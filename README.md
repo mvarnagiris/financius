@@ -1,0 +1,4 @@
+Financius
+=========
+
+Android Expense Manager
