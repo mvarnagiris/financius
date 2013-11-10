@@ -7,7 +7,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/dynamic_margin_card_vertical"
         android:paddingBottom="@dimen/dynamic_margin_card_vertical"
         android:paddingLeft="@dimen/dynamic_margin_card_horizontal"
         android:paddingRight="@dimen/dynamic_margin_card_horizontal"
@@ -16,7 +15,8 @@
         <com.code44.finance.views.cards.BackupCardView
             android:id="@+id/backupCard_V"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
 
         <com.code44.finance.views.cards.CSVCardView
             android:id="@+id/csvCard_V"

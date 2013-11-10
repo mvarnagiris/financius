@@ -68,6 +68,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/export_B"
         style="@style/Button.Primary"
         android:layout_marginTop="@dimen/space_large"
         android:layout_gravity="center_horizontal"

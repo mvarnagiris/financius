@@ -24,6 +24,9 @@ import java.io.*;
 public class BackupService extends AbstractService
 {
     public static final String EXTRA_FILE_PATH = BackupService.class.getName() + ".EXTRA_FILE_PATH";
+    public static final String EXTRA_DATE_FROM = BackupService.class.getName() + ".EXTRA_DATE_FROM";
+    public static final String EXTRA_DATE_TO = BackupService.class.getName() + ".EXTRA_DATE_TO";
+    // -----------------------------------------------------------------------------------------------------------------
     public static final int EXPORT_VERSION = 1;
     public static final int RT_EXPORT_CSV = 1;
     public static final int RT_EXPORT_JSON = 2;
@@ -34,6 +37,9 @@ public class BackupService extends AbstractService
 
     public void rtExportCSV(Intent intent) throws Exception
     {
+        final long dateFrom = intent.getLongExtra(EXTRA_DATE_FROM, 0);
+        final long dateTo = intent.getLongExtra(EXTRA_DATE_TO, Long.MAX_VALUE);
+
         File csvFile = getExportFile(CSV_FILE_NAME_PREFIX, ".csv");
         if (csvFile == null)
         {
@@ -55,7 +61,8 @@ public class BackupService extends AbstractService
                     TransactionsProvider.uriTransactions(getApplicationContext()),
                     new String[]{Tables.Transactions.DATE, Tables.Accounts.AccountFrom.S_TITLE, Tables.Accounts.AccountTo.S_TITLE,
                             Tables.Transactions.CATEGORY_ID, Tables.Categories.CategoriesChild.S_TITLE, Tables.Transactions.AMOUNT, Tables.Transactions.NOTE},
-                    Tables.Transactions.DELETE_STATE + "<>?", new String[]{String.valueOf(Tables.DeleteState.DELETED)}, null);
+                    Tables.Transactions.DELETE_STATE + "=? and " + Tables.Transactions.DATE + " between ? and ?", new String[]{String.valueOf(Tables.DeleteState.NONE),
+                    String.valueOf(dateFrom), String.valueOf(dateTo)}, null);
             if (c != null && c.moveToFirst())
             {
                 final int iDate = c.getColumnIndex(Tables.Transactions.DATE);
@@ -78,7 +85,10 @@ public class BackupService extends AbstractService
             // Finish writing
             writer.flush();
 
-            new SingleMediaScanner(this, csvFile.getAbsolutePath());
+            Uri contentUri = Uri.fromFile(csvFile);
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            mediaScanIntent.setData(contentUri);
+            sendBroadcast(mediaScanIntent);
         }
         finally
         {
@@ -96,9 +106,6 @@ public class BackupService extends AbstractService
             }
         }
     }
-
-    // Request type methods
-    // --------------------------------------------------------------------------------------------------------------------------------
 
     public void rtExportJSON(Intent intent) throws Exception
     {
@@ -177,6 +184,18 @@ public class BackupService extends AbstractService
         getContentResolver().notifyChange(AccountsProvider.uriAccounts(this), null);
         getContentResolver().notifyChange(CategoriesProvider.uriCategories(this), null);
         getContentResolver().notifyChange(TransactionsProvider.uriTransactions(this), null);
+    }
+
+    @Override
+    protected ServiceEvent getServiceEvent(Intent intent, int requestType, boolean force)
+    {
+        switch (requestType)
+        {
+            case RT_EXPORT_CSV:
+                new CSVExportEvent(requestType, force);
+                break;
+        }
+        return super.getServiceEvent(intent, requestType, force);
     }
 
     @Override
@@ -393,6 +412,14 @@ public class BackupService extends AbstractService
 //            if (c != null && !c.isClosed())
 //                c.close();
 //        }
+    }
+
+    public static class CSVExportEvent extends ServiceEvent
+    {
+        public CSVExportEvent(int requestType, boolean force)
+        {
+            super(requestType, force);
+        }
     }
 
     // Media scanner

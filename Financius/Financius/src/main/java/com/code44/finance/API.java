@@ -267,11 +267,13 @@ public class API
     // Backup
     // --------------------------------------------------------------------------------------------------------------------------------
 
-    public static void exportCSV(Context context)
+    public static void exportCSV(Context context, long dateFrom, long dateTo)
     {
         Intent intent = new Intent(context, BackupService.class);
         intent.putExtra(BackupService.EXTRA_REQUEST_TYPE, BackupService.RT_EXPORT_CSV);
         intent.putExtra(BackupService.EXTRA_FORCE, true);
+        intent.putExtra(BackupService.EXTRA_DATE_FROM, dateFrom);
+        intent.putExtra(BackupService.EXTRA_DATE_TO, dateTo);
         context.startService(intent);
     }
 

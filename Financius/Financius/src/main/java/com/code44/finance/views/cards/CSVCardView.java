@@ -10,14 +10,19 @@ import com.code44.finance.R;
 import org.joda.time.format.DateTimeFormat;
 
 @SuppressWarnings("UnusedDeclaration")
-public class CSVCardView extends BigTextCardView
+public class CSVCardView extends BigTextCardView implements View.OnClickListener
 {
+    private static final int REQUEST_FROM = 49641;
+    private static final int REQUEST_TO = 56145;
+    // -----------------------------------------------------------------------------------------------------------------
     private final View exportCSV_V;
     private final Button dateFrom_B;
     private final Button dateTo_B;
     private final ImageButton clearDateFrom_B;
     private final ImageButton clearDateTo_B;
+    private final Button export_B;
     // -----------------------------------------------------------------------------------------------------------------
+    private Callback callback;
     private long dateFrom;
     private long dateTo;
 
@@ -42,12 +47,18 @@ public class CSVCardView extends BigTextCardView
         dateTo_B = (Button) exportCSV_V.findViewById(R.id.dateTo_B);
         clearDateFrom_B = (ImageButton) exportCSV_V.findViewById(R.id.clearDateFrom_B);
         clearDateTo_B = (ImageButton) exportCSV_V.findViewById(R.id.clearDateTo_B);
+        export_B = (Button) exportCSV_V.findViewById(R.id.export_B);
 
         // Add views
         addView(exportCSV_V);
 
         // Setup
         setCardInfo(new CSVCardInfo(context));
+        dateFrom_B.setOnClickListener(this);
+        dateTo_B.setOnClickListener(this);
+        clearDateFrom_B.setOnClickListener(this);
+        clearDateTo_B.setOnClickListener(this);
+        export_B.setOnClickListener(this);
     }
 
     @Override
@@ -84,6 +95,36 @@ public class CSVCardView extends BigTextCardView
         childTop += params.topMargin;
         int childLeft = getPaddingLeft() + params.leftMargin;
         exportCSV_V.layout(childLeft, childTop, childLeft + exportCSV_V.getMeasuredWidth(), childTop + exportCSV_V.getMeasuredHeight());
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
+            case R.id.dateFrom_B:
+                if (callback != null)
+                    callback.onRequestCSVPeriod(REQUEST_FROM, dateFrom > 0 ? dateFrom : System.currentTimeMillis());
+                break;
+
+            case R.id.dateTo_B:
+                if (callback != null)
+                    callback.onRequestCSVPeriod(REQUEST_TO, dateTo > 0 ? dateTo : System.currentTimeMillis());
+                break;
+
+            case R.id.clearDateFrom_B:
+                setDateFrom(0);
+                break;
+
+            case R.id.clearDateTo_B:
+                setDateTo(0);
+                break;
+
+            case R.id.export_B:
+                if (callback != null)
+                    callback.onExportCSV(dateFrom, dateTo == 0 ? Long.MAX_VALUE : dateTo);
+                break;
+        }
     }
 
     @Override
@@ -133,6 +174,31 @@ public class CSVCardView extends BigTextCardView
             dateTo_B.setText(DateTimeFormat.mediumDate().print(dateTo));
             clearDateTo_B.setVisibility(VISIBLE);
         }
+    }
+
+    public void setDate(int requestCode, long date)
+    {
+        if (requestCode == REQUEST_FROM)
+            setDateFrom(date);
+        else if (requestCode == REQUEST_TO)
+            setDateTo(date);
+    }
+
+    public Callback getCallback()
+    {
+        return callback;
+    }
+
+    public void setCallback(Callback callback)
+    {
+        this.callback = callback;
+    }
+
+    public static interface Callback
+    {
+        public void onRequestCSVPeriod(int requestCode, long date);
+
+        public void onExportCSV(long dateFrom, long dateTo);
     }
 
     @SuppressWarnings("UnusedDeclaration")
