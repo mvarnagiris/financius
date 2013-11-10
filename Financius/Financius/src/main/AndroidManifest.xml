@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.code44.finance"
+    android:versionCode="42"
+    android:versionName="0.9.10">
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="18" />
+
+    <!-- Permissions -->
+    <!-- ======================================================================================================== -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+
+    <!-- Application -->
+    <!-- ======================================================================================================== -->
+    <application
+        android:name=".FinanciusApp"
+        android:hardwareAccelerated="true"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+
+        <!-- Activities -->
+        <!-- ======================================================================================================== -->
+        <activity
+            android:name=".ui.MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.AboutActivity" />
+
+        <activity android:name=".ui.settings.SettingsActivity" />
+        <activity android:name=".ui.settings.lock.LockActivity" />
+        <activity android:name=".ui.settings.donate.DonateActivity" />
+
+        <activity android:name=".ui.currencies.CurrencyListActivity" />
+        <activity android:name=".ui.currencies.CurrencyItemActivity" />
+        <activity android:name=".ui.currencies.CurrencyEditActivity" />
+
+        <activity android:name=".ui.accounts.AccountListActivity" />
+        <activity android:name=".ui.accounts.AccountItemActivity" />
+        <activity android:name=".ui.accounts.AccountEditActivity" />
+
+        <activity android:name=".ui.transactions.CalculatorActivity" />
+        <activity android:name=".ui.transactions.TransactionListActivity" />
+        <activity android:name=".ui.transactions.TransactionItemActivity" />
+        <activity android:name=".ui.transactions.TransactionEditActivity" />
+
+        <activity android:name=".ui.categories.CategoryListActivity" />
+        <activity android:name=".ui.categories.CategoryItemActivity" />
+        <activity android:name=".ui.categories.CategoryEditActivity" />
+
+        <activity android:name=".ui.budgets.BudgetListActivity" />
+        <activity android:name=".ui.budgets.BudgetItemActivity" />
+        <activity android:name=".ui.budgets.BudgetEditActivity" />
+
+        <activity android:name=".ui.reports.CategoriesReportActivity" />
+
+        <activity android:name=".ui.backup.BackupActivity" />
+        <activity android:name=".ui.backup.YourDataActivity" />
+
+        <!-- Services -->
+        <!-- ======================================================================================================== -->
+        <service android:name=".services.CurrenciesService" />
+        <service android:name=".services.CurrenciesRestService" />
+        <service android:name=".services.AccountsService" />
+        <service android:name=".services.CategoriesService" />
+        <service android:name=".services.TransactionsService" />
+        <service android:name=".services.BudgetsService" />
+        <service android:name=".services.BackupService" />
+        <service
+            android:name=".services.DashClockService"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
+            <intent-filter>
+                <action android:name="com.google.android.apps.dashclock.Extension" />
+            </intent-filter>
+
+            <meta-data
+                android:name="protocolVersion"
+                android:value="1" />
+            <meta-data
+                android:name="description"
+                android:value="@string/l_dashclock_desc" />
+        </service>
+        <meta-data android:name="com.crashlytics.ApiKey" android:value="a0fed0de33f7f506e0acd0e0eb605f9f3a3da96f"/>
+    </application>
+
+</manifest>

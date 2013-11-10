@@ -1,0 +1,6 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_disableBackup"
+        android:title="@string/disable_backup"
+        android:showAsAction="never" />
+</menu>

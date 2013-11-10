@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
+
+    <!-- Financius -->
+    <!-- ======================================================================================================== -->
+    <color name="f_dark">#0a0a0b</color>
+    <color name="f_dark_lighter1">#292b2d</color>
+    <color name="f_dark_lighter2">#3e4043</color>
+    <color name="f_dark_lighter3">#53565a</color>
+    <color name="f_dark_lighter4">#676b70</color>
+
+    <color name="f_light">#fcfcfc</color>
+    <color name="f_light_darker1">#f1f1f1</color>
+    <color name="f_light_darker2">#e0e0e0</color>
+    <color name="f_light_darker3">#d0d0d0</color>
+    <color name="f_light_darker4">#bbbbbb</color>
+    <color name="f_light_darker5">#969696</color>
+
+    <color name="f_brand_darker3">#485014</color>
+    <color name="f_brand_darker2">#6c781f</color>
+    <color name="f_brand_darker1">#90a029</color>
+    <color name="f_brand">#b4c833</color>
+    <color name="f_brand_lighter1">#cbd971</color>
+    <color name="f_brand_lighter2">#dde6a3</color>
+    <color name="f_brand_lighter3">#f0f4d6</color>
+
+    <color name="f_green_darker3">#293d00</color>
+    <color name="f_green_darker2">#3d5c00</color>
+    <color name="f_green_darker1">#527a00</color>
+    <color name="f_green">#669900</color>
+    <color name="f_green_lighter1">#94b84d</color>
+    <color name="f_green_lighter2">#bad18c</color>
+    <color name="f_green_lighter3">#e0ebcc</color>
+
+    <color name="f_red_darker3">#52201a</color>
+    <color name="f_red_darker2">#7c3028</color>
+    <color name="f_red_darker1">#a54035</color>
+    <color name="f_red">#ce5042</color>
+    <color name="f_red_lighter1">#dd857b</color>
+    <color name="f_red_lighter2">#e9b0aa</color>
+    <color name="f_red_lighter3">#f5dcd9</color>
+
+    <color name="f_maroon_darker3">#520000</color>
+    <color name="f_maroon_darker2">#7a0000</color>
+    <color name="f_maroon_darker1">#a30000</color>
+    <color name="f_maroon">#cc0000</color>
+    <color name="f_maroon_lighter1">#db4d4d</color>
+    <color name="f_maroon_lighter2">#e88c8c</color>
+    <color name="f_maroon_lighter3">#f5cccc</color>
+
+    <color name="f_orange_darker3">#64350d</color>
+    <color name="f_orange_darker2">#975014</color>
+    <color name="f_orange_darker1">#c96a1a</color>
+    <color name="f_orange">#fb8521</color>
+    <color name="f_orange_lighter1">#fcaa64</color>
+    <color name="f_orange_lighter2">#fdc89b</color>
+    <color name="f_orange_lighter3">#fee7d3</color>
+
+    <color name="f_yellow_darker3">#5c570f</color>
+    <color name="f_yellow_darker2">#898316</color>
+    <color name="f_yellow_darker1">#b7ae1d</color>
+    <color name="f_yellow">#e5da25</color>
+    <color name="f_yellow_lighter1">#ede567</color>
+    <color name="f_yellow_lighter2">#f3ee9d</color>
+    <color name="f_yellow_lighter3">#faf8d3</color>
+
+    <color name="f_sky_darker3">#0a405a</color>
+    <color name="f_sky_darker2">#106187</color>
+    <color name="f_sky_darker1">#1581b4</color>
+    <color name="f_sky">#1aa1e1</color>
+    <color name="f_sky_lighter1">#5fbdea</color>
+    <color name="f_sky_lighter2">#98d5f1</color>
+    <color name="f_sky_lighter3">#d1ecf9</color>
+
+    <color name="f_blue_darker3">#143666</color>
+    <color name="f_blue_darker2">#1f5299</color>
+    <color name="f_blue_darker1">#296dcc</color>
+    <color name="f_blue">#3388ff</color>
+    <color name="f_blue_lighter1">#71acff</color>
+    <color name="f_blue_lighter2">#a3c9ff</color>
+    <color name="f_blue_lighter3">#d6e7ff</color>
+
+    <color name="f_teal_darker3">#003d3d</color>
+    <color name="f_teal_darker2">#005c5c</color>
+    <color name="f_teal_darker1">#007a7a</color>
+    <color name="f_teal">#009999</color>
+    <color name="f_teal_lighter1">#4db8b8</color>
+    <color name="f_teal_lighter2">#8cd1d1</color>
+    <color name="f_teal_lighter3">#ccebeb</color>
+
+    <color name="f_lavender_darker3">#262543</color>
+    <color name="f_lavender_darker2">#383764</color>
+    <color name="f_lavender_darker1">#4b4a86</color>
+    <color name="f_lavender">#5e5ca7</color>
+    <color name="f_lavender_lighter1">#8f8dc2</color>
+    <color name="f_lavender_lighter2">#b6b5d7</color>
+    <color name="f_lavender_lighter3">#dfdeed</color>
+
+    <color name="f_purple_darker3">#3d1452</color>
+    <color name="f_purple_darker2">#5c1f7a</color>
+    <color name="f_purple_darker1">#7a29a3</color>
+    <color name="f_purple">#9933cc</color>
+    <color name="f_purple_lighter1">#b871db</color>
+    <color name="f_purple_lighter2">#d1a3e8</color>
+    <color name="f_purple_lighter3">#ebd6f5</color>
+
+    <!-- Background -->
+    <!-- ======================================================================================================== -->
+    <color name="bg_window">@color/f_light_darker1</color>
+    <color name="bg_primary">@color/f_light</color>
+    <color name="bg_primary_inverse">@color/f_dark_lighter1</color>
+
+    <!-- Text -->
+    <!-- ======================================================================================================== -->
+    <color name="text_accent">@color/f_brand</color>
+    <color name="text_primary">@color/f_dark_lighter1</color>
+    <color name="text_primary_inverted">@color/f_light</color>
+    <color name="text_secondary">@color/f_light_darker5</color>
+    <color name="text_green">@color/f_green</color>
+    <color name="text_red">@color/f_red</color>
+    <color name="text_yellow">@color/f_orange</color>
+
+    <!-- Separator -->
+    <!-- ======================================================================================================== -->
+    <color name="separator">@color/f_light_darker2</color>
+
+    <!-- Other -->
+    <!-- ======================================================================================================== -->
+    <color name="pressed_actionbar">#ccb4c833</color>
+    <color name="pressed_card">#99b4c833</color>
+    <color name="temp">#65a310</color>
+
+</resources>

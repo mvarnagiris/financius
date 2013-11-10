@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:id="@+id/container_V"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/space_large"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/color_V"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/dynamic_margin_narrow_vertical"
+            android:paddingBottom="@dimen/dynamic_margin_narrow_vertical"
+            android:paddingLeft="@dimen/dynamic_margin_narrow_horizontal"
+            android:paddingRight="@dimen/dynamic_margin_narrow_horizontal">
+
+
+            <TextView
+                android:id="@+id/date_TV"
+                style="@style/TextView.Inverse"
+                android:layout_alignParentRight="true"
+                android:fontFamily="sans-serif-light" />
+
+            <TextView
+                android:id="@+id/account_TV"
+                style="@style/TextView.Inverse"
+                android:layout_width="match_parent"
+                android:layout_toLeftOf="@+id/date_TV"
+                android:layout_marginRight="@dimen/space_normal"
+                android:fontFamily="sans-serif-light" />
+
+            <TextView
+                android:id="@+id/category_TV"
+                style="@style/TextView.Inverse"
+                android:layout_below="@+id/account_TV"
+                android:textSize="@dimen/text_xxlarge"
+                android:fontFamily="sans-serif-light" />
+
+        </RelativeLayout>
+
+        <View style="@style/Separator" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/dynamic_margin_narrow_vertical"
+            android:paddingLeft="@dimen/dynamic_margin_narrow_horizontal"
+            android:paddingRight="@dimen/dynamic_margin_narrow_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/amount_TV"
+                style="@style/TextView"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/space_normal"
+                android:textSize="@dimen/text_xxxlarge"
+                android:fontFamily="sans-serif-light" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/exchangeRate_TV"
+                    style="@style/TextView.Secondary"
+                    android:fontFamily="sans-serif-light" />
+
+                <TextView
+                    android:id="@+id/mainCurrencyAmount_TV"
+                    style="@style/TextView.Secondary"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            style="@style/Separator.Thin"
+            android:layout_marginLeft="@dimen/dynamic_margin_narrow_horizontal"
+            android:layout_marginRight="@dimen/dynamic_margin_narrow_horizontal" />
+
+        <TextView
+            android:id="@+id/note_TV"
+            style="@style/TextView"
+            android:paddingTop="@dimen/space_large"
+            android:paddingLeft="@dimen/dynamic_margin_narrow_horizontal"
+            android:paddingRight="@dimen/dynamic_margin_narrow_horizontal"
+            android:textSize="@dimen/text_large"
+            android:fontFamily="sans-serif-light" />
+
+        <TextView
+            android:id="@+id/notIncluded_TV"
+            style="@style/TextView.Secondary"
+            android:paddingTop="@dimen/space_large"
+            android:paddingLeft="@dimen/dynamic_margin_narrow_horizontal"
+            android:paddingRight="@dimen/dynamic_margin_narrow_horizontal"
+            android:text="@string/l_transaction_not_included"
+            android:fontFamily="sans-serif-light"
+            android:visibility="gone" />
+    </LinearLayout>
+</ScrollView>

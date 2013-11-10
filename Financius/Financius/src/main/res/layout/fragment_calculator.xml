@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/space_normal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/bg_primary">
+
+        <TextView
+            android:id="@+id/amount_TV"
+            style="@style/TextView"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/space_large"
+            android:layout_marginBottom="@dimen/space_large"
+            android:layout_marginLeft="@dimen/space_large"
+            android:layout_marginRight="@dimen/space_normal"
+            android:gravity="right|center_vertical"
+            android:textSize="@dimen/text_xxlarge"
+            tools:ignore="SelectableText" />
+
+        <ImageButton
+            android:id="@+id/delete_B"
+            style="@style/Button.Borderless"
+            android:layout_width="64dp"
+            android:layout_height="match_parent"
+            android:minHeight="@dimen/min_touch_size"
+            android:minWidth="@dimen/min_touch_size"
+            android:contentDescription="@string/delete"
+            android:src="@drawable/ic_action_backspace"
+            android:scaleType="centerInside" />
+
+    </LinearLayout>
+
+    <View style="@style/Separator" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:showDividers="middle"
+        android:divider="?android:attr/dividerVertical"
+        android:dividerPadding="@dimen/divider_padding">
+
+    <Button
+            android:id="@+id/div_B"
+            style="@style/Button.Borderless.Calc"
+            android:text="@string/calc_div" />
+
+        <Button
+            android:id="@+id/mul_B"
+            style="@style/Button.Borderless.Calc"
+            android:text="@string/calc_mul" />
+
+        <Button
+            android:id="@+id/sub_B"
+            style="@style/Button.Borderless.Calc"
+            android:text="@string/calc_sub" />
+
+        <Button
+            android:id="@+id/add_B"
+            style="@style/Button.Borderless.Calc"
+            android:text="@string/calc_add" />
+    </LinearLayout>
+
+    <View style="@style/Separator" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:layout_marginLeft="@dimen/space_normal"
+        android:layout_marginRight="@dimen/space_normal">
+
+    <Button
+            android:id="@+id/tl_B"
+            style="@style/Button.Borderless.Calc" />
+
+        <Button
+            android:id="@+id/tm_B"
+            style="@style/Button.Borderless.Calc" />
+
+        <Button
+            android:id="@+id/tr_B"
+            style="@style/Button.Borderless.Calc" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:layout_marginLeft="@dimen/space_normal"
+        android:layout_marginRight="@dimen/space_normal">
+
+    <Button
+            android:id="@+id/ml_B"
+            style="@style/Button.Borderless.Calc" />
+
+        <Button
+            android:id="@+id/mm_B"
+            style="@style/Button.Borderless.Calc" />
+
+        <Button
+            android:id="@+id/mr_B"
+            style="@style/Button.Borderless.Calc" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:layout_marginLeft="@dimen/space_normal"
+        android:layout_marginRight="@dimen/space_normal">
+
+    <Button
+            android:id="@+id/bl_B"
+            style="@style/Button.Borderless.Calc" />
+
+        <Button
+            android:id="@+id/bm_B"
+            style="@style/Button.Borderless.Calc" />
+
+        <Button
+            android:id="@+id/br_B"
+            style="@style/Button.Borderless.Calc" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:layout_marginLeft="@dimen/space_normal"
+        android:layout_marginRight="@dimen/space_normal">
+
+        <FrameLayout
+            style="@style/Button.Borderless.Calc"
+            android:padding="0dp">
+
+            <Button
+                android:id="@+id/done_B"
+                style="@style/Button.Borderless.Calc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/text_green"
+                android:text="@string/calc_equals"
+                android:textStyle="bold" />
+
+            <View
+                style="@style/Separator"
+                android:layout_gravity="bottom"
+                android:background="@color/f_green" />
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/zero_B"
+            style="@style/Button.Borderless.Calc"
+            android:text="@string/calc_0" />
+
+        <Button
+            android:id="@+id/decimal_B"
+            style="@style/Button.Borderless.Calc"
+            android:text="@string/calc_decimal" />
+    </LinearLayout>
+
+</LinearLayout>

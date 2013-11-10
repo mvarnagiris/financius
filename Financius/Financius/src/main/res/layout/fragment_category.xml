@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/dynamic_margin_narrow_vertical"
+        android:paddingBottom="@dimen/dynamic_margin_narrow_vertical"
+        android:paddingLeft="@dimen/dynamic_margin_narrow_horizontal"
+        android:paddingRight="@dimen/dynamic_margin_narrow_horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/color_V"
+                android:layout_width="@dimen/min_touch_size"
+                android:layout_height="@dimen/min_touch_size"
+                android:layout_marginRight="@dimen/space_normal" />
+
+            <TextView
+                android:id="@+id/mainTitle_TV"
+                style="@style/TextView"
+                android:textSize="@dimen/text_xlarge"
+                android:fontFamily="sans-serif-light" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/subContainer_V"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_large">
+
+            <TextView
+                android:id="@+id/subTitle_TV"
+                style="@style/TextView"
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/text_xxxlarge"
+                android:fontFamily="@string/font_thin" />
+
+        </LinearLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_normal">
+
+            <TableRow android:layout_marginTop="@dimen/space_normal">
+
+                <TextView
+                    style="@style/TextView.Stats.Title"
+                    android:text="@string/last_used" />
+
+                <TextView
+                    android:id="@+id/lastUsed_TV"
+                    style="@style/TextView.Stats" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="@dimen/space_normal">
+
+                <TextView
+                    style="@style/TextView.Stats.Title"
+                    android:text="@string/times_used" />
+
+                <TextView
+                    android:id="@+id/timesUsed_TV"
+                    style="@style/TextView.Stats" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="@dimen/space_normal">
+
+                <TextView
+                    style="@style/TextView.Stats.Title"
+                    android:text="@string/avg_amount" />
+
+                <TextView
+                    android:id="@+id/avgAmount_TV"
+                    style="@style/TextView.Stats" />
+            </TableRow>
+
+        </TableLayout>
+
+    </LinearLayout>
+</ScrollView>

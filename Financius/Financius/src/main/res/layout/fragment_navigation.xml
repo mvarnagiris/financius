@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ListView
+        android:id="@+id/list_V"
+        style="@style/ListView.NoDivider"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp" />
+
+    <include
+        android:id="@+id/donate_V"
+        layout="@layout/li_navigation" />
+</LinearLayout>

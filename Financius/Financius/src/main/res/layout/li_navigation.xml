@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ListItem"
+    android:paddingLeft="@dimen/space_large"
+    android:paddingRight="@dimen/space_large">
+
+    <TextView
+        android:id="@+id/title_TV"
+        style="@style/TextView"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/space_normal"
+        android:textSize="@dimen/text_xlarge"
+        android:fontFamily="sans-serif-light" />
+
+    <TextView
+        android:id="@+id/badge_TV"
+        style="@style/TextView.Inverse"
+        android:minWidth="@dimen/drawer_badge_size"
+        android:minHeight="@dimen/drawer_badge_size"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_large"
+        android:background="@drawable/bg_notification"
+        android:visibility="invisible"/>
+
+</LinearLayout>

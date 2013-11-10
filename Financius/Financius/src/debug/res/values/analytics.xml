@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Prevent data from appearing in reports. Useful for testing. -->
+    <bool name="ga_dryRun">true</bool>
+</resources>

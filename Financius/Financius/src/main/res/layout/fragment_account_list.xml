@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/container_V"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:minHeight="?android:attr/actionBarSize"
+        android:paddingLeft="@dimen/space_large"
+        android:paddingRight="@dimen/space_large"
+        android:paddingTop="@dimen/space_normal"
+        android:paddingBottom="@dimen/space_normal"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TextView"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/balance"
+            android:textSize="@dimen/text_large" />
+
+        <TextView
+            android:id="@+id/balance_TV"
+            style="@style/TextView"
+            android:textSize="@dimen/text_large" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/separator_V"
+        style="@style/Separator"
+        android:layout_above="@+id/container_V" />
+
+    <ListView
+        android:id="@+id/list_V"
+        style="@style/ListView"
+        android:layout_above="@+id/separator_V"
+        android:paddingLeft="@dimen/dynamic_margin_narrow_horizontal"
+        android:paddingRight="@dimen/dynamic_margin_narrow_horizontal"/>
+</RelativeLayout>

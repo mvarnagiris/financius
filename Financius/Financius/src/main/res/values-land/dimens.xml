@@ -1,0 +1,15 @@
+<resources>
+
+    <!-- Margin -->
+    <!-- ======================================================================================================== -->
+    <dimen name="margin_dynamic_normal">72dp</dimen>
+    <dimen name="margin_dynamic_large">80dp</dimen>
+    <dimen name="margin_land_normal">72dp</dimen>
+
+    <dimen name="dynamic_margin_narrow_horizontal">72dp</dimen>
+    <dimen name="dynamic_margin_narrow_vertical">16dp</dimen>
+    <dimen name="dynamic_margin_drawer_narrow_horizontal">72dp</dimen>
+    <dimen name="dynamic_margin_card_horizontal">72dp</dimen>
+    <dimen name="dynamic_margin_card_vertical">12dp</dimen>
+
+</resources>

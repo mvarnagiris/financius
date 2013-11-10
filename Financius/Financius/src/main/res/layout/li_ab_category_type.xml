@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ListItem"
+    android:textSize="@dimen/text_normal"
+    android:gravity="center_vertical"
+    android:textColor="@color/text_primary" />

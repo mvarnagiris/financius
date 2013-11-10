@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ListItem"
+    android:baselineAligned="false">
+
+    <LinearLayout
+        android:id="@+id/dateContainer_V"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/space_normal"
+        android:layout_gravity="center_vertical"
+        android:minHeight="@dimen/recommended_touch_size"
+        android:minWidth="@dimen/recommended_touch_size"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/month_TV"
+            style="@style/TextView"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/text_primary_inverted"
+            android:textSize="@dimen/text_xsmall" />
+
+        <TextView
+            android:id="@+id/day_TV"
+            style="@style/TextView"
+            android:layout_marginTop="-10dp"
+            android:fontFamily="sans-serif-light"
+            android:textSize="@dimen/text_xxlarge"
+            android:textColor="@color/text_primary_inverted" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/categoryTitle_TV"
+            style="@style/TextView"
+            android:layout_width="match_parent"
+            android:fontFamily="sans-serif-light" />
+
+        <TextView
+            android:id="@+id/note_TV"
+            style="@style/TextView"
+            android:textSize="@dimen/text_small" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_normal"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical|right"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/account_TV"
+            style="@style/TextView.Secondary"
+            android:textSize="@dimen/text_xsmall" />
+
+        <TextView
+            android:id="@+id/amount_TV"
+            style="@style/TextView" />
+
+        <TextView
+            android:id="@+id/amountCurrency_TV"
+            style="@style/TextView.Secondary"
+            android:textSize="@dimen/text_small"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/space_large"
+            android:paddingBottom="@dimen/space_large"
+            android:paddingLeft="@dimen/margin_dynamic_large"
+            android:paddingRight="@dimen/margin_dynamic_large"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/photo_IV"
+                    style="@style/ImageView"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginRight="@dimen/space_normal"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+
+                <TextView
+                    style="@style/TextView"
+                    android:text="@string/l_donate_greet"
+                    android:textSize="@dimen/text_xlarge"
+                    android:fontFamily="sans-serif-light" />
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/TextView"
+                android:layout_marginTop="@dimen/space_normal"
+                android:text="@string/l_donate_thank"
+                android:fontFamily="sans-serif-light" />
+
+            <View
+                style="@style/Separator"
+                android:layout_marginTop="@dimen/space_normal" />
+
+            <LinearLayout
+                android:id="@+id/container_V"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical" />
+        </LinearLayout>
+
+    </ScrollView>
+
+    <View
+        android:id="@+id/separator_V"
+        style="@style/Separator" />
+
+    <LinearLayout
+        android:id="@+id/donateSwitchContainer_V"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/margin_dynamic_large"
+        android:paddingRight="@dimen/margin_dynamic_large"
+        android:gravity="center_vertical"
+        android:minHeight="@dimen/recommended_touch_size">
+
+        <TextView
+            style="@style/TextView"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/space_normal"
+            android:text="@string/show_donate_in_navigation"
+            android:fontFamily="sans-serif-light" />
+
+        <Switch
+            android:id="@+id/switch_S"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

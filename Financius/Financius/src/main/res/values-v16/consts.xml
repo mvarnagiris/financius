@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item format="string" name="font_thin" type="string">sans-serif-thin</item>
+</resources>

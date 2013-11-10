@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:showDividers="middle"
+        android:divider="?android:dividerHorizontal"
+        android:animateLayoutChanges="true">
+
+        <com.code44.finance.views.FilterToggleView
+            android:id="@+id/periodFilter_V"
+            style="@style/Button.Borderless.Filter"
+            android:layout_width="match_parent" />
+
+        <com.code44.finance.views.FilterToggleView
+            android:id="@+id/accountsFilter_V"
+            style="@style/Button.Borderless.Filter"
+            android:layout_width="match_parent" />
+
+        <com.code44.finance.views.FilterToggleView
+            android:id="@+id/categoriesFilter_V"
+            style="@style/Button.Borderless.Filter"
+            android:layout_width="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/periodContainer_V"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="@dimen/space_normal"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/dateFrom_B"
+                style="@style/Button.Select"
+                android:layout_width="match_parent" />
+
+            <Button
+                android:id="@+id/dateTo_B"
+                style="@style/Button.Select"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/space_normal"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

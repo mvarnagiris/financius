@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="done">Done</string>
+    <string name="discard">Discard</string>
+    <string name="create">Create</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="undo">Undo</string>
+    <string name="back">Back</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="empty">Empty</string>
+    <string name="set">Set</string>
+    <string name="settings">Settings</string>
+    <string name="search">Search</string>
+    <string name="other">Other</string>
+    <string name="none">None</string>
+    <string name="never">Never</string>
+    <string name="about">About</string>
+    <string name="open_navigation">Open navigation</string>
+    <string name="close_navigation">Close navigation</string>
+    <string name="lists">Lists</string>
+    <string name="tags">Tags</string>
+    <string name="information">Information</string>
+    <string name="general">General</string>
+    <string name="period">Period</string>
+    <string name="day">Day</string>
+    <string name="week">Week</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
+    <string name="income">Income</string>
+    <string name="expense">Expense</string>
+    <string name="transfer">Transfer</string>
+    <string name="title">Title</string>
+    <string name="balance">Balance</string>
+    <string name="date">Date</string>
+    <string name="note">Note</string>
+    <string name="reports">Reports</string>
+    <string name="categories_report">Categories report</string>
+    <string name="security">Security</string>
+    <string name="color">Color</string>
+    <string name="select_color">Select color</string>
+    <string name="notifications">Notifications</string>
+    <string name="overview">Overview</string>
+    <string name="selection">Selection</string>
+    <string name="donate">Donate</string>
+    <string name="show_donate_in_navigation">Show Donate in navigation</string>
+    <string name="account">Account</string>
+    <string name="accounts">Accounts</string>
+    <string name="create_account">Create account</string>
+    <string name="overdraft">Overdraft</string>
+    <string name="account_balance_update">Account balance update</string>
+    <string name="transactions">Transactions</string>
+    <string name="transaction">Transaction</string>
+    <string name="create_transaction">Create transaction</string>
+    <string name="from_account">From account</string>
+    <string name="to_account">To account</string>
+    <string name="amount">Amount</string>
+    <string name="confirmed">Confirmed</string>
+    <string name="pending">Pending</string>
+    <string name="category">Category</string>
+    <string name="categories">Categories</string>
+    <string name="sub_categories">Sub-categories</string>
+    <string name="pick_main_category">Pick main category</string>
+    <string name="create_new_main_category">Create new main category</string>
+    <string name="search_categories">Search categories</string>
+    <string name="backup">Backup</string>
+    <string name="enable_backup">Enable backup</string>
+    <string name="disable_backup">Disable backup</string>
+    <string name="backup_date">Backup date</string>
+    <string name="restore">Restore</string>
+    <string name="backup_not_found">Backup not found</string>
+    <string name="device_name">Device name</string>
+    <string name="rate_app">Rate app</string>
+    <string name="change_log">Change log</string>
+    <string name="budgets">Budgets</string>
+    <string name="budget">Budget</string>
+    <string name="wish_list">Wish list</string>
+    <string name="recurring_transactions">Recurring transactions</string>
+    <string name="places">Places</string>
+    <string name="people">People</string>
+    <string name="transaction_templates">Transaction templates</string>
+    <string name="currencies">Currencies</string>
+    <string name="currency">Currency</string>
+    <string name="format">Format</string>
+    <string name="code">Code</string>
+    <string name="currency_code">Currency code</string>
+    <string name="main_currency">Main currency</string>
+    <string name="space">Space</string>
+    <string name="currency_symbol">Currency symbol</string>
+    <string name="exchange_rate">Exchange rate</string>
+    <string name="thousands_separator">Thousands separator</string>
+    <string name="decimal_separator">Decimal separator</string>
+    <string name="decimals_count">Decimals count</string>
+    <string name="refresh_rate">Refresh rate</string>
+    <string name="update_exchange_rates">Update exchange rates</string>
+    <string name="this_is_main_currency">This is main currency</string>
+    <string name="over_wifi_or_mobile_network">Over Wi-Fi or mobile network</string>
+    <string name="over_wifi_only">Over Wi-Fi only</string>
+    <string name="include_in_totals">Include in totals</string>
+    <string name="include_in_total_budget">Include in total budget</string>
+    <string name="include_in_reports">Include in reports</string>
+    <string name="show_in_selection">Show in selection</string>
+    <string name="show_in_overview">Show in overview</string>
+    <string name="last_used">Last used</string>
+    <string name="times_used">Times used</string>
+    <string name="avg_amount">Avg. amount</string>
+    <string name="avg_expense">Avg. expense</string>
+    <string name="avg_income">Avg. income</string>
+    <string name="negative_numbers_are_not_allowed_here">Negative numbers are not allowed here</string>
+    <string name="filter">Filter</string>
+    <string name="not_set">Not set</string>
+    <string name="export_csv">Export CSV</string>
+    <string name="your_data">Your data</string>
+    <string name="show_backups">Show backups</string>
+    <string name="export">Export</string>
+
+    <string name="f_x_deleted">%d deleted</string>
+    <string name="f_enable_backup">
+        <![CDATA[To make it simple to backup &amp; restore your data you can use <b>Google Drive</b>.<br><br>Press the “<b>%s</b>” button to get started.]]></string>
+    <string name="f_current_main_currency_x">Current main currency is %s</string>
+    <string name="f_x_will_change_y_main_currency" formatted="false">%s will change %s as main currency</string>
+    <string name="f_exchange_rate_x">Exchange rate %f</string>
+
+    <string name="l_dashclock_desc">Displays your total balance.</string>
+    <string name="l_period_expenses_empty">No expense this period</string>
+    <string name="l_currency_exists">This currency already exists.</string>
+    <string name="l_cannot_disable_main_currency">To change main currency, edit another currency and set it as main
+        one.
+    </string>
+    <string name="l_no_internet_error">Please check your internet connection and try again.</string>
+    <string name="l_delete_confirmation">Deleting this will result in linked records being deleted as well. Are you sure
+        you want to delete?
+    </string>
+    <string name="l_currency_not_used">Not used</string>
+    <string name="l_currency_used">Accounts</string>
+    <string name="l_confirmed_info">Transaction can be NOT confirmed, when not all data is entered, or when transaction is in the future, or when generated automatically. In this case, transaction will not be included in reports, until You mark it as confirmed.</string>
+    <string name="l_show_in_totals_info">If it is not selected, this record will not appear in reports. But it will still be included in balance calculations.</string>
+    <string name="l_transaction_not_included">This transaction is not included in reports.</string>
+    <string name="l_backup_restore">All changes that are not in backup will be deleted. Are you sure you want to restore backup?</string>
+    <string name="l_backup_delete">Are you sure you want to delete backup?</string>
+    <string name="l_auto_search_categories_on">Search will start automatically</string>
+    <string name="l_auto_search_categories_off">Search will NOT start automatically</string>
+    <string name="l_donate_greet">Hi, I\'m Mantas Varnagiris, developer of Financius</string>
+    <string name="l_donate_thank">Thank you for using my app. I hope it will help to save you some money. Please consider helping me save some money too :)</string>
+    <string name="l_donate_thank_donate">Thank you for supporting the development of Financius!</string>
+
+    <!-- Categories -->
+    <string name="c_food" tools:ignore="UnusedResources">Food</string>
+    <string name="c_groceries" tools:ignore="UnusedResources">Groceries</string>
+    <string name="c_eating_out" tools:ignore="UnusedResources">Eating out</string>
+    <string name="c_lunch" tools:ignore="UnusedResources">Lunch</string>
+    <string name="c_coffee_and_snacks" tools:ignore="UnusedResources">Coffee and Snacks</string>
+    <string name="c_alcohol_and_tobacco" tools:ignore="UnusedResources">Alcohol and Tobacco</string>
+    <string name="c_alcohol" tools:ignore="UnusedResources">Alcohol</string>
+    <string name="c_tobacco" tools:ignore="UnusedResources">Tobacco</string>
+    <string name="c_leisure" tools:ignore="UnusedResources">Leisure</string>
+    <string name="c_concerts" tools:ignore="UnusedResources">Concerts</string>
+    <string name="c_movies" tools:ignore="UnusedResources">Movies</string>
+    <string name="c_books_and_magazines" tools:ignore="UnusedResources">Books and Magazines</string>
+    <string name="c_games" tools:ignore="UnusedResources">Games</string>
+    <string name="c_music" tools:ignore="UnusedResources">Music</string>
+    <string name="c_party" tools:ignore="UnusedResources">Party</string>
+    <string name="c_transportation" tools:ignore="UnusedResources">Transportation</string>
+    <string name="c_fuel" tools:ignore="UnusedResources">Fuel</string>
+    <string name="c_public_transportation" tools:ignore="UnusedResources">Public Transportation</string>
+    <string name="c_taxi" tools:ignore="UnusedResources">Taxi</string>
+    <string name="c_car_maintenance" tools:ignore="UnusedResources">Car Maintenance</string>
+    <string name="c_family" tools:ignore="UnusedResources">Family</string>
+    <string name="c_child_care" tools:ignore="UnusedResources">Child Care</string>
+    <string name="c_child_clothing" tools:ignore="UnusedResources">Child Clothing</string>
+    <string name="c_child_education" tools:ignore="UnusedResources">Child Education</string>
+    <string name="c_toys" tools:ignore="UnusedResources">Toys</string>
+    <string name="c_health_and_beauty" tools:ignore="UnusedResources">Health and Beauty</string>
+    <string name="c_cosmetics" tools:ignore="UnusedResources">Cosmetics</string>
+    <string name="c_vitamins" tools:ignore="UnusedResources">Vitamins</string>
+    <string name="c_medicine" tools:ignore="UnusedResources">Medicine</string>
+    <string name="c_sports" tools:ignore="UnusedResources">Sports</string>
+    <string name="c_household" tools:ignore="UnusedResources">Household</string>
+    <string name="c_appliances" tools:ignore="UnusedResources">Appliances</string>
+    <string name="c_furniture" tools:ignore="UnusedResources">Furniture</string>
+    <string name="c_house_maintenance" tools:ignore="UnusedResources">House Maintenance</string>
+    <string name="c_electronics" tools:ignore="UnusedResources">Electronics</string>
+    <string name="c_rent_and_mortgage" tools:ignore="UnusedResources">Rent and Mortgage</string>
+    <string name="c_clothing" tools:ignore="UnusedResources">Clothing</string>
+    <string name="c_clothes" tools:ignore="UnusedResources">Clothes</string>
+    <string name="c_shoes" tools:ignore="UnusedResources">Shoes</string>
+    <string name="c_accessories" tools:ignore="UnusedResources">Accessories</string>
+    <string name="c_bills_utilities" tools:ignore="UnusedResources">Bills and Utilities</string>
+    <string name="c_cold_water" tools:ignore="UnusedResources">Cold Water</string>
+    <string name="c_hot_water" tools:ignore="UnusedResources">Hot Water</string>
+    <string name="c_tv" tools:ignore="UnusedResources">TV</string>
+    <string name="c_electric" tools:ignore="UnusedResources">Electric</string>
+    <string name="c_garbage_and_recycling" tools:ignore="UnusedResources">Garbage and Recycling</string>
+    <string name="c_gas" tools:ignore="UnusedResources">Gas</string>
+    <string name="c_internet" tools:ignore="UnusedResources">Internet</string>
+    <string name="c_telephone" tools:ignore="UnusedResources">Telephone</string>
+    <string name="c_heating" tools:ignore="UnusedResources">Heating</string>
+    <string name="c_other_expense" tools:ignore="UnusedResources">Other Expense</string>
+    <string name="c_salary" tools:ignore="UnusedResources">Salary</string>
+    <string name="c_bonus" tools:ignore="UnusedResources">Bonus</string>
+    <string name="c_scholarship" tools:ignore="UnusedResources">Scholarship</string>
+    <string name="c_other_income" tools:ignore="UnusedResources">Other Income</string>
+    <string name="c_gifts" tools:ignore="UnusedResources">Gifts</string>
+
+    <!-- Lock -->
+    <string name="app_lock">App lock</string>
+    <string name="pattern">Pattern</string>
+    <string name="lock_removed">Lock removed</string>
+    <string name="lock_created">Lock created</string>
+    <string name="lock_pattern_new">Draw your new unlock pattern:</string>
+    <string name="lock_pattern_new_in_progress">Release finger when done</string>
+    <string name="lock_pattern_error_new">Connect at least 4 dots. Try again…</string>
+    <string name="lock_pattern_confirm_new">Redraw pattern to confirm:</string>
+    <string name="lock_pattern_created">Your new unlock pattern:</string>
+    <string name="lock_pattern_compare">Draw pattern to unlock:</string>
+    <string name="lock_pattern_error_compare">Sorry, try again…</string>
+
+</resources>

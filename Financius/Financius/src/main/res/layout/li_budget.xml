@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ListItem"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title_TV"
+        style="@style/TextView" />
+
+    <com.code44.finance.views.reports.BudgetView
+        android:id="@+id/budget_V"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/budget_view_height"
+        android:layout_marginTop="@dimen/space_normal"
+        android:layout_marginBottom="@dimen/space_normal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/sum_TV"
+            style="@style/TextView.Secondary"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/amount_TV"
+            style="@style/TextView.Secondary"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:gravity="right" />
+    </LinearLayout>
+
+</LinearLayout>

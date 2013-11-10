@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dynamic_margin_narrow_vertical"
+        android:paddingBottom="@dimen/dynamic_margin_narrow_vertical"
+        android:paddingLeft="@dimen/dynamic_margin_narrow_horizontal"
+        android:paddingRight="@dimen/dynamic_margin_narrow_horizontal"
+        android:orientation="vertical"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false">
+
+            <Button
+                android:id="@+id/accountType_B"
+                style="@style/Button.Select"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/space_small"
+                android:hint="Cash"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/title_ET"
+                style="@style/EditText.Field"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_gravity="bottom"
+                android:hint="@string/title"
+                android:inputType="textCapWords" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_normal">
+
+            <Button
+                android:id="@+id/currency_B"
+                style="@style/Button.Select"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/space_small" />
+
+            <Button
+                android:id="@+id/balance_B"
+                style="@style/Button.Select"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_marginLeft="@dimen/space_small"
+                android:hint="@string/balance" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_normal"
+            android:visibility="gone">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/space_small"
+                android:hint="$" />
+
+            <Button
+                android:id="@+id/overdraft_B"
+                style="@style/Button.Select"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_marginLeft="@dimen/space_small"
+                android:hint="@string/overdraft" />
+
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/includeInBalance_CB"
+            style="@style/CheckBox"
+            android:layout_marginTop="@dimen/space_large"
+            android:text="@string/include_in_totals" />
+
+        <CheckBox
+            android:id="@+id/showInSelection_CB"
+            style="@style/CheckBox"
+            android:layout_marginTop="@dimen/space_large"
+            android:text="@string/show_in_selection" />
+
+        <EditText
+            android:id="@+id/note_ET"
+            style="@style/EditText.Field"
+            android:layout_marginTop="@dimen/space_large"
+            android:hint="@string/note"
+            android:inputType="textCapSentences|textMultiLine" />
+
+    </LinearLayout>
+
+</ScrollView>

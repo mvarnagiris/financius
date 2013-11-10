@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/space_large">
+
+        <TextView
+            android:id="@+id/version_TV"
+            style="@style/TextView"
+            android:drawableLeft="@drawable/ic_launcher"
+            android:drawablePadding="@dimen/space_normal"
+            android:textSize="@dimen/text_large"
+            android:gravity="center_vertical"
+            tools:ignore="SelectableText" />
+
+        <View
+            style="@style/Separator"
+            android:layout_marginBottom="@dimen/space_normal"
+            android:layout_marginTop="@dimen/space_normal" />
+
+        <TextView
+            android:id="@+id/description_TV"
+            style="@style/TextView"
+            android:layout_marginTop="@dimen/space_normal"
+            android:textSize="@dimen/text_small"
+            tools:ignore="SelectableText" />
+    </LinearLayout>
+
+</ScrollView>

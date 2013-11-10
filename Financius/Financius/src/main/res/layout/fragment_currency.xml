@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/dynamic_margin_narrow_vertical"
+        android:paddingBottom="@dimen/dynamic_margin_narrow_vertical"
+        android:paddingLeft="@dimen/dynamic_margin_narrow_horizontal"
+        android:paddingRight="@dimen/dynamic_margin_narrow_horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/code_TV"
+                style="@style/TextView"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/space_normal"
+                android:textSize="@dimen/text_xlarge"
+                android:textAllCaps="true" />
+
+            <TextView
+                android:id="@+id/format_TV"
+                style="@style/TextView.Secondary"
+                android:textSize="@dimen/text_xlarge"
+                android:textColor="@color/text_yellow" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/currentCurrency_TV"
+            style="@style/TextView.Secondary"
+            android:layout_marginTop="@dimen/space_normal"
+            android:fontFamily="sans-serif-light" />
+
+        <TextView
+            android:id="@+id/exchangeRate_TV"
+            style="@style/TextView.Secondary"
+            android:fontFamily="sans-serif-light" />
+
+        <View
+            style="@style/Separator.Thin"
+            android:layout_marginTop="@dimen/space_normal" />
+
+        <TextView
+            android:id="@+id/accounts_TV"
+            style="@style/TextView.Secondary"
+            android:layout_marginTop="@dimen/space_large"
+            android:textSize="@dimen/text_small"
+            android:textStyle="bold"
+            android:textAllCaps="true" />
+
+        <LinearLayout
+            android:id="@+id/container_V"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </LinearLayout>
+</ScrollView>

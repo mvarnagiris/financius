@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:paddingTop="@dimen/dynamic_margin_narrow_vertical"
+        android:paddingBottom="@dimen/dynamic_margin_narrow_vertical"
+        android:paddingLeft="@dimen/dynamic_margin_narrow_horizontal"
+        android:paddingRight="@dimen/dynamic_margin_narrow_horizontal"
+        android:orientation="vertical"
+        android:animateLayoutChanges="true">
+
+        <LinearLayout
+            android:id="@+id/mainContainer_V"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/space_normal"
+            android:visibility="gone">
+
+            <View
+                android:id="@+id/color_V"
+                android:layout_width="@dimen/min_touch_size"
+                android:layout_height="@dimen/min_touch_size"
+                android:layout_marginRight="@dimen/space_normal" />
+
+            <TextView
+                android:id="@+id/mainTitle_TV"
+                style="@style/TextView"
+                android:textSize="@dimen/text_xlarge"
+                android:fontFamily="sans-serif-light" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true">
+
+            <Button
+                android:id="@+id/color_B"
+                style="@style/Button.Select"
+                android:layout_width="64dp"
+                android:layout_marginRight="@dimen/space_normal"
+                android:visibility="gone"/>
+
+            <EditText
+                android:id="@+id/title_ET"
+                style="@style/EditText.Field"
+                android:inputType="textCapWords"
+                android:hint="@string/title"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</ScrollView>

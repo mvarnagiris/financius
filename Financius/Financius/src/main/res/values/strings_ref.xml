@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Financius</string>
+
+    <!-- Account types -->
+    <string name="ac_other">Other</string>
+    <string-array name="account_types">
+        <item>ac_other</item>
+    </string-array>
+
+    <!-- Automatic updates choices -->
+    <string-array name="automatic_updates">
+        <item>@string/over_wifi_or_mobile_network</item>
+        <item>@string/over_wifi_only</item>
+        <item>@string/never</item>
+    </string-array>
+    <string-array name="automatic_updates_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <!-- Period choices -->
+    <string-array name="periods">
+        <item>@string/day</item>
+        <item>@string/week</item>
+        <item>@string/month</item>
+        <item>@string/year</item>
+    </string-array>
+    <string-array name="periods_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <!-- Calc -->
+    <!-- ======================================================================================================== -->
+    <string name="calc_0">0</string>
+    <string name="calc_1">1</string>
+    <string name="calc_2">2</string>
+    <string name="calc_3">3</string>
+    <string name="calc_4">4</string>
+    <string name="calc_5">5</string>
+    <string name="calc_6">6</string>
+    <string name="calc_7">7</string>
+    <string name="calc_8">8</string>
+    <string name="calc_9">9</string>
+    <string name="calc_div">÷</string>
+    <string name="calc_mul">×</string>
+    <string name="calc_sub">-</string>
+    <string name="calc_add">+</string>
+    <string name="calc_decimal">.</string>
+    <string name="calc_equals">=</string>
+    <string name="calc_done">✓</string>
+
+    <!-- Colors -->
+    <!-- ======================================================================================================== -->
+    <array name="category_colors">
+        <item>#ff669900</item>
+        <item>#ff3388ff</item>
+        <item>#ffce5042</item>
+        <item>#ff1aa1e1</item>
+        <item>#fffb8521</item>
+        <item>#ff5e5ca7</item>
+        <item>#ffe5da25</item>
+        <item>#ff009999</item>
+        <item>#ff9933cc</item>
+        <item>#ffcc0000</item>
+        <item>#ff293d00</item>
+        <item>#ff143666</item>
+        <item>#ff52201a</item>
+        <item>#ff0a405a</item>
+        <item>#ff64350d</item>
+        <item>#ff262543</item>
+        <item>#ff5c570f</item>
+        <item>#ff003d3d</item>
+        <item>#ff3d1452</item>
+        <item>#ff520000</item>
+    </array>
+</resources>
