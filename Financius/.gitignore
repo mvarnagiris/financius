@@ -9,6 +9,7 @@ lint.xml
 *.iws
 classes
 local.properties
+release.keystore
 
 
 #Other

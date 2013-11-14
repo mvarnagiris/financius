@@ -70,6 +70,14 @@ android
                                 {
                                     storeFile file("debug.keystore")
                                 }
+
+                        release
+                                {
+                                    storeFile file("release.keystore")
+                                    storePassword "xxx"
+                                    keyAlias "financius"
+                                    keyPassword "xxx"
+                                }
                     }
 
             buildTypes
@@ -78,6 +86,11 @@ android
                                 {
                                     packageNameSuffix ".debug"
                                     versionNameSuffix " debug " + getBuildName()
+                                }
+
+                        release
+                                {
+                                    signingConfig signingConfigs.release
                                 }
                     }
         }
