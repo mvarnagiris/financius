@@ -115,7 +115,7 @@
     <string name="f_x_deleted">%d gelöscht</string>
     <string name="f_enable_backup">Um die Daten zu sichern &amp; wiederherzustellen, kannst du Google Drive verwenden. \n\nDrücke %s, um zu beginnen.</string>
     <string name="f_current_main_currency_x">Die aktuelle Standardwährung ist %s</string>
-    <string name="f_x_will_change_y_main_currency">%s wird durch %s als Standardwährung ersetzt</string>
+    <string name="f_x_will_change_y_main_currency" formatted="false">%s wird durch %s als Standardwährung ersetzt</string>
     <string name="f_exchange_rate_x">Wechselkurs %f</string>
     <string name="l_dashclock_desc">Zeigt deinen Gesamtsaldo an.</string>
     <string name="l_period_expenses_empty">Keine Ausgaben in diesem Zeitraum</string>
@@ -143,7 +143,7 @@
     <string name="lock_pattern_confirm_new">Zur Bestätigung noch einmal das Muster zeichnen:</string>
     <string name="lock_pattern_created">Dein neues Entsperrmuster:</string>
     <string name="lock_pattern_compare">Zeichne das Muster zum Entsperren:</string>
-    <string name="lock_pattern_error_compare">Entsperrmuster nicht korrekt. Versuche es noch einmal...</string>
+    <string name="lock_pattern_error_compare">Entsperrmuster nicht korrekt. Versuche es noch einmal…</string>
     <string name="c_food">Essen</string>
     <string name="c_groceries">Lebensmittel</string>
     <string name="c_eating_out">Essen außer Haus</string>

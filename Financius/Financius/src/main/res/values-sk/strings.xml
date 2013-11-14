@@ -115,7 +115,7 @@
     <string name="f_x_deleted">%d zmazané</string>
     <string name="f_enable_backup">Pre zjednodušenie zálohovania a obnovy vašich údajov môžete použiť Google Drive.\n\nStlačte %s pre začatie.</string>
     <string name="f_current_main_currency_x">Súčasná hlavná mena je %s</string>
-    <string name="f_x_will_change_y_main_currency">%s sa zmení %s ako hlavná mena</string>
+    <string name="f_x_will_change_y_main_currency" formatted="false">%s sa zmení %s ako hlavná mena</string>
     <string name="f_exchange_rate_x">Výmenný kurz %f</string>
     <string name="l_dashclock_desc">Zobraziť celkovú bilanciu.</string>
     <string name="l_period_expenses_empty">Žiadne výdavky počas tohto obdobia</string>
@@ -143,7 +143,7 @@
     <string name="lock_pattern_confirm_new">Nakresli vzor znova pre potvrdenie:</string>
     <string name="lock_pattern_created">Nový vzor pre odomknutie:</string>
     <string name="lock_pattern_compare">Nakresli vzor pre odomknutie:</string>
-    <string name="lock_pattern_error_compare">Prepáč, skús znova...</string>
+    <string name="lock_pattern_error_compare">Prepáč, skús znova…</string>
     <string name="c_food">Jedlo</string>
     <string name="c_groceries">Potraviny</string>
     <string name="c_eating_out">Reštaurácie</string>

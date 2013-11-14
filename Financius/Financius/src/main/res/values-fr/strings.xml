@@ -115,7 +115,7 @@
     <string name="f_x_deleted">%d supprimé</string>
     <string name="f_enable_backup">Pour sauvegarder et restaurer vos données, vous pouvez utiliser Google Drive.\n\nAppuyez sur %s pour démarrer.</string>
     <string name="f_current_main_currency_x">La monnaie principale est %s</string>
-    <string name="f_x_will_change_y_main_currency">%s est remplacé par %s comme la devise par défaut</string>
+    <string name="f_x_will_change_y_main_currency" formatted="false">%s est remplacé par %s comme la devise par défaut</string>
     <string name="f_exchange_rate_x">Taux de change %f</string>
     <string name="l_dashclock_desc">Affiche votre solde total.</string>
     <string name="l_period_expenses_empty">Aucune dépense de cette période</string>
@@ -143,7 +143,7 @@
     <string name="lock_pattern_confirm_new">Redessiner motif à confirmer:</string>
     <string name="lock_pattern_created">Votre nouveau schéma de déverrouillage:</string>
     <string name="lock_pattern_compare">Dessinez un schéma pour déverrouiller:</string>
-    <string name="lock_pattern_error_compare">Désolé, essayez encore ...</string>
+    <string name="lock_pattern_error_compare">Désolé, essayez encore …</string>
     <string name="c_food">Nourriture</string>
     <string name="c_groceries">Épicerie</string>
     <string name="c_eating_out">Manger</string>

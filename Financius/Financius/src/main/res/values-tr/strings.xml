@@ -115,7 +115,7 @@
     <string name="f_x_deleted">%d silindi</string>
     <string name="f_enable_backup">Verilerinizi kolayca yedekleme &amp; yükleme için Google Drive kullanabilirsiniz.\n\nBaşlamak için %s butonuna tıklayınız.</string>
     <string name="f_current_main_currency_x">Şu andaki ana para birimi %s</string>
-    <string name="f_x_will_change_y_main_currency">%s yerine %s ana para birimi olarak değiştirilcek </string>
+    <string name="f_x_will_change_y_main_currency" formatted="false">%s yerine %s ana para birimi olarak değiştirilcek </string>
     <string name="f_exchange_rate_x">Döviz kuru %f</string>
     <string name="l_dashclock_desc">Toplam bakiyenizi gösterir.</string>
     <string name="l_period_expenses_empty">Bu periyotta gider yok</string>
@@ -143,7 +143,7 @@
     <string name="lock_pattern_confirm_new">Onay için modeli tekrar çizin:</string>
     <string name="lock_pattern_created">Yeni kilit açma modeliniz:</string>
     <string name="lock_pattern_compare">Kilidi açmak için modeli çiniz:</string>
-    <string name="lock_pattern_error_compare">Üzgümün, tekrar deneyin...</string>
+    <string name="lock_pattern_error_compare">Üzgümün, tekrar deneyin…</string>
     <string name="c_food">Yiyecek</string>
     <string name="c_groceries">Market</string>
     <string name="c_eating_out">Yemek</string>

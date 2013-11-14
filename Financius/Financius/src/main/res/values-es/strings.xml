@@ -115,7 +115,7 @@
     <string name="f_x_deleted">%d eliminados</string>
     <string name="f_enable_backup">Para respaldar y restaurar sus datos de forma fácil, puede usar  Google Drive.\n\nPulse el botón %s para empezar.</string>
     <string name="f_current_main_currency_x">La moneda principal es %s</string>
-    <string name="f_x_will_change_y_main_currency">%s reemplazará a %s como moneda principal</string>
+    <string name="f_x_will_change_y_main_currency" formatted="false">%s reemplazará a %s como moneda principal</string>
     <string name="f_exchange_rate_x">Tasa de cambio de %f</string>
     <string name="l_dashclock_desc">Muestra tu balance total</string>
     <string name="l_period_expenses_empty">No hay gastos en este período</string>

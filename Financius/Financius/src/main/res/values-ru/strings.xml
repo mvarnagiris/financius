@@ -115,7 +115,7 @@
     <string name="f_x_deleted">%d удалено</string>
     <string name="f_enable_backup">Для удобства резервного копирования вы можете использовать Google Drive.\n\n нажмите кнопку %s, чтобы начать.</string>
     <string name="f_current_main_currency_x">%s – главная валюта</string>
-    <string name="f_x_will_change_y_main_currency">%s сменит %s в качестве основной валюты</string>
+    <string name="f_x_will_change_y_main_currency" formatted="false">%s сменит %s в качестве основной валюты</string>
     <string name="f_exchange_rate_x">Курс валют %f</string>
     <string name="l_dashclock_desc">Показывает суммарный баланс.</string>
     <string name="l_period_expenses_empty">Нет расходов за этот период</string>
@@ -143,7 +143,7 @@
     <string name="lock_pattern_confirm_new">Нарисуйте снова для подтверждения:</string>
     <string name="lock_pattern_created">Ваш новый графический ключ:</string>
     <string name="lock_pattern_compare">Введите ключ разблокировки:</string>
-    <string name="lock_pattern_error_compare">Попробуйте снова...</string>
+    <string name="lock_pattern_error_compare">Попробуйте снова…</string>
     <string name="c_food">Питание</string>
     <string name="c_groceries">Продукты</string>
     <string name="c_eating_out">Продукты питания на вынос</string>

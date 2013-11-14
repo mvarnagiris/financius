@@ -115,7 +115,7 @@
     <string name="f_x_deleted">%d 已删除</string>
     <string name="f_enable_backup">您可以使用谷歌云端硬盘便捷地备份和恢复数据。\n\n按下%s按钮即可开始。</string>
     <string name="f_current_main_currency_x">当前主要货币为 %s</string>
-    <string name="f_x_will_change_y_main_currency">%s 将设置 %s 为主要货币</string>
+    <string name="f_x_will_change_y_main_currency" formatted="false">%s 将设置 %s 为主要货币</string>
     <string name="f_exchange_rate_x">汇率 %f</string>
     <string name="l_dashclock_desc">显示总余额</string>
     <string name="l_period_expenses_empty">此周期内无支出</string>
@@ -143,7 +143,7 @@
     <string name="lock_pattern_confirm_new">再次绘制图案进行确认：</string>
     <string name="lock_pattern_created">您的新解锁图案：</string>
     <string name="lock_pattern_compare">绘制图案解锁：</string>
-    <string name="lock_pattern_error_compare">抱歉，请重试...</string>
+    <string name="lock_pattern_error_compare">抱歉，请重试…</string>
     <string name="c_food">食物</string>
     <string name="c_groceries">日用品</string>
     <string name="c_eating_out">外出用餐</string>

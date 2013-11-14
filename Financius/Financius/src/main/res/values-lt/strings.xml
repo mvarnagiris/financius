@@ -115,7 +115,7 @@
     <string name="f_x_deleted">%d ištrinta</string>
     <string name="f_enable_backup">Atsarginės kopijos bus saugomos Google Drive. Spauskite %s, kad pradėti.</string>
     <string name="f_current_main_currency_x">Dabartinė pagrindinė valiuta yra %s</string>
-    <string name="f_x_will_change_y_main_currency">%s pakeis %s kaip pagrindinę valiutą</string>
+    <string name="f_x_will_change_y_main_currency" formatted="false">%s pakeis %s kaip pagrindinę valiutą</string>
     <string name="f_exchange_rate_x">Kursas %f</string>
     <string name="l_dashclock_desc">Rodo jūsų balansą</string>
     <string name="l_period_expenses_empty">Šį periodą išlaidų nėra</string>

@@ -115,7 +115,7 @@
     <string name="f_x_deleted">%d dihapus</string>
     <string name="f_enable_backup">Untuk memudahkan rekam dan simpan ulang data Anda bisa menggunakan Google Drive.\n\nTekan tombol %s untuk memulai.</string>
     <string name="f_current_main_currency_x">Mata uang utama saat ini adalah %s</string>
-    <string name="f_x_will_change_y_main_currency">%s akan mengganti %s sebagai mata uang utama</string>
+    <string name="f_x_will_change_y_main_currency" formatted="false">%s akan mengganti %s sebagai mata uang utama</string>
     <string name="f_exchange_rate_x">Kurs penukaran %f</string>
     <string name="l_dashclock_desc">Tampilkan jumlah saldo Anda.</string>
     <string name="l_period_expenses_empty">Tidak ada pengeluaran periode ini</string>
@@ -143,7 +143,7 @@
     <string name="lock_pattern_confirm_new">Buat pola lagi untuk mengonfirmasi:</string>
     <string name="lock_pattern_created">Pola kunci baru Anda:</string>
     <string name="lock_pattern_compare">Gambar pola pembuka kunci:</string>
-    <string name="lock_pattern_error_compare">Maaf, coba lagi...</string>
+    <string name="lock_pattern_error_compare">Maaf, coba lagi…</string>
     <string name="c_food">Makanan</string>
     <string name="c_groceries">Bahan makanan</string>
     <string name="c_eating_out">Restoran</string>

@@ -115,7 +115,7 @@
     <string name="f_x_deleted">%d 已刪除</string>
     <string name="f_enable_backup">您可以使用Google雲端硬碟輕鬆的備份與回復您的資料。\n\n輕觸%s即可開始。</string>
     <string name="f_current_main_currency_x">目前主要貨幣為 %s</string>
-    <string name="f_x_will_change_y_main_currency">%s 將取代 %s 為主要貨幣</string>
+    <string name="f_x_will_change_y_main_currency" formatted="false">%s 將取代 %s 為主要貨幣</string>
     <string name="f_exchange_rate_x">匯率 %f</string>
     <string name="l_dashclock_desc">顯示總餘額</string>
     <string name="l_period_expenses_empty">此時段中無支出</string>
@@ -143,7 +143,7 @@
     <string name="lock_pattern_confirm_new">再次畫出圖形以確認：</string>
     <string name="lock_pattern_created">新的解鎖圖形：</string>
     <string name="lock_pattern_compare">繪製圖案以解鎖：</string>
-    <string name="lock_pattern_error_compare">抱歉，請再試一次...</string>
+    <string name="lock_pattern_error_compare">抱歉，請再試一次…</string>
     <string name="c_food">食物</string>
     <string name="c_groceries">日用品</string>
     <string name="c_eating_out">外出用餐</string>

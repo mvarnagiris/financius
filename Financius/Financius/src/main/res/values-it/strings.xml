@@ -115,7 +115,7 @@
     <string name="f_x_deleted">%d cancellati</string>
     <string name="f_enable_backup">Per rendere più facile il backup e il ripristino dei tuoi dati puoi utilizzare Google Drive.\n\nPremi il tasto %s per lanciare il backup/ripristino.</string>
     <string name="f_current_main_currency_x">L\'attuale valuta principale è %s</string>
-    <string name="f_x_will_change_y_main_currency">%s cambierà %s come valuta principale</string>
+    <string name="f_x_will_change_y_main_currency" formatted="false">%s cambierà %s come valuta principale</string>
     <string name="f_exchange_rate_x">Tasso di cambio %f</string>
     <string name="l_dashclock_desc">Mostra il tuo bilancio totale.</string>
     <string name="l_period_expenses_empty">Nessuna spesa in questo periodo</string>
@@ -143,7 +143,7 @@
     <string name="lock_pattern_confirm_new">Ridisegna la sequenza per conferma:</string>
     <string name="lock_pattern_created">Il tuo nuovo pattern di sblocco:</string>
     <string name="lock_pattern_compare">Disegna la sequenza:</string>
-    <string name="lock_pattern_error_compare">Spiacente, prova ancora...</string>
+    <string name="lock_pattern_error_compare">Spiacente, prova ancora…</string>
     <string name="c_food">Cibo</string>
     <string name="c_groceries">Generi alimentari</string>
     <string name="c_eating_out">Ristorante</string>
