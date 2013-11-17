@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/ListItem"
     android:baselineAligned="false">
 
@@ -12,14 +13,16 @@
         android:minHeight="@dimen/recommended_touch_size"
         android:minWidth="@dimen/recommended_touch_size"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:background="@color/f_red">
 
         <TextView
             android:id="@+id/month_TV"
             style="@style/TextView"
             android:fontFamily="sans-serif-light"
             android:textColor="@color/text_primary_inverted"
-            android:textSize="@dimen/text_xsmall" />
+            android:textSize="@dimen/text_xsmall"
+            tools:text="NOV"/>
 
         <TextView
             android:id="@+id/day_TV"
@@ -27,7 +30,8 @@
             android:layout_marginTop="-10dp"
             android:fontFamily="sans-serif-light"
             android:textSize="@dimen/text_xxlarge"
-            android:textColor="@color/text_primary_inverted" />
+            android:textColor="@color/text_primary_inverted"
+            tools:text="15"/>
 
     </LinearLayout>
 
@@ -42,12 +46,14 @@
             android:id="@+id/categoryTitle_TV"
             style="@style/TextView"
             android:layout_width="match_parent"
-            android:fontFamily="sans-serif-light" />
+            android:fontFamily="sans-serif-light"
+            tools:text="Groceries"/>
 
         <TextView
             android:id="@+id/note_TV"
             style="@style/TextView"
-            android:textSize="@dimen/text_small" />
+            android:textSize="@dimen/text_small"
+            tools:text="Just some food I bought"/>
 
     </LinearLayout>
 
@@ -62,16 +68,20 @@
         <TextView
             android:id="@+id/account_TV"
             style="@style/TextView.Secondary"
-            android:textSize="@dimen/text_xsmall" />
+            android:textSize="@dimen/text_xsmall"
+            android:maxWidth="180dp"
+            tools:text="Cash that has a very very long name. A super long name"/>
 
         <TextView
             android:id="@+id/amount_TV"
-            style="@style/TextView" />
+            style="@style/TextView"
+            tools:text="75.59 $"/>
 
         <TextView
             android:id="@+id/amountCurrency_TV"
             style="@style/TextView.Secondary"
-            android:textSize="@dimen/text_small"/>
+            android:textSize="@dimen/text_small"
+            tools:text="£63.74"/>
 
     </LinearLayout>
 
