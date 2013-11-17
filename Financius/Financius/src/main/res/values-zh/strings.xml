@@ -35,7 +35,7 @@
     <string name="income">收入</string>
     <string name="expense">支出</string>
     <string name="transfer">转账</string>
-    <string name="title">类别名称</string>
+    <string name="title">分类名称</string>
     <string name="balance">余额</string>
     <string name="date">日期</string>
     <string name="note">备注</string>
@@ -66,7 +66,7 @@
     <string name="categories">收支分类</string>
     <string name="sub_categories">子分类</string>
     <string name="pick_main_category">选择主分类</string>
-    <string name="create_new_main_category">新增主分灰</string>
+    <string name="create_new_main_category">新增主分类</string>
     <string name="search_categories">搜索分类</string>
     <string name="backup">备份</string>
     <string name="enable_backup">启用备份</string>
@@ -96,7 +96,7 @@
     <string name="thousands_separator">千位分隔符</string>
     <string name="decimal_separator">小数点隔符</string>
     <string name="decimals_count">小数位数</string>
-    <string name="refresh_rate">刷新率</string>
+    <string name="refresh_rate">重新整理汇率</string>
     <string name="update_exchange_rates">更新汇率</string>
     <string name="this_is_main_currency">这是主要货币</string>
     <string name="over_wifi_or_mobile_network">通过Wi-Fi或移动网络</string>
@@ -197,13 +197,13 @@
     <string name="c_other_expense">其他开支</string>
     <string name="c_salary">工资</string>
     <string name="c_bonus">分红</string>
-    <string name="c_scholarship">奖（学）金</string>
+    <string name="c_scholarship">奖学金</string>
     <string name="c_other_income">其他收入</string>
     <string name="c_gifts">礼物</string>
     <string name="filter">筛选器</string>
     <string name="not_set">未设定</string>
     <string name="export_csv">导出CSV</string>
-    <string name="your_data">您的数据</string>
+    <string name="your_data">数据</string>
     <string name="show_backups">显示备份</string>
     <string name="export">导出</string>
     <string name="please_wait">请稍候</string>

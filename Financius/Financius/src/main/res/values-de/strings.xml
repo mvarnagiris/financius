@@ -18,7 +18,7 @@
     <string name="settings">Einstellungen</string>
     <string name="search">Suchen</string>
     <string name="other">Andere</string>
-    <string name="none">Nichts</string>
+    <string name="none">Keine</string>
     <string name="never">Nie</string>
     <string name="about">Über</string>
     <string name="open_navigation">Öffne Steuerung</string>
@@ -131,7 +131,7 @@
     <string name="l_auto_search_categories_on">Die Suche wird automatisch gestartet.</string>
     <string name="l_auto_search_categories_off">Die Suche wird NICHT automatisch gestartet.</string>
     <string name="l_donate_greet">Hi, ich bin Mantas Varnagiris, der Entwickler von Financius</string>
-    <string name="l_donate_thank">Vielen Dank für das Benutzen meiner App. Ich hoffe es hilft dir ein wenig Geld zu sparen. Bitte hilf auch mir dabei, Geld zu sparen :)</string>
+    <string name="l_donate_thank">Vielen Dank, dass du meine App benutzt. Ich hoffe sie hilft dir ein wenig Geld zu sparen. Bitte hilf auch mir dabei Geld zu sparen :)</string>
     <string name="l_donate_thank_donate">Vielen Dank für die Unterstützung bei der Entwicklung von Financius!</string>
     <string name="app_lock">App-Sperre</string>
     <string name="pattern">Muster</string>
@@ -140,7 +140,7 @@
     <string name="lock_pattern_new">Zeichne ein neues Muster zum Entsperren:</string>
     <string name="lock_pattern_new_in_progress">Lass los, wenn du fertig bist</string>
     <string name="lock_pattern_error_new">Verbinde mindestens 4 Punkte. Versuche es noch einmal</string>
-    <string name="lock_pattern_confirm_new">Zur Bestätigung noch einmal das Muster zeichnen:</string>
+    <string name="lock_pattern_confirm_new">Bitte zeichne das Muster zur Bestätigung noch einmal:</string>
     <string name="lock_pattern_created">Dein neues Entsperrmuster:</string>
     <string name="lock_pattern_compare">Zeichne das Muster zum Entsperren:</string>
     <string name="lock_pattern_error_compare">Entsperrmuster nicht korrekt. Versuche es noch einmal…</string>

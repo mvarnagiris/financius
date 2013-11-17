@@ -12,7 +12,7 @@
     <string name="undo">Отмена</string>
     <string name="back">Назад</string>
     <string name="previous">Предыдущий</string>
-    <string name="next">Следующий</string>
+    <string name="next">Далее</string>
     <string name="empty">Пустой</string>
     <string name="set">Задать</string>
     <string name="settings">Настройки</string>
@@ -40,7 +40,7 @@
     <string name="date">Дата</string>
     <string name="note">Заметка</string>
     <string name="reports">Отчёты</string>
-    <string name="categories_report">Отчёт о категориях</string>
+    <string name="categories_report">Отчёт по категориям</string>
     <string name="security">Безопасность</string>
     <string name="color">Цвет</string>
     <string name="select_color">Выберите цвет</string>
@@ -65,12 +65,12 @@
     <string name="category">Категория</string>
     <string name="categories">Категории</string>
     <string name="sub_categories">Подкатегории</string>
-    <string name="pick_main_category">Выбрать главную категорию</string>
-    <string name="create_new_main_category">Создать новую главную категорию</string>
+    <string name="pick_main_category">Выберите главную категорию</string>
+    <string name="create_new_main_category">Создайте новую главную категорию</string>
     <string name="search_categories">Искать по категориям</string>
-    <string name="backup">Резервное копирование</string>
-    <string name="enable_backup">Включить резервное копирование</string>
-    <string name="disable_backup">Выключить резервное копирование</string>
+    <string name="backup">Бэкап</string>
+    <string name="enable_backup">Включить бэкап</string>
+    <string name="disable_backup">Выключить бэкап</string>
     <string name="backup_date">Дата резервного копирования</string>
     <string name="restore">Восстановить</string>
     <string name="backup_not_found">Резервных копий не найдено</string>
@@ -97,7 +97,7 @@
     <string name="decimal_separator">Разделитель десятичных</string>
     <string name="decimals_count">Количество десятичных</string>
     <string name="refresh_rate">Частота обновления</string>
-    <string name="update_exchange_rates">Обновить курсы валют</string>
+    <string name="update_exchange_rates">Обновлять курсы валют</string>
     <string name="this_is_main_currency">Это основная валюта</string>
     <string name="over_wifi_or_mobile_network">Через Wi-Fi или мобильную сеть</string>
     <string name="over_wifi_only">Только через Wi-Fi</string>
@@ -138,7 +138,7 @@
     <string name="lock_removed">Защита убрана</string>
     <string name="lock_created">Защита создана</string>
     <string name="lock_pattern_new">Нарисуйте новый графический ключ:</string>
-    <string name="lock_pattern_new_in_progress">Отпустите палец, когда закончила</string>
+    <string name="lock_pattern_new_in_progress">Отпустите палец, когда закончите</string>
     <string name="lock_pattern_error_new">Соедините как минимум 4 точки.</string>
     <string name="lock_pattern_confirm_new">Нарисуйте снова для подтверждения:</string>
     <string name="lock_pattern_created">Ваш новый графический ключ:</string>

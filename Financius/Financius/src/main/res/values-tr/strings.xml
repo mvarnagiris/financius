@@ -40,7 +40,7 @@
     <string name="date">Tarih</string>
     <string name="note">Not</string>
     <string name="reports">Raporlar</string>
-    <string name="categories_report">Kategori raporu</string>
+    <string name="categories_report">Kategori Raporu</string>
     <string name="security">Güvenlik</string>
     <string name="color">Renk</string>
     <string name="select_color">Renk seç</string>
@@ -76,7 +76,7 @@
     <string name="backup_not_found">Yedek bulunamadı</string>
     <string name="device_name">Aygıt adı</string>
     <string name="rate_app">Uygulamayı oyla</string>
-    <string name="change_log">Log değiştir</string>
+    <string name="change_log">Log bilgileri</string>
     <string name="budgets">Bütçeler</string>
     <string name="budget">Bütçeler</string>
     <string name="wish_list">İstek listesi</string>
@@ -107,21 +107,21 @@
     <string name="show_in_selection">Seçimde göster</string>
     <string name="show_in_overview">Genelde göster</string>
     <string name="last_used">Son kullanım</string>
-    <string name="times_used">Toplam kullanım</string>
+    <string name="times_used">Kullanım sayısı</string>
     <string name="avg_amount">Ort. tutar</string>
     <string name="avg_expense">Ort. gider</string>
     <string name="avg_income">Ort. gelir</string>
     <string name="negative_numbers_are_not_allowed_here">Negatif sayılara izin verilmiyor</string>
     <string name="f_x_deleted">%d silindi</string>
-    <string name="f_enable_backup">Verilerinizi kolayca yedekleme &amp; yükleme için Google Drive kullanabilirsiniz.\n\nBaşlamak için %s butonuna tıklayınız.</string>
-    <string name="f_current_main_currency_x">Şu andaki ana para birimi %s</string>
+    <string name="f_enable_backup">Verilerinizi yedekleme &amp; yükleme için Google Drive kullanabilirsiniz.\n\nBaşlamak için %s butonuna tıklayınız.</string>
+    <string name="f_current_main_currency_x">Mevcut ana para birimi %s</string>
     <string name="f_x_will_change_y_main_currency" formatted="false">%s yerine %s ana para birimi olarak değiştirilcek </string>
     <string name="f_exchange_rate_x">Döviz kuru %f</string>
     <string name="l_dashclock_desc">Toplam bakiyenizi gösterir.</string>
     <string name="l_period_expenses_empty">Bu periyotta gider yok</string>
     <string name="l_currency_exists">Bu para birimi zaten var.</string>
     <string name="l_cannot_disable_main_currency">Ana para birimini değiştirmek için, başka bir para birimini düzenleyin ve ana para birimi olarak seçin.</string>
-    <string name="l_no_internet_error">Lütfen internet bağlantınız kontrol edin ve tekrar deneyin.</string>
+    <string name="l_no_internet_error">Lütfen internet bağlantınızı kontrol edin ve tekrar deneyin.</string>
     <string name="l_delete_confirmation">Bunu silmek, bağlantılı tüm kayıtların silinmesine neden olacak. Silmek istediğinizden emin misiniz?</string>
     <string name="l_currency_not_used">Hiç kullanılmadı</string>
     <string name="l_currency_used">Hesaplar</string>
@@ -129,7 +129,7 @@
     <string name="l_backup_restore">Yedeklenmeyen tüm değişiklikler silinecek. Yedeği geri yüklemek istediğinizden emin misiniz?</string>
     <string name="l_backup_delete">Yedeği silmek istediğinizden emin misiniz?</string>
     <string name="l_auto_search_categories_on">Arama otomatik olarak başlayacak</string>
-    <string name="l_auto_search_categories_off">arama otomatik olarak başlamayacak</string>
+    <string name="l_auto_search_categories_off">Arama otomatik olarak başlamayacak</string>
     <string name="l_donate_greet">Merhaba, Ben Mantas Varnagiris, Financius\'un geliştiricisi</string>
     <string name="l_donate_thank">Uygulamamı kullandığınız için teşekkürler. Umarım ki size biraz para kazandırmıştır. Lütfen benim de biraz para kazanmam için yardım etmeyi düşünün :)</string>
     <string name="l_donate_thank_donate">Financius\'un gelişimine desteğiniz için teşekkürler!</string>
@@ -142,7 +142,7 @@
     <string name="lock_pattern_error_new">En az 4 noktayı birleştirin. Tekrar deneyin</string>
     <string name="lock_pattern_confirm_new">Onay için modeli tekrar çizin:</string>
     <string name="lock_pattern_created">Yeni kilit açma modeliniz:</string>
-    <string name="lock_pattern_compare">Kilidi açmak için modeli çiniz:</string>
+    <string name="lock_pattern_compare">Kilidi açmak için modeli çizin:</string>
     <string name="lock_pattern_error_compare">Üzgümün, tekrar deneyin…</string>
     <string name="c_food">Yiyecek</string>
     <string name="c_groceries">Market</string>
