@@ -192,8 +192,7 @@ public class BackupService extends AbstractService
         switch (requestType)
         {
             case RT_EXPORT_CSV:
-                new CSVExportEvent(requestType, force);
-                break;
+                return new CSVExportEvent(requestType, force);
         }
         return super.getServiceEvent(intent, requestType, force);
     }

@@ -1,12 +1,14 @@
 package com.code44.finance.views.cards;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import com.code44.finance.R;
+import com.code44.finance.utils.AnimUtils;
 import org.joda.time.format.DateTimeFormat;
 
 @SuppressWarnings("UnusedDeclaration")
@@ -122,7 +124,16 @@ public class CSVCardView extends BigTextCardView implements View.OnClickListener
 
             case R.id.export_B:
                 if (callback != null)
-                    callback.onExportCSV(dateFrom, dateTo == 0 ? Long.MAX_VALUE : dateTo);
+                {
+                    final long dateTo = this.dateTo == 0 ? Long.MAX_VALUE : this.dateTo + DateUtils.DAY_IN_MILLIS - 1;
+                    if (dateFrom > dateTo)
+                    {
+                        AnimUtils.shake(dateFrom_B);
+                        AnimUtils.shake(dateTo_B);
+                        return;
+                    }
+                    callback.onExportCSV(dateFrom, dateTo);
+                }
                 break;
         }
     }

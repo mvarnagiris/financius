@@ -107,11 +107,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
     private Button amountTo_B;
     private EditText note_ET;
     private CheckBox confirmed_CB;
-    private ImageButton confirmedInfo_B;
-    private View confirmedInfo_V;
     private CheckBox showInTotals_CB;
-    private ImageButton showInTotalsInfo_B;
-    private View showInTotalsInfo_V;
     // -----------------------------------------------------------------------------------------------------------------
     private long date;
     private long accountFromId;
@@ -179,11 +175,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         amountTo_B = (Button) view.findViewById(R.id.amountTo_B);
         note_ET = (EditText) view.findViewById(R.id.note_ET);
         confirmed_CB = (CheckBox) view.findViewById(R.id.confirmed_CB);
-        confirmedInfo_B = (ImageButton) view.findViewById(R.id.confirmedInfo_B);
-        confirmedInfo_V = view.findViewById(R.id.confirmedInfo_TV);
         showInTotals_CB = (CheckBox) view.findViewById(R.id.showInTotals_CB);
-        showInTotalsInfo_B = (ImageButton) view.findViewById(R.id.showInTotalsInfo_B);
-        showInTotalsInfo_V = view.findViewById(R.id.showInTotalsInfo_TV);
     }
 
     @Override
@@ -204,8 +196,6 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         category_B.setOnClickListener(this);
         amount_B.setOnClickListener(this);
         amountTo_B.setOnClickListener(this);
-        confirmedInfo_B.setOnClickListener(this);
-        showInTotalsInfo_B.setOnClickListener(this);
 
         // Restore date time dialog fragment
         final DateTimeDialog dateTime_F = (DateTimeDialog) getFragmentManager().findFragmentByTag(FRAGMENT_DATE_TIME);
@@ -469,14 +459,6 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
 
             case R.id.amount_B:
                 CalculatorActivity.startCalculator(this, REQUEST_AMOUNT, getAmount(), false, true);
-                break;
-
-            case R.id.confirmedInfo_B:
-                confirmedInfo_V.setVisibility(confirmedInfo_V.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-                break;
-
-            case R.id.showInTotalsInfo_B:
-                showInTotalsInfo_V.setVisibility(showInTotalsInfo_V.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
                 break;
 
             case R.id.amountTo_B:
