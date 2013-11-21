@@ -8,12 +8,12 @@
         android:id="@+id/buttonsContainer_V"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:showDividers="middle"
         android:divider="?android:attr/dividerVertical"
         android:dividerPadding="@dimen/divider_padding"
-        android:background="@color/bg_primary">
+        android:background="@color/bg_primary"
+        android:visibility="gone">
 
         <RadioButton
             android:id="@+id/expense_B"
@@ -55,12 +55,13 @@
     <View
         style="@style/Separator"
         android:id="@+id/separator_V"
-        android:layout_above="@+id/buttonsContainer_V" />
+        android:layout_below="@+id/buttonsContainer_V"
+        android:visibility="gone" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/separator_V"
+        android:layout_below="@+id/separator_V"
         android:fillViewport="true">
 
         <LinearLayout
@@ -74,6 +75,16 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical">
+
+            <Button
+                android:id="@+id/amount2_b"
+                style="@style/Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="@drawable/bg_card_normal_new"
+                android:text="58.71 $"
+                android:textSize="@dimen/text_xxxlarge"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -152,6 +163,44 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_marginLeft="@dimen/space_small" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_normal"
+                android:animateLayoutChanges="true"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/amount_B"
+                    style="@style/Button.Select"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif" />
+
+                <TextView
+                    android:id="@+id/amountsSeparator_TV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="@dimen/space_small"
+                    android:paddingRight="@dimen/space_small"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_xlarge"
+                    android:text="⇨"
+                    android:textColor="@color/text_secondary"
+                    tools:ignore="HardcodedText"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/amountTo_B"
+                    style="@style/Button.Select"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/text_secondary"
+                    android:fontFamily="sans-serif"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
