@@ -76,15 +76,46 @@
             android:focusableInTouchMode="true"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/amount2_b"
-                style="@style/Button.Borderless"
+            <com.code44.finance.views.cards.AmountCardView
+                android:id="@+id/amount_CV"
                 android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:background="@drawable/bg_card_normal_new"
-                android:text="58.71 $"
-                android:textSize="@dimen/text_xxxlarge"
-                />
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_normal"
+                android:orientation="horizontal">
+
+                <com.code44.finance.views.cards.AccountCardView
+                    android:id="@+id/accountFrom_CV"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/space_small"/>
+
+                <com.code44.finance.views.cards.AccountCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/space_small"/>
+            </LinearLayout>
+
+            <com.code44.finance.views.cards.CategoryCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_normal"/>
+
+            <com.code44.finance.views.cards.EditTextCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_normal"/>
+
+            <com.code44.finance.views.cards.DateCardView
+                android:id="@+id/date_CV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_normal"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -234,13 +265,6 @@
                 android:layout_marginTop="@dimen/space_normal"
                 android:animateLayoutChanges="true"
                 android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/amount_B"
-                    style="@style/Button.Select"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif" />
 
                 <TextView
                     android:id="@+id/amountsSeparator_TV"

@@ -127,7 +127,7 @@
     <!-- Other -->
     <!-- ======================================================================================================== -->
     <color name="pressed_actionbar">#ccb4c833</color>
-    <color name="pressed_card">#99b4c833</color>
+    <color name="pressed_card">#44b4c833</color>
     <color name="temp">#65a310</color>
 
 </resources>

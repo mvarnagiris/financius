@@ -44,41 +44,51 @@ public class AmountUtils
 
     public static CurrencyFormat initCurrency(Context context, long currencyId)
     {
-        CurrencyFormat format;
-        Cursor c = null;
-        try
+        char groupSeparator = ',';
+        char decimalSeparator = '.';
+        int decimals = 2;
+        String symbol = "";
+        String symbolFormat = Tables.Currencies.SymbolFormat.RIGHT_CLOSE;
+
+        if (currencyId > 0)
         {
-            c = context.getContentResolver().query(CurrenciesProvider.uriCurrency(context, currencyId), null, null, null, null);
-            if (c == null || !c.moveToFirst())
+            Cursor c = null;
+            try
+            {
+                c = context.getContentResolver().query(CurrenciesProvider.uriCurrency(context, currencyId), null, null, null, null);
+                if (c == null || !c.moveToFirst())
+                {
+                    if (c != null && !c.isClosed())
+                        c.close();
+
+                    c = context.getContentResolver().query(CurrenciesProvider.uriCurrency(context, CurrenciesHelper.getDefault(context).getMainCurrencyId()), null, null, null, null);
+                }
+
+                if (c != null && c.moveToFirst())
+                {
+                    final String groupSeparatorStr = c.getString(c.getColumnIndex(Tables.Currencies.GROUP_SEPARATOR));
+                    //noinspection ConstantConditions
+                    groupSeparator = TextUtils.isEmpty(groupSeparatorStr) ? '\0' : groupSeparatorStr.charAt(0);
+                    //noinspection ConstantConditions
+                    decimalSeparator = c.getString(c.getColumnIndex(Tables.Currencies.DECIMAL_SEPARATOR)).charAt(0);
+                    decimals = c.getInt(c.getColumnIndex(Tables.Currencies.DECIMALS));
+                    symbol = c.getString(c.getColumnIndex(Tables.Currencies.SYMBOL));
+                    symbolFormat = c.getString(c.getColumnIndex(Tables.Currencies.SYMBOL_FORMAT));
+                }
+                else throw new NumberFormatException();
+            }
+            catch (Exception e)
+            {
+                // Ignore
+            }
+            finally
             {
                 if (c != null && !c.isClosed())
                     c.close();
-
-                c = context.getContentResolver().query(CurrenciesProvider.uriCurrency(context, CurrenciesHelper.getDefault(context).getMainCurrencyId()), null, null, null, null);
             }
-
-            if (c != null && c.moveToFirst())
-            {
-                final String groupSeparator = c.getString(c.getColumnIndex(Tables.Currencies.GROUP_SEPARATOR));
-                format = new CurrencyFormat(TextUtils.isEmpty(groupSeparator) ? '\0' : groupSeparator.charAt(0),
-                        c.getString(c.getColumnIndex(Tables.Currencies.DECIMAL_SEPARATOR)).charAt(0),
-                        c.getInt(c.getColumnIndex(Tables.Currencies.DECIMALS)),
-                        c.getString(c.getColumnIndex(Tables.Currencies.SYMBOL)),
-                        c.getString(c.getColumnIndex(Tables.Currencies.SYMBOL_FORMAT)));
-            }
-            else throw new NumberFormatException();
-        }
-        catch (NullPointerException e)
-        {
-            format = new CurrencyFormat();
-        }
-        finally
-        {
-            if (c != null && !c.isClosed())
-                c.close();
         }
 
-        return format;
+        return new CurrencyFormat(groupSeparator, decimalSeparator, decimals, symbol, symbolFormat);
     }
 
     public static String formatAmount(double amount)

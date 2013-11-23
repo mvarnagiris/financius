@@ -10,6 +10,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,9 +36,11 @@ import com.code44.finance.utils.AmountUtils;
 import com.code44.finance.utils.AnimUtils;
 import com.code44.finance.utils.CurrenciesHelper;
 import com.code44.finance.utils.TransactionAutoHelper;
+import com.code44.finance.views.cards.AmountCardView;
+import com.code44.finance.views.cards.DateCardView;
 import de.greenrobot.event.EventBus;
 
-public class TransactionEditFragment extends ItemEditFragment implements View.OnClickListener, DateTimeDialog.DialogCallbacks
+public class TransactionEditFragment extends ItemEditFragment implements View.OnClickListener, DateTimeDialog.DialogCallbacks, AmountCardView.Callback
 {
     private static final String STATE_DATE = "STATE_DATE";
     private static final String STATE_ACCOUNT_FROM_ID = "STATE_ACCOUNT_FROM_ID";
@@ -88,6 +91,8 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
     // -----------------------------------------------------------------------------------------------------------------
     private final TransactionAutoHelper transactionAutoHelper = TransactionAutoHelper.getInstance();
     // -----------------------------------------------------------------------------------------------------------------
+    private AmountCardView amount_CV;
+    private DateCardView date_CV;
     private RadioButton expense_B;
     private RadioButton income_B;
     private RadioButton transfer_B;
@@ -102,14 +107,12 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
     private View categoryContainer_V;
     private Button category_B;
     private View color_V;
-    private Button amount_B;
     private View amountsSeparator_V;
     private Button amountTo_B;
     private EditText note_ET;
     private CheckBox confirmed_CB;
     private CheckBox showInTotals_CB;
     // -----------------------------------------------------------------------------------------------------------------
-    private long date;
     private long accountFromId;
     private String accountFromTitle;
     private long accountFromCurrencyId;
@@ -156,6 +159,8 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
+        amount_CV = (AmountCardView) view.findViewById(R.id.amount_CV);
+        date_CV = (DateCardView) view.findViewById(R.id.date_CV);
         expense_B = (RadioButton) view.findViewById(R.id.expense_B);
         income_B = (RadioButton) view.findViewById(R.id.income_B);
         transfer_B = (RadioButton) view.findViewById(R.id.transfer_B);
@@ -170,7 +175,6 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         categoryContainer_V = view.findViewById(R.id.categoryContainer_V);
         category_B = (Button) view.findViewById(R.id.category_B);
         color_V = view.findViewById(R.id.color_V);
-        amount_B = (Button) view.findViewById(R.id.amount_B);
         amountsSeparator_V = view.findViewById(R.id.amountsSeparator_TV);
         amountTo_B = (Button) view.findViewById(R.id.amountTo_B);
         note_ET = (EditText) view.findViewById(R.id.note_ET);
@@ -184,6 +188,9 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         super.onActivityCreated(savedInstanceState);
 
         // Setup
+        amount_CV.setOnClickListener(this);
+        amount_CV.setCallback(this);
+        date_CV.setOnClickListener(this);
         expense_B.setOnClickListener(this);
         income_B.setOnClickListener(this);
         transfer_B.setOnClickListener(this);
@@ -194,7 +201,6 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         accountTo_B.setOnClickListener(this);
         exchangeRate_B.setOnClickListener(this);
         category_B.setOnClickListener(this);
-        amount_B.setOnClickListener(this);
         amountTo_B.setOnClickListener(this);
 
         // Restore date time dialog fragment
@@ -283,6 +289,13 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode)
         {
+            case REQUEST_AMOUNT:
+            {
+                if (resultCode == Activity.RESULT_OK)
+                    setAmount(data.getDoubleExtra(CalculatorActivity.RESULT_EXTRA_AMOUNT, 0));
+                break;
+            }
+
             case REQUEST_ACCOUNT_FROM:
             {
                 if (resultCode == Activity.RESULT_OK)
@@ -320,13 +333,6 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
                         userSetCategoryIncome = true;
                     setCategory(data.getLongExtra(CategoryListFragment.RESULT_EXTRA_ITEM_ID, 0), data.getStringExtra(CategoryListFragment.RESULT_EXTRA_CATEGORY_TITLE), data.getIntExtra(CategoryListFragment.RESULT_EXTRA_CATEGORY_COLOR, 0));
                 }
-                break;
-            }
-
-            case REQUEST_AMOUNT:
-            {
-                if (resultCode == Activity.RESULT_OK)
-                    setAmount(data.getDoubleExtra(CalculatorActivity.RESULT_EXTRA_AMOUNT, 0));
                 break;
             }
 
@@ -411,6 +417,14 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
     {
         switch (view.getId())
         {
+            case R.id.amount_CV:
+                CalculatorActivity.startCalculator(this, REQUEST_AMOUNT, getAmount(), false, true);
+                break;
+
+            case R.id.date_CV:
+                DateTimeDialog.newDateDialogInstance(this, REQUEST_DATE, getDate()).show(getFragmentManager(), FRAGMENT_DATE_TIME);
+                break;
+
             case R.id.expense_B:
                 setCategoryType(Tables.Categories.Type.EXPENSE);
                 break;
@@ -421,14 +435,6 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
 
             case R.id.transfer_B:
                 setCategoryType(Tables.Categories.Type.TRANSFER);
-                break;
-
-            case R.id.date_B:
-                DateTimeDialog.newDateDialogInstance(this, REQUEST_DATE, getDate()).show(getFragmentManager(), FRAGMENT_DATE_TIME);
-                break;
-
-            case R.id.time_B:
-                DateTimeDialog.newTimeDialogInstance(this, REQUEST_TIME, getDate()).show(getFragmentManager(), FRAGMENT_DATE_TIME);
                 break;
 
             case R.id.accountFrom_B:
@@ -457,10 +463,6 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
                 CategoryListActivity.startListSelection(getActivity(), this, REQUEST_CATEGORY, categoryType);
                 break;
 
-            case R.id.amount_B:
-                CalculatorActivity.startCalculator(this, REQUEST_AMOUNT, getAmount(), false, true);
-                break;
-
             case R.id.amountTo_B:
                 CalculatorActivity.startCalculator(this, REQUEST_AMOUNT_TO, getAmount() * getExchangeRate(), false, true);
                 break;
@@ -470,7 +472,11 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
     @Override
     public void onDateSelected(int requestCode, long date)
     {
+        Log.i("asd", "RequestCode: " + requestCode);
         setDate(date);
+
+        if (requestCode == REQUEST_DATE)
+            DateTimeDialog.newTimeDialogInstance(this, REQUEST_TIME, getDate()).show(getFragmentManager(), FRAGMENT_DATE_TIME);
     }
 
     @Override
@@ -506,7 +512,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
 
         if (getAmount() <= 0)
         {
-            AnimUtils.shake(amount_B);
+            AnimUtils.shake(amount_CV);
             isOK = false;
         }
 
@@ -532,6 +538,14 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
     {
         if (event.getState() == AbstractService.ServiceEvent.State.SUCCEEDED && event.getFromCode().equalsIgnoreCase(getAccountFromCurrencyCode()) && event.getToCode().equalsIgnoreCase(getAccountToCurrencyCode()))
             setExchangeRate(event.getExchangeRate());
+    }
+
+    @Override
+    public void onChangeCategoryType()
+    {
+        final int currentCategoryType = getCategoryType();
+        final int newCategoryType = currentCategoryType == Tables.Categories.Type.EXPENSE ? Tables.Categories.Type.INCOME : currentCategoryType == Tables.Categories.Type.INCOME ? Tables.Categories.Type.TRANSFER : Tables.Categories.Type.EXPENSE;
+        setCategoryType(newCategoryType);
     }
 
     @Override
@@ -661,19 +675,20 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         doingAutoTransaction = false;
     }
 
-    private long getDate()
+    private double getAmount()
     {
-        return date;
+        return amount_CV.getAmount();
     }
 
-    private void setDate(long date)
+    private void setAmount(double amount)
     {
-        this.date = date;
-        date_B.setText(DateUtils.formatDateTime(getActivity(), date, DateUtils.FORMAT_SHOW_DATE));
-        time_B.setText(DateUtils.formatDateTime(getActivity(), date, DateUtils.FORMAT_SHOW_TIME));
-        transactionAutoHelper.setDate(date);
-        doAutoComplete();
+        amount_CV.setAmount(amount, getCategoryType() == Tables.Categories.Type.INCOME ? getAccountToCurrencyId() : getAccountFromCurrencyId(), getCategoryType());
+//        amount_B.setText(AmountUtils.formatAmount(amount));
+//        AmountUtils.setAmount(amount_B, amount, categoryType);
+//        if (accountToCurrencyId > 0)
+//            amountTo_B.setText(AmountUtils.formatAmount(getActivity(), accountToCurrencyId, getAmount() * getExchangeRate()));
     }
+
 
     private void setAccountFrom(long accountId, String title, long currencyId, String currencyCode, double exchangeRate)
     {
@@ -699,6 +714,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         updateCurrency();
 
         transactionAutoHelper.setAccountFromId(getCategoryType() == Tables.Categories.Type.INCOME ? 0 : accountId);
+        setAmount(getAmount());
         doAutoComplete();
     }
 
@@ -725,6 +741,22 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
     private double getAccountFromCurrencyExchangeRate()
     {
         return accountFromCurrencyExchangeRate;
+    }
+
+
+    private long getDate()
+    {
+        return date_CV.getDate();
+    }
+
+    private void setDate(long date)
+    {
+        date_CV.setDate(date);
+//        this.date = date;
+//        date_B.setText(DateUtils.formatDateTime(getActivity(), date, DateUtils.FORMAT_SHOW_DATE));
+//        time_B.setText(DateUtils.formatDateTime(getActivity(), date, DateUtils.FORMAT_SHOW_TIME));
+        transactionAutoHelper.setDate(date);
+        doAutoComplete();
     }
 
     private void setAccountTo(long accountId, String title, long currencyId, String currencyCode, double exchangeRate)
@@ -912,7 +944,6 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
                 break;
         }
 
-        setAmount(AmountUtils.getAmount(amount_B.getText().toString()));
         updateCurrency();
 
         transactionAutoHelper.setAccountFromId(0);
@@ -920,19 +951,8 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         transactionAutoHelper.setCategoryType(categoryType);
         autoTransactionSetForType = false;
         doAutoComplete();
-    }
 
-    private double getAmount()
-    {
-        return AmountUtils.getAmount(amount_B.getText().toString());
-    }
-
-    private void setAmount(double amount)
-    {
-        amount_B.setText(AmountUtils.formatAmount(amount));
-        AmountUtils.setAmount(amount_B, amount, categoryType);
-        if (accountToCurrencyId > 0)
-            amountTo_B.setText(AmountUtils.formatAmount(getActivity(), accountToCurrencyId, getAmount() * getExchangeRate()));
+        setAmount(getAmount());
     }
 
     private String getNote()

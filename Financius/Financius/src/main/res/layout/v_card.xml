@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_V"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:paddingTop="@dimen/space_normal"
+    android:paddingBottom="@dimen/space_normal"
+    android:orientation="vertical"
+    tools:ignore="UselessParent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/title_TV"
+            style="@style/TextView"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/space_normal"
+            android:layout_marginRight="@dimen/space_small"
+            android:textSize="@dimen/text_xlarge"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:text="Main title" />
+
+        <TextView
+            android:id="@+id/secondaryTitle_TV"
+            style="@style/TextView"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/space_small"
+            android:layout_marginRight="@dimen/space_normal"
+            android:gravity="right"
+            android:textSize="@dimen/text_xlarge"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:text="Secondary title" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/subTitle_TV"
+        style="@style/TextView"
+        android:layout_marginTop="@dimen/space_normal"
+        android:layout_marginLeft="@dimen/space_normal"
+        android:layout_marginRight="@dimen/space_normal"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="Sub-title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/icon_IV"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/space_normal"
+            android:paddingLeft="@dimen/space_normal"
+            android:paddingRight="@dimen/space_normal"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:src="@drawable/ic_action_edit"
+            tools:ignore="ContentDescription" />
+
+        <FrameLayout
+            android:id="@+id/content_FL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_normal"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:minHeight="64dp"
+            tools:background="#def" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/listContainer_LL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_normal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:minHeight="64dp"
+        tools:background="#fde" />
+</LinearLayout>
