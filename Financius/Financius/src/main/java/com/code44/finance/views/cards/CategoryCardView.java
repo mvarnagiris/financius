@@ -17,7 +17,6 @@ public class CategoryCardView extends CardViewV2
     private long categoryId;
     private String categoryTitle;
     private int categoryColor;
-    private int categoryType;
 
     public CategoryCardView(Context context)
     {
@@ -50,17 +49,16 @@ public class CategoryCardView extends CardViewV2
 
 
         if (isInEditMode())
-            setCategory(1, "Groceries", 0xffb4c833, 0);
+            setCategory(1, "Groceries", 0xffb4c833);
         else
-            setCategory(0, null, 0, 0);
+            setCategory(0, null, 0);
     }
 
-    public void setCategory(long categoryId, String categoryTitle, int categoryColor, int categoryType)
+    public void setCategory(long categoryId, String categoryTitle, int categoryColor)
     {
         this.categoryId = categoryId;
         this.categoryTitle = categoryTitle;
         this.categoryColor = categoryColor;
-        this.categoryType = categoryType;
 
         if (categoryId == 0 || categoryId == Tables.Categories.IDs.EXPENSE_ID || categoryId == Tables.Categories.IDs.INCOME_ID || categoryId == Tables.Categories.IDs.TRANSFER_ID)
         {
@@ -96,10 +94,5 @@ public class CategoryCardView extends CardViewV2
     public int getCategoryColor()
     {
         return categoryColor;
-    }
-
-    public int getCategoryType()
-    {
-        return categoryType;
     }
 }

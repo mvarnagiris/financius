@@ -20,6 +20,7 @@ public class CardViewV2 extends FrameLayout
     protected final TextView subTitle_TV;
     protected final ImageView icon_IV;
     protected final FrameLayout content_FL;
+    protected final View listContainerSeparator_V;
     protected final LinearLayout listContainer_LL;
 
     public CardViewV2(Context context)
@@ -49,6 +50,7 @@ public class CardViewV2 extends FrameLayout
         subTitle_TV = (TextView) findViewById(R.id.subTitle_TV);
         icon_IV = (ImageView) findViewById(R.id.icon_IV);
         content_FL = (FrameLayout) findViewById(R.id.content_FL);
+        listContainerSeparator_V = findViewById(R.id.listContainerSeparator_V);
         listContainer_LL = (LinearLayout) findViewById(R.id.listContainer_LL);
 
         // Setup
@@ -93,6 +95,20 @@ public class CardViewV2 extends FrameLayout
         }
 
         updateMargins();
+    }
+
+    public void setListVisible(boolean visible)
+    {
+        if (visible && listContainer_LL.getVisibility() != VISIBLE)
+        {
+            listContainerSeparator_V.setVisibility(VISIBLE);
+            listContainer_LL.setVisibility(VISIBLE);
+        }
+        else if (!visible && listContainer_LL.getVisibility() != GONE)
+        {
+            listContainerSeparator_V.setVisibility(GONE);
+            listContainer_LL.setVisibility(GONE);
+        }
     }
 
     protected void updateMargins()

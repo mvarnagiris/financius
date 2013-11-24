@@ -79,11 +79,17 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/listContainerSeparator_V"
+        style="@style/Separator.Thin"
+        android:layout_marginTop="@dimen/space_normal"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
     <LinearLayout
         android:id="@+id/listContainer_LL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_normal"
         android:orientation="vertical"
         android:visibility="gone"
         tools:visibility="visible"

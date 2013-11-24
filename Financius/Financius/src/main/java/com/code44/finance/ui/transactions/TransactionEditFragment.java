@@ -13,7 +13,10 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.ListPopupWindow;
 import com.code44.finance.API;
 import com.code44.finance.R;
 import com.code44.finance.db.Tables;
@@ -30,7 +33,6 @@ import com.code44.finance.ui.accounts.AccountListFragment;
 import com.code44.finance.ui.categories.CategoryListActivity;
 import com.code44.finance.ui.categories.CategoryListFragment;
 import com.code44.finance.ui.dialogs.DateTimeDialog;
-import com.code44.finance.utils.AmountUtils;
 import com.code44.finance.utils.AnimUtils;
 import com.code44.finance.utils.CurrenciesHelper;
 import com.code44.finance.utils.TransactionAutoHelper;
@@ -95,14 +97,10 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
     private CategoryCardView category_CV;
     private EditTextCardView note_CV;
     private DateCardView date_CV;
-    private View currenciesContainer_V;
-    private TextView currencies_TV;
-    private Button exchangeRate_B;
-    private View amountsSeparator_V;
-    private Button amountTo_B;
     private CheckBox confirmed_CB;
     private CheckBox showInTotals_CB;
     // -----------------------------------------------------------------------------------------------------------------
+    private int categoryType;
     private long expenseCategoryId;
     private String expenseCategoryTitle;
     private int expenseCategoryColor;
@@ -142,11 +140,6 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         category_CV = (CategoryCardView) view.findViewById(R.id.category_CV);
         note_CV = (EditTextCardView) view.findViewById(R.id.note_CV);
         date_CV = (DateCardView) view.findViewById(R.id.date_CV);
-        currenciesContainer_V = view.findViewById(R.id.currenciesContainer_V);
-        currencies_TV = (TextView) view.findViewById(R.id.currencies_TV);
-        exchangeRate_B = (Button) view.findViewById(R.id.exchangeRate_B);
-        amountsSeparator_V = view.findViewById(R.id.amountsSeparator_TV);
-        amountTo_B = (Button) view.findViewById(R.id.amountTo_B);
         confirmed_CB = (CheckBox) view.findViewById(R.id.confirmed_CB);
         showInTotals_CB = (CheckBox) view.findViewById(R.id.showInTotals_CB);
     }
@@ -164,8 +157,6 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         accountsSeparator_V.setOnClickListener(this);
         category_CV.setOnClickListener(this);
         date_CV.setOnClickListener(this);
-        exchangeRate_B.setOnClickListener(this);
-        amountTo_B.setOnClickListener(this);
 
         // Restore date time dialog fragment
         final DateTimeDialog dateTime_F = (DateTimeDialog) getFragmentManager().findFragmentByTag(FRAGMENT_DATE_TIME);
@@ -295,7 +286,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
                         userSetCategoryExpense = true;
                     else if (getCategoryType() == Tables.Categories.Type.INCOME)
                         userSetCategoryIncome = true;
-                    setCategory(data.getLongExtra(CategoryListFragment.RESULT_EXTRA_ITEM_ID, 0), data.getStringExtra(CategoryListFragment.RESULT_EXTRA_CATEGORY_TITLE), data.getIntExtra(CategoryListFragment.RESULT_EXTRA_CATEGORY_COLOR, 0), data.getIntExtra(CategoryListFragment.RESULT_EXTRA_CATEGORY_TYPE, Tables.Categories.Type.EXPENSE));
+                    setCategory(data.getLongExtra(CategoryListFragment.RESULT_EXTRA_ITEM_ID, 0), data.getStringExtra(CategoryListFragment.RESULT_EXTRA_CATEGORY_TITLE), data.getIntExtra(CategoryListFragment.RESULT_EXTRA_CATEGORY_COLOR, 0));
                 }
                 break;
             }
@@ -414,9 +405,9 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
                 showExchangeRateOptions();
                 break;
 
-            case R.id.amountTo_B:
-                CalculatorActivity.startCalculator(this, REQUEST_AMOUNT_TO, getAmount() * getExchangeRate(), false, true);
-                break;
+//            case R.id.amountTo_B:
+//                CalculatorActivity.startCalculator(this, REQUEST_AMOUNT_TO, getAmount() * getExchangeRate(), false, true);
+//                break;
         }
     }
 
@@ -521,7 +512,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
             setAccountFrom(c.getLong(c.getColumnIndex(Tables.Transactions.ACCOUNT_FROM_ID)), c.getString(c.getColumnIndex(Tables.Accounts.AccountFrom.TITLE)), c.getLong(c.getColumnIndex(Tables.Accounts.AccountFrom.CURRENCY_ID)), c.getString(c.getColumnIndex(Tables.Currencies.CurrencyFrom.CODE)), c.getDouble(c.getColumnIndex(Tables.Currencies.CurrencyFrom.EXCHANGE_RATE)));
             setAccountTo(c.getLong(c.getColumnIndex(Tables.Transactions.ACCOUNT_TO_ID)), c.getString(c.getColumnIndex(Tables.Accounts.AccountTo.TITLE)), c.getLong(c.getColumnIndex(Tables.Accounts.AccountTo.CURRENCY_ID)), c.getString(c.getColumnIndex(Tables.Currencies.CurrencyTo.CODE)), c.getDouble(c.getColumnIndex(Tables.Currencies.CurrencyTo.EXCHANGE_RATE)));
             setExchangeRate(c.getDouble(c.getColumnIndex(Tables.Transactions.EXCHANGE_RATE)));
-            setCategory(c.getLong(c.getColumnIndex(Tables.Transactions.CATEGORY_ID)), c.getString(c.getColumnIndex(Tables.Categories.CategoriesChild.TITLE)), c.getInt(c.getColumnIndex(Tables.Categories.CategoriesChild.COLOR)), c.getInt(c.getColumnIndex(Tables.Categories.CategoriesChild.TYPE)));
+            setCategory(c.getLong(c.getColumnIndex(Tables.Transactions.CATEGORY_ID)), c.getString(c.getColumnIndex(Tables.Categories.CategoriesChild.TITLE)), c.getInt(c.getColumnIndex(Tables.Categories.CategoriesChild.COLOR)));
             setAmount(c.getDouble(c.getColumnIndex(Tables.Transactions.AMOUNT)));
             setNote(c.getString(c.getColumnIndex(Tables.Transactions.NOTE)));
             setState(c.getInt(c.getColumnIndex(Tables.Transactions.STATE)));
@@ -542,7 +533,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
             setAccountFrom(savedInstanceState.getLong(STATE_ACCOUNT_FROM_ID), savedInstanceState.getString(STATE_ACCOUNT_FROM_TITLE), savedInstanceState.getLong(STATE_ACCOUNT_FROM_CURRENCY_ID), savedInstanceState.getString(STATE_ACCOUNT_FROM_CURRENCY_CODE), savedInstanceState.getDouble(STATE_ACCOUNT_FROM_CURRENCY_EXCHANGE_RATE));
             setAccountTo(savedInstanceState.getLong(STATE_ACCOUNT_TO_ID), savedInstanceState.getString(STATE_ACCOUNT_TO_TITLE), savedInstanceState.getLong(STATE_ACCOUNT_TO_CURRENCY_ID), savedInstanceState.getString(STATE_ACCOUNT_TO_CURRENCY_CODE), savedInstanceState.getDouble(STATE_ACCOUNT_TO_CURRENCY_EXCHANGE_RATE));
             setExchangeRate(savedInstanceState.getDouble(STATE_EXCHANGE_RATE));
-            setCategory(savedInstanceState.getLong(STATE_CATEGORY_ID), savedInstanceState.getString(STATE_CATEGORY_TITLE), savedInstanceState.getInt(STATE_CATEGORY_COLOR), savedInstanceState.getInt(STATE_CATEGORY_TYPE));
+            setCategory(savedInstanceState.getLong(STATE_CATEGORY_ID), savedInstanceState.getString(STATE_CATEGORY_TITLE), savedInstanceState.getInt(STATE_CATEGORY_COLOR));
             expenseCategoryId = savedInstanceState.getLong(STATE_EXPENSE_CATEGORY_ID);
             expenseCategoryTitle = savedInstanceState.getString(STATE_EXPENSE_CATEGORY_TITLE);
             expenseCategoryColor = savedInstanceState.getInt(STATE_EXPENSE_CATEGORY_COLOR);
@@ -566,7 +557,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
             setAccountFrom(0, null, 0, null, 1.0);
             setAccountTo(0, null, 0, null, 1.0);
             setExchangeRate(1.0);
-            setCategory(Tables.Categories.IDs.EXPENSE_ID, null, 0, Tables.Categories.Type.EXPENSE);
+            setCategory(Tables.Categories.IDs.EXPENSE_ID, null, 0);
             setAmount(0);
             setNote(null);
             setState(Tables.Transactions.State.CONFIRMED);
@@ -597,7 +588,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
             transactionAutoHelper.setCategoryId(0);
             final Category category = transactionAutoHelper.getCategory();
             if (category != null)
-                setCategory(category.getId(), category.getTitle(), category.getColor(), category.getType());
+                setCategory(category.getId(), category.getTitle(), category.getColor());
         }
 
         // Account from
@@ -630,17 +621,16 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
     private void setAmount(double amount)
     {
         amount_CV.setAmount(amount, getCategoryType() == Tables.Categories.Type.INCOME ? getAccountToCurrencyId() : getAccountFromCurrencyId(), getCategoryType());
-//        amount_B.setText(AmountUtils.formatAmount(amount));
-//        AmountUtils.setAmount(amount_B, amount, categoryType);
-//        if (accountToCurrencyId > 0)
-//            amountTo_B.setText(AmountUtils.formatAmount(getActivity(), accountToCurrencyId, getAmount() * getExchangeRate()));
     }
 
     private void setAccountFrom(long accountId, String title, long currencyId, String currencyCode, double exchangeRate)
     {
+        if (accountId == getAccountFromId())
+            return;
+
         accountFrom_CV.setAccount(accountId, title, currencyId, currencyCode, exchangeRate, getString(R.string.from_account));
-        updateCurrency();
         transactionAutoHelper.setAccountFromId(getCategoryType() == Tables.Categories.Type.INCOME ? 0 : accountId);
+        checkNeedExchangeRate();
         doAutoComplete();
         setAmount(getAmount());
     }
@@ -672,9 +662,12 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
 
     private void setAccountTo(long accountId, String title, long currencyId, String currencyCode, double exchangeRate)
     {
+        if (accountId == getAccountToId())
+            return;
+
         accountTo_CV.setAccount(accountId, title, currencyId, currencyCode, exchangeRate, getString(R.string.to_account));
-        updateCurrency();
         transactionAutoHelper.setAccountToId(getCategoryType() == Tables.Categories.Type.EXPENSE ? 0 : accountId);
+        checkNeedExchangeRate();
         doAutoComplete();
         setAmount(getAmount());
     }
@@ -704,7 +697,6 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         return accountTo_CV.getCurrencyExchangeRate();
     }
 
-
     private long getDate()
     {
         return date_CV.getDate();
@@ -712,33 +704,33 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
 
     private void setDate(long date)
     {
+        if (date == getDate())
+            return;
+
         date_CV.setDate(date);
-//        this.date = date;
-//        date_B.setText(DateUtils.formatDateTime(getActivity(), date, DateUtils.FORMAT_SHOW_DATE));
-//        time_B.setText(DateUtils.formatDateTime(getActivity(), date, DateUtils.FORMAT_SHOW_TIME));
         transactionAutoHelper.setDate(date);
         doAutoComplete();
     }
 
-
     private double getExchangeRate()
     {
         //noinspection ConstantConditions
-        return getCategoryType() == Tables.Categories.Type.TRANSFER ? Double.parseDouble(exchangeRate_B.getText().toString()) : 1.0;
+        return getCategoryType() == Tables.Categories.Type.TRANSFER ? amount_CV.getExchangeRate() : 1.0;
     }
 
     private void setExchangeRate(double exchangeRate)
     {
-        exchangeRate_B.setText(String.valueOf(exchangeRate));
-        if (getAccountToCurrencyId() > 0)
-            amountTo_B.setText(AmountUtils.formatAmount(getActivity(), getAccountToCurrencyId(), getAmount() * exchangeRate));
+        amount_CV.setExchangeRate(exchangeRate, getAccountToCurrencyId());
     }
 
-    private void setCategory(long categoryId, String title, int color, int type)
+    private void setCategory(long categoryId, String title, int color)
     {
-        category_CV.setCategory(categoryId, title, color, type);
+        if (categoryId == getCategoryId())
+            return;
 
-        switch (type)
+        category_CV.setCategory(categoryId, title, color);
+
+        switch (getCategoryType())
         {
             case Tables.Categories.Type.EXPENSE:
                 expenseCategoryId = categoryId;
@@ -786,7 +778,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
 
     private int getCategoryType()
     {
-        return category_CV.getCategoryType();
+        return categoryType;
     }
 
     private void setCategoryType(int categoryType)
@@ -794,6 +786,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         if (getCategoryType() == categoryType)
             return;
 
+        this.categoryType = categoryType;
         transactionAutoHelper.setCategoryId(0);
         switch (categoryType)
         {
@@ -802,7 +795,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
                 accountTo_CV.setVisibility(View.GONE);
                 accountFrom_CV.setVisibility(View.VISIBLE);
                 category_CV.setVisibility(View.VISIBLE);
-                setCategory(expenseCategoryId, expenseCategoryTitle, expenseCategoryColor, categoryType);
+                setCategory(expenseCategoryId, expenseCategoryTitle, expenseCategoryColor);
                 break;
 
             case Tables.Categories.Type.INCOME:
@@ -810,7 +803,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
                 accountsSeparator_V.setVisibility(View.GONE);
                 accountTo_CV.setVisibility(View.VISIBLE);
                 category_CV.setVisibility(View.VISIBLE);
-                setCategory(incomeCategoryId, incomeCategoryTitle, incomeCategoryColor, categoryType);
+                setCategory(incomeCategoryId, incomeCategoryTitle, incomeCategoryColor);
                 break;
 
             case Tables.Categories.Type.TRANSFER:
@@ -818,11 +811,11 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
                 accountsSeparator_V.setVisibility(View.VISIBLE);
                 accountTo_CV.setVisibility(View.VISIBLE);
                 category_CV.setVisibility(View.GONE);
-                setCategory(Tables.Categories.IDs.TRANSFER_ID, getString(R.string.transfer), 0, categoryType);
+                setCategory(Tables.Categories.IDs.TRANSFER_ID, getString(R.string.transfer), 0);
                 break;
         }
 
-        updateCurrency();
+        checkNeedExchangeRate();
 
         transactionAutoHelper.setAccountFromId(0);
         transactionAutoHelper.setAccountToId(0);
@@ -863,31 +856,25 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         showInTotals_CB.setChecked(showInTotals);
     }
 
-    private void updateCurrency()
+    private void checkNeedExchangeRate()
     {
-        int visibility = View.GONE;
+        boolean shouldBeVisible = false;
         double exchangeRate = 1.0;
-        String currencies = null;
         switch (getCategoryType())
         {
             case Tables.Categories.Type.EXPENSE:
             case Tables.Categories.Type.INCOME:
-                visibility = View.GONE;
+                shouldBeVisible = false;
                 exchangeRate = 1.0;
-                currencies = null;
                 break;
 
             case Tables.Categories.Type.TRANSFER:
-                visibility = getAccountFromCurrencyId() == getAccountToCurrencyId() || getAccountFromId() == 0 || getAccountFromId() == Tables.Accounts.IDs.INCOME_ID || getAccountToId() == 0 || getAccountToId() == Tables.Accounts.IDs.EXPENSE_ID ? View.GONE : View.VISIBLE;
+                shouldBeVisible = !(getAccountFromCurrencyId() == getAccountToCurrencyId() || getAccountFromId() == 0 || getAccountToId() == 0);
                 exchangeRate = getAccountFromCurrencyId() == CurrenciesHelper.getDefault(getActivity()).getMainCurrencyId() ? 1 / getAccountToCurrencyExchangeRate() : getAccountToCurrencyId() == CurrenciesHelper.getDefault(getActivity()).getMainCurrencyId() ? getAccountFromCurrencyExchangeRate() : 1.0;
-                currencies = getAccountFromCurrencyCode() + " \u21E8 " + getAccountToCurrencyCode();
                 break;
         }
-        currenciesContainer_V.setVisibility(visibility);
-        currencies_TV.setText(currencies);
+        amount_CV.setExchangeRateVisible(shouldBeVisible);
         setExchangeRate(exchangeRate);
-        amountTo_B.setVisibility(visibility);
-        amountsSeparator_V.setVisibility(visibility);
     }
 
     private void showExchangeRateOptions()
@@ -895,7 +882,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         final ListPopupWindow popup = new ListPopupWindow(getActivity());
         popup.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new String[]{getString(R.string.refresh_rate), getString(R.string.set)}));
         popup.setContentWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getActivity().getResources().getDisplayMetrics()));
-        popup.setAnchorView(exchangeRate_B);
+        popup.setAnchorView(amount_CV);
         popup.setModal(true);
         popup.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
