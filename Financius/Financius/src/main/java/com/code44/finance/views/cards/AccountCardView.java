@@ -44,6 +44,7 @@ public class AccountCardView extends CardViewV2
         account_TV.setTextSize(getResources().getDimension(R.dimen.text_xxxlarge));
         account_TV.setMinTextSize(getResources().getDimension(R.dimen.text_xsmall));
         account_TV.setMinHeight(getResources().getDimensionPixelSize(R.dimen.recommended_touch_size) - container_V.getPaddingTop() - container_V.getPaddingBottom());
+        account_TV.setMaxHeight(getResources().getDimensionPixelSize(R.dimen.recommended_touch_size) - container_V.getPaddingTop() - container_V.getPaddingBottom());
         setContentView(account_TV);
 
         if (isInEditMode())

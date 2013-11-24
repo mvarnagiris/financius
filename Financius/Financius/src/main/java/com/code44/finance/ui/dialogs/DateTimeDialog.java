@@ -21,6 +21,7 @@ public class DateTimeDialog extends DialogFragment
     private static final String ARG_DIALOG_ID = "ARG_DIALOG_ID";
     private static final String ARG_DATE = "ARG_DATE";
     private DialogCallbacks listener;
+    private int timesCalled = 0;
 
     public static DateTimeDialog newDateDialogInstance(DialogCallbacks listener, int requestCode, long timeMillis)
     {
@@ -72,8 +73,11 @@ public class DateTimeDialog extends DialogFragment
                         c.set(Calendar.YEAR, year);
                         c.set(Calendar.MONTH, monthOfYear);
                         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        if (listener != null)
+                        if (listener != null && timesCalled < 1)
+                        {
+                            timesCalled++;
                             listener.onDateSelected(requestCode, c.getTimeInMillis());
+                        }
                     }
                 }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 
@@ -86,8 +90,11 @@ public class DateTimeDialog extends DialogFragment
                     {
                         c.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         c.set(Calendar.MINUTE, minute);
-                        if (listener != null)
+                        if (listener != null && timesCalled < 1)
+                        {
+                            timesCalled++;
                             listener.onDateSelected(requestCode, c.getTimeInMillis());
+                        }
                     }
                 }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true);
             }

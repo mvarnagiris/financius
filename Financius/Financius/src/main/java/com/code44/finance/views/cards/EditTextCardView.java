@@ -67,6 +67,12 @@ public class EditTextCardView extends CardViewV2
         text_ET.setHint(hint);
     }
 
+    public String getText()
+    {
+        //noinspection ConstantConditions
+        return text_ET.getText().toString();
+    }
+
     private void showKeyboard()
     {
         text_ET.requestFocus();

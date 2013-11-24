@@ -6,6 +6,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import com.code44.finance.R;
+import com.code44.finance.db.Tables;
 import com.code44.finance.views.AutoResizeTextView;
 
 @SuppressWarnings("UnusedDeclaration")
@@ -61,7 +62,7 @@ public class CategoryCardView extends CardViewV2
         this.categoryColor = categoryColor;
         this.categoryType = categoryType;
 
-        if (categoryId == 0)
+        if (categoryId == 0 || categoryId == Tables.Categories.IDs.EXPENSE_ID || categoryId == Tables.Categories.IDs.INCOME_ID || categoryId == Tables.Categories.IDs.TRANSFER_ID)
         {
             //noinspection ConstantConditions
             category_TV.setText(getResources().getString(R.string.category));
@@ -87,19 +88,9 @@ public class CategoryCardView extends CardViewV2
         return categoryId;
     }
 
-    public void setCategoryId(long categoryId)
-    {
-        this.categoryId = categoryId;
-    }
-
     public String getCategoryTitle()
     {
         return categoryTitle;
-    }
-
-    public void setCategoryTitle(String categoryTitle)
-    {
-        this.categoryTitle = categoryTitle;
     }
 
     public int getCategoryColor()
@@ -107,18 +98,8 @@ public class CategoryCardView extends CardViewV2
         return categoryColor;
     }
 
-    public void setCategoryColor(int categoryColor)
-    {
-        this.categoryColor = categoryColor;
-    }
-
     public int getCategoryType()
     {
         return categoryType;
-    }
-
-    public void setCategoryType(int categoryType)
-    {
-        this.categoryType = categoryType;
     }
 }
