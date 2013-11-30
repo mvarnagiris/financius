@@ -104,7 +104,7 @@ public class AccountListFragment extends ItemListFragment implements MainActivit
     }
 
     @Override
-    protected void startItemCreate(Context context)
+    protected void startItemCreate(Context context, View expandFrom)
     {
         AccountEditActivity.startItemEdit(context, 0);
     }

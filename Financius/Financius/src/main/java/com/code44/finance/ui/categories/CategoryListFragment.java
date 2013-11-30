@@ -225,7 +225,7 @@ public class CategoryListFragment extends ItemListFragment
     }
 
     @Override
-    protected void startItemCreate(Context context)
+    protected void startItemCreate(Context context, View expandFrom)
     {
         CategoryEditActivity.startItemEdit(context, 0, categoryType);
     }

@@ -49,7 +49,7 @@ public class BudgetItemFragment extends ItemFragment
     }
 
     @Override
-    protected void startItemEdit(Context context, long itemId)
+    protected void startItemEdit(Context context, long itemId, View expandFrom)
     {
         BudgetEditActivity.startItemEdit(context, itemId);
     }

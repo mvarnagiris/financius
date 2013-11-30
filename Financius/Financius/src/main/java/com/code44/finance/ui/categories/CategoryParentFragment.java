@@ -94,7 +94,7 @@ public class CategoryParentFragment extends ItemListFragment
     }
 
     @Override
-    protected void startItemCreate(Context context)
+    protected void startItemCreate(Context context, View expandFrom)
     {
         // Ignore this.
     }

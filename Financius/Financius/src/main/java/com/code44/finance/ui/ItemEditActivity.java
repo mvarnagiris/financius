@@ -1,47 +1,41 @@
 package com.code44.finance.ui;
 
-import android.app.ActionBar;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import com.code44.finance.R;
 
 public abstract class ItemEditActivity extends ItemActivity implements ItemEditFragment.Callbacks
 {
-    private View buttons_V;
-
-    /**
-     * Use this when creating intent for subclasses.
-     *
-     * @param context Context.
-     * @param cls     Class of items activity.
-     * @param itemId  Id of the item.
-     * @return Created intent with required extras.
-     */
-    protected static Intent makeIntent(Context context, Class cls, long itemId)
-    {
-        Intent intent = new Intent(context, cls);
-        intent.putExtra(EXTRA_ITEM_ID, itemId);
-        return intent;
-    }
+    private TextView discardTitle_TV;
+    private TextView doneTitle_TV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        // Inflate a "Done/Discard" custom action bar view.
-        final ActionBar actionBar = getActionBar();
+        // Hide ActionBar
         //noinspection ConstantConditions
-        final LayoutInflater inflater = (LayoutInflater) actionBar.getThemedContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        buttons_V = inflater.inflate(R.layout.v_actionbar_done_discard, null);
-        //noinspection ConstantConditions
-        buttons_V.findViewById(R.id.action_done).setOnClickListener(new View.OnClickListener()
+        getActionBar().hide();
+
+        // Get views
+        discardTitle_TV = (TextView) findViewById(R.id.discardTitle_TV);
+        doneTitle_TV = (TextView) findViewById(R.id.doneTitle_TV);
+        final View discardAction_V = findViewById(R.id.action_discard);
+        final View doneAction_V = findViewById(R.id.action_done);
+
+        // Setup
+        discardAction_V.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                onDiscardOrPrevClick();
+            }
+        });
+        doneAction_V.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -49,22 +43,6 @@ public abstract class ItemEditActivity extends ItemActivity implements ItemEditF
                 onSaveOrNextClick();
             }
         });
-        buttons_V.findViewById(R.id.action_discard).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if (((ItemEditFragment) item_F).onDiscard())
-                {
-                    onDiscardOrPrevClick();
-                }
-            }
-        });
-
-        actionBar.setCustomView(buttons_V, new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        //noinspection ConstantConditions
-        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
-                ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
     }
 
     @Override
@@ -115,6 +93,13 @@ public abstract class ItemEditActivity extends ItemActivity implements ItemEditF
     public void doNextOrSaveClick()
     {
         onSaveOrNextClick();
+    }
+
+    @Override
+    protected int inflateView()
+    {
+        setContentView(R.layout.activity_item_edit);
+        return R.id.container_V;
     }
 
     @Override
@@ -198,10 +183,6 @@ public abstract class ItemEditActivity extends ItemActivity implements ItemEditF
         ItemEditFragment itemEdit_F = (ItemEditFragment) item_F;
         final int currentStep = itemEdit_F.getCurrentStep();
         final int stepsCount = itemEdit_F.getStepsCount();
-
-        // Get views
-        final TextView discardTitle_TV = (TextView) buttons_V.findViewById(R.id.discardTitle_TV);
-        final TextView doneTitle_TV = (TextView) buttons_V.findViewById(R.id.doneTitle_TV);
 
         // Update discard button
         if (currentStep == 0)

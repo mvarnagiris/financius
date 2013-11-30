@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.db.Tables;
 import com.code44.finance.utils.AmountUtils;
-import com.code44.finance.utils.CurrenciesHelper;
 
 @SuppressWarnings("ConstantConditions")
 public class CurrenciesAdapter extends AbstractCursorAdapter
@@ -30,7 +29,6 @@ public class CurrenciesAdapter extends AbstractCursorAdapter
         final View view = LayoutInflater.from(context).inflate(R.layout.li_currency, viewGroup, false);
         final ViewHolder holder = new ViewHolder();
         holder.code_TV = (TextView) view.findViewById(R.id.code_TV);
-        holder.exchangeRateTitle_TV = (TextView) view.findViewById(R.id.exchangeRateTitle_TV);
         holder.exchangeRate_TV = (TextView) view.findViewById(R.id.exchangeRate_TV);
         holder.format_TV = (TextView) view.findViewById(R.id.format_TV);
         view.setTag(holder);
@@ -47,19 +45,21 @@ public class CurrenciesAdapter extends AbstractCursorAdapter
 
         // Set values
         holder.code_TV.setText(code);
-        holder.code_TV.setTextColor(context.getResources().getColor(cursor.getInt(iIsDefault) != 0 ? R.color.text_green : R.color.text_primary));
-        if (CurrenciesHelper.getDefault(context).getMainCurrencyId() == cursor.getLong(iId))
+        if (cursor.getInt(iIsDefault) != 0)
         {
-            holder.exchangeRateTitle_TV.setVisibility(View.GONE);
-            holder.exchangeRate_TV.setVisibility(View.GONE);
+            final int color = context.getResources().getColor(R.color.text_green);
+            holder.code_TV.setTextColor(color);
+            holder.exchangeRate_TV.setText(R.string.main_currency);
+            holder.exchangeRate_TV.setTextColor(color);
         }
         else
         {
-            holder.exchangeRateTitle_TV.setVisibility(View.VISIBLE);
-            holder.exchangeRate_TV.setVisibility(View.VISIBLE);
+            final int color = context.getResources().getColor(R.color.text_primary);
+            holder.code_TV.setTextColor(color);
             holder.exchangeRate_TV.setText(String.valueOf(cursor.getDouble(iExchangeRate)));
+            holder.exchangeRate_TV.setTextColor(color);
         }
-        holder.format_TV.setText(AmountUtils.formatAmount(context, cursor.getLong(iId), 1000.00));
+        holder.format_TV.setText("(" + AmountUtils.formatAmount(context, cursor.getLong(iId), 1000.00) + ")");
     }
 
     @Override
@@ -74,7 +74,6 @@ public class CurrenciesAdapter extends AbstractCursorAdapter
     private static class ViewHolder
     {
         public TextView code_TV;
-        public TextView exchangeRateTitle_TV;
         public TextView exchangeRate_TV;
         public TextView format_TV;
     }

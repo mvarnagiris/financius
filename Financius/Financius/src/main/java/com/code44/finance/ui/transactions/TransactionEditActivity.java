@@ -2,34 +2,21 @@ package com.code44.finance.ui.transactions;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import com.code44.finance.R;
-import com.code44.finance.ui.AbstractActivity;
+import android.view.View;
+import com.code44.finance.ui.ItemEditActivity;
+import com.code44.finance.ui.ItemEditFragment;
 
-public class TransactionEditActivity extends AbstractActivity
+public class TransactionEditActivity extends ItemEditActivity
 {
-    protected static final String EXTRA_ITEM_ID = TransactionEditActivity.class.getName() + ".EXTRA_ITEM_ID";
-    // -----------------------------------------------------------------------------------------------------------------
-    protected static final String FRAGMENT_ITEM = TransactionEditActivity.class.getName() + ".FRAGMENT_ITEM";
-
-    public static void startItemEdit(Context context, long itemId)
+    public static void startItemEdit(Context context, long itemId, View expandFromView)
     {
-        final Intent intent = new Intent(context, TransactionEditActivity.class);
-        context.startActivity(intent);
+        final Intent intent = makeIntent(context, TransactionEditActivity.class, itemId);
+        start(context, intent, expandFromView);
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected ItemEditFragment createItemEditFragment(long itemId)
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transaction_edit);
-
-        // Hide ActionBar
-        //noinspection ConstantConditions
-        getActionBar().hide();
-
-        // Setup fragment
-        if (getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEM) == null)
-            getSupportFragmentManager().beginTransaction().replace(R.id.container_V, TransactionEditFragment.newInstance(0), FRAGMENT_ITEM).commit();
+        return TransactionEditFragment.newInstance(itemId);
     }
 }

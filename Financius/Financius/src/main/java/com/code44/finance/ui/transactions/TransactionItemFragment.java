@@ -68,9 +68,9 @@ public class TransactionItemFragment extends ItemFragment
     }
 
     @Override
-    protected void startItemEdit(Context context, long itemId)
+    protected void startItemEdit(Context context, long itemId, View expandFrom)
     {
-        TransactionEditActivity.startItemEdit(context, itemId);
+        TransactionEditActivity.startItemEdit(context, itemId, expandFrom);
     }
 
     @Override

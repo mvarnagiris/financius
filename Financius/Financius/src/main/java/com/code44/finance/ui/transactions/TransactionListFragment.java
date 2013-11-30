@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.view.View;
 import com.code44.finance.R;
 import com.code44.finance.adapters.AbstractCursorAdapter;
 import com.code44.finance.adapters.AbstractSectionedCursorAdapter;
@@ -24,24 +25,6 @@ public class TransactionListFragment extends ItemListFragment implements MainAct
         final TransactionListFragment f = new TransactionListFragment();
         f.setArguments(makeArgs(selectionType, null));
         return f;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-
-        // Register events
-        EventBus.getDefault().register(this, FilterHelper.FilterChangedEvent.class);
-    }
-
-    @Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-
-        // Unregister events
-        EventBus.getDefault().unregister(this, FilterHelper.FilterChangedEvent.class);
     }
 
     public static Loader<Cursor> createItemsLoader(Context context)
@@ -72,9 +55,33 @@ public class TransactionListFragment extends ItemListFragment implements MainAct
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+
+        // Register events
+        EventBus.getDefault().register(this, FilterHelper.FilterChangedEvent.class);
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+
+        // Unregister events
+        EventBus.getDefault().unregister(this, FilterHelper.FilterChangedEvent.class);
+    }
+
+    @Override
     public String getTitle()
     {
         return getString(R.string.transactions);
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void onEventMainThread(FilterHelper.FilterChangedEvent event)
+    {
+        getLoaderManager().restartLoader(LOADER_ITEMS, null, this);
     }
 
     @Override
@@ -102,14 +109,8 @@ public class TransactionListFragment extends ItemListFragment implements MainAct
     }
 
     @Override
-    protected void startItemCreate(Context context)
+    protected void startItemCreate(Context context, View expandFrom)
     {
-        TransactionEditActivity.startItemEdit(context, 0);
-    }
-
-    @SuppressWarnings("UnusedDeclaration")
-    public void onEventMainThread(FilterHelper.FilterChangedEvent event)
-    {
-        getLoaderManager().restartLoader(LOADER_ITEMS, null, this);
+        TransactionEditActivity.startItemEdit(context, 0, expandFrom);
     }
 }

@@ -1,18 +1,19 @@
 package com.code44.finance.ui;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.app.*;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.SpannableStringBuilder;
 import android.text.style.TypefaceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import com.code44.finance.R;
 import com.code44.finance.ui.settings.SettingsActivity;
 import com.code44.finance.ui.settings.lock.LockActivity;
@@ -35,6 +36,19 @@ public abstract class AbstractActivity extends FragmentActivity
     };
     protected boolean forceSecurity = false;
 
+    protected static void start(Context context, Intent intent, View expandFromView)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && expandFromView != null &&context instanceof Activity)
+        {
+            final Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(expandFromView, 0, 0, expandFromView.getWidth(), expandFromView.getHeight()).toBundle();
+            ActivityCompat.startActivity((Activity) context, intent, options);
+        }
+        else
+        {
+            context.startActivity(intent);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -44,6 +58,7 @@ public abstract class AbstractActivity extends FragmentActivity
         LocalBroadcastManager.getInstance(this).registerReceiver(killReceiver, new IntentFilter(LockActivity.ACTION_KILL));
 
         // Setup ActionBar
+        //noinspection ConstantConditions
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Restore state
@@ -93,6 +108,14 @@ public abstract class AbstractActivity extends FragmentActivity
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean(STATE_FORCE_SECURITY, forceSecurity);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         getMenuInflater().inflate(R.menu.common, menu);
@@ -136,14 +159,6 @@ public abstract class AbstractActivity extends FragmentActivity
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-
-        outState.putBoolean(STATE_FORCE_SECURITY, forceSecurity);
     }
 
     protected void setForceSecurity(boolean forceSecurity)

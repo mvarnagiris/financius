@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import com.code44.finance.R;
@@ -51,6 +52,7 @@ public class EditTextCardView extends CardViewV2
         text_ET.setTextColor(getResources().getColor(R.color.text_primary));
         text_ET.setHintTextColor(getResources().getColor(R.color.text_secondary));
         text_ET.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_large));
+        text_ET.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         setContentView(text_ET);
 
         //if (isInEditMode())

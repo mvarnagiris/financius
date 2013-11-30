@@ -9,14 +9,10 @@ import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.format.DateUtils;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.ListPopupWindow;
 import com.code44.finance.API;
 import com.code44.finance.R;
 import com.code44.finance.db.Tables;
@@ -399,10 +395,6 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
 
             case R.id.date_CV:
                 DateTimeDialog.newDateDialogInstance(this, REQUEST_DATE, getDate()).show(getFragmentManager(), FRAGMENT_DATE_TIME);
-                break;
-
-            case R.id.exchangeRate_B:
-                showExchangeRateOptions();
                 break;
 
 //            case R.id.amountTo_B:
@@ -875,27 +867,5 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         }
         amount_CV.setExchangeRateVisible(shouldBeVisible);
         setExchangeRate(exchangeRate);
-    }
-
-    private void showExchangeRateOptions()
-    {
-        final ListPopupWindow popup = new ListPopupWindow(getActivity());
-        popup.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new String[]{getString(R.string.refresh_rate), getString(R.string.set)}));
-        popup.setContentWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getActivity().getResources().getDisplayMetrics()));
-        popup.setAnchorView(amount_CV);
-        popup.setModal(true);
-        popup.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
-            {
-                popup.dismiss();
-                if (position == 0)
-                    API.getExchangeRate(getActivity(), getAccountFromCurrencyCode(), getAccountToCurrencyCode());
-                else
-                    CalculatorActivity.startCalculator(TransactionEditFragment.this, REQUEST_EXCHANGE_RATE, getExchangeRate(), false, false);
-            }
-        });
-        popup.show();
     }
 }

@@ -14,11 +14,11 @@
     <dimen name="margin_dynamic_large">16dp</dimen>
     <dimen name="margin_land_normal">8dp</dimen>
 
-    <dimen name="dynamic_margin_narrow_horizontal">16dp</dimen>
-    <dimen name="dynamic_margin_narrow_vertical">16dp</dimen>
-    <dimen name="dynamic_margin_drawer_narrow_horizontal">16dp</dimen>
-    <dimen name="dynamic_margin_card_horizontal">12dp</dimen>
-    <dimen name="dynamic_margin_card_vertical">12dp</dimen>
+    <dimen name="dynamic_margin_narrow_horizontal">8dp</dimen>
+    <dimen name="dynamic_margin_narrow_vertical">8dp</dimen>
+    <dimen name="dynamic_margin_drawer_narrow_horizontal">8dp</dimen>
+    <dimen name="dynamic_margin_card_horizontal">8dp</dimen>
+    <dimen name="dynamic_margin_card_vertical">8dp</dimen>
 
     <!-- Text -->
     <!-- ======================================================================================================== -->

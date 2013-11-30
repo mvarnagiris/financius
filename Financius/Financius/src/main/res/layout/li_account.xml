@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem"
-    android:minHeight="60dp">
+    style="@style/ListItem">
 
     <TextView
         android:id="@+id/title_TV"
@@ -27,7 +26,7 @@
         <TextView
             android:id="@+id/balanceMain_TV"
             style="@style/TextView.Secondary"
-            android:textSize="@dimen/text_small"/>
+            android:textSize="@dimen/text_small" />
 
     </LinearLayout>
 

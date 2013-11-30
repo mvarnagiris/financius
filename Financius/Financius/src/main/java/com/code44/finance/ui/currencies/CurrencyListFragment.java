@@ -9,6 +9,7 @@ import android.support.v4.content.Loader;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import com.code44.finance.API;
 import com.code44.finance.R;
 import com.code44.finance.adapters.AbstractCursorAdapter;
@@ -85,7 +86,7 @@ public class CurrencyListFragment extends ItemListFragment
     }
 
     @Override
-    protected void startItemCreate(Context context)
+    protected void startItemCreate(Context context, View expandFrom)
     {
         CurrencyEditActivity.startItemEdit(context, 0);
     }

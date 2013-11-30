@@ -1,40 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/ListItem"
     android:gravity="center_vertical">
 
     <TextView
-        android:id="@+id/format_TV"
-        style="@style/TextView"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:gravity="center_vertical"/>
-
-    <TextView
         android:id="@+id/code_TV"
         style="@style/TextView"
-        android:layout_width="match_parent"
-        android:layout_toLeftOf="@+id/format_TV"
-        android:layout_marginRight="@dimen/space_normal" />
+        android:layout_width="wrap_content"
+        android:layout_marginRight="@dimen/space_normal"
+        android:textSize="@dimen/text_xxlarge"
+        android:fontFamily="@string/font_light"
+        tools:text="GBP" />
 
     <TextView
-        android:id="@+id/exchangeRateTitle_TV"
+        android:id="@+id/format_TV"
         style="@style/TextView.Secondary"
-        android:layout_width="wrap_content"
-        android:layout_below="@+id/code_TV"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_marginRight="@dimen/space_normal"
-        android:textSize="@dimen/text_xsmall"
-        android:text="@string/exchange_rate" />
+        tools:text="(£1,000.00)" />
 
     <TextView
         android:id="@+id/exchangeRate_TV"
-        style="@style/TextView.Secondary"
-        android:layout_below="@+id/code_TV"
-        android:layout_toLeftOf="@+id/format_TV"
-        android:layout_toRightOf="@+id/exchangeRateTitle_TV"
-        android:layout_marginRight="@dimen/space_normal"
-        android:textSize="@dimen/text_xsmall"
-        android:textStyle="bold" />
+        style="@style/TextView"
+        tools:text="0.216874" />
 
-</RelativeLayout>
+</LinearLayout>

@@ -140,7 +140,7 @@ public class AccountItemFragment extends ItemFragment
     }
 
     @Override
-    protected void startItemEdit(Context context, long itemId)
+    protected void startItemEdit(Context context, long itemId, View expandFrom)
     {
         AccountEditActivity.startItemEdit(context, itemId);
     }

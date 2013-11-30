@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
 
 public abstract class ItemEditFragment extends ItemFragment
 {
@@ -42,7 +43,7 @@ public abstract class ItemEditFragment extends ItemFragment
     }
 
     @Override
-    protected void startItemEdit(Context context, long itemId)
+    protected void startItemEdit(Context context, long itemId, View expandFrom)
     {
         // Ignore.
     }

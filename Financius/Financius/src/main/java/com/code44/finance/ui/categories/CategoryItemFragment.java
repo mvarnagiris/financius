@@ -124,7 +124,7 @@ public class CategoryItemFragment extends ItemFragment
     }
 
     @Override
-    protected void startItemEdit(Context context, long itemId)
+    protected void startItemEdit(Context context, long itemId, View expandFrom)
     {
         CategoryEditActivity.startItemEdit(context, itemId, categoryType);
     }

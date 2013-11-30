@@ -69,7 +69,31 @@ public class AmountCardView extends CardViewV2 implements View.OnClickListener
         exchangeRate_TV.setMinTextSize(getResources().getDimension(R.dimen.text_xsmall));
         exchangeRate_TV.setMinHeight(getResources().getDimensionPixelSize(R.dimen.recommended_touch_size));
         exchangeRate_TV.setBackgroundResource(R.drawable.card_selector);
-        exchangeRate_TV.setOnClickListener(this);
+        exchangeRate_TV.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+//                final ListPopupWindow popup = new ListPopupWindow(getContext());
+//                popup.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, new String[]{getContext().getString(R.string.refresh_rate), getContext().getString(R.string.set)}));
+//                popup.setContentWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getContext().getResources().getDisplayMetrics()));
+//                popup.setAnchorView(exchangeRate_TV);
+//                popup.setModal(true);
+//                popup.setOnItemClickListener(new AdapterView.OnItemClickListener()
+//                {
+//                    @Override
+//                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
+//                    {
+//                        popup.dismiss();
+//                        if (position == 0)
+//                            API.getExchangeRate(getContext(), getAccountFromCurrencyCode(), getAccountToCurrencyCode());
+//                        else
+//                            CalculatorActivity.startCalculator(TransactionEditFragment.this, REQUEST_EXCHANGE_RATE, getExchangeRate(), false, false);
+//                    }
+//                });
+//                popup.show();
+            }
+        });
         listContainer_LL.addView(exchangeRate_TV);
 
         // Setup exchange rate
@@ -111,7 +135,6 @@ public class AmountCardView extends CardViewV2 implements View.OnClickListener
     @Override
     public void onClick(View v)
     {
-
     }
 
     public void setAmount(double amount, long currencyId, int categoryType)

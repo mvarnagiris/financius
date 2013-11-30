@@ -108,7 +108,7 @@ public class OverviewFragment extends AbstractFragment implements MainActivity.N
         switch (item.getItemId())
         {
             case R.id.action_create:
-                TransactionEditActivity.startItemEdit(getActivity(), 0);
+                TransactionEditActivity.startItemEdit(getActivity(), 0, item.getActionView());
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -224,7 +224,7 @@ public class OverviewFragment extends AbstractFragment implements MainActivity.N
         switch (v.getId())
         {
             case R.id.create_B:
-                TransactionEditActivity.startItemEdit(getActivity(), 0);
+                TransactionEditActivity.startItemEdit(getActivity(), 0, v);
                 break;
         }
     }
