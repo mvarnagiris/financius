@@ -68,11 +68,9 @@ public class BackupParser extends Parser
             values.put(Tables.Accounts.ID, jObject.getLong(JTags.Account.ID));
             values.put(Tables.Accounts.SERVER_ID, jObject.getString(JTags.Account.SERVER_ID));
             values.put(Tables.Accounts.CURRENCY_ID, jObject.getLong(JTags.Account.CURRENCY_ID));
-            values.put(Tables.Accounts.TYPE_RES_NAME, jObject.getString(JTags.Account.TYPE_RES_NAME));
             values.put(Tables.Accounts.TITLE, jObject.getString(JTags.Account.TITLE));
             values.put(Tables.Accounts.NOTE, jObject.getString(JTags.Account.NOTE));
             values.put(Tables.Accounts.BALANCE, jObject.getDouble(JTags.Account.BALANCE));
-            values.put(Tables.Accounts.OVERDRAFT, jObject.getDouble(JTags.Account.OVERDRAFT));
             values.put(Tables.Accounts.SHOW_IN_TOTALS, jObject.getInt(JTags.Account.SHOW_IN_TOTALS));
             values.put(Tables.Accounts.SHOW_IN_SELECTION, jObject.getInt(JTags.Account.SHOW_IN_SELECTION));
             values.put(Tables.Accounts.ORIGIN, jObject.getInt(JTags.Account.ORIGIN));

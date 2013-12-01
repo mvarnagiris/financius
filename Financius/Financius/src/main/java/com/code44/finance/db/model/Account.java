@@ -21,20 +21,15 @@ public class Account extends DBRecord
         initBase(account, c, c.getLong(c.getColumnIndex(Tables.Accounts.ID)), Tables.Accounts.TABLE_NAME);
 
         final int iCurrencyId = c.getColumnIndex(Tables.Accounts.CURRENCY_ID);
-        final int iTypeResName = c.getColumnIndex(Tables.Accounts.TYPE_RES_NAME);
         final int iTitle = c.getColumnIndex(Tables.Accounts.TITLE);
         final int iNote = c.getColumnIndex(Tables.Accounts.NOTE);
         final int iBalance = c.getColumnIndex(Tables.Accounts.BALANCE);
-        final int iOverdraft = c.getColumnIndex(Tables.Accounts.OVERDRAFT);
         final int iShowInTotals = c.getColumnIndex(Tables.Accounts.SHOW_IN_TOTALS);
         final int iShowInSelection = c.getColumnIndex(Tables.Accounts.SHOW_IN_SELECTION);
         final int iOrigin = c.getColumnIndex(Tables.Accounts.ORIGIN);
 
         if (iCurrencyId >= 0)
             account.setCurrency(Currency.from(c, Tables.Accounts.CURRENCY_ID));
-
-        if (iTypeResName >= 0)
-            account.setTypeResName(c.getString(iTypeResName));
 
         if (iTitle >= 0)
             account.setTitle(c.getString(iTitle));
@@ -44,9 +39,6 @@ public class Account extends DBRecord
 
         if (iBalance >= 0)
             account.setBalance(c.getDouble(iBalance));
-
-        if (iOverdraft >= 0)
-            account.setOverdraft(c.getDouble(iOverdraft));
 
         if (iShowInTotals >= 0)
             account.setShowInTotals(c.getInt(iShowInTotals) != 0);

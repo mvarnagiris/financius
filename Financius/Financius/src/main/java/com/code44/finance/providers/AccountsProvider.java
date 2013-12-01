@@ -51,8 +51,6 @@ public class AccountsProvider extends AbstractItemsProvider
     @Override
     protected void onAfterInsert(Uri uri, ContentValues values, long newId, Object objectFromBefore)
     {
-        super.onAfterInsert(uri, values, newId, objectFromBefore);
-
         // Create transaction if necessary
         final Double balance = (Double) objectFromBefore;
         if (balance != 0)
@@ -76,8 +74,6 @@ public class AccountsProvider extends AbstractItemsProvider
     @Override
     protected void onAfterUpdate(Uri uri, ContentValues values, String selection, String[] selectionArgs, int updatedCount, Object objectFromBefore)
     {
-        super.onAfterUpdate(uri, values, selection, selectionArgs, updatedCount, objectFromBefore);
-
         // Create transactions if necessary
         if (objectFromBefore != null)
         {

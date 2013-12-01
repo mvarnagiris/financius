@@ -36,6 +36,18 @@ public class CategoriesProvider extends AbstractItemsProvider
     }
 
     @Override
+    protected Object onBeforeInsert(Uri uri, ContentValues values)
+    {
+        return null;
+    }
+
+    @Override
+    protected void onAfterInsert(Uri uri, ContentValues values, long newId, Object objectFromBefore)
+    {
+
+    }
+
+    @Override
     protected Object onBeforeUpdate(Uri uri, ContentValues values, String selection, String[] selectionArgs)
     {
         // If this is main category, update color to all sub-categories
@@ -47,6 +59,12 @@ public class CategoriesProvider extends AbstractItemsProvider
         }
 
         return null;
+    }
+
+    @Override
+    protected void onAfterUpdate(Uri uri, ContentValues values, String selection, String[] selectionArgs, int updatedCount, Object objectFromBefore)
+    {
+
     }
 
     @Override

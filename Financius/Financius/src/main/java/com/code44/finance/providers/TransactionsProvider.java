@@ -31,6 +31,12 @@ public class TransactionsProvider extends AbstractItemsProvider
     }
 
     @Override
+    protected Object onBeforeInsert(Uri uri, ContentValues values)
+    {
+        return null;
+    }
+
+    @Override
     protected String getJoinedTables()
     {
         return " inner join " + Tables.Accounts.TABLE_NAME + " as " + Tables.Accounts.AccountFrom.TABLE_NAME + " on " + Tables.Accounts.AccountFrom.T_ID + "=" + Tables.Transactions.ACCOUNT_FROM_ID
@@ -48,9 +54,21 @@ public class TransactionsProvider extends AbstractItemsProvider
     }
 
     @Override
+    protected Object onBeforeUpdate(Uri uri, ContentValues values, String selection, String[] selectionArgs)
+    {
+        return null;
+    }
+
+    @Override
     protected void onAfterUpdate(Uri uri, ContentValues values, String selection, String[] selectionArgs, int updatedCount, Object objectFromBefore)
     {
         AccountsUtils.updateBalance(getContext(), db);
+    }
+
+    @Override
+    protected Object onBeforeDelete(Uri uri, String selection, String[] selectionArgs)
+    {
+        return null;
     }
 
     @Override

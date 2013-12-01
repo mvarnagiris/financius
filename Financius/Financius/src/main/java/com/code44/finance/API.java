@@ -3,13 +3,10 @@ package com.code44.finance;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
-import com.code44.finance.db.Tables;
 import com.code44.finance.providers.AccountsProvider;
 import com.code44.finance.providers.CurrenciesProvider;
 import com.code44.finance.services.*;
 import com.code44.finance.utils.DataHelper;
-import com.code44.finance.utils.NotifyUtils;
 
 public class API
 {
@@ -18,33 +15,17 @@ public class API
 
     public static void createCurrency(ContentValues values)
     {
-        DataHelper.create(Tables.Currencies.TABLE_NAME, CurrenciesProvider.uriCurrencies(FinanciusApp.getAppContext()), values, NotifyUtils.getCurrencyUpdatedURIs());
+        DataHelper.create(CurrenciesProvider.uriCurrencies(FinanciusApp.getAppContext()), values);
     }
 
-    public static void updateCurrency(Context context, long itemId, String code, String symbol, int decimals, String groupSeparator, String decimalSeparator, boolean isDefault, String symbolFormat, double exchangeRate)
+    public static void updateCurrency(long itemId, ContentValues values)
     {
-        Intent intent = new Intent(context, CurrenciesService.class);
-        intent.putExtra(CurrenciesService.EXTRA_REQUEST_TYPE, CurrenciesService.RT_UPDATE_ITEM);
-        intent.putExtra(CurrenciesService.EXTRA_FORCE, true);
-        intent.putExtra(CurrenciesService.EXTRA_ITEM_ID, itemId);
-        intent.putExtra(CurrenciesService.EXTRA_CODE, code);
-        intent.putExtra(CurrenciesService.EXTRA_SYMBOL, symbol);
-        intent.putExtra(CurrenciesService.EXTRA_DECIMALS, decimals);
-        intent.putExtra(CurrenciesService.EXTRA_GROUP_SEPARATOR, groupSeparator);
-        intent.putExtra(CurrenciesService.EXTRA_DECIMAL_SEPARATOR, decimalSeparator);
-        intent.putExtra(CurrenciesService.EXTRA_IS_DEFAULT, isDefault);
-        intent.putExtra(CurrenciesService.EXTRA_SYMBOL_FORMAT, symbolFormat);
-        intent.putExtra(CurrenciesService.EXTRA_EXCHANGE_RATE, exchangeRate);
-        context.startService(intent);
+        DataHelper.update(CurrenciesProvider.uriCurrencies(FinanciusApp.getAppContext()), itemId, values);
     }
 
-    public static void deleteCurrencies(Context context, long[] itemIDs)
+    public static void deleteCurrencies(long[] itemIDs)
     {
-        Intent intent = new Intent(context, CurrenciesService.class);
-        intent.putExtra(CurrenciesService.EXTRA_REQUEST_TYPE, CurrenciesService.RT_DELETE_ITEMS);
-        intent.putExtra(CurrenciesService.EXTRA_FORCE, true);
-        intent.putExtra(CurrenciesService.EXTRA_ITEM_IDS, itemIDs);
-        context.startService(intent);
+        DataHelper.delete(CurrenciesProvider.uriCurrencies(FinanciusApp.getAppContext()), itemIDs);
     }
 
     public static void getExchangeRate(Context context, String code)
@@ -80,20 +61,17 @@ public class API
 
     public static void createAccount(ContentValues values)
     {
-        checkId(values, Tables.Accounts.CURRENCY_ID);
-        checkString(values, Tables.Accounts.TITLE);
-
-        DataHelper.create(Tables.Accounts.TABLE_NAME, AccountsProvider.uriAccounts(FinanciusApp.getAppContext()), values, NotifyUtils.getAccountUpdatedURIs());
+        DataHelper.create(AccountsProvider.uriAccounts(FinanciusApp.getAppContext()), values);
     }
 
     public static void updateAccount(long itemId, ContentValues values)
     {
-        DataHelper.update(Tables.Accounts.TABLE_NAME, AccountsProvider.uriAccounts(FinanciusApp.getAppContext()), itemId, values, NotifyUtils.getAccountUpdatedURIs());
+        DataHelper.update(AccountsProvider.uriAccounts(FinanciusApp.getAppContext()), itemId, values);
     }
 
     public static void deleteAccounts(long[] itemIDs)
     {
-        DataHelper.delete(Tables.Accounts.TABLE_NAME, AccountsProvider.uriAccounts(FinanciusApp.getAppContext()), itemIDs, NotifyUtils.getAccountUpdatedURIs());
+        DataHelper.delete(AccountsProvider.uriAccounts(FinanciusApp.getAppContext()), itemIDs);
     }
 
     // Categories
@@ -249,6 +227,7 @@ public class API
         context.startService(intent);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public static void exportJSON(Context context)
     {
         Intent intent = new Intent(context, BackupService.class);
@@ -257,6 +236,7 @@ public class API
         context.startService(intent);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public static void importJSON(Context context, String filePath)
     {
         Intent intent = new Intent(context, BackupService.class);

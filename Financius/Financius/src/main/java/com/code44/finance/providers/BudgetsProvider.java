@@ -88,4 +88,16 @@ public class BudgetsProvider extends AbstractItemsProvider
             db.insert(Tables.BudgetCategories.TABLE_NAME, null, tempValues);
         }
     }
+
+    @Override
+    protected Object onBeforeDelete(Uri uri, String selection, String[] selectionArgs)
+    {
+        return null;
+    }
+
+    @Override
+    protected void onAfterDelete(Uri uri, String selection, String[] selectionArgs, int updatedCount, Object objectFromBefore)
+    {
+
+    }
 }

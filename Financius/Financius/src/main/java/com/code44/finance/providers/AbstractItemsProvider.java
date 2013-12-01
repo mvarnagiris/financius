@@ -64,6 +64,14 @@ public abstract class AbstractItemsProvider extends AbstractProvider
 
     protected abstract void onAfterDelete(Uri uri, String selection, String[] selectionArgs, int updatedCount, Object objectFromBefore);
 
+    protected abstract Object onBeforeBulkInsert(Uri uri, ContentValues[] valuesArray);
+
+    protected abstract void onAfterBulkInsert(Uri uri, ContentValues[] valuesArray, Object objectFromBefore);
+
+    protected abstract void onBeforeItemBulkInsert(Uri uri, ContentValues values, Object objectFromBefore);
+
+    protected abstract void onAfterItemBulkInsert(Uri uri, ContentValues values, Object objectFromBefore);
+
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
     {
@@ -161,7 +169,19 @@ public abstract class AbstractItemsProvider extends AbstractProvider
     @Override
     public int bulkInsert(Uri uri, @Nonnull ContentValues[] valuesArray)
     {
-        throw new IllegalArgumentException("Unsupported URI: " + uri);
+        int count;
+
+        final int uriId = uriMatcher.match(uri);
+        switch (uriId)
+        {
+            case URI_ITEMS:
+                count = bulkInsertItems(uri, valuesArray);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unsupported URI: " + uri);
+        }
+        return count;
     }
 
     protected long insertItem(Uri uri, ContentValues values)
@@ -232,6 +252,35 @@ public abstract class AbstractItemsProvider extends AbstractProvider
             final Object extras = onBeforeDelete(uri, selection, selectionArgs);
             count = db.update(table, values, selection, selectionArgs);
             onAfterDelete(uri, selection, selectionArgs, count, extras);
+
+            db.setTransactionSuccessful();
+        }
+        finally
+        {
+            db.endTransaction();
+        }
+        return count;
+    }
+
+    protected int bulkInsertItems(Uri uri, ContentValues[] valuesArray)
+    {
+        int count = 0;
+        try
+        {
+            db.beginTransaction();
+
+            final Object extras = onBeforeBulkInsert(uri, valuesArray);
+            final String tableName = getItemTable();
+            //noinspection ForLoopReplaceableByForEach
+            for (int i = 0; i < valuesArray.length; i++)
+            {
+                final ContentValues values = valuesArray[i];
+                onBeforeItemBulkInsert(uri, values, extras);
+                doUpdateOrInsert(tableName, values, false);
+                onAfterItemBulkInsert(uri, values, extras);
+                count++;
+            }
+            onAfterBulkInsert(uri, valuesArray, extras);
 
             db.setTransactionSuccessful();
         }

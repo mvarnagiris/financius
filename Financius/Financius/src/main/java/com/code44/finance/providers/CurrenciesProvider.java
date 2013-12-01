@@ -222,6 +222,18 @@ public class CurrenciesProvider extends AbstractItemsProvider
         CurrenciesHelper.getDefault(getContext()).update();
     }
 
+    @Override
+    protected Object onBeforeBulkInsert(Uri uri, ContentValues[] valuesArray)
+    {
+        return null;
+    }
+
+    @Override
+    protected void onAfterBulkInsert(Uri uri, ContentValues[] valuesArray, Object objectFromBefore)
+    {
+
+    }
+
     private void checkValues(ContentValues values, boolean isInsert)
     {
         if (isInsert || values.containsKey(Tables.Currencies.CODE))

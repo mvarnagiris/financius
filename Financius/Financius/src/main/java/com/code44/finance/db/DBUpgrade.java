@@ -389,13 +389,10 @@ public class DBUpgrade
 
         // Accounts
         db.execSQL("ALTER TABLE " + Tables.Accounts.TABLE_NAME + " ADD COLUMN " + Tables.Accounts.CURRENCY_ID + " INTEGER;");
-        db.execSQL("ALTER TABLE " + Tables.Accounts.TABLE_NAME + " ADD COLUMN " + Tables.Accounts.TYPE_RES_NAME + " TEXT;");
         db.execSQL("ALTER TABLE " + Tables.Accounts.TABLE_NAME + " ADD COLUMN " + Tables.Accounts.NOTE + " TEXT;");
-        db.execSQL("ALTER TABLE " + Tables.Accounts.TABLE_NAME + " ADD COLUMN " + Tables.Accounts.OVERDRAFT + " REAL;");
         db.execSQL("ALTER TABLE " + Tables.Accounts.TABLE_NAME + " ADD COLUMN " + Tables.Accounts.SHOW_IN_TOTALS + " BOOLEAN;");
         db.execSQL("ALTER TABLE " + Tables.Accounts.TABLE_NAME + " ADD COLUMN " + Tables.Accounts.SHOW_IN_SELECTION + " BOOLEAN;");
         values.put(Tables.Accounts.CURRENCY_ID, mainCurrencyId);
-        values.put(Tables.Accounts.TYPE_RES_NAME, context.getResources().getResourceEntryName(R.string.ac_other));
         values.put(Tables.Accounts.SHOW_IN_TOTALS, true);
         values.put(Tables.Accounts.SHOW_IN_SELECTION, true);
         db.update(Tables.Accounts.TABLE_NAME, values, null, null);
