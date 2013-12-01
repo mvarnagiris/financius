@@ -13,6 +13,7 @@ public abstract class AbstractItemService extends AbstractService
 {
     public static final String EXTRA_ITEM_ID = AbstractItemService.class.getName() + ".EXTRA_ITEM_ID";
     public static final String EXTRA_ITEM_IDS = AbstractItemService.class.getName() + ".EXTRA_ITEM_IDS";
+    public static final String EXTRA_CONTENT_VALUES = AbstractItemService.class.getName() + ".EXTRA_CONTENT_VALUES";
     public static final int RT_CREATE_ITEM = 1001;
     public static final int RT_UPDATE_ITEM = 1002;
     public static final int RT_DELETE_ITEMS = 1003;

@@ -219,13 +219,13 @@ public class CategoryListFragment extends ItemListFragment
     }
 
     @Override
-    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c)
+    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c, View view)
     {
         CategoryItemActivity.startItem(context, position, c.getInt(c.getColumnIndex(Tables.Categories.TYPE)), ((CategoriesAdapter) adapter).getQuery());
     }
 
     @Override
-    protected void startItemCreate(Context context, View expandFrom)
+    protected void startItemCreate(Context context, View view)
     {
         CategoryEditActivity.startItemEdit(context, 0, categoryType);
     }

@@ -103,14 +103,14 @@ public class TransactionListFragment extends ItemListFragment implements MainAct
     }
 
     @Override
-    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c)
+    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c, View view)
     {
         TransactionItemActivity.startItem(context, ((AbstractSectionedCursorAdapter) adapter).getCursorPosition(position));
     }
 
     @Override
-    protected void startItemCreate(Context context, View expandFrom)
+    protected void startItemCreate(Context context, View view)
     {
-        TransactionEditActivity.startItemEdit(context, 0, expandFrom);
+        TransactionEditActivity.startItemEdit(context, 0, view);
     }
 }

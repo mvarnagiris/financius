@@ -98,13 +98,13 @@ public class AccountListFragment extends ItemListFragment implements MainActivit
     }
 
     @Override
-    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c)
+    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c, View view)
     {
         AccountItemActivity.startItem(context, position);
     }
 
     @Override
-    protected void startItemCreate(Context context, View expandFrom)
+    protected void startItemCreate(Context context, View view)
     {
         AccountEditActivity.startItemEdit(context, 0);
     }

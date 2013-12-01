@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import com.code44.finance.db.Tables;
 import com.code44.finance.providers.AccountsProvider;
-import com.code44.finance.utils.AccountsUtils;
 import com.code44.finance.utils.NotifyUtils;
 
 public class AccountsService extends AbstractItemService
@@ -28,18 +27,8 @@ public class AccountsService extends AbstractItemService
     @Override
     protected void prepareValues(ContentValues outValues, Intent intent)
     {
-        // Get values
-        final long currencyId = intent.getLongExtra(EXTRA_CURRENCY_ID, 0);
-        final String typeResName = intent.getStringExtra(EXTRA_TYPE_RES_NAME);
-        final String title = intent.getStringExtra(EXTRA_TITLE);
-        final String note = intent.getStringExtra(EXTRA_NOTE);
-        final double balance = intent.getDoubleExtra(EXTRA_BALANCE, 0);
-        final double overdraft = intent.getDoubleExtra(EXTRA_OVERDRAFT, 0);
-        final boolean showInTotals = intent.getBooleanExtra(EXTRA_SHOW_IN_TOTALS, true);
-        final boolean showInSelection = intent.getBooleanExtra(EXTRA_SHOW_IN_SELECTION, true);
-
-        // Prepare
-        AccountsUtils.prepareValues(outValues, currencyId, typeResName, title, note, balance, overdraft, showInTotals, showInSelection);
+        //noinspection ConstantConditions
+        outValues.putAll((ContentValues) intent.getParcelableExtra(EXTRA_CONTENT_VALUES));
     }
 
     @Override

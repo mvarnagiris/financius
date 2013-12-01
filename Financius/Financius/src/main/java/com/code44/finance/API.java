@@ -1,8 +1,10 @@
 package com.code44.finance;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import com.code44.finance.services.*;
+import com.code44.finance.utils.AccountsUtils;
 
 public class API
 {
@@ -98,20 +100,23 @@ public class API
         context.startService(intent);
     }
 
+    /**
+     * @deprecated Not used any more
+     */
     public static void updateAccount(Context context, long itemId, long currencyId, String typeResName, String title, String note, double balance, double overdraft, boolean showInTotals, boolean showInSelection)
+    {
+        final ContentValues values = new ContentValues();
+        AccountsUtils.prepareValues(values, currencyId, typeResName, title, note, balance, overdraft, showInTotals, showInSelection);
+        updateAccount(context, itemId, values);
+    }
+
+    public static void updateAccount(Context context, long itemId, ContentValues values)
     {
         Intent intent = new Intent(context, AccountsService.class);
         intent.putExtra(AccountsService.EXTRA_REQUEST_TYPE, AccountsService.RT_UPDATE_ITEM);
         intent.putExtra(AccountsService.EXTRA_FORCE, true);
         intent.putExtra(AccountsService.EXTRA_ITEM_ID, itemId);
-        intent.putExtra(AccountsService.EXTRA_CURRENCY_ID, currencyId);
-        intent.putExtra(AccountsService.EXTRA_TYPE_RES_NAME, typeResName);
-        intent.putExtra(AccountsService.EXTRA_TITLE, title);
-        intent.putExtra(AccountsService.EXTRA_NOTE, note);
-        intent.putExtra(AccountsService.EXTRA_BALANCE, balance);
-        intent.putExtra(AccountsService.EXTRA_OVERDRAFT, overdraft);
-        intent.putExtra(AccountsService.EXTRA_SHOW_IN_TOTALS, showInTotals);
-        intent.putExtra(AccountsService.EXTRA_SHOW_IN_SELECTION, showInSelection);
+        intent.putExtra(AccountsService.EXTRA_CONTENT_VALUES, values);
         context.startService(intent);
     }
 

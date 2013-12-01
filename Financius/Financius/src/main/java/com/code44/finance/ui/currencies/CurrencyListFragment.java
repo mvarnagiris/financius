@@ -80,13 +80,13 @@ public class CurrencyListFragment extends ItemListFragment
     }
 
     @Override
-    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c)
+    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c, View view)
     {
-        CurrencyItemActivity.startItem(context, position);
+        CurrencyItemActivity.startItem(context, itemId, view);
     }
 
     @Override
-    protected void startItemCreate(Context context, View expandFrom)
+    protected void startItemCreate(Context context, View view)
     {
         CurrencyEditActivity.startItemEdit(context, 0);
     }

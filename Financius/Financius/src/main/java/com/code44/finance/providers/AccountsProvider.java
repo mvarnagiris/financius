@@ -63,10 +63,14 @@ public class AccountsProvider extends AbstractItemsProvider
     protected Object onBeforeUpdate(Uri uri, ContentValues values, String selection, String[] selectionArgs)
     {
         // Get balance
-        final Double balance = values.getAsDouble(Tables.Accounts.BALANCE);
-        values.remove(Tables.Accounts.BALANCE);
+        if (values.containsKey(Tables.Accounts.BALANCE))
+        {
+            final Double balance = values.getAsDouble(Tables.Accounts.BALANCE);
+            values.remove(Tables.Accounts.BALANCE);
+            return balance;
+        }
 
-        return balance;
+        return null;
     }
 
     @Override
@@ -75,8 +79,11 @@ public class AccountsProvider extends AbstractItemsProvider
         super.onAfterUpdate(uri, values, selection, selectionArgs, updatedCount, objectFromBefore);
 
         // Create transactions if necessary
-        final Double balance = (Double) objectFromBefore;
-        AccountsUtils.updateBalanceWithTransaction(getContext(), selection, selectionArgs, balance);
+        if (objectFromBefore != null)
+        {
+            final Double balance = (Double) objectFromBefore;
+            AccountsUtils.updateBalanceWithTransaction(getContext(), selection, selectionArgs, balance);
+        }
     }
 
     @Override

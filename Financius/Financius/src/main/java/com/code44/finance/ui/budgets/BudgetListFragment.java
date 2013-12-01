@@ -181,13 +181,13 @@ public class BudgetListFragment extends ItemListFragment implements MainActivity
     }
 
     @Override
-    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c)
+    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c, View view)
     {
         BudgetItemActivity.startItem(context, position - 1);
     }
 
     @Override
-    protected void startItemCreate(Context context, View expandFrom)
+    protected void startItemCreate(Context context, View view)
     {
         BudgetEditActivity.startItemEdit(context, 0);
     }

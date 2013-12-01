@@ -87,6 +87,11 @@ public abstract class ItemListFragment extends AbstractFragment implements Adapt
         super.onActivityCreated(savedInstanceState);
 
         // Setup
+        if (selectionType == SELECTION_TYPE_NONE)
+        {
+            final View create_V = LayoutInflater.from(getActivity()).inflate(R.layout.li_create_new, list_V, false);
+            list_V.addFooterView(create_V);
+        }
         adapter = createAdapter(getActivity());
         list_V.setAdapter(adapter);
         list_V.setOnItemClickListener(this);
@@ -193,7 +198,10 @@ public abstract class ItemListFragment extends AbstractFragment implements Adapt
         switch (selectionType)
         {
             case SELECTION_TYPE_NONE:
-                startItemDetails(getActivity(), id, position, adapter, adapter.getCursor());
+                if (position == adapterView.getCount() - 1)
+                    startItemCreate(getActivity(), view);
+                else
+                    startItemDetails(getActivity(), id, position, adapter, adapter.getCursor(), view);
                 break;
 
             case SELECTION_TYPE_SINGLE:
@@ -237,13 +245,14 @@ public abstract class ItemListFragment extends AbstractFragment implements Adapt
      * @param position Selected position.
      * @param adapter  Adapter for convenience.
      * @param c        Cursor.
+     * @param view
      */
-    protected abstract void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c);
+    protected abstract void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c, View view);
 
     /**
      * Start item create activity here.
      */
-    protected abstract void startItemCreate(Context context, View expandFrom);
+    protected abstract void startItemCreate(Context context, View view);
 
     public long[] getSelectedItemIDs()
     {

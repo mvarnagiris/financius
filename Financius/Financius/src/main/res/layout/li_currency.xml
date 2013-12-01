@@ -7,9 +7,9 @@
     <TextView
         android:id="@+id/code_TV"
         style="@style/TextView"
-        android:layout_width="wrap_content"
         android:layout_marginRight="@dimen/space_normal"
         android:textSize="@dimen/text_xxlarge"
+        android:textAllCaps="true"
         android:fontFamily="@string/font_light"
         tools:text="GBP" />
 

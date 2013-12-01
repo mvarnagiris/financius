@@ -28,8 +28,8 @@ public class CardViewV3 extends ViewGroup
     protected final LinearLayout listContainer_LL;
     protected final TextView bottomInfo_TV;
     // -----------------------------------------------------------------------------------------------------------------
-    protected final Drawable cardDrawable;
-    protected final Drawable foregroundDrawable;
+    protected Drawable cardDrawable;
+    protected Drawable foregroundDrawable;
     protected View content_V;
     // -----------------------------------------------------------------------------------------------------------------
     protected int cardPaddingLeft;
@@ -59,7 +59,7 @@ public class CardViewV3 extends ViewGroup
         cardPaddingTop = 0;
         cardPaddingBottom = 0;
         //noinspection ConstantConditions
-        cardDrawable = res.getDrawable(R.drawable.bg_card_normal);
+        cardDrawable = res.getDrawable(R.drawable.bg_card_normal_new);
         foregroundDrawable = res.getDrawable(R.drawable.card_selector);
 
         // Setup
@@ -321,8 +321,11 @@ public class CardViewV3 extends ViewGroup
     {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        cardDrawable.setBounds(getCardPaddingLeft(), getCardPaddingTop(), w - getCardPaddingRight(), h - getCardPaddingBottom());
-        foregroundDrawable.setBounds(getCardPaddingLeft(), getCardPaddingTop(), w - getCardPaddingRight(), h - getCardPaddingBottom());
+        if (cardDrawable != null)
+            cardDrawable.setBounds(getCardPaddingLeft(), getCardPaddingTop(), w - getCardPaddingRight(), h - getCardPaddingBottom());
+
+        if (foregroundDrawable != null)
+            foregroundDrawable.setBounds(getCardPaddingLeft(), getCardPaddingTop(), w - getCardPaddingRight(), h - getCardPaddingBottom());
     }
 
     @Override
@@ -430,15 +433,6 @@ public class CardViewV3 extends ViewGroup
             final int bottomInfoLeft = iconLeftRight + lp.leftMargin;
             bottomInfo_TV.layout(bottomInfoLeft, bottomInfoTop, bottomInfoLeft + bottomInfo_TV.getMeasuredWidth(), bottomInfoTop + bottomInfo_TV.getMeasuredHeight());
         }
-    }
-
-    @SuppressWarnings("NullableProblems")
-    @Override
-    protected void dispatchDraw(Canvas canvas)
-    {
-        cardDrawable.draw(canvas);
-        foregroundDrawable.draw(canvas);
-        super.dispatchDraw(canvas);
     }
 
     public void setTitle(int resId)
@@ -653,8 +647,21 @@ public class CardViewV3 extends ViewGroup
         this.cardPaddingBottom = cardPaddingBottom;
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
-    protected void drawableStateChanged() {
+    protected void dispatchDraw(Canvas canvas)
+    {
+        if (cardDrawable != null)
+            cardDrawable.draw(canvas);
+
+        if (foregroundDrawable != null)
+            foregroundDrawable.draw(canvas);
+        super.dispatchDraw(canvas);
+    }
+
+    @Override
+    protected void drawableStateChanged()
+    {
         super.drawableStateChanged();
 
         foregroundDrawable.setState(getDrawableState());

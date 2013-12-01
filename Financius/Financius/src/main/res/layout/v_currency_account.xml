@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/title_TV"
+        style="@style/TextView"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_marginRight="@dimen/space_normal"
+        android:textSize="@dimen/text_large"
+        android:fontFamily="@string/font_light"
+        tools:text="Cash" />
+
+    <Button
+        android:id="@+id/currency_B"
+        style="@style/Button.Primary"
+        android:textAllCaps="true"
+        tools:text="GBP" />
+
+</LinearLayout>
