@@ -3,28 +3,22 @@ package com.code44.finance;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
+import com.code44.finance.db.Tables;
+import com.code44.finance.providers.AccountsProvider;
+import com.code44.finance.providers.CurrenciesProvider;
 import com.code44.finance.services.*;
-import com.code44.finance.utils.AccountsUtils;
+import com.code44.finance.utils.DataHelper;
+import com.code44.finance.utils.NotifyUtils;
 
 public class API
 {
     // Currencies
     // --------------------------------------------------------------------------------------------------------------------------------
 
-    public static void createCurrency(Context context, String code, String symbol, int decimals, String groupSeparator, String decimalSeparator, boolean isDefault, String symbolFormat, double exchangeRate)
+    public static void createCurrency(ContentValues values)
     {
-        Intent intent = new Intent(context, CurrenciesService.class);
-        intent.putExtra(CurrenciesService.EXTRA_REQUEST_TYPE, CurrenciesService.RT_CREATE_ITEM);
-        intent.putExtra(CurrenciesService.EXTRA_FORCE, true);
-        intent.putExtra(CurrenciesService.EXTRA_CODE, code);
-        intent.putExtra(CurrenciesService.EXTRA_SYMBOL, symbol);
-        intent.putExtra(CurrenciesService.EXTRA_DECIMALS, decimals);
-        intent.putExtra(CurrenciesService.EXTRA_GROUP_SEPARATOR, groupSeparator);
-        intent.putExtra(CurrenciesService.EXTRA_DECIMAL_SEPARATOR, decimalSeparator);
-        intent.putExtra(CurrenciesService.EXTRA_IS_DEFAULT, isDefault);
-        intent.putExtra(CurrenciesService.EXTRA_SYMBOL_FORMAT, symbolFormat);
-        intent.putExtra(CurrenciesService.EXTRA_EXCHANGE_RATE, exchangeRate);
-        context.startService(intent);
+        DataHelper.create(Tables.Currencies.TABLE_NAME, CurrenciesProvider.uriCurrencies(FinanciusApp.getAppContext()), values, NotifyUtils.getCurrencyUpdatedURIs());
     }
 
     public static void updateCurrency(Context context, long itemId, String code, String symbol, int decimals, String groupSeparator, String decimalSeparator, boolean isDefault, String symbolFormat, double exchangeRate)
@@ -84,49 +78,22 @@ public class API
     // Accounts
     // --------------------------------------------------------------------------------------------------------------------------------
 
-    public static void createAccount(Context context, long currencyId, String typeResName, String title, String note, double balance, double overdraft, boolean showInTotals, boolean showInSelection)
+    public static void createAccount(ContentValues values)
     {
-        Intent intent = new Intent(context, AccountsService.class);
-        intent.putExtra(AccountsService.EXTRA_REQUEST_TYPE, AccountsService.RT_CREATE_ITEM);
-        intent.putExtra(AccountsService.EXTRA_FORCE, true);
-        intent.putExtra(AccountsService.EXTRA_CURRENCY_ID, currencyId);
-        intent.putExtra(AccountsService.EXTRA_TYPE_RES_NAME, typeResName);
-        intent.putExtra(AccountsService.EXTRA_TITLE, title);
-        intent.putExtra(AccountsService.EXTRA_NOTE, note);
-        intent.putExtra(AccountsService.EXTRA_BALANCE, balance);
-        intent.putExtra(AccountsService.EXTRA_OVERDRAFT, overdraft);
-        intent.putExtra(AccountsService.EXTRA_SHOW_IN_TOTALS, showInTotals);
-        intent.putExtra(AccountsService.EXTRA_SHOW_IN_SELECTION, showInSelection);
-        context.startService(intent);
+        checkId(values, Tables.Accounts.CURRENCY_ID);
+        checkString(values, Tables.Accounts.TITLE);
+
+        DataHelper.create(Tables.Accounts.TABLE_NAME, AccountsProvider.uriAccounts(FinanciusApp.getAppContext()), values, NotifyUtils.getAccountUpdatedURIs());
     }
 
-    /**
-     * @deprecated Not used any more
-     */
-    public static void updateAccount(Context context, long itemId, long currencyId, String typeResName, String title, String note, double balance, double overdraft, boolean showInTotals, boolean showInSelection)
+    public static void updateAccount(long itemId, ContentValues values)
     {
-        final ContentValues values = new ContentValues();
-        AccountsUtils.prepareValues(values, currencyId, typeResName, title, note, balance, overdraft, showInTotals, showInSelection);
-        updateAccount(context, itemId, values);
+        DataHelper.update(Tables.Accounts.TABLE_NAME, AccountsProvider.uriAccounts(FinanciusApp.getAppContext()), itemId, values, NotifyUtils.getAccountUpdatedURIs());
     }
 
-    public static void updateAccount(Context context, long itemId, ContentValues values)
+    public static void deleteAccounts(long[] itemIDs)
     {
-        Intent intent = new Intent(context, AccountsService.class);
-        intent.putExtra(AccountsService.EXTRA_REQUEST_TYPE, AccountsService.RT_UPDATE_ITEM);
-        intent.putExtra(AccountsService.EXTRA_FORCE, true);
-        intent.putExtra(AccountsService.EXTRA_ITEM_ID, itemId);
-        intent.putExtra(AccountsService.EXTRA_CONTENT_VALUES, values);
-        context.startService(intent);
-    }
-
-    public static void deleteAccounts(Context context, long[] itemIDs)
-    {
-        Intent intent = new Intent(context, AccountsService.class);
-        intent.putExtra(AccountsService.EXTRA_REQUEST_TYPE, AccountsService.RT_DELETE_ITEMS);
-        intent.putExtra(AccountsService.EXTRA_FORCE, true);
-        intent.putExtra(AccountsService.EXTRA_ITEM_IDS, itemIDs);
-        context.startService(intent);
+        DataHelper.delete(Tables.Accounts.TABLE_NAME, AccountsProvider.uriAccounts(FinanciusApp.getAppContext()), itemIDs, NotifyUtils.getAccountUpdatedURIs());
     }
 
     // Categories

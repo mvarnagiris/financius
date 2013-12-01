@@ -33,24 +33,17 @@ public class AccountEditFragment extends ItemEditFragment implements View.OnClic
     // -----------------------------------------------------------------------------------------------------------------
     private static final int REQUEST_CURRENCY = 1;
     private static final int REQUEST_BALANCE = 2;
-    private static final int REQUEST_OVERDRAFT = 3;
     // -----------------------------------------------------------------------------------------------------------------
-    private static final String STATE_TYPE_RES_NAME = "STATE_TYPE_RES_NAME";
     private static final String STATE_TITLE = "STATE_TITLE";
     private static final String STATE_CURRENCY_ID = "STATE_CURRENCY_ID";
     private static final String STATE_CURRENCY_CODE = "STATE_CURRENCY_CODE";
     private static final String STATE_BALANCE = "STATE_BALANCE";
-    private static final String STATE_OVERDRAFT = "STATE_OVERDRAFT";
     private static final String STATE_SHOW_IN_TOTALS = "STATE_SHOW_IN_TOTALS";
     private static final String STATE_SHOW_IN_SELECTION = "STATE_SHOW_IN_SELECTION";
     private static final String STATE_NOTE = "STATE_NOTE";
-    // -----------------------------------------------------------------------------------------------------------------
-    @SuppressWarnings("FieldCanBeLocal")
-    private Button accountType_B;
     private EditText title_ET;
     private Button currency_B;
     private Button balance_B;
-    private Button overdraft_B;
     private CheckBox includeInTotals_CB;
     private CheckBox showInSelection_CB;
     private EditText note_ET;
@@ -76,7 +69,6 @@ public class AccountEditFragment extends ItemEditFragment implements View.OnClic
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        accountType_B = (Button) view.findViewById(R.id.accountType_B);
         title_ET = (EditText) view.findViewById(R.id.title_ET);
         currency_B = (Button) view.findViewById(R.id.currency_B);
         balance_B = (Button) view.findViewById(R.id.balance_B);
@@ -86,7 +78,6 @@ public class AccountEditFragment extends ItemEditFragment implements View.OnClic
         note_ET = (EditText) view.findViewById(R.id.note_ET);
 
         // Setup
-        accountType_B.setOnClickListener(this);
         currency_B.setOnClickListener(this);
         balance_B.setOnClickListener(this);
         overdraft_B.setOnClickListener(this);

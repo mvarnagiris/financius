@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import com.code44.finance.db.Tables;
 import com.code44.finance.providers.AccountsProvider;
-import com.code44.finance.utils.NotifyUtils;
 
 public class AccountsService extends AbstractItemService
 {
@@ -21,7 +20,7 @@ public class AccountsService extends AbstractItemService
     @Override
     protected void notifyOnItemUpdated()
     {
-        NotifyUtils.onAccountUpdated(this);
+        //NotifyUtils.onAccountUpdated(this);
     }
 
     @Override

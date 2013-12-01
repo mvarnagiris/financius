@@ -6,15 +6,38 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.text.TextUtils;
 import com.code44.finance.db.Tables;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class AbstractItemsProvider extends AbstractProvider
 {
     private static final int URI_ITEMS = 1;
     private static final int URI_ITEMS_ID = 2;
+
+    protected static void checkId(ContentValues values, String columnName)
+    {
+        //noinspection ConstantConditions
+        if (values.getAsLong(columnName) == null || values.getAsLong(columnName) <= 0)
+            throw new IllegalArgumentException(columnName + " must be > 0.");
+    }
+
+    protected static void checkInt(ContentValues values, String columnName)
+    {
+        //noinspection ConstantConditions
+        if (values.getAsLong(columnName) == null)
+            throw new IllegalArgumentException(columnName + " must be empty.");
+    }
+
+    protected static void checkString(ContentValues values, String columnName)
+    {
+        if (TextUtils.isEmpty(values.getAsString(columnName)))
+            throw new IllegalArgumentException(columnName + " must not be empty.");
+    }
 
     @Override
     public boolean onCreate()
@@ -29,6 +52,18 @@ public abstract class AbstractItemsProvider extends AbstractProvider
 
     protected abstract String getItemTable();
 
+    protected abstract Object onBeforeInsert(Uri uri, ContentValues values);
+
+    protected abstract void onAfterInsert(Uri uri, ContentValues values, long newId, Object objectFromBefore);
+
+    protected abstract Object onBeforeUpdate(Uri uri, ContentValues values, String selection, String[] selectionArgs);
+
+    protected abstract void onAfterUpdate(Uri uri, ContentValues values, String selection, String[] selectionArgs, int updatedCount, Object objectFromBefore);
+
+    protected abstract Object onBeforeDelete(Uri uri, String selection, String[] selectionArgs);
+
+    protected abstract void onAfterDelete(Uri uri, String selection, String[] selectionArgs, int updatedCount, Object objectFromBefore);
+
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
     {
@@ -38,7 +73,7 @@ public abstract class AbstractItemsProvider extends AbstractProvider
         switch (uriId)
         {
             case URI_ITEMS:
-                c = queryItems(uri, projection, selection, selectionArgs, sortOrder);
+                c = queryItems(projection, selection, selectionArgs, sortOrder);
                 break;
 
             case URI_ITEMS_ID:
@@ -49,6 +84,7 @@ public abstract class AbstractItemsProvider extends AbstractProvider
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
 
+        //noinspection ConstantConditions
         c.setNotificationUri(getContext().getContentResolver(), uri);
 
         return c;
@@ -123,25 +159,24 @@ public abstract class AbstractItemsProvider extends AbstractProvider
     }
 
     @Override
-    public int bulkInsert(Uri uri, ContentValues[] valuesArray)
+    public int bulkInsert(Uri uri, @Nonnull ContentValues[] valuesArray)
     {
-        int count;
-
-        final int uriId = uriMatcher.match(uri);
-        switch (uriId)
-        {
-            case URI_ITEMS:
-                count = bulkInsertItems(uri, valuesArray);
-                break;
-
-            default:
-                throw new IllegalArgumentException("Unsupported URI: " + uri);
-        }
-        return count;
+        throw new IllegalArgumentException("Unsupported URI: " + uri);
     }
 
     protected long insertItem(Uri uri, ContentValues values)
     {
+        final String tableName = getItemTable();
+
+        // Set default values
+        String columnName = tableName + "_" + Tables.SERVER_ID_SUFFIX;
+        if (!values.containsKey(columnName) || TextUtils.isEmpty(values.getAsString(columnName)))
+            values.put(columnName, UUID.randomUUID().toString());
+
+        values.put(tableName + "_" + Tables.TIMESTAMP_SUFFIX, System.currentTimeMillis());
+        values.put(tableName + "_" + Tables.DELETE_STATE_SUFFIX, Tables.DeleteState.NONE);
+        values.put(tableName + "_" + Tables.SYNC_STATE_SUFFIX, Tables.SyncState.LOCAL_CHANGES);
+
         long newId = 0;
         try
         {
@@ -158,20 +193,6 @@ public abstract class AbstractItemsProvider extends AbstractProvider
             db.endTransaction();
         }
         return newId;
-    }
-
-    protected Object onBeforeInsert(Uri uri, ContentValues values)
-    {
-        return null;
-    }
-
-    protected void onAfterInsert(Uri uri, ContentValues values, long newId, Object objectFromBefore)
-    {
-    }
-
-    protected int bulkInsertItems(Uri uri, ContentValues[] valuesArray)
-    {
-        return doBulkInsert(getItemTable(), valuesArray);
     }
 
     protected int updateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs)
@@ -192,24 +213,6 @@ public abstract class AbstractItemsProvider extends AbstractProvider
             db.endTransaction();
         }
         return count;
-    }
-
-    protected Object onBeforeUpdate(Uri uri, ContentValues values, String selection, String[] selectionArgs)
-    {
-        return null;
-    }
-
-    protected void onAfterUpdate(Uri uri, ContentValues values, String selection, String[] selectionArgs, int updatedCount, Object objectFromBefore)
-    {
-    }
-
-    protected Object onBeforeDelete(Uri uri, String selection, String[] selectionArgs)
-    {
-        return null;
-    }
-
-    protected void onAfterDelete(Uri uri, String selection, String[] selectionArgs, int updatedCount, Object objectFromBefore)
-    {
     }
 
     protected int deleteItems(Uri uri, String selection, String[] selectionArgs)
@@ -244,7 +247,7 @@ public abstract class AbstractItemsProvider extends AbstractProvider
         return "";
     }
 
-    protected Cursor queryItems(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
+    protected Cursor queryItems(String[] projection, String selection, String[] selectionArgs, String sortOrder)
     {
         final SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(getItemTable() + getJoinedTables());

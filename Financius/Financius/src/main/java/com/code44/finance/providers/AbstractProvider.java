@@ -1,13 +1,11 @@
 package com.code44.finance.providers;
 
-import android.content.ContentProvider;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.UriMatcher;
+import android.content.*;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import com.code44.finance.db.DBHelper;
@@ -21,6 +19,11 @@ public abstract class AbstractProvider extends ContentProvider
     protected UriMatcher uriMatcher;
     protected SQLiteDatabase db;
 
+    protected static String getAuthority(Context context, Class<?> clss)
+    {
+        return context.getPackageName() + ".providers." + clss.getSimpleName();
+    }
+
     @Override
     public boolean onCreate()
     {
@@ -29,9 +32,6 @@ public abstract class AbstractProvider extends ContentProvider
         db = DBHelper.getInstance(getContext()).getWritableDatabase();
         return (db != null);
     }
-
-    // Protected methods
-    // --------------------------------------------------------------------------------------------------------------------------
 
     protected long doUpdateOrInsert(String tableName, ContentValues values, boolean returnNewId)
     {
@@ -88,6 +88,7 @@ public abstract class AbstractProvider extends ContentProvider
     protected int doArrayInsert(String tableName, ContentValues[] valuesArray)
     {
         int count = 0;
+        //noinspection ForLoopReplaceableByForEach
         for (int i = 0; i < valuesArray.length; i++)
         {
             doUpdateOrInsert(tableName, valuesArray[i], false);
@@ -96,6 +97,7 @@ public abstract class AbstractProvider extends ContentProvider
         return count;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     protected int doBulkInsert(String tableName, ContentValues[] valuesArray)
     {
         int count = 0;
@@ -136,11 +138,16 @@ public abstract class AbstractProvider extends ContentProvider
         return localId;
     }
 
-    // Static protected methods
-    // --------------------------------------------------------------------------------------------------------------------------
-
-    protected static String getAuthority(Context context, Class<?> clss)
+    protected void notifyURIs(Uri[] notifyURIs)
     {
-        return context.getPackageName() + ".providers." + clss.getSimpleName();
+        if (notifyURIs != null && notifyURIs.length > 0)
+        {
+            //noinspection ConstantConditions
+            final ContentResolver resolver = getContext().getContentResolver();
+
+            //noinspection ForLoopReplaceableByForEach
+            for (int i = 0; i < notifyURIs.length; i++)
+                resolver.notifyChange(notifyURIs[i], null);
+        }
     }
 }

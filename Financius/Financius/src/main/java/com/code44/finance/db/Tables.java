@@ -100,11 +100,9 @@ public class Tables
         public static final String ID = BaseColumns._ID;
         public static final String SERVER_ID = TABLE_NAME + "_" + SERVER_ID_SUFFIX;
         public static final String CURRENCY_ID = TABLE_NAME + "_" + "currency_id";
-        public static final String TYPE_RES_NAME = TABLE_NAME + "_" + "type_res_name";
         public static final String TITLE = TABLE_NAME + "_" + "title";
         public static final String NOTE = TABLE_NAME + "_" + "note";
         public static final String BALANCE = TABLE_NAME + "_" + "balance";
-        public static final String OVERDRAFT = TABLE_NAME + "_" + "overdraft";
         public static final String SHOW_IN_TOTALS = TABLE_NAME + "_" + "show_in_totals";
         public static final String SHOW_IN_SELECTION = TABLE_NAME + "_" + "show_in_selection";
         public static final String ORIGIN = TABLE_NAME + "_" + "origin";
@@ -115,8 +113,8 @@ public class Tables
         public static final String T_ID = TABLE_NAME + "." + ID;
         // -------------------------------------------------------------------------------------------------------------
         public static final String CREATE_SCRIPT = "create table " + TABLE_NAME + " (" + ID + " integer primary key autoincrement, " + SERVER_ID
-                + " text, " + CURRENCY_ID + " integer default 0, " + TYPE_RES_NAME + " text, " + TITLE + " text, " + NOTE + " text, "
-                + BALANCE + " real default 0, " + OVERDRAFT + " real default 0, " + SHOW_IN_TOTALS + " boolean default 1, "
+                + " text, " + CURRENCY_ID + " integer default 0, " + TITLE + " text, " + NOTE + " text, "
+                + BALANCE + " real default 0, " + SHOW_IN_TOTALS + " boolean default 1, "
                 + SHOW_IN_SELECTION + " boolean default 1, " + ORIGIN + " integer, " + TIMESTAMP + " datetime default 0, "
                 + SYNC_STATE + " integer default " + SyncState.LOCAL_CHANGES + ", " + DELETE_STATE + " integer default " + DeleteState.NONE + ");";
         // -------------------------------------------------------------------------------------------------------------
