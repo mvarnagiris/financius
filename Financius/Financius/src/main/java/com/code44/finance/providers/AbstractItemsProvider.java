@@ -68,10 +68,6 @@ public abstract class AbstractItemsProvider extends AbstractProvider
 
     protected abstract void onAfterBulkInsert(Uri uri, ContentValues[] valuesArray, Object objectFromBefore);
 
-    protected abstract void onBeforeItemBulkInsert(Uri uri, ContentValues values, Object objectFromBefore);
-
-    protected abstract void onAfterItemBulkInsert(Uri uri, ContentValues values, Object objectFromBefore);
-
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
     {
@@ -275,9 +271,7 @@ public abstract class AbstractItemsProvider extends AbstractProvider
             for (int i = 0; i < valuesArray.length; i++)
             {
                 final ContentValues values = valuesArray[i];
-                onBeforeItemBulkInsert(uri, values, extras);
                 doUpdateOrInsert(tableName, values, false);
-                onAfterItemBulkInsert(uri, values, extras);
                 count++;
             }
             onAfterBulkInsert(uri, valuesArray, extras);
