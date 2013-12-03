@@ -82,7 +82,7 @@ public class AccountsProvider extends AbstractItemsProvider
             AccountsUtils.updateBalanceWithTransaction(getContext(), selection, selectionArgs, balance);
         }
 
-        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(FinanciusApp.getAppContext()), BudgetsProvider.uriBudgets(FinanciusApp.getAppContext()));
+        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
     }
 
     @Override
@@ -101,13 +101,13 @@ public class AccountsProvider extends AbstractItemsProvider
         {
             InClause inClause = InClause.getInClause(itemIDs, Tables.Transactions.ACCOUNT_FROM_ID);
             //noinspection ConstantConditions
-            getContext().getContentResolver().delete(TransactionsProvider.uriTransactions(getContext()), inClause.getSelection(), inClause.getSelectionArgs());
+            getContext().getContentResolver().delete(TransactionsProvider.uriTransactions(), inClause.getSelection(), inClause.getSelectionArgs());
 
             inClause = InClause.getInClause(itemIDs, Tables.Transactions.ACCOUNT_TO_ID);
-            getContext().getContentResolver().delete(TransactionsProvider.uriTransactions(getContext()), inClause.getSelection(), inClause.getSelectionArgs());
+            getContext().getContentResolver().delete(TransactionsProvider.uriTransactions(), inClause.getSelection(), inClause.getSelectionArgs());
         }
 
-        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(FinanciusApp.getAppContext()), BudgetsProvider.uriBudgets(FinanciusApp.getAppContext()));
+        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
     }
 
     @Override

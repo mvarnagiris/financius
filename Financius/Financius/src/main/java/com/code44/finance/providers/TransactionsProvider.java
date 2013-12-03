@@ -2,38 +2,27 @@ package com.code44.finance.providers;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.net.Uri;
+import com.code44.finance.FinanciusApp;
 import com.code44.finance.db.Tables;
 import com.code44.finance.utils.AccountsUtils;
 
 public class TransactionsProvider extends AbstractItemsProvider
 {
-    public static Uri uriTransactions(Context context)
+    public static Uri uriTransactions()
     {
-        return getContentUri(context);
+        return Uri.parse(CONTENT_URI_BASE + getAuthority(FinanciusApp.getAppContext(), TransactionsProvider.class) + "/" + Tables.Transactions.TABLE_NAME);
     }
 
-    public static Uri uriTransaction(Context context, long transactionId)
+    public static Uri uriTransaction(long transactionId)
     {
-        return ContentUris.withAppendedId(uriTransactions(context), transactionId);
-    }
-
-    protected static Uri getContentUri(Context context)
-    {
-        return Uri.parse(CONTENT_URI_BASE + getAuthority(context, TransactionsProvider.class) + "/" + Tables.Transactions.TABLE_NAME);
+        return ContentUris.withAppendedId(uriTransactions(), transactionId);
     }
 
     @Override
     protected String getItemTable()
     {
         return Tables.Transactions.TABLE_NAME;
-    }
-
-    @Override
-    protected Object onBeforeInsert(Uri uri, ContentValues values)
-    {
-        return null;
     }
 
     @Override
@@ -48,9 +37,18 @@ public class TransactionsProvider extends AbstractItemsProvider
     }
 
     @Override
+    protected Object onBeforeInsert(Uri uri, ContentValues values)
+    {
+        return null;
+    }
+
+    @Override
     protected void onAfterInsert(Uri uri, ContentValues values, long newId, Object objectFromBefore)
     {
+        //noinspection ConstantConditions
         AccountsUtils.updateBalance(getContext(), db, values.getAsLong(Tables.Transactions.ACCOUNT_FROM_ID), values.getAsLong(Tables.Transactions.ACCOUNT_TO_ID), values.getAsLong(Tables.Transactions.CATEGORY_ID));
+
+        notifyURIs(AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
     }
 
     @Override
@@ -63,6 +61,8 @@ public class TransactionsProvider extends AbstractItemsProvider
     protected void onAfterUpdate(Uri uri, ContentValues values, String selection, String[] selectionArgs, int updatedCount, Object objectFromBefore)
     {
         AccountsUtils.updateBalance(getContext(), db);
+
+        notifyURIs(AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
     }
 
     @Override
@@ -75,5 +75,34 @@ public class TransactionsProvider extends AbstractItemsProvider
     protected void onAfterDelete(Uri uri, String selection, String[] selectionArgs, int updatedCount, Object objectFromBefore)
     {
         AccountsUtils.updateBalance(getContext(), db);
+
+        notifyURIs(AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
+    }
+
+    @Override
+    protected Object onBeforeBulkInsert(Uri uri, ContentValues[] valuesArray)
+    {
+        return null;
+    }
+
+    @Override
+    protected void onAfterBulkInsert(Uri uri, ContentValues[] valuesArray, Object objectFromBefore)
+    {
+        notifyURIs(AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
+    }
+
+    @Override
+    protected void checkValues(ContentValues values, int operation)
+    {
+        final boolean required = operation == OPERATION_INSERT || operation == OPERATION_BULK_INSERT;
+        checkId(values, Tables.Transactions.ACCOUNT_FROM_ID, required);
+        checkId(values, Tables.Transactions.ACCOUNT_TO_ID, required);
+        checkId(values, Tables.Transactions.CATEGORY_ID, required);
+        checkLong(values, Tables.Transactions.DATE, required);
+        checkDouble(values, Tables.Transactions.AMOUNT, required, 0.01, Double.MAX_VALUE);
+        checkDouble(values, Tables.Transactions.EXCHANGE_RATE, required, 0, Double.MAX_VALUE);
+        checkInt(values, Tables.Transactions.STATE, required, 0, 1);
+        if (required && !values.containsKey(Tables.Transactions.SHOW_IN_TOTALS))
+            values.put(Tables.Transactions.SHOW_IN_TOTALS, true);
     }
 }

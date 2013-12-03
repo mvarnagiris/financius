@@ -2,26 +2,21 @@ package com.code44.finance.providers;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.net.Uri;
+import com.code44.finance.FinanciusApp;
 import com.code44.finance.db.Tables;
 import com.code44.finance.utils.BudgetsUtils;
 
 public class BudgetsProvider extends AbstractItemsProvider
 {
-    public static Uri uriBudgets(Context context)
+    public static Uri uriBudgets()
     {
-        return getContentUri(context);
+        return Uri.parse(CONTENT_URI_BASE + getAuthority(FinanciusApp.getAppContext(), BudgetsProvider.class) + "/" + Tables.Budgets.TABLE_NAME);
     }
 
-    public static Uri uriBudget(Context context, long budgetId)
+    public static Uri uriBudget(long budgetId)
     {
-        return ContentUris.withAppendedId(uriBudgets(context), budgetId);
-    }
-
-    protected static Uri getContentUri(Context context)
-    {
-        return Uri.parse(CONTENT_URI_BASE + getAuthority(context, BudgetsProvider.class) + "/" + Tables.Budgets.TABLE_NAME);
+        return ContentUris.withAppendedId(uriBudgets(), budgetId);
     }
 
     @Override
@@ -97,6 +92,24 @@ public class BudgetsProvider extends AbstractItemsProvider
 
     @Override
     protected void onAfterDelete(Uri uri, String selection, String[] selectionArgs, int updatedCount, Object objectFromBefore)
+    {
+
+    }
+
+    @Override
+    protected Object onBeforeBulkInsert(Uri uri, ContentValues[] valuesArray)
+    {
+        return null;
+    }
+
+    @Override
+    protected void onAfterBulkInsert(Uri uri, ContentValues[] valuesArray, Object objectFromBefore)
+    {
+
+    }
+
+    @Override
+    protected void checkValues(ContentValues values, int operation)
     {
 
     }

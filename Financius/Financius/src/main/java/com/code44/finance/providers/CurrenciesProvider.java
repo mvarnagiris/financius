@@ -150,7 +150,7 @@ public class CurrenciesProvider extends AbstractItemsProvider
         CurrenciesHelper.getDefault().update();
 
         // Notify
-        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(getContext()), BudgetsProvider.uriBudgets(getContext()));
+        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
     }
 
     @Override
@@ -203,7 +203,7 @@ public class CurrenciesProvider extends AbstractItemsProvider
         CurrenciesHelper.getDefault().update();
 
         // Notify
-        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(getContext()), BudgetsProvider.uriBudgets(getContext()));
+        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
     }
 
     @Override
@@ -275,7 +275,7 @@ public class CurrenciesProvider extends AbstractItemsProvider
         }
 
         // Notify
-        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(getContext()), BudgetsProvider.uriBudgets(getContext()));
+        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
     }
 
     @Override

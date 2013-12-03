@@ -14,6 +14,7 @@ public class Tables
     public static final String DELETE_STATE_SUFFIX = "delete_state";
     public static final String TIMESTAMP_SUFFIX = "timestamp";
 
+    @SuppressWarnings("UnusedDeclaration")
     public static class SyncState
     {
         public static final int LOCAL_CHANGES = 0;
@@ -131,6 +132,7 @@ public class Tables
             public static final int USER = 1;
         }
 
+        @SuppressWarnings("UnusedDeclaration")
         public class AccountFrom
         {
             public static final String TABLE_NAME = Accounts.TABLE_NAME + "_" + "account_from";
@@ -152,6 +154,7 @@ public class Tables
             public static final String S_ORIGIN = T_ORIGIN + " as " + ORIGIN;
         }
 
+        @SuppressWarnings("UnusedDeclaration")
         public class AccountTo
         {
             public static final String TABLE_NAME = Accounts.TABLE_NAME + "_" + "account_to";
@@ -226,6 +229,7 @@ public class Tables
         // Calculated tables
         // --------------------------------------------------------------------------------------------------------------------------------
 
+        @SuppressWarnings("UnusedDeclaration")
         public class CategoriesChild
         {
             public static final String TABLE_NAME = Categories.TABLE_NAME + "_" + "categories_child";
@@ -253,6 +257,7 @@ public class Tables
             public static final String S_LEVEL = T_LEVEL + " as " + LEVEL;
         }
 
+        @SuppressWarnings("UnusedDeclaration")
         public class CategoriesParent
         {
             public static final String TABLE_NAME = Categories.TABLE_NAME + "_" + "categories_parent";
@@ -265,6 +270,7 @@ public class Tables
             public static final String S_TITLE = T_TITLE + " as " + TITLE;
         }
 
+        @SuppressWarnings("UnusedDeclaration")
         public class CategoriesBudget
         {
             public static final String TABLE_NAME = Categories.TABLE_NAME + "_" + "categories_budget";
@@ -273,6 +279,7 @@ public class Tables
             public static final String S_TITLE = TABLE_NAME + "." + Categories.TITLE + " as " + TITLE;
         }
 
+        @SuppressWarnings("UnusedDeclaration")
         public class CategoriesBudgetTransactions
         {
             public static final String TABLE_NAME = Categories.TABLE_NAME + "_" + "categories_budget_transactions";
@@ -281,6 +288,7 @@ public class Tables
         }
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public static class Transactions
     {
         public static final String TABLE_NAME = "transactions";
@@ -359,6 +367,7 @@ public class Tables
                 + CATEGORY_ID + " integer, primary key (" + BUDGET_ID + ", " + CATEGORY_ID + "));";
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public static class RecurringTransactions
     {
         public static final String TABLE_NAME = "recurring_transactions";

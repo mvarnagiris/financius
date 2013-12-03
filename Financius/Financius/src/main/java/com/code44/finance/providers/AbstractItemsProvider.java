@@ -30,6 +30,12 @@ public abstract class AbstractItemsProvider extends AbstractProvider
             throw new IllegalArgumentException(columnName + " must be > 0.");
     }
 
+    protected static void checkLong(ContentValues values, String columnName, boolean required)
+    {
+        if (required && values.getAsLong(columnName) == null)
+            throw new IllegalArgumentException(columnName + " must not be empty.");
+    }
+
     protected static void checkInt(ContentValues values, String columnName, boolean required)
     {
         if (required && values.getAsInteger(columnName) == null)

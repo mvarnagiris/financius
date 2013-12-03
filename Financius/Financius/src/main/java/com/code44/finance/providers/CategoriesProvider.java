@@ -77,7 +77,7 @@ public class CategoriesProvider extends AbstractItemsProvider
         }
 
         // Notify
-        notifyURIs(CategoriesProvider.uriCategories(), TransactionsProvider.uriTransactions(FinanciusApp.getAppContext()), BudgetsProvider.uriBudgets(FinanciusApp.getAppContext()), null);
+        notifyURIs(CategoriesProvider.uriCategories(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
     }
 
     @Override
@@ -130,11 +130,11 @@ public class CategoriesProvider extends AbstractItemsProvider
         if (itemIDs != null && itemIDs.size() > 0)
         {
             inClause = InClause.getInClause(itemIDs, Tables.Transactions.CATEGORY_ID);
-            getContext().getContentResolver().delete(TransactionsProvider.uriTransactions(getContext()), inClause.getSelection(), inClause.getSelectionArgs());
+            getContext().getContentResolver().delete(TransactionsProvider.uriTransactions(), inClause.getSelection(), inClause.getSelectionArgs());
         }
 
         // Notify
-        notifyURIs(CategoriesProvider.uriCategories(), TransactionsProvider.uriTransactions(FinanciusApp.getAppContext()), BudgetsProvider.uriBudgets(FinanciusApp.getAppContext()), null);
+        notifyURIs(CategoriesProvider.uriCategories(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
     }
 
     @Override
@@ -146,7 +146,8 @@ public class CategoriesProvider extends AbstractItemsProvider
     @Override
     protected void onAfterBulkInsert(Uri uri, ContentValues[] valuesArray, Object objectFromBefore)
     {
-
+        // Notify
+        notifyURIs(CategoriesProvider.uriCategories(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
     }
 
     @Override
