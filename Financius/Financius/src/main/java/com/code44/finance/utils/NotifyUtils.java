@@ -16,13 +16,6 @@ public class NotifyUtils
         context.getContentResolver().notifyChange(BudgetsProvider.uriBudgets(context), null);
     }
 
-    public static void onCategoryUpdated(Context context)
-    {
-        context.getContentResolver().notifyChange(CategoriesProvider.uriCategories(context), null);
-        context.getContentResolver().notifyChange(TransactionsProvider.uriTransactions(context), null);
-        context.getContentResolver().notifyChange(BudgetsProvider.uriBudgets(context), null);
-    }
-
     public static void onTransactionUpdated(Context context)
     {
         context.getContentResolver().notifyChange(AccountsProvider.uriAccounts(context), null);
