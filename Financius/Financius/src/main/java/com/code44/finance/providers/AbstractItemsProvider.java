@@ -16,29 +16,87 @@ import java.util.UUID;
 
 public abstract class AbstractItemsProvider extends AbstractProvider
 {
+    protected static final int OPERATION_INSERT = 1;
+    protected static final int OPERATION_UPDATE = 2;
+    protected static final int OPERATION_BULK_INSERT = 3;
+    // -----------------------------------------------------------------------------------------------------------------
     private static final int URI_ITEMS = 1;
     private static final int URI_ITEMS_ID = 2;
 
-    @SuppressWarnings("UnusedDeclaration")
-    protected static void checkId(ContentValues values, String columnName)
+    protected static void checkId(ContentValues values, String columnName, boolean required)
     {
-        //noinspection ConstantConditions
-        if (values.getAsLong(columnName) == null || values.getAsLong(columnName) <= 0)
+        final Long value = values.getAsLong(columnName);
+        if ((value != null && value <= 0) || (value == null && required))
             throw new IllegalArgumentException(columnName + " must be > 0.");
     }
 
-    @SuppressWarnings("UnusedDeclaration")
-    protected static void checkInt(ContentValues values, String columnName)
+    protected static void checkInt(ContentValues values, String columnName, boolean required)
     {
-        //noinspection ConstantConditions
-        if (values.getAsLong(columnName) == null)
-            throw new IllegalArgumentException(columnName + " must be empty.");
+        if (required && values.getAsInteger(columnName) == null)
+            throw new IllegalArgumentException(columnName + " must not be empty.");
     }
 
-    protected static void checkString(ContentValues values, String columnName)
+    protected static void checkInt(ContentValues values, String columnName, boolean required, int start, int end)
     {
-        if (TextUtils.isEmpty(values.getAsString(columnName)))
+        checkInt(values, columnName, required);
+
+        final Integer value = values.getAsInteger(columnName);
+        if (value != null && (value < start || value > end))
+            throw new IllegalArgumentException(columnName + " must be " + start + " <= ? <= " + end);
+    }
+
+    protected static void checkDouble(ContentValues values, String columnName, boolean required)
+    {
+        if (required && values.getAsDouble(columnName) == null)
             throw new IllegalArgumentException(columnName + " must not be empty.");
+    }
+
+    protected static void checkDouble(ContentValues values, String columnName, boolean required, double start, double end)
+    {
+        checkDouble(values, columnName, required);
+
+        final Double value = values.getAsDouble(columnName);
+        if (value != null && (value < start || value > end))
+            throw new IllegalArgumentException(columnName + " must be " + start + " <= ? <= " + end);
+    }
+
+    protected static void checkString(ContentValues values, String columnName, boolean required, boolean canBeEmpty)
+    {
+        final String value = values.getAsString(columnName);
+        if (required && (value == null || (!canBeEmpty && value.length() == 0)))
+            throw new IllegalArgumentException(columnName + " must not be empty.");
+    }
+
+    protected static void checkString(ContentValues values, String columnName, boolean required, String... possibleValues)
+    {
+        checkString(values, columnName, required, false);
+        final String value = values.getAsString(columnName);
+        if (!required && value == null)
+            return;
+
+        boolean isOK = false;
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < possibleValues.length; i++)
+        {
+            if (possibleValues[i].equals(value))
+            {
+                isOK = true;
+                break;
+            }
+        }
+
+        if (!isOK)
+        {
+            final StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < possibleValues.length; i++)
+            {
+                if (i > 0)
+                    sb.append(", ");
+                sb.append(possibleValues[i]);
+            }
+
+            throw new IllegalArgumentException(columnName + " must be equal to one of these values: " + sb.toString());
+        }
     }
 
     @Override
@@ -69,6 +127,8 @@ public abstract class AbstractItemsProvider extends AbstractProvider
     protected abstract Object onBeforeBulkInsert(Uri uri, ContentValues[] valuesArray);
 
     protected abstract void onAfterBulkInsert(Uri uri, ContentValues[] valuesArray, Object objectFromBefore);
+
+    protected abstract void checkValues(ContentValues values, int operation);
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
@@ -200,6 +260,7 @@ public abstract class AbstractItemsProvider extends AbstractProvider
         {
             db.beginTransaction();
 
+            checkValues(values, OPERATION_INSERT);
             final Object extras = onBeforeInsert(uri, values);
             newId = doUpdateOrInsert(getItemTable(), values, true);
             onAfterInsert(uri, values, newId, extras);
@@ -220,6 +281,7 @@ public abstract class AbstractItemsProvider extends AbstractProvider
         {
             db.beginTransaction();
 
+            checkValues(values, OPERATION_UPDATE);
             final Object extras = onBeforeUpdate(uri, values, selection, selectionArgs);
             count = db.update(getItemTable(), values, selection, selectionArgs);
             onAfterUpdate(uri, values, selection, selectionArgs, count, extras);
@@ -273,6 +335,7 @@ public abstract class AbstractItemsProvider extends AbstractProvider
             for (int i = 0; i < valuesArray.length; i++)
             {
                 final ContentValues values = valuesArray[i];
+                checkValues(values, OPERATION_BULK_INSERT);
                 doUpdateOrInsert(tableName, values, false);
                 count++;
             }

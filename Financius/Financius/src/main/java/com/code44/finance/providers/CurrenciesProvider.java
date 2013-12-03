@@ -2,10 +2,9 @@ package com.code44.finance.providers;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.text.TextUtils;
+import com.code44.finance.FinanciusApp;
 import com.code44.finance.db.Tables;
 import com.code44.finance.utils.AmountUtils;
 import com.code44.finance.utils.CurrenciesHelper;
@@ -14,19 +13,14 @@ import java.util.List;
 
 public class CurrenciesProvider extends AbstractItemsProvider
 {
-    public static Uri uriCurrencies(Context context)
+    public static Uri uriCurrencies()
     {
-        return getContentUri(context);
+        return Uri.parse(CONTENT_URI_BASE + getAuthority(FinanciusApp.getAppContext(), CurrenciesProvider.class) + "/" + Tables.Currencies.TABLE_NAME);
     }
 
-    public static Uri uriCurrency(Context context, long currencyId)
+    public static Uri uriCurrency(long currencyId)
     {
-        return ContentUris.withAppendedId(uriCurrencies(context), currencyId);
-    }
-
-    protected static Uri getContentUri(Context context)
-    {
-        return Uri.parse(CONTENT_URI_BASE + getAuthority(context, CurrenciesProvider.class) + "/" + Tables.Currencies.TABLE_NAME);
+        return ContentUris.withAppendedId(uriCurrencies(), currencyId);
     }
 
     @Override
@@ -38,8 +32,6 @@ public class CurrenciesProvider extends AbstractItemsProvider
     @Override
     protected Object onBeforeInsert(Uri uri, ContentValues values)
     {
-        checkValues(values, true);
-
         // Update IS_DEFAULT field
         //noinspection ConstantConditions
         final boolean isDefault = values.getAsBoolean(Tables.Currencies.IS_DEFAULT);
@@ -78,18 +70,16 @@ public class CurrenciesProvider extends AbstractItemsProvider
     @Override
     protected void onAfterInsert(Uri uri, ContentValues values, long newId, Object objectFromBefore)
     {
-        AmountUtils.onCurrencyUpdated(getContext(), newId);
-        CurrenciesHelper.getDefault(getContext()).update();
+        AmountUtils.onCurrencyUpdated(newId);
+        CurrenciesHelper.getDefault().update();
 
         // Notify
-        notifyURIs(new Uri[]{uriCurrencies(getContext())});
+        notifyURIs(uriCurrencies());
     }
 
     @Override
     protected Object onBeforeUpdate(Uri uri, ContentValues values, String selection, String[] selectionArgs)
     {
-        checkValues(values, false);
-
         // Check if we are trying to change IS_DEFAULT value
         if (values.containsKey(Tables.Currencies.IS_DEFAULT))
         {
@@ -147,7 +137,7 @@ public class CurrenciesProvider extends AbstractItemsProvider
             {
                 do
                 {
-                    AmountUtils.onCurrencyUpdated(getContext(), c.getLong(0));
+                    AmountUtils.onCurrencyUpdated(c.getLong(0));
                 }
                 while (c.moveToNext());
             }
@@ -157,14 +147,10 @@ public class CurrenciesProvider extends AbstractItemsProvider
             if (c != null && !c.isClosed())
                 c.close();
         }
-        CurrenciesHelper.getDefault(getContext()).update();
+        CurrenciesHelper.getDefault().update();
 
         // Notify
-        notifyURIs(new Uri[]{
-                CurrenciesProvider.uriCurrencies(getContext()),
-                AccountsProvider.uriAccounts(getContext()),
-                TransactionsProvider.uriTransactions(getContext()),
-                BudgetsProvider.uriBudgets(getContext())});
+        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(getContext()), BudgetsProvider.uriBudgets(getContext()));
     }
 
     @Override
@@ -211,10 +197,13 @@ public class CurrenciesProvider extends AbstractItemsProvider
         {
             final InClause inClause = InClause.getInClause(itemIDs, Tables.Accounts.CURRENCY_ID);
             //noinspection ConstantConditions
-            getContext().getContentResolver().delete(AccountsProvider.uriAccounts(getContext()), Tables.Accounts.ORIGIN + "<>" + Tables.Accounts.Origin.SYSTEM + " and " + inClause.getSelection(), inClause.getSelectionArgs());
+            getContext().getContentResolver().delete(AccountsProvider.uriAccounts(), Tables.Accounts.ORIGIN + "<>" + Tables.Accounts.Origin.SYSTEM + " and " + inClause.getSelection(), inClause.getSelectionArgs());
         }
 
-        CurrenciesHelper.getDefault(getContext()).update();
+        CurrenciesHelper.getDefault().update();
+
+        // Notify
+        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(getContext()), BudgetsProvider.uriBudgets(getContext()));
     }
 
     @Override
@@ -284,41 +273,23 @@ public class CurrenciesProvider extends AbstractItemsProvider
             values.put(Tables.Currencies.IS_DEFAULT, true);
             db.update(Tables.Currencies.TABLE_NAME, values, Tables.Currencies.T_ID + "=?", new String[]{String.valueOf(newDefaultCurrencyId)});
         }
+
+        // Notify
+        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(getContext()), BudgetsProvider.uriBudgets(getContext()));
     }
 
-    private void checkValues(ContentValues values, boolean isInsert)
+    @Override
+    protected void checkValues(ContentValues values, int operation)
     {
-        if (isInsert || values.containsKey(Tables.Currencies.CODE))
-            checkString(values, Tables.Currencies.CODE);
+        final boolean required = operation == OPERATION_INSERT || operation == OPERATION_BULK_INSERT;
+        checkString(values, Tables.Currencies.CODE, required);
+        checkInt(values, Tables.Currencies.DECIMALS, required, 0, 2);
+        checkString(values, Tables.Currencies.DECIMAL_SEPARATOR, required, ",", ".", "");
+        checkString(values, Tables.Currencies.GROUP_SEPARATOR, required, ",", ".", " ", "");
+        checkString(values, Tables.Currencies.SYMBOL_FORMAT, required, Tables.Currencies.SymbolFormat.LEFT_CLOSE, Tables.Currencies.SymbolFormat.LEFT_FAR, Tables.Currencies.SymbolFormat.RIGHT_CLOSE, Tables.Currencies.SymbolFormat.RIGHT_FAR);
+        checkDouble(values, Tables.Currencies.EXCHANGE_RATE, required, 0, Double.MAX_VALUE);
 
-        if (isInsert || values.containsKey(Tables.Currencies.DECIMALS))
-        {
-            final Integer decimals = values.getAsInteger(Tables.Currencies.DECIMALS);
-            if (decimals == null || decimals < 0 || decimals > 2)
-                throw new IllegalArgumentException(Tables.Currencies.DECIMALS + " must be 0 <= decimals <= 2");
-        }
-
-        if (isInsert || values.containsKey(Tables.Currencies.DECIMAL_SEPARATOR))
-            checkString(values, Tables.Currencies.DECIMAL_SEPARATOR);
-
-        if (isInsert || values.containsKey(Tables.Currencies.SYMBOL_FORMAT))
-        {
-            final String symbolFormat = values.getAsString(Tables.Currencies.SYMBOL_FORMAT);
-            if (TextUtils.isEmpty(symbolFormat) || !(Tables.Currencies.SymbolFormat.LEFT_CLOSE.equals(symbolFormat)
-                    || Tables.Currencies.SymbolFormat.LEFT_FAR.equals(symbolFormat)
-                    || Tables.Currencies.SymbolFormat.RIGHT_CLOSE.equals(symbolFormat)
-                    || Tables.Currencies.SymbolFormat.RIGHT_FAR.equals(symbolFormat)))
-                throw new IllegalArgumentException(Tables.Currencies.SYMBOL_FORMAT + " must be equal to one of these values: " + Tables.Currencies.SymbolFormat.LEFT_CLOSE + ", " + Tables.Currencies.SymbolFormat.LEFT_FAR + ", " + Tables.Currencies.SymbolFormat.RIGHT_CLOSE + ", " + Tables.Currencies.SymbolFormat.RIGHT_FAR);
-        }
-
-        if (isInsert || values.containsKey(Tables.Currencies.EXCHANGE_RATE))
-        {
-            final Double exchangeRate = values.getAsDouble(Tables.Currencies.EXCHANGE_RATE);
-            if (exchangeRate == null || exchangeRate < 0)
-                throw new IllegalArgumentException(Tables.Currencies.EXCHANGE_RATE + " must be > 0.");
-        }
-
-        if (isInsert && !values.containsKey(Tables.Currencies.IS_DEFAULT))
+        if (required && !values.containsKey(Tables.Currencies.IS_DEFAULT))
             values.put(Tables.Currencies.IS_DEFAULT, false);
     }
 

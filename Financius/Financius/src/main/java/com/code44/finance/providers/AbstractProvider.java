@@ -138,7 +138,7 @@ public abstract class AbstractProvider extends ContentProvider
         return localId;
     }
 
-    protected void notifyURIs(Uri[] notifyURIs)
+    protected void notifyURIs(Uri... notifyURIs)
     {
         if (notifyURIs != null && notifyURIs.length > 0)
         {

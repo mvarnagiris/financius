@@ -16,12 +16,6 @@ public class NotifyUtils
         context.getContentResolver().notifyChange(BudgetsProvider.uriBudgets(context), null);
     }
 
-    public static Uri[] getAccountUpdatedURIs()
-    {
-        final Context context = FinanciusApp.getAppContext();
-        return new Uri[]{CurrenciesProvider.uriCurrencies(context), AccountsProvider.uriAccounts(context), TransactionsProvider.uriTransactions(context), BudgetsProvider.uriBudgets(context)};
-    }
-
     public static void onCategoryUpdated(Context context)
     {
         context.getContentResolver().notifyChange(CategoriesProvider.uriCategories(context), null);
