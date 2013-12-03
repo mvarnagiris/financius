@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import com.code44.finance.FinanciusApp;
+import com.code44.finance.db.DBUpgrade;
 import com.code44.finance.db.Tables;
 
 import java.util.ArrayList;
@@ -38,6 +39,9 @@ public class CategoriesProvider extends AbstractItemsProvider
     @Override
     protected void onAfterInsert(Uri uri, ContentValues values, long newId, Object objectFromBefore)
     {
+        // Update order
+        DBUpgrade.updateCategoriesOrder(db);
+
         notifyURIs(uriCategories());
     }
 
@@ -75,6 +79,9 @@ public class CategoriesProvider extends AbstractItemsProvider
                     c.close();
             }
         }
+
+        // Update order
+        DBUpgrade.updateCategoriesOrder(db);
 
         // Notify
         notifyURIs(CategoriesProvider.uriCategories(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
@@ -133,6 +140,9 @@ public class CategoriesProvider extends AbstractItemsProvider
             getContext().getContentResolver().delete(TransactionsProvider.uriTransactions(), inClause.getSelection(), inClause.getSelectionArgs());
         }
 
+        // Update order
+        DBUpgrade.updateCategoriesOrder(db);
+
         // Notify
         notifyURIs(CategoriesProvider.uriCategories(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
     }
@@ -146,6 +156,9 @@ public class CategoriesProvider extends AbstractItemsProvider
     @Override
     protected void onAfterBulkInsert(Uri uri, ContentValues[] valuesArray, Object objectFromBefore)
     {
+        // Update order
+        DBUpgrade.updateCategoriesOrder(db);
+
         // Notify
         notifyURIs(CategoriesProvider.uriCategories(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
     }

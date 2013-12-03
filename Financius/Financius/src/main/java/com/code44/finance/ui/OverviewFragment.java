@@ -127,7 +127,7 @@ public class OverviewFragment extends AbstractFragment implements MainActivity.N
         {
             case LOADER_ACCOUNTS:
             {
-                uri = AccountsProvider.uriAccounts(getActivity());
+                uri = AccountsProvider.uriAccounts();
                 projection = new String[]{Tables.Accounts.T_ID, Tables.Accounts.TITLE, Tables.Accounts.BALANCE, Tables.Accounts.CURRENCY_ID, Tables.Currencies.EXCHANGE_RATE, Tables.Accounts.SHOW_IN_TOTALS};
                 selection = Tables.Accounts.ORIGIN + "<>? and " + Tables.Accounts.DELETE_STATE + "=?";
                 selectionArgs = new String[]{String.valueOf(Tables.Categories.Origin.SYSTEM), String.valueOf(Tables.DeleteState.NONE)};
@@ -154,7 +154,7 @@ public class OverviewFragment extends AbstractFragment implements MainActivity.N
                         break;
                 }
 
-                uri = TransactionsProvider.uriTransactions(getActivity());
+                uri = TransactionsProvider.uriTransactions();
                 projection = new String[]
                         {
                                 "min(" + Tables.Transactions.DATE + ")",
@@ -172,7 +172,7 @@ public class OverviewFragment extends AbstractFragment implements MainActivity.N
             {
                 final PeriodHelper periodHelper = PeriodHelper.getDefault(getActivity());
 
-                uri = TransactionsProvider.uriTransactions(getActivity());
+                uri = TransactionsProvider.uriTransactions();
                 projection = new String[]
                         {
                                 "min(" + Tables.Transactions.CATEGORY_ID + ")",

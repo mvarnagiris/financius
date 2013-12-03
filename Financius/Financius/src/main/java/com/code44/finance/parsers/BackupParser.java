@@ -4,11 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import com.code44.finance.db.DBHelper;
-import com.code44.finance.db.DBUpgrade;
 import com.code44.finance.db.Tables;
+import com.code44.finance.providers.AccountsProvider;
+import com.code44.finance.providers.CategoriesProvider;
+import com.code44.finance.providers.CurrenciesProvider;
+import com.code44.finance.providers.TransactionsProvider;
 import com.code44.finance.utils.BackupUtils;
-import com.code44.finance.utils.CurrenciesHelper;
-import com.code44.finance.utils.NotifyUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -150,6 +151,7 @@ public class BackupParser extends Parser
 
         try
         {
+            //noinspection ConstantConditions
             db.beginTransaction();
 
             // Clear tables
@@ -160,39 +162,27 @@ public class BackupParser extends Parser
 
             // Insert currency values
             valuesArray = parsedValues.getArray(KEY_CURRENCIES);
-            for (int i = 0; i < valuesArray.length; i++)
-                db.insert(Tables.Currencies.TABLE_NAME, null, valuesArray[i]);
-
-            // Update default currency
-            CurrenciesHelper.getDefault(context).update();
+            context.getContentResolver().bulkInsert(CurrenciesProvider.uriCurrencies(), valuesArray);
 
             // Insert account values
             valuesArray = parsedValues.getArray(KEY_ACCOUNTS);
-            for (int i = 0; i < valuesArray.length; i++)
-                db.insert(Tables.Accounts.TABLE_NAME, null, valuesArray[i]);
+            context.getContentResolver().bulkInsert(AccountsProvider.uriAccounts(), valuesArray);
 
             // Insert category values
             valuesArray = parsedValues.getArray(KEY_CATEGORIES);
-            for (int i = 0; i < valuesArray.length; i++)
-                db.insert(Tables.Categories.TABLE_NAME, null, valuesArray[i]);
-
-            // Generate order values for older backup versions
-            if (valuesArray.length > 0 && !valuesArray[0].containsKey(Tables.Categories.ORDER))
-                DBUpgrade.updateCategoriesOrder(db);
+            context.getContentResolver().bulkInsert(CategoriesProvider.uriCategories(), valuesArray);
 
             // Insert transaction values
             valuesArray = parsedValues.getArray(KEY_TRANSACTIONS);
-            for (int i = 0; i < valuesArray.length; i++)
-                db.insert(Tables.Transactions.TABLE_NAME, null, valuesArray[i]);
+            context.getContentResolver().bulkInsert(TransactionsProvider.uriTransactions(), valuesArray);
 
             db.setTransactionSuccessful();
         }
         finally
         {
+            //noinspection ConstantConditions
             db.endTransaction();
         }
-
-        NotifyUtils.notifyAll(context);
     }
 
     @Override

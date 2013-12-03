@@ -93,7 +93,7 @@ public class CategoriesReportAdapter extends BaseAdapter
 
         holder.separator_V.setVisibility(position == getCount() - 1 || ((CategoriesPeriodReport.CategoriesPeriodReportItem) getItem(position + 1)).getLevel() != 2 ? View.VISIBLE : View.INVISIBLE);
         holder.title_TV.setText(item.getTitle());
-        holder.amount_TV.setText(AmountUtils.formatAmount(context, CurrenciesHelper.getDefault(context).getMainCurrencyId(), item.getAmount()));
+        holder.amount_TV.setText(AmountUtils.formatAmount(CurrenciesHelper.getDefault().getMainCurrencyId(), item.getAmount()));
 
         return convertView;
     }

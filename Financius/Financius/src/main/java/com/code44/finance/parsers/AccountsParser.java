@@ -45,7 +45,7 @@ public class AccountsParser extends Parser
         }
 
         // Notify
-        context.getContentResolver().notifyChange(AccountsProvider.uriAccounts(context), null);
+        context.getContentResolver().notifyChange(AccountsProvider.uriAccounts(), null);
     }
 
     @Override

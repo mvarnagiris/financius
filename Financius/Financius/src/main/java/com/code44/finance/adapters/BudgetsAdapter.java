@@ -90,8 +90,8 @@ public class BudgetsAdapter extends AbstractCursorAdapter
 
         holder.title_TV.setText(cursor.getString(iTitle));
         holder.budget_V.setProgress((float) (sum / amount));
-        holder.sum_TV.setText(AmountUtils.formatAmount(context, CurrenciesHelper.getDefault(context).getMainCurrencyId(), sum));
-        holder.amount_TV.setText(AmountUtils.formatAmount(context, CurrenciesHelper.getDefault(context).getMainCurrencyId(), amount));
+        holder.sum_TV.setText(AmountUtils.formatAmount(CurrenciesHelper.getDefault().getMainCurrencyId(), sum));
+        holder.amount_TV.setText(AmountUtils.formatAmount(CurrenciesHelper.getDefault().getMainCurrencyId(), amount));
     }
 
     @Override

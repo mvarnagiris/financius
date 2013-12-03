@@ -11,7 +11,6 @@ import com.code44.finance.db.Tables;
 import com.code44.finance.providers.CategoriesProvider;
 import com.code44.finance.ui.categories.CategoryListFragment;
 import com.code44.finance.utils.CategoriesUtils;
-import com.code44.finance.utils.NotifyUtils;
 
 public class CategoriesService extends AbstractItemService
 {
@@ -40,7 +39,6 @@ public class CategoriesService extends AbstractItemService
     @Override
     protected void notifyOnItemUpdated()
     {
-        NotifyUtils.onCategoryUpdated(this);
     }
 
     @Override
@@ -109,7 +107,7 @@ public class CategoriesService extends AbstractItemService
     @Override
     protected Uri getUriForItems()
     {
-        return CategoriesProvider.uriCategories(this);
+        return CategoriesProvider.uriCategories();
     }
 
     @Override
@@ -134,7 +132,7 @@ public class CategoriesService extends AbstractItemService
         Cursor c = null;
         try
         {
-            c = getContentResolver().query(CategoriesProvider.uriCategories(this), new String[]{Tables.Categories.T_ID, Tables.Categories.LEVEL, Tables.Categories.ORDER, Tables.Categories.PARENT_ID}, CategoryListFragment.getLoaderSelection(null), CategoryListFragment.getLoaderSelectionArgs(categoryType, null), CategoryListFragment.getLoaderSortOrder());
+            c = getContentResolver().query(CategoriesProvider.uriCategories(), new String[]{Tables.Categories.T_ID, Tables.Categories.LEVEL, Tables.Categories.ORDER, Tables.Categories.PARENT_ID}, CategoryListFragment.getLoaderSelection(null), CategoryListFragment.getLoaderSelectionArgs(categoryType, null), CategoryListFragment.getLoaderSortOrder());
             if (c != null)
             {
                 c.moveToPosition(swapFrom);
@@ -186,7 +184,7 @@ public class CategoriesService extends AbstractItemService
                 final String betweenFrom = String.valueOf(fromOrder < toOrder ? fromOrder + 1 : toOrder);
                 final String betweenTo = String.valueOf(fromOrder < toOrder ? toOrder : fromOrder - 1);
                 c = getContentResolver().query(
-                        CategoriesProvider.uriCategories(this),
+                        CategoriesProvider.uriCategories(),
                         new String[]{Tables.Categories.T_ID, Tables.Categories.ORDER},
                         level == 1 ? Tables.Categories.LEVEL + "=? and " + Tables.Categories.ORDER + " between ? and ?" : Tables.Categories.PARENT_ID + "=? and " + Tables.Categories.ORDER + " between ? and ?",
                         new String[]{firstArg, betweenFrom, betweenTo}, null);
@@ -235,6 +233,6 @@ public class CategoriesService extends AbstractItemService
             db.endTransaction();
         }
 
-        NotifyUtils.onCategoryUpdated(this);
+        //NotifyUtils.onCategoryUpdated(this);
     }
 }

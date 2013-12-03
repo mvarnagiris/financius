@@ -131,7 +131,7 @@ public class BudgetEditFragment extends ItemEditFragment implements View.OnClick
             {
                 final long[] idArray = getCategories();
                 final AbstractItemsProvider.InClause inClause = AbstractItemsProvider.InClause.getInClause(idArray != null && idArray.length > 0 ? idArray : new long[]{0}, Tables.Categories.T_ID);
-                final Uri uri = CategoriesProvider.uriCategories(getActivity());
+                final Uri uri = CategoriesProvider.uriCategories();
                 final String[] projection = new String[]{Tables.Categories.TITLE, Tables.Categories.COLOR};
                 final String selection = inClause.getSelection();
                 final String[] selectionArgs = inClause.getSelectionArgs();
@@ -259,7 +259,7 @@ public class BudgetEditFragment extends ItemEditFragment implements View.OnClick
     @Override
     protected Loader<Cursor> createItemLoader(Context context, long itemId)
     {
-        final Uri uri = BudgetsProvider.uriBudget(getActivity(), itemId);
+        final Uri uri = BudgetsProvider.uriBudget(itemId);
         final String[] projection = new String[]{Tables.Budgets.T_ID, Tables.Budgets.TITLE, Tables.Budgets.NOTE, Tables.Budgets.AMOUNT, Tables.Budgets.INCLUDE_IN_TOTAL_BUDGET, Tables.Budgets.SHOW_IN_OVERVIEW, Tables.Budgets.S_CATEGORIES};
         final String selection = "1)" +
                 " GROUP BY (" + Tables.Budgets.T_ID;

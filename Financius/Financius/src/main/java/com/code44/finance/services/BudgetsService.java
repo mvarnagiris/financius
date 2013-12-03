@@ -6,7 +6,6 @@ import android.net.Uri;
 import com.code44.finance.db.Tables;
 import com.code44.finance.providers.BudgetsProvider;
 import com.code44.finance.utils.BudgetsUtils;
-import com.code44.finance.utils.NotifyUtils;
 import com.code44.finance.utils.PeriodHelper;
 
 public class BudgetsService extends AbstractItemService
@@ -22,7 +21,7 @@ public class BudgetsService extends AbstractItemService
     @Override
     protected void notifyOnItemUpdated()
     {
-        NotifyUtils.onBudgetUpdated(this);
+        //NotifyUtils.onBudgetUpdated(this);
     }
 
     @Override
@@ -44,7 +43,7 @@ public class BudgetsService extends AbstractItemService
     @Override
     protected Uri getUriForItems()
     {
-        return BudgetsProvider.uriBudgets(this);
+        return BudgetsProvider.uriBudgets();
     }
 
     @Override

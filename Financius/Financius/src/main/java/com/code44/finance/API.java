@@ -15,17 +15,17 @@ public class API
 
     public static void createCurrency(ContentValues values)
     {
-        DataHelper.create(CurrenciesProvider.uriCurrencies(FinanciusApp.getAppContext()), values);
+        DataHelper.create(CurrenciesProvider.uriCurrencies(), values);
     }
 
     public static void updateCurrency(long itemId, ContentValues values)
     {
-        DataHelper.update(CurrenciesProvider.uriCurrencies(FinanciusApp.getAppContext()), itemId, values);
+        DataHelper.update(CurrenciesProvider.uriCurrencies(), itemId, values);
     }
 
     public static void deleteCurrencies(long[] itemIDs)
     {
-        DataHelper.delete(CurrenciesProvider.uriCurrencies(FinanciusApp.getAppContext()), itemIDs);
+        DataHelper.delete(CurrenciesProvider.uriCurrencies(), itemIDs);
     }
 
     public static void getExchangeRate(Context context, String code)
@@ -61,17 +61,17 @@ public class API
 
     public static void createAccount(ContentValues values)
     {
-        DataHelper.create(AccountsProvider.uriAccounts(FinanciusApp.getAppContext()), values);
+        DataHelper.create(AccountsProvider.uriAccounts(), values);
     }
 
     public static void updateAccount(long itemId, ContentValues values)
     {
-        DataHelper.update(AccountsProvider.uriAccounts(FinanciusApp.getAppContext()), itemId, values);
+        DataHelper.update(AccountsProvider.uriAccounts(), itemId, values);
     }
 
     public static void deleteAccounts(long[] itemIDs)
     {
-        DataHelper.delete(AccountsProvider.uriAccounts(FinanciusApp.getAppContext()), itemIDs);
+        DataHelper.delete(AccountsProvider.uriAccounts(), itemIDs);
     }
 
     // Categories

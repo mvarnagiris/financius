@@ -70,7 +70,7 @@ public class CategoryParentFragment extends ItemListFragment
     @Override
     protected Loader<Cursor> createItemsLoader()
     {
-        Uri uri = CategoriesProvider.uriCategories(getActivity());
+        Uri uri = CategoriesProvider.uriCategories();
         String[] projection = null;
         String selection = Tables.Categories.LEVEL + "<=? and " + Tables.Categories.DELETE_STATE + "=? and " + Tables.Categories.TYPE + "=?";
         String[] selectionArgs = new String[]{"1", String.valueOf(Tables.DeleteState.NONE), String.valueOf(categoryType)};

@@ -274,6 +274,9 @@ public class CurrenciesProvider extends AbstractItemsProvider
             db.update(Tables.Currencies.TABLE_NAME, values, Tables.Currencies.T_ID + "=?", new String[]{String.valueOf(newDefaultCurrencyId)});
         }
 
+        // TODO Update format in CurrenciesHelper for all currencies
+        CurrenciesHelper.getDefault().update();
+
         // Notify
         notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
     }

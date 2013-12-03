@@ -64,7 +64,7 @@ public class BudgetItemFragment extends ItemFragment
     @Override
     protected Loader<Cursor> createItemLoader(Context context, long itemId)
     {
-        final Uri uri = BudgetsProvider.uriBudget(context, itemId);
+        final Uri uri = BudgetsProvider.uriBudget(itemId);
         final String[] projection = new String[]{Tables.Budgets.T_ID, Tables.Budgets.TITLE, Tables.Budgets.NOTE, Tables.Budgets.AMOUNT, Tables.Budgets.INCLUDE_IN_TOTAL_BUDGET, Tables.Budgets.SHOW_IN_OVERVIEW};
         final String selection = null;
         final String[] selectionArgs = null;
@@ -90,7 +90,7 @@ public class BudgetItemFragment extends ItemFragment
             final String crossMark = "\u2717";
             final String note = c.getString(iNote);
             title_TV.setText(c.getString(iTitle));
-            amount_TV.setText(AmountUtils.formatAmount(getActivity(), CurrenciesHelper.getDefault(getActivity()).getMainCurrencyId(), c.getDouble(iAmount)));
+            amount_TV.setText(AmountUtils.formatAmount(CurrenciesHelper.getDefault().getMainCurrencyId(), c.getDouble(iAmount)));
             if (TextUtils.isEmpty(note))
             {
                 note_TV.setVisibility(View.GONE);

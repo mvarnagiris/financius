@@ -72,7 +72,6 @@ public class AccountEditFragment extends ItemEditFragment implements View.OnClic
         title_ET = (EditText) view.findViewById(R.id.title_ET);
         currency_B = (Button) view.findViewById(R.id.currency_B);
         balance_B = (Button) view.findViewById(R.id.balance_B);
-        overdraft_B = (Button) view.findViewById(R.id.overdraft_B);
         includeInTotals_CB = (CheckBox) view.findViewById(R.id.includeInBalance_CB);
         showInSelection_CB = (CheckBox) view.findViewById(R.id.showInSelection_CB);
         note_ET = (EditText) view.findViewById(R.id.note_ET);
@@ -80,7 +79,6 @@ public class AccountEditFragment extends ItemEditFragment implements View.OnClic
         // Setup
         currency_B.setOnClickListener(this);
         balance_B.setOnClickListener(this);
-        overdraft_B.setOnClickListener(this);
     }
 
     @Override
@@ -97,12 +95,10 @@ public class AccountEditFragment extends ItemEditFragment implements View.OnClic
     public void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putString(STATE_TYPE_RES_NAME, getTypeResName());
         outState.putString(STATE_TITLE, getTitle());
         outState.putLong(STATE_CURRENCY_ID, getCurrencyId());
         outState.putString(STATE_CURRENCY_CODE, getCurrencyCode());
         outState.putDouble(STATE_BALANCE, getBalance());
-        outState.putDouble(STATE_OVERDRAFT, getOverdraft());
         outState.putBoolean(STATE_SHOW_IN_TOTALS, isShowInTotals());
         outState.putBoolean(STATE_SHOW_IN_SELECTION, isShowInSelection());
         outState.putString(STATE_NOTE, getNote());
@@ -135,7 +131,7 @@ public class AccountEditFragment extends ItemEditFragment implements View.OnClic
         switch (id)
         {
             case LOADER_DEFAULT_CURRENCY:
-                Uri uri = CurrenciesProvider.uriCurrencies(getActivity());
+                Uri uri = CurrenciesProvider.uriCurrencies();
                 String[] projection = {Tables.Currencies.T_ID, Tables.Currencies.CODE};
                 String selection = Tables.Currencies.IS_DEFAULT + "=?";
                 String[] selectionArgs = new String[]{"1"};
@@ -176,10 +172,6 @@ public class AccountEditFragment extends ItemEditFragment implements View.OnClic
             case R.id.balance_B:
                 CalculatorActivity.startCalculator(this, REQUEST_BALANCE, getBalance(), true, true);
                 break;
-
-            case R.id.overdraft_B:
-                CalculatorActivity.startCalculator(this, REQUEST_OVERDRAFT, getOverdraft(), false, true);
-                break;
         }
     }
 
@@ -216,7 +208,7 @@ public class AccountEditFragment extends ItemEditFragment implements View.OnClic
     @Override
     protected Loader<Cursor> createItemLoader(Context context, long itemId)
     {
-        Uri uri = AccountsProvider.uriAccount(getActivity(), itemId);
+        Uri uri = AccountsProvider.uriAccount(itemId);
         String[] projection = {Tables.Accounts.T_ID, Tables.Accounts.TYPE_RES_NAME, Tables.Accounts.TITLE, Tables.Accounts.CURRENCY_ID, Tables.Currencies.CODE, Tables.Accounts.BALANCE, Tables.Accounts.OVERDRAFT, Tables.Accounts.SHOW_IN_TOTALS, Tables.Accounts.SHOW_IN_SELECTION, Tables.Accounts.NOTE};
         String selection = null;
         String[] selectionArgs = null;

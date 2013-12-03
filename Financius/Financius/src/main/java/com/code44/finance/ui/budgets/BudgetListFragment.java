@@ -37,7 +37,7 @@ public class BudgetListFragment extends ItemListFragment implements MainActivity
     {
         final PeriodHelper periodHelper = PeriodHelper.getDefault(context);
 
-        final Uri uri = BudgetsProvider.uriBudgets(context);
+        final Uri uri = BudgetsProvider.uriBudgets();
         final String[] projection = new String[]{Tables.Budgets.T_ID, Tables.Budgets.TITLE, Tables.Budgets.NOTE, Tables.Budgets.AMOUNT, Tables.Budgets.INCLUDE_IN_TOTAL_BUDGET, Tables.Budgets.S_SUM, Tables.Budgets.PERIOD};
         final String selection = Tables.Budgets.DELETE_STATE + "=? and (ifnull(" + Tables.Transactions.DATE + ", '') = '' or " + Tables.Transactions.DATE + " between ? and ?))"
                 + " GROUP BY (" + Tables.Budgets.T_ID;

@@ -80,7 +80,7 @@ public class CategoryItemFragment extends ItemFragment
         {
             case LOADER_PARENT_CATEGORY:
             {
-                Uri uri = CategoriesProvider.uriCategory(getActivity(), parentId);
+                Uri uri = CategoriesProvider.uriCategory(parentId);
                 String[] projection = new String[]{Tables.Categories.TITLE, Tables.Categories.LEVEL};
                 String selection = null;
                 String[] selectionArgs = null;
@@ -91,7 +91,7 @@ public class CategoryItemFragment extends ItemFragment
 
             case LOADER_TRANSACTIONS:
             {
-                Uri uri = TransactionsProvider.uriTransactions(getActivity());
+                Uri uri = TransactionsProvider.uriTransactions();
                 String[] projection = new String[]
                         {
                                 "max(" + Tables.Transactions.DATE + ")",

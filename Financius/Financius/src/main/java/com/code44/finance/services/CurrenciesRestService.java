@@ -3,17 +3,14 @@ package com.code44.finance.services;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import com.code44.finance.api.CurrencyAPI;
 import com.code44.finance.api.Financius;
-import com.code44.finance.db.DBHelper;
 import com.code44.finance.db.Tables;
 import com.code44.finance.providers.AccountsProvider;
 import com.code44.finance.providers.CurrenciesProvider;
-import com.code44.finance.utils.ExchangeRatesHelper;
 import com.code44.finance.utils.CurrenciesHelper;
-import com.code44.finance.utils.NotifyUtils;
+import com.code44.finance.utils.ExchangeRatesHelper;
 import org.json.JSONObject;
 import retrofit.client.Response;
 
@@ -59,7 +56,7 @@ public class CurrenciesRestService extends AbstractService
         switch (requestType)
         {
             case RT_GET_EXCHANGE_RATE_TO_MAIN:
-                return new GetExchangeRateEvent(requestType, force, intent.getStringExtra(EXTRA_FROM_CODE), CurrenciesHelper.getDefault(this).getMainCurrencyCode());
+                return new GetExchangeRateEvent(requestType, force, intent.getStringExtra(EXTRA_FROM_CODE), CurrenciesHelper.getDefault().getMainCurrencyCode());
 
             case RT_GET_EXCHANGE_RATE:
                 return new GetExchangeRateEvent(requestType, force, intent.getStringExtra(EXTRA_FROM_CODE), intent.getStringExtra(EXTRA_TO_CODE));
@@ -82,7 +79,7 @@ public class CurrenciesRestService extends AbstractService
     {
         // Get values
         final String formCode = intent.getStringExtra(EXTRA_FROM_CODE);
-        final String toCode = CurrenciesHelper.getDefault(this).getMainCurrencyCode();
+        final String toCode = CurrenciesHelper.getDefault().getMainCurrencyCode();
 
         exchangeRate = getExchangeRate(formCode, toCode);
     }
@@ -109,7 +106,7 @@ public class CurrenciesRestService extends AbstractService
         Cursor c = null;
         try
         {
-            c = getContentResolver().query(CurrenciesProvider.uriCurrencies(this), new String[]{Tables.Currencies.CODE}, Tables.Currencies.IS_DEFAULT + "=?", new String[]{"1"}, null);
+            c = getContentResolver().query(CurrenciesProvider.uriCurrencies(), new String[]{Tables.Currencies.CODE}, Tables.Currencies.IS_DEFAULT + "=?", new String[]{"1"}, null);
             if (c != null && c.moveToFirst())
             {
                 defaultCurrency = c.getString(0);
@@ -126,7 +123,7 @@ public class CurrenciesRestService extends AbstractService
         c = null;
         try
         {
-            c = getContentResolver().query(onlyUsed ? AccountsProvider.uriAccounts(this) : CurrenciesProvider.uriCurrencies(this), new String[]{Tables.Currencies.CODE, Tables.Currencies.IS_DEFAULT}, null, null, null);
+            c = getContentResolver().query(onlyUsed ? AccountsProvider.uriAccounts() : CurrenciesProvider.uriCurrencies(), new String[]{Tables.Currencies.CODE, Tables.Currencies.IS_DEFAULT}, null, null, null);
             if (c != null && c.moveToFirst())
             {
                 do
@@ -169,23 +166,10 @@ public class CurrenciesRestService extends AbstractService
         }
 
         // Store to database
-        final SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
-        try
-        {
-            db.beginTransaction();
-
-            for (ContentValues currencyValues : valuesList)
-                db.update(Tables.Currencies.TABLE_NAME, currencyValues, Tables.Currencies.CODE + "=?", new String[]{currencyValues.getAsString(Tables.Currencies.CODE)});
-
-            db.setTransactionSuccessful();
-        }
-        finally
-        {
-            db.endTransaction();
-        }
+        for (ContentValues currencyValues : valuesList)
+            getContentResolver().update(CurrenciesProvider.uriCurrencies(), currencyValues, Tables.Currencies.CODE + "=?", new String[]{currencyValues.getAsString(Tables.Currencies.CODE)});
 
         ExchangeRatesHelper.getDefault(this).updateExchangeRatesTimestamp();
-        NotifyUtils.onCurrencyUpdated(this);
     }
 
     private double getExchangeRate(String from, String to) throws Exception

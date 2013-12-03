@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import com.code44.finance.db.Tables;
 import com.code44.finance.providers.TransactionsProvider;
-import com.code44.finance.utils.NotifyUtils;
 import com.code44.finance.utils.TransactionsUtils;
 
 public class TransactionsService extends AbstractItemService
@@ -23,7 +22,6 @@ public class TransactionsService extends AbstractItemService
     @Override
     protected void notifyOnItemUpdated()
     {
-        NotifyUtils.onTransactionUpdated(this);
     }
 
     @Override
@@ -47,7 +45,7 @@ public class TransactionsService extends AbstractItemService
     @Override
     protected Uri getUriForItems()
     {
-        return TransactionsProvider.uriTransactions(this);
+        return TransactionsProvider.uriTransactions();
     }
 
     @Override

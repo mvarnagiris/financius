@@ -15,7 +15,7 @@ public class DashClockService extends DashClockExtension
     protected void onInitialize(boolean isReconnect)
     {
         super.onInitialize(isReconnect);
-        addWatchContentUris(new String[]{AccountsProvider.uriAccounts(getApplicationContext()).toString()});
+        addWatchContentUris(new String[]{AccountsProvider.uriAccounts().toString()});
     }
 
     @Override
@@ -28,7 +28,7 @@ public class DashClockService extends DashClockExtension
         Cursor c = null;
         try
         {
-            c = getContentResolver().query(AccountsProvider.uriAccounts(getApplicationContext()), projection, selection, selectionArgs, null);
+            c = getContentResolver().query(AccountsProvider.uriAccounts(), projection, selection, selectionArgs, null);
 
             if (c != null && c.moveToFirst())
             {

@@ -33,7 +33,7 @@ public class AccountsService extends AbstractItemService
     @Override
     protected Uri getUriForItems()
     {
-        return AccountsProvider.uriAccounts(this);
+        return AccountsProvider.uriAccounts();
     }
 
     @Override

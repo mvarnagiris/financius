@@ -66,8 +66,8 @@ public class DBDefaults
                 long newId = db.insert(Tables.Currencies.TABLE_NAME, null, values);
                 if (code.equalsIgnoreCase(defaultCode))
                 {
-                    CurrenciesHelper.getDefault(context).setMainCurrencyId(newId);
-                    CurrenciesHelper.getDefault(context).setMainCurrencyCode(code);
+                    CurrenciesHelper.getDefault().setMainCurrencyId(newId);
+                    CurrenciesHelper.getDefault().setMainCurrencyCode(code);
                     mainCurrencyId = newId;
                 }
             }

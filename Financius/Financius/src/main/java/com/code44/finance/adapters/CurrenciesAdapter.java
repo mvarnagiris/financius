@@ -59,7 +59,7 @@ public class CurrenciesAdapter extends AbstractCursorAdapter
             holder.exchangeRate_TV.setText(String.valueOf(cursor.getDouble(iExchangeRate)));
             holder.exchangeRate_TV.setTextColor(color);
         }
-        holder.format_TV.setText("(" + AmountUtils.formatAmount(context, cursor.getLong(iId), 1000.00) + ")");
+        holder.format_TV.setText("(" + AmountUtils.formatAmount(cursor.getLong(iId), 1000.00) + ")");
     }
 
     @Override

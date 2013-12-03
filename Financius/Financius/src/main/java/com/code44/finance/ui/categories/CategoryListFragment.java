@@ -83,7 +83,7 @@ public class CategoryListFragment extends ItemListFragment
 
     public static Loader<Cursor> createItemsLoader(Context context, int categoryType, String query)
     {
-        final Uri uri = CategoriesProvider.uriCategories(context);
+        final Uri uri = CategoriesProvider.uriCategories();
         final String[] projection = new String[]{Tables.Categories.T_ID, Tables.Categories.PARENT_ID, Tables.Categories.LEVEL, Tables.Categories.TITLE,
                 Tables.Categories.TYPE, Tables.Categories.COLOR, Tables.Categories.ORIGIN};
         final String selection = getLoaderSelection(query);

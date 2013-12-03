@@ -93,7 +93,7 @@ public class CategoriesParser extends Parser
 //        }
 
         // Notify
-        context.getContentResolver().notifyChange(CategoriesProvider.uriCategories(context), null);
+        context.getContentResolver().notifyChange(CategoriesProvider.uriCategories(), null);
     }
 
     @Override

@@ -120,7 +120,7 @@ public class CurrencyCodeFragment extends AbstractFragment implements LoaderMana
         {
             case LOADER_CURRENCIES:
             {
-                uri = CurrenciesProvider.uriCurrencies(getActivity());
+                uri = CurrenciesProvider.uriCurrencies();
                 projection = new String[]{Tables.Currencies.T_ID, Tables.Currencies.CODE, Tables.Currencies.IS_DEFAULT};
                 selection = Tables.Currencies.DELETE_STATE + "=?";
                 selectionArgs = new String[]{String.valueOf(Tables.DeleteState.NONE)};
