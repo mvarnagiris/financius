@@ -65,9 +65,7 @@ public class CurrenciesProvider extends AbstractItemsProvider
             // Only when creating new default currency and other default currency is already created
 
             // Mark other currencies as not default
-            final ContentValues tempValues = new ContentValues();
-            tempValues.put(Tables.Currencies.IS_DEFAULT, false);
-            db.update(Tables.Currencies.TABLE_NAME, tempValues, null, null);
+            clearDefaultCurrency();
         }
 
         // If it's the first currency, then it must be default
@@ -129,10 +127,7 @@ public class CurrenciesProvider extends AbstractItemsProvider
                 if (!isEditingMain)
                 {
                     // Setting new currency as default. Mark other currencies as not default and reset exchange rates
-                    final ContentValues tempValues = new ContentValues();
-                    tempValues.put(Tables.Currencies.IS_DEFAULT, false);
-                    tempValues.put(Tables.Currencies.EXCHANGE_RATE, 1.0);
-                    db.update(Tables.Currencies.TABLE_NAME, tempValues, null, null);
+                    clearDefaultCurrency();
                 }
             }
         }
@@ -225,13 +220,70 @@ public class CurrenciesProvider extends AbstractItemsProvider
     @Override
     protected Object onBeforeBulkInsert(Uri uri, ContentValues[] valuesArray)
     {
-        return null;
+        final BulkInsertStatus status = new BulkInsertStatus();
+
+        // Find current default currency
+        Cursor c = null;
+        try
+        {
+            c = queryItems(new String[]{Tables.Currencies.T_ID}, Tables.Currencies.IS_DEFAULT + "=?", new String[]{"1"}, null);
+            if (c != null && c.moveToFirst())
+            {
+                status.setOldDefaultCurrencyId(c.getLong(0));
+            }
+        }
+        finally
+        {
+            if (c != null && !c.isClosed())
+                c.close();
+        }
+
+        return status;
     }
 
     @Override
     protected void onAfterBulkInsert(Uri uri, ContentValues[] valuesArray, Object objectFromBefore)
     {
+        final BulkInsertStatus status = (BulkInsertStatus) objectFromBefore;
+        long newDefaultCurrencyId = 0;
+        if (status.getOldDefaultCurrencyId() > 0)
+        {
+            // Find out if default currency is changing.
+            Cursor c = null;
+            try
+            {
+                c = queryItems(new String[]{Tables.Currencies.T_ID}, Tables.Currencies.IS_DEFAULT + "=?", new String[]{"1"}, null);
+                if (c != null && c.moveToFirst())
+                {
+                    do
+                    {
+                        if (c.getLong(0) != status.getOldDefaultCurrencyId())
+                        {
+                            newDefaultCurrencyId = c.getLong(0);
+                            break;
+                        }
+                    }
+                    while (c.moveToNext());
+                }
+            }
+            finally
+            {
+                if (c != null && !c.isClosed())
+                    c.close();
+            }
+        }
 
+        // Ensure that there is only one default currency
+        if (newDefaultCurrencyId > 0)
+        {
+            // Clear default currencies and exchange rates.
+            clearDefaultCurrency();
+
+            // Set new default currency.
+            final ContentValues values = new ContentValues();
+            values.put(Tables.Currencies.IS_DEFAULT, true);
+            db.update(Tables.Currencies.TABLE_NAME, values, Tables.Currencies.T_ID + "=?", new String[]{String.valueOf(newDefaultCurrencyId)});
+        }
     }
 
     private void checkValues(ContentValues values, boolean isInsert)
@@ -268,5 +320,28 @@ public class CurrenciesProvider extends AbstractItemsProvider
 
         if (isInsert && !values.containsKey(Tables.Currencies.IS_DEFAULT))
             values.put(Tables.Currencies.IS_DEFAULT, false);
+    }
+
+    private void clearDefaultCurrency()
+    {
+        final ContentValues values = new ContentValues();
+        values.put(Tables.Currencies.IS_DEFAULT, false);
+        values.put(Tables.Currencies.EXCHANGE_RATE, 1);
+        db.update(Tables.Currencies.TABLE_NAME, values, null, null);
+    }
+
+    private static class BulkInsertStatus
+    {
+        private long oldDefaultCurrencyId = -1;
+
+        public long getOldDefaultCurrencyId()
+        {
+            return oldDefaultCurrencyId;
+        }
+
+        public void setOldDefaultCurrencyId(long oldDefaultCurrencyId)
+        {
+            this.oldDefaultCurrencyId = oldDefaultCurrencyId;
+        }
     }
 }

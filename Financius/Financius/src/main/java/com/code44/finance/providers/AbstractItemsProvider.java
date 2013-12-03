@@ -19,6 +19,7 @@ public abstract class AbstractItemsProvider extends AbstractProvider
     private static final int URI_ITEMS = 1;
     private static final int URI_ITEMS_ID = 2;
 
+    @SuppressWarnings("UnusedDeclaration")
     protected static void checkId(ContentValues values, String columnName)
     {
         //noinspection ConstantConditions
@@ -26,6 +27,7 @@ public abstract class AbstractItemsProvider extends AbstractProvider
             throw new IllegalArgumentException(columnName + " must be > 0.");
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     protected static void checkInt(ContentValues values, String columnName)
     {
         //noinspection ConstantConditions
