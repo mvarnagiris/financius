@@ -1,96 +1,81 @@
 import java.text.SimpleDateFormat
 
 buildscript {
-    repositories { maven { url 'http://repo1.maven.org/maven2' }
-        maven { url 'http://download.crashlytics.com/maven' }
- }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.6.+'
-        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
-
-    }
+    repositories { mavenCentral() }
+    dependencies { classpath 'com.android.tools.build:gradle:0.8.+' }
 }
+
 apply plugin: 'android'
-apply plugin: 'crashlytics'
 
 repositories {
-    maven {
-        url 'https://github.com/Goddchen/mvn-repo/raw/master/'
-    }
     mavenCentral()
-    maven { url 'http://download.crashlytics.com/maven' }
-
+    maven { url 'https://github.com/Goddchen/mvn-repo/raw/master/' }
 }
 
-dependencies
-        {
-            compile files(
-                    'libs/dashclock-api-r1.1.jar',
-                    'libs/bsh-core-2.0b4.jar',
-                    'libs/google-play-services.jar',
-                    'libs/google-api-client-1.15.0-rc.jar',
-                    'libs/google-api-client-android-1.15.0-rc.jar',
-                    'libs/google-api-services-drive-v2-rev77-1.15.0-rc.jar',
-                    'libs/google-http-client-1.15.0-rc.jar',
-                    'libs/google-http-client-android-1.15.0-rc.jar',
-                    'libs/google-http-client-gson-1.15.0-rc.jar',
-                    'libs/google-oauth-client-1.15.0-rc.jar',
-                    'libs/jsr305-1.3.9.jar',
-                    'libs/libGoogleAnalyticsServices.jar',
-                    'libs/joda-time-2.3.jar')
-            compile 'com.android.support:support-v4:18.0.+'
-            compile 'de.greenrobot:eventbus:2.0.2'
-            compile 'com.squareup.okhttp:okhttp:1.2.1'
-            compile 'com.squareup.retrofit:retrofit:1.2.2'
-            compile 'com.mobeta.android.dslv:drag-sort-listview:0.6.1'
-            //compile 'com.squareup.picasso:picasso:2.0.2'
-    compile 'com.crashlytics.android:crashlytics:1.+'
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.0.1"
 
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 19
+        versionCode 44
+        versionName "0.9.12"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("debug.keystore")
         }
+
+        release {
+            storeFile file("release.keystore")
+            storePassword "xxx"
+            keyAlias "financius"
+            keyPassword "xxx"
+        }
+    }
+
+    buildTypes {
+        debug {
+            packageNameSuffix ".debug"
+            versionNameSuffix " debug " + getBuildName()
+        }
+
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+}
 
 def getBuildName()
 {
     return new SimpleDateFormat("yyMMdd-HHmm").format(new Date());
 }
 
-android
-        {
-            compileSdkVersion 19
-            buildToolsVersion "19"
-
-            defaultConfig
-                    {
-                        minSdkVersion 14
-                        targetSdkVersion 19
-                    }
-
-            signingConfigs
-                    {
-                        debug
-                                {
-                                    storeFile file("debug.keystore")
-                                }
-
-                        release
-                                {
-                                    storeFile file("release.keystore")
-                                    storePassword "xxx"
-                                    keyAlias "financius"
-                                    keyPassword "xxx"
-                                }
-                    }
-
-            buildTypes
-                    {
-                        debug
-                                {
-                                    packageNameSuffix ".debug"
-                                    versionNameSuffix " debug " + getBuildName()
-                                }
-
-                        release
-                                {
-                                    signingConfig signingConfigs.release
-                                }
-                    }
-        }
+dependencies {
+    compile files(
+            'libs/dashclock-api-r1.1.jar',
+            'libs/bsh-core-2.0b4.jar',
+            'libs/google-play-services.jar',
+            'libs/google-api-client-1.15.0-rc.jar',
+            'libs/google-api-client-android-1.15.0-rc.jar',
+            'libs/google-api-services-drive-v2-rev77-1.15.0-rc.jar',
+            'libs/google-http-client-1.15.0-rc.jar',
+            'libs/google-http-client-android-1.15.0-rc.jar',
+            'libs/google-http-client-gson-1.15.0-rc.jar',
+            'libs/google-oauth-client-1.15.0-rc.jar',
+            'libs/jsr305-1.3.9.jar',
+            'libs/libGoogleAnalyticsServices.jar',
+            'libs/joda-time-2.3.jar')
+    compile 'com.google.android.gms:play-services:4.1.+'
+    compile 'de.greenrobot:eventbus:2.2.0'
+    compile 'com.squareup.okhttp:okhttp:1.3.0'
+    compile 'com.squareup.retrofit:retrofit:1.3.0'
+    compile 'com.mobeta.android.dslv:drag-sort-listview:0.6.1'
+}

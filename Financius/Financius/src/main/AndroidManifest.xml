@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.code44.finance"
-    android:versionCode="44"
-    android:versionName="0.9.12">
+    package="com.code44.finance">
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -95,7 +93,10 @@
                 android:name="description"
                 android:value="@string/l_dashclock_desc" />
         </service>
-        <meta-data android:name="com.crashlytics.ApiKey" android:value="a0fed0de33f7f506e0acd0e0eb605f9f3a3da96f"/>
+
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="a0fed0de33f7f506e0acd0e0eb605f9f3a3da96f" />
     </application>
 
 </manifest>

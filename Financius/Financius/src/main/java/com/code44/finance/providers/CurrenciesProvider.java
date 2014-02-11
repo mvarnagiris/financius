@@ -33,30 +33,16 @@ public class CurrenciesProvider extends AbstractItemsProvider
     protected Object onBeforeInsert(Uri uri, ContentValues values)
     {
         // Update IS_DEFAULT field
-        //noinspection ConstantConditions
-        final boolean isDefault = values.getAsBoolean(Tables.Currencies.IS_DEFAULT);
+        Boolean isDefault = values.getAsBoolean(Tables.Currencies.IS_DEFAULT);
+        if (isDefault == null)
+            isDefault = false;
 
         // Find the current count of currencies
-        int count = 0;
-        Cursor c = null;
-        try
-        {
-            c = queryItems(new String[]{Tables.Currencies.T_ID}, null, null, null);
-            if (c != null && c.moveToFirst())
-                count = c.getCount();
-        }
-        finally
-        {
-            if (c != null && !c.isClosed())
-                c.close();
-        }
+        final int count = getCurrenciesCount();
 
-        // Mark other currencies as not default if necessary
+        // When creating new default currency, clear current default currency
         if (isDefault && count > 0)
         {
-            // Only when creating new default currency and other default currency is already created
-
-            // Mark other currencies as not default
             clearDefaultCurrency();
         }
 
@@ -294,6 +280,25 @@ public class CurrenciesProvider extends AbstractItemsProvider
 
         if (required && !values.containsKey(Tables.Currencies.IS_DEFAULT))
             values.put(Tables.Currencies.IS_DEFAULT, false);
+    }
+
+    private int getCurrenciesCount()
+    {
+        int count = 0;
+        Cursor c = null;
+        try
+        {
+            c = queryItems(new String[]{Tables.Currencies.T_ID}, null, null, null);
+            if (c != null && c.moveToFirst())
+                count = c.getCount();
+        }
+        finally
+        {
+            if (c != null && !c.isClosed())
+                c.close();
+        }
+
+        return count;
     }
 
     private void clearDefaultCurrency()
