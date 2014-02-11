@@ -2,7 +2,7 @@ package com.code44.finance.utils;
 
 import android.graphics.Typeface;
 import android.util.SparseArray;
-import com.code44.finance.FinanciusApp;
+import com.code44.finance.App;
 
 public class TypefaceHelper
 {
@@ -17,7 +17,7 @@ public class TypefaceHelper
             switch (typefaceCode)
             {
                 case TYPEFACE_SERIF:
-                    typeface = Typeface.createFromAsset(FinanciusApp.getAppContext().getAssets(), "fonts/RobotoSlab-Regular.ttf");
+                    typeface = Typeface.createFromAsset(App.getAppContext().getAssets(), "fonts/RobotoSlab-Regular.ttf");
                     break;
             }
             cache.put(typefaceCode, typeface);

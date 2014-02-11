@@ -3,7 +3,7 @@ package com.code44.finance.providers;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.net.Uri;
-import com.code44.finance.FinanciusApp;
+import com.code44.finance.App;
 import com.code44.finance.db.Tables;
 import com.code44.finance.utils.AccountsUtils;
 
@@ -13,7 +13,7 @@ public class AccountsProvider extends AbstractItemsProvider
 {
     public static Uri uriAccounts()
     {
-        return Uri.parse(CONTENT_URI_BASE + getAuthority(FinanciusApp.getAppContext(), AccountsProvider.class) + "/" + Tables.Accounts.TABLE_NAME);
+        return Uri.parse(CONTENT_URI_BASE + getAuthority(App.getAppContext(), AccountsProvider.class) + "/" + Tables.Accounts.TABLE_NAME);
     }
 
     public static Uri uriAccount(long accountId)

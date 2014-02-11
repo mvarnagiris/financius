@@ -18,7 +18,7 @@
     <!-- Application -->
     <!-- ======================================================================================================== -->
     <application
-        android:name=".FinanciusApp"
+        android:name=".App"
         android:hardwareAccelerated="true"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"

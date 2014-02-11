@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.code44.finance.utils.PrefsHelper;
 
-public class FinanciusApp extends Application
+public class App extends Application
 {
     private static Context appContext;
 

@@ -4,7 +4,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import com.code44.finance.FinanciusApp;
+import com.code44.finance.App;
 import com.code44.finance.db.DBUpgrade;
 import com.code44.finance.db.Tables;
 
@@ -16,7 +16,7 @@ public class CategoriesProvider extends AbstractItemsProvider
 
     public static Uri uriCategories()
     {
-        return Uri.parse(CONTENT_URI_BASE + getAuthority(FinanciusApp.getAppContext(), CategoriesProvider.class) + "/" + Tables.Categories.TABLE_NAME);
+        return Uri.parse(CONTENT_URI_BASE + getAuthority(App.getAppContext(), CategoriesProvider.class) + "/" + Tables.Categories.TABLE_NAME);
     }
 
     public static Uri uriCategory(long categoryId)

@@ -4,7 +4,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import com.code44.finance.FinanciusApp;
+import com.code44.finance.App;
 import com.code44.finance.db.Tables;
 import com.code44.finance.utils.AmountUtils;
 import com.code44.finance.utils.CurrenciesHelper;
@@ -15,7 +15,7 @@ public class CurrenciesProvider extends AbstractItemsProvider
 {
     public static Uri uriCurrencies()
     {
-        return Uri.parse(CONTENT_URI_BASE + getAuthority(FinanciusApp.getAppContext(), CurrenciesProvider.class) + "/" + Tables.Currencies.TABLE_NAME);
+        return Uri.parse(CONTENT_URI_BASE + getAuthority(App.getAppContext(), CurrenciesProvider.class) + "/" + Tables.Currencies.TABLE_NAME);
     }
 
     public static Uri uriCurrency(long currencyId)

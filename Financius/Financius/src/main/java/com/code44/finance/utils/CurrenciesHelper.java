@@ -1,7 +1,7 @@
 package com.code44.finance.utils;
 
 import android.database.Cursor;
-import com.code44.finance.FinanciusApp;
+import com.code44.finance.App;
 import com.code44.finance.db.Tables;
 import com.code44.finance.providers.CurrenciesProvider;
 
@@ -48,7 +48,7 @@ public class CurrenciesHelper
         Cursor c = null;
         try
         {
-            c = FinanciusApp.getAppContext().getContentResolver().query(CurrenciesProvider.uriCurrencies(), new String[]{Tables.Currencies.T_ID, Tables.Currencies.CODE}, Tables.Currencies.IS_DEFAULT + "=?", new String[]{"1"}, null);
+            c = App.getAppContext().getContentResolver().query(CurrenciesProvider.uriCurrencies(), new String[]{Tables.Currencies.T_ID, Tables.Currencies.CODE}, Tables.Currencies.IS_DEFAULT + "=?", new String[]{"1"}, null);
             if (c != null && c.moveToFirst())
             {
                 mainCurrencyId = c.getLong(0);

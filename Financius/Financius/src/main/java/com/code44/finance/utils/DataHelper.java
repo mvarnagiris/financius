@@ -5,14 +5,14 @@ import android.content.ContentValues;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.BaseColumns;
-import com.code44.finance.FinanciusApp;
+import com.code44.finance.App;
 import com.code44.finance.providers.AbstractItemsProvider;
 
 public class DataHelper
 {
     private static ContentResolver getContentResolver()
     {
-        return FinanciusApp.getAppContext().getContentResolver();
+        return App.getAppContext().getContentResolver();
     }
 
     public static void create(Uri uri, ContentValues values)

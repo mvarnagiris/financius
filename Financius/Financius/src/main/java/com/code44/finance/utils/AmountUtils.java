@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.util.LongSparseArray;
 import android.text.TextUtils;
-import com.code44.finance.FinanciusApp;
+import com.code44.finance.App;
 import com.code44.finance.R;
 import com.code44.finance.db.Tables;
 import com.code44.finance.providers.CurrenciesProvider;
@@ -52,13 +52,13 @@ public class AmountUtils
             Cursor c = null;
             try
             {
-                c = FinanciusApp.getAppContext().getContentResolver().query(CurrenciesProvider.uriCurrency(currencyId), null, null, null, null);
+                c = App.getAppContext().getContentResolver().query(CurrenciesProvider.uriCurrency(currencyId), null, null, null, null);
                 if (c == null || !c.moveToFirst())
                 {
                     if (c != null && !c.isClosed())
                         c.close();
 
-                    c = FinanciusApp.getAppContext().getContentResolver().query(CurrenciesProvider.uriCurrency(CurrenciesHelper.getDefault().getMainCurrencyId()), null, null, null, null);
+                    c = App.getAppContext().getContentResolver().query(CurrenciesProvider.uriCurrency(CurrenciesHelper.getDefault().getMainCurrencyId()), null, null, null, null);
                 }
 
                 if (c != null && c.moveToFirst())
