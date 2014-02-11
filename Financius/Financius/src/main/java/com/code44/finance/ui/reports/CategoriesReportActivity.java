@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import com.code44.finance.R;
-import com.code44.finance.ui.AbstractActivity;
+import com.code44.finance.ui.BaseActivity;
 
-public class CategoriesReportActivity extends AbstractActivity
+public class CategoriesReportActivity extends BaseActivity
 {
     public static void startCategoriesReport(Context context)
     {

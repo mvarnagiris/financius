@@ -146,7 +146,7 @@ public class BackupParser extends Parser
     @Override
     public void store(Context context, ParsedValues parsedValues)
     {
-        final SQLiteDatabase db = DBHelper.getInstance(context).getWritableDatabase();
+        final SQLiteDatabase db = DBHelper.get(context).getWritableDatabase();
         ContentValues[] valuesArray;
 
         try

@@ -29,7 +29,7 @@ public abstract class AbstractProvider extends ContentProvider
     {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-        db = DBHelper.getInstance(getContext()).getWritableDatabase();
+        db = DBHelper.get(getContext()).getWritableDatabase();
         return (db != null);
     }
 
@@ -37,7 +37,7 @@ public abstract class AbstractProvider extends ContentProvider
     {
         // Get id columns
         final String idColumn = BaseColumns._ID;
-        final String serverIdColumn = tableName + "_" + Tables.SERVER_ID_SUFFIX;
+        final String serverIdColumn = tableName + "_" + Tables.SUFFIX_SERVER_ID;
 
         // Get ids
         final Long id = values.getAsLong(idColumn);
@@ -126,7 +126,7 @@ public abstract class AbstractProvider extends ContentProvider
         Cursor c = null;
         try
         {
-            c = db.query(tableName, new String[]{BaseColumns._ID}, tableName + "_" + Tables.SERVER_ID_SUFFIX + "=?", new String[]{serverId}, null, null, null);
+            c = db.query(tableName, new String[]{BaseColumns._ID}, tableName + "_" + Tables.SUFFIX_SERVER_ID + "=?", new String[]{serverId}, null, null, null);
             if (c != null && c.moveToFirst())
                 localId = c.getLong(0);
         }

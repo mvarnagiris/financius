@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import com.code44.finance.API;
 import com.code44.finance.R;
 import com.code44.finance.db.Tables;
-import com.code44.finance.ui.AbstractFragment;
+import com.code44.finance.ui.BaseFragment;
 import com.code44.finance.ui.ItemEditStepsFragment;
 
 public class CategoryEditFragment extends ItemEditStepsFragment implements CategoryParentFragment.Callbacks
@@ -81,7 +81,7 @@ public class CategoryEditFragment extends ItemEditStepsFragment implements Categ
     protected void restoreOrInit(long itemId, Bundle savedInstanceState)
     {
         // Fragments
-        AbstractFragment currentFragment = (AbstractFragment) getChildFragmentManager().findFragmentByTag(FRAGMENT_CURRENT);
+        BaseFragment currentFragment = (BaseFragment) getChildFragmentManager().findFragmentByTag(FRAGMENT_CURRENT);
         if (currentFragment == null)
         {
             currentFragment = getStepsCount() == 2 ? CategoryParentFragment.newInstance(categoryType) : CategoryDetailsFragment.newInstance(itemId, 0);

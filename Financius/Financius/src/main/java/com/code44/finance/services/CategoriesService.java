@@ -62,7 +62,7 @@ public class CategoriesService extends AbstractItemService
             // Creating new item
             try
             {
-                c = DBHelper.getInstance(this).getReadableDatabase().query(Tables.Categories.TABLE_NAME, new String[]{Tables.Categories.T_ID}, level == 1 ? Tables.Categories.LEVEL + "=?" : Tables.Categories.PARENT_ID + "=?", level == 1 ? new String[]{"1"} : new String[]{String.valueOf(parentId)}, null, null, null);
+                c = DBHelper.get(this).getReadableDatabase().query(Tables.Categories.TABLE_NAME, new String[]{Tables.Categories.T_ID}, level == 1 ? Tables.Categories.LEVEL + "=?" : Tables.Categories.PARENT_ID + "=?", level == 1 ? new String[]{"1"} : new String[]{String.valueOf(parentId)}, null, null, null);
                 if (c != null && c.moveToFirst())
                     order = c.getCount();
             }
@@ -77,7 +77,7 @@ public class CategoriesService extends AbstractItemService
             // Updating item
             try
             {
-                c = DBHelper.getInstance(this).getReadableDatabase().query(Tables.Categories.TABLE_NAME, new String[]{Tables.Categories.ORDER}, Tables.Categories.T_ID + "=?", new String[]{String.valueOf(itemId)}, null, null, null);
+                c = DBHelper.get(this).getReadableDatabase().query(Tables.Categories.TABLE_NAME, new String[]{Tables.Categories.ORDER}, Tables.Categories.T_ID + "=?", new String[]{String.valueOf(itemId)}, null, null, null);
                 if (c != null && c.moveToFirst())
                     order = c.getInt(0);
             }
@@ -90,7 +90,7 @@ public class CategoriesService extends AbstractItemService
 
         try
         {
-            c = DBHelper.getInstance(this).getReadableDatabase().query(Tables.Categories.TABLE_NAME, new String[]{Tables.Categories.ORDER}, Tables.Categories.T_ID + "=?", new String[]{String.valueOf(parentId)}, null, null, null);
+            c = DBHelper.get(this).getReadableDatabase().query(Tables.Categories.TABLE_NAME, new String[]{Tables.Categories.ORDER}, Tables.Categories.T_ID + "=?", new String[]{String.valueOf(parentId)}, null, null, null);
             if (c != null && c.moveToFirst())
                 parentOrder = c.getInt(0);
         }
@@ -170,7 +170,7 @@ public class CategoriesService extends AbstractItemService
 
 
         // Swap categories
-        final SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
+        final SQLiteDatabase db = DBHelper.get(this).getWritableDatabase();
         try
         {
             db.beginTransaction();

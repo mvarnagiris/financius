@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.code44.finance.R;
 
-public class NotificationsFragment extends AbstractFragment
+public class NotificationsFragment extends BaseFragment
 {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

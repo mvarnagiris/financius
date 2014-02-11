@@ -10,7 +10,7 @@ import android.widget.*;
 import com.code44.finance.R;
 import com.code44.finance.adapters.BackupFilesAdapter;
 import com.code44.finance.parsers.BackupParser;
-import com.code44.finance.ui.AbstractFragment;
+import com.code44.finance.ui.BaseFragment;
 import com.code44.finance.ui.ItemActivity;
 import com.code44.finance.ui.dialogs.EditTextDialog;
 import com.code44.finance.ui.dialogs.QuestionDialog;
@@ -29,7 +29,7 @@ import java.io.InputStreamReader;
 /**
  * Created by Mantas on 09/06/13.
  */
-public class BackupFragment extends AbstractFragment implements DriveFragment.Callbacks, View.OnClickListener, EditTextDialog.EditTextDialogListener, AdapterView.OnItemClickListener, QuestionDialog.DialogCallbacks
+public class BackupFragment extends BaseFragment implements DriveFragment.Callbacks, View.OnClickListener, EditTextDialog.EditTextDialogListener, AdapterView.OnItemClickListener, QuestionDialog.DialogCallbacks
 {
     private static final String FRAGMENT_DEVICE_NAME = "FRAGMENT_DEVICE_NAME";
     private static final String FRAGMENT_DELETE_DIALOG = ItemActivity.class.getName() + ".FRAGMENT_DELETE_DIALOG";

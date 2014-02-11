@@ -13,7 +13,7 @@ import com.code44.finance.utils.StringUtils;
 
 import java.io.IOException;
 
-public class AboutActivity extends AbstractActivity
+public class AboutActivity extends BaseActivity
 {
     public static void startAbout(Context context)
     {

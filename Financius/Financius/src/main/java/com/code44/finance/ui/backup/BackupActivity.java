@@ -4,14 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import com.code44.finance.R;
-import com.code44.finance.ui.AbstractActivity;
+import com.code44.finance.ui.BaseActivity;
 import com.code44.finance.user.DriveFragment;
 import com.code44.finance.user.GoogleUserFragment;
 
 /**
  * Created by Mantas on 09/06/13.
  */
-public class BackupActivity extends AbstractActivity implements BackupFragment.Callbacks
+public class BackupActivity extends BaseActivity implements BackupFragment.Callbacks
 {
     private static final String FRAGMENT_BACKUP = "FRAGMENT_BACKUP";
     private static final String FRAGMENT_DRIVE = "FRAGMENT_DRIVE";

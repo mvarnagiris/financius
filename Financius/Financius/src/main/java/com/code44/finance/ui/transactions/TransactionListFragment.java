@@ -29,7 +29,7 @@ public class TransactionListFragment extends ItemListFragment implements MainAct
 
     public static Loader<Cursor> createItemsLoader(Context context)
     {
-        final Uri uri = TransactionsProvider.uriTransactions(context);
+        final Uri uri = TransactionsProvider.uriTransactions();
         final String[] projection = new String[]
                 {
                         Tables.Transactions.T_ID, Tables.Transactions.DATE, Tables.Transactions.AMOUNT, Tables.Transactions.NOTE, Tables.Transactions.STATE, Tables.Transactions.EXCHANGE_RATE,

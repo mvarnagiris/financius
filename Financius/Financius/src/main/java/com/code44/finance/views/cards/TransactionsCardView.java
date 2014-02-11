@@ -164,7 +164,7 @@ public class TransactionsCardView extends PeriodCardView
         if (expense > 0)
         {
             expense_TV.setVisibility(VISIBLE);
-            expense_TV.setText(AmountUtils.formatAmount(getContext(), mainCurrencyId, expense));
+            expense_TV.setText(AmountUtils.formatAmount(mainCurrencyId, expense));
         }
         else
         {

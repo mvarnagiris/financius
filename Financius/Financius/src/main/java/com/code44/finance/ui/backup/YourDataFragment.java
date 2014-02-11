@@ -8,13 +8,13 @@ import android.widget.Toast;
 import com.code44.finance.API;
 import com.code44.finance.R;
 import com.code44.finance.services.BackupService;
-import com.code44.finance.ui.AbstractFragment;
+import com.code44.finance.ui.BaseFragment;
 import com.code44.finance.ui.dialogs.DateTimeDialog;
 import com.code44.finance.ui.dialogs.ProgressDialog;
 import com.code44.finance.views.cards.CSVCardView;
 import de.greenrobot.event.EventBus;
 
-public class YourDataFragment extends AbstractFragment implements CSVCardView.Callback, DateTimeDialog.DialogCallbacks
+public class YourDataFragment extends BaseFragment implements CSVCardView.Callback, DateTimeDialog.DialogCallbacks
 {
     private static final String FRAGMENT_DATE_TIME = "FRAGMENT_DATE_TIME";
     // -----------------------------------------------------------------------------------------------------------------

@@ -23,9 +23,9 @@ import com.code44.finance.utils.Tracking;
 /**
  * Created by Mantas on 25/05/13.
  */
-public abstract class AbstractActivity extends FragmentActivity
+public abstract class BaseActivity extends FragmentActivity
 {
-    protected static final String STATE_FORCE_SECURITY = AbstractActivity.class.getName() + ".STATE_FORCE_SECURITY";
+    protected static final String STATE_FORCE_SECURITY = BaseActivity.class.getName() + ".STATE_FORCE_SECURITY";
     protected final BroadcastReceiver killReceiver = new BroadcastReceiver()
     {
         @Override

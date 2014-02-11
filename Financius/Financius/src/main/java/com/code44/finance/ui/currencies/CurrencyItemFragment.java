@@ -76,7 +76,7 @@ public class CurrencyItemFragment extends ItemFragment
         {
             case LOADER_ACCOUNTS:
             {
-                Uri uri = AccountsProvider.uriAccounts(getActivity());
+                Uri uri = AccountsProvider.uriAccounts();
                 String[] projection = new String[]{Tables.Accounts.T_ID, Tables.Accounts.TITLE, Tables.Accounts.CURRENCY_ID, Tables.Currencies.CODE};
                 String selection = Tables.Accounts.DELETE_STATE + "=? and " + Tables.Accounts.ORIGIN + "<>?";
                 String[] selectionArgs = new String[]{String.valueOf(Tables.DeleteState.NONE), String.valueOf(Tables.Accounts.Origin.SYSTEM)};
@@ -86,7 +86,7 @@ public class CurrencyItemFragment extends ItemFragment
 
             case LOADER_DEFAULT_CURRENCY:
             {
-                Uri uri = CurrenciesProvider.uriCurrencies(getActivity());
+                Uri uri = CurrenciesProvider.uriCurrencies();
                 String[] projection = new String[]{Tables.Currencies.CODE};
                 String selection = Tables.Currencies.IS_DEFAULT + "=?";
                 String[] selectionArgs = new String[]{"1"};
@@ -122,14 +122,14 @@ public class CurrencyItemFragment extends ItemFragment
     @Override
     protected boolean onDeleteItem(Context context, long[] itemIds)
     {
-        API.deleteCurrencies(context, itemIds);
+        API.deleteCurrencies(itemIds);
         return true;
     }
 
     @Override
     protected Loader<Cursor> createItemLoader(Context context, long itemId)
     {
-        Uri uri = CurrenciesProvider.uriCurrency(getActivity(), itemId);
+        Uri uri = CurrenciesProvider.uriCurrency(itemId);
         String[] projection = new String[]{Tables.Currencies.T_ID, Tables.Currencies.CODE, Tables.Currencies.EXCHANGE_RATE};
 
         return new CursorLoader(getActivity(), uri, projection, null, null, null);
@@ -149,7 +149,7 @@ public class CurrencyItemFragment extends ItemFragment
 
             // Set values
             code_TV.setText(code);
-            format_TV.setText(AmountUtils.formatAmount(getActivity(), c.getLong(iId), 1000.00));
+            format_TV.setText(AmountUtils.formatAmount(c.getLong(iId), 1000.00));
             exchangeRate_TV.setText("\u21C4 " + c.getDouble(iExchangeRate));
 
             updateDefaultCurrency();

@@ -75,7 +75,7 @@ public class BackupUtils
         Cursor c = null;
         try
         {
-            c = DBHelper.getInstance(context).getReadableDatabase().query(Tables.Currencies.TABLE_NAME, null, null, null, null, null, null);
+            c = DBHelper.get(context).getReadableDatabase().query(Tables.Currencies.TABLE_NAME, null, null, null, null, null, null);
 
             if (c != null && c.moveToFirst())
             {
@@ -126,7 +126,7 @@ public class BackupUtils
         Cursor c = null;
         try
         {
-            c = DBHelper.getInstance(context).getReadableDatabase().query(Tables.Accounts.TABLE_NAME, null, null, null, null, null, null);
+            c = DBHelper.get(context).getReadableDatabase().query(Tables.Accounts.TABLE_NAME, null, null, null, null, null, null);
 
             if (c != null && c.moveToFirst())
             {
@@ -179,7 +179,7 @@ public class BackupUtils
         Cursor c = null;
         try
         {
-            c = DBHelper.getInstance(context).getReadableDatabase().query(Tables.Categories.TABLE_NAME, null, null, null, null, null, null);
+            c = DBHelper.get(context).getReadableDatabase().query(Tables.Categories.TABLE_NAME, null, null, null, null, null, null);
 
             if (c != null && c.moveToFirst())
             {
@@ -230,7 +230,7 @@ public class BackupUtils
         Cursor c = null;
         try
         {
-            c = DBHelper.getInstance(context).getReadableDatabase().query(Tables.Transactions.TABLE_NAME, null, null, null, null, null, null);
+            c = DBHelper.get(context).getReadableDatabase().query(Tables.Transactions.TABLE_NAME, null, null, null, null, null, null);
 
             if (c != null && c.moveToFirst())
             {

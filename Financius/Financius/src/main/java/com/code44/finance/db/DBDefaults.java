@@ -20,14 +20,14 @@ public class DBDefaults
 {
     public static void insertDefaults(Context context, SQLiteDatabase db)
     {
-        insertDefaultCurrencies(context, db);
+        insertDefaultCurrencies(db);
         insertDefaultAccounts(context, db);
         insertDefaultCategories(context, db);
     }
 
-    public static long insertDefaultCurrencies(Context context, SQLiteDatabase db)
+    public static long insertDefaultCurrencies(SQLiteDatabase db)
     {
-        final Set<String> currencyCodeSet = new HashSet<String>();
+        final Set<String> currencyCodeSet = new HashSet<>();
 
         // Default currency
         String defaultCode = null;
@@ -35,7 +35,7 @@ public class DBDefaults
         {
             defaultCode = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
         }
-        catch (Exception e)
+        catch (Exception ignored)
         {
         }
 
@@ -55,14 +55,12 @@ public class DBDefaults
         // Create currencies
         Currency currency;
         long mainCurrencyId = 0;
-        final ContentValues values = new ContentValues();
         for (String code : currencyCodeSet)
         {
             try
             {
                 currency = Currency.getInstance(code);
-                values.clear();
-                CurrenciesUtils.prepareValues(values, code, currency.getSymbol(), currency.getDefaultFractionDigits(), ",", ".", code.equals(defaultCode), Tables.Currencies.SymbolFormat.RIGHT_FAR, 1.0, Tables.DeleteState.NONE, Tables.SyncState.LOCAL_CHANGES);
+                ContentValues values = CurrenciesUtils.getValues(code, currency.getSymbol(), currency.getDefaultFractionDigits(), ",", ".", code.equals(defaultCode), Tables.Currencies.SymbolFormat.RIGHT_FAR, 1.0);
                 long newId = db.insert(Tables.Currencies.TABLE_NAME, null, values);
                 if (code.equalsIgnoreCase(defaultCode))
                 {
@@ -71,7 +69,7 @@ public class DBDefaults
                     mainCurrencyId = newId;
                 }
             }
-            catch (Exception e)
+            catch (Exception ignored)
             {
             }
         }
@@ -81,45 +79,42 @@ public class DBDefaults
 
     public static void insertDefaultAccounts(Context context, SQLiteDatabase db)
     {
-        final ContentValues values = new ContentValues();
-
         // Income account
-        values.clear();
+        ContentValues values = AccountsUtils.getValues(0, context.getResources().getResourceName(R.string.income), "", 0, false, false, Tables.Accounts.Origin.SYSTEM);
         values.put(Tables.Accounts.ID, Tables.Accounts.IDs.INCOME_ID);
-        AccountsUtils.prepareValues(values, String.valueOf(Tables.Accounts.IDs.INCOME_ID), 0, context.getResources().getResourceName(R.string.ac_other), context.getString(R.string.income), "", 0, 0, false, false, Tables.Accounts.Origin.SYSTEM, Tables.DeleteState.NONE, Tables.SyncState.LOCAL_CHANGES);
+        values.put(Tables.Accounts.SERVER_ID, String.valueOf(Tables.Accounts.IDs.INCOME_ID));
         db.insert(Tables.Accounts.TABLE_NAME, null, values);
 
         // Expense account
-        values.clear();
+        values = AccountsUtils.getValues(0, context.getResources().getResourceName(R.string.expense), "", 0, false, false, Tables.Accounts.Origin.SYSTEM);
         values.put(Tables.Accounts.ID, Tables.Accounts.IDs.EXPENSE_ID);
-        AccountsUtils.prepareValues(values, String.valueOf(Tables.Accounts.IDs.EXPENSE_ID), 0, context.getResources().getResourceName(R.string.ac_other), context.getString(R.string.expense), "", 0, 0, false, false, Tables.Accounts.Origin.SYSTEM, Tables.DeleteState.NONE, Tables.SyncState.LOCAL_CHANGES);
+        values.put(Tables.Accounts.SERVER_ID, String.valueOf(Tables.Accounts.IDs.EXPENSE_ID));
         db.insert(Tables.Accounts.TABLE_NAME, null, values);
     }
 
     public static void insertDefaultCategories(Context context, SQLiteDatabase db)
     {
-        final ContentValues values = new ContentValues();
-
         // Income category
-        values.clear();
+        ContentValues values = CategoriesUtils.getValues(0, context.getString(R.string.income), 0, Tables.Categories.Type.INCOME, context.getResources().getColor(R.color.text_green), 0, 0, Tables.Categories.Origin.SYSTEM);
         values.put(Tables.Categories.ID, Tables.Categories.IDs.INCOME_ID);
-        CategoriesUtils.prepareValues(values, String.valueOf(Tables.Categories.IDs.INCOME_ID), 0, context.getString(R.string.income), 0, Tables.Categories.Type.INCOME, context.getResources().getColor(R.color.text_green), 0, 0, Tables.Categories.Origin.SYSTEM, Tables.DeleteState.NONE, Tables.SyncState.LOCAL_CHANGES);
+        values.put(Tables.Categories.SERVER_ID, String.valueOf(Tables.Categories.IDs.INCOME_ID));
         db.insert(Tables.Categories.TABLE_NAME, null, values);
 
         // Expense category
-        values.clear();
+        values = CategoriesUtils.getValues(0, context.getString(R.string.expense), 0, Tables.Categories.Type.EXPENSE, context.getResources().getColor(R.color.f_maroon), 0, 0, Tables.Categories.Origin.SYSTEM);
         values.put(Tables.Categories.ID, Tables.Categories.IDs.EXPENSE_ID);
-        CategoriesUtils.prepareValues(values, String.valueOf(Tables.Categories.IDs.EXPENSE_ID), 0, context.getString(R.string.expense), 0, Tables.Categories.Type.EXPENSE, context.getResources().getColor(R.color.f_maroon), 0, 0, Tables.Categories.Origin.SYSTEM, Tables.DeleteState.NONE, Tables.SyncState.LOCAL_CHANGES);
+        values.put(Tables.Categories.SERVER_ID, String.valueOf(Tables.Categories.IDs.EXPENSE_ID));
         db.insert(Tables.Categories.TABLE_NAME, null, values);
 
         // Transfer category
-        values.clear();
+        values = CategoriesUtils.getValues(0, context.getString(R.string.transfer), 0, Tables.Categories.Type.TRANSFER, context.getResources().getColor(R.color.text_yellow), 0, 0, Tables.Categories.Origin.SYSTEM);
         values.put(Tables.Categories.ID, Tables.Categories.IDs.TRANSFER_ID);
-        CategoriesUtils.prepareValues(values, String.valueOf(Tables.Categories.IDs.TRANSFER_ID), 0, context.getString(R.string.transfer), 0, Tables.Categories.Type.TRANSFER, context.getResources().getColor(R.color.text_yellow), 0, 0, Tables.Categories.Origin.SYSTEM, Tables.DeleteState.NONE, Tables.SyncState.LOCAL_CHANGES);
+        values.put(Tables.Categories.SERVER_ID, String.valueOf(Tables.Categories.IDs.TRANSFER_ID));
         db.insert(Tables.Categories.TABLE_NAME, null, values);
 
         // Insert default categories
         TypedArray ta = context.getResources().obtainTypedArray(R.array.category_colors);
+        //noinspection ConstantConditions
         int[] colors = new int[ta.length()];
         for (int i = 0; i < ta.length(); i++)
         {
@@ -152,7 +147,6 @@ public class DBDefaults
     public static void insertCategories(Context context, SQLiteDatabase db, Resources res, JSONArray jArray, long parentId, int parentLevel, int parentOrder, int type, int[] colors, int colorStartIndex) throws Exception
     {
         final int level = parentLevel + 1;
-        final ContentValues values = new ContentValues();
         JSONObject jObject;
         long newId;
         String titleRes;
@@ -161,8 +155,8 @@ public class DBDefaults
             jObject = jArray.getJSONObject(i);
             titleRes = jObject.getString("title_res");
 
-            values.clear();
-            CategoriesUtils.prepareValues(values, titleRes, parentId, res.getString(res.getIdentifier(titleRes, "string", context.getPackageName())), level, type, level == 1 ? colors[(i + colorStartIndex) % colors.length] : colors[colorStartIndex], i, parentOrder, Tables.Categories.Origin.USER, Tables.DeleteState.NONE, Tables.SyncState.LOCAL_CHANGES);
+            ContentValues values = CategoriesUtils.getValues(parentId, res.getString(res.getIdentifier(titleRes, "string", context.getPackageName())), level, type, level == 1 ? colors[(i + colorStartIndex) % colors.length] : colors[colorStartIndex], i, parentOrder, Tables.Categories.Origin.USER);
+            values.put(Tables.Categories.SERVER_ID, titleRes);
             newId = db.insert(Tables.Categories.TABLE_NAME, null, values);
 
             if (jObject.has("categories"))

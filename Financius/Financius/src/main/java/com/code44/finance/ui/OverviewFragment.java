@@ -31,7 +31,7 @@ import de.greenrobot.event.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OverviewFragment extends AbstractFragment implements MainActivity.NavigationContentFragment, LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener, AdapterView.OnItemClickListener
+public class OverviewFragment extends BaseFragment implements MainActivity.NavigationContentFragment, LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener, AdapterView.OnItemClickListener
 {
     private static final int LOADER_ACCOUNTS = 1;
     private static final int LOADER_TRANSACTIONS = 2;

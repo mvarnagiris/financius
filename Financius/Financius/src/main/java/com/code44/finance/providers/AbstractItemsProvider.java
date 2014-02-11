@@ -253,12 +253,12 @@ public abstract class AbstractItemsProvider extends AbstractProvider
         final String tableName = getItemTable();
 
         // Set default values
-        String columnName = tableName + "_" + Tables.SERVER_ID_SUFFIX;
+        String columnName = tableName + "_" + Tables.SUFFIX_SERVER_ID;
         if (!values.containsKey(columnName) || TextUtils.isEmpty(values.getAsString(columnName)))
             values.put(columnName, UUID.randomUUID().toString());
 
         values.put(tableName + "_" + Tables.TIMESTAMP_SUFFIX, System.currentTimeMillis());
-        values.put(tableName + "_" + Tables.DELETE_STATE_SUFFIX, Tables.DeleteState.NONE);
+        values.put(tableName + "_" + Tables.SUFFIX_DELETE_STATE, Tables.DeleteState.NONE);
         values.put(tableName + "_" + Tables.SYNC_STATE_SUFFIX, Tables.SyncState.LOCAL_CHANGES);
 
         long newId = 0;
@@ -308,7 +308,7 @@ public abstract class AbstractItemsProvider extends AbstractProvider
         final String table = getItemTable();
         final ContentValues values = new ContentValues();
         values.put(table + "_" + Tables.TIMESTAMP_SUFFIX, System.currentTimeMillis());
-        values.put(table + "_" + Tables.DELETE_STATE_SUFFIX, Tables.DeleteState.DELETED);
+        values.put(table + "_" + Tables.SUFFIX_DELETE_STATE, Tables.DeleteState.DELETED);
         values.put(table + "_" + Tables.SYNC_STATE_SUFFIX, Tables.SyncState.LOCAL_CHANGES);
 
         try

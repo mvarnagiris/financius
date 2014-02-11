@@ -12,7 +12,7 @@ import android.view.View;
 import com.code44.finance.R;
 import com.code44.finance.ui.dialogs.QuestionDialog;
 
-public abstract class ItemFragment extends AbstractFragment implements LoaderManager.LoaderCallbacks<Cursor>, QuestionDialog.DialogCallbacks
+public abstract class ItemFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, QuestionDialog.DialogCallbacks
 {
     public static final String ARG_ITEM_ID = ItemFragment.class.getName() + ".ARG_ITEM_ID";
     // -----------------------------------------------------------------------------------------------------------------

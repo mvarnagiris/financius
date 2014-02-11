@@ -56,7 +56,7 @@ public abstract class AbstractItemService extends AbstractService
         // Store values
         final ContentValues values = new ContentValues();
         prepareValues(values, intent);
-        values.put(getItemTable() + "_" + Tables.SERVER_ID_SUFFIX, UUID.randomUUID().toString());
+        values.put(getItemTable() + "_" + Tables.SUFFIX_SERVER_ID, UUID.randomUUID().toString());
         getContentResolver().insert(getUriForItems(), values);
 
         // Notify

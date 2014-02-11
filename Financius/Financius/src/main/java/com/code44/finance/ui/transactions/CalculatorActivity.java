@@ -3,9 +3,9 @@ package com.code44.finance.ui.transactions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import com.code44.finance.ui.AbstractActivity;
+import com.code44.finance.ui.BaseActivity;
 
-public class CalculatorActivity extends AbstractActivity implements CalculatorFragment.CalculatorListener
+public class CalculatorActivity extends BaseActivity implements CalculatorFragment.CalculatorListener
 {
     public static final String RESULT_EXTRA_AMOUNT = CalculatorActivity.class.getName() + ".RESULT_EXTRA_AMOUNT";
     // -----------------------------------------------------------------------------------------------------------------

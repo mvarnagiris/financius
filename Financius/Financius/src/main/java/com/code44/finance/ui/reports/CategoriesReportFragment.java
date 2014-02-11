@@ -19,7 +19,7 @@ import com.code44.finance.adapters.CategoriesReportAdapter;
 import com.code44.finance.db.Tables;
 import com.code44.finance.db.model.CategoriesPeriodReport;
 import com.code44.finance.providers.TransactionsProvider;
-import com.code44.finance.ui.AbstractFragment;
+import com.code44.finance.ui.BaseFragment;
 import com.code44.finance.ui.MainActivity;
 import com.code44.finance.utils.AmountUtils;
 import com.code44.finance.utils.CurrenciesHelper;
@@ -29,7 +29,7 @@ import com.code44.finance.views.PeriodChangerView;
 import com.code44.finance.views.reports.PieChartView;
 import de.greenrobot.event.EventBus;
 
-public class CategoriesReportFragment extends AbstractFragment implements LoaderManager.LoaderCallbacks<Cursor>, PeriodChangerView.PeriodChangerListener, MainActivity.NavigationContentFragment, View.OnClickListener
+public class CategoriesReportFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, PeriodChangerView.PeriodChangerListener, MainActivity.NavigationContentFragment, View.OnClickListener
 {
     private static final int LOADER_TRANSACTIONS = 1;
     // -----------------------------------------------------------------------------------------------------------------

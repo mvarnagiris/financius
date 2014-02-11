@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import com.code44.finance.ui.AbstractFragment;
+import com.code44.finance.ui.BaseFragment;
 
-public abstract class LockFragment extends AbstractFragment
+public abstract class LockFragment extends BaseFragment
 {
     public static final int LT_NEW = 1;
     public static final int LT_COMPARE = 3;

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class ItemListFragment extends AbstractFragment implements AdapterView.OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor>
+public abstract class ItemListFragment extends BaseFragment implements AdapterView.OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor>
 {
     public static final String RESULT_EXTRA_ITEM_ID = ItemListFragment.class.getName() + ".RESULT_EXTRA_ITEM_ID";
     public static final String RESULT_EXTRA_ITEM_IDS = ItemListFragment.class.getName() + ".RESULT_EXTRA_ITEM_IDS";

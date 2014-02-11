@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-public abstract class ItemActivity extends AbstractActivity
+public abstract class ItemActivity extends BaseActivity
 {
     protected static final String EXTRA_ITEM_ID = ItemEditActivity.class.getName() + ".EXTRA_ITEM_ID";
     // -----------------------------------------------------------------------------------------------------------------
