@@ -9,7 +9,6 @@ import android.provider.BaseColumns;
 import android.text.TextUtils;
 import com.code44.finance.db.Tables;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -77,7 +76,7 @@ public abstract class AbstractItemsProvider extends AbstractProvider
     {
         checkString(values, columnName, required, false);
         final String value = values.getAsString(columnName);
-        if (!required && value == null)
+        if (!required && (possibleValues == null || possibleValues.length == 0 || value == null))
             return;
 
         boolean isOK = false;
@@ -231,7 +230,7 @@ public abstract class AbstractItemsProvider extends AbstractProvider
     }
 
     @Override
-    public int bulkInsert(Uri uri, @Nonnull ContentValues[] valuesArray)
+    public int bulkInsert(Uri uri, @SuppressWarnings("NullableProblems") ContentValues[] valuesArray)
     {
         int count;
 
@@ -257,9 +256,7 @@ public abstract class AbstractItemsProvider extends AbstractProvider
         if (!values.containsKey(columnName) || TextUtils.isEmpty(values.getAsString(columnName)))
             values.put(columnName, UUID.randomUUID().toString());
 
-        values.put(tableName + "_" + Tables.TIMESTAMP_SUFFIX, System.currentTimeMillis());
         values.put(tableName + "_" + Tables.SUFFIX_DELETE_STATE, Tables.DeleteState.NONE);
-        values.put(tableName + "_" + Tables.SYNC_STATE_SUFFIX, Tables.SyncState.LOCAL_CHANGES);
 
         long newId = 0;
         try
@@ -307,9 +304,7 @@ public abstract class AbstractItemsProvider extends AbstractProvider
 
         final String table = getItemTable();
         final ContentValues values = new ContentValues();
-        values.put(table + "_" + Tables.TIMESTAMP_SUFFIX, System.currentTimeMillis());
         values.put(table + "_" + Tables.SUFFIX_DELETE_STATE, Tables.DeleteState.DELETED);
-        values.put(table + "_" + Tables.SYNC_STATE_SUFFIX, Tables.SyncState.LOCAL_CHANGES);
 
         try
         {
@@ -381,7 +376,7 @@ public abstract class AbstractItemsProvider extends AbstractProvider
 
     protected List<Long> getItemIDs(String selection, String[] selectionArgs)
     {
-        final List<Long> itemIDs = new ArrayList<Long>();
+        final List<Long> itemIDs = new ArrayList<>();
         Cursor c = null;
         try
         {

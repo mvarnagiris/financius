@@ -5,21 +5,21 @@ import com.code44.finance.App;
 import com.code44.finance.db.Tables;
 import com.code44.finance.providers.CurrenciesProvider;
 
-public class CurrenciesHelper
+public class CurrencyHelper
 {
-    private static CurrenciesHelper instance;
+    private static CurrencyHelper instance;
     private long mainCurrencyId;
     private String mainCurrencyCode;
 
-    private CurrenciesHelper()
+    private CurrencyHelper()
     {
         update();
     }
 
-    public static CurrenciesHelper getDefault()
+    public static CurrencyHelper get()
     {
         if (instance == null)
-            instance = new CurrenciesHelper();
+            instance = new CurrencyHelper();
         return instance;
     }
 

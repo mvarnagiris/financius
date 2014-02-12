@@ -18,7 +18,7 @@ import com.code44.finance.providers.AccountsProvider;
 import com.code44.finance.ui.ItemListFragment;
 import com.code44.finance.ui.MainActivity;
 import com.code44.finance.utils.AmountUtils;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 
 public class AccountListFragment extends ItemListFragment implements MainActivity.NavigationContentFragment
 {
@@ -115,7 +115,7 @@ public class AccountListFragment extends ItemListFragment implements MainActivit
         if (selectionType == SELECTION_TYPE_NONE)
         {
             // Find total balance
-            final long mainCurrencyId = CurrenciesHelper.getDefault().getMainCurrencyId();
+            final long mainCurrencyId = CurrencyHelper.get().getMainCurrencyId();
             double balance = 0;
             if (c != null && c.moveToFirst())
             {

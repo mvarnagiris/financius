@@ -19,7 +19,6 @@ public class AmountCardView extends CardViewV2 implements View.OnClickListener
     private Callback callback;
     private double amount = 0;
     private double exchangeRate = 1;
-    private long currencyId = 0;
 
     public AmountCardView(Context context)
     {
@@ -140,7 +139,7 @@ public class AmountCardView extends CardViewV2 implements View.OnClickListener
     public void setAmount(double amount, long currencyId, int categoryType)
     {
         this.amount = amount;
-        amount_TV.setText(AmountUtils.formatAmount(getContext(), currencyId, amount));
+        amount_TV.setText(AmountUtils.formatAmount(currencyId, amount));
         //noinspection ConstantConditions
         amount_TV.setTextColor(getResources().getColor(categoryType == Tables.Categories.Type.EXPENSE ? R.color.text_red : categoryType == Tables.Categories.Type.INCOME ? R.color.text_green : R.color.text_yellow));
         setIcon(getResources().getDrawable(categoryType == Tables.Categories.Type.EXPENSE ? R.drawable.ic_category_type_expense : categoryType == Tables.Categories.Type.INCOME ? R.drawable.ic_category_type_income : R.drawable.ic_category_type_transfer));
@@ -155,9 +154,8 @@ public class AmountCardView extends CardViewV2 implements View.OnClickListener
     public void setExchangeRate(double exchangeRate, long currencyId)
     {
         this.exchangeRate = exchangeRate;
-        this.currencyId = currencyId;
         exchangeRate_TV.setText(String.valueOf(exchangeRate));
-        amountTo_TV.setText(AmountUtils.formatAmount(getContext(), currencyId, amount * exchangeRate));
+        amountTo_TV.setText(AmountUtils.formatAmount(currencyId, amount * exchangeRate));
     }
 
     public double getExchangeRate()

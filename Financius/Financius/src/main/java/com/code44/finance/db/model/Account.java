@@ -6,11 +6,9 @@ import com.code44.finance.db.Tables;
 public class Account extends DBRecord
 {
     private Currency currency;
-    private String typeResName;
     private String title;
     private String note;
     private double balance;
-    private double overdraft;
     private boolean showInTotals;
     private boolean showInSelection;
     private int origin;
@@ -93,16 +91,6 @@ public class Account extends DBRecord
         this.currency = currency;
     }
 
-    public String getTypeResName()
-    {
-        return typeResName;
-    }
-
-    public void setTypeResName(String typeResName)
-    {
-        this.typeResName = typeResName;
-    }
-
     public String getNote()
     {
         return note;
@@ -111,16 +99,6 @@ public class Account extends DBRecord
     public void setNote(String note)
     {
         this.note = note;
-    }
-
-    public double getOverdraft()
-    {
-        return overdraft;
-    }
-
-    public void setOverdraft(double overdraft)
-    {
-        this.overdraft = overdraft;
     }
 
     public boolean isShowInTotals()

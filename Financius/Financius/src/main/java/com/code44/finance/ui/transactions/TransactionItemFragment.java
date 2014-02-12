@@ -22,7 +22,7 @@ import com.code44.finance.db.Tables;
 import com.code44.finance.providers.TransactionsProvider;
 import com.code44.finance.ui.ItemFragment;
 import com.code44.finance.utils.AmountUtils;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 
 public class TransactionItemFragment extends ItemFragment
 {
@@ -64,7 +64,6 @@ public class TransactionItemFragment extends ItemFragment
         mainCurrencyAmount_TV = (TextView) view.findViewById(R.id.mainCurrencyAmount_TV);
         note_TV = (TextView) view.findViewById(R.id.note_TV);
         notIncluded_TV = (TextView) view.findViewById(R.id.notIncluded_TV);
-        final ViewGroup container_V = (ViewGroup) view.findViewById(R.id.container_V);
     }
 
     @Override
@@ -76,24 +75,21 @@ public class TransactionItemFragment extends ItemFragment
     @Override
     protected boolean onDeleteItem(Context context, long[] itemIds)
     {
-        API.deleteTransactions(context, itemIds);
+        API.deleteItems(TransactionsProvider.uriTransactions(), itemIds);
         return true;
     }
 
     @Override
     protected Loader<Cursor> createItemLoader(Context context, long itemId)
     {
-        final Uri uri = TransactionsProvider.uriTransaction(getActivity(), itemId);
+        final Uri uri = TransactionsProvider.uriTransaction(itemId);
         final String[] projection = new String[]{
                 Tables.Transactions.T_ID, Tables.Transactions.DATE, Tables.Transactions.AMOUNT, Tables.Transactions.NOTE, Tables.Transactions.STATE, Tables.Transactions.EXCHANGE_RATE, Tables.Transactions.SHOW_IN_TOTALS,
                 Tables.Transactions.ACCOUNT_FROM_ID, Tables.Accounts.AccountFrom.S_TITLE, Tables.Accounts.AccountFrom.S_CURRENCY_ID, Tables.Currencies.CurrencyFrom.S_CODE, Tables.Currencies.CurrencyFrom.S_EXCHANGE_RATE,
                 Tables.Transactions.ACCOUNT_TO_ID, Tables.Accounts.AccountTo.S_TITLE, Tables.Accounts.AccountTo.S_CURRENCY_ID, Tables.Currencies.CurrencyTo.S_CODE, Tables.Currencies.CurrencyTo.S_EXCHANGE_RATE,
                 Tables.Transactions.CATEGORY_ID, Tables.Categories.CategoriesChild.S_TITLE, Tables.Categories.CategoriesChild.S_TYPE, Tables.Categories.CategoriesChild.S_COLOR};
-        final String selection = null;
-        final String[] selectionArgs = null;
-        final String sortOrder = null;
 
-        return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs, sortOrder);
+        return new CursorLoader(getActivity(), uri, projection, null, null, null);
     }
 
     @Override
@@ -128,7 +124,7 @@ public class TransactionItemFragment extends ItemFragment
             final int categoryType = c.getInt(iCategoryType);
             final double amount = c.getDouble(iAmount);
             final String note = c.getString(iNote);
-            final long mainCurrencyId = CurrenciesHelper.getDefault(getActivity()).getMainCurrencyId();
+            final long mainCurrencyId = CurrencyHelper.get().getMainCurrencyId();
             final Drawable colorDrawable = makeColorDrawable(c.getInt(iState) == Tables.Transactions.State.CONFIRMED ? c.getInt(iCategoryColor) : getResources().getColor(R.color.f_light_darker3));
 
             // Set values
@@ -136,6 +132,7 @@ public class TransactionItemFragment extends ItemFragment
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
                 color_V.setBackground(colorDrawable);
             else
+                //noinspection deprecation
                 color_V.setBackgroundDrawable(colorDrawable);
             category_TV.setText(categoryTitle);
             note_TV.setText(note);
@@ -146,12 +143,12 @@ public class TransactionItemFragment extends ItemFragment
                 case Tables.Categories.Type.EXPENSE:
                     account_TV.setText(accountFromTitle);
                     category_TV.setVisibility(View.VISIBLE);
-                    amount_TV.setText(AmountUtils.formatAmount(getActivity(), accountFromCurrencyId, amount));
+                    amount_TV.setText(AmountUtils.formatAmount(accountFromCurrencyId, amount));
                     amount_TV.setTextColor(getResources().getColor(R.color.text_primary));
                     if (mainCurrencyId != accountFromCurrencyId)
                     {
                         mainCurrencyAmount_TV.setVisibility(View.VISIBLE);
-                        mainCurrencyAmount_TV.setText(AmountUtils.formatAmount(getActivity(), mainCurrencyId, amount * c.getDouble(iAccountFromCurrencyExchangeRate)));
+                        mainCurrencyAmount_TV.setText(AmountUtils.formatAmount(mainCurrencyId, amount * c.getDouble(iAccountFromCurrencyExchangeRate)));
                         exchangeRate_TV.setText("\u21C4" + String.valueOf(c.getDouble(iAccountFromCurrencyExchangeRate)));
                     }
                     else
@@ -164,12 +161,12 @@ public class TransactionItemFragment extends ItemFragment
                 case Tables.Categories.Type.INCOME:
                     account_TV.setText(accountToTitle);
                     category_TV.setVisibility(View.VISIBLE);
-                    amount_TV.setText(AmountUtils.formatAmount(getActivity(), accountToCurrencyId, amount));
+                    amount_TV.setText(AmountUtils.formatAmount(accountToCurrencyId, amount));
                     amount_TV.setTextColor(getResources().getColor(R.color.text_green));
                     if (mainCurrencyId != accountToCurrencyId)
                     {
                         mainCurrencyAmount_TV.setVisibility(View.VISIBLE);
-                        mainCurrencyAmount_TV.setText(AmountUtils.formatAmount(getActivity(), mainCurrencyId, amount * c.getDouble(iAccountToCurrencyExchangeRate)));
+                        mainCurrencyAmount_TV.setText(AmountUtils.formatAmount(mainCurrencyId, amount * c.getDouble(iAccountToCurrencyExchangeRate)));
                         exchangeRate_TV.setText("\u21C4" + String.valueOf(c.getDouble(iAccountToCurrencyExchangeRate)));
                     }
                     else
@@ -184,15 +181,15 @@ public class TransactionItemFragment extends ItemFragment
                     category_TV.setVisibility(View.GONE);
                     if (accountFromCurrencyId == accountToCurrencyId)
                     {
-                        amount_TV.setText(AmountUtils.formatAmount(getActivity(), c.getLong(iAccountFromCurrencyId), amount));
+                        amount_TV.setText(AmountUtils.formatAmount(c.getLong(iAccountFromCurrencyId), amount));
                         mainCurrencyAmount_TV.setVisibility(View.GONE);
                         exchangeRate_TV.setVisibility(View.GONE);
                     }
                     else
                     {
-                        amount_TV.setText(AmountUtils.formatAmount(getActivity(), c.getLong(iAccountFromCurrencyId), amount));
+                        amount_TV.setText(AmountUtils.formatAmount(c.getLong(iAccountFromCurrencyId), amount));
                         mainCurrencyAmount_TV.setVisibility(View.VISIBLE);
-                        mainCurrencyAmount_TV.setText(AmountUtils.formatAmount(getActivity(), c.getLong(iAccountToCurrencyId), amount * c.getDouble(iExchangeRate)));
+                        mainCurrencyAmount_TV.setText(AmountUtils.formatAmount(c.getLong(iAccountToCurrencyId), amount * c.getDouble(iExchangeRate)));
                         exchangeRate_TV.setText("\u21C4" + String.valueOf(c.getDouble(iExchangeRate)));
                     }
                     amount_TV.setTextColor(getResources().getColor(R.color.text_yellow));

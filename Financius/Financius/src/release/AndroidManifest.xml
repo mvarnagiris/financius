@@ -24,10 +24,6 @@
             android:name=".providers.CurrenciesProvider"
             android:authorities="com.code44.finance.providers.CurrenciesProvider"
             android:exported="false" />
-        <provider
-            android:name=".providers.BudgetsProvider"
-            android:authorities="com.code44.finance.providers.BudgetsProvider"
-            android:exported="false" />
     </application>
 
 </manifest>

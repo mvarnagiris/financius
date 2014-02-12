@@ -122,7 +122,7 @@ public class CurrencyItemFragment extends ItemFragment
     @Override
     protected boolean onDeleteItem(Context context, long[] itemIds)
     {
-        API.deleteCurrencies(itemIds);
+        API.deleteItems(CurrenciesProvider.uriCurrencies(), itemIds);
         return true;
     }
 

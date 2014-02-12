@@ -9,7 +9,7 @@ import com.code44.finance.api.Financius;
 import com.code44.finance.db.Tables;
 import com.code44.finance.providers.AccountsProvider;
 import com.code44.finance.providers.CurrenciesProvider;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 import com.code44.finance.utils.ExchangeRatesHelper;
 import org.json.JSONObject;
 import retrofit.client.Response;
@@ -56,7 +56,7 @@ public class CurrenciesRestService extends AbstractService
         switch (requestType)
         {
             case RT_GET_EXCHANGE_RATE_TO_MAIN:
-                return new GetExchangeRateEvent(requestType, force, intent.getStringExtra(EXTRA_FROM_CODE), CurrenciesHelper.getDefault().getMainCurrencyCode());
+                return new GetExchangeRateEvent(requestType, force, intent.getStringExtra(EXTRA_FROM_CODE), CurrencyHelper.get().getMainCurrencyCode());
 
             case RT_GET_EXCHANGE_RATE:
                 return new GetExchangeRateEvent(requestType, force, intent.getStringExtra(EXTRA_FROM_CODE), intent.getStringExtra(EXTRA_TO_CODE));
@@ -79,7 +79,7 @@ public class CurrenciesRestService extends AbstractService
     {
         // Get values
         final String formCode = intent.getStringExtra(EXTRA_FROM_CODE);
-        final String toCode = CurrenciesHelper.getDefault().getMainCurrencyCode();
+        final String toCode = CurrencyHelper.get().getMainCurrencyCode();
 
         exchangeRate = getExchangeRate(formCode, toCode);
     }

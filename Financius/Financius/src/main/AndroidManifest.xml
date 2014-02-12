@@ -59,10 +59,6 @@
         <activity android:name=".ui.categories.CategoryItemActivity" />
         <activity android:name=".ui.categories.CategoryEditActivity" />
 
-        <activity android:name=".ui.budgets.BudgetListActivity" />
-        <activity android:name=".ui.budgets.BudgetItemActivity" />
-        <activity android:name=".ui.budgets.BudgetEditActivity" />
-
         <activity android:name=".ui.reports.CategoriesReportActivity" />
 
         <activity android:name=".ui.backup.BackupActivity" />
@@ -70,12 +66,8 @@
 
         <!-- Services -->
         <!-- ======================================================================================================== -->
-        <service android:name=".services.CurrenciesService" />
         <service android:name=".services.CurrenciesRestService" />
-        <service android:name=".services.AccountsService" />
         <service android:name=".services.CategoriesService" />
-        <service android:name=".services.TransactionsService" />
-        <service android:name=".services.BudgetsService" />
         <service android:name=".services.BackupService" />
         <service
             android:name=".services.DashClockService"

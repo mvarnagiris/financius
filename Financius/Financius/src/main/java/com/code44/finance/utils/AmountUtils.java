@@ -58,7 +58,7 @@ public class AmountUtils
                     if (c != null && !c.isClosed())
                         c.close();
 
-                    c = App.getAppContext().getContentResolver().query(CurrenciesProvider.uriCurrency(CurrenciesHelper.getDefault().getMainCurrencyId()), null, null, null, null);
+                    c = App.getAppContext().getContentResolver().query(CurrenciesProvider.uriCurrency(CurrencyHelper.get().getMainCurrencyId()), null, null, null, null);
                 }
 
                 if (c != null && c.moveToFirst())

@@ -32,7 +32,7 @@ public class CurrencyListFragment extends ItemListFragment
 
     public static Loader<Cursor> createItemsLoader(Context context)
     {
-        final Uri uri = CurrenciesProvider.uriCurrencies(context);
+        final Uri uri = CurrenciesProvider.uriCurrencies();
         final String[] projection = new String[]{Tables.Currencies.T_ID, Tables.Currencies.CODE, Tables.Currencies.EXCHANGE_RATE, Tables.Currencies.IS_DEFAULT, Tables.Currencies.SYMBOL};
         final String selection = Tables.Currencies.DELETE_STATE + "=?";
         final String[] selectionArgs = new String[]{String.valueOf(Tables.DeleteState.NONE)};

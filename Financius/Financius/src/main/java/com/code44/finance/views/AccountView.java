@@ -7,9 +7,6 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.utils.AmountUtils;
 
-/**
- * Created by Mantas on 25/05/13.
- */
 public class AccountView extends LinearLayout
 {
     private final TextView title_TV;
@@ -38,7 +35,7 @@ public class AccountView extends LinearLayout
     public void bind(String title, double balance, long currencyId)
     {
         title_TV.setText(title);
-        balance_TV.setText(AmountUtils.formatAmount(getContext(), currencyId, balance));
+        balance_TV.setText(AmountUtils.formatAmount(currencyId, balance));
         balance_TV.setTextColor(AmountUtils.getBalanceColor(getContext(), balance));
     }
 }

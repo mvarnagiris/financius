@@ -69,7 +69,6 @@ public class CategoriesParser extends Parser
         values.put(Tables.Categories.TYPE, type);
         values.put(Tables.Categories.ORIGIN, json.getInt(JTags.Category.ORIGIN));
         values.put(Tables.Categories.COLOR, json.getInt(JTags.Category.COLOR));
-        values.put(Tables.Categories.TIMESTAMP, json.getLong(JTags.Category.TIMESTAMP));
         values.put(Tables.Categories.DELETE_STATE, json.getInt(JTags.Category.DELETE_STATE));
     }
 

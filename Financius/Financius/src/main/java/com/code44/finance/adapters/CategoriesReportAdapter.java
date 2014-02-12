@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.db.model.CategoriesPeriodReport;
 import com.code44.finance.utils.AmountUtils;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 
 /**
  * Created by Mantas on 08/06/13.
@@ -93,7 +93,7 @@ public class CategoriesReportAdapter extends BaseAdapter
 
         holder.separator_V.setVisibility(position == getCount() - 1 || ((CategoriesPeriodReport.CategoriesPeriodReportItem) getItem(position + 1)).getLevel() != 2 ? View.VISIBLE : View.INVISIBLE);
         holder.title_TV.setText(item.getTitle());
-        holder.amount_TV.setText(AmountUtils.formatAmount(CurrenciesHelper.getDefault().getMainCurrencyId(), item.getAmount()));
+        holder.amount_TV.setText(AmountUtils.formatAmount(CurrencyHelper.get().getMainCurrencyId(), item.getAmount()));
 
         return convertView;
     }

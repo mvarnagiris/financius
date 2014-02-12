@@ -84,7 +84,7 @@ public class CategoriesProvider extends AbstractItemsProvider
         DBUpgrade.updateCategoriesOrder(db);
 
         // Notify
-        notifyURIs(CategoriesProvider.uriCategories(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
+        notifyURIs(CategoriesProvider.uriCategories(), TransactionsProvider.uriTransactions());
     }
 
     @Override
@@ -144,7 +144,7 @@ public class CategoriesProvider extends AbstractItemsProvider
         DBUpgrade.updateCategoriesOrder(db);
 
         // Notify
-        notifyURIs(CategoriesProvider.uriCategories(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
+        notifyURIs(CategoriesProvider.uriCategories(), TransactionsProvider.uriTransactions());
     }
 
     @Override
@@ -160,7 +160,7 @@ public class CategoriesProvider extends AbstractItemsProvider
         DBUpgrade.updateCategoriesOrder(db);
 
         // Notify
-        notifyURIs(CategoriesProvider.uriCategories(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
+        notifyURIs(CategoriesProvider.uriCategories(), TransactionsProvider.uriTransactions());
     }
 
     @Override

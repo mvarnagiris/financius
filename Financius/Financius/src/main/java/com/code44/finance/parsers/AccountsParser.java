@@ -30,7 +30,6 @@ public class AccountsParser extends Parser
         values.put(Tables.Accounts.SERVER_ID, json.getString(JTags.Account.SERVER_ID));
         values.put(Tables.Accounts.TITLE, json.getString(JTags.Account.TITLE));
         values.put(Tables.Accounts.ORIGIN, json.getInt(JTags.Account.ORIGIN));
-        values.put(Tables.Accounts.TIMESTAMP, json.getLong(JTags.Account.TIMESTAMP));
         values.put(Tables.Accounts.DELETE_STATE, json.getInt(JTags.Account.DELETE_STATE));
     }
 

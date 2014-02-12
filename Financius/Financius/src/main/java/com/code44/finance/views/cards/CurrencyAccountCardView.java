@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.code44.finance.API;
 import com.code44.finance.R;
 import com.code44.finance.db.Tables;
+import com.code44.finance.providers.AccountsProvider;
 
 @SuppressWarnings("UnusedDeclaration")
 public class CurrencyAccountCardView extends CardViewV3
@@ -76,7 +77,7 @@ public class CurrencyAccountCardView extends CardViewV3
                 {
                     final ContentValues values = new ContentValues();
                     values.put(Tables.Accounts.CURRENCY_ID, currencyId);
-                    API.updateAccount(getContext(), accountId, values);
+                    API.updateItem(AccountsProvider.uriAccounts(), accountId, values);
                 }
             });
         }

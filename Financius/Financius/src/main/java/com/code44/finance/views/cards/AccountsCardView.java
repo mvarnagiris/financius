@@ -11,7 +11,7 @@ import com.code44.finance.R;
 import com.code44.finance.db.model.Account;
 import com.code44.finance.utils.AmountUtils;
 import com.code44.finance.utils.CardViewUtils;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 import com.code44.finance.views.AccountView;
 
 import java.util.List;
@@ -207,7 +207,7 @@ public class AccountsCardView extends TitleCardView
         {
             separator_V.setVisibility(View.VISIBLE);
             balanceContainer_V.setVisibility(View.VISIBLE);
-            balance_TV.setText(AmountUtils.formatAmount(getContext(), CurrenciesHelper.getDefault(getContext()).getMainCurrencyId(), totalBalance));
+            balance_TV.setText(AmountUtils.formatAmount(CurrencyHelper.get().getMainCurrencyId(), totalBalance));
             balance_TV.setTextColor(AmountUtils.getBalanceColor(getContext(), totalBalance, false));
         }
         else

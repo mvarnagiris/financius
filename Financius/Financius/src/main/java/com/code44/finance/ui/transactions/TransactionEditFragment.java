@@ -1,6 +1,7 @@
 package com.code44.finance.ui.transactions;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -30,8 +31,9 @@ import com.code44.finance.ui.categories.CategoryListActivity;
 import com.code44.finance.ui.categories.CategoryListFragment;
 import com.code44.finance.ui.dialogs.DateTimeDialog;
 import com.code44.finance.utils.AnimUtils;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 import com.code44.finance.utils.TransactionAutoHelper;
+import com.code44.finance.utils.TransactionsUtils;
 import com.code44.finance.views.cards.*;
 import de.greenrobot.event.EventBus;
 
@@ -174,7 +176,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         super.onResume();
 
         // Register events
-        EventBus.getDefault().register(this, CurrenciesRestService.GetExchangeRateEvent.class);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -307,23 +309,23 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         switch (id)
         {
             case LOADER_ACCOUNTS:
-                uri = AccountsProvider.uriAccounts(getActivity());
+                uri = AccountsProvider.uriAccounts();
                 projection = new String[]{Tables.Accounts.T_ID, Tables.Accounts.CURRENCY_ID, Tables.Accounts.TITLE, Tables.Currencies.EXCHANGE_RATE, Tables.Currencies.CODE};
                 selection = Tables.Accounts.ORIGIN + "<>? and " + Tables.Accounts.DELETE_STATE + "=? and " + Tables.Accounts.SHOW_IN_SELECTION + "=?";
                 selectionArgs = new String[]{String.valueOf(Tables.Categories.Origin.SYSTEM), String.valueOf(Tables.DeleteState.NONE), "1"};
                 break;
 
             case LOADER_CATEGORIES:
-                uri = CategoriesProvider.uriCategories(getActivity());
+                uri = CategoriesProvider.uriCategories();
                 selection = Tables.Categories.DELETE_STATE + "=? and " + Tables.Categories.LEVEL + ">?";
                 selectionArgs = new String[]{String.valueOf(Tables.DeleteState.NONE), "0"};
                 break;
 
             case LOADER_TRANSACTIONS:
-                uri = TransactionsProvider.uriTransactions(getActivity());
-                projection = new String[]{Tables.Transactions.T_ID, Tables.Transactions.SERVER_ID, Tables.Transactions.ACCOUNT_FROM_ID, Tables.Transactions.ACCOUNT_TO_ID, Tables.Transactions.TIMESTAMP, Tables.Transactions.DATE, Tables.Accounts.AccountFrom.S_TITLE,
+                uri = TransactionsProvider.uriTransactions();
+                projection = new String[]{Tables.Transactions.T_ID, Tables.Transactions.SERVER_ID, Tables.Transactions.ACCOUNT_FROM_ID, Tables.Transactions.ACCOUNT_TO_ID, Tables.Transactions.DATE, Tables.Accounts.AccountFrom.S_TITLE,
                         Tables.Accounts.AccountTo.S_TITLE, Tables.Transactions.CATEGORY_ID, Tables.Categories.CategoriesChild.S_TITLE,
-                        Tables.Categories.CategoriesChild.S_TYPE, Tables.Transactions.AMOUNT, Tables.Transactions.NOTE, Tables.Transactions.DELETE_STATE, Tables.Transactions.SYNC_STATE};
+                        Tables.Categories.CategoriesChild.S_TYPE, Tables.Transactions.AMOUNT, Tables.Transactions.NOTE, Tables.Transactions.DELETE_STATE};
                 selection = Tables.Transactions.STATE + "=? and " + Tables.Transactions.DELETE_STATE + "=? and " + Tables.Transactions.DATE + " between ? and ?";
                 final long now = System.currentTimeMillis();
                 selectionArgs = new String[]{String.valueOf(Tables.Transactions.State.CONFIRMED), String.valueOf(Tables.DeleteState.NONE), String.valueOf(now - (DateUtils.WEEK_IN_MILLIS * 12)), String.valueOf(now)};
@@ -451,10 +453,11 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
 
         if (isOK)
         {
+            ContentValues values = TransactionsUtils.getValues(getAccountFromId(), getAccountToId(), getCategoryId(), getDate(), getAmount(), exchangeRate, getNote(), getState(), isShowInTotals());
             if (this.itemId == 0)
-                API.createTransaction(getActivity(), getAccountFromId(), getAccountToId(), getCategoryId(), getDate(), getAmount(), exchangeRate, getNote(), getState(), isShowInTotals());
+                API.createItem(TransactionsProvider.uriTransactions(), values);
             else
-                API.updateTransaction(getActivity(), itemId, getAccountFromId(), getAccountToId(), getCategoryId(), getDate(), getAmount(), exchangeRate, getNote(), getState(), isShowInTotals());
+                API.updateItem(TransactionsProvider.uriTransactions(), itemId, values);
         }
 
         return isOK;
@@ -484,7 +487,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
     @Override
     protected Loader<Cursor> createItemLoader(Context context, long itemId)
     {
-        final Uri uri = TransactionsProvider.uriTransaction(getActivity(), itemId);
+        final Uri uri = TransactionsProvider.uriTransaction(itemId);
         final String[] projection = new String[]{
                 Tables.Transactions.T_ID, Tables.Transactions.DATE, Tables.Transactions.AMOUNT, Tables.Transactions.NOTE, Tables.Transactions.STATE, Tables.Transactions.EXCHANGE_RATE, Tables.Transactions.SHOW_IN_TOTALS,
                 Tables.Transactions.ACCOUNT_FROM_ID, Tables.Accounts.AccountFrom.S_TITLE, Tables.Accounts.AccountFrom.S_CURRENCY_ID, Tables.Currencies.CurrencyFrom.S_CODE, Tables.Currencies.CurrencyFrom.S_EXCHANGE_RATE,
@@ -862,7 +865,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
 
             case Tables.Categories.Type.TRANSFER:
                 shouldBeVisible = !(getAccountFromCurrencyId() == getAccountToCurrencyId() || getAccountFromId() == 0 || getAccountToId() == 0);
-                exchangeRate = getAccountFromCurrencyId() == CurrenciesHelper.getDefault(getActivity()).getMainCurrencyId() ? 1 / getAccountToCurrencyExchangeRate() : getAccountToCurrencyId() == CurrenciesHelper.getDefault(getActivity()).getMainCurrencyId() ? getAccountFromCurrencyExchangeRate() : 1.0;
+                exchangeRate = getAccountFromCurrencyId() == CurrencyHelper.get().getMainCurrencyId() ? 1 / getAccountToCurrencyExchangeRate() : getAccountToCurrencyId() == CurrencyHelper.get().getMainCurrencyId() ? getAccountFromCurrencyExchangeRate() : 1.0;
                 break;
         }
         amount_CV.setExchangeRateVisible(shouldBeVisible);

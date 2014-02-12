@@ -60,22 +60,13 @@ def getBuildName()
 
 dependencies {
     compile files(
-            'libs/dashclock-api-r1.1.jar',
-            'libs/bsh-core-2.0b4.jar',
-            'libs/google-play-services.jar',
-            'libs/google-api-client-1.15.0-rc.jar',
-            'libs/google-api-client-android-1.15.0-rc.jar',
-            'libs/google-api-services-drive-v2-rev77-1.15.0-rc.jar',
-            'libs/google-http-client-1.15.0-rc.jar',
-            'libs/google-http-client-android-1.15.0-rc.jar',
-            'libs/google-http-client-gson-1.15.0-rc.jar',
-            'libs/google-oauth-client-1.15.0-rc.jar',
-            'libs/jsr305-1.3.9.jar',
             'libs/libGoogleAnalyticsServices.jar',
+            'libs/bsh-core-2.0b4.jar',
             'libs/joda-time-2.3.jar')
     compile 'com.google.android.gms:play-services:4.1.+'
     compile 'de.greenrobot:eventbus:2.2.0'
     compile 'com.squareup.okhttp:okhttp:1.3.0'
     compile 'com.squareup.retrofit:retrofit:1.3.0'
     compile 'com.mobeta.android.dslv:drag-sort-listview:0.6.1'
+    compile 'com.google.android.apps.dashclock:dashclock-api:+'
 }

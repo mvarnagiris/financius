@@ -48,8 +48,6 @@ public class BackupParser extends Parser
             values.put(Tables.Currencies.SYMBOL_FORMAT, jObject.getString(JTags.Currency.SYMBOL_FORMAT));
             values.put(Tables.Currencies.IS_DEFAULT, jObject.getInt(JTags.Currency.IS_DEFAULT));
             values.put(Tables.Currencies.EXCHANGE_RATE, jObject.getDouble(JTags.Currency.EXCHANGE_RATE));
-            values.put(Tables.Currencies.TIMESTAMP, jObject.getLong(JTags.Currency.TIMESTAMP));
-            values.put(Tables.Currencies.SYNC_STATE, jObject.getInt(JTags.Currency.SYNC_STATE));
             values.put(Tables.Currencies.DELETE_STATE, jObject.getInt(JTags.Currency.DELETE_STATE));
             list.add(values);
         }
@@ -75,8 +73,6 @@ public class BackupParser extends Parser
             values.put(Tables.Accounts.SHOW_IN_TOTALS, jObject.getInt(JTags.Account.SHOW_IN_TOTALS));
             values.put(Tables.Accounts.SHOW_IN_SELECTION, jObject.getInt(JTags.Account.SHOW_IN_SELECTION));
             values.put(Tables.Accounts.ORIGIN, jObject.getInt(JTags.Account.ORIGIN));
-            values.put(Tables.Accounts.TIMESTAMP, jObject.getLong(JTags.Account.TIMESTAMP));
-            values.put(Tables.Accounts.SYNC_STATE, jObject.getInt(JTags.Account.SYNC_STATE));
             values.put(Tables.Accounts.DELETE_STATE, jObject.getInt(JTags.Account.DELETE_STATE));
             list.add(values);
         }
@@ -101,8 +97,6 @@ public class BackupParser extends Parser
             values.put(Tables.Categories.TYPE, jObject.getInt(JTags.Category.TYPE));
             values.put(Tables.Categories.COLOR, jObject.getInt(JTags.Category.COLOR));
             values.put(Tables.Categories.ORIGIN, jObject.getInt(JTags.Category.ORIGIN));
-            values.put(Tables.Categories.TIMESTAMP, jObject.getLong(JTags.Category.TIMESTAMP));
-            values.put(Tables.Categories.SYNC_STATE, jObject.getInt(JTags.Category.SYNC_STATE));
             values.put(Tables.Categories.DELETE_STATE, jObject.getInt(JTags.Category.DELETE_STATE));
             if (exportVersion >= 4)
             {
@@ -135,8 +129,6 @@ public class BackupParser extends Parser
             values.put(Tables.Transactions.EXCHANGE_RATE, jObject.getDouble(JTags.Transaction.EXCHANGE_RATE));
             values.put(Tables.Transactions.STATE, jObject.getInt(JTags.Transaction.STATE));
             values.put(Tables.Transactions.SHOW_IN_TOTALS, jObject.getInt(JTags.Transaction.SHOW_IN_TOTALS));
-            values.put(Tables.Transactions.TIMESTAMP, jObject.getLong(JTags.Transaction.TIMESTAMP));
-            values.put(Tables.Transactions.SYNC_STATE, jObject.getInt(JTags.Transaction.SYNC_STATE));
             values.put(Tables.Transactions.DELETE_STATE, jObject.getInt(JTags.Transaction.DELETE_STATE));
             list.add(values);
         }

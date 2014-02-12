@@ -82,7 +82,7 @@ public class AccountsProvider extends AbstractItemsProvider
             AccountsUtils.updateBalanceWithTransaction(getContext(), selection, selectionArgs, balance);
         }
 
-        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
+        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions());
     }
 
     @Override
@@ -107,7 +107,7 @@ public class AccountsProvider extends AbstractItemsProvider
             getContext().getContentResolver().delete(TransactionsProvider.uriTransactions(), inClause.getSelection(), inClause.getSelectionArgs());
         }
 
-        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
+        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions());
     }
 
     @Override

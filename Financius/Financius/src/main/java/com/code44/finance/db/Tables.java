@@ -145,7 +145,7 @@ public class Tables
                     makeColumn(BALANCE, TYPE_REAL, "0"),
                     makeColumn(SHOW_IN_TOTALS, TYPE_BOOLEAN, "1"),
                     makeColumn(SHOW_IN_SELECTION, TYPE_BOOLEAN, "1"),
-                    makeColumn(ORIGIN, TYPE_INTEGER, null));
+                    makeColumn(ORIGIN, TYPE_INTEGER, String.valueOf(Origin.USER)));
         }
 
         public static class IDs
@@ -230,7 +230,7 @@ public class Tables
                     makeColumn(COLOR, TYPE_INTEGER, "0"),
                     makeColumn(LEVEL, TYPE_INTEGER, "0"),
                     makeColumn(TYPE, TYPE_INTEGER, null),
-                    makeColumn(ORIGIN, TYPE_INTEGER, null),
+                    makeColumn(ORIGIN, TYPE_INTEGER, String.valueOf(Origin.USER)),
                     makeColumn(ORDER, TYPE_INTEGER, null),
                     makeColumn(PARENT_ORDER, TYPE_INTEGER, null));
         }

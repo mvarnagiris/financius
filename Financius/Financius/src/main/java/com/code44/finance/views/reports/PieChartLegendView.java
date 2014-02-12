@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.utils.AmountUtils;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +105,7 @@ public class PieChartLegendView extends LinearLayout
         int cutoffIndex = -1;
         PieChartLegendItem item;
         View view;
-        final long mainCurrencyId = CurrenciesHelper.getDefault().getMainCurrencyId();
+        final long mainCurrencyId = CurrencyHelper.get().getMainCurrencyId();
         for (int i = 0; i < size; i++)
         {
             // Get item

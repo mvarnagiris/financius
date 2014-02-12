@@ -7,7 +7,7 @@ import android.net.Uri;
 import com.code44.finance.App;
 import com.code44.finance.db.Tables;
 import com.code44.finance.utils.AmountUtils;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 
 import java.util.List;
 
@@ -57,7 +57,7 @@ public class CurrenciesProvider extends AbstractItemsProvider
     protected void onAfterInsert(Uri uri, ContentValues values, long newId, Object objectFromBefore)
     {
         AmountUtils.onCurrencyUpdated(newId);
-        CurrenciesHelper.getDefault().update();
+        CurrencyHelper.get().update();
 
         // Notify
         notifyURIs(uriCurrencies());
@@ -133,10 +133,10 @@ public class CurrenciesProvider extends AbstractItemsProvider
             if (c != null && !c.isClosed())
                 c.close();
         }
-        CurrenciesHelper.getDefault().update();
+        CurrencyHelper.get().update();
 
         // Notify
-        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
+        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions());
     }
 
     @Override
@@ -186,10 +186,10 @@ public class CurrenciesProvider extends AbstractItemsProvider
             getContext().getContentResolver().delete(AccountsProvider.uriAccounts(), Tables.Accounts.ORIGIN + "<>" + Tables.Accounts.Origin.SYSTEM + " and " + inClause.getSelection(), inClause.getSelectionArgs());
         }
 
-        CurrenciesHelper.getDefault().update();
+        CurrencyHelper.get().update();
 
         // Notify
-        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
+        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions());
     }
 
     @Override
@@ -260,11 +260,11 @@ public class CurrenciesProvider extends AbstractItemsProvider
             db.update(Tables.Currencies.TABLE_NAME, values, Tables.Currencies.T_ID + "=?", new String[]{String.valueOf(newDefaultCurrencyId)});
         }
 
-        // TODO Update format in CurrenciesHelper for all currencies
-        CurrenciesHelper.getDefault().update();
+        // TODO Update format in CurrencyHelper for all currencies
+        CurrencyHelper.get().update();
 
         // Notify
-        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
+        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions());
     }
 
     @Override

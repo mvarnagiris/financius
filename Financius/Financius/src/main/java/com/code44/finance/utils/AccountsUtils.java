@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class AccountsUtils
 {
-    public static ContentValues getValues(long currencyId, String title, String note, double balance, boolean showInTotals, boolean showInSelection, int origin)
+    public static ContentValues getValues(long currencyId, String title, String note, double balance, boolean showInTotals, boolean showInSelection)
     {
         ContentValues values = new ContentValues();
 
@@ -25,7 +25,6 @@ public class AccountsUtils
         values.put(Tables.Accounts.BALANCE, balance);
         values.put(Tables.Accounts.SHOW_IN_TOTALS, showInTotals);
         values.put(Tables.Accounts.SHOW_IN_SELECTION, showInSelection);
-        values.put(Tables.Accounts.ORIGIN, origin);
 
         return values;
     }
@@ -187,8 +186,7 @@ public class AccountsUtils
                 categoryId = Tables.Categories.IDs.EXPENSE_ID;
             }
 
-            final ContentValues values = new ContentValues();
-            TransactionsUtils.prepareValues(values, accountFromId, accountToId, categoryId, System.currentTimeMillis(), Math.abs(delta), 1.0, context.getString(R.string.account_balance_update), Tables.Transactions.State.CONFIRMED, false);
+            final ContentValues values = TransactionsUtils.getValues(accountFromId, accountToId, categoryId, System.currentTimeMillis(), Math.abs(delta), 1.0, context.getString(R.string.account_balance_update), Tables.Transactions.State.CONFIRMED, false);
             values.put(Tables.Transactions.SERVER_ID, UUID.randomUUID().toString());
             context.getContentResolver().insert(TransactionsProvider.uriTransactions(), values);
         }

@@ -17,12 +17,22 @@ public class DataHelper
 
     public static void create(Uri uri, ContentValues values)
     {
-        new CreateAsyncTask(uri, values).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        create(uri, values, null);
+    }
+
+    public static void create(Uri uri, ContentValues values, ValuesUpdater valuesUpdater)
+    {
+        new CreateAsyncTask(uri, values, valuesUpdater).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public static void update(Uri uri, long itemId, ContentValues values)
     {
-        new UpdateAsyncTask(uri, itemId, values).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        update(uri, itemId, values, null);
+    }
+
+    public static void update(Uri uri, long itemId, ContentValues values, ValuesUpdater valuesUpdater)
+    {
+        new UpdateAsyncTask(uri, itemId, values, valuesUpdater).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public static void delete(Uri uri, long[] itemIDs)
@@ -34,16 +44,20 @@ public class DataHelper
     {
         private final Uri uri;
         private final ContentValues values;
+        private final ValuesUpdater valuesUpdater;
 
-        protected CreateAsyncTask(Uri uri, ContentValues values)
+        protected CreateAsyncTask(Uri uri, ContentValues values, ValuesUpdater valuesUpdater)
         {
             this.uri = uri;
             this.values = values;
+            this.valuesUpdater = valuesUpdater;
         }
 
         @Override
         protected Void doInBackground(Void... params)
         {
+            if (valuesUpdater != null)
+                valuesUpdater.updateValues(values);
             getContentResolver().insert(uri, values);
             return null;
         }
@@ -54,17 +68,21 @@ public class DataHelper
         private final Uri uri;
         private final long itemId;
         private final ContentValues values;
+        private final ValuesUpdater valuesUpdater;
 
-        protected UpdateAsyncTask(Uri uri, long itemId, ContentValues values)
+        protected UpdateAsyncTask(Uri uri, long itemId, ContentValues values, ValuesUpdater valuesUpdater)
         {
             this.uri = uri;
             this.itemId = itemId;
             this.values = values;
+            this.valuesUpdater = valuesUpdater;
         }
 
         @Override
         protected Void doInBackground(Void... params)
         {
+            if (valuesUpdater != null)
+                valuesUpdater.updateValues(values);
             values.put(BaseColumns._ID, itemId);
             getContentResolver().update(uri, values, BaseColumns._ID + "=?", new String[]{String.valueOf(itemId)});
             return null;
@@ -89,5 +107,10 @@ public class DataHelper
             getContentResolver().delete(uri, inClause.getSelection(), inClause.getSelectionArgs());
             return null;
         }
+    }
+
+    public static interface ValuesUpdater
+    {
+        public void updateValues(ContentValues values);
     }
 }

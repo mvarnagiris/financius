@@ -75,6 +75,7 @@ public class BackupUtils
         Cursor c = null;
         try
         {
+            //noinspection ConstantConditions
             c = DBHelper.get(context).getReadableDatabase().query(Tables.Currencies.TABLE_NAME, null, null, null, null, null, null);
 
             if (c != null && c.moveToFirst())
@@ -89,8 +90,6 @@ public class BackupUtils
                 final int iSymbolFormat = c.getColumnIndex(Tables.Currencies.SYMBOL_FORMAT);
                 final int iIsDefault = c.getColumnIndex(Tables.Currencies.IS_DEFAULT);
                 final int iExchangeRate = c.getColumnIndex(Tables.Currencies.EXCHANGE_RATE);
-                final int iTimestamp = c.getColumnIndex(Tables.Currencies.TIMESTAMP);
-                final int iSyncState = c.getColumnIndex(Tables.Currencies.SYNC_STATE);
                 final int iDeleteState = c.getColumnIndex(Tables.Currencies.DELETE_STATE);
 
                 do
@@ -106,8 +105,6 @@ public class BackupUtils
                     writer.name(JTags.Currency.SYMBOL_FORMAT).value(c.getString(iSymbolFormat));
                     writer.name(JTags.Currency.IS_DEFAULT).value(c.getInt(iIsDefault));
                     writer.name(JTags.Currency.EXCHANGE_RATE).value(c.getDouble(iExchangeRate));
-                    writer.name(JTags.Currency.TIMESTAMP).value(c.getLong(iTimestamp));
-                    writer.name(JTags.Currency.SYNC_STATE).value(c.getInt(iSyncState));
                     writer.name(JTags.Currency.DELETE_STATE).value(c.getInt(iDeleteState));
                     writer.endObject();
                 }
@@ -126,6 +123,7 @@ public class BackupUtils
         Cursor c = null;
         try
         {
+            //noinspection ConstantConditions
             c = DBHelper.get(context).getReadableDatabase().query(Tables.Accounts.TABLE_NAME, null, null, null, null, null, null);
 
             if (c != null && c.moveToFirst())
@@ -133,16 +131,12 @@ public class BackupUtils
                 final int iId = c.getColumnIndex(Tables.Accounts.ID);
                 final int iServerId = c.getColumnIndex(Tables.Accounts.SERVER_ID);
                 final int iCurrencyId = c.getColumnIndex(Tables.Accounts.CURRENCY_ID);
-                final int iTypeResName = c.getColumnIndex(Tables.Accounts.TYPE_RES_NAME);
                 final int iTitle = c.getColumnIndex(Tables.Accounts.TITLE);
                 final int iNote = c.getColumnIndex(Tables.Accounts.NOTE);
                 final int iBalance = c.getColumnIndex(Tables.Accounts.BALANCE);
-                final int iOverdraft = c.getColumnIndex(Tables.Accounts.OVERDRAFT);
                 final int iShowInTotals = c.getColumnIndex(Tables.Accounts.SHOW_IN_TOTALS);
                 final int iShowInSelection = c.getColumnIndex(Tables.Accounts.SHOW_IN_SELECTION);
                 final int iOrigin = c.getColumnIndex(Tables.Accounts.ORIGIN);
-                final int iTimestamp = c.getColumnIndex(Tables.Accounts.TIMESTAMP);
-                final int iSyncState = c.getColumnIndex(Tables.Accounts.SYNC_STATE);
                 final int iDeleteState = c.getColumnIndex(Tables.Accounts.DELETE_STATE);
 
                 do
@@ -151,16 +145,12 @@ public class BackupUtils
                     writer.name(JTags.Account.ID).value(c.getLong(iId));
                     writer.name(JTags.Account.SERVER_ID).value(c.getString(iServerId));
                     writer.name(JTags.Account.CURRENCY_ID).value(c.getLong(iCurrencyId));
-                    writer.name(JTags.Account.TYPE_RES_NAME).value(c.getString(iTypeResName));
                     writer.name(JTags.Account.TITLE).value(c.getString(iTitle));
                     writer.name(JTags.Account.NOTE).value(c.getString(iNote));
                     writer.name(JTags.Account.BALANCE).value(c.getDouble(iBalance));
-                    writer.name(JTags.Account.OVERDRAFT).value(c.getDouble(iOverdraft));
                     writer.name(JTags.Account.SHOW_IN_TOTALS).value(c.getInt(iShowInTotals));
                     writer.name(JTags.Account.SHOW_IN_SELECTION).value(c.getInt(iShowInSelection));
                     writer.name(JTags.Account.ORIGIN).value(c.getInt(iOrigin));
-                    writer.name(JTags.Account.TIMESTAMP).value(c.getLong(iTimestamp));
-                    writer.name(JTags.Account.SYNC_STATE).value(c.getInt(iSyncState));
                     writer.name(JTags.Account.DELETE_STATE).value(c.getInt(iDeleteState));
                     writer.endObject();
                 }
@@ -179,6 +169,7 @@ public class BackupUtils
         Cursor c = null;
         try
         {
+            //noinspection ConstantConditions
             c = DBHelper.get(context).getReadableDatabase().query(Tables.Categories.TABLE_NAME, null, null, null, null, null, null);
 
             if (c != null && c.moveToFirst())
@@ -193,8 +184,6 @@ public class BackupUtils
                 final int iOrigin = c.getColumnIndex(Tables.Categories.ORIGIN);
                 final int iOrder = c.getColumnIndex(Tables.Categories.ORDER);
                 final int iParentOrder = c.getColumnIndex(Tables.Categories.PARENT_ORDER);
-                final int iTimestamp = c.getColumnIndex(Tables.Categories.TIMESTAMP);
-                final int iSyncState = c.getColumnIndex(Tables.Categories.SYNC_STATE);
                 final int iDeleteState = c.getColumnIndex(Tables.Categories.DELETE_STATE);
 
                 do
@@ -210,8 +199,6 @@ public class BackupUtils
                     writer.name(JTags.Category.ORIGIN).value(c.getInt(iOrigin));
                     writer.name(JTags.Category.ORDER).value(c.getInt(iOrder));
                     writer.name(JTags.Category.PARENT_ORDER).value(c.getInt(iParentOrder));
-                    writer.name(JTags.Category.TIMESTAMP).value(c.getLong(iTimestamp));
-                    writer.name(JTags.Category.SYNC_STATE).value(c.getInt(iSyncState));
                     writer.name(JTags.Category.DELETE_STATE).value(c.getInt(iDeleteState));
                     writer.endObject();
                 }
@@ -230,6 +217,7 @@ public class BackupUtils
         Cursor c = null;
         try
         {
+            //noinspection ConstantConditions
             c = DBHelper.get(context).getReadableDatabase().query(Tables.Transactions.TABLE_NAME, null, null, null, null, null, null);
 
             if (c != null && c.moveToFirst())
@@ -245,8 +233,6 @@ public class BackupUtils
                 final int iNote = c.getColumnIndex(Tables.Transactions.NOTE);
                 final int iState = c.getColumnIndex(Tables.Transactions.STATE);
                 final int iShowInTotals = c.getColumnIndex(Tables.Transactions.SHOW_IN_TOTALS);
-                final int iTimestamp = c.getColumnIndex(Tables.Transactions.TIMESTAMP);
-                final int iSyncState = c.getColumnIndex(Tables.Transactions.SYNC_STATE);
                 final int iDeleteState = c.getColumnIndex(Tables.Transactions.DELETE_STATE);
 
                 do
@@ -263,8 +249,6 @@ public class BackupUtils
                     writer.name(JTags.Transaction.NOTE).value(c.getString(iNote));
                     writer.name(JTags.Transaction.STATE).value(c.getInt(iState));
                     writer.name(JTags.Transaction.SHOW_IN_TOTALS).value(c.getInt(iShowInTotals));
-                    writer.name(JTags.Transaction.TIMESTAMP).value(c.getLong(iTimestamp));
-                    writer.name(JTags.Transaction.SYNC_STATE).value(c.getInt(iSyncState));
                     writer.name(JTags.Transaction.DELETE_STATE).value(c.getInt(iDeleteState));
                     writer.endObject();
                 }

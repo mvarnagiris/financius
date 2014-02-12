@@ -48,7 +48,7 @@ public class TransactionsProvider extends AbstractItemsProvider
         //noinspection ConstantConditions
         AccountsUtils.updateBalance(getContext(), db, values.getAsLong(Tables.Transactions.ACCOUNT_FROM_ID), values.getAsLong(Tables.Transactions.ACCOUNT_TO_ID), values.getAsLong(Tables.Transactions.CATEGORY_ID));
 
-        notifyURIs(AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
+        notifyURIs(AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions());
     }
 
     @Override
@@ -62,7 +62,7 @@ public class TransactionsProvider extends AbstractItemsProvider
     {
         AccountsUtils.updateBalance(getContext(), db);
 
-        notifyURIs(AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
+        notifyURIs(AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions());
     }
 
     @Override
@@ -76,7 +76,7 @@ public class TransactionsProvider extends AbstractItemsProvider
     {
         AccountsUtils.updateBalance(getContext(), db);
 
-        notifyURIs(AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
+        notifyURIs(AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions());
     }
 
     @Override
@@ -88,7 +88,7 @@ public class TransactionsProvider extends AbstractItemsProvider
     @Override
     protected void onAfterBulkInsert(Uri uri, ContentValues[] valuesArray, Object objectFromBefore)
     {
-        notifyURIs(AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions(), BudgetsProvider.uriBudgets());
+        notifyURIs(AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions());
     }
 
     @Override

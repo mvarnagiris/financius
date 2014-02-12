@@ -18,7 +18,7 @@ import com.code44.finance.providers.CategoriesProvider;
 import com.code44.finance.providers.TransactionsProvider;
 import com.code44.finance.ui.ItemFragment;
 import com.code44.finance.utils.AmountUtils;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 
 public class CategoryItemFragment extends ItemFragment
 {
@@ -82,11 +82,8 @@ public class CategoryItemFragment extends ItemFragment
             {
                 Uri uri = CategoriesProvider.uriCategory(parentId);
                 String[] projection = new String[]{Tables.Categories.TITLE, Tables.Categories.LEVEL};
-                String selection = null;
-                String[] selectionArgs = null;
-                String sortOrder = null;
 
-                return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs, sortOrder);
+                return new CursorLoader(getActivity(), uri, projection, null, null, null);
             }
 
             case LOADER_TRANSACTIONS:
@@ -99,9 +96,8 @@ public class CategoryItemFragment extends ItemFragment
                                 "avg(" + Tables.Transactions.AMOUNT + " * case " + Tables.Categories.CategoriesChild.T_TYPE + " when " + Tables.Categories.Type.EXPENSE + " then " + Tables.Currencies.CurrencyFrom.T_EXCHANGE_RATE + " else " + Tables.Currencies.CurrencyTo.T_EXCHANGE_RATE + " end)"};
                 String selection = Tables.Transactions.CATEGORY_ID + "=? and " + Tables.Transactions.STATE + "=? and " + Tables.Transactions.DELETE_STATE + "=? and " + Tables.Transactions.SHOW_IN_TOTALS + "=?";
                 String[] selectionArgs = new String[]{String.valueOf(itemId), String.valueOf(Tables.Transactions.State.CONFIRMED), String.valueOf(Tables.DeleteState.NONE), "1"};
-                String sortOrder = null;
 
-                return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs, sortOrder);
+                return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs, null);
             }
         }
         return super.onCreateLoader(id, bundle);
@@ -132,20 +128,17 @@ public class CategoryItemFragment extends ItemFragment
     @Override
     protected boolean onDeleteItem(Context context, long[] itemIds)
     {
-        API.deleteCategories(context, itemIds);
+        API.deleteItems(CategoriesProvider.uriCategories(), itemIds);
         return true;
     }
 
     @Override
     protected Loader<Cursor> createItemLoader(Context context, long itemId)
     {
-        Uri uri = CategoriesProvider.uriCategory(getActivity(), itemId);
+        Uri uri = CategoriesProvider.uriCategory(itemId);
         String[] projection = new String[]{Tables.Categories.PARENT_ID, Tables.Categories.TITLE, Tables.Categories.COLOR, Tables.Categories.TYPE, Tables.Categories.LEVEL};
-        String selection = null;
-        String[] selectionArgs = null;
-        String sortOrder = null;
 
-        return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs, sortOrder);
+        return new CursorLoader(getActivity(), uri, projection, null, null, null);
     }
 
     @Override
@@ -203,7 +196,7 @@ public class CategoryItemFragment extends ItemFragment
             final long lastUsedDate = c.getLong(0);
             lastUsed_TV.setText(lastUsedDate == 0 ? getString(R.string.never) : DateUtils.getRelativeTimeSpanString(c.getLong(0), System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS));
             timesUsed_TV.setText(c.getString(1));
-            avgAmount_TV.setText(AmountUtils.formatAmount(getActivity(), CurrenciesHelper.getDefault(getActivity()).getMainCurrencyId(), c.getDouble(2)));
+            avgAmount_TV.setText(AmountUtils.formatAmount(CurrencyHelper.get().getMainCurrencyId(), c.getDouble(2)));
         }
     }
 }

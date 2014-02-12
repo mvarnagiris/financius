@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.utils.AmountUtils;
 import com.code44.finance.utils.CardViewUtils;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 import com.code44.finance.utils.PeriodHelper;
 import com.code44.finance.views.reports.ExpenseGraphView;
 
@@ -150,11 +150,11 @@ public class TransactionsCardView extends PeriodCardView
         final double income = info.getIncome();
         final double expense = info.getExpense();
 
-        final long mainCurrencyId = CurrenciesHelper.getDefault(getContext()).getMainCurrencyId();
+        final long mainCurrencyId = CurrencyHelper.get().getMainCurrencyId();
         if (income > 0)
         {
             income_TV.setVisibility(VISIBLE);
-            income_TV.setText(AmountUtils.formatAmount(getContext(), mainCurrencyId, income));
+            income_TV.setText(AmountUtils.formatAmount(mainCurrencyId, income));
         }
         else
         {
@@ -175,7 +175,7 @@ public class TransactionsCardView extends PeriodCardView
         {
             final double profit = income - expense;
             profit_TV.setVisibility(VISIBLE);
-            profit_TV.setText(AmountUtils.formatAmount(getContext(), mainCurrencyId, profit));
+            profit_TV.setText(AmountUtils.formatAmount(mainCurrencyId, profit));
             profit_TV.setTextColor(AmountUtils.getBalanceColor(getContext(), profit, false));
         }
         else

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.db.Tables;
 import com.code44.finance.utils.AmountUtils;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 import com.code44.finance.utils.PeriodHelper;
 
 import java.util.Calendar;
@@ -131,10 +131,10 @@ public class TransactionsAdapter extends AbstractSectionedCursorAdapter
                 holder.account_TV.setText(c.getString(iAccountFromTitle));
                 holder.amount_TV.setText(AmountUtils.formatAmount(c.getLong(iAccountFromCurrencyId), c.getDouble(iAmount)));
                 holder.amount_TV.setTextColor(state == Tables.Transactions.State.CONFIRMED ? darkColor : darkSecondaryColor);
-                if (c.getLong(iAccountFromCurrencyId) != CurrenciesHelper.getDefault().getMainCurrencyId())
+                if (c.getLong(iAccountFromCurrencyId) != CurrencyHelper.get().getMainCurrencyId())
                 {
                     holder.amountCurrency_TV.setVisibility(View.VISIBLE);
-                    holder.amountCurrency_TV.setText(AmountUtils.formatAmount(CurrenciesHelper.getDefault().getMainCurrencyId(), c.getDouble(iAmount) * c.getDouble(iAccountFromCurrencyExchangeRate)));
+                    holder.amountCurrency_TV.setText(AmountUtils.formatAmount(CurrencyHelper.get().getMainCurrencyId(), c.getDouble(iAmount) * c.getDouble(iAccountFromCurrencyExchangeRate)));
                 }
                 else
                 {
@@ -146,10 +146,10 @@ public class TransactionsAdapter extends AbstractSectionedCursorAdapter
                 holder.account_TV.setText(c.getString(iAccountToTitle));
                 holder.amount_TV.setText(AmountUtils.formatAmount(c.getLong(iAccountToCurrencyId), c.getDouble(iAmount)));
                 holder.amount_TV.setTextColor(state == Tables.Transactions.State.CONFIRMED ? greenColor : darkSecondaryColor);
-                if (c.getLong(iAccountToCurrencyId) != CurrenciesHelper.getDefault().getMainCurrencyId())
+                if (c.getLong(iAccountToCurrencyId) != CurrencyHelper.get().getMainCurrencyId())
                 {
                     holder.amountCurrency_TV.setVisibility(View.VISIBLE);
-                    holder.amountCurrency_TV.setText(AmountUtils.formatAmount(CurrenciesHelper.getDefault().getMainCurrencyId(), c.getDouble(iAmount) * c.getDouble(iAccountToCurrencyExchangeRate)));
+                    holder.amountCurrency_TV.setText(AmountUtils.formatAmount(CurrencyHelper.get().getMainCurrencyId(), c.getDouble(iAmount) * c.getDouble(iAccountToCurrencyExchangeRate)));
                 }
                 else
                 {

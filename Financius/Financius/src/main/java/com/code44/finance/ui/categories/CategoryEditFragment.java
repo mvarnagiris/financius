@@ -1,13 +1,16 @@
 package com.code44.finance.ui.categories;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import com.code44.finance.API;
 import com.code44.finance.R;
 import com.code44.finance.db.Tables;
+import com.code44.finance.providers.CategoriesProvider;
 import com.code44.finance.ui.BaseFragment;
 import com.code44.finance.ui.ItemEditStepsFragment;
+import com.code44.finance.utils.CategoriesUtils;
 
 public class CategoryEditFragment extends ItemEditStepsFragment implements CategoryParentFragment.Callbacks
 {
@@ -56,10 +59,12 @@ public class CategoryEditFragment extends ItemEditStepsFragment implements Categ
         if (TextUtils.isEmpty(title) || color == 0)
             return false;
 
+
+        ContentValues values = CategoriesUtils.getValues(parentId, title, level, categoryType, color);
         if (itemId == 0)
-            API.createCategory(getActivity(), parentId, title, level, categoryType, color);
+            API.createItem(CategoriesProvider.uriCategories(), values, new CategoriesUtils.OrderValuesUpdater());
         else
-            API.updateCategory(getActivity(), itemId, parentId, title, level, categoryType, color);
+            API.updateItem(CategoriesProvider.uriCategories(), itemId, values, new CategoriesUtils.OrderValuesUpdater());
 
         return true;
     }

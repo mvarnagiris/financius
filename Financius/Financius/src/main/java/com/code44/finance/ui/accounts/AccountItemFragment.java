@@ -19,7 +19,7 @@ import com.code44.finance.providers.AccountsProvider;
 import com.code44.finance.providers.TransactionsProvider;
 import com.code44.finance.ui.ItemFragment;
 import com.code44.finance.utils.AmountUtils;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 
 public class AccountItemFragment extends ItemFragment
 {
@@ -148,7 +148,7 @@ public class AccountItemFragment extends ItemFragment
     @Override
     protected boolean onDeleteItem(Context context, long[] itemIds)
     {
-        API.deleteAccounts(itemIds);
+        API.deleteItems(AccountsProvider.uriAccounts(), itemIds);
         return true;
     }
 
@@ -212,7 +212,7 @@ public class AccountItemFragment extends ItemFragment
     {
         if (c != null && c.moveToFirst())
         {
-            avgExpense_TV.setText(AmountUtils.formatAmount(CurrenciesHelper.getDefault().getMainCurrencyId(), c.getDouble(0)));
+            avgExpense_TV.setText(AmountUtils.formatAmount(CurrencyHelper.get().getMainCurrencyId(), c.getDouble(0)));
         }
     }
 
@@ -220,7 +220,7 @@ public class AccountItemFragment extends ItemFragment
     {
         if (c != null && c.moveToFirst())
         {
-            avgIncome_TV.setText(AmountUtils.formatAmount(CurrenciesHelper.getDefault().getMainCurrencyId(), c.getDouble(0)));
+            avgIncome_TV.setText(AmountUtils.formatAmount(CurrencyHelper.get().getMainCurrencyId(), c.getDouble(0)));
         }
     }
 }
