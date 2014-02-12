@@ -10,7 +10,7 @@ import com.code44.finance.utils.AmountUtils;
 import com.code44.finance.views.AutoResizeTextView;
 
 @SuppressWarnings("UnusedDeclaration")
-public class AmountCardView extends CardViewV2 implements View.OnClickListener
+public class AmountCardView extends CardViewV2
 {
     private final AutoResizeTextView amount_TV;
     private final AutoResizeTextView exchangeRate_TV;
@@ -55,11 +55,20 @@ public class AmountCardView extends CardViewV2 implements View.OnClickListener
         amount_TV.setTextSize(getResources().getDimension(R.dimen.text_xxxlarge));
         amount_TV.setMinTextSize(getResources().getDimension(R.dimen.text_xsmall));
         amount_TV.setMinHeight(getResources().getDimensionPixelSize(R.dimen.big_touch_size));
+        amount_TV.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (callback != null)
+                    callback.onRequestAmount();
+            }
+        });
         setContentView(amount_TV);
 
         // Setup exchange rate
         exchangeRate_TV = new AutoResizeTextView(context);
-        exchangeRate_TV.setPadding(padding, 0 ,padding, 0);
+        exchangeRate_TV.setPadding(padding, 0, padding, 0);
         exchangeRate_TV.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
         exchangeRate_TV.setMaxLines(1);
         //noinspection ConstantConditions
@@ -71,33 +80,17 @@ public class AmountCardView extends CardViewV2 implements View.OnClickListener
         exchangeRate_TV.setOnClickListener(new OnClickListener()
         {
             @Override
-            public void onClick(View v)
+            public void onClick(View view)
             {
-//                final ListPopupWindow popup = new ListPopupWindow(getContext());
-//                popup.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, new String[]{getContext().getString(R.string.refresh_rate), getContext().getString(R.string.set)}));
-//                popup.setContentWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getContext().getResources().getDisplayMetrics()));
-//                popup.setAnchorView(exchangeRate_TV);
-//                popup.setModal(true);
-//                popup.setOnItemClickListener(new AdapterView.OnItemClickListener()
-//                {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
-//                    {
-//                        popup.dismiss();
-//                        if (position == 0)
-//                            API.getExchangeRate(getContext(), getAccountFromCurrencyCode(), getAccountToCurrencyCode());
-//                        else
-//                            CalculatorActivity.startCalculator(TransactionEditFragment.this, REQUEST_EXCHANGE_RATE, getExchangeRate(), false, false);
-//                    }
-//                });
-//                popup.show();
+                if (callback != null)
+                    callback.onRequestExchangeRate();
             }
         });
         listContainer_LL.addView(exchangeRate_TV);
 
         // Setup exchange rate
         amountTo_TV = new AutoResizeTextView(context);
-        amountTo_TV.setPadding(padding, 0 ,padding, 0);
+        amountTo_TV.setPadding(padding, 0, padding, 0);
         amountTo_TV.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
         amountTo_TV.setMaxLines(1);
         //noinspection ConstantConditions
@@ -106,7 +99,15 @@ public class AmountCardView extends CardViewV2 implements View.OnClickListener
         amountTo_TV.setMinTextSize(getResources().getDimension(R.dimen.text_xsmall));
         amountTo_TV.setMinHeight(getResources().getDimensionPixelSize(R.dimen.recommended_touch_size));
         amountTo_TV.setBackgroundResource(R.drawable.card_selector);
-        amountTo_TV.setOnClickListener(this);
+        amountTo_TV.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (callback != null)
+                    callback.onRequestAmountTo();
+            }
+        });
         listContainer_LL.addView(amountTo_TV);
 
         // Setup icon
@@ -118,7 +119,7 @@ public class AmountCardView extends CardViewV2 implements View.OnClickListener
         icon_IV.setOnClickListener(new OnClickListener()
         {
             @Override
-            public void onClick(View v)
+            public void onClick(View view)
             {
                 if (callback != null)
                     callback.onChangeCategoryType();
@@ -129,11 +130,6 @@ public class AmountCardView extends CardViewV2 implements View.OnClickListener
             setAmount(275.19, 0, Tables.Categories.Type.EXPENSE);
         else
             setAmount(0.0, 0, Tables.Categories.Type.EXPENSE);
-    }
-
-    @Override
-    public void onClick(View v)
-    {
     }
 
     public void setAmount(double amount, long currencyId, int categoryType)
@@ -176,5 +172,11 @@ public class AmountCardView extends CardViewV2 implements View.OnClickListener
     public static interface Callback
     {
         public void onChangeCategoryType();
+
+        public void onRequestAmount();
+
+        public void onRequestExchangeRate();
+
+        public void onRequestAmountTo();
     }
 }

@@ -9,7 +9,6 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import com.code44.finance.R;
 import com.code44.finance.adapters.AbstractCursorAdapter;
-import com.code44.finance.adapters.AbstractSectionedCursorAdapter;
 import com.code44.finance.adapters.TransactionsAdapter;
 import com.code44.finance.db.Tables;
 import com.code44.finance.providers.TransactionsProvider;
@@ -105,7 +104,7 @@ public class TransactionListFragment extends ItemListFragment implements MainAct
     @Override
     protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c, View view)
     {
-        TransactionItemActivity.startItem(context, ((AbstractSectionedCursorAdapter) adapter).getCursorPosition(position));
+        TransactionItemActivity.startItem(context, itemId, view);
     }
 
     @Override

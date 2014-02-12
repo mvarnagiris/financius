@@ -98,7 +98,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
     private CheckBox confirmed_CB;
     private CheckBox showInTotals_CB;
     // -----------------------------------------------------------------------------------------------------------------
-    private int categoryType;
+    private int categoryType = -1;
     private long expenseCategoryId;
     private String expenseCategoryTitle;
     private int expenseCategoryColor;
@@ -148,7 +148,6 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         super.onActivityCreated(savedInstanceState);
 
         // Setup
-        amount_CV.setOnClickListener(this);
         amount_CV.setCallback(this);
         accountFrom_CV.setOnClickListener(this);
         accountTo_CV.setOnClickListener(this);
@@ -369,10 +368,6 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
     {
         switch (view.getId())
         {
-            case R.id.amount_CV:
-                CalculatorActivity.startCalculator(this, REQUEST_AMOUNT, getAmount(), false, true);
-                break;
-
             case R.id.accountFrom_CV:
                 AccountListActivity.startListSelection(getActivity(), this, REQUEST_ACCOUNT_FROM);
                 break;
@@ -398,10 +393,6 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
             case R.id.date_CV:
                 DateTimeDialog.newDateDialogInstance(this, REQUEST_DATE, getDate()).show(getFragmentManager(), FRAGMENT_DATE_TIME);
                 break;
-
-//            case R.id.amountTo_B:
-//                CalculatorActivity.startCalculator(this, REQUEST_AMOUNT_TO, getAmount() * getExchangeRate(), false, true);
-//                break;
         }
     }
 
@@ -482,6 +473,24 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         final int currentCategoryType = getCategoryType();
         final int newCategoryType = currentCategoryType == Tables.Categories.Type.EXPENSE ? Tables.Categories.Type.INCOME : currentCategoryType == Tables.Categories.Type.INCOME ? Tables.Categories.Type.TRANSFER : Tables.Categories.Type.EXPENSE;
         setCategoryType(newCategoryType);
+    }
+
+    @Override
+    public void onRequestAmount()
+    {
+        CalculatorActivity.startCalculator(this, REQUEST_AMOUNT, getAmount(), false, true);
+    }
+
+    @Override
+    public void onRequestExchangeRate()
+    {
+        CalculatorActivity.startCalculator(this, REQUEST_EXCHANGE_RATE, getExchangeRate(), false, false);
+    }
+
+    @Override
+    public void onRequestAmountTo()
+    {
+        CalculatorActivity.startCalculator(this, REQUEST_AMOUNT_TO, getAmount(), false, true);
     }
 
     @Override

@@ -1,37 +1,27 @@
 package com.code44.finance.ui.transactions;
 
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.Loader;
+import android.view.View;
 import com.code44.finance.R;
-import com.code44.finance.adapters.ItemFragmentAdapter;
-import com.code44.finance.ui.ItemPagerActivity;
+import com.code44.finance.ui.ItemActivity;
+import com.code44.finance.ui.ItemFragment;
 
-public class TransactionItemActivity extends ItemPagerActivity
+public class TransactionItemActivity extends ItemActivity
 {
-    public static void startItem(Context context, int position)
+    public static void startItem(Context context, long itemId, View expandFrom)
     {
-        final Intent intent = makeIntent(context, TransactionItemActivity.class, position);
-        context.startActivity(intent);
+        start(context, makeIntent(context, TransactionItemActivity.class, itemId), expandFrom);
+    }
+
+    @Override
+    protected ItemFragment createItemFragment(long itemId)
+    {
+        return TransactionItemFragment.newInstance(itemId);
     }
 
     @Override
     protected String getActivityTitle()
     {
         return getString(R.string.transaction);
-    }
-
-    @Override
-    protected ItemFragmentAdapter createAdapter(Context context, FragmentManager fm)
-    {
-        return new ItemFragmentAdapter(context, fm, TransactionItemFragment.class);
-    }
-
-    @Override
-    protected Loader<Cursor> createItemsLoader()
-    {
-        return TransactionListFragment.createItemsLoader(this);
     }
 }

@@ -3,6 +3,7 @@ package com.code44.finance.ui.categories;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import com.code44.finance.R;
 import com.code44.finance.db.Tables;
 import com.code44.finance.ui.ItemActivity;
@@ -16,12 +17,12 @@ public class CategoryItemActivity extends ItemActivity
     private int categoryType;
     private String query;
 
-    public static void startItem(Context context, long itemId, int categoryType, String query)
+    public static void startItem(Context context, long itemId, int categoryType, String query, View expandFrom)
     {
         Intent intent = makeIntent(context, CategoryItemActivity.class, itemId);
         intent.putExtra(EXTRA_CATEGORY_TYPE, categoryType);
         intent.putExtra(EXTRA_QUERY, query);
-        context.startActivity(intent);
+        start(context, intent, expandFrom);
     }
 
     @Override
