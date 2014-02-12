@@ -289,7 +289,7 @@ public class CurrenciesProvider extends AbstractItemsProvider
     protected void checkValues(ContentValues values, int operation)
     {
         final boolean required = operation == OPERATION_INSERT || operation == OPERATION_BULK_INSERT;
-        checkString(values, Tables.Currencies.CODE, required);
+        checkString(values, Tables.Currencies.CODE, required, required);
         checkInt(values, Tables.Currencies.DECIMALS, required, 0, 2);
         checkString(values, Tables.Currencies.DECIMAL_SEPARATOR, required, ",", ".", "");
         checkString(values, Tables.Currencies.GROUP_SEPARATOR, required, ",", ".", " ", "");
