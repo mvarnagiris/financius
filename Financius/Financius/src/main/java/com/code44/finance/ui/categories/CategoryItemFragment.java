@@ -2,6 +2,7 @@ package com.code44.finance.ui.categories;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
@@ -10,6 +11,7 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.code44.finance.API;
 import com.code44.finance.R;
@@ -25,7 +27,7 @@ public class CategoryItemFragment extends ItemFragment
     private static final int LOADER_PARENT_CATEGORY = 1;
     private static final int LOADER_TRANSACTIONS = 2;
     // -----------------------------------------------------------------------------------------------------------------
-    private View color_V;
+    private ImageView color_IV;
     private TextView mainTitle_TV;
     private View subContainer_V;
     private TextView subTitle_TV;
@@ -55,7 +57,7 @@ public class CategoryItemFragment extends ItemFragment
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        color_V = view.findViewById(R.id.color_V);
+        color_IV = (ImageView) view.findViewById(R.id.color_IV);
         mainTitle_TV = (TextView) view.findViewById(R.id.mainTitle_TV);
         subContainer_V = view.findViewById(R.id.subContainer_V);
         subTitle_TV = (TextView) view.findViewById(R.id.subTitle_TV);
@@ -168,7 +170,8 @@ public class CategoryItemFragment extends ItemFragment
                 subTitle_TV.setText(title);
                 subContainer_V.setVisibility(View.VISIBLE);
             }
-            color_V.setBackgroundColor(c.getInt(iColor));
+            //noinspection ConstantConditions
+            ((GradientDrawable) color_IV.getDrawable()).setColor(c.getInt(iColor));
 
             // Reload parent
             if (parentId > 0)

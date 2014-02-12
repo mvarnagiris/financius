@@ -8,7 +8,7 @@ public class CurrencyEditActivity extends ItemEditActivity
 {
     public static void startItemEdit(Context context, long itemId)
     {
-        context.startActivity(makeIntent(context, CurrencyEditActivity.class, itemId));
+        start(context, makeIntent(context, CurrencyEditActivity.class, itemId), null);
     }
 
     @Override

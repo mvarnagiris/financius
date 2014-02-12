@@ -49,7 +49,28 @@ public class CategoriesProvider extends AbstractItemsProvider
     protected Object onBeforeUpdate(Uri uri, ContentValues values, String selection, String[] selectionArgs)
     {
         if (values.containsKey(Tables.Categories.PARENT_ID))
-            throw new IllegalArgumentException("Cannot change " + Tables.Categories.PARENT_ID + ". Create new category instead.");
+        {
+            //noinspection ConstantConditions
+            final long parentId = values.getAsLong(Tables.Categories.PARENT_ID);
+            Cursor c = db.query(Tables.Categories.TABLE_NAME, new String[]{Tables.Categories.PARENT_ID}, selection, selectionArgs, null, null, null);
+            try
+            {
+                if (c != null && c.moveToFirst())
+                {
+                    do
+                    {
+                        if (parentId != c.getLong(0))
+                            throw new IllegalArgumentException("Cannot change " + Tables.Categories.PARENT_ID + ". Create new category instead.");
+                    }
+                    while (c.moveToNext());
+                }
+            }
+            finally
+            {
+                if (c != null && !c.isClosed())
+                    c.close();
+            }
+        }
         return null;
     }
 
@@ -65,13 +86,16 @@ public class CategoriesProvider extends AbstractItemsProvider
             {
                 final String realSelection = Tables.Categories.LEVEL + "=1" + (selection != null ? " and (" + selection + ")" : "");
                 c = queryItems(new String[]{Tables.Categories.T_ID}, realSelection, selectionArgs, null);
-                do
+                if (c != null && c.moveToFirst())
                 {
-                    ContentValues tempValues = new ContentValues();
-                    tempValues.put(Tables.Categories.COLOR, values.getAsInteger(Tables.Categories.COLOR));
-                    db.update(Tables.Categories.TABLE_NAME, tempValues, Tables.Categories.PARENT_ID + "=?", new String[]{String.valueOf(c.getLong(0))});
+                    do
+                    {
+                        ContentValues tempValues = new ContentValues();
+                        tempValues.put(Tables.Categories.COLOR, values.getAsInteger(Tables.Categories.COLOR));
+                        db.update(Tables.Categories.TABLE_NAME, tempValues, Tables.Categories.PARENT_ID + "=?", new String[]{String.valueOf(c.getLong(0))});
+                    }
+                    while (c.moveToNext());
                 }
-                while (c.moveToNext());
             }
             finally
             {

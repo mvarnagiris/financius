@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/ListItem"
-    android:minHeight="@dimen/big_touch_size"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    tools:ignore="UseCompoundDrawables">
 
-    <View
-        android:id="@+id/color_V"
+    <ImageView
+        android:id="@+id/color_IV"
         android:layout_width="@dimen/min_touch_size"
         android:layout_height="@dimen/min_touch_size"
-        android:layout_marginRight="@dimen/space_normal" />
+        android:layout_marginRight="@dimen/space_normal"
+        android:src="@drawable/category_color"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/title_TV"
