@@ -73,8 +73,26 @@ public class CurrenciesProvider extends AbstractItemsProvider
             boolean isDefault = values.getAsBoolean(Tables.Currencies.IS_DEFAULT);
             if (!isDefault)
             {
-                // Changing to NOT default. Do not allow to make currency not default.
-                throw new IllegalArgumentException(Tables.Currencies.IS_DEFAULT + " cannot be set to false for currency that has value true. To change default currency you must update another currency to have " + Tables.Currencies.IS_DEFAULT + "=true.");
+                Cursor c = null;
+                try
+                {
+                    c = queryItems(new String[]{Tables.Currencies.IS_DEFAULT}, selection, selectionArgs, null);
+                    if (c != null && c.moveToFirst())
+                    {
+                        do
+                        {
+                            // Changing to NOT default. Do not allow to make currency not default.
+                            if (c.getInt(0) != 0)
+                                throw new IllegalArgumentException(Tables.Currencies.IS_DEFAULT + " cannot be set to false for currency that has value true. To change default currency you must update another currency to have " + Tables.Currencies.IS_DEFAULT + "=true.");
+                        }
+                        while (c.moveToNext());
+                    }
+                }
+                finally
+                {
+                    if (c != null && !c.isClosed())
+                        c.close();
+                }
             }
             else
             {

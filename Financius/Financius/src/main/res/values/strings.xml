@@ -120,6 +120,7 @@
     <string name="show_backups">Show backups</string>
     <string name="export">Export</string>
     <string name="please_wait">Please wait</string>
+    <string name="change_account_currency">Change account currency</string>
 
     <string name="f_x_deleted">%d deleted</string>
     <string name="f_enable_backup">

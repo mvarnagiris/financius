@@ -22,23 +22,26 @@
 
             <TextView
                 android:id="@+id/mainCurrency_TV"
-                style="@style/TextView"
+                style="@style/TextView.Secondary"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_marginRight="@dimen/space_normal"
-                android:textSize="@dimen/text_xlarge"
-                android:textAllCaps="true"
                 android:fontFamily="@string/font_light"
-                tools:text="Your main currency USD" />
+                tools:text="Current main currency is USD" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_normal"
             android:animateLayoutChanges="true">
 
             <TextView
                 android:id="@+id/code_TV"
                 style="@style/TextView"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_marginRight="@dimen/space_normal"
                 android:textSize="@dimen/text_xxlarge"
                 android:textAllCaps="true"
@@ -48,32 +51,41 @@
             <TextView
                 android:id="@+id/exchangeRate_TV"
                 style="@style/TextView"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
                 android:textSize="@dimen/text_large"
                 android:textAllCaps="true"
                 android:fontFamily="@string/font_light"
                 tools:text="0.1648941 \u21C4" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_normal"
+            android:animateLayoutChanges="true">
+
             <TextView
-                android:id="@+id/currentCurrency_TV"
-                style="@style/TextView.Secondary"
-                android:textSize="@dimen/text_xxlarge"
+                style="@style/TextView"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/space_normal"
+                android:text="@string/format"
+                android:fontFamily="@string/font_light"/>
+
+            <TextView
+                android:id="@+id/format_TV"
+                style="@style/TextView"
                 android:fontFamily="@string/font_light"
-                android:layout_marginLeft="@dimen/space_normal"
-                tools:text="USD" />
+                tools:text="£1,000.00" />
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/format_TV"
             style="@style/TextView.Secondary"
-            android:layout_marginTop="@dimen/space_normal"
+            android:layout_marginTop="@dimen/space_xxlarge"
+            android:text="@string/change_account_currency"
             android:textSize="@dimen/text_large"
-            android:textAllCaps="true"
-            android:fontFamily="@string/font_light"
-            tools:text="£1,000.00" />
+            android:fontFamily="@string/font_light"/>
 
         <View
             style="@style/Separator.Thin"

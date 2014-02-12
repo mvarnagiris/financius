@@ -29,7 +29,7 @@ public class CurrencyItemFragment extends ItemFragment
     private LinearLayout container_V;
     private TextView code_TV;
     private TextView format_TV;
-    private TextView currentCurrency_TV;
+    private TextView mainCurrency_TV;
     private TextView exchangeRate_TV;
     // -----------------------------------------------------------------------------------------------------------------
     private String defaultCurrencyCode;
@@ -56,7 +56,7 @@ public class CurrencyItemFragment extends ItemFragment
         container_V = (LinearLayout) view.findViewById(R.id.container_V);
         code_TV = (TextView) view.findViewById(R.id.code_TV);
         format_TV = (TextView) view.findViewById(R.id.format_TV);
-        currentCurrency_TV = (TextView) view.findViewById(R.id.currentCurrency_TV);
+        mainCurrency_TV = (TextView) view.findViewById(R.id.mainCurrency_TV);
         exchangeRate_TV = (TextView) view.findViewById(R.id.exchangeRate_TV);
     }
 
@@ -203,13 +203,13 @@ public class CurrencyItemFragment extends ItemFragment
         //noinspection ConstantConditions
         if (code_TV.getText().toString().equalsIgnoreCase(defaultCurrencyCode))
         {
-            currentCurrency_TV.setVisibility(View.GONE);
+            mainCurrency_TV.setVisibility(View.GONE);
             exchangeRate_TV.setVisibility(View.GONE);
         }
         else
         {
-            currentCurrency_TV.setText(defaultCurrencyCode);
-            currentCurrency_TV.setVisibility(View.VISIBLE);
+            mainCurrency_TV.setText(getString(R.string.f_current_main_currency_x, defaultCurrencyCode));
+            mainCurrency_TV.setVisibility(View.VISIBLE);
             exchangeRate_TV.setVisibility(View.VISIBLE);
         }
     }
