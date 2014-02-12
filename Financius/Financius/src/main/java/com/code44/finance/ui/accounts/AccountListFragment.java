@@ -100,7 +100,7 @@ public class AccountListFragment extends ItemListFragment implements MainActivit
     @Override
     protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c, View view)
     {
-        AccountItemActivity.startItem(context, position);
+        AccountItemActivity.startItem(context, itemId, view);
     }
 
     @Override

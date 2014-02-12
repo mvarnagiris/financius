@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import com.code44.finance.R;
+import com.code44.finance.db.DBHelper;
 import com.code44.finance.db.Tables;
 import com.code44.finance.providers.AccountsProvider;
 import com.code44.finance.providers.CategoriesProvider;
@@ -206,7 +207,8 @@ public class AccountsUtils
         Cursor c = null;
         try
         {
-            c = context.getContentResolver().query(AccountsProvider.uriAccounts(), new String[]{Tables.Accounts.T_ID, Tables.Accounts.SERVER_ID}, selection, selectionArgs, null);
+            //noinspection ConstantConditions
+            c = DBHelper.get(context).getReadableDatabase().query(Tables.Accounts.TABLE_NAME, new String[]{Tables.Accounts.T_ID, Tables.Accounts.SERVER_ID}, selection, selectionArgs, null, null, null);
             if (c != null && c.moveToFirst())
             {
                 long accountId;
