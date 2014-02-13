@@ -1,28 +1,45 @@
 package com.code44.finance.ui.backup;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import com.code44.finance.API;
 import com.code44.finance.R;
 import com.code44.finance.services.BackupService;
 import com.code44.finance.ui.BaseFragment;
 import com.code44.finance.ui.dialogs.DateTimeDialog;
 import com.code44.finance.ui.dialogs.ProgressDialog;
+import com.code44.finance.views.cards.BackupCardView;
 import com.code44.finance.views.cards.CSVCardView;
+
 import de.greenrobot.event.EventBus;
 
-public class YourDataFragment extends BaseFragment implements CSVCardView.Callback, DateTimeDialog.DialogCallbacks
+public class YourDataFragment extends BaseFragment implements CSVCardView.Callback, DateTimeDialog.DialogCallbacks, View.OnClickListener
 {
     private static final String FRAGMENT_DATE_TIME = "FRAGMENT_DATE_TIME";
     // -----------------------------------------------------------------------------------------------------------------
-    private CSVCardView csvCard_V;
+    private BackupCardView backup_CV;
+    private BackupCardView restore_CV;
+    private CSVCardView csv_CV;
+    // -----------------------------------------------------------------------------------------------------------------
+    private Callbacks callbacks;
 
     public static YourDataFragment newInstance()
     {
         return new YourDataFragment();
+    }
+
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+
+        if (activity instanceof Callbacks)
+            callbacks = (Callbacks) activity;
     }
 
     @Override
@@ -37,10 +54,15 @@ public class YourDataFragment extends BaseFragment implements CSVCardView.Callba
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        csvCard_V = (CSVCardView) view.findViewById(R.id.csvCard_V);
+        backup_CV = (BackupCardView) view.findViewById(R.id.backup_CV);
+        restore_CV = (BackupCardView) view.findViewById(R.id.restore_CV);
+        csv_CV = (CSVCardView) view.findViewById(R.id.csv_CV);
 
         // Setup
-        csvCard_V.setCallback(this);
+        restore_CV.setTitle(R.string.restore);
+        backup_CV.setOnClickListener(this);
+        restore_CV.setOnClickListener(this);
+        csv_CV.setCallback(this);
     }
 
     @Override
@@ -60,7 +82,7 @@ public class YourDataFragment extends BaseFragment implements CSVCardView.Callba
         super.onResume();
 
         // Register events
-        EventBus.getDefault().registerSticky(this, BackupService.CSVExportEvent.class);
+        EventBus.getDefault().registerSticky(this);
     }
 
     @Override
@@ -70,6 +92,44 @@ public class YourDataFragment extends BaseFragment implements CSVCardView.Callba
 
         // Unregister events
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onDetach()
+    {
+        super.onDetach();
+        callbacks = null;
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        switch (view.getId())
+        {
+            case R.id.backup_CV:
+                if (callbacks != null)
+                    callbacks.onRequestBackup();
+                break;
+
+            case R.id.restore_CV:
+                if (callbacks != null)
+                    callbacks.onRequestRestore();
+                break;
+        }
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void onEventMainThread(BackupService.CSVExportEvent event)
+    {
+        if (event.isWorking(true))
+            ProgressDialog.showDialog(getFragmentManager(), getString(R.string.please_wait));
+        else if (event.isFinished())
+        {
+            ProgressDialog.dismissDialog(getFragmentManager());
+
+            if (event.isSuccessful())
+                Toast.makeText(getActivity(), R.string.done, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -87,20 +147,13 @@ public class YourDataFragment extends BaseFragment implements CSVCardView.Callba
     @Override
     public void onDateSelected(int requestCode, long date)
     {
-        csvCard_V.setDate(requestCode, date);
+        csv_CV.setDate(requestCode, date);
     }
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void onEventMainThread(BackupService.CSVExportEvent event)
+    public static interface Callbacks
     {
-        if (event.isWorking(true))
-            ProgressDialog.showDialog(getFragmentManager(), getString(R.string.please_wait));
-        else if (event.isFinished())
-        {
-            ProgressDialog.dismissDialog(getFragmentManager());
+        public void onRequestBackup();
 
-            if (event.isSuccessful())
-                Toast.makeText(getActivity(), R.string.done, Toast.LENGTH_SHORT).show();
-        }
+        public void onRequestRestore();
     }
 }

@@ -1,6 +1,10 @@
 package com.code44.finance.providers;
 
-import android.content.*;
+import android.content.ContentProvider;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,10 +12,12 @@ import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
+
+import com.code44.finance.App;
 import com.code44.finance.db.DBHelper;
 import com.code44.finance.db.Tables;
 
-public abstract class AbstractProvider extends ContentProvider
+public abstract class BaseProvider extends ContentProvider
 {
     protected static final String CONTENT_URI_BASE = "content://";
     protected static final String TYPE_LIST_BASE = "vnd.android.cursor.dir/vnd.code44.";
@@ -24,16 +30,25 @@ public abstract class AbstractProvider extends ContentProvider
         return context.getPackageName() + ".providers." + clss.getSimpleName();
     }
 
-    @Override
-    public boolean onCreate()
+    public static long getLocalId(SQLiteDatabase db, String tableName, String serverId)
     {
-        uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-
-        db = DBHelper.get(getContext()).getWritableDatabase();
-        return (db != null);
+        long localId = 0;
+        Cursor c = null;
+        try
+        {
+            c = db.query(tableName, new String[]{BaseColumns._ID}, tableName + "_" + Tables.SUFFIX_SERVER_ID + "=?", new String[]{serverId}, null, null, null);
+            if (c != null && c.moveToFirst())
+                localId = c.getLong(0);
+        }
+        finally
+        {
+            if (c != null && !c.isClosed())
+                c.close();
+        }
+        return localId;
     }
 
-    protected long doUpdateOrInsert(String tableName, ContentValues values, boolean returnNewId)
+    public static long doUpdateOrInsert(SQLiteDatabase db, String tableName, ContentValues values, boolean returnNewId)
     {
         // Get id columns
         final String idColumn = BaseColumns._ID;
@@ -80,31 +95,30 @@ public abstract class AbstractProvider extends ContentProvider
 
         // Get local ID if necessary
         if (newId == 0 && returnNewId && !TextUtils.isEmpty(serverId))
-            newId = getLocalId(tableName, serverId);
+            newId = getLocalId(db, tableName, serverId);
 
         return newId;
     }
 
-    protected int doArrayInsert(String tableName, ContentValues[] valuesArray)
+    public static int doArrayInsert(SQLiteDatabase db, String tableName, ContentValues[] valuesArray)
     {
         int count = 0;
         //noinspection ForLoopReplaceableByForEach
         for (int i = 0; i < valuesArray.length; i++)
         {
-            doUpdateOrInsert(tableName, valuesArray[i], false);
+            doUpdateOrInsert(db, tableName, valuesArray[i], false);
             count++;
         }
         return count;
     }
 
-    @SuppressWarnings("UnusedDeclaration")
-    protected int doBulkInsert(String tableName, ContentValues[] valuesArray)
+    public static int doBulkInsert(SQLiteDatabase db, String tableName, ContentValues[] valuesArray)
     {
         int count = 0;
         try
         {
             db.beginTransaction();
-            count = doArrayInsert(tableName, valuesArray);
+            count = doArrayInsert(db, tableName, valuesArray);
             db.setTransactionSuccessful();
         }
         catch (SQLiteException e)
@@ -120,34 +134,25 @@ public abstract class AbstractProvider extends ContentProvider
         return count;
     }
 
-    protected long getLocalId(String tableName, String serverId)
-    {
-        long localId = 0;
-        Cursor c = null;
-        try
-        {
-            c = db.query(tableName, new String[]{BaseColumns._ID}, tableName + "_" + Tables.SUFFIX_SERVER_ID + "=?", new String[]{serverId}, null, null, null);
-            if (c != null && c.moveToFirst())
-                localId = c.getLong(0);
-        }
-        finally
-        {
-            if (c != null && !c.isClosed())
-                c.close();
-        }
-        return localId;
-    }
-
-    protected void notifyURIs(Uri... notifyURIs)
+    public static void notifyURIs(Uri... notifyURIs)
     {
         if (notifyURIs != null && notifyURIs.length > 0)
         {
             //noinspection ConstantConditions
-            final ContentResolver resolver = getContext().getContentResolver();
+            final ContentResolver resolver = App.getAppContext().getContentResolver();
 
             //noinspection ForLoopReplaceableByForEach
             for (int i = 0; i < notifyURIs.length; i++)
                 resolver.notifyChange(notifyURIs[i], null);
         }
+    }
+
+    @Override
+    public boolean onCreate()
+    {
+        uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
+        db = DBHelper.get(getContext()).getWritableDatabase();
+        return (db != null);
     }
 }

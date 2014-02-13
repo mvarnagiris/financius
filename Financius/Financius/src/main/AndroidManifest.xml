@@ -86,9 +86,8 @@
                 android:value="@string/l_dashclock_desc" />
         </service>
 
-        <meta-data
-            android:name="com.crashlytics.ApiKey"
-            android:value="a0fed0de33f7f506e0acd0e0eb605f9f3a3da96f" />
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

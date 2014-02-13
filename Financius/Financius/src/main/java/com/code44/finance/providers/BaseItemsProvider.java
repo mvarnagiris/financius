@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class AbstractItemsProvider extends AbstractProvider
+public abstract class BaseItemsProvider extends BaseProvider
 {
     protected static final int OPERATION_INSERT = 1;
     protected static final int OPERATION_UPDATE = 2;
@@ -265,7 +265,7 @@ public abstract class AbstractItemsProvider extends AbstractProvider
 
             checkValues(values, OPERATION_INSERT);
             final Object extras = onBeforeInsert(uri, values);
-            newId = doUpdateOrInsert(getItemTable(), values, true);
+            newId = doUpdateOrInsert(db, getItemTable(), values, true);
             onAfterInsert(uri, values, newId, extras);
 
             db.setTransactionSuccessful();
@@ -337,7 +337,7 @@ public abstract class AbstractItemsProvider extends AbstractProvider
             {
                 final ContentValues values = valuesArray[i];
                 checkValues(values, OPERATION_BULK_INSERT);
-                doUpdateOrInsert(tableName, values, false);
+                doUpdateOrInsert(db, tableName, values, false);
                 count++;
             }
             onAfterBulkInsert(uri, valuesArray, extras);

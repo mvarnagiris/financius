@@ -401,7 +401,7 @@ public class BackupFragment extends BaseFragment implements DriveFragment.Callba
 //        @Override
 //        public java.io.File generateFile() throws Exception
 //        {
-//            return BackupUtils.generateBackupFile(context);
+//            return BackupUtils.generateBackupJson(context);
 //        }
 //
 //        @Override

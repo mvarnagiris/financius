@@ -11,7 +11,7 @@ import com.code44.finance.utils.CurrencyHelper;
 
 import java.util.List;
 
-public class CurrenciesProvider extends AbstractItemsProvider
+public class CurrenciesProvider extends BaseItemsProvider
 {
     public static Uri uriCurrencies()
     {

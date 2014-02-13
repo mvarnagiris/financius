@@ -7,7 +7,7 @@ import com.code44.finance.App;
 import com.code44.finance.db.Tables;
 import com.code44.finance.utils.AccountsUtils;
 
-public class TransactionsProvider extends AbstractItemsProvider
+public class TransactionsProvider extends BaseItemsProvider
 {
     public static Uri uriTransactions()
     {

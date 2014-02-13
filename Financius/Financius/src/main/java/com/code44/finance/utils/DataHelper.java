@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.BaseColumns;
 import com.code44.finance.App;
-import com.code44.finance.providers.AbstractItemsProvider;
+import com.code44.finance.providers.BaseItemsProvider;
 
 public class DataHelper
 {
@@ -103,7 +103,7 @@ public class DataHelper
         @Override
         protected Void doInBackground(Void... params)
         {
-            final AbstractItemsProvider.InClause inClause = AbstractItemsProvider.InClause.getInClause(itemIDs, BaseColumns._ID);
+            final BaseItemsProvider.InClause inClause = BaseItemsProvider.InClause.getInClause(itemIDs, BaseColumns._ID);
             getContentResolver().delete(uri, inClause.getSelection(), inClause.getSelectionArgs());
             return null;
         }

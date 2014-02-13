@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import com.code44.finance.db.Tables;
-import com.code44.finance.providers.AbstractItemsProvider;
+import com.code44.finance.providers.BaseItemsProvider;
 
 import java.util.UUID;
 
@@ -84,7 +84,7 @@ public abstract class AbstractItemService extends AbstractService
         final long[] itemIDs = intent.getLongArrayExtra(EXTRA_ITEM_IDS);
 
         // Prepare IN clause
-        final AbstractItemsProvider.InClause inClause = AbstractItemsProvider.InClause.getInClause(itemIDs, getItemTable() + "." + BaseColumns._ID);
+        final BaseItemsProvider.InClause inClause = BaseItemsProvider.InClause.getInClause(itemIDs, getItemTable() + "." + BaseColumns._ID);
 
         // Delete items
         getContentResolver().delete(getUriForItems(), inClause.getSelection(), inClause.getSelectionArgs());

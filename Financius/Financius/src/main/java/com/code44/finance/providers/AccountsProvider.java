@@ -9,7 +9,7 @@ import com.code44.finance.utils.AccountsUtils;
 
 import java.util.List;
 
-public class AccountsProvider extends AbstractItemsProvider
+public class AccountsProvider extends BaseItemsProvider
 {
     public static Uri uriAccounts()
     {

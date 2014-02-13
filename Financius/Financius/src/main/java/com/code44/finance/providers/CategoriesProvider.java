@@ -11,7 +11,7 @@ import com.code44.finance.db.Tables;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoriesProvider extends AbstractItemsProvider
+public class CategoriesProvider extends BaseItemsProvider
 {
 
     public static Uri uriCategories()

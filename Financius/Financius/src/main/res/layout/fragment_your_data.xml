@@ -13,16 +13,22 @@
         android:orientation="vertical">
 
         <com.code44.finance.views.cards.BackupCardView
-            android:id="@+id/backupCard_V"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
-
-        <com.code44.finance.views.cards.CSVCardView
-            android:id="@+id/csvCard_V"
+            android:id="@+id/backup_CV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dynamic_margin_card_vertical"/>
+
+        <com.code44.finance.views.cards.BackupCardView
+            android:id="@+id/restore_CV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dynamic_margin_card_vertical"/>
+
+        <com.code44.finance.views.cards.CSVCardView
+            android:id="@+id/csv_CV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dynamic_margin_card_vertical" />
 
     </LinearLayout>
 
