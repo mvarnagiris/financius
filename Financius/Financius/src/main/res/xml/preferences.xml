@@ -62,10 +62,6 @@
         </PreferenceScreen>
 
         <Preference
-            android:key="backup"
-            android:title="@string/backup" />
-
-        <Preference
             android:key="your_data"
             android:title="@string/your_data" />
     </PreferenceCategory>
