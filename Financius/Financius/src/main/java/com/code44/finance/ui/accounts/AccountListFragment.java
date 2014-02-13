@@ -18,7 +18,7 @@ import com.code44.finance.providers.AccountsProvider;
 import com.code44.finance.ui.ItemListFragment;
 import com.code44.finance.ui.MainActivity;
 import com.code44.finance.utils.AmountUtils;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 
 public class AccountListFragment extends ItemListFragment implements MainActivity.NavigationContentFragment
 {
@@ -37,7 +37,7 @@ public class AccountListFragment extends ItemListFragment implements MainActivit
 
     public static Loader<Cursor> createItemsLoader(Context context, int selectionType)
     {
-        final Uri uri = AccountsProvider.uriAccounts(context);
+        final Uri uri = AccountsProvider.uriAccounts();
         final String[] projection = new String[]{Tables.Accounts.T_ID, Tables.Accounts.TITLE, Tables.Accounts.BALANCE, Tables.Accounts.CURRENCY_ID, Tables.Accounts.SHOW_IN_TOTALS, Tables.Currencies.CODE, Tables.Currencies.EXCHANGE_RATE};
         final String selection = Tables.Accounts.ORIGIN + "<>? and " + Tables.Accounts.DELETE_STATE + "=?" + (selectionType != SELECTION_TYPE_NONE ? " and " + Tables.Accounts.SHOW_IN_SELECTION + "=?" : "");
         final String[] selectionArgs = selectionType != SELECTION_TYPE_NONE ? new String[]{String.valueOf(Tables.Categories.Origin.SYSTEM), String.valueOf(Tables.DeleteState.NONE), "1"} : new String[]{String.valueOf(Tables.Categories.Origin.SYSTEM), String.valueOf(Tables.DeleteState.NONE)};
@@ -98,13 +98,13 @@ public class AccountListFragment extends ItemListFragment implements MainActivit
     }
 
     @Override
-    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c)
+    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c, View view)
     {
-        AccountItemActivity.startItem(context, position);
+        AccountItemActivity.startItem(context, itemId, view);
     }
 
     @Override
-    protected void startItemCreate(Context context)
+    protected void startItemCreate(Context context, View view)
     {
         AccountEditActivity.startItemEdit(context, 0);
     }
@@ -115,7 +115,7 @@ public class AccountListFragment extends ItemListFragment implements MainActivit
         if (selectionType == SELECTION_TYPE_NONE)
         {
             // Find total balance
-            final long mainCurrencyId = CurrenciesHelper.getDefault(getActivity()).getMainCurrencyId();
+            final long mainCurrencyId = CurrencyHelper.get().getMainCurrencyId();
             double balance = 0;
             if (c != null && c.moveToFirst())
             {
@@ -133,7 +133,7 @@ public class AccountListFragment extends ItemListFragment implements MainActivit
             }
 
             // Set values
-            balance_TV.setText(AmountUtils.formatAmount(getActivity(), mainCurrencyId, balance));
+            balance_TV.setText(AmountUtils.formatAmount(mainCurrencyId, balance));
             balance_TV.setTextColor(AmountUtils.getBalanceColor(getActivity(), balance));
         }
         super.bindItems(c);

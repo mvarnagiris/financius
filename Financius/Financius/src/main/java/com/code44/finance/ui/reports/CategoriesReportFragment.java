@@ -19,17 +19,17 @@ import com.code44.finance.adapters.CategoriesReportAdapter;
 import com.code44.finance.db.Tables;
 import com.code44.finance.db.model.CategoriesPeriodReport;
 import com.code44.finance.providers.TransactionsProvider;
-import com.code44.finance.ui.AbstractFragment;
+import com.code44.finance.ui.BaseFragment;
 import com.code44.finance.ui.MainActivity;
 import com.code44.finance.utils.AmountUtils;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 import com.code44.finance.utils.LayoutType;
 import com.code44.finance.utils.PeriodHelper;
 import com.code44.finance.views.PeriodChangerView;
 import com.code44.finance.views.reports.PieChartView;
 import de.greenrobot.event.EventBus;
 
-public class CategoriesReportFragment extends AbstractFragment implements LoaderManager.LoaderCallbacks<Cursor>, PeriodChangerView.PeriodChangerListener, MainActivity.NavigationContentFragment, View.OnClickListener
+public class CategoriesReportFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, PeriodChangerView.PeriodChangerListener, MainActivity.NavigationContentFragment, View.OnClickListener
 {
     private static final int LOADER_TRANSACTIONS = 1;
     // -----------------------------------------------------------------------------------------------------------------
@@ -55,7 +55,7 @@ public class CategoriesReportFragment extends AbstractFragment implements Loader
         super.onCreate(savedInstanceState);
 
         // Register events
-        EventBus.getDefault().register(this, PeriodHelper.PeriodTypeChangedEvent.class);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -148,7 +148,7 @@ public class CategoriesReportFragment extends AbstractFragment implements Loader
         super.onDestroy();
 
         // Unregister events
-        EventBus.getDefault().unregister(this, PeriodHelper.PeriodTypeChangedEvent.class);
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -158,7 +158,6 @@ public class CategoriesReportFragment extends AbstractFragment implements Loader
         String[] projection = null;
         String selection = null;
         String[] selectionArgs = null;
-        String sortOrder = null;
 
         switch (id)
         {
@@ -166,7 +165,7 @@ public class CategoriesReportFragment extends AbstractFragment implements Loader
             {
                 final PeriodHelper periodHelper = PeriodHelper.getDefault(getActivity());
 
-                uri = TransactionsProvider.uriTransactions(getActivity());
+                uri = TransactionsProvider.uriTransactions();
                 projection = new String[]
                         {
                                 "min(" + Tables.Transactions.CATEGORY_ID + ")",
@@ -185,7 +184,7 @@ public class CategoriesReportFragment extends AbstractFragment implements Loader
             }
         }
 
-        return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs, sortOrder);
+        return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs, null);
     }
 
     @Override
@@ -240,10 +239,10 @@ public class CategoriesReportFragment extends AbstractFragment implements Loader
     {
         final CategoriesPeriodReport report = CategoriesPeriodReport.from(c);
         pieChart_V.bind(report.getExpenseList());
-        final long mainCurrencyId = CurrenciesHelper.getDefault(getActivity()).getMainCurrencyId();
-        expense_TV.setText(AmountUtils.formatAmount(getActivity(), mainCurrencyId, report.getTotalExpense()));
-        income_TV.setText(AmountUtils.formatAmount(getActivity(), mainCurrencyId, report.getTotalIncome()));
-        transfer_TV.setText(AmountUtils.formatAmount(getActivity(), mainCurrencyId, report.getTotalTransfer()));
+        final long mainCurrencyId = CurrencyHelper.get().getMainCurrencyId();
+        expense_TV.setText(AmountUtils.formatAmount(mainCurrencyId, report.getTotalExpense()));
+        income_TV.setText(AmountUtils.formatAmount(mainCurrencyId, report.getTotalIncome()));
+        transfer_TV.setText(AmountUtils.formatAmount(mainCurrencyId, report.getTotalTransfer()));
         adapter.setReport(report);
     }
 }

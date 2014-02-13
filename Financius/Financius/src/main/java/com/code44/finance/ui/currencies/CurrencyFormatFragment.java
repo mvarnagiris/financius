@@ -23,7 +23,7 @@ import com.code44.finance.providers.CurrenciesProvider;
 import com.code44.finance.services.AbstractService;
 import com.code44.finance.services.CurrenciesRestService;
 import com.code44.finance.ui.ItemEditFragment;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 import de.greenrobot.event.EventBus;
 
 import java.util.Currency;
@@ -160,7 +160,7 @@ public class CurrencyFormatFragment extends ItemEditFragment implements LoaderMa
         super.onResume();
 
         // Register events
-        EventBus.getDefault().register(this, CurrenciesRestService.GetExchangeRateEvent.class);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -169,7 +169,7 @@ public class CurrencyFormatFragment extends ItemEditFragment implements LoaderMa
         super.onPause();
 
         // Unregister events
-        EventBus.getDefault().unregister(this, CurrenciesRestService.GetExchangeRateEvent.class);
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -200,7 +200,7 @@ public class CurrencyFormatFragment extends ItemEditFragment implements LoaderMa
         {
             case LOADER_DEFAULT_CURRENCY:
             {
-                uri = CurrenciesProvider.uriCurrencies(getActivity());
+                uri = CurrenciesProvider.uriCurrencies();
                 projection = new String[]{Tables.Currencies.CODE};
                 selection = Tables.Currencies.IS_DEFAULT + "=?";
                 selectionArgs = new String[]{"1"};
@@ -387,7 +387,7 @@ public class CurrencyFormatFragment extends ItemEditFragment implements LoaderMa
     @SuppressWarnings("UnusedDeclaration")
     public void onEventMainThread(CurrenciesRestService.GetExchangeRateEvent event)
     {
-        if (event.getState() == AbstractService.ServiceEvent.State.SUCCEEDED && event.getFromCode().equalsIgnoreCase(getCurrencyCode()) && event.getToCode().equalsIgnoreCase(CurrenciesHelper.getDefault(getActivity()).getMainCurrencyCode()))
+        if (event.getState() == AbstractService.ServiceEvent.State.SUCCEEDED && event.getFromCode().equalsIgnoreCase(getCurrencyCode()) && event.getToCode().equalsIgnoreCase(CurrencyHelper.get().getMainCurrencyCode()))
             setExchangeRate(event.getExchangeRate());
     }
 
@@ -484,13 +484,9 @@ public class CurrencyFormatFragment extends ItemEditFragment implements LoaderMa
     @Override
     protected Loader<Cursor> createItemLoader(Context context, long itemId)
     {
-        Uri uri = CurrenciesProvider.uriCurrency(getActivity(), itemId);
-        String[] projection = null;
-        String selection = null;
-        String[] selectionArgs = null;
-        String sortOrder = null;
+        Uri uri = CurrenciesProvider.uriCurrency(itemId);
 
-        return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs, sortOrder);
+        return new CursorLoader(getActivity(), uri, null, null, null, null);
     }
 
     private void refreshExchangeRate()

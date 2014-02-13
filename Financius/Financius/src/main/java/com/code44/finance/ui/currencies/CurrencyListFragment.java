@@ -9,6 +9,7 @@ import android.support.v4.content.Loader;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import com.code44.finance.API;
 import com.code44.finance.R;
 import com.code44.finance.adapters.AbstractCursorAdapter;
@@ -31,7 +32,7 @@ public class CurrencyListFragment extends ItemListFragment
 
     public static Loader<Cursor> createItemsLoader(Context context)
     {
-        final Uri uri = CurrenciesProvider.uriCurrencies(context);
+        final Uri uri = CurrenciesProvider.uriCurrencies();
         final String[] projection = new String[]{Tables.Currencies.T_ID, Tables.Currencies.CODE, Tables.Currencies.EXCHANGE_RATE, Tables.Currencies.IS_DEFAULT, Tables.Currencies.SYMBOL};
         final String selection = Tables.Currencies.DELETE_STATE + "=?";
         final String[] selectionArgs = new String[]{String.valueOf(Tables.DeleteState.NONE)};
@@ -79,13 +80,13 @@ public class CurrencyListFragment extends ItemListFragment
     }
 
     @Override
-    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c)
+    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c, View view)
     {
-        CurrencyItemActivity.startItem(context, position);
+        CurrencyItemActivity.startItem(context, itemId, view);
     }
 
     @Override
-    protected void startItemCreate(Context context)
+    protected void startItemCreate(Context context, View view)
     {
         CurrencyEditActivity.startItemEdit(context, 0);
     }

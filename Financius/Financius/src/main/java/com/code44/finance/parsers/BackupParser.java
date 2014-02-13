@@ -4,11 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import com.code44.finance.db.DBHelper;
-import com.code44.finance.db.DBUpgrade;
 import com.code44.finance.db.Tables;
+import com.code44.finance.providers.AccountsProvider;
+import com.code44.finance.providers.CategoriesProvider;
+import com.code44.finance.providers.CurrenciesProvider;
+import com.code44.finance.providers.TransactionsProvider;
 import com.code44.finance.utils.BackupUtils;
-import com.code44.finance.utils.CurrenciesHelper;
-import com.code44.finance.utils.NotifyUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,8 +48,6 @@ public class BackupParser extends Parser
             values.put(Tables.Currencies.SYMBOL_FORMAT, jObject.getString(JTags.Currency.SYMBOL_FORMAT));
             values.put(Tables.Currencies.IS_DEFAULT, jObject.getInt(JTags.Currency.IS_DEFAULT));
             values.put(Tables.Currencies.EXCHANGE_RATE, jObject.getDouble(JTags.Currency.EXCHANGE_RATE));
-            values.put(Tables.Currencies.TIMESTAMP, jObject.getLong(JTags.Currency.TIMESTAMP));
-            values.put(Tables.Currencies.SYNC_STATE, jObject.getInt(JTags.Currency.SYNC_STATE));
             values.put(Tables.Currencies.DELETE_STATE, jObject.getInt(JTags.Currency.DELETE_STATE));
             list.add(values);
         }
@@ -68,16 +67,12 @@ public class BackupParser extends Parser
             values.put(Tables.Accounts.ID, jObject.getLong(JTags.Account.ID));
             values.put(Tables.Accounts.SERVER_ID, jObject.getString(JTags.Account.SERVER_ID));
             values.put(Tables.Accounts.CURRENCY_ID, jObject.getLong(JTags.Account.CURRENCY_ID));
-            values.put(Tables.Accounts.TYPE_RES_NAME, jObject.getString(JTags.Account.TYPE_RES_NAME));
             values.put(Tables.Accounts.TITLE, jObject.getString(JTags.Account.TITLE));
             values.put(Tables.Accounts.NOTE, jObject.getString(JTags.Account.NOTE));
             values.put(Tables.Accounts.BALANCE, jObject.getDouble(JTags.Account.BALANCE));
-            values.put(Tables.Accounts.OVERDRAFT, jObject.getDouble(JTags.Account.OVERDRAFT));
             values.put(Tables.Accounts.SHOW_IN_TOTALS, jObject.getInt(JTags.Account.SHOW_IN_TOTALS));
             values.put(Tables.Accounts.SHOW_IN_SELECTION, jObject.getInt(JTags.Account.SHOW_IN_SELECTION));
             values.put(Tables.Accounts.ORIGIN, jObject.getInt(JTags.Account.ORIGIN));
-            values.put(Tables.Accounts.TIMESTAMP, jObject.getLong(JTags.Account.TIMESTAMP));
-            values.put(Tables.Accounts.SYNC_STATE, jObject.getInt(JTags.Account.SYNC_STATE));
             values.put(Tables.Accounts.DELETE_STATE, jObject.getInt(JTags.Account.DELETE_STATE));
             list.add(values);
         }
@@ -102,8 +97,6 @@ public class BackupParser extends Parser
             values.put(Tables.Categories.TYPE, jObject.getInt(JTags.Category.TYPE));
             values.put(Tables.Categories.COLOR, jObject.getInt(JTags.Category.COLOR));
             values.put(Tables.Categories.ORIGIN, jObject.getInt(JTags.Category.ORIGIN));
-            values.put(Tables.Categories.TIMESTAMP, jObject.getLong(JTags.Category.TIMESTAMP));
-            values.put(Tables.Categories.SYNC_STATE, jObject.getInt(JTags.Category.SYNC_STATE));
             values.put(Tables.Categories.DELETE_STATE, jObject.getInt(JTags.Category.DELETE_STATE));
             if (exportVersion >= 4)
             {
@@ -136,8 +129,6 @@ public class BackupParser extends Parser
             values.put(Tables.Transactions.EXCHANGE_RATE, jObject.getDouble(JTags.Transaction.EXCHANGE_RATE));
             values.put(Tables.Transactions.STATE, jObject.getInt(JTags.Transaction.STATE));
             values.put(Tables.Transactions.SHOW_IN_TOTALS, jObject.getInt(JTags.Transaction.SHOW_IN_TOTALS));
-            values.put(Tables.Transactions.TIMESTAMP, jObject.getLong(JTags.Transaction.TIMESTAMP));
-            values.put(Tables.Transactions.SYNC_STATE, jObject.getInt(JTags.Transaction.SYNC_STATE));
             values.put(Tables.Transactions.DELETE_STATE, jObject.getInt(JTags.Transaction.DELETE_STATE));
             list.add(values);
         }
@@ -147,11 +138,12 @@ public class BackupParser extends Parser
     @Override
     public void store(Context context, ParsedValues parsedValues)
     {
-        final SQLiteDatabase db = DBHelper.getInstance(context).getWritableDatabase();
+        final SQLiteDatabase db = DBHelper.get(context).getWritableDatabase();
         ContentValues[] valuesArray;
 
         try
         {
+            //noinspection ConstantConditions
             db.beginTransaction();
 
             // Clear tables
@@ -162,39 +154,27 @@ public class BackupParser extends Parser
 
             // Insert currency values
             valuesArray = parsedValues.getArray(KEY_CURRENCIES);
-            for (int i = 0; i < valuesArray.length; i++)
-                db.insert(Tables.Currencies.TABLE_NAME, null, valuesArray[i]);
-
-            // Update default currency
-            CurrenciesHelper.getDefault(context).update();
+            context.getContentResolver().bulkInsert(CurrenciesProvider.uriCurrencies(), valuesArray);
 
             // Insert account values
             valuesArray = parsedValues.getArray(KEY_ACCOUNTS);
-            for (int i = 0; i < valuesArray.length; i++)
-                db.insert(Tables.Accounts.TABLE_NAME, null, valuesArray[i]);
+            context.getContentResolver().bulkInsert(AccountsProvider.uriAccounts(), valuesArray);
 
             // Insert category values
             valuesArray = parsedValues.getArray(KEY_CATEGORIES);
-            for (int i = 0; i < valuesArray.length; i++)
-                db.insert(Tables.Categories.TABLE_NAME, null, valuesArray[i]);
-
-            // Generate order values for older backup versions
-            if (valuesArray.length > 0 && !valuesArray[0].containsKey(Tables.Categories.ORDER))
-                DBUpgrade.updateCategoriesOrder(db);
+            context.getContentResolver().bulkInsert(CategoriesProvider.uriCategories(), valuesArray);
 
             // Insert transaction values
             valuesArray = parsedValues.getArray(KEY_TRANSACTIONS);
-            for (int i = 0; i < valuesArray.length; i++)
-                db.insert(Tables.Transactions.TABLE_NAME, null, valuesArray[i]);
+            context.getContentResolver().bulkInsert(TransactionsProvider.uriTransactions(), valuesArray);
 
             db.setTransactionSuccessful();
         }
         finally
         {
+            //noinspection ConstantConditions
             db.endTransaction();
         }
-
-        NotifyUtils.notifyAll(context);
     }
 
     @Override

@@ -6,9 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.view.View;
 import com.code44.finance.R;
 import com.code44.finance.adapters.AbstractCursorAdapter;
-import com.code44.finance.adapters.AbstractSectionedCursorAdapter;
 import com.code44.finance.adapters.TransactionsAdapter;
 import com.code44.finance.db.Tables;
 import com.code44.finance.providers.TransactionsProvider;
@@ -26,27 +26,9 @@ public class TransactionListFragment extends ItemListFragment implements MainAct
         return f;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-
-        // Register events
-        EventBus.getDefault().register(this, FilterHelper.FilterChangedEvent.class);
-    }
-
-    @Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-
-        // Unregister events
-        EventBus.getDefault().unregister(this, FilterHelper.FilterChangedEvent.class);
-    }
-
     public static Loader<Cursor> createItemsLoader(Context context)
     {
-        final Uri uri = TransactionsProvider.uriTransactions(context);
+        final Uri uri = TransactionsProvider.uriTransactions();
         final String[] projection = new String[]
                 {
                         Tables.Transactions.T_ID, Tables.Transactions.DATE, Tables.Transactions.AMOUNT, Tables.Transactions.NOTE, Tables.Transactions.STATE, Tables.Transactions.EXCHANGE_RATE,
@@ -72,9 +54,33 @@ public class TransactionListFragment extends ItemListFragment implements MainAct
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+
+        // Register events
+        EventBus.getDefault().register(this, FilterHelper.FilterChangedEvent.class);
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+
+        // Unregister events
+        EventBus.getDefault().unregister(this, FilterHelper.FilterChangedEvent.class);
+    }
+
+    @Override
     public String getTitle()
     {
         return getString(R.string.transactions);
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void onEventMainThread(FilterHelper.FilterChangedEvent event)
+    {
+        getLoaderManager().restartLoader(LOADER_ITEMS, null, this);
     }
 
     @Override
@@ -96,20 +102,14 @@ public class TransactionListFragment extends ItemListFragment implements MainAct
     }
 
     @Override
-    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c)
+    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c, View view)
     {
-        TransactionItemActivity.startItem(context, ((AbstractSectionedCursorAdapter) adapter).getCursorPosition(position));
+        TransactionItemActivity.startItem(context, itemId, view);
     }
 
     @Override
-    protected void startItemCreate(Context context)
+    protected void startItemCreate(Context context, View view)
     {
-        TransactionEditActivity.startItemEdit(context, 0);
-    }
-
-    @SuppressWarnings("UnusedDeclaration")
-    public void onEventMainThread(FilterHelper.FilterChangedEvent event)
-    {
-        getLoaderManager().restartLoader(LOADER_ITEMS, null, this);
+        TransactionEditActivity.startItemEdit(context, 0, view);
     }
 }

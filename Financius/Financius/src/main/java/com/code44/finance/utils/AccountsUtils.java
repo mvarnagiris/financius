@@ -5,10 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.text.TextUtils;
 import com.code44.finance.R;
+import com.code44.finance.db.DBHelper;
 import com.code44.finance.db.Tables;
-import com.code44.finance.db.Tables.SyncState;
 import com.code44.finance.providers.AccountsProvider;
 import com.code44.finance.providers.CategoriesProvider;
 import com.code44.finance.providers.TransactionsProvider;
@@ -17,33 +16,18 @@ import java.util.UUID;
 
 public class AccountsUtils
 {
-    /**
-     * Prepare values for update or for create.
-     */
-    public static void prepareValues(ContentValues values, String serverId, long currencyId, String typeResName, String title, String note, double balance, double overdraft, boolean showInTotals, boolean showInSelection, int origin, int deleteState, int syncState)
+    public static ContentValues getValues(long currencyId, String title, String note, double balance, boolean showInTotals, boolean showInSelection)
     {
-        if (!TextUtils.isEmpty(serverId))
-            values.put(Tables.Accounts.SERVER_ID, serverId);
+        ContentValues values = new ContentValues();
+
         values.put(Tables.Accounts.CURRENCY_ID, currencyId);
-        values.put(Tables.Accounts.TYPE_RES_NAME, typeResName);
         values.put(Tables.Accounts.TITLE, title);
         values.put(Tables.Accounts.NOTE, note);
         values.put(Tables.Accounts.BALANCE, balance);
-        values.put(Tables.Accounts.OVERDRAFT, overdraft);
         values.put(Tables.Accounts.SHOW_IN_TOTALS, showInTotals);
         values.put(Tables.Accounts.SHOW_IN_SELECTION, showInSelection);
-        values.put(Tables.Accounts.ORIGIN, origin);
-        values.put(Tables.Accounts.TIMESTAMP, System.currentTimeMillis());
-        values.put(Tables.Accounts.DELETE_STATE, deleteState);
-        values.put(Tables.Accounts.SYNC_STATE, syncState);
-    }
 
-    /**
-     * Prepare values for update or for create.
-     */
-    public static void prepareValues(ContentValues values, long currencyId, String typeResName, String title, String note, double balance, double overdraft, boolean showInTotals, boolean showInSelection)
-    {
-        prepareValues(values, null, currencyId, typeResName, title, note, balance, overdraft, showInTotals, showInSelection, Tables.Accounts.Origin.USER, Tables.DeleteState.NONE, SyncState.LOCAL_CHANGES);
+        return values;
     }
 
     /**
@@ -96,7 +80,7 @@ public class AccountsUtils
         Cursor c = null;
         try
         {
-            c = context.getContentResolver().query(AccountsProvider.uriAccounts(context), new String[]{Tables.Accounts.T_ID}, null, null, null);
+            c = context.getContentResolver().query(AccountsProvider.uriAccounts(), new String[]{Tables.Accounts.T_ID}, null, null, null);
             if (c != null && c.moveToFirst())
             {
                 do
@@ -129,7 +113,7 @@ public class AccountsUtils
         Cursor c = null;
         try
         {
-            c = context.getContentResolver().query(CategoriesProvider.uriCategory(context, categoryId), new String[]{Tables.Categories.TYPE}, null, null,
+            c = context.getContentResolver().query(CategoriesProvider.uriCategory(categoryId), new String[]{Tables.Categories.TYPE}, null, null,
                     null);
             if (c != null && c.moveToFirst())
                 categoryType = c.getInt(0);
@@ -172,7 +156,7 @@ public class AccountsUtils
         Cursor c = null;
         try
         {
-            c = context.getContentResolver().query(AccountsProvider.uriAccounts(context), new String[]{Tables.Accounts.BALANCE}, Tables.Accounts.T_ID + "=? or " + Tables.Accounts.SERVER_ID + "=?", new String[]{String.valueOf(accountId), accountServerId}, null);
+            c = context.getContentResolver().query(AccountsProvider.uriAccounts(), new String[]{Tables.Accounts.BALANCE}, Tables.Accounts.T_ID + "=? or " + Tables.Accounts.SERVER_ID + "=?", new String[]{String.valueOf(accountId), accountServerId}, null);
             if (c != null && c.moveToFirst())
                 currentBalance = c.getDouble(0);
         }
@@ -203,10 +187,9 @@ public class AccountsUtils
                 categoryId = Tables.Categories.IDs.EXPENSE_ID;
             }
 
-            final ContentValues values = new ContentValues();
-            TransactionsUtils.prepareValues(values, accountFromId, accountToId, categoryId, System.currentTimeMillis(), Math.abs(delta), 1.0, context.getString(R.string.account_balance_update), Tables.Transactions.State.CONFIRMED, false);
+            final ContentValues values = TransactionsUtils.getValues(accountFromId, accountToId, categoryId, System.currentTimeMillis(), Math.abs(delta), 1.0, context.getString(R.string.account_balance_update), Tables.Transactions.State.CONFIRMED, false);
             values.put(Tables.Transactions.SERVER_ID, UUID.randomUUID().toString());
-            context.getContentResolver().insert(TransactionsProvider.uriTransactions(context), values);
+            context.getContentResolver().insert(TransactionsProvider.uriTransactions(), values);
         }
     }
 
@@ -224,7 +207,8 @@ public class AccountsUtils
         Cursor c = null;
         try
         {
-            c = context.getContentResolver().query(AccountsProvider.uriAccounts(context), new String[]{Tables.Accounts.T_ID, Tables.Accounts.SERVER_ID}, selection, selectionArgs, null);
+            //noinspection ConstantConditions
+            c = DBHelper.get(context).getReadableDatabase().query(Tables.Accounts.TABLE_NAME, new String[]{Tables.Accounts.T_ID, Tables.Accounts.SERVER_ID}, selection, selectionArgs, null, null, null);
             if (c != null && c.moveToFirst())
             {
                 long accountId;

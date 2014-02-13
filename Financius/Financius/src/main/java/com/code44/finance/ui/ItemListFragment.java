@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class ItemListFragment extends AbstractFragment implements AdapterView.OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor>
+public abstract class ItemListFragment extends BaseFragment implements AdapterView.OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor>
 {
     public static final String RESULT_EXTRA_ITEM_ID = ItemListFragment.class.getName() + ".RESULT_EXTRA_ITEM_ID";
     public static final String RESULT_EXTRA_ITEM_IDS = ItemListFragment.class.getName() + ".RESULT_EXTRA_ITEM_IDS";
@@ -87,6 +87,11 @@ public abstract class ItemListFragment extends AbstractFragment implements Adapt
         super.onActivityCreated(savedInstanceState);
 
         // Setup
+        if (selectionType == SELECTION_TYPE_NONE)
+        {
+            final View create_V = LayoutInflater.from(getActivity()).inflate(R.layout.li_create_new, list_V, false);
+            list_V.addFooterView(create_V);
+        }
         adapter = createAdapter(getActivity());
         list_V.setAdapter(adapter);
         list_V.setOnItemClickListener(this);
@@ -121,12 +126,15 @@ public abstract class ItemListFragment extends AbstractFragment implements Adapt
 
         if (selectionType == SELECTION_TYPE_MULTI)
         {
-            final SparseBooleanArray listPositions = list_V.getCheckedItemPositions();
             final ArrayList<Integer> selectedPositions = new ArrayList<Integer>();
-            for (int i = 0; i < listPositions.size(); i++)
+            final SparseBooleanArray listPositions = list_V.getCheckedItemPositions();
+            if (listPositions != null)
             {
-                if (listPositions.get(listPositions.keyAt(i)))
-                    selectedPositions.add(listPositions.keyAt(i));
+                for (int i = 0; i < listPositions.size(); i++)
+                {
+                    if (listPositions.get(listPositions.keyAt(i)))
+                        selectedPositions.add(listPositions.keyAt(i));
+                }
             }
             outState.putIntegerArrayList(STATE_SELECTED_POSITIONS, selectedPositions);
         }
@@ -145,7 +153,7 @@ public abstract class ItemListFragment extends AbstractFragment implements Adapt
         switch (item.getItemId())
         {
             case R.id.action_create:
-                startItemCreate(getActivity());
+                startItemCreate(getActivity(), item.getActionView());
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -190,7 +198,10 @@ public abstract class ItemListFragment extends AbstractFragment implements Adapt
         switch (selectionType)
         {
             case SELECTION_TYPE_NONE:
-                startItemDetails(getActivity(), id, position, adapter, adapter.getCursor());
+                if (position == adapterView.getCount() - 1)
+                    startItemCreate(getActivity(), view);
+                else
+                    startItemDetails(getActivity(), id, position, adapter, adapter.getCursor(), view);
                 break;
 
             case SELECTION_TYPE_SINGLE:
@@ -234,13 +245,14 @@ public abstract class ItemListFragment extends AbstractFragment implements Adapt
      * @param position Selected position.
      * @param adapter  Adapter for convenience.
      * @param c        Cursor.
+     * @param view
      */
-    protected abstract void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c);
+    protected abstract void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c, View view);
 
     /**
      * Start item create activity here.
      */
-    protected abstract void startItemCreate(Context context);
+    protected abstract void startItemCreate(Context context, View view);
 
     public long[] getSelectedItemIDs()
     {
@@ -257,8 +269,10 @@ public abstract class ItemListFragment extends AbstractFragment implements Adapt
             final Object tag = list_V.getTag();
             if (tag instanceof ArrayList)
             {
+                //noinspection unchecked
                 final ArrayList<Integer> selectedPositions = (ArrayList<Integer>) tag;
                 list_V.setTag(selectedPositions);
+                //noinspection ForLoopReplaceableByForEach
                 for (int i = 0; i < selectedPositions.size(); i++)
                     list_V.setItemChecked(selectedPositions.get(i), true);
             }
@@ -266,6 +280,7 @@ public abstract class ItemListFragment extends AbstractFragment implements Adapt
             {
                 final long[] selectedIDs = (long[]) tag;
                 final Set<Long> selectedIDsSet = new HashSet<Long>();
+                //noinspection ForLoopReplaceableByForEach
                 for (int i = 0; i < selectedIDs.length; i++)
                     selectedIDsSet.add(selectedIDs[i]);
 

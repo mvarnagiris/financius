@@ -19,7 +19,7 @@ import com.code44.finance.providers.AccountsProvider;
 import com.code44.finance.providers.TransactionsProvider;
 import com.code44.finance.ui.ItemFragment;
 import com.code44.finance.utils.AmountUtils;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 
 public class AccountItemFragment extends ItemFragment
 {
@@ -84,7 +84,7 @@ public class AccountItemFragment extends ItemFragment
         {
             case LOADER_TRANSACTIONS:
             {
-                Uri uri = TransactionsProvider.uriTransactions(getActivity());
+                Uri uri = TransactionsProvider.uriTransactions();
                 String[] projection = new String[] {"max(" + Tables.Transactions.DATE + ")", "count(distinct " + Tables.Transactions.T_ID + ")"};
                 String selection = "(" + Tables.Transactions.ACCOUNT_FROM_ID + "=? or " + Tables.Transactions.ACCOUNT_TO_ID + "=?) and " + Tables.Transactions.STATE + "=? and " + Tables.Transactions.DELETE_STATE + "=? and " + Tables.Transactions.SHOW_IN_TOTALS + "=?";
                 String[] selectionArgs = new String[]{String.valueOf(itemId), String.valueOf(itemId), String.valueOf(Tables.Transactions.State.CONFIRMED), String.valueOf(Tables.DeleteState.NONE), "1"};
@@ -95,7 +95,7 @@ public class AccountItemFragment extends ItemFragment
 
             case LOADER_TRANSACTIONS_EXPENSE:
             {
-                Uri uri = TransactionsProvider.uriTransactions(getActivity());
+                Uri uri = TransactionsProvider.uriTransactions();
                 String[] projection = new String[] {"avg(" + Tables.Transactions.AMOUNT + " * " + Tables.Currencies.CurrencyFrom.T_EXCHANGE_RATE + ")"};
                 String selection = Tables.Transactions.ACCOUNT_FROM_ID + "=? and " + Tables.Transactions.STATE + "=? and " + Tables.Transactions.DELETE_STATE + "=? and " + Tables.Transactions.SHOW_IN_TOTALS + "=?";
                 String[] selectionArgs = new String[]{String.valueOf(itemId), String.valueOf(Tables.Transactions.State.CONFIRMED), String.valueOf(Tables.DeleteState.NONE), "1"};
@@ -106,7 +106,7 @@ public class AccountItemFragment extends ItemFragment
 
             case LOADER_TRANSACTIONS_INCOME:
             {
-                Uri uri = TransactionsProvider.uriTransactions(getActivity());
+                Uri uri = TransactionsProvider.uriTransactions();
                 String[] projection = new String[] {"avg(" + Tables.Transactions.AMOUNT + " * " + Tables.Currencies.CurrencyTo.T_EXCHANGE_RATE + ")"};
                 String selection = Tables.Transactions.ACCOUNT_TO_ID + "=? and " + Tables.Transactions.STATE + "=? and " + Tables.Transactions.DELETE_STATE + "=? and " + Tables.Transactions.SHOW_IN_TOTALS + "=?";
                 String[] selectionArgs = new String[]{String.valueOf(itemId), String.valueOf(Tables.Transactions.State.CONFIRMED), String.valueOf(Tables.DeleteState.NONE), "1"};
@@ -140,7 +140,7 @@ public class AccountItemFragment extends ItemFragment
     }
 
     @Override
-    protected void startItemEdit(Context context, long itemId)
+    protected void startItemEdit(Context context, long itemId, View expandFrom)
     {
         AccountEditActivity.startItemEdit(context, itemId);
     }
@@ -148,14 +148,14 @@ public class AccountItemFragment extends ItemFragment
     @Override
     protected boolean onDeleteItem(Context context, long[] itemIds)
     {
-        API.deleteAccounts(context, itemIds);
+        API.deleteItems(AccountsProvider.uriAccounts(), itemIds);
         return true;
     }
 
     @Override
     protected Loader<Cursor> createItemLoader(Context context, long itemId)
     {
-        Uri uri = AccountsProvider.uriAccount(getActivity(), itemId);
+        Uri uri = AccountsProvider.uriAccount(itemId);
         String[] projection = new String[]{Tables.Accounts.CURRENCY_ID, Tables.Accounts.TITLE, Tables.Accounts.NOTE, Tables.Accounts.BALANCE, Tables.Accounts.SHOW_IN_TOTALS, Tables.Accounts.SHOW_IN_SELECTION};
         String selection = null;
         String[] selectionArgs = null;
@@ -182,7 +182,7 @@ public class AccountItemFragment extends ItemFragment
             final String crossMark = "\u2717";
             final String note = c.getString(iNote);
             title_TV.setText(c.getString(iTitle));
-            balance_TV.setText(AmountUtils.formatAmount(getActivity(), c.getLong(iCurrencyId), c.getDouble(iBalance)));
+            balance_TV.setText(AmountUtils.formatAmount(c.getLong(iCurrencyId), c.getDouble(iBalance)));
             balance_TV.setTextColor(AmountUtils.getBalanceColor(getActivity(), c.getDouble(iBalance)));
             if (TextUtils.isEmpty(note))
             {
@@ -212,7 +212,7 @@ public class AccountItemFragment extends ItemFragment
     {
         if (c != null && c.moveToFirst())
         {
-            avgExpense_TV.setText(AmountUtils.formatAmount(getActivity(), CurrenciesHelper.getDefault(getActivity()).getMainCurrencyId(), c.getDouble(0)));
+            avgExpense_TV.setText(AmountUtils.formatAmount(CurrencyHelper.get().getMainCurrencyId(), c.getDouble(0)));
         }
     }
 
@@ -220,7 +220,7 @@ public class AccountItemFragment extends ItemFragment
     {
         if (c != null && c.moveToFirst())
         {
-            avgIncome_TV.setText(AmountUtils.formatAmount(getActivity(), CurrenciesHelper.getDefault(getActivity()).getMainCurrencyId(), c.getDouble(0)));
+            avgIncome_TV.setText(AmountUtils.formatAmount(CurrencyHelper.get().getMainCurrencyId(), c.getDouble(0)));
         }
     }
 }

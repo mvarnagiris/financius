@@ -1,7 +1,6 @@
 package com.code44.finance.adapters;
 
 import android.content.Context;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import com.code44.finance.R;
-import com.google.api.services.drive.model.File;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -66,12 +65,12 @@ public class BackupFilesAdapter extends BaseAdapter implements Comparator<File>
             holder = (ViewHolder) view.getTag();
         }
 
-        final File file = list.get(position);
-        holder.date_TV.setText(DateUtils.formatDateTime(context, file.getModifiedDate().getValue(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
-        final double size = file.getFileSize();
-        final String sizeStr = size >= 1000000 ? String.format("%.1f MB", size / 1000000.0) : String.format("%.0f KB", size / 1000.0);
-        holder.deviceName_TV.setText(file.getDescription() + ", " + sizeStr);
-        holder.overflow_B.setTag(file.getId());
+//        final File file = list.get(position);
+//        holder.date_TV.setText(DateUtils.formatDateTime(context, file.getModifiedDate().getValue(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
+//        final double size = file.getFileSize();
+//        final String sizeStr = size >= 1000000 ? String.format("%.1f MB", size / 1000000.0) : String.format("%.0f KB", size / 1000.0);
+//        holder.deviceName_TV.setText(file.getDescription() + ", " + sizeStr);
+//        holder.overflow_B.setTag(file.getId());
 
         return view;
     }
@@ -95,10 +94,10 @@ public class BackupFilesAdapter extends BaseAdapter implements Comparator<File>
     @Override
     public int compare(File file, File file2)
     {
-        if (file.getModifiedDate().getValue() < file2.getModifiedDate().getValue())
-            return 1;
-        if (file.getModifiedDate().getValue() > file2.getModifiedDate().getValue())
-            return -1;
+//        if (file.getModifiedDate().getValue() < file2.getModifiedDate().getValue())
+//            return 1;
+//        if (file.getModifiedDate().getValue() > file2.getModifiedDate().getValue())
+//            return -1;
         return 0;
     }
 

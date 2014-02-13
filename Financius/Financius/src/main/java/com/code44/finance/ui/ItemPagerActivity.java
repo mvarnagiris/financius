@@ -11,7 +11,7 @@ import android.support.v4.view.ViewPager;
 import com.code44.finance.R;
 import com.code44.finance.adapters.ItemFragmentAdapter;
 
-public abstract class ItemPagerActivity extends AbstractActivity implements LoaderManager.LoaderCallbacks<Cursor>, ViewPager.OnPageChangeListener
+public abstract class ItemPagerActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor>, ViewPager.OnPageChangeListener
 {
     protected static final String EXTRA_POSITION = ItemEditActivity.class.getName() + ".EXTRA_POSITION";
     // -----------------------------------------------------------------------------------------------------------------

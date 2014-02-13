@@ -6,11 +6,9 @@ import com.code44.finance.db.Tables;
 public class Account extends DBRecord
 {
     private Currency currency;
-    private String typeResName;
     private String title;
     private String note;
     private double balance;
-    private double overdraft;
     private boolean showInTotals;
     private boolean showInSelection;
     private int origin;
@@ -21,20 +19,15 @@ public class Account extends DBRecord
         initBase(account, c, c.getLong(c.getColumnIndex(Tables.Accounts.ID)), Tables.Accounts.TABLE_NAME);
 
         final int iCurrencyId = c.getColumnIndex(Tables.Accounts.CURRENCY_ID);
-        final int iTypeResName = c.getColumnIndex(Tables.Accounts.TYPE_RES_NAME);
         final int iTitle = c.getColumnIndex(Tables.Accounts.TITLE);
         final int iNote = c.getColumnIndex(Tables.Accounts.NOTE);
         final int iBalance = c.getColumnIndex(Tables.Accounts.BALANCE);
-        final int iOverdraft = c.getColumnIndex(Tables.Accounts.OVERDRAFT);
         final int iShowInTotals = c.getColumnIndex(Tables.Accounts.SHOW_IN_TOTALS);
         final int iShowInSelection = c.getColumnIndex(Tables.Accounts.SHOW_IN_SELECTION);
         final int iOrigin = c.getColumnIndex(Tables.Accounts.ORIGIN);
 
         if (iCurrencyId >= 0)
             account.setCurrency(Currency.from(c, Tables.Accounts.CURRENCY_ID));
-
-        if (iTypeResName >= 0)
-            account.setTypeResName(c.getString(iTypeResName));
 
         if (iTitle >= 0)
             account.setTitle(c.getString(iTitle));
@@ -44,9 +37,6 @@ public class Account extends DBRecord
 
         if (iBalance >= 0)
             account.setBalance(c.getDouble(iBalance));
-
-        if (iOverdraft >= 0)
-            account.setOverdraft(c.getDouble(iOverdraft));
 
         if (iShowInTotals >= 0)
             account.setShowInTotals(c.getInt(iShowInTotals) != 0);
@@ -101,16 +91,6 @@ public class Account extends DBRecord
         this.currency = currency;
     }
 
-    public String getTypeResName()
-    {
-        return typeResName;
-    }
-
-    public void setTypeResName(String typeResName)
-    {
-        this.typeResName = typeResName;
-    }
-
     public String getNote()
     {
         return note;
@@ -119,16 +99,6 @@ public class Account extends DBRecord
     public void setNote(String note)
     {
         this.note = note;
-    }
-
-    public double getOverdraft()
-    {
-        return overdraft;
-    }
-
-    public void setOverdraft(double overdraft)
-    {
-        this.overdraft = overdraft;
     }
 
     public boolean isShowInTotals()

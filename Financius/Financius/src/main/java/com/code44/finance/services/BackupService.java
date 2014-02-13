@@ -58,7 +58,7 @@ public class BackupService extends AbstractService
 
             // Write Transactions
             c = getContentResolver().query(
-                    TransactionsProvider.uriTransactions(getApplicationContext()),
+                    TransactionsProvider.uriTransactions(),
                     new String[]{Tables.Transactions.DATE, Tables.Accounts.AccountFrom.S_TITLE, Tables.Accounts.AccountTo.S_TITLE,
                             Tables.Transactions.CATEGORY_ID, Tables.Categories.CategoriesChild.S_TITLE, Tables.Transactions.AMOUNT, Tables.Transactions.NOTE},
                     Tables.Transactions.DELETE_STATE + "=? and " + Tables.Transactions.DATE + " between ? and ?", new String[]{String.valueOf(Tables.DeleteState.NONE),
@@ -181,9 +181,9 @@ public class BackupService extends AbstractService
             new BackupParser().parseAndStore(this, jObject);
 
         // Notify
-        getContentResolver().notifyChange(AccountsProvider.uriAccounts(this), null);
-        getContentResolver().notifyChange(CategoriesProvider.uriCategories(this), null);
-        getContentResolver().notifyChange(TransactionsProvider.uriTransactions(this), null);
+        getContentResolver().notifyChange(AccountsProvider.uriAccounts(), null);
+        getContentResolver().notifyChange(CategoriesProvider.uriCategories(), null);
+        getContentResolver().notifyChange(TransactionsProvider.uriTransactions(), null);
     }
 
     @Override

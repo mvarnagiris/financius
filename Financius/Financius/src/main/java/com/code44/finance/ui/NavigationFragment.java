@@ -14,7 +14,7 @@ import com.code44.finance.ui.settings.donate.DonateActivity;
 import com.code44.finance.utils.PrefsHelper;
 import de.greenrobot.event.EventBus;
 
-public class NavigationFragment extends AbstractFragment implements AdapterView.OnItemClickListener, View.OnClickListener
+public class NavigationFragment extends BaseFragment implements AdapterView.OnItemClickListener, View.OnClickListener
 {
     private static final String STATE_SELECTED_POSITION = "STATE_SELECTED_POSITION";
     // -----------------------------------------------------------------------------------------------------------------

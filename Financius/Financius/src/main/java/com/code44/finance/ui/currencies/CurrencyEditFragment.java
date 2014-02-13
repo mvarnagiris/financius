@@ -1,11 +1,14 @@
 package com.code44.finance.ui.currencies;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import com.code44.finance.API;
 import com.code44.finance.R;
+import com.code44.finance.providers.CurrenciesProvider;
 import com.code44.finance.ui.ItemEditStepsFragment;
+import com.code44.finance.utils.CurrenciesUtils;
 
 public class CurrencyEditFragment extends ItemEditStepsFragment
 {
@@ -39,10 +42,11 @@ public class CurrencyEditFragment extends ItemEditStepsFragment
         final String symbolFormat = f.getSymbolFormat();
         final double exchangeRate = f.getExchangeRate();
 
+        ContentValues values = CurrenciesUtils.getValues(code, symbol, decimals, groupSeparator, decimalSeparator, isDefault, symbolFormat, exchangeRate);
         if (itemId == 0)
-            API.createCurrency(context, code, symbol, decimals, groupSeparator, decimalSeparator, isDefault, symbolFormat, exchangeRate);
+            API.createItem(CurrenciesProvider.uriCurrencies(), values);
         else
-            API.updateCurrency(context, itemId, code, symbol, decimals, groupSeparator, decimalSeparator, isDefault, symbolFormat, exchangeRate);
+            API.updateItem(CurrenciesProvider.uriCurrencies(), itemId, values);
 
         return true;
     }

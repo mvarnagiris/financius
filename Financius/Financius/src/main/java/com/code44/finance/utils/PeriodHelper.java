@@ -380,7 +380,7 @@ public class PeriodHelper
         resetActive();
         PrefsHelper.storeInt(context, PrefsHelper.PREF_PERIOD_TYPE, type);
         EventBus.getDefault().post(new PeriodTypeChangedEvent());
-        NotifyUtils.notifyAll(context);
+        // TODO NotifyUtils.notifyAll(context);
     }
 
     public static class PeriodTypeChangedEvent

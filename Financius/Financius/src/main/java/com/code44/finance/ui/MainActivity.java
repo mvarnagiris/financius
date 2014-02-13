@@ -16,10 +16,9 @@ import com.code44.finance.R;
 import com.code44.finance.utils.ExchangeRatesHelper;
 import com.code44.finance.utils.FilterHelper;
 import com.code44.finance.utils.LayoutType;
-import com.crashlytics.android.Crashlytics;
 import de.greenrobot.event.EventBus;
 
-public class MainActivity extends AbstractActivity implements NavigationFragment.Callbacks
+public class MainActivity extends BaseActivity implements NavigationFragment.Callbacks
 {
     private static final String FRAGMENT_CONTENT = "FRAGMENT_CONTENT";
     private NavigationContentFragment content_F;
@@ -111,8 +110,6 @@ public class MainActivity extends AbstractActivity implements NavigationFragment
         // Force security on this Activity
         if (savedInstanceState == null)
             setForceSecurity(true);
-
-        Crashlytics.start(this);
     }
 
     @Override

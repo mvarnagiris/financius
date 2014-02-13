@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.db.Tables;
 import com.code44.finance.utils.AmountUtils;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 
 public class AccountsAdapter extends AbstractCursorAdapter
 {
@@ -50,9 +50,9 @@ public class AccountsAdapter extends AbstractCursorAdapter
         // Set values
         holder.title_TV.setText(title);
         holder.title_TV.setTextColor(context.getResources().getColor(c.getInt(iIncludeInTotals) != 0 ? R.color.text_primary : R.color.text_secondary));
-        holder.balance_TV.setText(AmountUtils.formatAmount(context, currencyId, balance));
+        holder.balance_TV.setText(AmountUtils.formatAmount(currencyId, balance));
         holder.balance_TV.setTextColor(AmountUtils.getBalanceColor(context, balance));
-        if (currencyId == CurrenciesHelper.getDefault(context).getMainCurrencyId())
+        if (currencyId == CurrencyHelper.get().getMainCurrencyId())
         {
             holder.balanceMain_TV.setVisibility(View.GONE);
         }
@@ -60,7 +60,7 @@ public class AccountsAdapter extends AbstractCursorAdapter
         {
             final double convertedBalance = balance * c.getDouble(iExchangeRate);
             holder.balanceMain_TV.setVisibility(View.VISIBLE);
-            holder.balanceMain_TV.setText(AmountUtils.formatAmount(context, CurrenciesHelper.getDefault(context).getMainCurrencyId(), convertedBalance));
+            holder.balanceMain_TV.setText(AmountUtils.formatAmount(CurrencyHelper.get().getMainCurrencyId(), convertedBalance));
             holder.balanceMain_TV.setTextColor(AmountUtils.getBalanceColor(context, convertedBalance, false));
         }
     }

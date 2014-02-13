@@ -8,7 +8,7 @@ public class AccountEditActivity extends ItemEditActivity
 {
     public static void startItemEdit(Context context, long itemId)
     {
-        context.startActivity(makeIntent(context, AccountEditActivity.class, itemId));
+        start(context, makeIntent(context, AccountEditActivity.class, itemId), null);
     }
 
     @Override

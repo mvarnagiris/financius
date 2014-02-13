@@ -118,7 +118,7 @@ public class CategoryDetailsFragment extends ItemEditFragment implements View.On
         {
             case LOADER_PARENT:
             {
-                uri = CategoriesProvider.uriCategory(getActivity(), parentId);
+                uri = CategoriesProvider.uriCategory(parentId);
                 projection = null;
                 selection = null;
                 selectionArgs = null;
@@ -200,7 +200,7 @@ public class CategoryDetailsFragment extends ItemEditFragment implements View.On
     @Override
     protected Loader<Cursor> createItemLoader(Context context, long itemId)
     {
-        Uri uri = CategoriesProvider.uriCategory(context, itemId);
+        Uri uri = CategoriesProvider.uriCategory(itemId);
         String[] projection = null;
         String selection = null;
         String[] selectionArgs = null;

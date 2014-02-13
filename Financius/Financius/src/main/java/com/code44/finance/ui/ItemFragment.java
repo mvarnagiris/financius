@@ -8,10 +8,11 @@ import android.support.v4.content.Loader;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import com.code44.finance.R;
 import com.code44.finance.ui.dialogs.QuestionDialog;
 
-public abstract class ItemFragment extends AbstractFragment implements LoaderManager.LoaderCallbacks<Cursor>, QuestionDialog.DialogCallbacks
+public abstract class ItemFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, QuestionDialog.DialogCallbacks
 {
     public static final String ARG_ITEM_ID = ItemFragment.class.getName() + ".ARG_ITEM_ID";
     // -----------------------------------------------------------------------------------------------------------------
@@ -75,7 +76,7 @@ public abstract class ItemFragment extends AbstractFragment implements LoaderMan
         switch (item.getItemId())
         {
             case R.id.action_edit:
-                startItemEdit(getActivity(), itemId);
+                startItemEdit(getActivity(), itemId, item.getActionView());
                 break;
 
             case R.id.action_delete:
@@ -115,9 +116,10 @@ public abstract class ItemFragment extends AbstractFragment implements LoaderMan
     /**
      * Start item edit here.
      *
-     * @param itemId This is required by {@link ItemEditActivity}.
+     * @param itemId This is required by {@link com.code44.finance.ui.ItemEditActivity}.
+     * @param expandFrom
      */
-    protected abstract void startItemEdit(Context context, long itemId);
+    protected abstract void startItemEdit(Context context, long itemId, View expandFrom);
 
     /**
      * Delete the item here.

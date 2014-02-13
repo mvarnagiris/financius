@@ -3,80 +3,51 @@ package com.code44.finance.utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.format.DateUtils;
+
+import com.code44.finance.App;
 import com.code44.finance.db.DBHelper;
 import com.code44.finance.db.Tables;
 import com.code44.finance.parsers.JTags;
-import com.google.gson.stream.JsonWriter;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 public class BackupUtils
 {
-    public static final int BACKUP_VERSION = 4;
-    // -----------------------------------------------------------------------------------------------------------------
-    public static final String BACKUP_FILE_PREFIX = "snapshot_";
-    public static final String BACKUP_FILE_SUFFIX = ".json";
-    public static final String BACKUP_MIME_TYPE = "application/json";
-    // -----------------------------------------------------------------------------------------------------------------
+    public static final int BACKUP_VERSION = 5;
 
-
-    public static File generateBackupFile(Context context) throws Exception
+    public static JsonObject generateBackupJson()
     {
-        context = context.getApplicationContext();
-        File jsonFile = File.createTempFile("temp_" + System.currentTimeMillis(), "json");
-        if (jsonFile == null)
-            throw new IOException("Could not create file for JSON.");
-
-        // Prepare writer
-        final JsonWriter writer = new JsonWriter(new OutputStreamWriter(new FileOutputStream(jsonFile), "UTF-8"));
-        writer.setIndent("  ");
-
-        // Start
-        writer.beginObject();
+        final Context context = App.getAppContext();
+        final JsonObject json = new JsonObject();
 
         // Add export object values
         final long timestamp = System.currentTimeMillis();
-        writer.name(JTags.Export.DATE).value(DateUtils.formatDateTime(context, timestamp, DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_YEAR));
-        writer.name(JTags.Export.DATE_TS).value(timestamp);
-        writer.name(JTags.Export.VERSION).value(BACKUP_VERSION);
+        json.addProperty(JTags.Export.DATE, DateUtils.formatDateTime(context, timestamp, DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_YEAR));
+        json.addProperty(JTags.Export.DATE_TS, timestamp);
+        json.addProperty(JTags.Export.VERSION, BACKUP_VERSION);
 
         // Add currencies
-        writer.name(JTags.Currency.LIST).beginArray();
-        writeCurrencies(context, writer);
-        writer.endArray();
+        json.add(JTags.Currency.LIST, getCurrencies());
 
         // Add accounts
-        writer.name(JTags.Account.LIST).beginArray();
-        writeAccounts(context, writer);
-        writer.endArray();
+        json.add(JTags.Account.LIST, getAccounts());
 
         // Add categories
-        writer.name(JTags.Category.LIST).beginArray();
-        writeCategories(context, writer);
-        writer.endArray();
+        json.add(JTags.Category.LIST, getCategories());
 
         // Add transactions
-        writer.name(JTags.Transaction.LIST).beginArray();
-        writeTransactions(context, writer);
-        writer.endArray();
+        json.add(JTags.Transaction.LIST, getTransactions());
 
-        // End
-        writer.endObject();
-        writer.close();
-
-        return jsonFile;
+        return json;
     }
 
-    private static void writeCurrencies(Context context, JsonWriter writer) throws IOException
+    private static JsonArray getCurrencies()
     {
-        Cursor c = null;
+        JsonArray jsonArray = new JsonArray();
+        //noinspection ConstantConditions
+        Cursor c = DBHelper.get(App.getAppContext()).getReadableDatabase().query(Tables.Currencies.TABLE_NAME, null, null, null, null, null, null);
         try
         {
-            c = DBHelper.getInstance(context).getReadableDatabase().query(Tables.Currencies.TABLE_NAME, null, null, null, null, null, null);
-
             if (c != null && c.moveToFirst())
             {
                 final int iId = c.getColumnIndex(Tables.Currencies.ID);
@@ -89,27 +60,23 @@ public class BackupUtils
                 final int iSymbolFormat = c.getColumnIndex(Tables.Currencies.SYMBOL_FORMAT);
                 final int iIsDefault = c.getColumnIndex(Tables.Currencies.IS_DEFAULT);
                 final int iExchangeRate = c.getColumnIndex(Tables.Currencies.EXCHANGE_RATE);
-                final int iTimestamp = c.getColumnIndex(Tables.Currencies.TIMESTAMP);
-                final int iSyncState = c.getColumnIndex(Tables.Currencies.SYNC_STATE);
                 final int iDeleteState = c.getColumnIndex(Tables.Currencies.DELETE_STATE);
 
                 do
                 {
-                    writer.beginObject();
-                    writer.name(JTags.Currency.ID).value(c.getLong(iId));
-                    writer.name(JTags.Currency.SERVER_ID).value(c.getString(iServerId));
-                    writer.name(JTags.Currency.CODE).value(c.getString(iCode));
-                    writer.name(JTags.Currency.SYMBOL).value(c.getString(iSymbol));
-                    writer.name(JTags.Currency.DECIMALS).value(c.getInt(iDecimals));
-                    writer.name(JTags.Currency.DECIMAL_SEPARATOR).value(c.getString(iDecimalSeparator));
-                    writer.name(JTags.Currency.GROUP_SEPARATOR).value(c.getString(iGroupSeparator));
-                    writer.name(JTags.Currency.SYMBOL_FORMAT).value(c.getString(iSymbolFormat));
-                    writer.name(JTags.Currency.IS_DEFAULT).value(c.getInt(iIsDefault));
-                    writer.name(JTags.Currency.EXCHANGE_RATE).value(c.getDouble(iExchangeRate));
-                    writer.name(JTags.Currency.TIMESTAMP).value(c.getLong(iTimestamp));
-                    writer.name(JTags.Currency.SYNC_STATE).value(c.getInt(iSyncState));
-                    writer.name(JTags.Currency.DELETE_STATE).value(c.getInt(iDeleteState));
-                    writer.endObject();
+                    JsonObject json = new JsonObject();
+                    json.addProperty(JTags.Currency.ID, c.getLong(iId));
+                    json.addProperty(JTags.Currency.SERVER_ID, c.getString(iServerId));
+                    json.addProperty(JTags.Currency.CODE, c.getString(iCode));
+                    json.addProperty(JTags.Currency.SYMBOL, c.getString(iSymbol));
+                    json.addProperty(JTags.Currency.DECIMALS, c.getInt(iDecimals));
+                    json.addProperty(JTags.Currency.DECIMAL_SEPARATOR, c.getString(iDecimalSeparator));
+                    json.addProperty(JTags.Currency.GROUP_SEPARATOR, c.getString(iGroupSeparator));
+                    json.addProperty(JTags.Currency.SYMBOL_FORMAT, c.getString(iSymbolFormat));
+                    json.addProperty(JTags.Currency.IS_DEFAULT, c.getInt(iIsDefault));
+                    json.addProperty(JTags.Currency.EXCHANGE_RATE, c.getDouble(iExchangeRate));
+                    json.addProperty(JTags.Currency.DELETE_STATE, c.getInt(iDeleteState));
+                    jsonArray.add(json);
                 }
                 while (c.moveToNext());
             }
@@ -119,50 +86,44 @@ public class BackupUtils
             if (c != null && !c.isClosed())
                 c.close();
         }
+
+        return jsonArray;
     }
 
-    private static void writeAccounts(Context context, JsonWriter writer) throws IOException
+    private static JsonArray getAccounts()
     {
-        Cursor c = null;
+        JsonArray jsonArray = new JsonArray();
+        //noinspection ConstantConditions
+        Cursor c = DBHelper.get(App.getAppContext()).getReadableDatabase().query(Tables.Accounts.TABLE_NAME, null, null, null, null, null, null);
         try
         {
-            c = DBHelper.getInstance(context).getReadableDatabase().query(Tables.Accounts.TABLE_NAME, null, null, null, null, null, null);
-
             if (c != null && c.moveToFirst())
             {
                 final int iId = c.getColumnIndex(Tables.Accounts.ID);
                 final int iServerId = c.getColumnIndex(Tables.Accounts.SERVER_ID);
                 final int iCurrencyId = c.getColumnIndex(Tables.Accounts.CURRENCY_ID);
-                final int iTypeResName = c.getColumnIndex(Tables.Accounts.TYPE_RES_NAME);
                 final int iTitle = c.getColumnIndex(Tables.Accounts.TITLE);
                 final int iNote = c.getColumnIndex(Tables.Accounts.NOTE);
                 final int iBalance = c.getColumnIndex(Tables.Accounts.BALANCE);
-                final int iOverdraft = c.getColumnIndex(Tables.Accounts.OVERDRAFT);
                 final int iShowInTotals = c.getColumnIndex(Tables.Accounts.SHOW_IN_TOTALS);
                 final int iShowInSelection = c.getColumnIndex(Tables.Accounts.SHOW_IN_SELECTION);
                 final int iOrigin = c.getColumnIndex(Tables.Accounts.ORIGIN);
-                final int iTimestamp = c.getColumnIndex(Tables.Accounts.TIMESTAMP);
-                final int iSyncState = c.getColumnIndex(Tables.Accounts.SYNC_STATE);
                 final int iDeleteState = c.getColumnIndex(Tables.Accounts.DELETE_STATE);
 
                 do
                 {
-                    writer.beginObject();
-                    writer.name(JTags.Account.ID).value(c.getLong(iId));
-                    writer.name(JTags.Account.SERVER_ID).value(c.getString(iServerId));
-                    writer.name(JTags.Account.CURRENCY_ID).value(c.getLong(iCurrencyId));
-                    writer.name(JTags.Account.TYPE_RES_NAME).value(c.getString(iTypeResName));
-                    writer.name(JTags.Account.TITLE).value(c.getString(iTitle));
-                    writer.name(JTags.Account.NOTE).value(c.getString(iNote));
-                    writer.name(JTags.Account.BALANCE).value(c.getDouble(iBalance));
-                    writer.name(JTags.Account.OVERDRAFT).value(c.getDouble(iOverdraft));
-                    writer.name(JTags.Account.SHOW_IN_TOTALS).value(c.getInt(iShowInTotals));
-                    writer.name(JTags.Account.SHOW_IN_SELECTION).value(c.getInt(iShowInSelection));
-                    writer.name(JTags.Account.ORIGIN).value(c.getInt(iOrigin));
-                    writer.name(JTags.Account.TIMESTAMP).value(c.getLong(iTimestamp));
-                    writer.name(JTags.Account.SYNC_STATE).value(c.getInt(iSyncState));
-                    writer.name(JTags.Account.DELETE_STATE).value(c.getInt(iDeleteState));
-                    writer.endObject();
+                    JsonObject json = new JsonObject();
+                    json.addProperty(JTags.Account.ID, c.getLong(iId));
+                    json.addProperty(JTags.Account.SERVER_ID, c.getString(iServerId));
+                    json.addProperty(JTags.Account.CURRENCY_ID, c.getLong(iCurrencyId));
+                    json.addProperty(JTags.Account.TITLE, c.getString(iTitle));
+                    json.addProperty(JTags.Account.NOTE, c.getString(iNote));
+                    json.addProperty(JTags.Account.BALANCE, c.getDouble(iBalance));
+                    json.addProperty(JTags.Account.SHOW_IN_TOTALS, c.getInt(iShowInTotals));
+                    json.addProperty(JTags.Account.SHOW_IN_SELECTION, c.getInt(iShowInSelection));
+                    json.addProperty(JTags.Account.ORIGIN, c.getInt(iOrigin));
+                    json.addProperty(JTags.Account.DELETE_STATE, c.getInt(iDeleteState));
+                    jsonArray.add(json);
                 }
                 while (c.moveToNext());
             }
@@ -172,15 +133,18 @@ public class BackupUtils
             if (c != null && !c.isClosed())
                 c.close();
         }
+
+        return jsonArray;
     }
 
-    private static void writeCategories(Context context, JsonWriter writer) throws IOException
+    private static JsonArray getCategories()
     {
-        Cursor c = null;
+        JsonArray jsonArray = new JsonArray();
+        //noinspection ConstantConditions
+        Cursor c = DBHelper.get(App.getAppContext()).getReadableDatabase().query(Tables.Categories.TABLE_NAME, null, null, null, null, null, null);
+        ;
         try
         {
-            c = DBHelper.getInstance(context).getReadableDatabase().query(Tables.Categories.TABLE_NAME, null, null, null, null, null, null);
-
             if (c != null && c.moveToFirst())
             {
                 final int iId = c.getColumnIndex(Tables.Categories.ID);
@@ -193,27 +157,23 @@ public class BackupUtils
                 final int iOrigin = c.getColumnIndex(Tables.Categories.ORIGIN);
                 final int iOrder = c.getColumnIndex(Tables.Categories.ORDER);
                 final int iParentOrder = c.getColumnIndex(Tables.Categories.PARENT_ORDER);
-                final int iTimestamp = c.getColumnIndex(Tables.Categories.TIMESTAMP);
-                final int iSyncState = c.getColumnIndex(Tables.Categories.SYNC_STATE);
                 final int iDeleteState = c.getColumnIndex(Tables.Categories.DELETE_STATE);
 
                 do
                 {
-                    writer.beginObject();
-                    writer.name(JTags.Category.ID).value(c.getLong(iId));
-                    writer.name(JTags.Category.SERVER_ID).value(c.getString(iServerId));
-                    writer.name(JTags.Category.PARENT_ID).value(c.getLong(iParentId));
-                    writer.name(JTags.Category.TITLE).value(c.getString(iTitle));
-                    writer.name(JTags.Category.COLOR).value(c.getInt(iColor));
-                    writer.name(JTags.Category.LEVEL).value(c.getInt(iLevel));
-                    writer.name(JTags.Category.TYPE).value(c.getInt(iType));
-                    writer.name(JTags.Category.ORIGIN).value(c.getInt(iOrigin));
-                    writer.name(JTags.Category.ORDER).value(c.getInt(iOrder));
-                    writer.name(JTags.Category.PARENT_ORDER).value(c.getInt(iParentOrder));
-                    writer.name(JTags.Category.TIMESTAMP).value(c.getLong(iTimestamp));
-                    writer.name(JTags.Category.SYNC_STATE).value(c.getInt(iSyncState));
-                    writer.name(JTags.Category.DELETE_STATE).value(c.getInt(iDeleteState));
-                    writer.endObject();
+                    JsonObject json = new JsonObject();
+                    json.addProperty(JTags.Category.ID, c.getLong(iId));
+                    json.addProperty(JTags.Category.SERVER_ID, c.getString(iServerId));
+                    json.addProperty(JTags.Category.PARENT_ID, c.getLong(iParentId));
+                    json.addProperty(JTags.Category.TITLE, c.getString(iTitle));
+                    json.addProperty(JTags.Category.COLOR, c.getInt(iColor));
+                    json.addProperty(JTags.Category.LEVEL, c.getInt(iLevel));
+                    json.addProperty(JTags.Category.TYPE, c.getInt(iType));
+                    json.addProperty(JTags.Category.ORIGIN, c.getInt(iOrigin));
+                    json.addProperty(JTags.Category.ORDER, c.getInt(iOrder));
+                    json.addProperty(JTags.Category.PARENT_ORDER, c.getInt(iParentOrder));
+                    json.addProperty(JTags.Category.DELETE_STATE, c.getInt(iDeleteState));
+                    jsonArray.add(json);
                 }
                 while (c.moveToNext());
             }
@@ -223,15 +183,18 @@ public class BackupUtils
             if (c != null && !c.isClosed())
                 c.close();
         }
+
+        return jsonArray;
     }
 
-    private static void writeTransactions(Context context, JsonWriter writer) throws IOException
+    private static JsonArray getTransactions()
     {
-        Cursor c = null;
+        JsonArray jsonArray = new JsonArray();
+        //noinspection ConstantConditions
+        Cursor c = DBHelper.get(App.getAppContext()).getReadableDatabase().query(Tables.Transactions.TABLE_NAME, null, null, null, null, null, null);
+        ;
         try
         {
-            c = DBHelper.getInstance(context).getReadableDatabase().query(Tables.Transactions.TABLE_NAME, null, null, null, null, null, null);
-
             if (c != null && c.moveToFirst())
             {
                 final int iId = c.getColumnIndex(Tables.Transactions.ID);
@@ -245,28 +208,24 @@ public class BackupUtils
                 final int iNote = c.getColumnIndex(Tables.Transactions.NOTE);
                 final int iState = c.getColumnIndex(Tables.Transactions.STATE);
                 final int iShowInTotals = c.getColumnIndex(Tables.Transactions.SHOW_IN_TOTALS);
-                final int iTimestamp = c.getColumnIndex(Tables.Transactions.TIMESTAMP);
-                final int iSyncState = c.getColumnIndex(Tables.Transactions.SYNC_STATE);
                 final int iDeleteState = c.getColumnIndex(Tables.Transactions.DELETE_STATE);
 
                 do
                 {
-                    writer.beginObject();
-                    writer.name(JTags.Transaction.ID).value(c.getLong(iId));
-                    writer.name(JTags.Transaction.SERVER_ID).value(c.getString(iServerId));
-                    writer.name(JTags.Transaction.ACCOUNT_FROM_ID).value(c.getLong(iAccountFromId));
-                    writer.name(JTags.Transaction.ACCOUNT_TO_ID).value(c.getLong(iAccountToId));
-                    writer.name(JTags.Transaction.CATEGORY_ID).value(c.getLong(iCategoryId));
-                    writer.name(JTags.Transaction.DATE).value(c.getLong(iDate));
-                    writer.name(JTags.Transaction.AMOUNT).value(c.getDouble(iAmount));
-                    writer.name(JTags.Transaction.EXCHANGE_RATE).value(c.getDouble(iExchangeRate));
-                    writer.name(JTags.Transaction.NOTE).value(c.getString(iNote));
-                    writer.name(JTags.Transaction.STATE).value(c.getInt(iState));
-                    writer.name(JTags.Transaction.SHOW_IN_TOTALS).value(c.getInt(iShowInTotals));
-                    writer.name(JTags.Transaction.TIMESTAMP).value(c.getLong(iTimestamp));
-                    writer.name(JTags.Transaction.SYNC_STATE).value(c.getInt(iSyncState));
-                    writer.name(JTags.Transaction.DELETE_STATE).value(c.getInt(iDeleteState));
-                    writer.endObject();
+                    JsonObject json = new JsonObject();
+                    json.addProperty(JTags.Transaction.ID, c.getLong(iId));
+                    json.addProperty(JTags.Transaction.SERVER_ID, c.getString(iServerId));
+                    json.addProperty(JTags.Transaction.ACCOUNT_FROM_ID, c.getLong(iAccountFromId));
+                    json.addProperty(JTags.Transaction.ACCOUNT_TO_ID, c.getLong(iAccountToId));
+                    json.addProperty(JTags.Transaction.CATEGORY_ID, c.getLong(iCategoryId));
+                    json.addProperty(JTags.Transaction.DATE, c.getLong(iDate));
+                    json.addProperty(JTags.Transaction.AMOUNT, c.getDouble(iAmount));
+                    json.addProperty(JTags.Transaction.EXCHANGE_RATE, c.getDouble(iExchangeRate));
+                    json.addProperty(JTags.Transaction.NOTE, c.getString(iNote));
+                    json.addProperty(JTags.Transaction.STATE, c.getInt(iState));
+                    json.addProperty(JTags.Transaction.SHOW_IN_TOTALS, c.getInt(iShowInTotals));
+                    json.addProperty(JTags.Transaction.DELETE_STATE, c.getInt(iDeleteState));
+                    jsonArray.add(json);
                 }
                 while (c.moveToNext());
             }
@@ -276,5 +235,7 @@ public class BackupUtils
             if (c != null && !c.isClosed())
                 c.close();
         }
+
+        return jsonArray;
     }
 }

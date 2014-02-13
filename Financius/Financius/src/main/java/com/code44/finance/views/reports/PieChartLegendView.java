@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.utils.AmountUtils;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +105,7 @@ public class PieChartLegendView extends LinearLayout
         int cutoffIndex = -1;
         PieChartLegendItem item;
         View view;
-        final long mainCurrencyId = CurrenciesHelper.getDefault(getContext()).getMainCurrencyId();
+        final long mainCurrencyId = CurrencyHelper.get().getMainCurrencyId();
         for (int i = 0; i < size; i++)
         {
             // Get item
@@ -124,7 +124,7 @@ public class PieChartLegendView extends LinearLayout
                     total += itemList.get(e).getPieChartLegendValue();
                 }
                 ((TextView) view.findViewById(R.id.title_TV)).setText(R.string.other);
-                ((TextView) view.findViewById(R.id.amount_TV)).setText(AmountUtils.formatAmount(getContext(), mainCurrencyId, total));
+                ((TextView) view.findViewById(R.id.amount_TV)).setText(AmountUtils.formatAmount(mainCurrencyId, total));
                 view.findViewById(R.id.color_V).setBackgroundResource(R.drawable.bg_stripe);
                 cutoffIndex = maxItemsCount;
             }
@@ -132,7 +132,7 @@ public class PieChartLegendView extends LinearLayout
             {
                 // Normal view
                 ((TextView) view.findViewById(R.id.title_TV)).setText(item.getPieChartLegendTitle());
-                ((TextView) view.findViewById(R.id.amount_TV)).setText(AmountUtils.formatAmount(getContext(), mainCurrencyId, item.getPieChartLegendValue()));
+                ((TextView) view.findViewById(R.id.amount_TV)).setText(AmountUtils.formatAmount(mainCurrencyId, item.getPieChartLegendValue()));
                 view.findViewById(R.id.color_V).setBackgroundColor(item.getPieChartColor());
             }
 

@@ -19,6 +19,7 @@ import com.code44.finance.providers.AccountsProvider;
 import com.code44.finance.providers.CurrenciesProvider;
 import com.code44.finance.ui.ItemFragment;
 import com.code44.finance.utils.AmountUtils;
+import com.code44.finance.views.cards.CurrencyAccountCardView;
 
 public class CurrencyItemFragment extends ItemFragment
 {
@@ -28,9 +29,8 @@ public class CurrencyItemFragment extends ItemFragment
     private LinearLayout container_V;
     private TextView code_TV;
     private TextView format_TV;
-    private TextView currentCurrency_TV;
+    private TextView mainCurrency_TV;
     private TextView exchangeRate_TV;
-    private TextView accounts_TV;
     // -----------------------------------------------------------------------------------------------------------------
     private String defaultCurrencyCode;
 
@@ -56,9 +56,8 @@ public class CurrencyItemFragment extends ItemFragment
         container_V = (LinearLayout) view.findViewById(R.id.container_V);
         code_TV = (TextView) view.findViewById(R.id.code_TV);
         format_TV = (TextView) view.findViewById(R.id.format_TV);
-        currentCurrency_TV = (TextView) view.findViewById(R.id.currentCurrency_TV);
+        mainCurrency_TV = (TextView) view.findViewById(R.id.mainCurrency_TV);
         exchangeRate_TV = (TextView) view.findViewById(R.id.exchangeRate_TV);
-        accounts_TV = (TextView) view.findViewById(R.id.accounts_TV);
     }
 
     @Override
@@ -67,7 +66,6 @@ public class CurrencyItemFragment extends ItemFragment
         super.onActivityCreated(savedInstanceState);
 
         // Loader
-        getLoaderManager().initLoader(LOADER_ACCOUNTS, null, this);
         getLoaderManager().initLoader(LOADER_DEFAULT_CURRENCY, null, this);
     }
 
@@ -78,24 +76,22 @@ public class CurrencyItemFragment extends ItemFragment
         {
             case LOADER_ACCOUNTS:
             {
-                Uri uri = AccountsProvider.uriAccounts(getActivity());
-                String[] projection = new String[]{Tables.Accounts.TITLE};
-                String selection = Tables.Accounts.CURRENCY_ID + "=? and " + Tables.Accounts.DELETE_STATE + "=? and " + Tables.Accounts.ORIGIN + "<>?";
-                String[] selectionArgs = new String[]{String.valueOf(itemId), String.valueOf(Tables.DeleteState.NONE), String.valueOf(Tables.Accounts.Origin.SYSTEM)};
-                String sortOrder = null;
+                Uri uri = AccountsProvider.uriAccounts();
+                String[] projection = new String[]{Tables.Accounts.T_ID, Tables.Accounts.TITLE, Tables.Accounts.CURRENCY_ID, Tables.Currencies.CODE};
+                String selection = Tables.Accounts.DELETE_STATE + "=? and " + Tables.Accounts.ORIGIN + "<>?";
+                String[] selectionArgs = new String[]{String.valueOf(Tables.DeleteState.NONE), String.valueOf(Tables.Accounts.Origin.SYSTEM)};
 
-                return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs, sortOrder);
+                return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs, null);
             }
 
             case LOADER_DEFAULT_CURRENCY:
             {
-                Uri uri = CurrenciesProvider.uriCurrencies(getActivity());
+                Uri uri = CurrenciesProvider.uriCurrencies();
                 String[] projection = new String[]{Tables.Currencies.CODE};
                 String selection = Tables.Currencies.IS_DEFAULT + "=?";
                 String[] selectionArgs = new String[]{"1"};
-                String sortOrder = null;
 
-                return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs, sortOrder);
+                return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs, null);
             }
         }
         return super.onCreateLoader(id, bundle);
@@ -118,7 +114,7 @@ public class CurrencyItemFragment extends ItemFragment
     }
 
     @Override
-    protected void startItemEdit(Context context, long itemId)
+    protected void startItemEdit(Context context, long itemId, View expandFrom)
     {
         CurrencyEditActivity.startItemEdit(context, itemId);
     }
@@ -126,20 +122,17 @@ public class CurrencyItemFragment extends ItemFragment
     @Override
     protected boolean onDeleteItem(Context context, long[] itemIds)
     {
-        API.deleteCurrencies(context, itemIds);
+        API.deleteItems(CurrenciesProvider.uriCurrencies(), itemIds);
         return true;
     }
 
     @Override
     protected Loader<Cursor> createItemLoader(Context context, long itemId)
     {
-        Uri uri = CurrenciesProvider.uriCurrency(getActivity(), itemId);
+        Uri uri = CurrenciesProvider.uriCurrency(itemId);
         String[] projection = new String[]{Tables.Currencies.T_ID, Tables.Currencies.CODE, Tables.Currencies.EXCHANGE_RATE};
-        String selection = null;
-        String[] selectionArgs = null;
-        String sortOrder = null;
 
-        return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs, sortOrder);
+        return new CursorLoader(getActivity(), uri, projection, null, null, null);
     }
 
     @Override
@@ -156,11 +149,13 @@ public class CurrencyItemFragment extends ItemFragment
 
             // Set values
             code_TV.setText(code);
-            format_TV.setText(AmountUtils.formatAmount(getActivity(), c.getLong(iId), 1000.00));
-            exchangeRate_TV.setText(getString(R.string.f_exchange_rate_x, c.getDouble(iExchangeRate)));
+            format_TV.setText(AmountUtils.formatAmount(c.getLong(iId), 1000.00));
+            exchangeRate_TV.setText("\u21C4 " + c.getDouble(iExchangeRate));
 
             updateDefaultCurrency();
         }
+
+        getLoaderManager().restartLoader(LOADER_ACCOUNTS, null, this);
     }
 
     private void bindAccounts(Cursor c)
@@ -170,22 +165,22 @@ public class CurrencyItemFragment extends ItemFragment
 
         if (c != null && c.moveToFirst())
         {
-            accounts_TV.setText(R.string.l_currency_used);
-
             // Add accounts views
+            final int iId = c.getColumnIndex(Tables.Accounts.ID);
             final int iTitle = c.getColumnIndex(Tables.Accounts.TITLE);
-            View v;
+            final int iCurrencyId = c.getColumnIndex(Tables.Accounts.CURRENCY_ID);
+            final int iCurrencyCode = c.getColumnIndex(Tables.Currencies.CODE);
             do
             {
-                v = LayoutInflater.from(getActivity()).inflate(R.layout.li_account_simple, container_V, false);
-                ((TextView) v.findViewById(R.id.title_TV)).setText(c.getString(iTitle));
-                container_V.addView(v);
+                final CurrencyAccountCardView card_V = new CurrencyAccountCardView(getActivity());
+                final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp.topMargin = getResources().getDimensionPixelSize(R.dimen.space_normal);
+                card_V.setLayoutParams(lp);
+                //noinspection ConstantConditions
+                card_V.setData(itemId, code_TV.getText().toString(), c.getLong(iId), c.getString(iTitle), c.getLong(iCurrencyId), c.getString(iCurrencyCode));
+                container_V.addView(card_V);
             }
             while (c.moveToNext());
-        }
-        else
-        {
-            accounts_TV.setText(R.string.l_currency_not_used);
         }
     }
 
@@ -205,14 +200,16 @@ public class CurrencyItemFragment extends ItemFragment
         if (TextUtils.isEmpty(code_TV.getText()) || TextUtils.isEmpty(defaultCurrencyCode))
             return;
 
+        //noinspection ConstantConditions
         if (code_TV.getText().toString().equalsIgnoreCase(defaultCurrencyCode))
         {
-            currentCurrency_TV.setText(getString(R.string.this_is_main_currency));
+            mainCurrency_TV.setVisibility(View.GONE);
             exchangeRate_TV.setVisibility(View.GONE);
         }
         else
         {
-            currentCurrency_TV.setText(getString(R.string.f_current_main_currency_x, defaultCurrencyCode));
+            mainCurrency_TV.setText(getString(R.string.f_current_main_currency_x, defaultCurrencyCode));
+            mainCurrency_TV.setVisibility(View.VISIBLE);
             exchangeRate_TV.setVisibility(View.VISIBLE);
         }
     }

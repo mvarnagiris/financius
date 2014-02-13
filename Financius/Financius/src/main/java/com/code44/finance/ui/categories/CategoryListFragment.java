@@ -83,7 +83,7 @@ public class CategoryListFragment extends ItemListFragment
 
     public static Loader<Cursor> createItemsLoader(Context context, int categoryType, String query)
     {
-        final Uri uri = CategoriesProvider.uriCategories(context);
+        final Uri uri = CategoriesProvider.uriCategories();
         final String[] projection = new String[]{Tables.Categories.T_ID, Tables.Categories.PARENT_ID, Tables.Categories.LEVEL, Tables.Categories.TITLE,
                 Tables.Categories.TYPE, Tables.Categories.COLOR, Tables.Categories.ORIGIN};
         final String selection = getLoaderSelection(query);
@@ -219,13 +219,13 @@ public class CategoryListFragment extends ItemListFragment
     }
 
     @Override
-    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c)
+    protected void startItemDetails(Context context, long itemId, int position, AbstractCursorAdapter adapter, Cursor c, View view)
     {
-        CategoryItemActivity.startItem(context, position, c.getInt(c.getColumnIndex(Tables.Categories.TYPE)), ((CategoriesAdapter) adapter).getQuery());
+        CategoryItemActivity.startItem(context, itemId, c.getInt(c.getColumnIndex(Tables.Categories.TYPE)), ((CategoriesAdapter) adapter).getQuery(), view);
     }
 
     @Override
-    protected void startItemCreate(Context context)
+    protected void startItemCreate(Context context, View view)
     {
         CategoryEditActivity.startItemEdit(context, 0, categoryType);
     }

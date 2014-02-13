@@ -20,7 +20,7 @@ import com.code44.finance.billing.IabResult;
 import com.code44.finance.billing.Inventory;
 import com.code44.finance.billing.Purchase;
 import com.code44.finance.billing.SkuDetails;
-import com.code44.finance.ui.AbstractActivity;
+import com.code44.finance.ui.BaseActivity;
 import com.code44.finance.utils.PrefsHelper;
 import com.code44.finance.utils.SecurityHelper;
 import com.code44.finance.utils.Tracking;
@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DonateActivity extends AbstractActivity implements IabHelper.QueryInventoryFinishedListener, IabHelper.OnConsumeFinishedListener, IabHelper.OnConsumeMultiFinishedListener, IabHelper.OnIabPurchaseFinishedListener, View.OnClickListener {
+public class DonateActivity extends BaseActivity implements IabHelper.QueryInventoryFinishedListener, IabHelper.OnConsumeFinishedListener, IabHelper.OnConsumeMultiFinishedListener, IabHelper.OnIabPurchaseFinishedListener, View.OnClickListener {
     public static final String SKU_DONATE_1 = "donate_1";
     public static final String SKU_DONATE_2 = "donate_2";
     public static final String SKU_DONATE_3 = "donate_3";

@@ -2,16 +2,14 @@ package com.code44.finance.ui.categories;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.Loader;
+import android.view.View;
 import com.code44.finance.R;
-import com.code44.finance.adapters.ItemFragmentAdapter;
 import com.code44.finance.db.Tables;
-import com.code44.finance.ui.ItemPagerActivity;
+import com.code44.finance.ui.ItemActivity;
+import com.code44.finance.ui.ItemFragment;
 
-public class CategoryItemActivity extends ItemPagerActivity
+public class CategoryItemActivity extends ItemActivity
 {
     private static final String EXTRA_CATEGORY_TYPE = CategoryItemActivity.class.getName() + ".EXTRA_CATEGORY_TYPE";
     private static final String EXTRA_QUERY = CategoryItemActivity.class.getName() + ".EXTRA_QUERY";
@@ -19,12 +17,12 @@ public class CategoryItemActivity extends ItemPagerActivity
     private int categoryType;
     private String query;
 
-    public static void startItem(Context context, int position, int categoryType, String query)
+    public static void startItem(Context context, long itemId, int categoryType, String query, View expandFrom)
     {
-        Intent intent = makeIntent(context, CategoryItemActivity.class, position);
+        Intent intent = makeIntent(context, CategoryItemActivity.class, itemId);
         intent.putExtra(EXTRA_CATEGORY_TYPE, categoryType);
         intent.putExtra(EXTRA_QUERY, query);
-        context.startActivity(intent);
+        start(context, intent, expandFrom);
     }
 
     @Override
@@ -38,20 +36,14 @@ public class CategoryItemActivity extends ItemPagerActivity
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    protected ItemFragment createItemFragment(long itemId)
+    {
+        return CategoryItemFragment.newInstance(itemId);
+    }
+
     protected String getActivityTitle()
     {
         return getString(R.string.category);
-    }
-
-    @Override
-    protected ItemFragmentAdapter createAdapter(Context context, FragmentManager fm)
-    {
-        return new ItemFragmentAdapter(context, fm, CategoryItemFragment.class);
-    }
-
-    @Override
-    protected Loader<Cursor> createItemsLoader()
-    {
-        return CategoryListFragment.createItemsLoader(this, categoryType, query);
     }
 }

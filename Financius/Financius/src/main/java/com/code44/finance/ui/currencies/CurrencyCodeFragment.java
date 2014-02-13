@@ -19,12 +19,12 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.db.Tables;
 import com.code44.finance.providers.CurrenciesProvider;
-import com.code44.finance.ui.AbstractFragment;
+import com.code44.finance.ui.BaseFragment;
 import com.code44.finance.utils.AnimUtils;
 
 import java.util.*;
 
-public class CurrencyCodeFragment extends AbstractFragment implements LoaderManager.LoaderCallbacks<Cursor>
+public class CurrencyCodeFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
     private static final int LOADER_CURRENCIES = 1;
     private AutoCompleteTextView code_ET;
@@ -120,7 +120,7 @@ public class CurrencyCodeFragment extends AbstractFragment implements LoaderMana
         {
             case LOADER_CURRENCIES:
             {
-                uri = CurrenciesProvider.uriCurrencies(getActivity());
+                uri = CurrenciesProvider.uriCurrencies();
                 projection = new String[]{Tables.Currencies.T_ID, Tables.Currencies.CODE, Tables.Currencies.IS_DEFAULT};
                 selection = Tables.Currencies.DELETE_STATE + "=?";
                 selectionArgs = new String[]{String.valueOf(Tables.DeleteState.NONE)};

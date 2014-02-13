@@ -1,248 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
-    <RadioGroup
-        android:id="@+id/buttonsContainer_V"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:showDividers="middle"
-        android:divider="?android:attr/dividerVertical"
-        android:dividerPadding="@dimen/divider_padding"
-        android:background="@color/bg_primary">
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dynamic_margin_narrow_vertical"
+        android:paddingBottom="@dimen/dynamic_margin_narrow_vertical"
+        android:paddingLeft="@dimen/dynamic_margin_narrow_horizontal"
+        android:paddingRight="@dimen/dynamic_margin_narrow_horizontal"
+        android:animateLayoutChanges="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/expense_B"
-            style="@style/Button.Borderless"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/expense"
-            android:textSize="@dimen/text_xsmall"
-            android:textAllCaps="true" />
-
-        <RadioButton
-            android:id="@+id/income_B"
-            style="@style/Button.Borderless"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/income"
-            android:textSize="@dimen/text_xsmall"
-            android:textAllCaps="true" />
-
-        <RadioButton
-            android:id="@+id/transfer_B"
-            style="@style/Button.Borderless"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/transfer"
-            android:textSize="@dimen/text_xsmall"
-            android:textAllCaps="true" />
-    </RadioGroup>
-
-    <View
-        style="@style/Separator"
-        android:id="@+id/separator_V"
-        android:layout_above="@+id/buttonsContainer_V" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/separator_V"
-        android:fillViewport="true">
+        <com.code44.finance.views.cards.AmountCardView
+            android:id="@+id/amount_CV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/dynamic_margin_narrow_vertical"
-            android:paddingBottom="@dimen/dynamic_margin_narrow_vertical"
-            android:paddingLeft="@dimen/dynamic_margin_narrow_horizontal"
-            android:paddingRight="@dimen/dynamic_margin_narrow_horizontal"
+            android:layout_marginTop="@dimen/space_normal"
             android:animateLayoutChanges="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <com.code44.finance.views.cards.AccountCardView
+                android:id="@+id/accountFrom_CV"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_weight="1" />
 
-                <Button
-                    android:id="@+id/date_B"
-                    style="@style/Button.Select"
-                    android:layout_width="0dp"
-                    android:layout_weight="3"
-                    android:layout_marginRight="@dimen/space_small" />
+            <TextView
+                android:id="@+id/accountsSeparator_TV"
+                android:layout_width="@dimen/space_normal"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:ignore="HardcodedText" />
 
-                <Button
-                    android:id="@+id/time_B"
-                    style="@style/Button.Select"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_marginLeft="@dimen/space_small" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <com.code44.finance.views.cards.AccountCardView
+                android:id="@+id/accountTo_CV"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_normal"
-                android:animateLayoutChanges="true"
-                android:orientation="horizontal">
+                android:layout_weight="1" />
+        </LinearLayout>
 
-                <Button
-                    android:id="@+id/accountFrom_B"
-                    style="@style/Button.Select"
-                    android:layout_width="0dp"
-                    android:layout_weight="1" />
+        <com.code44.finance.views.cards.CategoryCardView
+            android:id="@+id/category_CV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_normal" />
 
-                <TextView
-                    android:id="@+id/accountsSeparator_TV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="@dimen/space_small"
-                    android:paddingRight="@dimen/space_small"
-                    android:gravity="center"
-                    android:textSize="@dimen/text_xlarge"
-                    android:text="⇨"
-                    android:textColor="@color/text_secondary"
-                    tools:ignore="HardcodedText"
-                    android:visibility="gone" />
+        <com.code44.finance.views.cards.EditTextCardView
+            android:id="@+id/note_CV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_normal" />
 
-                <Button
-                    android:id="@+id/accountTo_B"
-                    style="@style/Button.Select"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:visibility="gone" />
+        <com.code44.finance.views.cards.DateCardView
+            android:id="@+id/date_CV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_normal" />
 
-            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/currenciesContainer_V"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_normal"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
-            <LinearLayout
-                android:id="@+id/currenciesContainer_V"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_normal"
-                android:orientation="horizontal"
-                android:visibility="gone">
+            <TextView
+                android:id="@+id/currencies_TV"
+                style="@style/TextView"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="@dimen/space_small"
+                android:textColor="@color/text_secondary" />
 
-                <TextView
-                    android:id="@+id/currencies_TV"
-                    style="@style/TextView"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="@dimen/space_small"
-                    android:textColor="@color/text_secondary" />
-
-                <Button
-                    android:id="@+id/exchangeRate_B"
-                    style="@style/Button.Select"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="@dimen/space_small" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/categoryContainer_V"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_normal"
-                android:orientation="horizontal">
-
-                <View
-                    android:id="@+id/color_V"
-                    android:layout_width="@dimen/min_touch_size"
-                    android:layout_height="@dimen/min_touch_size"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/space_normal"
-                    android:layout_marginLeft="12dp" />
-
-                <Button
-                    android:id="@+id/category_B"
-                    style="@style/Button.Select"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:text="@string/c_books_and_magazines" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_normal"
-                android:animateLayoutChanges="true"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/amount_B"
-                    style="@style/Button.Select"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif" />
-
-                <TextView
-                    android:id="@+id/amountsSeparator_TV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="@dimen/space_small"
-                    android:paddingRight="@dimen/space_small"
-                    android:gravity="center"
-                    android:textSize="@dimen/text_xlarge"
-                    android:text="⇨"
-                    android:textColor="@color/text_secondary"
-                    tools:ignore="HardcodedText"
-                    android:visibility="gone" />
-
-                <Button
-                    android:id="@+id/amountTo_B"
-                    style="@style/Button.Select"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:textColor="@color/text_secondary"
-                    android:fontFamily="sans-serif"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/note_ET"
-                style="@style/EditText.Field"
-                android:layout_marginTop="18dp"
-                android:hint="@string/note"
-                android:inputType="textCapSentences|textMultiLine" />
-
-            <CheckBox
-                android:id="@+id/confirmed_CB"
-                style="@style/CheckBox"
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/space_large"
-                android:layout_gravity="center_vertical"
-                android:checked="true"
-                android:text="@string/confirmed" />
-
-            <CheckBox
-                android:id="@+id/showInTotals_CB"
-                style="@style/CheckBox"
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/space_normal"
-                android:layout_gravity="center_vertical"
-                android:checked="true"
-                android:text="@string/include_in_reports" />
+            <Button
+                android:id="@+id/exchangeRate_B"
+                style="@style/Button.Select"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/space_small" />
 
         </LinearLayout>
 
-    </ScrollView>
-</RelativeLayout>
+        <CheckBox
+            android:id="@+id/confirmed_CB"
+            style="@style/CheckBox"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/space_large"
+            android:layout_gravity="center_vertical"
+            android:checked="true"
+            android:text="@string/confirmed"
+            android:textSize="@dimen/text_xlarge"/>
+
+        <CheckBox
+            android:id="@+id/showInTotals_CB"
+            style="@style/CheckBox"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/space_large"
+            android:layout_gravity="center_vertical"
+            android:checked="true"
+            android:text="@string/include_in_reports"
+            android:textSize="@dimen/text_xlarge"/>
+
+    </LinearLayout>
+
+</ScrollView>

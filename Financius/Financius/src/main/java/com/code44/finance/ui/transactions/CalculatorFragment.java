@@ -18,7 +18,7 @@ import android.widget.Toast;
 import bsh.EvalError;
 import bsh.Interpreter;
 import com.code44.finance.R;
-import com.code44.finance.ui.AbstractFragment;
+import com.code44.finance.ui.BaseFragment;
 import com.code44.finance.utils.AnimUtils;
 
 import java.text.DecimalFormat;
@@ -27,7 +27,7 @@ import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.Locale;
 
-public class CalculatorFragment extends AbstractFragment implements OnClickListener, View.OnLongClickListener
+public class CalculatorFragment extends BaseFragment implements OnClickListener, View.OnLongClickListener
 {
     private static final String ARG_AMOUNT = "ARG_AMOUNT";
     private static final String ARG_ALLOW_NEGATIVE = "ARG_ALLOW_NEGATIVE";

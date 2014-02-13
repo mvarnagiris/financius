@@ -1,21 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ScrollView"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:paddingTop="@dimen/dynamic_margin_narrow_vertical"
+    android:paddingBottom="@dimen/dynamic_margin_narrow_vertical"
+    android:paddingLeft="@dimen/dynamic_margin_narrow_horizontal"
+    android:paddingRight="@dimen/dynamic_margin_narrow_horizontal">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/space_normal"
+        android:paddingRight="@dimen/space_normal"
         android:orientation="vertical"
-        android:paddingTop="@dimen/dynamic_margin_narrow_vertical"
-        android:paddingBottom="@dimen/dynamic_margin_narrow_vertical"
-        android:paddingLeft="@dimen/dynamic_margin_narrow_horizontal"
-        android:paddingRight="@dimen/dynamic_margin_narrow_horizontal">
+        android:animateLayoutChanges="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/mainCurrency_TV"
+                style="@style/TextView.Secondary"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/space_normal"
+                android:fontFamily="@string/font_light"
+                tools:text="Current main currency is USD" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_normal"
+            android:animateLayoutChanges="true">
 
             <TextView
                 android:id="@+id/code_TV"
@@ -23,45 +43,60 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_marginRight="@dimen/space_normal"
-                android:textSize="@dimen/text_xlarge"
-                android:textAllCaps="true" />
+                android:textSize="@dimen/text_xxlarge"
+                android:textAllCaps="true"
+                android:fontFamily="@string/font_light"
+                tools:text="GBP" />
+
+            <TextView
+                android:id="@+id/exchangeRate_TV"
+                style="@style/TextView"
+                android:textSize="@dimen/text_large"
+                android:textAllCaps="true"
+                android:fontFamily="@string/font_light"
+                tools:text="0.1648941 \u21C4" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_normal"
+            android:animateLayoutChanges="true">
+
+            <TextView
+                style="@style/TextView"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/space_normal"
+                android:text="@string/format"
+                android:fontFamily="@string/font_light"/>
 
             <TextView
                 android:id="@+id/format_TV"
-                style="@style/TextView.Secondary"
-                android:textSize="@dimen/text_xlarge"
-                android:textColor="@color/text_yellow" />
+                style="@style/TextView"
+                android:fontFamily="@string/font_light"
+                tools:text="£1,000.00" />
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/currentCurrency_TV"
             style="@style/TextView.Secondary"
-            android:layout_marginTop="@dimen/space_normal"
-            android:fontFamily="sans-serif-light" />
-
-        <TextView
-            android:id="@+id/exchangeRate_TV"
-            style="@style/TextView.Secondary"
-            android:fontFamily="sans-serif-light" />
+            android:layout_marginTop="@dimen/space_xxlarge"
+            android:text="@string/change_account_currency"
+            android:textSize="@dimen/text_large"
+            android:fontFamily="@string/font_light"/>
 
         <View
             style="@style/Separator.Thin"
             android:layout_marginTop="@dimen/space_normal" />
 
-        <TextView
-            android:id="@+id/accounts_TV"
-            style="@style/TextView.Secondary"
-            android:layout_marginTop="@dimen/space_large"
-            android:textSize="@dimen/text_small"
-            android:textStyle="bold"
-            android:textAllCaps="true" />
-
         <LinearLayout
             android:id="@+id/container_V"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            android:animateLayoutChanges="true" />
 
     </LinearLayout>
 </ScrollView>

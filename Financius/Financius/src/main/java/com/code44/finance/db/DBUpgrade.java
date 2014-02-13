@@ -101,10 +101,9 @@ public class DBUpgrade
     /**
      * 11 - v0.5
      *
-     * @param context Context.
-     * @param db      Database.
+     * @param db Database.
      */
-    public static void upgradeV7(Context context, SQLiteDatabase db)
+    public static void upgradeV7(SQLiteDatabase db)
     {
         // Update database with server_id values
         Cursor c = null;
@@ -170,24 +169,6 @@ public class DBUpgrade
             if (c != null && !c.isClosed())
                 c.close();
 
-            // Budgets
-            c = db.query(Tables.Budgets.TABLE_NAME, new String[]{Tables.Budgets.ID, Tables.Budgets.SERVER_ID}, null, null, null, null, null);
-            if (c != null && c.moveToFirst())
-            {
-                do
-                {
-                    if (TextUtils.isEmpty(c.getString(1)))
-                    {
-                        values.clear();
-                        values.put(Tables.Budgets.SERVER_ID, UUID.randomUUID().toString());
-                        db.update(Tables.Budgets.TABLE_NAME, values, Tables.Budgets.ID + "=?", new String[]{String.valueOf(c.getLong(0))});
-                    }
-                }
-                while (c.moveToNext());
-            }
-            if (c != null && !c.isClosed())
-                c.close();
-
             db.setTransactionSuccessful();
         }
         finally
@@ -198,8 +179,7 @@ public class DBUpgrade
         }
 
         // Create indexes
-        final String[] tables = {Tables.Accounts.TABLE_NAME, Tables.Categories.TABLE_NAME,
-                Tables.Transactions.TABLE_NAME, Tables.Budgets.TABLE_NAME};
+        final String[] tables = {Tables.Accounts.TABLE_NAME, Tables.Categories.TABLE_NAME, Tables.Transactions.TABLE_NAME};
         for (String tableName : tables)
             createCommonIndex(db, tableName);
     }
@@ -207,16 +187,10 @@ public class DBUpgrade
     /**
      * 16 - v0.5.2
      *
-     * @param context Context.
-     * @param db      Database.
+     * @param db Database.
      */
-    public static void upgradeV8(Context context, SQLiteDatabase db)
+    public static void upgradeV8(SQLiteDatabase db)
     {
-        // Add new columns
-        db.execSQL("alter table " + Tables.Accounts.TABLE_NAME + " add column " + Tables.Accounts.TIMESTAMP + " datetime default 0;");
-        db.execSQL("alter table " + Tables.Categories.TABLE_NAME + " add column " + Tables.Categories.TIMESTAMP + " datetime default 0;");
-        db.execSQL("alter table " + Tables.Budgets.TABLE_NAME + " add column " + Tables.Budgets.TIMESTAMP + " datetime default 0;");
-
         // Update server IDs for system accounts
         ContentValues values = new ContentValues();
         values.put(Tables.Accounts.SERVER_ID, String.valueOf(Tables.Accounts.IDs.INCOME_ID));
@@ -293,6 +267,7 @@ public class DBUpgrade
         db.update(Tables.Categories.TABLE_NAME, values, Tables.Categories.ID + "=?", new String[]{String.valueOf(Tables.Categories.IDs.TRANSFER_ID)});
 
         TypedArray ta = context.getResources().obtainTypedArray(R.array.category_colors);
+        //noinspection ConstantConditions
         int[] colors = new int[ta.length()];
         for (int i = 0; i < ta.length(); i++)
         {
@@ -326,10 +301,9 @@ public class DBUpgrade
     /**
      * 20 - v0.6.1
      *
-     * @param context Context.
-     * @param db      Database.
+     * @param db Database.
      */
-    public static void upgradeV10(Context context, SQLiteDatabase db)
+    public static void upgradeV10(SQLiteDatabase db)
     {
         // Update database with server_id values
         Cursor c = null;
@@ -364,10 +338,9 @@ public class DBUpgrade
     /**
      * 22 - v0.6.3
      *
-     * @param context Context.
-     * @param db      Database.
+     * @param db Database.
      */
-    public static void upgradeV11(Context context, SQLiteDatabase db)
+    public static void upgradeV11(SQLiteDatabase db)
     {
         // Add new columns
         db.execSQL("ALTER TABLE " + Tables.Transactions.TABLE_NAME + " ADD COLUMN " + Tables.Transactions.STATE + " INTEGER DEFAULT " + Tables.Transactions.State.CONFIRMED + ";");
@@ -384,24 +357,22 @@ public class DBUpgrade
         ContentValues values = new ContentValues();
 
         // Currencies
-        db.execSQL(Tables.Currencies.CREATE_SCRIPT);
-        final long mainCurrencyId = DBDefaults.insertDefaultCurrencies(context, db);
+        db.execSQL(Tables.Currencies.createScript());
+        final long mainCurrencyId = DBDefaults.insertDefaultCurrencies(db);
 
         // Accounts
         db.execSQL("ALTER TABLE " + Tables.Accounts.TABLE_NAME + " ADD COLUMN " + Tables.Accounts.CURRENCY_ID + " INTEGER;");
-        db.execSQL("ALTER TABLE " + Tables.Accounts.TABLE_NAME + " ADD COLUMN " + Tables.Accounts.TYPE_RES_NAME + " TEXT;");
         db.execSQL("ALTER TABLE " + Tables.Accounts.TABLE_NAME + " ADD COLUMN " + Tables.Accounts.NOTE + " TEXT;");
-        db.execSQL("ALTER TABLE " + Tables.Accounts.TABLE_NAME + " ADD COLUMN " + Tables.Accounts.OVERDRAFT + " REAL;");
         db.execSQL("ALTER TABLE " + Tables.Accounts.TABLE_NAME + " ADD COLUMN " + Tables.Accounts.SHOW_IN_TOTALS + " BOOLEAN;");
         db.execSQL("ALTER TABLE " + Tables.Accounts.TABLE_NAME + " ADD COLUMN " + Tables.Accounts.SHOW_IN_SELECTION + " BOOLEAN;");
         values.put(Tables.Accounts.CURRENCY_ID, mainCurrencyId);
-        values.put(Tables.Accounts.TYPE_RES_NAME, context.getResources().getResourceEntryName(R.string.ac_other));
         values.put(Tables.Accounts.SHOW_IN_TOTALS, true);
         values.put(Tables.Accounts.SHOW_IN_SELECTION, true);
         db.update(Tables.Accounts.TABLE_NAME, values, null, null);
 
         // Categories
         TypedArray ta = context.getResources().obtainTypedArray(R.array.category_colors);
+        //noinspection ConstantConditions
         int[] colors = new int[ta.length()];
         for (int i = 0; i < ta.length(); i++)
         {
@@ -443,10 +414,9 @@ public class DBUpgrade
     /**
      * 26 - v0.7.1
      *
-     * @param context Context.
-     * @param db      Database.
+     * @param db Database.
      */
-    public static void upgradeV13(Context context, SQLiteDatabase db)
+    public static void upgradeV13(SQLiteDatabase db)
     {
         ContentValues values = new ContentValues();
 
@@ -454,25 +424,16 @@ public class DBUpgrade
         values.clear();
         values.put(Tables.Accounts.DELETE_STATE, Tables.DeleteState.DELETED);
         db.update(Tables.Accounts.TABLE_NAME, values, Tables.Accounts.DELETE_STATE + "<>?", new String[]{String.valueOf(Tables.DeleteState.NONE)});
-        values.clear();
-        values.put(Tables.Accounts.SYNC_STATE, Tables.SyncState.LOCAL_CHANGES);
-        db.update(Tables.Accounts.TABLE_NAME, values, null, null);
 
         // Categories
         values.clear();
         values.put(Tables.Categories.DELETE_STATE, Tables.DeleteState.DELETED);
         db.update(Tables.Categories.TABLE_NAME, values, Tables.Categories.DELETE_STATE + "<>?", new String[]{String.valueOf(Tables.DeleteState.NONE)});
-        values.clear();
-        values.put(Tables.Categories.SYNC_STATE, Tables.SyncState.LOCAL_CHANGES);
-        db.update(Tables.Categories.TABLE_NAME, values, null, null);
 
         // Transactions
         values.clear();
         values.put(Tables.Transactions.DELETE_STATE, Tables.DeleteState.DELETED);
         db.update(Tables.Transactions.TABLE_NAME, values, Tables.Transactions.DELETE_STATE + "<>?", new String[]{String.valueOf(Tables.DeleteState.NONE)});
-        values.clear();
-        values.put(Tables.Transactions.SYNC_STATE, Tables.SyncState.LOCAL_CHANGES);
-        db.update(Tables.Transactions.TABLE_NAME, values, null, null);
         values.clear();
         values.put(Tables.Transactions.EXCHANGE_RATE, 1.0);
         db.update(Tables.Transactions.TABLE_NAME, values, Tables.Transactions.EXCHANGE_RATE + "=?", new String[]{"0"});
@@ -481,15 +442,10 @@ public class DBUpgrade
     /**
      * 32 - v0.9.1
      *
-     * @param context Context.
-     * @param db      Database.
+     * @param db Database.
      */
-    public static void upgradeV15(Context context, SQLiteDatabase db)
+    public static void upgradeV15(SQLiteDatabase db)
     {
-        db.execSQL("DROP TABLE IF EXISTS " + Tables.Budgets.TABLE_NAME + ";");
-        db.execSQL(Tables.Budgets.CREATE_SCRIPT);
-        db.execSQL(Tables.BudgetCategories.CREATE_SCRIPT);
-
         db.execSQL("ALTER TABLE " + Tables.Categories.TABLE_NAME + " ADD COLUMN " + Tables.Categories.ORDER + " INTEGER;");
         db.execSQL("ALTER TABLE " + Tables.Categories.TABLE_NAME + " ADD COLUMN " + Tables.Categories.PARENT_ORDER + " INTEGER;");
 
@@ -499,10 +455,9 @@ public class DBUpgrade
     /**
      * 33 - v0.9.2
      *
-     * @param context Context.
-     * @param db      Database.
+     * @param db Database.
      */
-    public static void upgradeV16(Context context, SQLiteDatabase db)
+    public static void upgradeV16(SQLiteDatabase db)
     {
         updateCategoriesOrder(db);
     }
@@ -510,10 +465,9 @@ public class DBUpgrade
     /**
      * 34 - v0.9.3
      *
-     * @param context Context.
-     * @param db      Database.
+     * @param db Database.
      */
-    public static void upgradeV17(Context context, SQLiteDatabase db)
+    public static void upgradeV17(SQLiteDatabase db)
     {
         updateCategoriesOrder(db);
     }
@@ -521,25 +475,10 @@ public class DBUpgrade
     /**
      * 35 - v0.9.4
      *
-     * @param context Context.
-     * @param db      Database.
+     * @param db Database.
      */
-    public static void upgradeV18(Context context, SQLiteDatabase db)
+    public static void upgradeV18(SQLiteDatabase db)
     {
-        // Add missing columns
-        Cursor c = null;
-        try
-        {
-            c = db.query(Tables.Budgets.TABLE_NAME, null, null, null, null, null, null);
-            if (c == null || c.getColumnIndex(Tables.Budgets.SHOW_IN_OVERVIEW) < 0)
-                db.execSQL("ALTER TABLE " + Tables.Budgets.TABLE_NAME + " ADD COLUMN " + Tables.Budgets.SHOW_IN_OVERVIEW + " BOOLEAN DEFAULT 0;");
-        }
-        finally
-        {
-            if (c != null && !c.isClosed())
-                c.close();
-        }
-
         final ContentValues values = new ContentValues();
 
         // Clear 'null' comments in accounts
@@ -547,7 +486,7 @@ public class DBUpgrade
         db.update(Tables.Accounts.TABLE_NAME, values, Tables.Accounts.NOTE + "=?", new String[]{"null"});
 
         // Update transactions with server id where it's empty
-        c = null;
+        Cursor c = null;
         try
         {
             db.beginTransaction();
@@ -574,10 +513,21 @@ public class DBUpgrade
         }
     }
 
+    /**
+     * 44 - v0.9.12
+     *
+     * @param db Database.
+     */
+    public static void upgradeV19(SQLiteDatabase db)
+    {
+
+        // TODO Implement
+    }
+
     public static void createCommonIndexes(SQLiteDatabase db)
     {
         final String[] tables = {Tables.Currencies.TABLE_NAME, Tables.Accounts.TABLE_NAME, Tables.Categories.TABLE_NAME,
-                Tables.Transactions.TABLE_NAME, Tables.Budgets.TABLE_NAME};
+                Tables.Transactions.TABLE_NAME};
 
         for (String tableName : tables)
         {
@@ -587,6 +537,6 @@ public class DBUpgrade
 
     public static void createCommonIndex(SQLiteDatabase db, String tableName)
     {
-        db.execSQL("create index " + tableName + "_" + Tables.SERVER_ID_SUFFIX + "_idx on " + tableName + "(" + tableName + "_" + Tables.SERVER_ID_SUFFIX + ")");
+        db.execSQL("create index " + tableName + "_" + Tables.SUFFIX_SERVER_ID + "_idx on " + tableName + "(" + tableName + "_" + Tables.SUFFIX_SERVER_ID + ")");
     }
 }

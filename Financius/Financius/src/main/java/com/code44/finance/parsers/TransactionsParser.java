@@ -27,15 +27,15 @@ public class TransactionsParser extends Parser
         final ContentValues[] valuesArray = parsedValues.getArray(KEY_TRANSACTIONS);
         if (valuesArray != null && valuesArray.length > 0)
         {
-            final Map<String, Long> accountsMap = getStringIDsMap(context, AccountsProvider.uriAccounts(context), null, null, Tables.Accounts.SERVER_ID,
+            final Map<String, Long> accountsMap = getStringIDsMap(context, AccountsProvider.uriAccounts(), null, null, Tables.Accounts.SERVER_ID,
                     Tables.Accounts.T_ID);
             replaceStringWithLong(valuesArray, accountsMap, TEMP_ACCOUNT_FROM_SERVER_ID, Tables.Transactions.ACCOUNT_FROM_ID);
             replaceStringWithLong(valuesArray, accountsMap, TEMP_ACCOUNT_TO_SERVER_ID, Tables.Transactions.ACCOUNT_TO_ID);
             replaceStringWithLong(valuesArray,
-                    getStringIDsMap(context, CategoriesProvider.uriCategories(context), null, null, Tables.Categories.SERVER_ID, Tables.Categories.T_ID),
+                    getStringIDsMap(context, CategoriesProvider.uriCategories(), null, null, Tables.Categories.SERVER_ID, Tables.Categories.T_ID),
                     TEMP_CATEGORY_SERVER_ID, Tables.Transactions.CATEGORY_ID);
            // context.getContentResolver().bulkInsert(TransactionsProvider.uriBulkTransactions(context), valuesArray);
-            context.getContentResolver().notifyChange(TransactionsProvider.uriTransactions(context), null);
+            context.getContentResolver().notifyChange(TransactionsProvider.uriTransactions(), null);
         }
     }
 

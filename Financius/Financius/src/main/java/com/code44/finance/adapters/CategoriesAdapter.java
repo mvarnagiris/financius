@@ -2,6 +2,7 @@ package com.code44.finance.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.GradientDrawable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -9,6 +10,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.code44.finance.API;
 import com.code44.finance.R;
@@ -59,7 +61,7 @@ public class CategoriesAdapter extends AbstractCursorAdapter implements DragSort
 
         final View view = LayoutInflater.from(context).inflate(viewType == VT_NORMAL ? R.layout.li_category : R.layout.li_category_header, root, false);
         final ViewHolder holder = new ViewHolder();
-        holder.color_V = view.findViewById(R.id.color_V);
+        holder.color_IV = (ImageView) view.findViewById(R.id.color_IV);
         holder.title_TV = (TextView) view.findViewById(R.id.title_TV);
         view.setTag(holder);
         return view;
@@ -86,9 +88,15 @@ public class CategoriesAdapter extends AbstractCursorAdapter implements DragSort
         }
 
         if (viewType == VT_HEADER || index >= 0)
-            holder.color_V.setBackgroundColor(c.getInt(iColor));
+        {
+            holder.color_IV.setVisibility(View.VISIBLE);
+            GradientDrawable drawable = (GradientDrawable) holder.color_IV.getDrawable();
+            drawable.setColor(c.getInt(iColor));
+        }
         else
-            holder.color_V.setBackgroundColor(0);
+        {
+            holder.color_IV.setVisibility(View.INVISIBLE);
+        }
 
         view.setBackgroundColor(isSelected(c.getLong(iId)) ? selectedColor : 0);
     }
@@ -158,7 +166,7 @@ public class CategoriesAdapter extends AbstractCursorAdapter implements DragSort
 
     private static class ViewHolder
     {
-        public View color_V;
+        public ImageView color_IV;
         public TextView title_TV;
     }
 }

@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import java.util.List;
 
-public abstract class DeleteItemsFragment extends AbstractFragment
+public abstract class DeleteItemsFragment extends BaseFragment
 {
     protected static final String ARG_ITEM_IDS = DeleteItemsFragment.class.getName() + ".ARG_ITEM_IDS";
     protected static final String ARG_ITEM_TITLES = DeleteItemsFragment.class.getName() + ".ARG_ITEM_TITLES";

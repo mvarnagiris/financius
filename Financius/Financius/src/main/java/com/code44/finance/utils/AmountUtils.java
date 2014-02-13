@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.util.LongSparseArray;
 import android.text.TextUtils;
-import android.widget.TextView;
+import com.code44.finance.App;
 import com.code44.finance.R;
 import com.code44.finance.db.Tables;
 import com.code44.finance.providers.CurrenciesProvider;
@@ -18,67 +18,74 @@ public class AmountUtils
     private static final LongSparseArray<CurrencyFormat> formatArray = new LongSparseArray<CurrencyFormat>();
     private static int primaryColor;
     private static int secondaryColor;
-    private static int expenseColor;
-    private static int incomeColor;
-    private static int transferColor;
     private static int negativeBalanceColor;
     private static NumberFormat decimalFormat;
 
-    public static String formatAmount(Context context, long currencyId, double amount)
+    public static String formatAmount(long currencyId, double amount)
     {
         CurrencyFormat format = formatArray.get(currencyId);
         if (format == null)
         {
-            format = initCurrency(context, currencyId);
+            format = initCurrency(currencyId);
             formatArray.put(currencyId, format);
         }
 
         return format.format(amount);
     }
 
-    public static void onCurrencyUpdated(Context context, long currencyId)
+    public static void onCurrencyUpdated(long currencyId)
     {
         formatArray.remove(currencyId);
-        formatArray.put(currencyId, initCurrency(context, currencyId));
+        formatArray.put(currencyId, initCurrency(currencyId));
     }
 
-    public static CurrencyFormat initCurrency(Context context, long currencyId)
+    public static CurrencyFormat initCurrency(long currencyId)
     {
-        CurrencyFormat format;
-        Cursor c = null;
-        try
+        char groupSeparator = ',';
+        char decimalSeparator = '.';
+        int decimals = 2;
+        String symbol = "";
+        String symbolFormat = Tables.Currencies.SymbolFormat.RIGHT_CLOSE;
+
+        if (currencyId > 0)
         {
-            c = context.getContentResolver().query(CurrenciesProvider.uriCurrency(context, currencyId), null, null, null, null);
-            if (c == null || !c.moveToFirst())
+            Cursor c = null;
+            try
+            {
+                c = App.getAppContext().getContentResolver().query(CurrenciesProvider.uriCurrency(currencyId), null, null, null, null);
+                if (c == null || !c.moveToFirst())
+                {
+                    if (c != null && !c.isClosed())
+                        c.close();
+
+                    c = App.getAppContext().getContentResolver().query(CurrenciesProvider.uriCurrency(CurrencyHelper.get().getMainCurrencyId()), null, null, null, null);
+                }
+
+                if (c != null && c.moveToFirst())
+                {
+                    final String groupSeparatorStr = c.getString(c.getColumnIndex(Tables.Currencies.GROUP_SEPARATOR));
+                    //noinspection ConstantConditions
+                    groupSeparator = TextUtils.isEmpty(groupSeparatorStr) ? '\0' : groupSeparatorStr.charAt(0);
+                    //noinspection ConstantConditions
+                    decimalSeparator = c.getString(c.getColumnIndex(Tables.Currencies.DECIMAL_SEPARATOR)).charAt(0);
+                    decimals = c.getInt(c.getColumnIndex(Tables.Currencies.DECIMALS));
+                    symbol = c.getString(c.getColumnIndex(Tables.Currencies.SYMBOL));
+                    symbolFormat = c.getString(c.getColumnIndex(Tables.Currencies.SYMBOL_FORMAT));
+                }
+                else throw new NumberFormatException();
+            }
+            catch (Exception e)
+            {
+                // Ignore
+            }
+            finally
             {
                 if (c != null && !c.isClosed())
                     c.close();
-
-                c = context.getContentResolver().query(CurrenciesProvider.uriCurrency(context, CurrenciesHelper.getDefault(context).getMainCurrencyId()), null, null, null, null);
             }
-
-            if (c != null && c.moveToFirst())
-            {
-                final String groupSeparator = c.getString(c.getColumnIndex(Tables.Currencies.GROUP_SEPARATOR));
-                format = new CurrencyFormat(TextUtils.isEmpty(groupSeparator) ? '\0' : groupSeparator.charAt(0),
-                        c.getString(c.getColumnIndex(Tables.Currencies.DECIMAL_SEPARATOR)).charAt(0),
-                        c.getInt(c.getColumnIndex(Tables.Currencies.DECIMALS)),
-                        c.getString(c.getColumnIndex(Tables.Currencies.SYMBOL)),
-                        c.getString(c.getColumnIndex(Tables.Currencies.SYMBOL_FORMAT)));
-            }
-            else throw new NumberFormatException();
-        }
-        catch (NullPointerException e)
-        {
-            format = new CurrencyFormat();
-        }
-        finally
-        {
-            if (c != null && !c.isClosed())
-                c.close();
         }
 
-        return format;
+        return new CurrencyFormat(groupSeparator, decimalSeparator, decimals, symbol, symbolFormat);
     }
 
     public static String formatAmount(double amount)
@@ -123,45 +130,6 @@ public class AmountUtils
         }
 
         return color;
-    }
-
-    public static void setAmount(TextView amount_TV, double amount, int categoryType)
-    {
-        // TODO Review this method
-        switch (categoryType)
-        {
-            case Tables.Categories.Type.EXPENSE:
-                final int color;
-                if (amount < 0)
-                {
-                    if (negativeBalanceColor <= 0)
-                        negativeBalanceColor = amount_TV.getContext().getResources().getColor(R.color.text_red);
-                    color = negativeBalanceColor;
-                }
-                else
-                {
-                    if (expenseColor <= 0)
-                        expenseColor = amount_TV.getContext().getResources().getColor(R.color.text_primary);
-                    color = expenseColor;
-                }
-                amount_TV.setTextColor(color);
-                amount_TV.setText(formatAmount(amount));
-                break;
-
-            case Tables.Categories.Type.INCOME:
-                if (incomeColor <= 0)
-                    incomeColor = amount_TV.getContext().getResources().getColor(R.color.text_green);
-                amount_TV.setTextColor(incomeColor);
-                amount_TV.setText(formatAmount(amount));
-                break;
-
-            case Tables.Categories.Type.TRANSFER:
-                if (transferColor <= 0)
-                    transferColor = amount_TV.getContext().getResources().getColor(R.color.text_yellow);
-                amount_TV.setTextColor(transferColor);
-                amount_TV.setText(formatAmount(amount));
-                break;
-        }
     }
 
     public static double getAmount(String amountStr)

@@ -13,7 +13,7 @@ import com.code44.finance.views.FilterToggleView;
 import de.greenrobot.event.EventBus;
 import org.joda.time.format.DateTimeFormat;
 
-public class FilterFragment extends AbstractFragment implements View.OnClickListener, DateTimeDialog.DialogCallbacks, FilterToggleView.Callbacks
+public class FilterFragment extends BaseFragment implements View.OnClickListener, DateTimeDialog.DialogCallbacks, FilterToggleView.Callbacks
 {
     private static final int REQUEST_DATE_FROM = 1;
     private static final int REQUEST_DATE_TO = 2;

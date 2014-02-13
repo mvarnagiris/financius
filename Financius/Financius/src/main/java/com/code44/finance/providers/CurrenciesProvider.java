@@ -2,30 +2,25 @@ package com.code44.finance.providers;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import com.code44.finance.App;
 import com.code44.finance.db.Tables;
 import com.code44.finance.utils.AmountUtils;
-import com.code44.finance.utils.CurrenciesHelper;
+import com.code44.finance.utils.CurrencyHelper;
 
 import java.util.List;
 
-public class CurrenciesProvider extends AbstractItemsProvider
+public class CurrenciesProvider extends BaseItemsProvider
 {
-    public static Uri uriCurrencies(Context context)
+    public static Uri uriCurrencies()
     {
-        return getContentUri(context);
+        return Uri.parse(CONTENT_URI_BASE + getAuthority(App.getAppContext(), CurrenciesProvider.class) + "/" + Tables.Currencies.TABLE_NAME);
     }
 
-    public static Uri uriCurrency(Context context, long currencyId)
+    public static Uri uriCurrency(long currencyId)
     {
-        return ContentUris.withAppendedId(uriCurrencies(context), currencyId);
-    }
-
-    protected static Uri getContentUri(Context context)
-    {
-        return Uri.parse(CONTENT_URI_BASE + getAuthority(context, CurrenciesProvider.class) + "/" + Tables.Currencies.TABLE_NAME);
+        return ContentUris.withAppendedId(uriCurrencies(), currencyId);
     }
 
     @Override
@@ -37,97 +32,116 @@ public class CurrenciesProvider extends AbstractItemsProvider
     @Override
     protected Object onBeforeInsert(Uri uri, ContentValues values)
     {
+        // Update IS_DEFAULT field
+        Boolean isDefault = values.getAsBoolean(Tables.Currencies.IS_DEFAULT);
+        if (isDefault == null)
+            isDefault = false;
+
         // Find the current count of currencies
-        int count = 0;
-        Cursor c = null;
-        try
-        {
-            c = queryItems(uri, new String[]{Tables.Currencies.T_ID}, null, null, null);
-            if (c != null && c.moveToFirst())
-                count = c.getCount();
-        }
-        finally
-        {
-            if (c != null && !c.isClosed())
-                c.close();
-        }
+        final int count = getCurrenciesCount();
 
-        // Mark other currencies as not default if necessary
-        if (values.containsKey(Tables.Currencies.IS_DEFAULT) && values.getAsBoolean(Tables.Currencies.IS_DEFAULT) && count > 0)
+        // When creating new default currency, clear current default currency
+        if (isDefault && count > 0)
         {
-            // Only when creating new default currency and other default currency is already created
-
-            // Mark other currencies as not default
-            final ContentValues tempValues = new ContentValues();
-            tempValues.put(Tables.Currencies.IS_DEFAULT, false);
-            db.update(Tables.Currencies.TABLE_NAME, tempValues, null, null);
+            clearDefaultCurrency();
         }
 
         // If it's the first currency, then it must be default
         if (count == 0)
             values.put(Tables.Currencies.IS_DEFAULT, true);
 
-        return super.onBeforeInsert(uri, values);
+        return null;
     }
 
     @Override
     protected void onAfterInsert(Uri uri, ContentValues values, long newId, Object objectFromBefore)
     {
-        super.onAfterInsert(uri, values, newId, objectFromBefore);
-        AmountUtils.onCurrencyUpdated(getContext(), newId);
-        CurrenciesHelper.getDefault(getContext()).update();
+        AmountUtils.onCurrencyUpdated(newId);
+        CurrencyHelper.get().update();
+
+        // Notify
+        notifyURIs(uriCurrencies());
     }
 
     @Override
     protected Object onBeforeUpdate(Uri uri, ContentValues values, String selection, String[] selectionArgs)
     {
-        // Find if currency we are editing is main or not
-        boolean isMain = false;
-        Cursor c = null;
-        try
+        // Check if we are trying to change IS_DEFAULT value
+        if (values.containsKey(Tables.Currencies.IS_DEFAULT))
         {
-            c = queryItems(uri, new String[]{Tables.Currencies.IS_DEFAULT}, selection, selectionArgs, null);
-            if (c != null && c.moveToFirst())
-                isMain = c.getInt(0) != 0;
-        }
-        finally
-        {
-            if (c != null && !c.isClosed())
-                c.close();
+            //noinspection ConstantConditions
+            boolean isDefault = values.getAsBoolean(Tables.Currencies.IS_DEFAULT);
+            if (!isDefault)
+            {
+                Cursor c = null;
+                try
+                {
+                    c = queryItems(new String[]{Tables.Currencies.IS_DEFAULT}, selection, selectionArgs, null);
+                    if (c != null && c.moveToFirst())
+                    {
+                        do
+                        {
+                            // Changing to NOT default. Do not allow to make currency not default.
+                            if (c.getInt(0) != 0)
+                                throw new IllegalArgumentException(Tables.Currencies.IS_DEFAULT + " cannot be set to false for currency that has value true. To change default currency you must update another currency to have " + Tables.Currencies.IS_DEFAULT + "=true.");
+                        }
+                        while (c.moveToNext());
+                    }
+                }
+                finally
+                {
+                    if (c != null && !c.isClosed())
+                        c.close();
+                }
+            }
+            else
+            {
+                // Changing to default
+                boolean isEditingMain = false;
+
+                // Find if currency we are editing is main or not and how many currencies we are trying to change.
+                Cursor c = null;
+                try
+                {
+                    c = queryItems(new String[]{Tables.Currencies.IS_DEFAULT}, selection, selectionArgs, null);
+                    if (c != null && c.moveToFirst())
+                    {
+                        if (c.getCount() > 1)
+                            throw new IllegalArgumentException("Cannot make more than 1 currency as default.");
+
+                        isEditingMain = c.getInt(0) != 0;
+                    }
+                }
+                finally
+                {
+                    if (c != null && !c.isClosed())
+                        c.close();
+                }
+
+                if (!isEditingMain)
+                {
+                    // Setting new currency as default. Mark other currencies as not default and reset exchange rates
+                    clearDefaultCurrency();
+                }
+            }
         }
 
-        if (!values.getAsBoolean(Tables.Currencies.IS_DEFAULT))
-        {
-            // Do not allow to make currency not default
-            values.remove(Tables.Currencies.IS_DEFAULT);
-        }
-        else if (!isMain)
-        {
-            // Setting new currency as default. Mark other currencies as not default and reset exchange rates
-            final ContentValues tempValues = new ContentValues();
-            tempValues.put(Tables.Currencies.IS_DEFAULT, false);
-            tempValues.put(Tables.Currencies.EXCHANGE_RATE, 1.0);
-            db.update(Tables.Currencies.TABLE_NAME, tempValues, null, null);
-        }
-
-        return super.onBeforeUpdate(uri, values, selection, selectionArgs);
+        return null;
     }
 
     @Override
     protected void onAfterUpdate(Uri uri, ContentValues values, String selection, String[] selectionArgs, int updatedCount, Object objectFromBefore)
     {
-        super.onAfterUpdate(uri, values, selection, selectionArgs, updatedCount, objectFromBefore);
-
         // Update currency formats
         Cursor c = null;
         try
         {
-            c = queryItems(uri, new String[]{Tables.Currencies.T_ID}, selection, selectionArgs, null);
+            c = queryItems(new String[]{Tables.Currencies.T_ID}, selection, selectionArgs, null);
             if (c != null && c.moveToFirst())
             {
                 do
                 {
-                    AmountUtils.onCurrencyUpdated(getContext(), c.getLong(0));
+                    AmountUtils.onCurrencyUpdated(c.getLong(0));
                 }
                 while (c.moveToNext());
             }
@@ -137,8 +151,10 @@ public class CurrenciesProvider extends AbstractItemsProvider
             if (c != null && !c.isClosed())
                 c.close();
         }
+        CurrencyHelper.get().update();
 
-        CurrenciesHelper.getDefault(getContext()).update();
+        // Notify
+        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions());
     }
 
     @Override
@@ -150,11 +166,11 @@ public class CurrenciesProvider extends AbstractItemsProvider
     @Override
     protected void onAfterDelete(Uri uri, String selection, String[] selectionArgs, int updatedCount, Object objectFromBefore)
     {
-        // Make one random currency as default, if default currency was deleted. Also reset exchange rates
+        // Check if default currency was deleted.
         Cursor c = null;
         try
         {
-            c = db.query(Tables.Currencies.TABLE_NAME, new String[]{Tables.Currencies.T_ID, Tables.Currencies.IS_DEFAULT}, Tables.Currencies.DELETE_STATE + "=?", new String[] {String.valueOf(Tables.DeleteState.NONE)}, null, null, Tables.Currencies.IS_DEFAULT + " desc");
+            c = db.query(Tables.Currencies.TABLE_NAME, new String[]{Tables.Currencies.T_ID, Tables.Currencies.IS_DEFAULT}, Tables.Currencies.DELETE_STATE + "=?", new String[]{String.valueOf(Tables.DeleteState.NONE)}, null, null, Tables.Currencies.IS_DEFAULT + " desc");
             if (c != null && c.moveToFirst())
             {
                 // First currency should be default by sort order. If it's not, then there is no default currency. Need to make new currency a default currency.
@@ -179,13 +195,150 @@ public class CurrenciesProvider extends AbstractItemsProvider
         }
 
         // Delete accounts
+        //noinspection unchecked
         final List<Long> itemIDs = (List<Long>) objectFromBefore;
         if (itemIDs != null && itemIDs.size() > 0)
         {
             final InClause inClause = InClause.getInClause(itemIDs, Tables.Accounts.CURRENCY_ID);
-            getContext().getContentResolver().delete(AccountsProvider.uriAccounts(getContext()), Tables.Accounts.ORIGIN + "<>" + Tables.Accounts.Origin.SYSTEM + " and " + inClause.getSelection(), inClause.getSelectionArgs());
+            //noinspection ConstantConditions
+            getContext().getContentResolver().delete(AccountsProvider.uriAccounts(), Tables.Accounts.ORIGIN + "<>" + Tables.Accounts.Origin.SYSTEM + " and " + inClause.getSelection(), inClause.getSelectionArgs());
         }
 
-        CurrenciesHelper.getDefault(getContext()).update();
+        CurrencyHelper.get().update();
+
+        // Notify
+        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions());
+    }
+
+    @Override
+    protected Object onBeforeBulkInsert(Uri uri, ContentValues[] valuesArray)
+    {
+        final BulkInsertStatus status = new BulkInsertStatus();
+
+        // Find current default currency
+        Cursor c = null;
+        try
+        {
+            c = queryItems(new String[]{Tables.Currencies.T_ID}, Tables.Currencies.IS_DEFAULT + "=?", new String[]{"1"}, null);
+            if (c != null && c.moveToFirst())
+            {
+                status.setOldDefaultCurrencyId(c.getLong(0));
+            }
+        }
+        finally
+        {
+            if (c != null && !c.isClosed())
+                c.close();
+        }
+
+        return status;
+    }
+
+    @Override
+    protected void onAfterBulkInsert(Uri uri, ContentValues[] valuesArray, Object objectFromBefore)
+    {
+        final BulkInsertStatus status = (BulkInsertStatus) objectFromBefore;
+        long newDefaultCurrencyId = 0;
+        if (status.getOldDefaultCurrencyId() > 0)
+        {
+            // Find out if default currency is changing.
+            Cursor c = null;
+            try
+            {
+                c = queryItems(new String[]{Tables.Currencies.T_ID}, Tables.Currencies.IS_DEFAULT + "=?", new String[]{"1"}, null);
+                if (c != null && c.moveToFirst())
+                {
+                    do
+                    {
+                        if (c.getLong(0) != status.getOldDefaultCurrencyId())
+                        {
+                            newDefaultCurrencyId = c.getLong(0);
+                            break;
+                        }
+                    }
+                    while (c.moveToNext());
+                }
+            }
+            finally
+            {
+                if (c != null && !c.isClosed())
+                    c.close();
+            }
+        }
+
+        // Ensure that there is only one default currency
+        if (newDefaultCurrencyId > 0)
+        {
+            // Clear default currencies and exchange rates.
+            clearDefaultCurrency();
+
+            // Set new default currency.
+            final ContentValues values = new ContentValues();
+            values.put(Tables.Currencies.IS_DEFAULT, true);
+            db.update(Tables.Currencies.TABLE_NAME, values, Tables.Currencies.T_ID + "=?", new String[]{String.valueOf(newDefaultCurrencyId)});
+        }
+
+        // TODO Update format in CurrencyHelper for all currencies
+        CurrencyHelper.get().update();
+
+        // Notify
+        notifyURIs(CurrenciesProvider.uriCurrencies(), AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions());
+    }
+
+    @Override
+    protected void checkValues(ContentValues values, int operation)
+    {
+        final boolean required = operation == OPERATION_INSERT || operation == OPERATION_BULK_INSERT;
+        checkString(values, Tables.Currencies.CODE, required, required);
+        checkInt(values, Tables.Currencies.DECIMALS, required, 0, 2);
+        checkString(values, Tables.Currencies.DECIMAL_SEPARATOR, required, ",", ".", "");
+        checkString(values, Tables.Currencies.GROUP_SEPARATOR, required, ",", ".", " ", "");
+        checkString(values, Tables.Currencies.SYMBOL_FORMAT, required, Tables.Currencies.SymbolFormat.LEFT_CLOSE, Tables.Currencies.SymbolFormat.LEFT_FAR, Tables.Currencies.SymbolFormat.RIGHT_CLOSE, Tables.Currencies.SymbolFormat.RIGHT_FAR);
+        checkDouble(values, Tables.Currencies.EXCHANGE_RATE, required, 0, Double.MAX_VALUE);
+
+        if (required && !values.containsKey(Tables.Currencies.IS_DEFAULT))
+            values.put(Tables.Currencies.IS_DEFAULT, false);
+    }
+
+    private int getCurrenciesCount()
+    {
+        int count = 0;
+        Cursor c = null;
+        try
+        {
+            c = queryItems(new String[]{Tables.Currencies.T_ID}, null, null, null);
+            if (c != null && c.moveToFirst())
+                count = c.getCount();
+        }
+        finally
+        {
+            if (c != null && !c.isClosed())
+                c.close();
+        }
+
+        return count;
+    }
+
+    private void clearDefaultCurrency()
+    {
+        final ContentValues values = new ContentValues();
+        values.put(Tables.Currencies.IS_DEFAULT, false);
+        values.put(Tables.Currencies.EXCHANGE_RATE, 1);
+        db.update(Tables.Currencies.TABLE_NAME, values, null, null);
+    }
+
+    private static class BulkInsertStatus
+    {
+        private long oldDefaultCurrencyId = -1;
+
+        public long getOldDefaultCurrencyId()
+        {
+            return oldDefaultCurrencyId;
+        }
+
+        public void setOldDefaultCurrencyId(long oldDefaultCurrencyId)
+        {
+            this.oldDefaultCurrencyId = oldDefaultCurrencyId;
+        }
     }
 }

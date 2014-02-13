@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -106,24 +104,24 @@ public abstract class GoogleUserFragment extends Fragment
         if (!googleUser.hasAccount())
         {
             // If we don't have account selected, ask user to select
-            startActivityForResult(getAccountChooserIntent(request.getScopes()), REQUEST_ACCOUNT);
+//            startActivityForResult(getAccountChooserIntent(request.getScopes()), REQUEST_ACCOUNT);
         }
         else
             executeNextRequest();
     }
 
-    private GoogleAccountCredential getCredential(GoogleRequest request)
-    {
-        // Setup credential
-        final GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(getActivity(), request.getScopes());
-        credential.setSelectedAccountName(googleUser.getAccountName());
-        return credential;
-    }
-
-    private Intent getAccountChooserIntent(List<String> scopes)
-    {
-        return GoogleAccountCredential.usingOAuth2(getActivity(), scopes).newChooseAccountIntent();
-    }
+//    private GoogleAccountCredential getCredential(GoogleRequest request)
+//    {
+//        // Setup credential
+//        final GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(getActivity(), request.getScopes());
+//        credential.setSelectedAccountName(googleUser.getAccountName());
+//        return credential;
+//    }
+//
+//    private Intent getAccountChooserIntent(List<String> scopes)
+//    {
+//        return GoogleAccountCredential.usingOAuth2(getActivity(), scopes).newChooseAccountIntent();
+//    }
 
     private void onAuthorizationFailed()
     {
@@ -149,7 +147,7 @@ public abstract class GoogleUserFragment extends Fragment
 
     public static interface GoogleRequest
     {
-        public GoogleResult execute(GoogleAccountCredential credential) throws Exception;
+        //public GoogleResult execute(GoogleAccountCredential credential) throws Exception;
 
         public List<String> getScopes();
     }
@@ -216,18 +214,19 @@ public abstract class GoogleUserFragment extends Fragment
         @Override
         protected GoogleResult doInBackground(Void... params)
         {
-            GoogleResult result;
-            try
-            {
-                result = request.execute(getCredential(request));
-            }
-            catch (Exception e)
-            {
-                result = new GoogleResult(request);
-                result.setException(e);
-            }
-
-            return result;
+//            GoogleResult result;
+//            try
+//            {
+//                result = request.execute(getCredential(request));
+//            }
+//            catch (Exception e)
+//            {
+//                result = new GoogleResult(request);
+//                result.setException(e);
+//            }
+//
+//            return result;
+            return null;
         }
 
         @Override
@@ -249,11 +248,11 @@ public abstract class GoogleUserFragment extends Fragment
 
                 executeNextRequest();
             }
-            catch (UserRecoverableAuthIOException e)
-            {
-                // User can recover from error
-                startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);
-            }
+//            catch (UserRecoverableAuthIOException e)
+//            {
+//                // User can recover from error
+//                startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);
+//            }
             catch (Exception e)
             {
                 // Request failed

@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import com.code44.finance.db.Tables;
-import com.code44.finance.providers.AbstractItemsProvider;
+import com.code44.finance.providers.BaseItemsProvider;
 
 import java.util.UUID;
 
@@ -13,6 +13,7 @@ public abstract class AbstractItemService extends AbstractService
 {
     public static final String EXTRA_ITEM_ID = AbstractItemService.class.getName() + ".EXTRA_ITEM_ID";
     public static final String EXTRA_ITEM_IDS = AbstractItemService.class.getName() + ".EXTRA_ITEM_IDS";
+    public static final String EXTRA_CONTENT_VALUES = AbstractItemService.class.getName() + ".EXTRA_CONTENT_VALUES";
     public static final int RT_CREATE_ITEM = 1001;
     public static final int RT_UPDATE_ITEM = 1002;
     public static final int RT_DELETE_ITEMS = 1003;
@@ -55,7 +56,7 @@ public abstract class AbstractItemService extends AbstractService
         // Store values
         final ContentValues values = new ContentValues();
         prepareValues(values, intent);
-        values.put(getItemTable() + "_" + Tables.SERVER_ID_SUFFIX, UUID.randomUUID().toString());
+        values.put(getItemTable() + "_" + Tables.SUFFIX_SERVER_ID, UUID.randomUUID().toString());
         getContentResolver().insert(getUriForItems(), values);
 
         // Notify
@@ -83,7 +84,7 @@ public abstract class AbstractItemService extends AbstractService
         final long[] itemIDs = intent.getLongArrayExtra(EXTRA_ITEM_IDS);
 
         // Prepare IN clause
-        final AbstractItemsProvider.InClause inClause = AbstractItemsProvider.InClause.getInClause(itemIDs, getItemTable() + "." + BaseColumns._ID);
+        final BaseItemsProvider.InClause inClause = BaseItemsProvider.InClause.getInClause(itemIDs, getItemTable() + "." + BaseColumns._ID);
 
         // Delete items
         getContentResolver().delete(getUriForItems(), inClause.getSelection(), inClause.getSelectionArgs());

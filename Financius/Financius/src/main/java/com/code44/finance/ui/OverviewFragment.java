@@ -31,7 +31,7 @@ import de.greenrobot.event.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OverviewFragment extends AbstractFragment implements MainActivity.NavigationContentFragment, LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener, AdapterView.OnItemClickListener
+public class OverviewFragment extends BaseFragment implements MainActivity.NavigationContentFragment, LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener, AdapterView.OnItemClickListener
 {
     private static final int LOADER_ACCOUNTS = 1;
     private static final int LOADER_TRANSACTIONS = 2;
@@ -108,7 +108,7 @@ public class OverviewFragment extends AbstractFragment implements MainActivity.N
         switch (item.getItemId())
         {
             case R.id.action_create:
-                TransactionEditActivity.startItemEdit(getActivity(), 0);
+                TransactionEditActivity.startItemEdit(getActivity(), 0, item.getActionView());
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -127,7 +127,7 @@ public class OverviewFragment extends AbstractFragment implements MainActivity.N
         {
             case LOADER_ACCOUNTS:
             {
-                uri = AccountsProvider.uriAccounts(getActivity());
+                uri = AccountsProvider.uriAccounts();
                 projection = new String[]{Tables.Accounts.T_ID, Tables.Accounts.TITLE, Tables.Accounts.BALANCE, Tables.Accounts.CURRENCY_ID, Tables.Currencies.EXCHANGE_RATE, Tables.Accounts.SHOW_IN_TOTALS};
                 selection = Tables.Accounts.ORIGIN + "<>? and " + Tables.Accounts.DELETE_STATE + "=?";
                 selectionArgs = new String[]{String.valueOf(Tables.Categories.Origin.SYSTEM), String.valueOf(Tables.DeleteState.NONE)};
@@ -154,7 +154,7 @@ public class OverviewFragment extends AbstractFragment implements MainActivity.N
                         break;
                 }
 
-                uri = TransactionsProvider.uriTransactions(getActivity());
+                uri = TransactionsProvider.uriTransactions();
                 projection = new String[]
                         {
                                 "min(" + Tables.Transactions.DATE + ")",
@@ -172,7 +172,7 @@ public class OverviewFragment extends AbstractFragment implements MainActivity.N
             {
                 final PeriodHelper periodHelper = PeriodHelper.getDefault(getActivity());
 
-                uri = TransactionsProvider.uriTransactions(getActivity());
+                uri = TransactionsProvider.uriTransactions();
                 projection = new String[]
                         {
                                 "min(" + Tables.Transactions.CATEGORY_ID + ")",
@@ -224,7 +224,7 @@ public class OverviewFragment extends AbstractFragment implements MainActivity.N
         switch (v.getId())
         {
             case R.id.create_B:
-                TransactionEditActivity.startItemEdit(getActivity(), 0);
+                TransactionEditActivity.startItemEdit(getActivity(), 0, v);
                 break;
         }
     }

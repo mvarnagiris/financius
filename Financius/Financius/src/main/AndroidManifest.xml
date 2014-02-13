@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.code44.finance"
-    android:versionCode="44"
-    android:versionName="0.9.12">
+    package="com.code44.finance">
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -20,7 +18,7 @@
     <!-- Application -->
     <!-- ======================================================================================================== -->
     <application
-        android:name=".FinanciusApp"
+        android:name=".App"
         android:hardwareAccelerated="true"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -61,10 +59,6 @@
         <activity android:name=".ui.categories.CategoryItemActivity" />
         <activity android:name=".ui.categories.CategoryEditActivity" />
 
-        <activity android:name=".ui.budgets.BudgetListActivity" />
-        <activity android:name=".ui.budgets.BudgetItemActivity" />
-        <activity android:name=".ui.budgets.BudgetEditActivity" />
-
         <activity android:name=".ui.reports.CategoriesReportActivity" />
 
         <activity android:name=".ui.backup.BackupActivity" />
@@ -72,12 +66,8 @@
 
         <!-- Services -->
         <!-- ======================================================================================================== -->
-        <service android:name=".services.CurrenciesService" />
         <service android:name=".services.CurrenciesRestService" />
-        <service android:name=".services.AccountsService" />
         <service android:name=".services.CategoriesService" />
-        <service android:name=".services.TransactionsService" />
-        <service android:name=".services.BudgetsService" />
         <service android:name=".services.BackupService" />
         <service
             android:name=".services.DashClockService"
@@ -95,7 +85,9 @@
                 android:name="description"
                 android:value="@string/l_dashclock_desc" />
         </service>
-        <meta-data android:name="com.crashlytics.ApiKey" android:value="a0fed0de33f7f506e0acd0e0eb605f9f3a3da96f"/>
+
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

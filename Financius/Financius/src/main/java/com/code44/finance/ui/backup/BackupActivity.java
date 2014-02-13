@@ -4,14 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import com.code44.finance.R;
-import com.code44.finance.ui.AbstractActivity;
+import com.code44.finance.ui.BaseActivity;
 import com.code44.finance.user.DriveFragment;
-import com.code44.finance.user.GoogleUserFragment;
 
 /**
  * Created by Mantas on 09/06/13.
  */
-public class BackupActivity extends AbstractActivity implements BackupFragment.Callbacks
+public class BackupActivity extends BaseActivity// implements BackupFragment.Callbacks
 {
     private static final String FRAGMENT_BACKUP = "FRAGMENT_BACKUP";
     private static final String FRAGMENT_DRIVE = "FRAGMENT_DRIVE";
@@ -52,57 +51,57 @@ public class BackupActivity extends AbstractActivity implements BackupFragment.C
         drive_F.setCallbacksListener(backup_F);
     }
 
-    @Override
-    public GoogleUserFragment.GoogleRequest onGetWorkingGoogleRequest()
-    {
-        return drive_F != null ? drive_F.getWorkingRequest() : null;
-    }
-
-    @Override
-    public boolean onRequestFiles()
-    {
-        if (drive_F != null)
-        {
-            drive_F.getFiles();
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean onStoreFile(DriveFragment.FileGenerator fileGenerator, String fileToOverwriteId)
-    {
-        if (drive_F != null)
-        {
-            drive_F.storeFile(fileGenerator, fileToOverwriteId);
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean onGetFileContents(DriveFragment.FileHandler fileHandler, String fileId)
-    {
-        if (drive_F != null)
-        {
-            drive_F.getFileContents(fileHandler, fileId);
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean onDeleteFile(String fileId)
-    {
-        if (drive_F != null)
-        {
-            drive_F.deleteFile(fileId);
-            return true;
-        }
-
-        return false;
-    }
+//    @Override
+//    public GoogleUserFragment.GoogleRequest onGetWorkingGoogleRequest()
+//    {
+//        return drive_F != null ? drive_F.getWorkingRequest() : null;
+//    }
+//
+//    @Override
+//    public boolean onRequestFiles()
+//    {
+//        if (drive_F != null)
+//        {
+//            drive_F.getFiles();
+//            return true;
+//        }
+//
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean onStoreFile(DriveFragment.FileGenerator fileGenerator, String fileToOverwriteId)
+//    {
+//        if (drive_F != null)
+//        {
+//            drive_F.storeFile(fileGenerator, fileToOverwriteId);
+//            return true;
+//        }
+//
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean onGetFileContents(FileHandler fileHandler, String fileId)
+//    {
+//        if (drive_F != null)
+//        {
+//            drive_F.getFileContents(fileHandler, fileId);
+//            return true;
+//        }
+//
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean onDeleteFile(String fileId)
+//    {
+//        if (drive_F != null)
+//        {
+//            drive_F.deleteFile(fileId);
+//            return true;
+//        }
+//
+//        return false;
+//    }
 }

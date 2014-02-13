@@ -15,21 +15,13 @@ public abstract class DBRecord
 
     protected static void initBase(DBRecord record, Cursor c, long id, String tableName)
     {
-        final int iServerId = c.getColumnIndex(tableName + "_" + Tables.SERVER_ID_SUFFIX);
-        final int iTimestamp = c.getColumnIndex(tableName + "_" + Tables.TIMESTAMP_SUFFIX);
-        final int iSyncState = c.getColumnIndex(tableName + "_" + Tables.SYNC_STATE_SUFFIX);
-        final int iDeleteState = c.getColumnIndex(tableName + "_" + Tables.DELETE_STATE_SUFFIX);
+        final int iServerId = c.getColumnIndex(tableName + "_" + Tables.SUFFIX_SERVER_ID);
+        final int iDeleteState = c.getColumnIndex(tableName + "_" + Tables.SUFFIX_DELETE_STATE);
 
         record.setId(id);
 
         if (iServerId >= 0)
             record.setServerId(c.getString(iServerId));
-
-        if (iTimestamp >= 0)
-            record.setTimestamp(new Date(c.getLong(iTimestamp)));
-
-        if (iSyncState >= 0)
-            record.setSyncState(c.getInt(iSyncState));
 
         if (iDeleteState >= 0)
             record.setDeleteState(c.getInt(iDeleteState));

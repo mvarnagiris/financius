@@ -6,9 +6,6 @@ import com.code44.finance.db.Tables;
 import com.code44.finance.ui.ItemEditActivity;
 import com.code44.finance.ui.ItemEditFragment;
 
-/**
- * Created by Mantas on 27/05/13.
- */
 public class CategoryEditActivity extends ItemEditActivity
 {
     private static final String EXTRA_CATEGORY_TYPE = CategoryEditActivity.class.getName() + ".EXTRA_CATEGORY_TYPE";
@@ -34,6 +31,6 @@ public class CategoryEditActivity extends ItemEditActivity
         final Intent extras = getIntent();
         categoryType = extras.getIntExtra(EXTRA_CATEGORY_TYPE, Tables.Categories.Type.EXPENSE);
 
-        return android.R.id.content;
+        return super.inflateView();
     }
 }

@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.code44.finance.R;
 
 @SuppressWarnings({"UnusedParameters", "ConstantConditions", "UnnecessaryLocalVariable", "UnusedDeclaration"})
-public abstract class ItemListActivity extends AbstractActivity
+public abstract class ItemListActivity extends BaseActivity
 {
     // -----------------------------------------------------------------------------------------------------------------
     protected static final String EXTRA_SELECTION_TYPE = ItemListActivity.class.getName() + ".EXTRA_SELECTION_TYPE";
