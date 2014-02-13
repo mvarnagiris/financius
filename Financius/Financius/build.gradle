@@ -35,9 +35,9 @@ android {
 
         release {
             storeFile file("release.keystore")
-            storePassword "xxx"
+            storePassword "tarakonaspragriove"
             keyAlias "financius"
-            keyPassword "xxx"
+            keyPassword "tarakonaspragriove"
         }
     }
 
@@ -50,6 +50,10 @@ android {
         release {
             signingConfig signingConfigs.release
         }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
     }
 }
 

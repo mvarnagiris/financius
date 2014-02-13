@@ -15,9 +15,9 @@ import android.text.SpannableStringBuilder;
 import android.text.style.TypefaceSpan;
 import android.view.MenuItem;
 import android.widget.Toast;
+
 import com.code44.finance.R;
 import com.code44.finance.ui.AboutActivity;
-import com.code44.finance.ui.backup.BackupActivity;
 import com.code44.finance.ui.backup.YourDataActivity;
 import com.code44.finance.ui.categories.CategoryListActivity;
 import com.code44.finance.ui.currencies.CurrencyListActivity;
@@ -31,7 +31,6 @@ import com.code44.finance.utils.SecurityHelper;
 @SuppressWarnings({"ConstantConditions", "deprecation"})
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, OnPreferenceClickListener, Preference.OnPreferenceChangeListener
 {
-    public static final String PREF_BACKUP = "backup";
     public static final String PREF_PERIOD = "period";
     public static final String PREF_CURRENCIES = "currencies";
     public static final String PREF_UPDATE_EXCHANGE_RATES = "update_exchange_rates";
@@ -77,7 +76,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         changeLog_P = findPreference(PREF_CHANGE_LOG);
 
         // Set OnPreferenceClickListener
-        findPreference(PREF_BACKUP).setOnPreferenceClickListener(this);
         findPreference(PREF_CURRENCIES).setOnPreferenceClickListener(this);
         findPreference(PREF_CATEGORIES).setOnPreferenceClickListener(this);
         findPreference(PREF_APP_LOCK_PATTERN).setOnPreferenceClickListener(this);
@@ -131,12 +129,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     @Override
     public boolean onPreferenceClick(Preference preference)
     {
-        if (preference.getKey().equals(PREF_BACKUP))
-        {
-            BackupActivity.startBackup(SettingsActivity.this);
-            return true;
-        }
-        else if (preference.getKey().equals(PREF_CURRENCIES))
+        if (preference.getKey().equals(PREF_CURRENCIES))
         {
             CurrencyListActivity.startList(SettingsActivity.this);
             return true;

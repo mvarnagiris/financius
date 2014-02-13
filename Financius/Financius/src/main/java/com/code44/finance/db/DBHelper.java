@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper
 {
     private static final String NAME = "finance.db";
-    private static final int VERSION = 19;
+    private static final int VERSION = 18;
     // -----------------------------------------------------------------------------------------------------------------
     private static DBHelper singleton = null;
     // -----------------------------------------------------------------------------------------------------------------
@@ -74,8 +74,6 @@ public class DBHelper extends SQLiteOpenHelper
                 DBUpgrade.upgradeV17(db);
             case 17: // 35 - v0.9.4
                 DBUpgrade.upgradeV18(db);
-            case 18: // 44 - v0.9.12
-                DBUpgrade.upgradeV19(db);
         }
     }
 }

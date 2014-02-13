@@ -93,6 +93,7 @@ public class YourDataActivity extends BaseActivity implements GoogleApiClient.Co
                 if (resultCode == RESULT_OK)
                 {
                     DriveId driveId = data.getParcelableExtra(OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
+                    doRestore = false;
                     new RestoreAsyncTask(client).execute(driveId);
                 }
                 return;

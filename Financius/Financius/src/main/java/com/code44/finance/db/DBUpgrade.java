@@ -513,17 +513,6 @@ public class DBUpgrade
         }
     }
 
-    /**
-     * 44 - v0.9.12
-     *
-     * @param db Database.
-     */
-    public static void upgradeV19(SQLiteDatabase db)
-    {
-
-        // TODO Implement
-    }
-
     public static void createCommonIndexes(SQLiteDatabase db)
     {
         final String[] tables = {Tables.Currencies.TABLE_NAME, Tables.Accounts.TABLE_NAME, Tables.Categories.TABLE_NAME,
