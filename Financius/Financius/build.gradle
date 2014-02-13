@@ -35,9 +35,9 @@ android {
 
         release {
             storeFile file("release.keystore")
-            storePassword "tarakonaspragriove"
+            storePassword "xxx"
             keyAlias "financius"
-            keyPassword "tarakonaspragriove"
+            keyPassword "xxx"
         }
     }
 
