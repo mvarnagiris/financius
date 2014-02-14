@@ -10,6 +10,7 @@
         android:layout_width="@dimen/min_touch_size"
         android:layout_height="@dimen/min_touch_size"
         android:layout_marginRight="@dimen/space_normal"
+        android:src="@drawable/category_color"
         tools:ignore="ContentDescription" />
 
     <TextView

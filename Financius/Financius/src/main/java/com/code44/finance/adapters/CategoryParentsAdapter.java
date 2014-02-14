@@ -3,10 +3,13 @@ package com.code44.finance.adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.code44.finance.R;
 import com.code44.finance.db.Tables;
 
@@ -32,8 +35,8 @@ public class CategoryParentsAdapter extends AbstractCursorAdapter
         final View view = LayoutInflater.from(context).inflate(R.layout.li_category, viewGroup, false);
         final ViewHolder holder = new ViewHolder();
         //noinspection ConstantConditions
-        holder.color_V = view.findViewById(R.id.color_V);
-        holder.color_V.setVisibility(View.VISIBLE);
+        holder.color_IV = (ImageView) view.findViewById(R.id.color_IV);
+        holder.color_IV.setVisibility(View.VISIBLE);
         holder.title_TV = (TextView) view.findViewById(R.id.title_TV);
         view.setTag(holder);
         return view;
@@ -47,17 +50,28 @@ public class CategoryParentsAdapter extends AbstractCursorAdapter
         // Set values
         if (cursor.getPosition() == 0)
         {
-            holder.color_V.setVisibility(View.GONE);
+            holder.color_IV.setVisibility(View.GONE);
             holder.title_TV.setText(R.string.create_new_main_category);
             holder.title_TV.setTypeface(regularTypeface);
         }
         else
         {
-            holder.color_V.setVisibility(View.VISIBLE);
-            holder.color_V.setBackgroundColor(cursor.getInt(iColor));
+            holder.color_IV.setVisibility(View.VISIBLE);
+            //noinspection ConstantConditions
+            ((GradientDrawable) holder.color_IV.getDrawable()).setColor(cursor.getInt(iColor));
             holder.title_TV.setText(cursor.getString(iTitle));
             holder.title_TV.setTypeface(lightTypeface);
         }
+    }
+
+    public long getSelectedId()
+    {
+        return selectedId;
+    }
+
+    public void setSelectedId(long selectedId)
+    {
+        this.selectedId = selectedId;
     }
 
     @Override
@@ -67,19 +81,9 @@ public class CategoryParentsAdapter extends AbstractCursorAdapter
         iColor = c.getColumnIndex(Tables.Categories.COLOR);
     }
 
-    public void setSelectedId(long selectedId)
-    {
-        this.selectedId = selectedId;
-    }
-
-    public long getSelectedId()
-    {
-        return selectedId;
-    }
-
     private static class ViewHolder
     {
-        public View color_V;
+        public ImageView color_IV;
         public TextView title_TV;
     }
 }

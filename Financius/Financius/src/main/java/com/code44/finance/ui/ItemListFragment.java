@@ -37,6 +37,7 @@ public abstract class ItemListFragment extends BaseFragment implements AdapterVi
     protected static final int LOADER_ITEMS = 1468;
     // -----------------------------------------------------------------------------------------------------------------
     protected ListView list_V;
+    protected View create_V;
     // -----------------------------------------------------------------------------------------------------------------
     protected AbstractCursorAdapter adapter;
     protected int selectionType;
@@ -89,7 +90,7 @@ public abstract class ItemListFragment extends BaseFragment implements AdapterVi
         // Setup
         if (selectionType == SELECTION_TYPE_NONE)
         {
-            final View create_V = LayoutInflater.from(getActivity()).inflate(R.layout.li_create_new, list_V, false);
+            create_V = LayoutInflater.from(getActivity()).inflate(R.layout.li_create_new, list_V, false);
             list_V.addFooterView(create_V);
         }
         adapter = createAdapter(getActivity());

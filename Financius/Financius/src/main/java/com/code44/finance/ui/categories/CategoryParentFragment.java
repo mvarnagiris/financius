@@ -9,6 +9,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.code44.finance.R;
 import com.code44.finance.adapters.AbstractCursorAdapter;
 import com.code44.finance.adapters.CategoryParentsAdapter;
@@ -52,6 +53,14 @@ public class CategoryParentFragment extends ItemListFragment
         return inflater.inflate(R.layout.fragment_category_parent, container, false);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState)
+    {
+        super.onActivityCreated(savedInstanceState);
+        if (create_V != null)
+            list_V.removeFooterView(create_V);
+    }
+
     public long getSelectedId()
     {
         final long selectedId = ((CategoryParentsAdapter) adapter).getSelectedId();
@@ -59,6 +68,11 @@ public class CategoryParentFragment extends ItemListFragment
             AnimUtils.shake(list_V);
 
         return selectedId;
+    }
+
+    public void setCallbacks(Callbacks callbacks)
+    {
+        this.callbacks = callbacks;
     }
 
     @Override
@@ -97,11 +111,6 @@ public class CategoryParentFragment extends ItemListFragment
     protected void startItemCreate(Context context, View view)
     {
         // Ignore this.
-    }
-
-    public void setCallbacks(Callbacks callbacks)
-    {
-        this.callbacks = callbacks;
     }
 
     public static interface Callbacks
