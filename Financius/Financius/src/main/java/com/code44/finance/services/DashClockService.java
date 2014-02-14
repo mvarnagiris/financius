@@ -22,8 +22,8 @@ public class DashClockService extends DashClockExtension
     protected void onUpdateData(int reason)
     {
         final String[] projection = new String[]{Tables.Accounts.BALANCE};
-        final String selection = Tables.Accounts.ORIGIN + "<>? and " + Tables.Accounts.DELETE_STATE + "<>?";
-        final String[] selectionArgs = new String[]{String.valueOf(Tables.Categories.Origin.SYSTEM), String.valueOf(Tables.DeleteState.DELETED)};
+        final String selection = Tables.Accounts.ORIGIN + "<>? and " + Tables.Accounts.DELETE_STATE + "<>? and " + Tables.Accounts.SHOW_IN_TOTALS + "=?";
+        final String[] selectionArgs = new String[]{String.valueOf(Tables.Categories.Origin.SYSTEM), String.valueOf(Tables.DeleteState.DELETED), "1"};
         double balance = 0.0;
         Cursor c = null;
         try
