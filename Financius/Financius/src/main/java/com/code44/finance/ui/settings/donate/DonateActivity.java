@@ -30,7 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DonateActivity extends BaseActivity implements IabHelper.QueryInventoryFinishedListener, IabHelper.OnConsumeFinishedListener, IabHelper.OnConsumeMultiFinishedListener, IabHelper.OnIabPurchaseFinishedListener, View.OnClickListener {
+public class DonateActivity extends BaseActivity implements IabHelper.QueryInventoryFinishedListener, IabHelper.OnConsumeFinishedListener, IabHelper.OnConsumeMultiFinishedListener, IabHelper.OnIabPurchaseFinishedListener, View.OnClickListener
+{
     public static final String SKU_DONATE_1 = "donate_1";
     public static final String SKU_DONATE_2 = "donate_2";
     public static final String SKU_DONATE_3 = "donate_3";
@@ -50,14 +51,16 @@ public class DonateActivity extends BaseActivity implements IabHelper.QueryInven
     // -----------------------------------------------------------------------------------------------------------------
     private IabHelper billingHelper;
 
-    public static void startDonate(Context context) {
+    public static void startDonate(Context context)
+    {
         Intent intent = new Intent(context, DonateActivity.class);
         context.startActivity(intent);
 
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donate);
 
@@ -74,9 +77,11 @@ public class DonateActivity extends BaseActivity implements IabHelper.QueryInven
         donateSwitchContainer_V.setVisibility(PrefsHelper.getDefault(this).isEnoughTimeForDonateInNavigation() ? View.VISIBLE : View.GONE);
         //Picasso.with(this).load("https://plus.google.com/s2/photos/profile/112109180062919976918").fit().into(photo_IV);
         switch_S.setChecked(PrefsHelper.getDefault(this).showDonateInNavigation());
-        switch_S.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        switch_S.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
                 PrefsHelper.getDefault(DonateActivity.this).setShowDonateInNavigation(isChecked);
             }
         });
@@ -85,9 +90,12 @@ public class DonateActivity extends BaseActivity implements IabHelper.QueryInven
         billingHelper = new IabHelper(this, p1 + "Ay+WnMitUf3lHTifPBZMBJYfseutMrgna88TJZ" + SecurityHelper.p3 + p4 + "HNcbX4+/yG1doAm7eIBKryReTM1gTMxEzJj1nzJGsKlEqOMBMq09OsCQfoHiCfnLKtf+NSpDV" + p6);
         if (BuildConfig.DEBUG)
             billingHelper.enableDebugLogging(true);
-        billingHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            public void onIabSetupFinished(IabResult result) {
-                if (!result.isSuccess()) {
+        billingHelper.startSetup(new IabHelper.OnIabSetupFinishedListener()
+        {
+            public void onIabSetupFinished(IabResult result)
+            {
+                if (!result.isSuccess())
+                {
                     // Oh noes, there was a problem.
                     complain("Problem setting up in-app billing: " + result);
                     return;
@@ -107,7 +115,8 @@ public class DonateActivity extends BaseActivity implements IabHelper.QueryInven
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroy()
+    {
         super.onDestroy();
 
         if (billingHelper != null)
@@ -116,9 +125,11 @@ public class DonateActivity extends BaseActivity implements IabHelper.QueryInven
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         // Pass on the activity result to the helper for handling
-        if (!billingHelper.handleActivityResult(requestCode, resultCode, data)) {
+        if (!billingHelper.handleActivityResult(requestCode, resultCode, data))
+        {
             // not handled, so handle it ourselves (here's where you'd
             // perform any handling of activity results not related to in-app
             // billing...
@@ -127,18 +138,22 @@ public class DonateActivity extends BaseActivity implements IabHelper.QueryInven
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         return false;
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         billingHelper.launchPurchaseFlow(this, (String) v.getTag(), REQUEST_DONATE, this);
     }
 
     @Override
-    public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-        if (result.isFailure()) {
+    public void onQueryInventoryFinished(IabResult result, Inventory inventory)
+    {
+        if (result.isFailure())
+        {
             complain("Failed to query inventory: " + result);
             return;
         }
@@ -147,23 +162,28 @@ public class DonateActivity extends BaseActivity implements IabHelper.QueryInven
         final List<Purchase> purchaseToConsume = new ArrayList<Purchase>();
         Purchase purchase;
         products.clear();
-        for (String sku : donateSKUs) {
-            if (inventory.hasDetails(sku)) {
+        for (String sku : donateSKUs)
+        {
+            if (inventory.hasDetails(sku))
+            {
                 SkuDetails details = inventory.getSkuDetails(sku);
                 Product product = new Product(sku, details.getTitle().replace("(Financius - Expense Manager)", ""), details.getDescription(), details.getPrice());
 
                 purchase = inventory.getPurchase(sku);
-                if (purchase != null && verifyDeveloperPayload(purchase)) {
+                if (purchase != null && verifyDeveloperPayload(purchase))
+                {
                     purchaseToConsume.add(purchase);
                     product.setEnabled(false);
-                } else
+                }
+                else
                     product.setEnabled(true);
 
                 products.put(sku, product);
             }
         }
 
-        if (purchaseToConsume.size() > 0) {
+        if (purchaseToConsume.size() > 0)
+        {
             billingHelper.consumeAsync(purchaseToConsume, this);
             return;
         }
@@ -172,7 +192,8 @@ public class DonateActivity extends BaseActivity implements IabHelper.QueryInven
     }
 
     @Override
-    public void onConsumeFinished(Purchase purchase, IabResult result) {
+    public void onConsumeFinished(Purchase purchase, IabResult result)
+    {
         if (result.isSuccess())
             products.get(purchase.getSku()).setEnabled(true);
         else
@@ -181,8 +202,10 @@ public class DonateActivity extends BaseActivity implements IabHelper.QueryInven
     }
 
     @Override
-    public void onConsumeMultiFinished(List<Purchase> purchases, List<IabResult> results) {
-        for (int i = 0; i < purchases.size(); i++) {
+    public void onConsumeMultiFinished(List<Purchase> purchases, List<IabResult> results)
+    {
+        for (int i = 0; i < purchases.size(); i++)
+        {
             final IabResult result = results.get(i);
             if (result.isSuccess())
                 products.get(purchases.get(i).getSku()).setEnabled(true);
@@ -194,14 +217,17 @@ public class DonateActivity extends BaseActivity implements IabHelper.QueryInven
     }
 
     @Override
-    public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-        if (result.isFailure()) {
+    public void onIabPurchaseFinished(IabResult result, Purchase purchase)
+    {
+        if (result.isFailure())
+        {
             if (result.getResponse() != -1005)
                 complain("Error purchasing: " + result);
             return;
         }
 
-        if (!verifyDeveloperPayload(purchase)) {
+        if (!verifyDeveloperPayload(purchase))
+        {
             complain("Error purchasing. Authenticity verification failed.");
             return;
         }
@@ -215,21 +241,27 @@ public class DonateActivity extends BaseActivity implements IabHelper.QueryInven
         new AlertDialog.Builder(this).setMessage(R.string.l_donate_thank_donate).setNeutralButton(R.string.ok, null).create().show();
     }
 
-    private void complain(String message) {
+    private void complain(String message)
+    {
         alert("Error: " + message);
     }
 
-    private void alert(String message) {
-        AlertDialog.Builder bld = new AlertDialog.Builder(this);
-        bld.setMessage(message);
-        bld.setNeutralButton("OK", null);
-        bld.create().show();
+    private void alert(String message)
+    {
+        if (!isFinishing())
+        {
+            AlertDialog.Builder bld = new AlertDialog.Builder(this);
+            bld.setMessage(message);
+            bld.setNeutralButton("OK", null);
+            bld.create().show();
+        }
     }
 
     /**
      * Verifies the developer payload of a purchase.
      */
-    private boolean verifyDeveloperPayload(Purchase p) {
+    private boolean verifyDeveloperPayload(Purchase p)
+    {
         String payload = p.getDeveloperPayload();
 
         /*
@@ -258,15 +290,18 @@ public class DonateActivity extends BaseActivity implements IabHelper.QueryInven
         return true;
     }
 
-    private void updateUI() {
+    private void updateUI()
+    {
         container_V.removeAllViews();
 
         String[] skuArray = {SKU_DONATE_1, SKU_DONATE_2, SKU_DONATE_3, SKU_DONATE_4, SKU_DONATE_5};
 
         Product product;
-        for (String sku : skuArray) {
+        for (String sku : skuArray)
+        {
             product = products.get(sku);
-            if (product != null) {
+            if (product != null)
+            {
                 View view = LayoutInflater.from(this).inflate(R.layout.v_donate, container_V, false);
                 ((TextView) view.findViewById(R.id.title_TV)).setText(product.getTitle());
                 ((TextView) view.findViewById(R.id.price_TV)).setText(product.getPrice());
@@ -279,14 +314,16 @@ public class DonateActivity extends BaseActivity implements IabHelper.QueryInven
         }
     }
 
-    private static class Product {
+    private static class Product
+    {
         private String sku;
         private String title;
         private String description;
         private String price;
         private boolean isEnabled;
 
-        private Product(String sku, String title, String description, String price) {
+        private Product(String sku, String title, String description, String price)
+        {
             this.sku = sku;
             this.title = title;
             this.description = description;
@@ -294,27 +331,33 @@ public class DonateActivity extends BaseActivity implements IabHelper.QueryInven
             this.isEnabled = false;
         }
 
-        public String getSku() {
+        public String getSku()
+        {
             return sku;
         }
 
-        public String getTitle() {
+        public String getTitle()
+        {
             return title;
         }
 
-        public String getDescription() {
+        public String getDescription()
+        {
             return description;
         }
 
-        public String getPrice() {
+        public String getPrice()
+        {
             return price;
         }
 
-        public boolean isEnabled() {
+        public boolean isEnabled()
+        {
             return isEnabled;
         }
 
-        public void setEnabled(boolean enabled) {
+        public void setEnabled(boolean enabled)
+        {
             isEnabled = enabled;
         }
     }

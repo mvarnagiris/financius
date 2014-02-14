@@ -15,7 +15,15 @@ import android.text.style.TypefaceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.code44.finance.API;
 import com.code44.finance.R;
 import com.code44.finance.db.Tables;
@@ -24,9 +32,10 @@ import com.code44.finance.services.AbstractService;
 import com.code44.finance.services.CurrenciesRestService;
 import com.code44.finance.ui.ItemEditFragment;
 import com.code44.finance.utils.CurrencyHelper;
-import de.greenrobot.event.EventBus;
 
 import java.util.Currency;
+
+import de.greenrobot.event.EventBus;
 
 public class CurrencyFormatFragment extends ItemEditFragment implements LoaderManager.LoaderCallbacks<Cursor>, RadioGroup.OnCheckedChangeListener, View.OnClickListener
 {
@@ -375,8 +384,20 @@ public class CurrencyFormatFragment extends ItemEditFragment implements LoaderMa
         if (isCurrentMainCurrency())
             return 1.0;
         else
-            //noinspection ConstantConditions
-            return Double.parseDouble(exchangeRate_ET.getText().toString());
+        {
+            double exchangeRate;
+            try
+            {
+                //noinspection ConstantConditions
+                exchangeRate = Double.parseDouble(exchangeRate_ET.getText().toString());
+            }
+            catch (Exception e)
+            {
+                exchangeRate = 1.0;
+            }
+
+            return exchangeRate;
+        }
     }
 
     private void setExchangeRate(double exchangeRate)
