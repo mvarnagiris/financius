@@ -15,8 +15,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import bsh.EvalError;
-import bsh.Interpreter;
+
 import com.code44.finance.R;
 import com.code44.finance.ui.BaseFragment;
 import com.code44.finance.utils.AnimUtils;
@@ -26,6 +25,9 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.Locale;
+
+import bsh.EvalError;
+import bsh.Interpreter;
 
 public class CalculatorFragment extends BaseFragment implements OnClickListener, View.OnLongClickListener
 {
@@ -339,7 +341,7 @@ public class CalculatorFragment extends BaseFragment implements OnClickListener,
 
             // Return result
             if (listener != null)
-                listener.onAmountSet(result);
+                listener.onAmountSet(result == Double.POSITIVE_INFINITY || result == Double.NEGATIVE_INFINITY ? 0 : result);
         }
         else
         {

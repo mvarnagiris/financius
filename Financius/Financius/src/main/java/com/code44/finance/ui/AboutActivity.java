@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.Menu;
 import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.utils.StringUtils;
@@ -51,5 +52,11 @@ public class AboutActivity extends BaseActivity
         {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        return false;
     }
 }
