@@ -146,5 +146,7 @@ public class CategoriesService extends AbstractService
             //noinspection ConstantConditions
             db.endTransaction();
         }
+
+        getContentResolver().notifyChange(CategoriesProvider.uriCategories(), null);
     }
 }
