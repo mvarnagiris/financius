@@ -95,6 +95,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
     private CategoryCardView category_CV;
     private EditTextCardView note_CV;
     private DateCardView date_CV;
+    private TimeCardView time_CV;
     private CheckBox confirmed_CB;
     private CheckBox showInTotals_CB;
     // -----------------------------------------------------------------------------------------------------------------
@@ -138,6 +139,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         category_CV = (CategoryCardView) view.findViewById(R.id.category_CV);
         note_CV = (EditTextCardView) view.findViewById(R.id.note_CV);
         date_CV = (DateCardView) view.findViewById(R.id.date_CV);
+        time_CV = (TimeCardView) view.findViewById(R.id.time_CV);
         confirmed_CB = (CheckBox) view.findViewById(R.id.confirmed_CB);
         showInTotals_CB = (CheckBox) view.findViewById(R.id.showInTotals_CB);
     }
@@ -154,6 +156,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         accountsSeparator_V.setOnClickListener(this);
         category_CV.setOnClickListener(this);
         date_CV.setOnClickListener(this);
+        time_CV.setOnClickListener(this);
 
         // Restore date time dialog fragment
         final DateTimeDialog dateTime_F = (DateTimeDialog) getFragmentManager().findFragmentByTag(FRAGMENT_DATE_TIME);
@@ -393,6 +396,10 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
             case R.id.date_CV:
                 DateTimeDialog.newDateDialogInstance(this, REQUEST_DATE, getDate()).show(getFragmentManager(), FRAGMENT_DATE_TIME);
                 break;
+
+            case R.id.time_CV:
+                DateTimeDialog.newTimeDialogInstance(this, REQUEST_TIME, getDate()).show(getFragmentManager(), FRAGMENT_DATE_TIME);
+                break;
         }
     }
 
@@ -400,9 +407,6 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
     public void onDateSelected(int requestCode, long date)
     {
         setDate(date);
-
-        if (requestCode == REQUEST_DATE)
-            DateTimeDialog.newTimeDialogInstance(this, REQUEST_TIME, getDate()).show(getFragmentManager(), FRAGMENT_DATE_TIME);
     }
 
     @Override
@@ -715,6 +719,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
             return;
 
         date_CV.setDate(date);
+        time_CV.setDate(date);
         transactionAutoHelper.setDate(date);
         doAutoComplete();
     }
