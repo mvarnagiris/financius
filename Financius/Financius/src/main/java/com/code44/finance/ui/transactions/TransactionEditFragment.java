@@ -576,6 +576,9 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
             getLoaderManager().initLoader(LOADER_ACCOUNTS, null, this);
             getLoaderManager().initLoader(LOADER_CATEGORIES, null, this);
             getLoaderManager().initLoader(LOADER_TRANSACTIONS, null, this);
+
+            // Request amount when starting new transaction
+            onRequestAmount();
         }
     }
 
