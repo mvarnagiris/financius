@@ -2,6 +2,11 @@ package com.code44.finance.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+
+import com.code44.finance.db.Tables;
+import com.code44.finance.providers.AccountsProvider;
+
 import de.greenrobot.event.EventBus;
 
 public class FilterHelper
@@ -13,6 +18,7 @@ public class FilterHelper
     private Context context;
     private long periodStart;
     private long periodEnd;
+    private long accountID;
 
     private FilterHelper(Context context)
     {
@@ -21,6 +27,7 @@ public class FilterHelper
         final SharedPreferences prefs = PrefsHelper.getPrefs(context);
         periodStart = prefs.getLong(PREFIX + "periodStart", 0);
         periodEnd = prefs.getLong(PREFIX + "periodEnd", 0);
+        accountID = prefs.getLong(PREFIX + "accountID", -1);
     }
 
     public static FilterHelper getDefault(Context context)
@@ -63,6 +70,53 @@ public class FilterHelper
     {
         periodStart = 0;
         periodEnd = 0;
+        accountID = -1;
+        EventBus.getDefault().post(new FilterChangedEvent());
+    }
+
+
+    public void clearAccount()
+    {
+        accountID = -1;
+        EventBus.getDefault().post(new FilterChangedEvent());
+    }
+
+    public boolean isAccountSet()
+    {
+        return accountID != -1;
+    }
+
+    public long getAccountID() {
+        return accountID;
+    }
+
+    public String getAccountName() {
+        Cursor c = null;
+
+        if(accountID == -1)
+            return "";
+
+        try {
+            c = context.getContentResolver().query(AccountsProvider.uriAccounts(),
+                    new String[]{Tables.Accounts.TITLE},
+                    Tables.Accounts.T_ID + "=?",
+                    new String[]{String.valueOf(accountID)}, null);
+            if(c != null && c.moveToFirst())
+            {
+                return c.getString(c.getColumnIndex(Tables.Accounts.TITLE));
+            }
+        }
+        catch(Exception e)
+        {
+            if (c != null && !c.isClosed())
+                c.close();
+        }
+        return "";
+    }
+
+    public void setAccountID(long id){
+        accountID = id;
+        PrefsHelper.getPrefs(context).edit().putLong(PREFIX + "accountID", accountID).apply();
         EventBus.getDefault().post(new FilterChangedEvent());
     }
 

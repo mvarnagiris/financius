@@ -40,14 +40,24 @@ public class TransactionListFragment extends ItemListFragment implements MainAct
         final FilterHelper filterHelper = FilterHelper.getDefault(context);
         final long startDate = filterHelper.getPeriodStart();
         final long endDate = filterHelper.getPeriodEnd();
+        final long accountID = filterHelper.getAccountID();
+        int argsIdx = 0;
 
-        final String selection = Tables.Transactions.DELETE_STATE + "=?" + (startDate > 0 ? " and " + Tables.Transactions.DATE + " >=?" : "") + (endDate > 0 ? " and " + Tables.Transactions.DATE + " <=?" : "");
-        final String[] selectionArgs = new String[1 + (startDate > 0 ? 1 : 0) + (endDate > 0 ? 1 : 0)];
-        selectionArgs[0] = String.valueOf(Tables.DeleteState.NONE);
+        final String selection = Tables.Transactions.DELETE_STATE + "=?" +
+                (startDate > 0 ? " and " + Tables.Transactions.DATE + " >=?" : "") +
+                (endDate > 0 ? " and " + Tables.Transactions.DATE + " <=?" : "") +
+                (accountID >= 0 ? "and (" + Tables.Transactions.ACCOUNT_FROM_ID + "=?" : "") +
+                (accountID >= 0 ? "or " + Tables.Transactions.ACCOUNT_TO_ID + "=?)" : "");
+        final String[] selectionArgs = new String[1 + (startDate > 0 ? 1 : 0) + (endDate > 0 ? 1 : 0) + (accountID >= 0 ? 2 : 0)];
+        selectionArgs[argsIdx++] = String.valueOf(Tables.DeleteState.NONE);
         if (startDate > 0)
-            selectionArgs[1] = String.valueOf(startDate);
+            selectionArgs[argsIdx++] = String.valueOf(startDate);
         if (endDate > 0)
-            selectionArgs[1 + (startDate > 0 ? 1 : 0)] = String.valueOf(endDate);
+            selectionArgs[argsIdx++] = String.valueOf(endDate);
+        if (accountID >= 0) {
+            selectionArgs[argsIdx++] = String.valueOf(accountID);
+            selectionArgs[argsIdx++] = String.valueOf(accountID);
+        }
         final String sortOrder = Tables.Transactions.STATE + " desc, " + Tables.Transactions.DATE + " desc";
 
         return new CursorLoader(context, uri, projection, selection, selectionArgs, sortOrder);
