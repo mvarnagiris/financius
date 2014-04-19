@@ -25,9 +25,9 @@ public class FilterHelper
         this.context = context.getApplicationContext();
 
         final SharedPreferences prefs = PrefsHelper.getPrefs(context);
-        periodStart = prefs.getLong(PREFIX + "periodStart", 0);
-        periodEnd = prefs.getLong(PREFIX + "periodEnd", 0);
-        accountID = prefs.getLong(PREFIX + "accountID", -1);
+        periodStart = 0;
+        periodEnd = 0;
+        accountID = -1;
     }
 
     public static FilterHelper getDefault(Context context)
@@ -44,8 +44,15 @@ public class FilterHelper
 
     public void setPeriodStart(long periodStart)
     {
-        this.periodStart = periodStart;
-        PrefsHelper.getPrefs(context).edit().putLong(PREFIX + "periodStart", periodStart).apply();
+        if(this.periodEnd > 0 && periodStart > this.periodEnd)
+        {//we should swap the start & end time
+            this.periodStart = this.periodEnd;
+            this.periodEnd = periodStart;
+        }
+        else
+        {
+            this.periodStart = periodStart;
+        }
         EventBus.getDefault().post(new FilterChangedEvent());
     }
 
@@ -56,8 +63,15 @@ public class FilterHelper
 
     public void setPeriodEnd(long periodEnd)
     {
-        this.periodEnd = periodEnd;
-        PrefsHelper.getPrefs(context).edit().putLong(PREFIX + "periodEnd", periodEnd).apply();
+        if(this.periodStart > 0 && periodEnd < this.periodStart)
+        {//we should swap the start & end time
+            this.periodEnd = this.periodStart;
+            this.periodStart = periodEnd;
+        }
+        else
+        {
+            this.periodEnd = periodEnd;
+        }
         EventBus.getDefault().post(new FilterChangedEvent());
     }
 
@@ -116,7 +130,6 @@ public class FilterHelper
 
     public void setAccountID(long id){
         accountID = id;
-        PrefsHelper.getPrefs(context).edit().putLong(PREFIX + "accountID", accountID).apply();
         EventBus.getDefault().post(new FilterChangedEvent());
     }
 

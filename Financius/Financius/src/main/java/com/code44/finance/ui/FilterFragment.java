@@ -244,9 +244,11 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
         }
 
         if(filterHelper.isAccountSet()) {
+            accountsFilter_V.setFilterSet(true);
             accountsFilter_V.setDescription(filterHelper.getAccountName());
         }
         else {
+            accountsFilter_V.setFilterSet(false);
             accountsFilter_V.setDescription(notSetStr);
         }
         categoriesFilter_V.setDescription(notSetStr);
