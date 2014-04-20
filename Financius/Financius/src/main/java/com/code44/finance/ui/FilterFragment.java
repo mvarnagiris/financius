@@ -8,8 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import com.code44.finance.R;
+import com.code44.finance.db.Tables;
 import com.code44.finance.ui.accounts.AccountListActivity;
 import com.code44.finance.ui.accounts.AccountListFragment;
+import com.code44.finance.ui.categories.CategoryListActivity;
+import com.code44.finance.ui.categories.CategoryListFragment;
 import com.code44.finance.ui.dialogs.DateTimeDialog;
 import com.code44.finance.utils.FilterHelper;
 import com.code44.finance.utils.PeriodHelper;
@@ -22,6 +25,7 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
     private static final int REQUEST_DATE_FROM = 1;
     private static final int REQUEST_DATE_TO = 2;
     private static final int REQUEST_ACCOUNT = 3;
+    private static final int REQUEST_CATEGORY = 4;
     // -----------------------------------------------------------------------------------------------------------------
     private static final String FRAGMENT_DATE_TIME = "FRAGMENT_DATE_TIME";
     // -----------------------------------------------------------------------------------------------------------------
@@ -44,6 +48,15 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
                 if (resultCode == Activity.RESULT_OK) {
                     filterHelper.setAccountID(data.getLongExtra(AccountListFragment.RESULT_EXTRA_ITEM_ID, 0));
                }
+                break;
+            }
+            case REQUEST_CATEGORY:
+            {
+                if(resultCode == Activity.RESULT_OK)
+                {
+                    long categoriesIDs[] = data.getLongArrayExtra(CategoryListFragment.RESULT_EXTRA_ITEM_IDS);
+                    filterHelper.setCategories(categoriesIDs);
+                }
                 break;
             }
         }
@@ -81,6 +94,10 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
         periodFilter_V.setCallbacks(this);
         accountsFilter_V.setCallbacks(this);
         categoriesFilter_V.setCallbacks(this);
+
+
+        accountsFilter_V.setVisibility(View.VISIBLE);
+        categoriesFilter_V.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -135,6 +152,12 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
             }
             case R.id.categoriesFilter_V:
             {
+                long item_id[] = filterHelper.getCategories();
+                if(item_id == null)
+                {
+                    item_id = new long[]{};
+                }
+                CategoryListActivity.startListMultiSelection(getActivity(), this, REQUEST_CATEGORY, Tables.Categories.Type.EXPENSE, item_id);
                 break;
             }
 
@@ -175,6 +198,9 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
             case R.id.accountsFilter_V:
                 filterHelper.clearAccount();
                 break;
+            case R.id.categoriesFilter_V:
+                filterHelper.clearCategories();
+                break;
         }
     }
 
@@ -193,17 +219,6 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
         {
             periodFilter_V.setVisibility(View.GONE);
             periodContainer_V.setVisibility(View.GONE);
-        }
-
-        accountsFilter_V.setVisibility(View.VISIBLE);
-
-        if (categoriesFilter_V.equals(v))
-        {
-            categoriesFilter_V.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            categoriesFilter_V.setVisibility(View.GONE);
         }
 
         isExpanded = true;
@@ -251,13 +266,25 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
             accountsFilter_V.setFilterSet(false);
             accountsFilter_V.setDescription(notSetStr);
         }
-        categoriesFilter_V.setDescription(notSetStr);
+
+        if(filterHelper.isCategoriesSet()){
+            String categoriesDescription;
+            categoriesFilter_V.setFilterSet(true);
+            categoriesDescription = filterHelper.getCategoriesName(filterHelper.getCategories()[0]);
+            if(filterHelper.getCategories().length > 1)
+            {
+                categoriesDescription += " ...";
+            }
+            categoriesFilter_V.setDescription(categoriesDescription);
+        }
+        else {
+            categoriesFilter_V.setFilterSet(false);
+            categoriesFilter_V.setDescription(notSetStr);
+        }
 
         if (!isExpanded)
         {
             periodFilter_V.setVisibility(View.VISIBLE);
-            categoriesFilter_V.setVisibility(View.GONE);
-
             periodContainer_V.setVisibility(View.GONE);
         }
     }

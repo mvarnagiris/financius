@@ -6,6 +6,7 @@ import android.database.Cursor;
 
 import com.code44.finance.db.Tables;
 import com.code44.finance.providers.AccountsProvider;
+import com.code44.finance.providers.CategoriesProvider;
 
 import de.greenrobot.event.EventBus;
 
@@ -19,6 +20,7 @@ public class FilterHelper
     private long periodStart;
     private long periodEnd;
     private long accountID;
+    private long[] categories;
 
     private FilterHelper(Context context)
     {
@@ -28,6 +30,7 @@ public class FilterHelper
         periodStart = 0;
         periodEnd = 0;
         accountID = -1;
+        categories = null;
     }
 
     public static FilterHelper getDefault(Context context)
@@ -35,6 +38,52 @@ public class FilterHelper
         if (instance == null)
             instance = new FilterHelper(context);
         return instance;
+    }
+
+    public long[] getCategories()
+    {
+        return categories;
+    }
+
+    public void setCategories(long[] item_ids)
+    {
+        categories = item_ids;
+        EventBus.getDefault().post(new FilterChangedEvent());
+    }
+
+    public boolean isCategoriesSet()
+    {
+        return categories != null;
+    }
+
+    public void clearCategories()
+    {
+        categories = null;
+        EventBus.getDefault().post(new FilterChangedEvent());
+    }
+
+    public String getCategoriesName(long id) {
+        Cursor c = null;
+
+        if(id == -1)
+            return "";
+
+        try {
+            c = context.getContentResolver().query(CategoriesProvider.uriCategories(),
+                    new String[]{Tables.Categories.TITLE},
+                    Tables.Categories.T_ID + "=?",
+                    new String[]{String.valueOf(id)}, null);
+            if(c != null && c.moveToFirst())
+            {
+                return c.getString(c.getColumnIndex(Tables.Categories.TITLE));
+            }
+        }
+        finally
+        {
+            if (c != null && !c.isClosed())
+                c.close();
+        }
+        return "";
     }
 
     public long getPeriodStart()
@@ -85,6 +134,7 @@ public class FilterHelper
         periodStart = 0;
         periodEnd = 0;
         accountID = -1;
+        categories = null;
         EventBus.getDefault().post(new FilterChangedEvent());
     }
 
@@ -120,7 +170,7 @@ public class FilterHelper
                 return c.getString(c.getColumnIndex(Tables.Accounts.TITLE));
             }
         }
-        catch(Exception e)
+        finally
         {
             if (c != null && !c.isClosed())
                 c.close();
