@@ -20,7 +20,8 @@ public class FilterHelper
     private long periodStart;
     private long periodEnd;
     private long accountID;
-    private long[] categories;
+    private long[] categoriesExpense;
+    private long[] categoriesIncome;
 
     private FilterHelper(Context context)
     {
@@ -30,7 +31,8 @@ public class FilterHelper
         periodStart = 0;
         periodEnd = 0;
         accountID = -1;
-        categories = null;
+        categoriesExpense = null;
+        categoriesIncome = null;
     }
 
     public static FilterHelper getDefault(Context context)
@@ -40,25 +42,38 @@ public class FilterHelper
         return instance;
     }
 
-    public long[] getCategories()
+    public long[] getCategoriesExpense()
     {
-        return categories;
+        return categoriesExpense;
     }
 
-    public void setCategories(long[] item_ids)
+
+    public long[] getCategoriesIncome()
     {
-        categories = item_ids;
+        return categoriesIncome;
+    }
+
+    public void setCategoriesIncome(long[] item_ids)
+    {
+        categoriesIncome = item_ids;
+        EventBus.getDefault().post(new FilterChangedEvent());
+    }
+
+    public void setCategoriesExpense(long[] item_ids)
+    {
+        categoriesExpense = item_ids;
         EventBus.getDefault().post(new FilterChangedEvent());
     }
 
     public boolean isCategoriesSet()
     {
-        return categories != null;
+        return categoriesExpense != null || categoriesIncome != null;
     }
 
     public void clearCategories()
     {
-        categories = null;
+        categoriesExpense = null;
+        categoriesIncome = null;
         EventBus.getDefault().post(new FilterChangedEvent());
     }
 
@@ -134,7 +149,8 @@ public class FilterHelper
         periodStart = 0;
         periodEnd = 0;
         accountID = -1;
-        categories = null;
+        categoriesIncome = null;
+        categoriesExpense = null;
         EventBus.getDefault().post(new FilterChangedEvent());
     }
 

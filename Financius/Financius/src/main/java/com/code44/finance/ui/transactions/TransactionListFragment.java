@@ -41,15 +41,28 @@ public class TransactionListFragment extends ItemListFragment implements MainAct
         final long startDate = filterHelper.getPeriodStart();
         final long endDate = filterHelper.getPeriodEnd();
         final long accountID = filterHelper.getAccountID();
-        final long[] categoriesIDs = filterHelper.getCategories();
+        long[] categoriesIDs = null;
         int argsIdx = 0;
         int i = 0;
 
+        if(filterHelper.isCategoriesSet())
+        {
+            long[] lengthCategoriesExpense = filterHelper.getCategoriesExpense();
+            long[] lengthCategoriesIncome = filterHelper.getCategoriesIncome();
+            categoriesIDs = new long[(lengthCategoriesExpense == null? 0 : lengthCategoriesExpense.length) +
+                    (lengthCategoriesIncome == null? 0 : lengthCategoriesIncome.length)];
+            if(lengthCategoriesExpense != null)
+                System.arraycopy(lengthCategoriesExpense, 0, categoriesIDs, 0, lengthCategoriesExpense.length);
+
+            if(lengthCategoriesIncome != null)
+                System.arraycopy(lengthCategoriesIncome, 0, categoriesIDs, (lengthCategoriesExpense == null? 0 : lengthCategoriesExpense.length), lengthCategoriesIncome.length);
+        }
         String selection = Tables.Transactions.DELETE_STATE + "=?" +
                 (startDate > 0 ? " and " + Tables.Transactions.DATE + " >=?" : "") +
                 (endDate > 0 ? " and " + Tables.Transactions.DATE + " <=?" : "") +
                 (accountID >= 0 ? "and (" + Tables.Transactions.ACCOUNT_FROM_ID + "=?" : "") +
                 (accountID >= 0 ? "or " + Tables.Transactions.ACCOUNT_TO_ID + "=?)" : "");
+
         if(categoriesIDs != null)
         {
             i = categoriesIDs.length;
