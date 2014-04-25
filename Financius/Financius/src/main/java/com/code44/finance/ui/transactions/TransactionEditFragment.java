@@ -440,12 +440,6 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
             exchangeRate = 1.0;
         }
 
-        if (getAmount() <= 0)
-        {
-            AnimUtils.shake(amount_CV);
-            isOK = false;
-        }
-
         if (isOK)
         {
             ContentValues values = TransactionsUtils.getValues(getAccountFromId(), getAccountToId(), getCategoryId(), getDate(), getAmount(), exchangeRate, getNote(), getState(), isShowInTotals());
@@ -482,7 +476,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
     @Override
     public void onRequestAmount()
     {
-        CalculatorActivity.startCalculator(this, REQUEST_AMOUNT, getAmount(), false, true);
+        CalculatorActivity.startCalculator(this, REQUEST_AMOUNT, getAmount(), true, true);
     }
 
     @Override

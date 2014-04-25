@@ -112,6 +112,7 @@
     <string name="avg_expense">Ort. gider</string>
     <string name="avg_income">Ort. gelir</string>
     <string name="negative_numbers_are_not_allowed_here">Negatif sayılara izin verilmiyor</string>
+    <string name="profit">Profit</string>
     <string name="f_x_deleted">%d silindi</string>
     <string name="f_enable_backup">Verilerinizi yedekleme &amp; yükleme için Google Drive kullanabilirsiniz.\n\nBaşlamak için %s butonuna tıklayınız.</string>
     <string name="f_current_main_currency_x">Mevcut ana para birimi %s</string>

@@ -329,16 +329,6 @@ public class CalculatorFragment extends BaseFragment implements OnClickListener,
             // We are in normal entry mode
             double result = (calcPartList.size() == 1 && calcPartList.getFirst().getType() == CalcPart.Type.SUB) ? -1 * currentPart.getNumber(returnTwoDecimals) : currentPart.getNumber(returnTwoDecimals);
 
-            // If negatives are not allowed, check ir result is not negative
-            if (!allowNegative && result < 0)
-            {
-                AnimUtils.shake(amount_TV);
-                negativeErrorCount++;
-                if (negativeErrorCount >= 3)
-                    Toast.makeText(getActivity(), R.string.negative_numbers_are_not_allowed_here, Toast.LENGTH_SHORT).show();
-                return;
-            }
-
             // Return result
             if (listener != null)
                 listener.onAmountSet(result == Double.POSITIVE_INFINITY || result == Double.NEGATIVE_INFINITY ? 0 : result);

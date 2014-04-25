@@ -1,5 +1,6 @@
 package com.code44.finance.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -12,6 +13,9 @@ import com.code44.finance.R;
 import com.code44.finance.ui.ItemListFragment;
 import com.code44.finance.ui.OverviewFragment;
 import com.code44.finance.ui.accounts.AccountListFragment;
+import com.code44.finance.ui.backup.BackupFragment;
+import com.code44.finance.ui.backup.YourDataActivity;
+import com.code44.finance.ui.backup.YourDataFragment;
 import com.code44.finance.ui.reports.CategoriesReportFragment;
 import com.code44.finance.ui.transactions.TransactionListFragment;
 
@@ -24,7 +28,7 @@ public class NavigationAdapter extends BaseAdapter
     private final List<NavItemInfo> navList = new ArrayList<NavItemInfo>();
     private int selectedPosition = 0;
 
-    public NavigationAdapter(Context context)
+    public NavigationAdapter(final Context context)
     {
         this.context = context;
 
@@ -36,6 +40,15 @@ public class NavigationAdapter extends BaseAdapter
         //navList.add(new NavItemInfo(res.getString(R.string.budgets), BudgetListFragment.class.getName(), null));
         navList.add(new NavItemInfo(res.getString(R.string.reports), CategoriesReportFragment.class.getName(), null));
         //navList.add(new NavItemInfo(res.getString(R.string.wish_list), OverviewFragment.class.getName(), null));
+        navList.add(new NavItemInfo(res.getString(R.string.backup),
+                new runActivityCallbacks(){
+                    @Override
+                    public void onSelected()
+                    {
+                        YourDataActivity.start(context);
+                    }
+                }, null));
+
     }
 
     @Override
@@ -102,6 +115,9 @@ public class NavigationAdapter extends BaseAdapter
     {
         private final String title;
         private final String fragmentClassName;
+
+
+        private final runActivityCallbacks activity;
         private final Bundle args;
         private int badge;
 
@@ -111,11 +127,26 @@ public class NavigationAdapter extends BaseAdapter
             this.fragmentClassName = fragmentClassName;
             this.args = args;
             badge = 0;
+            activity = null;
+        }
+
+        public NavItemInfo(String title, runActivityCallbacks fragmentActivity, Bundle args)
+        {
+            this.title = title;
+            this.fragmentClassName = null;
+            this.args = args;
+            badge = 0;
+            activity = fragmentActivity;
         }
 
         public String getTitle()
         {
             return title;
+        }
+
+        public runActivityCallbacks getActivity()
+        {
+            return activity;
         }
 
         public String getFragmentClassName()
@@ -143,5 +174,10 @@ public class NavigationAdapter extends BaseAdapter
     {
         public TextView title_TV;
         public TextView badge_TV;
+    }
+
+    public static interface runActivityCallbacks
+    {
+        public void onSelected();
     }
 }

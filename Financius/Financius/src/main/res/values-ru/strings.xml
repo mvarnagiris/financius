@@ -112,6 +112,7 @@
     <string name="avg_expense">Средний расход</string>
     <string name="avg_income">Средний доход</string>
     <string name="negative_numbers_are_not_allowed_here">Отрицательные числа не разрешены</string>
+    <string name="profit">Profit</string>
     <string name="f_x_deleted">%d удалено</string>
     <string name="f_enable_backup">Для удобства резервного копирования вы можете использовать Google Drive.\n\n нажмите кнопку %s, чтобы начать.</string>
     <string name="f_current_main_currency_x">%s – главная валюта</string>

@@ -99,7 +99,7 @@ public class TransactionsProvider extends BaseItemsProvider
         checkId(values, Tables.Transactions.ACCOUNT_TO_ID, required);
         checkId(values, Tables.Transactions.CATEGORY_ID, required);
         checkLong(values, Tables.Transactions.DATE, required);
-        checkDouble(values, Tables.Transactions.AMOUNT, required, 0.01, Double.MAX_VALUE);
+        checkDouble(values, Tables.Transactions.AMOUNT, required, -Double.MAX_VALUE, Double.MAX_VALUE);
         checkDouble(values, Tables.Transactions.EXCHANGE_RATE, required, 0, Double.MAX_VALUE);
         checkInt(values, Tables.Transactions.STATE, required, 0, 1);
         if (required && !values.containsKey(Tables.Transactions.SHOW_IN_TOTALS))

@@ -112,6 +112,7 @@
     <string name="avg_expense">Pengeluaran rata-rata</string>
     <string name="avg_income">Pendapatan rata-rata</string>
     <string name="negative_numbers_are_not_allowed_here">Angka negatif tidak diizinkan di sini</string>
+    <string name="profit">Profit</string>
     <string name="f_x_deleted">%d dihapus</string>
     <string name="f_enable_backup">Untuk memudahkan rekam dan simpan ulang data Anda bisa menggunakan Google Drive.\n\nTekan tombol %s untuk memulai.</string>
     <string name="f_current_main_currency_x">Mata uang utama saat ini adalah %s</string>

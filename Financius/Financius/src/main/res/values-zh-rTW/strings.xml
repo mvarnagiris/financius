@@ -112,6 +112,7 @@
     <string name="avg_expense">平均支出</string>
     <string name="avg_income">平均收入</string>
     <string name="negative_numbers_are_not_allowed_here">不可輸入負數</string>
+    <string name="profit">收益</string>
     <string name="f_x_deleted">%d 已刪除</string>
     <string name="f_enable_backup">您可以使用Google雲端硬碟輕鬆的備份與回復您的資料。\n\n輕觸%s即可開始。</string>
     <string name="f_current_main_currency_x">目前主要貨幣為 %s</string>
