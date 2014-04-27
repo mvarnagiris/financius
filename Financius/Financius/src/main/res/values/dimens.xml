@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
 
     <!-- Space -->
@@ -13,7 +14,6 @@
     <dimen name="margin_dynamic_normal">12dp</dimen>
     <dimen name="margin_dynamic_large">16dp</dimen>
     <dimen name="margin_land_normal">8dp</dimen>
-
     <dimen name="dynamic_margin_narrow_horizontal">8dp</dimen>
     <dimen name="dynamic_margin_narrow_vertical">8dp</dimen>
     <dimen name="dynamic_margin_drawer_narrow_horizontal">8dp</dimen>
@@ -49,5 +49,6 @@
     <dimen name="budget_view_height">12dp</dimen>
     <dimen name="btn_corner_radius">3dp</dimen>
     <dimen name="btn_stroke_width">2dp</dimen>
+    <dimen name="widget_margin">8dp</dimen>
 
 </resources>

@@ -39,6 +39,10 @@ import de.greenrobot.event.EventBus;
 
 public class TransactionEditFragment extends ItemEditFragment implements View.OnClickListener, DateTimeDialog.DialogCallbacks, AmountCardView.Callback
 {
+    public static final String TRANSACTION_TYPE = "transaction_type";
+    public static final String TRANSACTION_TYPE_EXPENSE = "expense";
+    public static final String TRANSACTION_TYPE_INCOME = "income";
+    public static final String TRANSACTION_TYPE_TRANSFER = "transfer";
     private static final String STATE_DATE = "STATE_DATE";
     private static final String STATE_ACCOUNT_FROM_ID = "STATE_ACCOUNT_FROM_ID";
     private static final String STATE_ACCOUNT_FROM_TITLE = "STATE_ACCOUNT_FROM_TITLE";
@@ -112,6 +116,7 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
     private boolean userSetCategoryExpense;
     private boolean autoTransactionSetForType = false;
     private boolean doingAutoTransaction = false;
+    private int transactionType = -1;
 
     public static TransactionEditFragment newInstance(long itemId)
     {
@@ -145,6 +150,27 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
     }
 
     @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+        Intent intent = activity.getIntent();
+        Bundle bundle = intent.getExtras();
+        String type = bundle.getString(TRANSACTION_TYPE);
+        if(type.compareTo(TRANSACTION_TYPE_EXPENSE) == 0)
+        {
+            transactionType = Tables.Categories.Type.EXPENSE;
+        }
+        else if(type.compareTo(TRANSACTION_TYPE_INCOME) == 0)
+        {
+            transactionType = Tables.Categories.Type.INCOME;
+        }
+        else if(type.compareTo(TRANSACTION_TYPE_TRANSFER) == 0)
+        {
+            transactionType = Tables.Categories.Type.TRANSFER;
+        }
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
@@ -170,6 +196,9 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
             getLoaderManager().initLoader(LOADER_CATEGORIES, null, this);
             getLoaderManager().initLoader(LOADER_TRANSACTIONS, null, this);
         }
+
+        if(transactionType != -1)
+            setCategoryType(transactionType);
     }
 
     @Override

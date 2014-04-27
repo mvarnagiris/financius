@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/space_normal"
+    android:background="@drawable/cab_background_bottom_actionbar">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:weightSum="0.9"
+            android:baselineAligned="false"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/title_linearLayout"
+            android:layout_alignParentStart="false"
+            android:id="@+id/btn_linearLayout"
+            >
+
+            <ImageButton
+                android:id="@+id/appwidget_expense"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:gravity="center_horizontal|fill_vertical"
+                android:src="@drawable/ic_category_type_expense"
+                android:background="@drawable/menu_dropdown_panel_actionbar"
+                android:clickable="true"
+                android:layout_weight="0.3"
+                android:baselineAlignBottom="true"
+                android:cropToPadding="false"
+                android:focusable="false"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:id="@+id/appwidget_transfer"
+                android:src="@drawable/ic_category_type_transfer"
+                android:background="@drawable/menu_dropdown_panel_actionbar"
+                android:clickable="true"
+                android:layout_weight="0.3"
+                />
+
+            <ImageButton
+                android:id="@+id/appwidget_income"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:gravity="center_horizontal|fill_vertical"
+                android:src="@drawable/ic_category_type_income"
+                android:clickable="true"
+                android:background="@drawable/menu_dropdown_panel_actionbar"
+                android:layout_weight="0.3"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
