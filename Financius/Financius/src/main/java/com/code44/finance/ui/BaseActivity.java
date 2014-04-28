@@ -54,6 +54,9 @@ public abstract class BaseActivity extends FragmentActivity
     {
         super.onCreate(savedInstanceState);
 
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+
         // Register broadcast receiver
         LocalBroadcastManager.getInstance(this).registerReceiver(killReceiver, new IntentFilter(LockActivity.ACTION_KILL));
 

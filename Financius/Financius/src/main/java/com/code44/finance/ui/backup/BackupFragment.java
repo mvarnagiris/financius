@@ -10,6 +10,7 @@ import com.code44.finance.R;
 import com.code44.finance.adapters.BackupFilesAdapter;
 import com.code44.finance.ui.BaseFragment;
 import com.code44.finance.ui.ItemActivity;
+import com.code44.finance.ui.MainActivity;
 import com.code44.finance.ui.dialogs.EditTextDialog;
 import com.code44.finance.ui.dialogs.QuestionDialog;
 import com.code44.finance.user.AppUser;
@@ -18,7 +19,7 @@ import com.code44.finance.user.GoogleUserFragment;
 
 import java.util.logging.FileHandler;
 
-public class BackupFragment extends BaseFragment implements DriveFragment.Callbacks, View.OnClickListener, EditTextDialog.EditTextDialogListener, AdapterView.OnItemClickListener, QuestionDialog.DialogCallbacks
+public class BackupFragment extends BaseFragment implements MainActivity.NavigationContentFragment, DriveFragment.Callbacks, View.OnClickListener, EditTextDialog.EditTextDialogListener, AdapterView.OnItemClickListener, QuestionDialog.DialogCallbacks
 {
     private static final String FRAGMENT_DEVICE_NAME = "FRAGMENT_DEVICE_NAME";
     private static final String FRAGMENT_DELETE_DIALOG = ItemActivity.class.getName() + ".FRAGMENT_DELETE_DIALOG";
@@ -385,6 +386,13 @@ public class BackupFragment extends BaseFragment implements DriveFragment.Callba
         public boolean onGetFileContents(FileHandler fileHandler, String fileId);
 
         public boolean onDeleteFile(String fileId);
+    }
+
+
+    @Override
+    public String getTitle()
+    {
+        return getString(R.string.backup);
     }
 
 //    private static class BackupFileGenerator implements DriveFragment.FileGenerator

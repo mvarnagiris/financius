@@ -112,6 +112,7 @@
     <string name="avg_expense">Vid. išlaidos</string>
     <string name="avg_income">Vid. pajamos</string>
     <string name="negative_numbers_are_not_allowed_here">Neigiami skaičiai čia neleidžiami</string>
+    <string name="profit">Profit</string>
     <string name="f_x_deleted">%d ištrinta</string>
     <string name="f_enable_backup">Atsarginės kopijos bus saugomos Google Drive. Spauskite %s, kad pradėti.</string>
     <string name="f_current_main_currency_x">Dabartinė pagrindinė valiuta yra %s</string>

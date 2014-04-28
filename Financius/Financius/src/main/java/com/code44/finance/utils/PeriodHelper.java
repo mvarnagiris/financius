@@ -216,7 +216,7 @@ public class PeriodHelper
                 else if (start > 0)
                     result = DateTimeFormat.mediumDate().print(start) + " - ?";
                 else
-                    result = "? - " + DateTimeFormat.mediumDate().print(start);
+                    result = "? - " + DateTimeFormat.mediumDate().print(end);
                 break;
 
             default:

@@ -40,14 +40,64 @@ public class TransactionListFragment extends ItemListFragment implements MainAct
         final FilterHelper filterHelper = FilterHelper.getDefault(context);
         final long startDate = filterHelper.getPeriodStart();
         final long endDate = filterHelper.getPeriodEnd();
+        final long accountID = filterHelper.getAccountID();
+        long[] categoriesIDs = null;
+        int argsIdx = 0;
+        int i = 0;
 
-        final String selection = Tables.Transactions.DELETE_STATE + "=?" + (startDate > 0 ? " and " + Tables.Transactions.DATE + " >=?" : "") + (endDate > 0 ? " and " + Tables.Transactions.DATE + " <=?" : "");
-        final String[] selectionArgs = new String[1 + (startDate > 0 ? 1 : 0) + (endDate > 0 ? 1 : 0)];
-        selectionArgs[0] = String.valueOf(Tables.DeleteState.NONE);
+        if(filterHelper.isCategoriesSet())
+        {
+            long[] lengthCategoriesExpense = filterHelper.getCategoriesExpense();
+            long[] lengthCategoriesIncome = filterHelper.getCategoriesIncome();
+            categoriesIDs = new long[(lengthCategoriesExpense == null? 0 : lengthCategoriesExpense.length) +
+                    (lengthCategoriesIncome == null? 0 : lengthCategoriesIncome.length)];
+            if(lengthCategoriesExpense != null)
+                System.arraycopy(lengthCategoriesExpense, 0, categoriesIDs, 0, lengthCategoriesExpense.length);
+
+            if(lengthCategoriesIncome != null)
+                System.arraycopy(lengthCategoriesIncome, 0, categoriesIDs, (lengthCategoriesExpense == null? 0 : lengthCategoriesExpense.length), lengthCategoriesIncome.length);
+        }
+        String selection = Tables.Transactions.DELETE_STATE + "=?" +
+                (startDate > 0 ? " and " + Tables.Transactions.DATE + " >=?" : "") +
+                (endDate > 0 ? " and " + Tables.Transactions.DATE + " <=?" : "") +
+                (accountID >= 0 ? "and (" + Tables.Transactions.ACCOUNT_FROM_ID + "=?" : "") +
+                (accountID >= 0 ? "or " + Tables.Transactions.ACCOUNT_TO_ID + "=?)" : "");
+
+        if(categoriesIDs != null)
+        {
+            i = categoriesIDs.length;
+            selection += "and (";
+            while(i-- > 0)
+            {
+                selection += "(" + Tables.Transactions.CATEGORY_ID + "=?)";
+                if(i != 0)
+                {
+                    selection += " or ";
+                }
+            }
+            selection += ")";
+        }
+
+        final String[] selectionArgs = new String[1 + (startDate > 0 ? 1 : 0) +
+                (endDate > 0 ? 1 : 0) +
+                (accountID >= 0 ? 2 : 0) +
+                (categoriesIDs == null ? 0 : categoriesIDs.length)];
+        selectionArgs[argsIdx++] = String.valueOf(Tables.DeleteState.NONE);
         if (startDate > 0)
-            selectionArgs[1] = String.valueOf(startDate);
+            selectionArgs[argsIdx++] = String.valueOf(startDate);
         if (endDate > 0)
-            selectionArgs[1 + (startDate > 0 ? 1 : 0)] = String.valueOf(endDate);
+            selectionArgs[argsIdx++] = String.valueOf(endDate);
+        if (accountID >= 0) {
+            selectionArgs[argsIdx++] = String.valueOf(accountID);
+            selectionArgs[argsIdx++] = String.valueOf(accountID);
+        }
+        if (categoriesIDs != null)
+        {
+            i = 0;
+            while(i < categoriesIDs.length) {
+                selectionArgs[argsIdx++] = String.valueOf(categoriesIDs[i++]);
+            }
+        }
         final String sortOrder = Tables.Transactions.STATE + " desc, " + Tables.Transactions.DATE + " desc";
 
         return new CursorLoader(context, uri, projection, selection, selectionArgs, sortOrder);

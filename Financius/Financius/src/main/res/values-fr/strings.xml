@@ -112,6 +112,7 @@
     <string name="avg_expense">Moy. dépense</string>
     <string name="avg_income">Moy. revenu</string>
     <string name="negative_numbers_are_not_allowed_here">Les nombres négatifs ne sont pas autorisés ici</string>
+    <string name="profit">Bénéfices</string>
     <string name="f_x_deleted">%d supprimé</string>
     <string name="f_enable_backup">Pour sauvegarder et restaurer vos données, vous pouvez utiliser Google Drive.\n\nAppuyez sur %s pour démarrer.</string>
     <string name="f_current_main_currency_x">La monnaie principale est %s</string>

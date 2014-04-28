@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.adapters.NavigationAdapter;
+import com.code44.finance.ui.backup.YourDataActivity;
 import com.code44.finance.ui.settings.donate.DonateActivity;
 import com.code44.finance.utils.PrefsHelper;
 import de.greenrobot.event.EventBus;
@@ -70,7 +71,6 @@ public class NavigationFragment extends BaseFragment implements AdapterView.OnIt
         list_V.setOnItemClickListener(this);
         ((TextView) donate_V.findViewById(R.id.title_TV)).setText(R.string.donate);
         donate_V.setOnClickListener(this);
-        donate_V.setBackgroundResource(R.drawable.btn_borderless);
         donate_V.setVisibility(PrefsHelper.getDefault(getActivity()).isEnoughTimeForDonateInNavigation() && PrefsHelper.getDefault(getActivity()).showDonateInNavigation() ? View.VISIBLE : View.GONE);
 
         // Select initial menu item
@@ -113,8 +113,15 @@ public class NavigationFragment extends BaseFragment implements AdapterView.OnIt
         if (callbacks != null)
         {
             NavigationAdapter.NavItemInfo item = (NavigationAdapter.NavItemInfo) adapter.getItem(position);
-            callbacks.onNavItemSelected(item.getFragmentClassName());
-            adapter.setSelectedPosition(position);
+            if(item.getActivity() != null)
+            {
+               item.getActivity().onSelected();
+            }
+            else
+            {
+                callbacks.onNavItemSelected(item.getFragmentClassName());
+                adapter.setSelectedPosition(position);
+            }
         }
     }
 
@@ -153,7 +160,7 @@ public class NavigationFragment extends BaseFragment implements AdapterView.OnIt
 
     public static interface Callbacks
     {
-        public void onNavItemSelected(String fragmentName);
+        abstract public void onNavItemSelected(String fragmentName);
     }
 
     public static class NavigationEvent

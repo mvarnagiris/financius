@@ -121,24 +121,20 @@
     <string name="export">Export</string>
     <string name="please_wait">Please wait</string>
     <string name="change_account_currency">Change account currency</string>
-
+    <string name="profit">Profit</string>
     <string name="f_x_deleted">%d deleted</string>
-    <string name="f_enable_backup">
-        <![CDATA[To make it simple to backup &amp; restore your data you can use <b>Google Drive</b>.<br><br>Press the “<b>%s</b>” button to get started.]]></string>
+    <string name="f_enable_backup"><![CDATA[To make it simple to backup &amp; restore your data you can use <b>Google Drive</b>.<br><br>Press the “<b>%s</b>” button to get started.]]></string>
     <string name="f_current_main_currency_x">Current main currency is %s</string>
     <string name="f_x_will_change_y_main_currency" formatted="false">%s will change %s as main currency</string>
     <string name="f_exchange_rate_x">Exchange rate %f</string>
-
     <string name="l_dashclock_desc">Displays your total balance.</string>
     <string name="l_period_expenses_empty">No expense this period</string>
     <string name="l_currency_exists">This currency already exists.</string>
     <string name="l_cannot_disable_main_currency">To change main currency, edit another currency and set it as main
-        one.
-    </string>
+        one.</string>
     <string name="l_no_internet_error">Please check your internet connection and try again.</string>
     <string name="l_delete_confirmation">Deleting this will result in linked records being deleted as well. Are you sure
-        you want to delete?
-    </string>
+        you want to delete?</string>
     <string name="l_currency_not_used">Not used</string>
     <string name="l_currency_used">Accounts</string>
     <string name="l_confirmed_info">Transaction can be NOT confirmed, when not all data is entered, or when transaction is in the future, or when generated automatically. In this case, transaction will not be included in reports, until You mark it as confirmed.</string>
@@ -222,5 +218,6 @@
     <string name="lock_pattern_created">Your new unlock pattern:</string>
     <string name="lock_pattern_compare">Draw pattern to unlock:</string>
     <string name="lock_pattern_error_compare">Sorry, try again…</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>

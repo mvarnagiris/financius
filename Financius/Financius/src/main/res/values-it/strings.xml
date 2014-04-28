@@ -112,6 +112,7 @@
     <string name="avg_expense">Spesa media</string>
     <string name="avg_income">Entrata media</string>
     <string name="negative_numbers_are_not_allowed_here">I numeri negativi non sono consentiti qui.</string>
+    <string name="profit">Profit</string>
     <string name="f_x_deleted">%d cancellati</string>
     <string name="f_enable_backup">Per rendere più facile il backup e il ripristino dei tuoi dati puoi utilizzare Google Drive.\n\nPremi il tasto %s per lanciare il backup/ripristino.</string>
     <string name="f_current_main_currency_x">L\'attuale valuta principale è %s</string>

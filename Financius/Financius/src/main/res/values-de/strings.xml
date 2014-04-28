@@ -112,6 +112,7 @@
     <string name="avg_expense">Durchschn. Ausgaben</string>
     <string name="avg_income">Durchschn. Einkommen</string>
     <string name="negative_numbers_are_not_allowed_here">Negative Werte sind hier nicht erlaubt</string>
+    <string name="profit">Profit</string>
     <string name="f_x_deleted">%d gelöscht</string>
     <string name="f_enable_backup">Um die Daten zu sichern &amp; wiederherzustellen, kannst du Google Drive verwenden. \n\nDrücke %s, um zu beginnen.</string>
     <string name="f_current_main_currency_x">Die aktuelle Standardwährung ist %s</string>

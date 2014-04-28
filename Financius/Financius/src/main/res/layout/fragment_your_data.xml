@@ -12,6 +12,19 @@
         android:paddingRight="@dimen/dynamic_margin_card_horizontal"
         android:orientation="vertical">
 
+        <com.code44.finance.views.cards.CSVCardView
+            android:id="@+id/csv_CV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dynamic_margin_card_vertical" />
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            android:visibility="invisible" />
+
         <com.code44.finance.views.cards.BackupCardView
             android:id="@+id/backup_CV"
             android:layout_width="match_parent"
@@ -23,12 +36,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dynamic_margin_card_vertical"/>
-
-        <com.code44.finance.views.cards.CSVCardView
-            android:id="@+id/csv_CV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dynamic_margin_card_vertical" />
 
     </LinearLayout>
 

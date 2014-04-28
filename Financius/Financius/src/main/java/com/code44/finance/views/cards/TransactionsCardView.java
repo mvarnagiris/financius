@@ -1,6 +1,7 @@
 package com.code44.finance.views.cards;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -40,13 +41,22 @@ public class TransactionsCardView extends PeriodCardView
     public TransactionsCardView(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
+        LinearLayout incomeContainer_v, expenseContainer_v, profitContainer_v;
+        TextView expenseTitle_TV, incomeTitle_TV, profitTitle_TV;
 
         // Init
         expenseGraph_V = new ExpenseGraphView(context);
         valuesContainer_V = new LinearLayout(context);
+        incomeContainer_v = new LinearLayout(context);
+        expenseContainer_v = new LinearLayout(context);
+        profitContainer_v = new LinearLayout(context);
+        expenseTitle_TV = new TextView(context);
+        incomeTitle_TV = new TextView(context);
+        profitTitle_TV = new TextView(context);
         expense_TV = new TextView(context);
         income_TV = new TextView(context);
         profit_TV = new TextView(context);
+        final Resources res = context.getResources();
 
         // Setup
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.recommended_touch_size));
@@ -56,27 +66,62 @@ public class TransactionsCardView extends PeriodCardView
         params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.topMargin = getResources().getDimensionPixelSize(R.dimen.space_normal);
         valuesContainer_V.setLayoutParams(params);
+        valuesContainer_V.setOrientation(LinearLayout.VERTICAL);
 
-        income_TV.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+
+        incomeTitle_TV.setText(res.getString(R.string.income));
+        expenseTitle_TV.setText(res.getString(R.string.expense));
+        profitTitle_TV.setText(res.getString(R.string.profit));
+
+        incomeContainer_v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        incomeContainer_v.setVisibility(VISIBLE);
+        income_TV.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        incomeTitle_TV.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        incomeTitle_TV.setGravity(Gravity.LEFT);
+        incomeTitle_TV.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_normal));
+        income_TV.setGravity(Gravity.RIGHT);
+        incomeContainer_v.addView(incomeTitle_TV);
+        incomeContainer_v.addView(income_TV);
+
+        income_TV.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         income_TV.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_normal));
         income_TV.setTextColor(getResources().getColor(R.color.text_green));
         income_TV.setVisibility(GONE);
 
-        expense_TV.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+        expenseContainer_v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        expenseContainer_v.setVisibility(VISIBLE);
+        expense_TV.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        expenseTitle_TV.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        expenseTitle_TV.setGravity(Gravity.LEFT);
+        expenseTitle_TV.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_normal));
+        expense_TV.setGravity(Gravity.RIGHT);
+        expenseContainer_v.addView(expenseTitle_TV);
+        expenseContainer_v.addView(expense_TV);
+
+        expense_TV.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
         expense_TV.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_normal));
         expense_TV.setTextColor(getResources().getColor(R.color.text_red));
-        expense_TV.setGravity(Gravity.RIGHT);
         expense_TV.setVisibility(GONE);
 
+        profitContainer_v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        profitContainer_v.setVisibility(VISIBLE);
         profit_TV.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        profitTitle_TV.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        profitTitle_TV.setGravity(Gravity.LEFT);
+        profitTitle_TV.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_normal));
+        profit_TV.setGravity(Gravity.RIGHT);
+        profitContainer_v.addView(profitTitle_TV);
+        profitContainer_v.addView(profit_TV);
+
+        profit_TV.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
         profit_TV.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_normal));
         profit_TV.setTextColor(getResources().getColor(R.color.text_secondary));
         profit_TV.setVisibility(GONE);
 
         // Add views
-        valuesContainer_V.addView(income_TV);
-        valuesContainer_V.addView(profit_TV);
-        valuesContainer_V.addView(expense_TV);
+        valuesContainer_V.addView(incomeContainer_v);
+        valuesContainer_V.addView(expenseContainer_v);
+        valuesContainer_V.addView(profitContainer_v);
         addView(expenseGraph_V);
         addView(valuesContainer_V);
     }

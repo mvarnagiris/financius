@@ -112,6 +112,7 @@
     <string name="avg_expense">Priemerný výdavok</string>
     <string name="avg_income">Priemerný príjem</string>
     <string name="negative_numbers_are_not_allowed_here">Záporné čísla zakázané</string>
+    <string name="profit">Profit</string>
     <string name="f_x_deleted">%d zmazané</string>
     <string name="f_enable_backup">Pre zjednodušenie zálohovania a obnovy vašich údajov môžete použiť Google Drive.\n\nStlačte %s pre začatie.</string>
     <string name="f_current_main_currency_x">Súčasná hlavná mena je %s</string>

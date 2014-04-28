@@ -112,6 +112,7 @@
     <string name="avg_expense">Gasto médio</string>
     <string name="avg_income">Renda média</string>
     <string name="negative_numbers_are_not_allowed_here">Números negativos não são permitidos aqui</string>
+    <string name="profit">Profit</string>
     <string name="f_x_deleted">%d deletados</string>
     <string name="f_enable_backup">Para simplificar o backup e restauração dos seus dados, você pode usar o Google Drive.\n\nPressiona o %s botão para iniciar.</string>
     <string name="f_current_main_currency_x">A moeda principal é %s</string>

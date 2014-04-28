@@ -112,6 +112,7 @@
     <string name="avg_expense">平均支出</string>
     <string name="avg_income">平均收入</string>
     <string name="negative_numbers_are_not_allowed_here">此处不允许为负数</string>
+    <string name="profit">收益</string>
     <string name="f_x_deleted">%d 已删除</string>
     <string name="f_enable_backup">您可以使用谷歌云端硬盘便捷地备份和恢复数据。\n\n按下%s按钮即可开始。</string>
     <string name="f_current_main_currency_x">当前主要货币为 %s</string>
