@@ -156,17 +156,15 @@ public class TransactionEditFragment extends ItemEditFragment implements View.On
         Intent intent = activity.getIntent();
         Bundle bundle = intent.getExtras();
         String type = bundle.getString(TRANSACTION_TYPE);
-        if(type.compareTo(TRANSACTION_TYPE_EXPENSE) == 0)
+        if(type != null)
         {
-            transactionType = Tables.Categories.Type.EXPENSE;
-        }
-        else if(type.compareTo(TRANSACTION_TYPE_INCOME) == 0)
-        {
-            transactionType = Tables.Categories.Type.INCOME;
-        }
-        else if(type.compareTo(TRANSACTION_TYPE_TRANSFER) == 0)
-        {
-            transactionType = Tables.Categories.Type.TRANSFER;
+            if (type.compareTo(TRANSACTION_TYPE_EXPENSE) == 0) {
+                transactionType = Tables.Categories.Type.EXPENSE;
+            } else if (type.compareTo(TRANSACTION_TYPE_INCOME) == 0) {
+                transactionType = Tables.Categories.Type.INCOME;
+            } else if (type.compareTo(TRANSACTION_TYPE_TRANSFER) == 0) {
+                transactionType = Tables.Categories.Type.TRANSFER;
+            }
         }
     }
 
