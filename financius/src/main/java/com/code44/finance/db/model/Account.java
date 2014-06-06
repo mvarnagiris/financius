@@ -1,7 +1,7 @@
 package com.code44.finance.db.model;
 
 import com.code44.finance.App;
-import com.code44.finance.providers.CurrenciesProvider;
+import com.code44.finance.providers.AccountsProvider;
 
 import nl.qbusict.cupboard.CupboardFactory;
 
@@ -21,7 +21,7 @@ public class Account extends BaseModel {
     public static Account getSystem() {
         if (systemAccount == null) {
             systemAccount = CupboardFactory.cupboard().withContext(App.getAppContext())
-                    .query(CurrenciesProvider.uriCurrencies(), Account.class)
+                    .query(AccountsProvider.uriAccounts(), Account.class)
                     .withSelection("owner=?", Owner.SYSTEM.toString()).get();
         }
         return systemAccount;

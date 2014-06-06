@@ -8,6 +8,7 @@ import android.net.Uri;
 
 import com.code44.finance.db.model.BaseModel;
 import com.code44.finance.db.model.Currency;
+import com.code44.finance.utils.UriUtils;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
@@ -67,39 +68,53 @@ public abstract class BaseModelProvider<T extends BaseModel> extends BaseProvide
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
+        long newId;
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
-                final long newId = cupboard().withDatabase(database).put(getModelClass(), values);
-                return ContentUris.withAppendedId(uri, newId);
+                newId = cupboard().withDatabase(database).put(getModelClass(), values);
+                break;
 
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
+
+        UriUtils.notifyChangeIfNecessary(getContext(), uri);
+        return ContentUris.withAppendedId(uri, newId);
     }
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        int count;
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
-                return cupboard().withDatabase(database).update(getModelClass(), values, selection, selectionArgs);
+                count = cupboard().withDatabase(database).update(getModelClass(), values, selection, selectionArgs);
+                break;
 
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
+
+        UriUtils.notifyChangeIfNecessary(getContext(), uri);
+        return count;
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
+        int count;
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
-                return cupboard().withDatabase(database).delete(getModelClass(), selection, selectionArgs);
+                count = cupboard().withDatabase(database).delete(getModelClass(), selection, selectionArgs);
+                break;
 
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
+
+        UriUtils.notifyChangeIfNecessary(getContext(), uri);
+        return count;
     }
 
     protected abstract Class<T> getModelClass();

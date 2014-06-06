@@ -2,15 +2,48 @@ package com.code44.finance.db.model;
 
 import android.text.TextUtils;
 
+import com.code44.finance.App;
+import com.code44.finance.providers.CategoriesProvider;
+
+import nl.qbusict.cupboard.CupboardFactory;
+
 public class Category extends BaseModel {
     public static final long EXPENSE_ID = 1;
     public static final long INCOME_ID = 2;
     public static final long TRANSFER_ID = 3;
 
+    private static Category expenseCategory;
+    private static Category incomeCategory;
+    private static Category transferCategory;
+
     private String title;
     private Type type;
     private Owner owner;
     private int order;
+
+    public static Category getExpense() {
+        if (expenseCategory == null) {
+            expenseCategory = CupboardFactory.cupboard().withContext(App.getAppContext())
+                    .query(CategoriesProvider.uriCategory(EXPENSE_ID), Category.class).get();
+        }
+        return expenseCategory;
+    }
+
+    public static Category getIncome() {
+        if (incomeCategory == null) {
+            incomeCategory = CupboardFactory.cupboard().withContext(App.getAppContext())
+                    .query(CategoriesProvider.uriCategory(INCOME_ID), Category.class).get();
+        }
+        return incomeCategory;
+    }
+
+    public static Category getTransfer() {
+        if (transferCategory == null) {
+            transferCategory = CupboardFactory.cupboard().withContext(App.getAppContext())
+                    .query(CategoriesProvider.uriCategory(TRANSFER_ID), Category.class).get();
+        }
+        return transferCategory;
+    }
 
     @Override
     public void useDefaultsIfNotSet() {
