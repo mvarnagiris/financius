@@ -1,16 +1,1 @@
-#Android generated
-build
-lint.xml
-
-#IntelliJ IDEA
-.idea
-*.iml
-*.ipr
-*.iws
-classes
-local.properties
-release.keystore
-
-
-#Other
-.DS_Store
+/build

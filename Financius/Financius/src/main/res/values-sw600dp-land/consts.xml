@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <item format="integer" name="layout_type" type="integer" tools:ignore="UnusedResources">3</item>
-    <item format="integer" name="column_count" type="integer" tools:ignore="UnusedResources">2</item>
-</resources>
