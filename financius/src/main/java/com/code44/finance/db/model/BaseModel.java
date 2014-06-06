@@ -1,10 +1,47 @@
 package com.code44.finance.db.model;
 
-public class BaseModel {
+import android.text.TextUtils;
+
+import java.util.UUID;
+
+public abstract class BaseModel {
     private Long _id;
     private String serverId;
     private ItemState itemState;
     private SyncState syncState;
+
+    protected BaseModel() {
+        setItemState(ItemState.NORMAL);
+        setSyncState(SyncState.NONE);
+    }
+
+    public void useDefaultsIfNotSet() {
+        if (TextUtils.isEmpty(serverId)) {
+            setServerId(UUID.randomUUID().toString());
+        }
+
+        if (itemState == null) {
+            itemState = ItemState.NORMAL;
+        }
+
+        if (syncState == null) {
+            syncState = SyncState.NONE;
+        }
+    }
+
+    public void checkRequiredValues() throws IllegalStateException {
+        if (TextUtils.isEmpty(serverId)) {
+            throw new IllegalStateException("Server Id cannot be empty.");
+        }
+
+        if (itemState == null) {
+            throw new IllegalStateException("ItemState cannot be null.");
+        }
+
+        if (syncState == null) {
+            throw new IllegalStateException("SyncState cannot be null.");
+        }
+    }
 
     public Long getId() {
         return _id;

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Financius</string>
+
+    <string-array name="expense_categories">
+
+    </string-array>
+
+    <string-array name="income_categories">
+
+    </string-array>
+
+</resources>
