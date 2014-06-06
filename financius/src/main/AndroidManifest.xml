@@ -17,6 +17,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Providers -->
+        <!-- ======================================================================================================= -->
+        <provider
+            android:name=".providers.CurrenciesProvider"
+            android:authorities="@string/authority_currencies"
+            android:exported="false" />
+        <provider
+            android:name=".providers.AccountsProvider"
+            android:authorities="@string/authority_accounts"
+            android:exported="false" />
+        <provider
+            android:name=".providers.CategoriesProvider"
+            android:authorities="@string/authority_categories"
+            android:exported="false" />
+        <provider
+            android:name=".providers.TransactionsProvider"
+            android:authorities="@string/authority_transactions"
+            android:exported="false" />
+
     </application>
 
 </manifest>

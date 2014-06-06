@@ -13,8 +13,8 @@ public abstract class BaseProvider extends ContentProvider {
     protected static final String TYPE_LIST_BASE = "vnd.android.cursor.dir/vnd.code44.";
     protected static final String TYPE_ITEM_BASE = "vnd.android.cursor.item/vnd.code44.";
 
-    protected UriMatcher mUriMatcher;
-    protected SQLiteDatabase mDatabase;
+    protected UriMatcher uriMatcher;
+    protected SQLiteDatabase database;
 
     protected static String getAuthority(Class<? extends BaseProvider> cls) {
         return BuildConfig.PACKAGE_NAME + ".providers." + cls.getSimpleName();
@@ -22,8 +22,12 @@ public abstract class BaseProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        mDatabase = DBHelper.get(getContext()).getWritableDatabase();
-        return (mDatabase != null);
+        uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+        database = DBHelper.get(getContext()).getWritableDatabase();
+        return (database != null);
+    }
+
+    protected String getAuthority() {
+        return getAuthority(getClass());
     }
 }
