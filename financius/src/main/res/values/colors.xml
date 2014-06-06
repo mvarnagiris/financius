@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="d_brand">#37a066</color>
+
+    <color name="d_dark">#303332</color>
+    <color name="d_dark_lighter1">#4a4a4a</color>
+    <color name="d_dark_lighter2">#767676</color>
+
+    <color name="d_light">#ffffff</color>
+    <color name="d_light_darker1">#f8f3f2</color>
+    <color name="d_light_darker2">#f3ebeb</color>
+    <color name="d_light_darker3">#9f9f9f</color>
+
+    <color name="bg_window">@color/d_light_darker1</color>
+    <color name="bg_primary">@color/d_light</color>
+    <color name="bg_secondary">@color/d_light_darker2</color>
+    <color name="bg_actionbar">@color/d_brand</color>
+
+    <color name="text_primary">@color/d_dark</color>
+    <color name="text_primary_inverse">@color/d_light</color>
+    <color name="text_secondary">@color/d_light_darker3</color>
+    <color name="text_accent">@color/d_brand</color>
+
+    <color name="separator">#b8b4b7</color>
+</resources>
