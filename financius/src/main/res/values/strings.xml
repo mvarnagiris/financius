@@ -8,5 +8,7 @@
     <string name="income">Income</string>
     <string name="transfer">Transfer</string>
     <string name="currencies">Currencies</string>
+    <string name="currency">Currency</string>
+    <string name="currency_code">Currency code</string>
 
 </resources>
