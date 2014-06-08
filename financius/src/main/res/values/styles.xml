@@ -29,9 +29,23 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">@dimen/recommended_touch_size</item>
+        <item name="android:paddingLeft">@dimen/space_large</item>
+        <item name="android:paddingRight">@dimen/space_large</item>
+        <item name="android:paddingTop">@dimen/space_small</item>
+        <item name="android:paddingBottom">@dimen/space_small</item>
         <item name="android:textSize">@dimen/text_normal</item>
         <!--<item name="android:textColor">@color/btn_primary_text</item>-->
         <!--<item name="android:background">@drawable/btn_primary</item>-->
+    </style>
+
+    <style name="Button.Borderless">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:background">@drawable/btn_borderless</item>
+    </style>
+
+    <style name="Button.Borderless.Settings">
+        <item name="android:minHeight">@dimen/big_touch_size</item>
+        <item name="android:gravity">left|center_vertical</item>
     </style>
 
     <!-- ImageView -->
@@ -62,7 +76,7 @@
         <item name="android:clipToPadding">false</item>
         <item name="android:scrollbarStyle">outsideOverlay</item>
         <item name="android:drawSelectorOnTop">true</item>
-        <!--<item name="android:listSelector">@drawable/btn_borderless_accent</item>-->
+        <item name="android:listSelector">@drawable/btn_borderless</item>
     </style>
 
     <style name="ListView.NoDivider">

@@ -19,7 +19,7 @@ public class Category extends BaseModel {
     private String title;
     private Type type;
     private Owner owner;
-    private int order;
+    private int sortOrder;
 
     public static Category getExpense() {
         if (expenseCategory == null) {
@@ -99,12 +99,12 @@ public class Category extends BaseModel {
         this.owner = owner;
     }
 
-    public int getOrder() {
-        return order;
+    public int getSortOrder() {
+        return sortOrder;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
+    public void setSortOrder(int sortOrder) {
+        this.sortOrder = sortOrder;
     }
 
     public static enum Type {

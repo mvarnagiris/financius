@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/buttonContainer_V"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:showDividers="middle"
+        android:divider="?android:attr/dividerVertical"
+        android:dividerPadding="@dimen/space_normal"
+        android:orientation="horizontal"
+        android:background="@color/bg_primary">
+
+        <Button
+            android:id="@+id/discard_B"
+            style="@style/Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_small"
+            android:text="@string/discard" />
+
+        <Button
+            android:id="@+id/done_B"
+            style="@style/Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_small"
+            android:textColor="@color/text_accent"
+            android:text="@string/done" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/separator_V"
+        style="@style/Separator.Thin"
+        android:layout_above="@+id/buttonContainer_V" />
+
+    <FrameLayout
+        android:id="@+id/container_V"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/separator_V" />
+
+</RelativeLayout>

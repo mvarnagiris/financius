@@ -17,6 +17,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static DBHelper singleton;
 
+    private final Context context;
+
     // Register models
     static {
         CupboardFactory.cupboard().register(Currency.class);
@@ -27,6 +29,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private DBHelper(Context context) {
         super(context, NAME, null, VERSION);
+        this.context = context;
     }
 
     public static synchronized DBHelper get(Context context) {
@@ -38,7 +41,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         CupboardFactory.cupboard().withDatabase(db).createTables();
-        DBDefaults.addDefaults(db);
+        DBDefaults.addDefaults(context, db);
     }
 
     @Override

@@ -13,7 +13,7 @@
     <dimen name="text_small">14sp</dimen>
 
     <dimen name="separator">2dp</dimen>
-    <dimen name="separator_thin">1dp</dimen>
+    <dimen name="separator_thin">1px</dimen>
 
     <dimen name="min_touch_size">32dp</dimen>
     <dimen name="recommended_touch_size">48dp</dimen>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="d_brand">#37a066</color>
+    <color name="d_brand">#55a72f</color>
 
     <color name="d_dark">#303332</color>
     <color name="d_dark_lighter1">#4a4a4a</color>
@@ -22,5 +22,7 @@
     <color name="text_secondary">@color/d_light_darker3</color>
     <color name="text_accent">@color/d_brand</color>
 
-    <color name="separator">#b8b4b7</color>
+    <color name="btn_borderless_pressed">#3355a72f</color>
+
+    <color name="separator">#d8d4d7</color>
 </resources>

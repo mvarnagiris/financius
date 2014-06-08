@@ -1,5 +1,6 @@
 package com.code44.finance.db.model;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.code44.finance.App;
@@ -30,6 +31,12 @@ public class Currency extends BaseModel {
                     .withSelection("isDefault=?", "1").get();
         }
         return defaultCurrency;
+    }
+
+    public static void updateDefaultCurrency(SQLiteDatabase db) {
+        defaultCurrency = CupboardFactory.cupboard().withDatabase(db)
+                .query(Currency.class)
+                .withSelection("isDefault=?", "1").get();
     }
 
     @Override
