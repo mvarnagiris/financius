@@ -25,8 +25,8 @@ public class Transaction extends BaseModel {
     }
 
     @Override
-    public void checkRequiredValues() throws IllegalStateException {
-        super.checkRequiredValues();
+    public void checkValues() throws IllegalStateException {
+        super.checkValues();
 
         if (accountFrom == null) {
             throw new IllegalStateException("AccountFrom cannot be null.");

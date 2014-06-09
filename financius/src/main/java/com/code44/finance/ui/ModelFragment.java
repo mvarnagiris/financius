@@ -18,7 +18,6 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
     private static final int LOADER_MODEL = 1000;
 
     private long modelId;
-    private T model;
 
     public static Bundle makeArgs(long modelId) {
         final Bundle args = new Bundle();
@@ -51,8 +50,7 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data != null && data.moveToFirst()) {
-            model = CupboardFactory.cupboard().withCursor(data).get(getModelClass());
-            onModelLoaded(model);
+            onModelLoaded(CupboardFactory.cupboard().withCursor(data).get(getModelClass()));
         }
     }
 
@@ -64,5 +62,5 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
 
     protected abstract Class<T> getModelClass();
 
-    protected abstract void onModelLoaded(T currency);
+    protected abstract void onModelLoaded(T model);
 }

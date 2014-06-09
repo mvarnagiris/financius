@@ -41,8 +41,8 @@ public class Account extends BaseModel {
     }
 
     @Override
-    public void checkRequiredValues() throws IllegalStateException {
-        super.checkRequiredValues();
+    public void checkValues() throws IllegalStateException {
+        super.checkValues();
 
         if (currency == null) {
             throw new IllegalStateException("Currency cannot be null.");

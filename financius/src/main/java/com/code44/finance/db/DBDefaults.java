@@ -51,7 +51,7 @@ public final class DBDefaults {
                 currency.setSymbol(javaCurrency.getSymbol());
                 currency.setDecimalCount(javaCurrency.getDefaultFractionDigits());
                 currency.setDefault(code.equals(mainCurrencyCode));
-                currency.checkRequiredValues();
+                currency.checkValues();
                 CupboardFactory.cupboard().withDatabase(db).put(currency);
             }
         }
@@ -63,7 +63,7 @@ public final class DBDefaults {
         final Account systemAccount = new Account();
         systemAccount.useDefaultsIfNotSet();
         systemAccount.setOwner(Account.Owner.SYSTEM);
-        systemAccount.checkRequiredValues();
+        systemAccount.checkValues();
 
         CupboardFactory.cupboard().withDatabase(db).put(systemAccount);
     }

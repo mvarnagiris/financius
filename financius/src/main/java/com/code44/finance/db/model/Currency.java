@@ -1,6 +1,8 @@
 package com.code44.finance.db.model;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.code44.finance.App;
@@ -9,6 +11,16 @@ import com.code44.finance.providers.CurrenciesProvider;
 import nl.qbusict.cupboard.CupboardFactory;
 
 public class Currency extends BaseModel {
+    public static final Parcelable.Creator<Currency> CREATOR = new Parcelable.Creator<Currency>() {
+        public Currency createFromParcel(Parcel in) {
+            return new Currency(in);
+        }
+
+        public Currency[] newArray(int size) {
+            return new Currency[size];
+        }
+    };
+
     private static Currency defaultCurrency;
 
     private String code;
@@ -16,12 +28,32 @@ public class Currency extends BaseModel {
     private SymbolPosition symbolPosition;
     private DecimalSeparator decimalSeparator;
     private GroupSeparator groupSeparator;
-    private Integer decimalCount;
+    private int decimalCount;
     private boolean isDefault;
-    private Double exchangeRate;
+    private double exchangeRate;
 
     public Currency() {
         super();
+        setCode(null);
+        setSymbol(null);
+        setSymbolPosition(SymbolPosition.CLOSE_RIGHT);
+        setDecimalSeparator(DecimalSeparator.DOT);
+        setGroupSeparator(GroupSeparator.COMMA);
+        setDecimalCount(2);
+        setDefault(false);
+        setExchangeRate(1.0);
+    }
+
+    public Currency(Parcel in) {
+        super(in);
+        setCode(in.readString());
+        setSymbol(in.readString());
+        setSymbolPosition(SymbolPosition.fromInt(in.readInt()));
+        setDecimalSeparator(DecimalSeparator.fromSymbol(in.readString()));
+        setGroupSeparator(GroupSeparator.fromSymbol(in.readString()));
+        setDecimalCount(in.readInt());
+        setDefault(in.readInt() != 0);
+        setExchangeRate(in.readDouble());
     }
 
     public static Currency getDefault() {
@@ -40,33 +72,21 @@ public class Currency extends BaseModel {
     }
 
     @Override
-    public void useDefaultsIfNotSet() {
-        super.useDefaultsIfNotSet();
-
-        if (symbolPosition == null) {
-            setSymbolPosition(SymbolPosition.CLOSE_RIGHT);
-        }
-
-        if (decimalSeparator == null) {
-            setDecimalSeparator(DecimalSeparator.DOT);
-        }
-
-        if (groupSeparator == null) {
-            setGroupSeparator(GroupSeparator.COMMA);
-        }
-
-        if (decimalCount == null) {
-            setDecimalCount(2);
-        }
-
-        if (exchangeRate == null) {
-            setExchangeRate(1);
-        }
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeString(getCode());
+        dest.writeString(getSymbol());
+        dest.writeInt(getSymbolPosition().asInt());
+        dest.writeString(getDecimalSeparator().symbol());
+        dest.writeString(getGroupSeparator().symbol());
+        dest.writeInt(getDecimalCount());
+        dest.writeInt(isDefault() ? 1 : 0);
+        dest.writeDouble(getExchangeRate());
     }
 
     @Override
-    public void checkRequiredValues() throws IllegalStateException {
-        super.checkRequiredValues();
+    public void checkValues() throws IllegalStateException {
+        super.checkValues();
 
         if (TextUtils.isEmpty(code)) {
             throw new IllegalStateException("Code cannot be empty.");
@@ -84,11 +104,11 @@ public class Currency extends BaseModel {
             throw new IllegalStateException("GroupSeparator cannot be null.");
         }
 
-        if (decimalCount == null || decimalCount < 0 || decimalCount > 2) {
+        if (decimalCount < 0 || decimalCount > 2) {
             throw new IllegalStateException("Decimal count must be [0, 2]");
         }
 
-        if (exchangeRate == null || Double.compare(exchangeRate, 0.0) < 0) {
+        if (Double.compare(exchangeRate, 0.0) < 0) {
             throw new IllegalStateException("Exchange rate must be > 0");
         }
     }
@@ -166,6 +186,22 @@ public class Currency extends BaseModel {
             this.symbol = symbol;
         }
 
+        public static DecimalSeparator fromSymbol(String symbol) {
+            switch (symbol) {
+                case ".":
+                    return DOT;
+
+                case ",":
+                    return COMMA;
+
+                case " ":
+                    return SPACE;
+
+                default:
+                    throw new IllegalArgumentException("Symbol '" + symbol + "' is not supported.");
+            }
+        }
+
         private String symbol() {
             return symbol;
         }
@@ -180,12 +216,65 @@ public class Currency extends BaseModel {
             this.symbol = symbol;
         }
 
+        public static GroupSeparator fromSymbol(String symbol) {
+            switch (symbol) {
+                case "":
+                    return NONE;
+
+                case ".":
+                    return DOT;
+
+                case ",":
+                    return COMMA;
+
+                case " ":
+                    return SPACE;
+
+                default:
+                    throw new IllegalArgumentException("Symbol '" + symbol + "' is not supported.");
+            }
+        }
+
         private String symbol() {
             return symbol;
         }
     }
 
     public static enum SymbolPosition {
-        CLOSE_RIGHT, FAR_RIGHT, CLOSE_LEFT, FAR_LEFT
+        CLOSE_RIGHT(SymbolPosition.VALUE_CLOSE_RIGHT), FAR_RIGHT(SymbolPosition.VALUE_FAR_RIGHT), CLOSE_LEFT(SymbolPosition.VALUE_CLOSE_LEFT), FAR_LEFT(SymbolPosition.VALUE_FAR_LEFT);
+
+        private static final int VALUE_CLOSE_RIGHT = 1;
+        private static final int VALUE_FAR_RIGHT = 2;
+        private static final int VALUE_CLOSE_LEFT = 3;
+        private static final int VALUE_FAR_LEFT = 4;
+
+        private final int value;
+
+        private SymbolPosition(int value) {
+            this.value = value;
+        }
+
+        public static SymbolPosition fromInt(int value) {
+            switch (value) {
+                case VALUE_CLOSE_RIGHT:
+                    return CLOSE_RIGHT;
+
+                case VALUE_FAR_RIGHT:
+                    return FAR_RIGHT;
+
+                case VALUE_CLOSE_LEFT:
+                    return CLOSE_LEFT;
+
+                case VALUE_FAR_LEFT:
+                    return FAR_LEFT;
+
+                default:
+                    throw new IllegalArgumentException("Value " + value + " is not supported.");
+            }
+        }
+
+        public int asInt() {
+            return value;
+        }
     }
 }

@@ -59,8 +59,8 @@ public class Category extends BaseModel {
     }
 
     @Override
-    public void checkRequiredValues() throws IllegalStateException {
-        super.checkRequiredValues();
+    public void checkValues() throws IllegalStateException {
+        super.checkValues();
 
         if (TextUtils.isEmpty(title)) {
             throw new IllegalStateException("Title cannot be empty");
