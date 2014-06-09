@@ -1,27 +1,47 @@
 package com.code44.finance.db.model;
 
-import java.util.Date;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 public class Transaction extends BaseModel {
+    public static final Parcelable.Creator<Transaction> CREATOR = new Parcelable.Creator<Transaction>() {
+        public Transaction createFromParcel(Parcel in) {
+            return new Transaction(in);
+        }
+
+        public Transaction[] newArray(int size) {
+            return new Transaction[size];
+        }
+    };
+
     private Account accountFrom;
     private Account accountTo;
     private Category category;
-    private Date date;
+    private long date;
     private long amount;
-    private Double exchangeRate;
+    private double exchangeRate;
     private String note;
 
-    @Override
-    public void useDefaultsIfNotSet() {
-        super.useDefaultsIfNotSet();
+    public Transaction() {
+        super();
+        setAccountFrom(Account.getSystem());
+        setAccountTo(Account.getSystem());
+        setCategory(Category.getExpense());
+        setDate(0);
+        setAmount(0);
+        setExchangeRate(1.0);
+        setNote(null);
+    }
 
-        if (date == null) {
-            date = new Date();
-        }
-
-        if (exchangeRate == null) {
-            setExchangeRate(1);
-        }
+    public Transaction(Parcel in) {
+        super(in);
+        setAccountFrom((Account) in.readParcelable(Account.class.getClassLoader()));
+        setAccountTo((Account) in.readParcelable(Account.class.getClassLoader()));
+        setCategory((Category) in.readParcelable(Category.class.getClassLoader()));
+        setDate(in.readLong());
+        setAmount(in.readLong());
+        setExchangeRate(in.readDouble());
+        setNote(in.readString());
     }
 
     @Override
@@ -36,15 +56,15 @@ public class Transaction extends BaseModel {
             throw new IllegalStateException("AccountTo cannot be null.");
         }
 
+        if (accountFrom == accountTo) {
+            throw new IllegalStateException("AccountFrom cannot be equal to AccountTo.");
+        }
+
         if (category == null) {
             throw new IllegalStateException("Category cannot be null.");
         }
 
-        if (date == null) {
-            throw new IllegalStateException("Date cannot be null.");
-        }
-
-        if (exchangeRate == null || Double.compare(exchangeRate, 0) < 0) {
+        if (Double.compare(exchangeRate, 0) < 0) {
             throw new IllegalStateException("Exchange rate must be > 0.");
         }
     }
@@ -73,11 +93,11 @@ public class Transaction extends BaseModel {
         this.category = category;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
