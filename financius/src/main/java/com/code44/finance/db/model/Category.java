@@ -1,5 +1,7 @@
 package com.code44.finance.db.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.code44.finance.App;
@@ -8,6 +10,16 @@ import com.code44.finance.providers.CategoriesProvider;
 import nl.qbusict.cupboard.CupboardFactory;
 
 public class Category extends BaseModel {
+    public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>() {
+        public Category createFromParcel(Parcel in) {
+            return new Category(in);
+        }
+
+        public Category[] newArray(int size) {
+            return new Category[size];
+        }
+    };
+
     public static final long EXPENSE_ID = 1;
     public static final long INCOME_ID = 2;
     public static final long TRANSFER_ID = 3;
@@ -20,6 +32,22 @@ public class Category extends BaseModel {
     private Type type;
     private Owner owner;
     private int sortOrder;
+
+    public Category() {
+        super();
+        setTitle(null);
+        setType(Type.EXPENSE);
+        setOwner(Owner.USER);
+        setSortOrder(0);
+    }
+
+    public Category(Parcel in) {
+        super(in);
+        setTitle(in.readString());
+        setType(Type.fromInt(in.readInt()));
+        setOwner(Owner.fromInt(in.readInt()));
+        setSortOrder(in.readInt());
+    }
 
     public static Category getExpense() {
         if (expenseCategory == null) {
@@ -46,16 +74,12 @@ public class Category extends BaseModel {
     }
 
     @Override
-    public void useDefaultsIfNotSet() {
-        super.useDefaultsIfNotSet();
-
-        if (type == null) {
-            setType(Type.EXPENSE);
-        }
-
-        if (owner == null) {
-            setOwner(Owner.USER);
-        }
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeString(getTitle());
+        dest.writeInt(getType().asInt());
+        dest.writeInt(getOwner().asInt());
+        dest.writeInt(getSortOrder());
     }
 
     @Override
@@ -108,10 +132,66 @@ public class Category extends BaseModel {
     }
 
     public static enum Type {
-        EXPENSE, INCOME, TRANSFER
+        EXPENSE(Type.VALUE_EXPENSE), INCOME(Type.VALUE_INCOME), TRANSFER(Type.VALUE_TRANSFER);
+
+        private static final int VALUE_EXPENSE = 1;
+        private static final int VALUE_INCOME = 2;
+        private static final int VALUE_TRANSFER = 3;
+
+        private final int value;
+
+        private Type(int value) {
+            this.value = value;
+        }
+
+        public static Type fromInt(int value) {
+            switch (value) {
+                case VALUE_EXPENSE:
+                    return EXPENSE;
+
+                case VALUE_INCOME:
+                    return INCOME;
+
+                case VALUE_TRANSFER:
+                    return TRANSFER;
+
+                default:
+                    throw new IllegalArgumentException("Value " + value + " is not supported.");
+            }
+        }
+
+        public int asInt() {
+            return value;
+        }
     }
 
     public static enum Owner {
-        SYSTEM, USER
+        SYSTEM(Owner.VALUE_SYSTEM), USER(Owner.VALUE_USER);
+
+        private static final int VALUE_SYSTEM = 1;
+        private static final int VALUE_USER = 2;
+
+        private final int value;
+
+        private Owner(int value) {
+            this.value = value;
+        }
+
+        public static Owner fromInt(int value) {
+            switch (value) {
+                case VALUE_SYSTEM:
+                    return SYSTEM;
+
+                case VALUE_USER:
+                    return USER;
+
+                default:
+                    throw new IllegalArgumentException("Value " + value + " is not supported.");
+            }
+        }
+
+        public int asInt() {
+            return value;
+        }
     }
 }
