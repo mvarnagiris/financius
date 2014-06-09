@@ -13,24 +13,22 @@
         android:orientation="horizontal"
         android:background="@color/bg_primary">
 
-        <Button
-            android:id="@+id/discard_B"
+        <ImageButton
+            android:id="@+id/delete_IB"
             style="@style/Button.Borderless"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:textAllCaps="true"
-            android:textSize="@dimen/text_small"
-            android:text="@string/discard" />
+            android:layout_width="@dimen/recommended_touch_size"
+            android:src="@drawable/ic_action_discard"
+            android:contentDescription="@string/delete" />
 
         <Button
-            android:id="@+id/done_B"
+            android:id="@+id/save_B"
             style="@style/Button.Borderless"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:textAllCaps="true"
             android:textSize="@dimen/text_small"
-            android:textColor="@color/text_accent"
-            android:text="@string/done" />
+            android:textStyle="bold"
+            android:text="@string/save" />
 
     </LinearLayout>
 

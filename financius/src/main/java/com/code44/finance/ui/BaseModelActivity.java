@@ -35,12 +35,15 @@ public abstract class BaseModelActivity extends BaseActivity implements View.OnC
         final long itemId = getIntent().getLongExtra(EXTRA_ITEM_ID, 0);
 
         // Get views
-        final View discard_V = findViewById(R.id.discard_B);
-        final View done_V = findViewById(R.id.done_B);
+        final View delete_V = findViewById(R.id.delete_IB);
+        final View save_V = findViewById(R.id.save_B);
 
         // Setup
-        discard_V.setOnClickListener(this);
-        done_V.setOnClickListener(this);
+        delete_V.setOnClickListener(this);
+        save_V.setOnClickListener(this);
+        if (itemId == 0) {
+            delete_V.setVisibility(View.GONE);
+        }
 
         // Add fragment
         model_F = (BaseModelFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_MODEL);
@@ -55,12 +58,12 @@ public abstract class BaseModelActivity extends BaseActivity implements View.OnC
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.discard_B:
-                discard();
-                break;
+//            case R.id.discard_B:
+//                discard();
+//                break;
 
-            case R.id.done_B:
-                done();
+            case R.id.save_B:
+                save();
                 break;
         }
     }
@@ -69,7 +72,7 @@ public abstract class BaseModelActivity extends BaseActivity implements View.OnC
         finish();
     }
 
-    private void done() {
+    private void save() {
         if (model_F.onSave()) {
             finish();
         }
