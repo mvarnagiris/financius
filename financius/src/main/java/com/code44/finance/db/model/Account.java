@@ -1,11 +1,24 @@
 package com.code44.finance.db.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.code44.finance.App;
 import com.code44.finance.providers.AccountsProvider;
 
 import nl.qbusict.cupboard.CupboardFactory;
 
 public class Account extends BaseModel {
+    public static final Parcelable.Creator<Account> CREATOR = new Parcelable.Creator<Account>() {
+        public Account createFromParcel(Parcel in) {
+            return new Account(in);
+        }
+
+        public Account[] newArray(int size) {
+            return new Account[size];
+        }
+    };
+
     private static Account systemAccount;
 
     private Currency currency;
@@ -16,6 +29,20 @@ public class Account extends BaseModel {
 
     public Account() {
         super();
+        setCurrency(Currency.getDefault());
+        setTitle(null);
+        setNote(null);
+        setBalance(0);
+        setOwner(Owner.USER);
+    }
+
+    public Account(Parcel in) {
+        super(in);
+        setCurrency((Currency) in.readParcelable(Currency.class.getClassLoader()));
+        setTitle(in.readString());
+        setNote(in.readString());
+        setBalance(in.readLong());
+        setOwner(Owner.fromInt(in.readInt()));
     }
 
     public static Account getSystem() {
@@ -28,16 +55,13 @@ public class Account extends BaseModel {
     }
 
     @Override
-    public void useDefaultsIfNotSet() {
-        super.useDefaultsIfNotSet();
-
-        if (currency == null) {
-            setCurrency(Currency.getDefault());
-        }
-
-        if (owner == null) {
-            setOwner(Owner.USER);
-        }
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeParcelable(getCurrency(), flags);
+        dest.writeString(getTitle());
+        dest.writeString(getNote());
+        dest.writeLong(getBalance());
+        dest.writeInt(getOwner().asInt());
     }
 
     @Override
@@ -94,6 +118,32 @@ public class Account extends BaseModel {
     }
 
     public static enum Owner {
-        SYSTEM, USER
+        SYSTEM(Owner.VALUE_SYSTEM), USER(Owner.VALUE_USER);
+
+        private static final int VALUE_SYSTEM = 1;
+        private static final int VALUE_USER = 2;
+
+        private final int value;
+
+        private Owner(int value) {
+            this.value = value;
+        }
+
+        public static Owner fromInt(int value) {
+            switch (value) {
+                case VALUE_SYSTEM:
+                    return SYSTEM;
+
+                case VALUE_USER:
+                    return USER;
+
+                default:
+                    throw new IllegalArgumentException("Value " + value + " is not supported.");
+            }
+        }
+
+        public int asInt() {
+            return value;
+        }
     }
 }
