@@ -64,7 +64,11 @@ public class BaseActivity extends FragmentActivity {
     }
 
     protected void setActionBarTitle(int resId) {
-        setActionBarTitle(getString(resId));
+        if (resId != 0) {
+            setActionBarTitle(getString(resId));
+        } else {
+            setActionBarTitle("");
+        }
     }
 
     protected void setActionBarTitle(String title) {

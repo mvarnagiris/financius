@@ -1,18 +1,31 @@
 package com.code44.finance.ui.currencies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 
-import com.code44.finance.ui.BaseModelActivity;
-import com.code44.finance.ui.BaseModelFragment;
+import com.code44.finance.R;
+import com.code44.finance.ui.ModelActivity;
+import com.code44.finance.ui.ModelFragment;
 
-public class CurrencyActivity extends BaseModelActivity {
+public class CurrencyActivity extends ModelActivity {
     public static void start(Context context, View expandFrom, long currencyId) {
-        start(context, makeIntent(context, CurrencyActivity.class, currencyId), expandFrom);
+        final Intent intent = makeIntent(context, CurrencyActivity.class, currencyId);
+        start(context, intent, expandFrom);
     }
 
     @Override
-    protected BaseModelFragment createFragment(long itemId) {
-        return CurrencyFragment.newInstance(itemId);
+    protected int getActionBarTitleResId() {
+        return R.string.currency;
+    }
+
+    @Override
+    protected ModelFragment createModelFragment(long modelId) {
+        return CurrencyFragment.newInstance(modelId);
+    }
+
+    @Override
+    protected void startEditActivity(long modelId) {
+        CurrencyEditActivity.start(this, null, modelId);
     }
 }

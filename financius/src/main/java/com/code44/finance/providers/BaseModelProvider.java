@@ -16,6 +16,14 @@ public abstract class BaseModelProvider<T extends BaseModel> extends BaseProvide
     private static final int URI_ITEMS = 1;
     private static final int URI_ITEMS_ID = 2;
 
+    public static Uri uriModels(Class<? extends BaseModelProvider> providerClass, Class<? extends BaseModel> modelClass) {
+        return Uri.parse(CONTENT_URI_BASE + getAuthority(providerClass) + "/" + modelClass.getSimpleName());
+    }
+
+    public static Uri uriModel(Class<? extends BaseModelProvider> providerClass, Class<? extends BaseModel> modelClass, long modelId) {
+        return ContentUris.withAppendedId(uriModels(providerClass, modelClass), modelId);
+    }
+
     @Override
     public boolean onCreate() {
         final boolean result = super.onCreate();

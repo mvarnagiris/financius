@@ -27,7 +27,7 @@ public class Currency extends BaseModel {
     public static Currency getDefault() {
         if (defaultCurrency == null) {
             defaultCurrency = CupboardFactory.cupboard().withContext(App.getAppContext())
-                    .query(CurrenciesProvider.uriCurrencies(), Currency.class)
+                    .query(CurrenciesProvider.uriModels(CurrenciesProvider.class, Currency.class), Currency.class)
                     .withSelection("isDefault=?", "1").get();
         }
         return defaultCurrency;

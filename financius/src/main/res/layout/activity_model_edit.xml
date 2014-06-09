@@ -13,12 +13,14 @@
         android:orientation="horizontal"
         android:background="@color/bg_primary">
 
-        <ImageButton
-            android:id="@+id/delete_IB"
+        <Button
+            android:id="@+id/cancel_B"
             style="@style/Button.Borderless"
-            android:layout_width="@dimen/recommended_touch_size"
-            android:src="@drawable/ic_action_discard"
-            android:contentDescription="@string/delete" />
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_small"
+            android:text="@string/cancel" />
 
         <Button
             android:id="@+id/save_B"
@@ -27,7 +29,6 @@
             android:layout_weight="1"
             android:textAllCaps="true"
             android:textSize="@dimen/text_small"
-            android:textStyle="bold"
             android:text="@string/save" />
 
     </LinearLayout>

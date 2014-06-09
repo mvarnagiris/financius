@@ -2,8 +2,10 @@
 <resources>
 
     <string name="settings">Settings</string>
+    <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
     <string name="expense">Expense</string>
     <string name="income">Income</string>
     <string name="transfer">Transfer</string>

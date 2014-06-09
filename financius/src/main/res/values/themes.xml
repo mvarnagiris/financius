@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="AppTheme" parent="android:Theme.Holo.Light">
         <item name="android:windowBackground">@color/bg_window</item>
         <item name="android:actionBarStyle">@style/ActionBar</item>
     </style>
 
-    <style name="ActionBar" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
+    <style name="ActionBar" parent="android:Widget.Holo.Light.ActionBar.Solid">
         <item name="android:background">@color/bg_actionbar</item>
         <item name="android:textColor">@color/text_primary_inverse</item>
     </style>

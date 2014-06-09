@@ -15,7 +15,7 @@
     <color name="bg_window">@color/d_light_darker1</color>
     <color name="bg_primary">@color/d_light</color>
     <color name="bg_secondary">@color/d_light_darker2</color>
-    <color name="bg_actionbar">@color/d_brand</color>
+    <color name="bg_actionbar">@color/d_light_darker2</color>
 
     <color name="text_primary">@color/d_dark</color>
     <color name="text_primary_inverse">@color/d_light</color>

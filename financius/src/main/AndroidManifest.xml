@@ -20,6 +20,7 @@
         <activity android:name=".ui.SettingsActivity" />
         <activity android:name=".ui.currencies.CurrenciesActivity" />
         <activity android:name=".ui.currencies.CurrencyActivity" />
+        <activity android:name=".ui.currencies.CurrencyEditActivity" />
 
         <!-- Providers -->
         <!-- ======================================================================================================= -->
