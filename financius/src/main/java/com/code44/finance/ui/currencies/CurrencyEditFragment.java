@@ -1,5 +1,7 @@
 package com.code44.finance.ui.currencies;
 
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +10,6 @@ import android.widget.EditText;
 
 import com.code44.finance.R;
 import com.code44.finance.db.model.Currency;
-import com.code44.finance.providers.BaseModelProvider;
 import com.code44.finance.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelEditFragment;
 
@@ -42,13 +43,13 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> {
     }
 
     @Override
-    protected Class<? extends BaseModelProvider<Currency>> getModelProviderClass() {
-        return CurrenciesProvider.class;
+    protected Uri getUri(long modelId) {
+        return CurrenciesProvider.uriCurrency(modelId);
     }
 
     @Override
-    protected Class<Currency> getModelClass() {
-        return Currency.class;
+    protected Currency getModelFrom(Cursor cursor) {
+        return Currency.from(cursor);
     }
 
     @Override

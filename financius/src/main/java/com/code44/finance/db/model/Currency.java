@@ -78,7 +78,7 @@ public class Currency extends BaseModel {
 
     public static void updateDefaultCurrency(SQLiteDatabase db) {
         final Cursor cursor = QueryBuilder.with(db, Tables.Currencies.TABLE_NAME)
-                .selection("isDefault=?", "1")
+                .selection(Tables.Currencies.IS_DEFAULT + "=?", "1")
                 .query();
 
         defaultCurrency = Currency.from(cursor);
@@ -300,7 +300,7 @@ public class Currency extends BaseModel {
             }
         }
 
-        private String symbol() {
+        public String symbol() {
             return symbol;
         }
     }
@@ -333,7 +333,7 @@ public class Currency extends BaseModel {
             }
         }
 
-        private String symbol() {
+        public String symbol() {
             return symbol;
         }
     }

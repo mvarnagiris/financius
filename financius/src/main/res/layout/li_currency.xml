@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem">
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ListItem"
+    android:baselineAligned="false"
+    android:gravity="center_vertical">
 
     <TextView
         android:id="@+id/code_TV"
-        style="@style/TextView" />
+        style="@style/TextView"
+        android:fontFamily="monospace"
+        android:textSize="@dimen/text_xlarge"
+        tools:ignore="UnusedAttribute" />
+
+    <TextView
+        android:id="@+id/format_TV"
+        style="@style/TextView.Secondary"
+        android:layout_marginLeft="@dimen/space_normal" />
+
+    <TextView
+        android:id="@+id/exchangeRate_TV"
+        style="@style/TextView"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/space_normal"
+        android:gravity="right"
+        android:textAllCaps="true" />
 
 </LinearLayout>

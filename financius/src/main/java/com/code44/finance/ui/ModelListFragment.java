@@ -13,10 +13,8 @@ import android.widget.ListView;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
-import com.code44.finance.db.model.BaseModel;
-import com.code44.finance.providers.BaseModelProvider;
 
-public abstract class ModelListFragment<T extends BaseModel> extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
+public abstract class ModelListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
     private static final int LOADER_MODELS = 1000;
 
     private BaseModelsAdapter adapter;
@@ -49,8 +47,7 @@ public abstract class ModelListFragment<T extends BaseModel> extends BaseFragmen
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_MODELS) {
-            final Uri uri = BaseModelProvider.uriModels(getModelProviderClass(), getModelClass());
-            return new CursorLoader(getActivity(), uri, null, null, null, null);
+            return new CursorLoader(getActivity(), getUri(), getProjection(), getSelection(), getSelectionArgs(), getSortOrder());
         }
 
         return null;
@@ -75,11 +72,25 @@ public abstract class ModelListFragment<T extends BaseModel> extends BaseFragmen
         startModelActivity(getActivity(), view, id);
     }
 
+    protected abstract void startModelActivity(Context context, View expandFrom, long modelId);
+
     protected abstract BaseModelsAdapter createAdapter(Context context);
 
-    protected abstract Class<? extends BaseModelProvider<T>> getModelProviderClass();
+    protected abstract Uri getUri();
 
-    protected abstract Class<T> getModelClass();
+    protected String[] getProjection() {
+        return null;
+    }
 
-    protected abstract void startModelActivity(Context context, View expandFrom, long modelId);
+    protected String getSelection() {
+        return null;
+    }
+
+    protected String[] getSelectionArgs() {
+        return null;
+    }
+
+    protected String getSortOrder() {
+        return null;
+    }
 }

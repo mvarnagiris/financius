@@ -13,13 +13,8 @@ import android.widget.ListView;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.TransactionsAdapter;
-import com.code44.finance.db.model.Account;
-import com.code44.finance.db.model.Category;
-import com.code44.finance.db.model.Transaction;
 import com.code44.finance.providers.TransactionsProvider;
 import com.code44.finance.ui.BaseFragment;
-
-import nl.qbusict.cupboard.CupboardFactory;
 
 public class TransactionsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int LOADER_TRANSACTIONS = 1;
@@ -50,13 +45,6 @@ public class TransactionsFragment extends BaseFragment implements LoaderManager.
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        Transaction transaction = new Transaction();
-        transaction.useDefaultsIfNotSet();
-        transaction.setAccountFrom(Account.getSystem());
-        transaction.setAccountTo(Account.getSystem());
-        transaction.setCategory(Category.getExpense());
-        CupboardFactory.cupboard().withContext(getActivity()).put(TransactionsProvider.uriTransactions(), transaction);
 
         // Loader
         getLoaderManager().initLoader(LOADER_TRANSACTIONS, null, this);

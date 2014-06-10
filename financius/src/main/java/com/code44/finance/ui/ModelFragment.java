@@ -8,16 +8,12 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 
 import com.code44.finance.db.model.BaseModel;
-import com.code44.finance.providers.BaseModelProvider;
-
-import nl.qbusict.cupboard.CupboardFactory;
 
 public abstract class ModelFragment<T extends BaseModel> extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    protected static final int LOADER_MODEL = 1000;
     private static final String ARG_MODEL_ID = "ARG_MODEL_ID";
-
-    private static final int LOADER_MODEL = 1000;
-
-    private long modelId;
+    protected long modelId;
+    protected T model;
 
     public static Bundle makeArgs(long modelId) {
         final Bundle args = new Bundle();
@@ -43,14 +39,18 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        final Uri uri = BaseModelProvider.uriModel(getModelProviderClass(), getModelClass(), modelId);
-        return new CursorLoader(getActivity(), uri, null, null, null, null);
+        if (id == LOADER_MODEL) {
+            return new CursorLoader(getActivity(), getUri(modelId), null, null, null, null);
+        }
+
+        return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (data != null && data.moveToFirst()) {
-            onModelLoaded(CupboardFactory.cupboard().withCursor(data).get(getModelClass()));
+        if (loader.getId() == LOADER_MODEL) {
+            model = getModelFrom(data);
+            onModelLoaded(model);
         }
     }
 
@@ -58,9 +58,9 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
     public void onLoaderReset(Loader<Cursor> loader) {
     }
 
-    protected abstract Class<? extends BaseModelProvider<T>> getModelProviderClass();
+    protected abstract Uri getUri(long modelId);
 
-    protected abstract Class<T> getModelClass();
+    protected abstract T getModelFrom(Cursor cursor);
 
     protected abstract void onModelLoaded(T model);
 }

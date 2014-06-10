@@ -28,5 +28,5 @@ public abstract class ModelListActivity extends BaseActivity {
 
     protected abstract int getActionBarTitleResId();
 
-    protected abstract ModelListFragment<?> createModelsFragment();
+    protected abstract ModelListFragment createModelsFragment();
 }

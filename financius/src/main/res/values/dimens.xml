@@ -7,10 +7,10 @@
     <dimen name="space_normal">8dp</dimen>
     <dimen name="space_small">4dp</dimen>
 
-    <dimen name="text_xlarge">20sp</dimen>
-    <dimen name="text_large">18sp</dimen>
+    <dimen name="text_xlarge">24sp</dimen>
+    <dimen name="text_large">20sp</dimen>
     <dimen name="text_normal">16sp</dimen>
-    <dimen name="text_small">14sp</dimen>
+    <dimen name="text_small">12sp</dimen>
 
     <dimen name="separator">2dp</dimen>
     <dimen name="separator_thin">1px</dimen>

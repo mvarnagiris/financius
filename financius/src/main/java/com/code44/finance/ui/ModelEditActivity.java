@@ -69,7 +69,7 @@ public abstract class ModelEditActivity extends ModelActivity implements View.On
     private void save() {
         final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_MODEL);
         if (fragment instanceof ModelEditFragment) {
-            if (((ModelEditFragment) fragment).onSave()) {
+            if (((ModelEditFragment) fragment).save()) {
                 finish();
             }
         }

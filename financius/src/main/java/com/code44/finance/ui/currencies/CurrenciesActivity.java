@@ -24,7 +24,7 @@ public class CurrenciesActivity extends ModelListActivity {
     }
 
     @Override
-    protected ModelListFragment<?> createModelsFragment() {
+    protected ModelListFragment createModelsFragment() {
         return CurrenciesFragment.newInstance();
     }
 }

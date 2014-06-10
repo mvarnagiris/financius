@@ -12,8 +12,6 @@ import com.code44.finance.R;
 import com.code44.finance.db.model.Transaction;
 import com.code44.finance.utils.AmountUtils;
 
-import nl.qbusict.cupboard.CupboardFactory;
-
 public class TransactionsAdapter extends CursorAdapter {
     public TransactionsAdapter(Context context) {
         super(context, null, true);
@@ -29,7 +27,7 @@ public class TransactionsAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         final ViewHolder holder = (ViewHolder) view.getTag();
-        final Transaction transaction = CupboardFactory.cupboard().withCursor(cursor).get(Transaction.class);
+        final Transaction transaction = Transaction.from(cursor);
         holder.amount_TV.setText(AmountUtils.format(transaction));
     }
 
