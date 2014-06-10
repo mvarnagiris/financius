@@ -9,13 +9,9 @@ import com.code44.finance.db.model.Account;
 import com.code44.finance.db.model.Category;
 import com.code44.finance.db.model.Currency;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-
-import nl.qbusict.cupboard.CupboardFactory;
 
 public final class DBDefaults {
     private DBDefaults() {
@@ -51,7 +47,7 @@ public final class DBDefaults {
                 currency.setDecimalCount(javaCurrency.getDefaultFractionDigits());
                 currency.setDefault(code.equals(mainCurrencyCode));
                 currency.checkValues();
-                CupboardFactory.cupboard().withDatabase(db).put(currency);
+                db.insert(Tables.Currencies.TABLE_NAME, null, currency.asContentValues());
             }
         }
 
@@ -60,16 +56,14 @@ public final class DBDefaults {
 
     private static void addAccounts(SQLiteDatabase db) {
         final Account systemAccount = new Account();
-        systemAccount.useDefaultsIfNotSet();
         systemAccount.setOwner(Account.Owner.SYSTEM);
         systemAccount.checkValues();
 
-        CupboardFactory.cupboard().withDatabase(db).put(systemAccount);
+        db.insert(Tables.Accounts.TABLE_NAME, null, systemAccount.asContentValues());
     }
 
     private static void addCategories(Context context, SQLiteDatabase db) {
         final Category expenseCategory = new Category();
-        expenseCategory.useDefaultsIfNotSet();
         expenseCategory.setId(Category.EXPENSE_ID);
         expenseCategory.setTitle(context.getString(R.string.expense));
         expenseCategory.setType(Category.Type.EXPENSE);
@@ -77,7 +71,6 @@ public final class DBDefaults {
         expenseCategory.setSortOrder(0);
 
         final Category incomeCategory = new Category();
-        incomeCategory.useDefaultsIfNotSet();
         incomeCategory.setId(Category.INCOME_ID);
         incomeCategory.setTitle(context.getString(R.string.income));
         incomeCategory.setType(Category.Type.INCOME);
@@ -85,14 +78,15 @@ public final class DBDefaults {
         incomeCategory.setSortOrder(0);
 
         final Category transferCategory = new Category();
-        transferCategory.useDefaultsIfNotSet();
         transferCategory.setId(Category.TRANSFER_ID);
         transferCategory.setTitle(context.getString(R.string.transfer));
         transferCategory.setType(Category.Type.TRANSFER);
         transferCategory.setOwner(Category.Owner.SYSTEM);
         transferCategory.setSortOrder(0);
 
-        CupboardFactory.cupboard().withDatabase(db).put(expenseCategory, incomeCategory, transferCategory);
+        db.insert(Tables.Categories.TABLE_NAME, null, expenseCategory.asContentValues());
+        db.insert(Tables.Categories.TABLE_NAME, null, incomeCategory.asContentValues());
+        db.insert(Tables.Categories.TABLE_NAME, null, transferCategory.asContentValues());
 
         insertCategories(db, context.getResources().getStringArray(R.array.expense_categories), Category.Type.EXPENSE);
         insertCategories(db, context.getResources().getStringArray(R.array.income_categories), Category.Type.INCOME);
@@ -120,17 +114,14 @@ public final class DBDefaults {
     }
 
     private static void insertCategories(SQLiteDatabase db, String[] titles, Category.Type type) {
-        final List<Category> categories = new ArrayList<>();
         int order = 0;
         for (String title : titles) {
             final Category category = new Category();
-            category.useDefaultsIfNotSet();
             category.setTitle(title);
             category.setType(type);
             category.setOwner(Category.Owner.SYSTEM);
             category.setSortOrder(order++);
-            categories.add(category);
+            db.insert(Tables.Categories.TABLE_NAME, null, category.asContentValues());
         }
-        CupboardFactory.cupboard().withDatabase(db).put(categories);
     }
 }
