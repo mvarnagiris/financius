@@ -43,6 +43,11 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> {
     }
 
     @Override
+    protected void ensureModelUpdated() {
+
+    }
+
+    @Override
     protected Uri getUri(long modelId) {
         return CurrenciesProvider.uriCurrency(modelId);
     }

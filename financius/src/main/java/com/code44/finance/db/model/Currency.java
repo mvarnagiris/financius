@@ -42,7 +42,7 @@ public class Currency extends BaseModel {
         super();
         setCode(null);
         setSymbol(null);
-        setSymbolPosition(SymbolPosition.CLOSE_RIGHT);
+        setSymbolPosition(SymbolPosition.FAR_RIGHT);
         setDecimalSeparator(DecimalSeparator.DOT);
         setGroupSeparator(GroupSeparator.COMMA);
         setDecimalCount(2);

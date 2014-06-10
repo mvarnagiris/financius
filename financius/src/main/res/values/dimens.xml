@@ -7,6 +7,8 @@
     <dimen name="space_normal">8dp</dimen>
     <dimen name="space_small">4dp</dimen>
 
+    <dimen name="text_xxxlarge">34sp</dimen>
+    <dimen name="text_xxlarge">28sp</dimen>
     <dimen name="text_xlarge">24sp</dimen>
     <dimen name="text_large">20sp</dimen>
     <dimen name="text_normal">16sp</dimen>

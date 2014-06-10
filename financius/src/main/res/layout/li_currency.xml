@@ -10,12 +10,14 @@
         style="@style/TextView"
         android:fontFamily="monospace"
         android:textSize="@dimen/text_xlarge"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        tools:text="GBP" />
 
     <TextView
         android:id="@+id/format_TV"
         style="@style/TextView.Secondary"
-        android:layout_marginLeft="@dimen/space_normal" />
+        android:layout_marginLeft="@dimen/space_normal"
+        tools:text="(1,000.00 £)" />
 
     <TextView
         android:id="@+id/exchangeRate_TV"
@@ -23,6 +25,7 @@
         android:layout_width="match_parent"
         android:layout_marginLeft="@dimen/space_normal"
         android:gravity="right"
-        android:textAllCaps="true" />
+        android:textAllCaps="true"
+        tools:text="1.2489" />
 
 </LinearLayout>

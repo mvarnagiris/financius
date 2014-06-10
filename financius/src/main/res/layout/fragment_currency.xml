@@ -1,17 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ScrollView">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/format_TV"
+        style="@style/TextView.Secondary"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/space_normal"
+        android:layout_marginLeft="@dimen/space_large"
+        android:layout_marginRight="@dimen/space_large"
+        android:layout_marginTop="@dimen/space_normal"
+        android:gravity="center_horizontal"
+        android:textSize="@dimen/text_xxxlarge"
+        tools:text="1,000.00 £" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <View style="@style/Separator.Thin" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/space_large"
-        android:orientation="vertical">
+        android:background="@color/bg_secondary"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/space_xlarge"
+        android:paddingLeft="@dimen/space_large"
+        android:paddingRight="@dimen/space_large"
+        android:paddingTop="@dimen/space_xlarge">
 
         <TextView
             android:id="@+id/code_TV"
-            style="@style/EditText" />
+            style="@style/TextView"
+            android:fontFamily="monospace"
+            android:textSize="@dimen/text_xlarge"
+            tools:ignore="UnusedAttribute"
+            tools:text="GBP → USD" />
+
+        <TextView
+            android:id="@+id/exchangeRate_TV"
+            style="@style/TextView"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="@dimen/space_normal"
+            android:gravity="right"
+            android:textSize="@dimen/text_xlarge"
+            tools:text="1.2489" />
 
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>
