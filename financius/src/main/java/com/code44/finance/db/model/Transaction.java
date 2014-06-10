@@ -49,6 +49,12 @@ public class Transaction extends BaseModel {
         setNote(in.readString());
     }
 
+    public static Transaction from(Cursor cursor) {
+        final Transaction transaction = new Transaction();
+        transaction.updateFrom(cursor, null);
+        return transaction;
+    }
+
     @Override
     public void checkValues() throws IllegalStateException {
         super.checkValues();
@@ -105,13 +111,13 @@ public class Transaction extends BaseModel {
     }
 
     @Override
-    protected void updateFrom(Cursor cursor) {
-        super.updateFrom(cursor);
+    protected void updateFrom(Cursor cursor, String columnPrefixTable) {
+        super.updateFrom(cursor, columnPrefixTable);
 
         int index;
 
         final Account accountFrom = Account.fromAccountFrom(cursor);
-        index = cursor.getColumnIndex(Tables.Transactions.ACCOUNT_FROM_ID.getName());
+        index = cursor.getColumnIndex(Tables.Transactions.ACCOUNT_FROM_ID.getName(columnPrefixTable));
         if (index >= 0) {
             accountFrom.setId(cursor.getLong(index));
         } else {
@@ -120,7 +126,7 @@ public class Transaction extends BaseModel {
         setAccountFrom(accountFrom);
 
         final Account accountTo = Account.fromAccountTo(cursor);
-        index = cursor.getColumnIndex(Tables.Transactions.ACCOUNT_TO_ID.getName());
+        index = cursor.getColumnIndex(Tables.Transactions.ACCOUNT_TO_ID.getName(columnPrefixTable));
         if (index >= 0) {
             accountTo.setId(cursor.getLong(index));
         } else {
@@ -129,7 +135,7 @@ public class Transaction extends BaseModel {
         setAccountTo(accountTo);
 
         final Category category = Category.from(cursor);
-        index = cursor.getColumnIndex(Tables.Transactions.CATEGORY_ID.getName());
+        index = cursor.getColumnIndex(Tables.Transactions.CATEGORY_ID.getName(columnPrefixTable));
         if (index >= 0) {
             category.setId(cursor.getLong(index));
         } else {
@@ -137,22 +143,22 @@ public class Transaction extends BaseModel {
         }
         setCategory(category);
 
-        index = cursor.getColumnIndex(Tables.Transactions.DATE.getName());
+        index = cursor.getColumnIndex(Tables.Transactions.DATE.getName(columnPrefixTable));
         if (index >= 0) {
             setDate(cursor.getLong(index));
         }
 
-        index = cursor.getColumnIndex(Tables.Transactions.AMOUNT.getName());
+        index = cursor.getColumnIndex(Tables.Transactions.AMOUNT.getName(columnPrefixTable));
         if (index >= 0) {
             setAmount(cursor.getLong(index));
         }
 
-        index = cursor.getColumnIndex(Tables.Transactions.EXCHANGE_RATE.getName());
+        index = cursor.getColumnIndex(Tables.Transactions.EXCHANGE_RATE.getName(columnPrefixTable));
         if (index >= 0) {
             setExchangeRate(cursor.getDouble(index));
         }
 
-        index = cursor.getColumnIndex(Tables.Transactions.NOTE.getName());
+        index = cursor.getColumnIndex(Tables.Transactions.NOTE.getName(columnPrefixTable));
         if (index >= 0) {
             setNote(cursor.getString(index));
         }

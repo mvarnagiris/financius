@@ -89,20 +89,20 @@ public abstract class BaseModel implements Parcelable {
 
     protected abstract Column getSyncStateColumn();
 
-    protected void updateFrom(Cursor cursor) {
+    protected void updateFrom(Cursor cursor, String columnPrefixTable) {
         int index;
 
-        index = cursor.getColumnIndex(getIdColumn().getName());
+        index = cursor.getColumnIndex(getIdColumn().getName(columnPrefixTable));
         if (index >= 0) {
             setId(cursor.getLong(index));
         }
 
-        index = cursor.getColumnIndex(getItemStateColumn().getName());
+        index = cursor.getColumnIndex(getItemStateColumn().getName(columnPrefixTable));
         if (index >= 0) {
             setItemState(ItemState.fromInt(cursor.getInt(index)));
         }
 
-        index = cursor.getColumnIndex(getSyncStateColumn().getName());
+        index = cursor.getColumnIndex(getSyncStateColumn().getName(columnPrefixTable));
         if (index >= 0) {
             setSyncState(SyncState.fromInt(cursor.getInt(index)));
         }

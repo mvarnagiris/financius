@@ -1,21 +1,25 @@
 package com.code44.finance.providers;
 
-import android.content.ContentUris;
 import android.net.Uri;
 
-import com.code44.finance.db.model.Category;
+import com.code44.finance.db.Tables;
 
-public class CategoriesProvider extends BaseModelProvider<Category> {
+public class CategoriesProvider extends BaseModelProvider {
     public static Uri uriCategories() {
-        return Uri.parse(CONTENT_URI_BASE + getAuthority(CategoriesProvider.class) + "/" + Category.class.getSimpleName());
+        return uriModels(CategoriesProvider.class, Tables.Categories.TABLE_NAME);
     }
 
     public static Uri uriCategory(long categoryId) {
-        return ContentUris.withAppendedId(uriCategories(), categoryId);
+        return uriModel(CategoriesProvider.class, Tables.Categories.TABLE_NAME, categoryId);
     }
 
     @Override
-    protected Class<Category> getModelClass() {
-        return Category.class;
+    protected String getModelTable() {
+        return Tables.Categories.TABLE_NAME;
+    }
+
+    @Override
+    protected String getQueryTables() {
+        return getModelTable();
     }
 }

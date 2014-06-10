@@ -6,7 +6,6 @@ public final class Column {
     private final String tableName;
     private final String name;
     private final DataType dataType;
-    private final String nameWithTable;
     private final String defaultValue;
 
     public Column(String tableName, String name, DataType dataType) {
@@ -22,16 +21,6 @@ public final class Column {
         this.name = prefixTableToName ? tableName + "_" + name : name;
         this.dataType = dataType;
         this.defaultValue = defaultValue;
-        this.nameWithTable = tableName + "." + name;
-    }
-
-    public static String makeColumnCreateScript(Column column) {
-        return column.name + " " + column.dataType + (TextUtils.isEmpty(column.defaultValue) ? "" : " default " + column.defaultValue);
-    }
-
-    @Override
-    public String toString() {
-        return name;
     }
 
     public String getTableName() {
@@ -42,8 +31,33 @@ public final class Column {
         return name;
     }
 
+    public String getName(String tableName) {
+        if (TextUtils.isEmpty(tableName)) {
+            return getName();
+        } else {
+            return tableName + "_" + name;
+        }
+    }
+
     public String getNameWithTable() {
-        return nameWithTable;
+        return getNameWithTable(tableName);
+    }
+
+    public String getNameWithTable(String tableName) {
+        return tableName + "." + name;
+    }
+
+    public String getNameWithAs(String tableName) {
+        return getNameWithTable(tableName) + " as " + getName(tableName);
+    }
+
+    public String getCreateScript() {
+        return name + " " + dataType + (TextUtils.isEmpty(defaultValue) ? "" : " default " + defaultValue);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
     public static enum DataType {

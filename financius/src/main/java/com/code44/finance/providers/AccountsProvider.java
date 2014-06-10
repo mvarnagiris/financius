@@ -1,21 +1,25 @@
 package com.code44.finance.providers;
 
-import android.content.ContentUris;
 import android.net.Uri;
 
-import com.code44.finance.db.model.Account;
+import com.code44.finance.db.Tables;
 
-public class AccountsProvider extends BaseModelProvider<Account> {
+public class AccountsProvider extends BaseModelProvider {
     public static Uri uriAccounts() {
-        return Uri.parse(CONTENT_URI_BASE + getAuthority(AccountsProvider.class) + "/" + Account.class.getSimpleName());
+        return uriModels(AccountsProvider.class, Tables.Accounts.TABLE_NAME);
     }
 
     public static Uri uriAccount(long accountId) {
-        return ContentUris.withAppendedId(uriAccounts(), accountId);
+        return uriModel(AccountsProvider.class, Tables.Accounts.TABLE_NAME, accountId);
     }
 
     @Override
-    protected Class<Account> getModelClass() {
-        return Account.class;
+    protected String getModelTable() {
+        return Tables.Accounts.TABLE_NAME;
+    }
+
+    @Override
+    protected String getQueryTables() {
+        return getModelTable() + " inner join " + Tables.Currencies.TABLE_NAME + " on " + Tables.Currencies.ID.getNameWithTable() + "=" + Tables.Accounts.CURRENCY_ID.getName();
     }
 }

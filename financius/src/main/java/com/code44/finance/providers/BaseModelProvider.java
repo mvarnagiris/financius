@@ -4,24 +4,22 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.provider.BaseColumns;
 
-import com.code44.finance.db.model.BaseModel;
-import com.code44.finance.db.model.Currency;
 import com.code44.finance.utils.UriUtils;
 
-import static nl.qbusict.cupboard.CupboardFactory.cupboard;
-
-public abstract class BaseModelProvider<T extends BaseModel> extends BaseProvider {
+public abstract class BaseModelProvider extends BaseProvider {
     private static final int URI_ITEMS = 1;
     private static final int URI_ITEMS_ID = 2;
 
-    public static Uri uriModels(Class<? extends BaseModelProvider> providerClass, Class<? extends BaseModel> modelClass) {
-        return Uri.parse(CONTENT_URI_BASE + getAuthority(providerClass) + "/" + modelClass.getSimpleName());
+    public static Uri uriModels(Class<? extends BaseModelProvider> providerClass, String modelTable) {
+        return Uri.parse(CONTENT_URI_BASE + getAuthority(providerClass) + "/" + modelTable);
     }
 
-    public static Uri uriModel(Class<? extends BaseModelProvider> providerClass, Class<? extends BaseModel> modelClass, long modelId) {
-        return ContentUris.withAppendedId(uriModels(providerClass, modelClass), modelId);
+    public static Uri uriModel(Class<? extends BaseModelProvider> providerClass, String modelTable, long modelId) {
+        return ContentUris.withAppendedId(uriModels(providerClass, modelTable), modelId);
     }
 
     @Override
@@ -29,7 +27,7 @@ public abstract class BaseModelProvider<T extends BaseModel> extends BaseProvide
         final boolean result = super.onCreate();
 
         final String authority = getAuthority();
-        final String mainTable = getModelClass().getSimpleName();
+        final String mainTable = getModelTable();
         uriMatcher.addURI(authority, mainTable, URI_ITEMS);
         uriMatcher.addURI(authority, mainTable + "/#", URI_ITEMS_ID);
 
@@ -40,9 +38,9 @@ public abstract class BaseModelProvider<T extends BaseModel> extends BaseProvide
     public String getType(Uri uri) {
         switch (uriMatcher.match(uri)) {
             case URI_ITEMS:
-                return TYPE_LIST_BASE + getModelClass().getSimpleName();
+                return TYPE_LIST_BASE + getModelTable();
             case URI_ITEMS_ID:
-                return TYPE_ITEM_BASE + getModelClass().getSimpleName();
+                return TYPE_ITEM_BASE + getModelTable();
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
@@ -55,11 +53,11 @@ public abstract class BaseModelProvider<T extends BaseModel> extends BaseProvide
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
-                cursor = queryItems();
+                cursor = queryItems(projection, selection, selectionArgs, sortOrder);
                 break;
 
             case URI_ITEMS_ID:
-                cursor = queryItem(uri);
+                cursor = queryItem(uri, projection, selection, selectionArgs, sortOrder);
                 break;
 
             default:
@@ -78,19 +76,7 @@ public abstract class BaseModelProvider<T extends BaseModel> extends BaseProvide
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        long newId;
-        final int uriId = uriMatcher.match(uri);
-        switch (uriId) {
-            case URI_ITEMS:
-                newId = cupboard().withDatabase(database).put(getModelClass(), values);
-                break;
-
-            default:
-                throw new IllegalArgumentException("Unsupported URI: " + uri);
-        }
-
-        UriUtils.notifyChangeIfNecessary(getContext(), uri);
-        return ContentUris.withAppendedId(uri, newId);
+        throw new IllegalArgumentException("Unsupported URI: " + uri);
     }
 
     @Override
@@ -99,7 +85,7 @@ public abstract class BaseModelProvider<T extends BaseModel> extends BaseProvide
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
-                count = cupboard().withDatabase(database).update(getModelClass(), values, selection, selectionArgs);
+                count = database.update(getModelTable(), values, selection, selectionArgs);
                 break;
 
             default:
@@ -112,28 +98,25 @@ public abstract class BaseModelProvider<T extends BaseModel> extends BaseProvide
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        int count;
-        final int uriId = uriMatcher.match(uri);
-        switch (uriId) {
-            case URI_ITEMS:
-                count = cupboard().withDatabase(database).delete(getModelClass(), selection, selectionArgs);
-                break;
-
-            default:
-                throw new IllegalArgumentException("Unsupported URI: " + uri);
-        }
-
-        UriUtils.notifyChangeIfNecessary(getContext(), uri);
-        return count;
+        throw new IllegalArgumentException("Unsupported URI: " + uri);
     }
 
-    protected abstract Class<T> getModelClass();
+    protected abstract String getModelTable();
 
-    public Cursor queryItems() {
-        return cupboard().withDatabase(database).query(Currency.class).getCursor();
+    protected abstract String getQueryTables();
+
+    public Cursor queryItems(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        final SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(getQueryTables());
+
+        return qb.query(database, projection, selection, selectionArgs, null, null, sortOrder);
     }
 
-    public Cursor queryItem(Uri uri) {
-        return cupboard().withDatabase(database).query(Currency.class).byId(ContentUris.parseId(uri)).getCursor();
+    public Cursor queryItem(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        final SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(getQueryTables());
+        qb.appendWhere(getModelTable() + "." + BaseColumns._ID + "=" + uri.getPathSegments().get(1));
+
+        return qb.query(database, projection, selection, selectionArgs, null, null, sortOrder);
     }
 }

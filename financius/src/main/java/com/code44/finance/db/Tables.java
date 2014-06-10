@@ -30,7 +30,7 @@ public final class Tables {
                 if (i > 0) {
                     sb.append(", ");
                 }
-                sb.append(Column.makeColumnCreateScript(columns[i]));
+                sb.append(columns[i].getCreateScript());
             }
         }
 
@@ -70,6 +70,8 @@ public final class Tables {
 
     public static final class Accounts {
         public static final String TABLE_NAME = "accounts";
+        public static final String TEMP_TABLE_NAME_FROM_ACCOUNT = "accounts_from";
+        public static final String TEMP_TABLE_NAME_TO_ACCOUNT = "accounts_to";
 
         public static final Column ID = getIdColumn(TABLE_NAME);
         public static final Column ITEM_STATE = getItemStateColumn(TABLE_NAME);
@@ -82,6 +84,16 @@ public final class Tables {
 
         public static final String[] PROJECTION = {ITEM_STATE.getName(), SYNC_STATE.getName(),
                 CURRENCY_ID.getName(), TITLE.getName(), NOTE.getName(), BALANCE.getName(), OWNER.getName()};
+
+        public static final String[] PROJECTION_ACCOUNT_FROM = {ITEM_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT),
+                SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), CURRENCY_ID.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT),
+                TITLE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), NOTE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT),
+                BALANCE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), OWNER.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT)};
+
+        public static final String[] PROJECTION_ACCOUNT_TO = {ITEM_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT),
+                SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), CURRENCY_ID.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT),
+                TITLE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), NOTE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT),
+                BALANCE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), OWNER.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT)};
 
         private Accounts() {
         }

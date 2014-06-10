@@ -65,7 +65,7 @@ public class Currency extends BaseModel {
     public static Currency getDefault() {
         if (defaultCurrency == null) {
             final ContentResolver contentResolver = App.getAppContext().getContentResolver();
-            final Uri uri = CurrenciesProvider.uriModels(CurrenciesProvider.class, Currency.class);
+            final Uri uri = CurrenciesProvider.uriCurrencies();
             final Cursor cursor = QueryBuilder.with(contentResolver, uri)
                     .selection(Tables.Currencies.IS_DEFAULT.getName() + "=?", "1")
                     .query();
@@ -87,7 +87,7 @@ public class Currency extends BaseModel {
 
     public static Currency from(Cursor cursor) {
         final Currency currency = new Currency();
-        currency.updateFrom(cursor);
+        currency.updateFrom(cursor, null);
         return currency;
     }
 
@@ -165,47 +165,47 @@ public class Currency extends BaseModel {
     }
 
     @Override
-    protected void updateFrom(Cursor cursor) {
-        super.updateFrom(cursor);
+    protected void updateFrom(Cursor cursor, String columnPrefixTable) {
+        super.updateFrom(cursor, columnPrefixTable);
 
         int index;
 
-        index = cursor.getColumnIndex(Tables.Currencies.CODE.getName());
+        index = cursor.getColumnIndex(Tables.Currencies.CODE.getName(columnPrefixTable));
         if (index >= 0) {
             setCode(cursor.getString(index));
         }
 
-        index = cursor.getColumnIndex(Tables.Currencies.SYMBOL.getName());
+        index = cursor.getColumnIndex(Tables.Currencies.SYMBOL.getName(columnPrefixTable));
         if (index >= 0) {
             setSymbol(cursor.getString(index));
         }
 
-        index = cursor.getColumnIndex(Tables.Currencies.SYMBOL_POSITION.getName());
+        index = cursor.getColumnIndex(Tables.Currencies.SYMBOL_POSITION.getName(columnPrefixTable));
         if (index >= 0) {
             setSymbolPosition(SymbolPosition.fromInt(cursor.getInt(index)));
         }
 
-        index = cursor.getColumnIndex(Tables.Currencies.DECIMAL_SEPARATOR.getName());
+        index = cursor.getColumnIndex(Tables.Currencies.DECIMAL_SEPARATOR.getName(columnPrefixTable));
         if (index >= 0) {
             setDecimalSeparator(DecimalSeparator.fromSymbol(cursor.getString(index)));
         }
 
-        index = cursor.getColumnIndex(Tables.Currencies.GROUP_SEPARATOR.getName());
+        index = cursor.getColumnIndex(Tables.Currencies.GROUP_SEPARATOR.getName(columnPrefixTable));
         if (index >= 0) {
             setGroupSeparator(GroupSeparator.fromSymbol(cursor.getString(index)));
         }
 
-        index = cursor.getColumnIndex(Tables.Currencies.DECIMAL_COUNT.getName());
+        index = cursor.getColumnIndex(Tables.Currencies.DECIMAL_COUNT.getName(columnPrefixTable));
         if (index >= 0) {
             setDecimalCount(cursor.getInt(index));
         }
 
-        index = cursor.getColumnIndex(Tables.Currencies.IS_DEFAULT.getName());
+        index = cursor.getColumnIndex(Tables.Currencies.IS_DEFAULT.getName(columnPrefixTable));
         if (index >= 0) {
             setDefault(cursor.getInt(index) != 0);
         }
 
-        index = cursor.getColumnIndex(Tables.Currencies.EXCHANGE_RATE.getName());
+        index = cursor.getColumnIndex(Tables.Currencies.EXCHANGE_RATE.getName(columnPrefixTable));
         if (index >= 0) {
             setExchangeRate(cursor.getDouble(index));
         }

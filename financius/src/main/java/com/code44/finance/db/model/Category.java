@@ -58,7 +58,7 @@ public class Category extends BaseModel {
     public static Category getExpense() {
         if (expenseCategory == null) {
             final ContentResolver contentResolver = App.getAppContext().getContentResolver();
-            final Uri uri = CategoriesProvider.uriModel(CategoriesProvider.class, Category.class, EXPENSE_ID);
+            final Uri uri = CategoriesProvider.uriCategory(EXPENSE_ID);
             final Cursor cursor = QueryBuilder.with(contentResolver, uri)
                     .query();
 
@@ -71,7 +71,7 @@ public class Category extends BaseModel {
     public static Category getIncome() {
         if (incomeCategory == null) {
             final ContentResolver contentResolver = App.getAppContext().getContentResolver();
-            final Uri uri = CategoriesProvider.uriModel(CategoriesProvider.class, Category.class, INCOME_ID);
+            final Uri uri = CategoriesProvider.uriCategory(INCOME_ID);
             final Cursor cursor = QueryBuilder.with(contentResolver, uri)
                     .query();
 
@@ -84,7 +84,7 @@ public class Category extends BaseModel {
     public static Category getTransfer() {
         if (transferCategory == null) {
             final ContentResolver contentResolver = App.getAppContext().getContentResolver();
-            final Uri uri = CategoriesProvider.uriModel(CategoriesProvider.class, Category.class, TRANSFER_ID);
+            final Uri uri = CategoriesProvider.uriCategory(TRANSFER_ID);
             final Cursor cursor = QueryBuilder.with(contentResolver, uri)
                     .query();
 
@@ -96,7 +96,7 @@ public class Category extends BaseModel {
 
     public static Category from(Cursor cursor) {
         final Category category = new Category();
-        category.updateFrom(cursor);
+        category.updateFrom(cursor, null);
         return category;
     }
 
@@ -154,27 +154,27 @@ public class Category extends BaseModel {
     }
 
     @Override
-    protected void updateFrom(Cursor cursor) {
-        super.updateFrom(cursor);
+    protected void updateFrom(Cursor cursor, String columnPrefixTable) {
+        super.updateFrom(cursor, columnPrefixTable);
 
         int index;
 
-        index = cursor.getColumnIndex(Tables.Categories.TITLE.getName());
+        index = cursor.getColumnIndex(Tables.Categories.TITLE.getName(columnPrefixTable));
         if (index >= 0) {
             setTitle(cursor.getString(index));
         }
 
-        index = cursor.getColumnIndex(Tables.Categories.TYPE.getName());
+        index = cursor.getColumnIndex(Tables.Categories.TYPE.getName(columnPrefixTable));
         if (index >= 0) {
             setType(Type.fromInt(cursor.getInt(index)));
         }
 
-        index = cursor.getColumnIndex(Tables.Categories.OWNER.getName());
+        index = cursor.getColumnIndex(Tables.Categories.OWNER.getName(columnPrefixTable));
         if (index >= 0) {
             setOwner(Owner.fromInt(cursor.getInt(index)));
         }
 
-        index = cursor.getColumnIndex(Tables.Categories.SORT_ORDER.getName());
+        index = cursor.getColumnIndex(Tables.Categories.SORT_ORDER.getName(columnPrefixTable));
         if (index >= 0) {
             setSortOrder(cursor.getInt(index));
         }

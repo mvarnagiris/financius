@@ -54,7 +54,7 @@ public class Account extends BaseModel {
     public static Account getSystem() {
         if (systemAccount == null) {
             final ContentResolver contentResolver = App.getAppContext().getContentResolver();
-            final Uri uri = AccountsProvider.uriModels(AccountsProvider.class, Account.class);
+            final Uri uri = AccountsProvider.uriAccounts();
             final Cursor cursor = QueryBuilder.with(contentResolver, uri)
                     .selection(Tables.Accounts.OWNER.getName() + "=?", String.valueOf(Owner.SYSTEM.asInt()))
                     .query();
@@ -67,21 +67,19 @@ public class Account extends BaseModel {
 
     public static Account from(Cursor cursor) {
         final Account account = new Account();
-        account.updateFrom(cursor);
+        account.updateFrom(cursor, null);
         return account;
     }
 
     public static Account fromAccountFrom(Cursor cursor) {
         final Account account = new Account();
-        // TODO Do this
-        account.updateFrom(cursor);
+        account.updateFrom(cursor, Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT);
         return account;
     }
 
     public static Account fromAccountTo(Cursor cursor) {
         final Account account = new Account();
-        // TODO Do this
-        account.updateFrom(cursor);
+        account.updateFrom(cursor, Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT);
         return account;
     }
 
@@ -137,13 +135,13 @@ public class Account extends BaseModel {
     }
 
     @Override
-    protected void updateFrom(Cursor cursor) {
-        super.updateFrom(cursor);
+    protected void updateFrom(Cursor cursor, String columnPrefixTable) {
+        super.updateFrom(cursor, columnPrefixTable);
 
         int index;
 
         Currency currency = Currency.from(cursor);
-        index = cursor.getColumnIndex(Tables.Accounts.CURRENCY_ID.getName());
+        index = cursor.getColumnIndex(Tables.Accounts.CURRENCY_ID.getName(columnPrefixTable));
         if (index >= 0) {
             currency.setId(cursor.getLong(index));
         } else {
@@ -151,22 +149,22 @@ public class Account extends BaseModel {
         }
         setCurrency(currency);
 
-        index = cursor.getColumnIndex(Tables.Accounts.TITLE.getName());
+        index = cursor.getColumnIndex(Tables.Accounts.TITLE.getName(columnPrefixTable));
         if (index >= 0) {
             setTitle(cursor.getString(index));
         }
 
-        index = cursor.getColumnIndex(Tables.Accounts.NOTE.getName());
+        index = cursor.getColumnIndex(Tables.Accounts.NOTE.getName(columnPrefixTable));
         if (index >= 0) {
             setNote(cursor.getString(index));
         }
 
-        index = cursor.getColumnIndex(Tables.Accounts.BALANCE.getName());
+        index = cursor.getColumnIndex(Tables.Accounts.BALANCE.getName(columnPrefixTable));
         if (index >= 0) {
             setBalance(cursor.getInt(index));
         }
 
-        index = cursor.getColumnIndex(Tables.Accounts.OWNER.getName());
+        index = cursor.getColumnIndex(Tables.Accounts.OWNER.getName(columnPrefixTable));
         if (index >= 0) {
             setOwner(Owner.fromInt(cursor.getInt(index)));
         }
