@@ -1,13 +1,19 @@
 package com.code44.finance.db.model;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.code44.finance.App;
+import com.code44.finance.db.Column;
+import com.code44.finance.db.Tables;
 import com.code44.finance.providers.CategoriesProvider;
-
-import nl.qbusict.cupboard.CupboardFactory;
+import com.code44.finance.utils.IOUtils;
+import com.code44.finance.utils.QueryBuilder;
 
 public class Category extends BaseModel {
     public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>() {
@@ -51,26 +57,47 @@ public class Category extends BaseModel {
 
     public static Category getExpense() {
         if (expenseCategory == null) {
-            expenseCategory = CupboardFactory.cupboard().withContext(App.getAppContext())
-                    .query(CategoriesProvider.uriCategory(EXPENSE_ID), Category.class).get();
+            final ContentResolver contentResolver = App.getAppContext().getContentResolver();
+            final Uri uri = CategoriesProvider.uriModel(CategoriesProvider.class, Category.class, EXPENSE_ID);
+            final Cursor cursor = QueryBuilder.with(contentResolver, uri)
+                    .query();
+
+            expenseCategory = Category.from(cursor);
+            IOUtils.closeQuietly(cursor);
         }
         return expenseCategory;
     }
 
     public static Category getIncome() {
         if (incomeCategory == null) {
-            incomeCategory = CupboardFactory.cupboard().withContext(App.getAppContext())
-                    .query(CategoriesProvider.uriCategory(INCOME_ID), Category.class).get();
+            final ContentResolver contentResolver = App.getAppContext().getContentResolver();
+            final Uri uri = CategoriesProvider.uriModel(CategoriesProvider.class, Category.class, INCOME_ID);
+            final Cursor cursor = QueryBuilder.with(contentResolver, uri)
+                    .query();
+
+            incomeCategory = Category.from(cursor);
+            IOUtils.closeQuietly(cursor);
         }
         return incomeCategory;
     }
 
     public static Category getTransfer() {
         if (transferCategory == null) {
-            transferCategory = CupboardFactory.cupboard().withContext(App.getAppContext())
-                    .query(CategoriesProvider.uriCategory(TRANSFER_ID), Category.class).get();
+            final ContentResolver contentResolver = App.getAppContext().getContentResolver();
+            final Uri uri = CategoriesProvider.uriModel(CategoriesProvider.class, Category.class, TRANSFER_ID);
+            final Cursor cursor = QueryBuilder.with(contentResolver, uri)
+                    .query();
+
+            transferCategory = Category.from(cursor);
+            IOUtils.closeQuietly(cursor);
         }
         return transferCategory;
+    }
+
+    public static Category from(Cursor cursor) {
+        final Category category = new Category();
+        category.updateFrom(cursor);
+        return category;
     }
 
     @Override
@@ -96,6 +123,60 @@ public class Category extends BaseModel {
 
         if (owner == null) {
             throw new IllegalStateException("Owner cannot be null.");
+        }
+    }
+
+    @Override
+    protected Column getIdColumn() {
+        return Tables.Categories.ID;
+    }
+
+    @Override
+    protected Column getItemStateColumn() {
+        return Tables.Categories.ITEM_STATE;
+    }
+
+    @Override
+    protected Column getSyncStateColumn() {
+        return Tables.Categories.SYNC_STATE;
+    }
+
+    @Override
+    public ContentValues asContentValues() {
+        final ContentValues values = super.asContentValues();
+
+        values.put(Tables.Categories.TITLE.getName(), title);
+        values.put(Tables.Categories.TYPE.getName(), type.asInt());
+        values.put(Tables.Categories.OWNER.getName(), owner.asInt());
+        values.put(Tables.Categories.SORT_ORDER.getName(), sortOrder);
+
+        return values;
+    }
+
+    @Override
+    protected void updateFrom(Cursor cursor) {
+        super.updateFrom(cursor);
+
+        int index;
+
+        index = cursor.getColumnIndex(Tables.Categories.TITLE.getName());
+        if (index >= 0) {
+            setTitle(cursor.getString(index));
+        }
+
+        index = cursor.getColumnIndex(Tables.Categories.TYPE.getName());
+        if (index >= 0) {
+            setType(Type.fromInt(cursor.getInt(index)));
+        }
+
+        index = cursor.getColumnIndex(Tables.Categories.OWNER.getName());
+        if (index >= 0) {
+            setOwner(Owner.fromInt(cursor.getInt(index)));
+        }
+
+        index = cursor.getColumnIndex(Tables.Categories.SORT_ORDER.getName());
+        if (index >= 0) {
+            setSortOrder(cursor.getInt(index));
         }
     }
 

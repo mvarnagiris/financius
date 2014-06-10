@@ -1,7 +1,11 @@
 package com.code44.finance.db.model;
 
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.code44.finance.db.Column;
 
 public abstract class BaseModel implements Parcelable {
     private long id;
@@ -30,6 +34,19 @@ public abstract class BaseModel implements Parcelable {
         dest.writeLong(getId());
         dest.writeInt(getItemState().asInt());
         dest.writeInt(getSyncState().asInt());
+    }
+
+    public ContentValues asContentValues() {
+        final ContentValues values = new ContentValues();
+
+        if (id != 0) {
+            values.put(getIdColumn().getName(), id);
+        }
+
+        values.put(getItemStateColumn().getName(), itemState.asInt());
+        values.put(getSyncStateColumn().getName(), syncState.asInt());
+
+        return values;
     }
 
     public void checkValues() throws IllegalStateException {
@@ -64,6 +81,31 @@ public abstract class BaseModel implements Parcelable {
 
     public void setSyncState(SyncState syncState) {
         this.syncState = syncState;
+    }
+
+    protected abstract Column getIdColumn();
+
+    protected abstract Column getItemStateColumn();
+
+    protected abstract Column getSyncStateColumn();
+
+    protected void updateFrom(Cursor cursor) {
+        int index;
+
+        index = cursor.getColumnIndex(getIdColumn().getName());
+        if (index >= 0) {
+            setId(cursor.getLong(index));
+        }
+
+        index = cursor.getColumnIndex(getItemStateColumn().getName());
+        if (index >= 0) {
+            setItemState(ItemState.fromInt(cursor.getInt(index)));
+        }
+
+        index = cursor.getColumnIndex(getSyncStateColumn().getName());
+        if (index >= 0) {
+            setSyncState(SyncState.fromInt(cursor.getInt(index)));
+        }
     }
 
     public static enum ItemState {

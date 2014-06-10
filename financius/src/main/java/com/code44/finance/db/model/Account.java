@@ -1,12 +1,18 @@
 package com.code44.finance.db.model;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.code44.finance.App;
+import com.code44.finance.db.Column;
+import com.code44.finance.db.Tables;
 import com.code44.finance.providers.AccountsProvider;
-
-import nl.qbusict.cupboard.CupboardFactory;
+import com.code44.finance.utils.IOUtils;
+import com.code44.finance.utils.QueryBuilder;
 
 public class Account extends BaseModel {
     public static final Parcelable.Creator<Account> CREATOR = new Parcelable.Creator<Account>() {
@@ -47,11 +53,36 @@ public class Account extends BaseModel {
 
     public static Account getSystem() {
         if (systemAccount == null) {
-            systemAccount = CupboardFactory.cupboard().withContext(App.getAppContext())
-                    .query(AccountsProvider.uriAccounts(), Account.class)
-                    .withSelection("owner=?", Owner.SYSTEM.toString()).get();
+            final ContentResolver contentResolver = App.getAppContext().getContentResolver();
+            final Uri uri = AccountsProvider.uriModels(AccountsProvider.class, Account.class);
+            final Cursor cursor = QueryBuilder.with(contentResolver, uri)
+                    .selection(Tables.Accounts.OWNER.getName() + "=?", String.valueOf(Owner.SYSTEM.asInt()))
+                    .query();
+
+            systemAccount = Account.from(cursor);
+            IOUtils.closeQuietly(cursor);
         }
         return systemAccount;
+    }
+
+    public static Account from(Cursor cursor) {
+        final Account account = new Account();
+        account.updateFrom(cursor);
+        return account;
+    }
+
+    public static Account fromAccountFrom(Cursor cursor) {
+        final Account account = new Account();
+        // TODO Do this
+        account.updateFrom(cursor);
+        return account;
+    }
+
+    public static Account fromAccountTo(Cursor cursor) {
+        final Account account = new Account();
+        // TODO Do this
+        account.updateFrom(cursor);
+        return account;
     }
 
     @Override
@@ -74,6 +105,70 @@ public class Account extends BaseModel {
 
         if (owner == null) {
             throw new IllegalStateException("Owner cannot be null.");
+        }
+    }
+
+    @Override
+    protected Column getIdColumn() {
+        return Tables.Accounts.ID;
+    }
+
+    @Override
+    protected Column getItemStateColumn() {
+        return Tables.Accounts.ITEM_STATE;
+    }
+
+    @Override
+    protected Column getSyncStateColumn() {
+        return Tables.Accounts.SYNC_STATE;
+    }
+
+    @Override
+    public ContentValues asContentValues() {
+        final ContentValues values = super.asContentValues();
+
+        values.put(Tables.Accounts.CURRENCY_ID.getName(), currency.getId());
+        values.put(Tables.Accounts.TITLE.getName(), title);
+        values.put(Tables.Accounts.NOTE.getName(), note);
+        values.put(Tables.Accounts.BALANCE.getName(), balance);
+        values.put(Tables.Accounts.OWNER.getName(), owner.asInt());
+
+        return values;
+    }
+
+    @Override
+    protected void updateFrom(Cursor cursor) {
+        super.updateFrom(cursor);
+
+        int index;
+
+        Currency currency = Currency.from(cursor);
+        index = cursor.getColumnIndex(Tables.Accounts.CURRENCY_ID.getName());
+        if (index >= 0) {
+            currency.setId(cursor.getLong(index));
+        } else {
+            currency.setId(0);
+        }
+        setCurrency(currency);
+
+        index = cursor.getColumnIndex(Tables.Accounts.TITLE.getName());
+        if (index >= 0) {
+            setTitle(cursor.getString(index));
+        }
+
+        index = cursor.getColumnIndex(Tables.Accounts.NOTE.getName());
+        if (index >= 0) {
+            setNote(cursor.getString(index));
+        }
+
+        index = cursor.getColumnIndex(Tables.Accounts.BALANCE.getName());
+        if (index >= 0) {
+            setBalance(cursor.getInt(index));
+        }
+
+        index = cursor.getColumnIndex(Tables.Accounts.OWNER.getName());
+        if (index >= 0) {
+            setOwner(Owner.fromInt(cursor.getInt(index)));
         }
     }
 

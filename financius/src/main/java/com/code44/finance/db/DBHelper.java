@@ -4,13 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.code44.finance.db.model.Account;
-import com.code44.finance.db.model.Category;
-import com.code44.finance.db.model.Currency;
-import com.code44.finance.db.model.Transaction;
-
-import nl.qbusict.cupboard.CupboardFactory;
-
 public class DBHelper extends SQLiteOpenHelper {
     private static final String NAME = "financius.db";
     private static final int VERSION = 1;
@@ -18,14 +11,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private static DBHelper singleton;
 
     private final Context context;
-
-    // Register models
-    static {
-        CupboardFactory.cupboard().register(Currency.class);
-        CupboardFactory.cupboard().register(Account.class);
-        CupboardFactory.cupboard().register(Category.class);
-        CupboardFactory.cupboard().register(Transaction.class);
-    }
 
     private DBHelper(Context context) {
         super(context, NAME, null, VERSION);
@@ -40,12 +25,17 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        CupboardFactory.cupboard().withDatabase(db).createTables();
+        // Create tables
+        db.execSQL(Tables.Currencies.createScript());
+        db.execSQL(Tables.Accounts.createScript());
+        db.execSQL(Tables.Categories.createScript());
+        db.execSQL(Tables.Transactions.createScript());
+
+        // Add defaults
         DBDefaults.addDefaults(context, db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        CupboardFactory.cupboard().withDatabase(db).upgradeTables();
     }
 }

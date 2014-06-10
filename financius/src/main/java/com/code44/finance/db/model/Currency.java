@@ -1,14 +1,20 @@
 package com.code44.finance.db.model;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.code44.finance.App;
+import com.code44.finance.db.Column;
+import com.code44.finance.db.Tables;
 import com.code44.finance.providers.CurrenciesProvider;
-
-import nl.qbusict.cupboard.CupboardFactory;
+import com.code44.finance.utils.IOUtils;
+import com.code44.finance.utils.QueryBuilder;
 
 public class Currency extends BaseModel {
     public static final Parcelable.Creator<Currency> CREATOR = new Parcelable.Creator<Currency>() {
@@ -58,17 +64,31 @@ public class Currency extends BaseModel {
 
     public static Currency getDefault() {
         if (defaultCurrency == null) {
-            defaultCurrency = CupboardFactory.cupboard().withContext(App.getAppContext())
-                    .query(CurrenciesProvider.uriModels(CurrenciesProvider.class, Currency.class), Currency.class)
-                    .withSelection("isDefault=?", "1").get();
+            final ContentResolver contentResolver = App.getAppContext().getContentResolver();
+            final Uri uri = CurrenciesProvider.uriModels(CurrenciesProvider.class, Currency.class);
+            final Cursor cursor = QueryBuilder.with(contentResolver, uri)
+                    .selection(Tables.Currencies.IS_DEFAULT.getName() + "=?", "1")
+                    .query();
+
+            defaultCurrency = Currency.from(cursor);
+            IOUtils.closeQuietly(cursor);
         }
         return defaultCurrency;
     }
 
     public static void updateDefaultCurrency(SQLiteDatabase db) {
-        defaultCurrency = CupboardFactory.cupboard().withDatabase(db)
-                .query(Currency.class)
-                .withSelection("isDefault=?", "1").get();
+        final Cursor cursor = QueryBuilder.with(db, Tables.Currencies.TABLE_NAME)
+                .selection("isDefault=?", "1")
+                .query();
+
+        defaultCurrency = Currency.from(cursor);
+        IOUtils.closeQuietly(cursor);
+    }
+
+    public static Currency from(Cursor cursor) {
+        final Currency currency = new Currency();
+        currency.updateFrom(cursor);
+        return currency;
     }
 
     @Override
@@ -110,6 +130,84 @@ public class Currency extends BaseModel {
 
         if (Double.compare(exchangeRate, 0.0) < 0) {
             throw new IllegalStateException("Exchange rate must be > 0");
+        }
+    }
+
+    @Override
+    protected Column getIdColumn() {
+        return Tables.Currencies.ID;
+    }
+
+    @Override
+    protected Column getItemStateColumn() {
+        return Tables.Currencies.ITEM_STATE;
+    }
+
+    @Override
+    protected Column getSyncStateColumn() {
+        return Tables.Currencies.SYNC_STATE;
+    }
+
+    @Override
+    public ContentValues asContentValues() {
+        final ContentValues values = super.asContentValues();
+
+        values.put(Tables.Currencies.CODE.getName(), code);
+        values.put(Tables.Currencies.SYMBOL.getName(), symbol);
+        values.put(Tables.Currencies.SYMBOL_POSITION.getName(), symbolPosition.asInt());
+        values.put(Tables.Currencies.DECIMAL_SEPARATOR.getName(), decimalSeparator.symbol());
+        values.put(Tables.Currencies.GROUP_SEPARATOR.getName(), groupSeparator.symbol());
+        values.put(Tables.Currencies.DECIMAL_COUNT.getName(), decimalCount);
+        values.put(Tables.Currencies.IS_DEFAULT.getName(), isDefault);
+        values.put(Tables.Currencies.EXCHANGE_RATE.getName(), exchangeRate);
+
+        return values;
+    }
+
+    @Override
+    protected void updateFrom(Cursor cursor) {
+        super.updateFrom(cursor);
+
+        int index;
+
+        index = cursor.getColumnIndex(Tables.Currencies.CODE.getName());
+        if (index >= 0) {
+            setCode(cursor.getString(index));
+        }
+
+        index = cursor.getColumnIndex(Tables.Currencies.SYMBOL.getName());
+        if (index >= 0) {
+            setSymbol(cursor.getString(index));
+        }
+
+        index = cursor.getColumnIndex(Tables.Currencies.SYMBOL_POSITION.getName());
+        if (index >= 0) {
+            setSymbolPosition(SymbolPosition.fromInt(cursor.getInt(index)));
+        }
+
+        index = cursor.getColumnIndex(Tables.Currencies.DECIMAL_SEPARATOR.getName());
+        if (index >= 0) {
+            setDecimalSeparator(DecimalSeparator.fromSymbol(cursor.getString(index)));
+        }
+
+        index = cursor.getColumnIndex(Tables.Currencies.GROUP_SEPARATOR.getName());
+        if (index >= 0) {
+            setGroupSeparator(GroupSeparator.fromSymbol(cursor.getString(index)));
+        }
+
+        index = cursor.getColumnIndex(Tables.Currencies.DECIMAL_COUNT.getName());
+        if (index >= 0) {
+            setDecimalCount(cursor.getInt(index));
+        }
+
+        index = cursor.getColumnIndex(Tables.Currencies.IS_DEFAULT.getName());
+        if (index >= 0) {
+            setDefault(cursor.getInt(index) != 0);
+        }
+
+        index = cursor.getColumnIndex(Tables.Currencies.EXCHANGE_RATE.getName());
+        if (index >= 0) {
+            setExchangeRate(cursor.getDouble(index));
         }
     }
 

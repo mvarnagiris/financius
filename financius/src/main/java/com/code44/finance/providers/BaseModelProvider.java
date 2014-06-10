@@ -71,6 +71,8 @@ public abstract class BaseModelProvider<T extends BaseModel> extends BaseProvide
             cursor.setNotificationUri(context.getContentResolver(), uri);
         }
 
+        cursor.moveToFirst();
+
         return cursor;
     }
 
