@@ -22,6 +22,18 @@
         android:textSize="@dimen/text_xxxlarge"
         tools:text="1,000.00 £" />
 
+    <TextView
+        android:id="@+id/mainFormat_TV"
+        style="@style/TextView.Secondary"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/space_normal"
+        android:layout_marginLeft="@dimen/space_large"
+        android:layout_marginRight="@dimen/space_large"
+        android:layout_marginTop="@dimen/space_normal"
+        android:gravity="center_horizontal"
+        android:textSize="@dimen/text_xlarge"
+        tools:text="1,000.00 £" />
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
