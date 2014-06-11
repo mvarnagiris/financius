@@ -51,7 +51,9 @@ public class Transaction extends BaseModel {
 
     public static Transaction from(Cursor cursor) {
         final Transaction transaction = new Transaction();
-        transaction.updateFrom(cursor, null);
+        if (cursor.getCount() > 0) {
+            transaction.updateFrom(cursor, null);
+        }
         return transaction;
     }
 

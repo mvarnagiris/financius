@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -21,6 +24,12 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
 
     public static Bundle makeArgs() {
         return new Bundle();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -42,6 +51,22 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
 
         // Loader
         getLoaderManager().initLoader(LOADER_MODELS, null, this);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.models, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_new:
+                startModelEditActivity(getActivity(), null, 0);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -73,6 +98,8 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
     }
 
     protected abstract void startModelActivity(Context context, View expandFrom, long modelId);
+
+    protected abstract void startModelEditActivity(Context context, View expandFrom, long modelId);
 
     protected abstract BaseModelsAdapter createAdapter(Context context);
 

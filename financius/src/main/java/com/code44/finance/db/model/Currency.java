@@ -87,7 +87,9 @@ public class Currency extends BaseModel {
 
     public static Currency from(Cursor cursor) {
         final Currency currency = new Currency();
-        currency.updateFrom(cursor, null);
+        if (cursor.getCount() > 0) {
+            currency.updateFrom(cursor, null);
+        }
         return currency;
     }
 

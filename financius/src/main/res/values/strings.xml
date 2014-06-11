@@ -12,6 +12,7 @@
     <string name="currencies">Currencies</string>
     <string name="currency">Currency</string>
     <string name="currency_code">Currency code</string>
+    <string name="create">Create</string>
     <string name="main_currency">Main currency</string>
     <string name="refresh_rate">Refresh rate</string>
 

@@ -96,7 +96,9 @@ public class Category extends BaseModel {
 
     public static Category from(Cursor cursor) {
         final Category category = new Category();
-        category.updateFrom(cursor, null);
+        if (cursor.getCount() > 0) {
+            category.updateFrom(cursor, null);
+        }
         return category;
     }
 

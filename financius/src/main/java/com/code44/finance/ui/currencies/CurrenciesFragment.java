@@ -34,6 +34,11 @@ public class CurrenciesFragment extends ModelListFragment {
     }
 
     @Override
+    protected void startModelEditActivity(Context context, View expandFrom, long modelId) {
+        CurrencyEditActivity.start(context, expandFrom, modelId);
+    }
+
+    @Override
     protected BaseModelsAdapter createAdapter(Context context) {
         return new CurrenciesAdapter(context);
     }

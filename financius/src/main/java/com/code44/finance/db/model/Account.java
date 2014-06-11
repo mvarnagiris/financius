@@ -67,19 +67,25 @@ public class Account extends BaseModel {
 
     public static Account from(Cursor cursor) {
         final Account account = new Account();
-        account.updateFrom(cursor, null);
+        if (cursor.getCount() > 0) {
+            account.updateFrom(cursor, null);
+        }
         return account;
     }
 
     public static Account fromAccountFrom(Cursor cursor) {
         final Account account = new Account();
-        account.updateFrom(cursor, Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT);
+        if (cursor.getCount() > 0) {
+            account.updateFrom(cursor, Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT);
+        }
         return account;
     }
 
     public static Account fromAccountTo(Cursor cursor) {
         final Account account = new Account();
-        account.updateFrom(cursor, Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT);
+        if (cursor.getCount() > 0) {
+            account.updateFrom(cursor, Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT);
+        }
         return account;
     }
 
