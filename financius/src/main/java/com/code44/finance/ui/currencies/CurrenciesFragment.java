@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,7 @@ import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.adapters.CurrenciesAdapter;
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
+import com.code44.finance.api.currencies.CurrencyRequest;
 import com.code44.finance.db.Tables;
 import com.code44.finance.db.model.Currency;
 import com.code44.finance.providers.CurrenciesProvider;
@@ -27,8 +29,12 @@ import com.code44.finance.utils.GeneralPrefs;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+
 public class CurrenciesFragment extends ModelListFragment implements CompoundButton.OnCheckedChangeListener {
     private final List<Currency> currencies = new ArrayList<>();
+
+    private SwipeRefreshLayout swipeRefresh_V;
 
     public static CurrenciesFragment newInstance() {
         final Bundle args = makeArgs();
@@ -48,12 +54,27 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
+        swipeRefresh_V = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh_V);
         final View separator_V = view.findViewById(R.id.separator_V);
         final Switch autoUpdateCurrencies_S = (Switch) view.findViewById(R.id.autoUpdateCurrencies_S);
 
         // Setup
         autoUpdateCurrencies_S.setChecked(GeneralPrefs.get().isAutoUpdateCurrencies());
         autoUpdateCurrencies_S.setOnCheckedChangeListener(this);
+        swipeRefresh_V.setEnabled(false);
+        swipeRefresh_V.setColorScheme(R.color.refresh_color_1, R.color.refresh_color_2, R.color.refresh_color_3, R.color.refresh_color_4);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().registerSticky(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -101,19 +122,13 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == LOADER_MODELS) {
             currencies.clear();
-            do {
-                currencies.add(Currency.from(data));
-            } while (data.moveToNext());
-        }
-        super.onLoadFinished(loader, data);
-    }
-
-    private void refreshRates() {
-        for (Currency currency : currencies) {
-            if (!currency.isDefault()) {
-                CurrenciesAsyncApi.get().updateExchangeRate(currency.getCode());
+            if (data.moveToFirst()) {
+                do {
+                    currencies.add(Currency.from(data));
+                } while (data.moveToNext());
             }
         }
+        super.onLoadFinished(loader, data);
     }
 
     @Override
@@ -122,5 +137,23 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         if (isChecked) {
             refreshRates();
         }
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void onEventMainThread(CurrencyRequest.CurrencyRequestEvent event) {
+        updateRefreshView();
+    }
+
+    private void updateRefreshView() {
+        swipeRefresh_V.setRefreshing(EventBus.getDefault().getStickyEvent(CurrencyRequest.CurrencyRequestEvent.class) != null);
+    }
+
+    private void refreshRates() {
+        for (Currency currency : currencies) {
+            if (!currency.isDefault()) {
+                CurrenciesAsyncApi.get().updateExchangeRate(currency.getCode());
+            }
+        }
+        swipeRefresh_V.setRefreshing(true);
     }
 }

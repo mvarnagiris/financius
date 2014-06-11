@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 
-public abstract class BaseRequest<R, S extends Object> implements Callable<R> {
+public abstract class BaseRequest<R, S> implements Callable<R> {
     private final S requestService;
 
     protected BaseRequest(S requestService) {
@@ -16,8 +16,10 @@ public abstract class BaseRequest<R, S extends Object> implements Callable<R> {
     public R call() throws Exception {
         final EventBus eventBus = EventBus.getDefault();
 
-        final RequestEvent workingEvent = new RequestEvent<>(getUniqueId(), this, null, null, null, RequestEvent.State.WORKING);
-        eventBus.postSticky(workingEvent);
+        final BaseRequestEvent<R, ? extends BaseRequest<R, S>> workingEvent = createEvent(null, null, null, BaseRequestEvent.State.WORKING);
+        if (workingEvent != null) {
+            eventBus.postSticky(workingEvent);
+        }
 
         Response rawResponse = null;
         R parsedResponse = null;
@@ -29,9 +31,11 @@ public abstract class BaseRequest<R, S extends Object> implements Callable<R> {
             error = e;
         }
 
-        eventBus.removeStickyEvent(workingEvent);
-        final RequestEvent finishedEvent = new RequestEvent<R>(getUniqueId(), this, rawResponse, parsedResponse, error, RequestEvent.State.FINISHED);
-        eventBus.post(finishedEvent);
+        if (workingEvent != null) {
+            eventBus.removeStickyEvent(workingEvent);
+            final BaseRequestEvent<R, ? extends BaseRequest<R, S>> finishedEvent = createEvent(rawResponse, parsedResponse, error, BaseRequestEvent.State.FINISHED);
+            eventBus.post(finishedEvent);
+        }
 
         return parsedResponse;
     }
@@ -44,25 +48,7 @@ public abstract class BaseRequest<R, S extends Object> implements Callable<R> {
         return null;
     }
 
-    public static class RequestEvent<R> {
-        private final String uniqueId;
-        private final BaseRequest request;
-        private final Response rawResponse;
-        private final R parsedResponse;
-        private final Exception error;
-        private final State state;
-
-        public RequestEvent(String uniqueId, BaseRequest<R, ?> request, Response rawResponse, R parsedResponse, Exception error, State state) {
-            this.uniqueId = uniqueId;
-            this.request = request;
-            this.rawResponse = rawResponse;
-            this.parsedResponse = parsedResponse;
-            this.error = error;
-            this.state = state;
-        }
-
-        public static enum State {
-            WORKING, FINISHED
-        }
+    protected BaseRequestEvent<R, ? extends BaseRequest<R, S>> createEvent(Response rawResponse, R parsedResponse, Exception error, BaseRequestEvent.State state) {
+        return null;
     }
 }

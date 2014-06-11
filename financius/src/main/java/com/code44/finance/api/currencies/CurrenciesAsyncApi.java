@@ -34,11 +34,15 @@ public class CurrenciesAsyncApi {
     }
 
     public void updateExchangeRate(String fromCode) {
-        final CurrenciesRequest request = new CurrenciesRequest(currenciesRequestService, App.getAppContext(), fromCode, Currency.getDefault().getCode());
-        executeRequest(request);
+        final String toCode = Currency.getDefault().getCode();
+        final boolean isWorking = CurrencyRequest.CurrencyRequestEvent.isWorking(CurrencyRequest.CurrencyRequestEvent.class, CurrencyRequest.getUniqueId(fromCode, toCode));
+        if (!isWorking) {
+            final CurrencyRequest request = new CurrencyRequest(currenciesRequestService, App.getAppContext(), fromCode, toCode);
+            executeRequest(request);
+        }
     }
 
-    private void executeRequest(CurrenciesRequest request) {
+    private void executeRequest(CurrencyRequest request) {
         executorService.submit(request);
     }
 }

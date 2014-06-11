@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.code44.finance.api.BaseRequest;
+import com.code44.finance.api.BaseRequestEvent;
 import com.code44.finance.db.Tables;
 import com.code44.finance.db.model.Currency;
 import com.code44.finance.providers.CurrenciesProvider;
@@ -14,16 +15,20 @@ import com.google.gson.JsonObject;
 
 import retrofit.client.Response;
 
-public class CurrenciesRequest extends BaseRequest<Currency, CurrenciesRequestService> {
+public class CurrencyRequest extends BaseRequest<Currency, CurrenciesRequestService> {
     private final Context context;
     private final String fromCode;
     private final String toCode;
 
-    public CurrenciesRequest(CurrenciesRequestService requestService, Context context, String fromCode, String toCode) {
+    public CurrencyRequest(CurrenciesRequestService requestService, Context context, String fromCode, String toCode) {
         super(requestService);
         this.context = context;
         this.fromCode = fromCode;
         this.toCode = toCode;
+    }
+
+    public static String getUniqueId(String fromCode, String toCode) {
+        return fromCode + "_" + toCode;
     }
 
     @Override
@@ -53,6 +58,17 @@ public class CurrenciesRequest extends BaseRequest<Currency, CurrenciesRequestSe
 
     @Override
     protected String getUniqueId() {
-        return fromCode + "_" + toCode;
+        return getUniqueId(fromCode, toCode);
+    }
+
+    @Override
+    protected BaseRequestEvent<Currency, ? extends BaseRequest<Currency, CurrenciesRequestService>> createEvent(Response rawResponse, Currency parsedResponse, Exception error, BaseRequestEvent.State state) {
+        return new CurrencyRequestEvent(this, rawResponse, parsedResponse, error, state);
+    }
+
+    public static class CurrencyRequestEvent extends BaseRequestEvent<Currency, CurrencyRequest> {
+        protected CurrencyRequestEvent(CurrencyRequest request, Response rawResponse, Currency parsedResponse, Exception error, State state) {
+            super(request, rawResponse, parsedResponse, error, state);
+        }
     }
 }
