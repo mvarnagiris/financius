@@ -1,10 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:id="@+id/container_V"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:minHeight="@dimen/recommended_touch_size"
+        android:paddingLeft="@dimen/space_large"
+        android:paddingRight="@dimen/space_large"
+        android:paddingTop="@dimen/space_normal"
+        android:paddingBottom="@dimen/space_normal"
+        android:gravity="center_vertical"
+        android:background="@color/bg_secondary">
+
+        <TextView
+            style="@style/TextView"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/l_refresh_rates_daily" />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/separator_V"
+        style="@style/Separator.Thin"
+        android:layout_above="@+id/container_V" />
+
     <ListView
         android:id="@+id/list_V"
-        style="@style/ListView" />
+        style="@style/ListView"
+        android:layout_above="@+id/separator_V" />
 
-</FrameLayout>
+</RelativeLayout>

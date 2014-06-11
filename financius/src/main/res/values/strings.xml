@@ -17,4 +17,6 @@
     <string name="refresh_rate">Refresh rate</string>
     <string name="refresh_rates">Refresh rates</string>
 
+    <string name="l_refresh_rates_daily">Refresh rates every day</string>
+
 </resources>
