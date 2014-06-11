@@ -15,5 +15,6 @@
     <string name="create">Create</string>
     <string name="main_currency">Main currency</string>
     <string name="refresh_rate">Refresh rate</string>
+    <string name="refresh_rates">Refresh rates</string>
 
 </resources>

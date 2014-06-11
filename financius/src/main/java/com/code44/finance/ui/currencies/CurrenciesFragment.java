@@ -4,6 +4,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -29,6 +32,22 @@ public class CurrenciesFragment extends ModelListFragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.currencies, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh_rates:
+                refreshRates();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void startModelActivity(Context context, View expandFrom, long modelId) {
         CurrencyActivity.start(context, expandFrom, modelId);
     }
@@ -51,5 +70,9 @@ public class CurrenciesFragment extends ModelListFragment {
     @Override
     protected String getSortOrder() {
         return Tables.Currencies.IS_DEFAULT + " desc, " + Tables.Currencies.CODE;
+    }
+
+    private void refreshRates() {
+        // TODO Refresh rates
     }
 }

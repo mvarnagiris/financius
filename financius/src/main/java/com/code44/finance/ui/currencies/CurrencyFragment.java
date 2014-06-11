@@ -3,6 +3,9 @@ package com.code44.finance.ui.currencies;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -92,7 +95,9 @@ public class CurrencyFragment extends ModelFragment<Currency> {
             code_TV.setTextColor(getResources().getColor(R.color.text_accent));
             exchangeRate_TV.setText(R.string.main_currency);
         } else {
-            code_TV.setText(currency.getCode() + " \u2192 " + Currency.getDefault().getCode());
+            final SpannableStringBuilder ssb = new SpannableStringBuilder(currency.getCode() + " \u2192 " + Currency.getDefault().getCode());
+            ssb.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.text_accent)), ssb.length() - 3, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            code_TV.setText(ssb);
             code_TV.setTextColor(getResources().getColor(R.color.text_primary));
             exchangeRate_TV.setText(String.valueOf(currency.getExchangeRate()));
         }
