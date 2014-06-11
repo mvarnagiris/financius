@@ -42,5 +42,5 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.2.0'
     compile 'com.squareup.okhttp:okhttp:2.0.0+'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0+'
-    compile 'com.squareup.retrofit:retrofit:1.5.1'
+    compile 'com.squareup.retrofit:retrofit:1.6.0'
 }

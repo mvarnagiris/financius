@@ -1,8 +1,10 @@
 package com.code44.finance.ui.currencies;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,12 +17,19 @@ import android.widget.Switch;
 import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.adapters.CurrenciesAdapter;
+import com.code44.finance.api.currencies.CurrenciesAsyncApi;
 import com.code44.finance.db.Tables;
+import com.code44.finance.db.model.Currency;
 import com.code44.finance.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.GeneralPrefs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CurrenciesFragment extends ModelListFragment implements CompoundButton.OnCheckedChangeListener {
+    private final List<Currency> currencies = new ArrayList<>();
+
     public static CurrenciesFragment newInstance() {
         final Bundle args = makeArgs();
 
@@ -88,8 +97,23 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         return Tables.Currencies.IS_DEFAULT + " desc, " + Tables.Currencies.CODE;
     }
 
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (loader.getId() == LOADER_MODELS) {
+            currencies.clear();
+            do {
+                currencies.add(Currency.from(data));
+            } while (data.moveToNext());
+        }
+        super.onLoadFinished(loader, data);
+    }
+
     private void refreshRates() {
-        // TODO Refresh rates
+        for (Currency currency : currencies) {
+            if (!currency.isDefault()) {
+                CurrenciesAsyncApi.get().updateExchangeRate(currency.getCode());
+            }
+        }
     }
 
     @Override

@@ -18,9 +18,9 @@ import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
 
 public abstract class ModelListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
-    private static final int LOADER_MODELS = 1000;
+    protected static final int LOADER_MODELS = 1000;
 
-    private BaseModelsAdapter adapter;
+    protected BaseModelsAdapter adapter;
 
     public static Bundle makeArgs() {
         return new Bundle();

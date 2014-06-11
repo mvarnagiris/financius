@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.code44.finance.R;
+import com.code44.finance.api.currencies.CurrenciesAsyncApi;
 import com.code44.finance.db.model.Currency;
 import com.code44.finance.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelFragment;
@@ -105,6 +106,6 @@ public class CurrencyFragment extends ModelFragment<Currency> {
     }
 
     private void refreshRate() {
-        // TODO Refresh rate
+        CurrenciesAsyncApi.get().updateExchangeRate(model.getCode());
     }
 }

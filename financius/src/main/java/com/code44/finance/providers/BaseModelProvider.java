@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import com.code44.finance.utils.ProviderUtils;
 import com.code44.finance.utils.UriUtils;
 
 public abstract class BaseModelProvider extends BaseProvider {
@@ -99,6 +100,23 @@ public abstract class BaseModelProvider extends BaseProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         throw new IllegalArgumentException("Unsupported URI: " + uri);
+    }
+
+    @Override
+    public int bulkInsert(Uri uri, @SuppressWarnings("NullableProblems") ContentValues[] valuesArray) {
+        int count;
+        final int uriId = uriMatcher.match(uri);
+        switch (uriId) {
+            case URI_ITEMS:
+                count = ProviderUtils.doArrayReplaceInTransaction(database, getModelTable(), valuesArray);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unsupported URI: " + uri);
+        }
+
+        UriUtils.notifyChangeIfNecessary(getContext(), uri);
+        return count;
     }
 
     protected abstract String getModelTable();
