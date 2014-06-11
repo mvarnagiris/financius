@@ -23,6 +23,7 @@
             android:text="@string/l_refresh_rates_daily" />
 
         <Switch
+            android:id="@+id/autoUpdateCurrencies_S"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
