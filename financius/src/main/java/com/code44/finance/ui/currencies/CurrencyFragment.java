@@ -3,6 +3,7 @@ package com.code44.finance.ui.currencies;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -16,12 +17,16 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
+import com.code44.finance.api.currencies.CurrencyRequest;
 import com.code44.finance.db.model.Currency;
 import com.code44.finance.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelFragment;
 import com.code44.finance.utils.AmountUtils;
 
+import de.greenrobot.event.EventBus;
+
 public class CurrencyFragment extends ModelFragment<Currency> {
+    private SwipeRefreshLayout swipeRefresh_V;
     private TextView code_TV;
     private TextView format_TV;
     private TextView mainFormat_TV;
@@ -51,10 +56,27 @@ public class CurrencyFragment extends ModelFragment<Currency> {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
+        swipeRefresh_V = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh_V);
         code_TV = (TextView) view.findViewById(R.id.code_TV);
         format_TV = (TextView) view.findViewById(R.id.format_TV);
         mainFormat_TV = (TextView) view.findViewById(R.id.mainFormat_TV);
         exchangeRate_TV = (TextView) view.findViewById(R.id.exchangeRate_TV);
+
+        // Setup
+        swipeRefresh_V.setEnabled(false);
+        swipeRefresh_V.setColorScheme(R.color.refresh_color_1, R.color.refresh_color_2, R.color.refresh_color_3, R.color.refresh_color_4);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().registerSticky(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -108,6 +130,15 @@ public class CurrencyFragment extends ModelFragment<Currency> {
             mainFormat_TV.setVisibility(View.VISIBLE);
         }
         format_TV.setText(AmountUtils.format(currency, 100000));
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void onEventMainThread(CurrencyRequest.CurrencyRequestEvent event) {
+        updateRefreshView();
+    }
+
+    private void updateRefreshView() {
+        swipeRefresh_V.setRefreshing(EventBus.getDefault().getStickyEvent(CurrencyRequest.CurrencyRequestEvent.class) != null);
     }
 
     private void refreshRate() {
