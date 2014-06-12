@@ -25,6 +25,7 @@ import com.code44.finance.db.model.Currency;
 import com.code44.finance.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.GeneralPrefs;
+import com.code44.finance.utils.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,8 +115,13 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
     }
 
     @Override
-    protected String getSortOrder() {
-        return Tables.Currencies.IS_DEFAULT + " desc, " + Tables.Currencies.CODE;
+    protected Query getQuery() {
+        return Query.get()
+                .appendProjection(Tables.Currencies.ID.getName())
+                .appendProjection(Tables.Currencies.PROJECTION)
+                .appendSortOrder(Tables.Currencies.IS_DEFAULT + " desc")
+                .appendSortOrder(Tables.Currencies.CODE.getName())
+                .build();
     }
 
     @Override

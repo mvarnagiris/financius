@@ -20,9 +20,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.SettingsActivity" />
+
         <activity android:name=".ui.currencies.CurrenciesActivity" />
         <activity android:name=".ui.currencies.CurrencyActivity" />
         <activity android:name=".ui.currencies.CurrencyEditActivity" />
+
+        <activity android:name=".ui.accounts.AccountsActivity" />
 
         <!-- Providers -->
         <!-- ======================================================================================================= -->

@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +15,7 @@ import android.widget.ListView;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
+import com.code44.finance.utils.Query;
 
 public abstract class ModelListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
     protected static final int LOADER_MODELS = 1000;
@@ -72,7 +72,11 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_MODELS) {
-            return new CursorLoader(getActivity(), getUri(), getProjection(), getSelection(), getSelectionArgs(), getSortOrder());
+            Query query = getQuery();
+            if (query == null) {
+                query = Query.get().build();
+            }
+            return query.asCursorLoader(getActivity(), getUri());
         }
 
         return null;
@@ -105,19 +109,7 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
 
     protected abstract Uri getUri();
 
-    protected String[] getProjection() {
-        return null;
-    }
-
-    protected String getSelection() {
-        return null;
-    }
-
-    protected String[] getSelectionArgs() {
-        return null;
-    }
-
-    protected String getSortOrder() {
+    protected Query getQuery() {
         return null;
     }
 }

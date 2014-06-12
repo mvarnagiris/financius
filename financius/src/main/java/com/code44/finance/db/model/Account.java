@@ -244,5 +244,9 @@ public class Account extends BaseModel {
         public int asInt() {
             return value;
         }
+
+        public String asString() {
+            return String.valueOf(value);
+        }
     }
 }

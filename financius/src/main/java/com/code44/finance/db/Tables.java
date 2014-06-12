@@ -13,11 +13,11 @@ public final class Tables {
     }
 
     private static Column getItemStateColumn(String tableName) {
-        return new Column(tableName, "item_state", Column.DataType.INTEGER, String.valueOf(BaseModel.ItemState.NORMAL.asInt()), false);
+        return new Column(tableName, "item_state", Column.DataType.INTEGER, String.valueOf(BaseModel.ItemState.NORMAL.asInt()));
     }
 
     private static Column getSyncStateColumn(String tableName) {
-        return new Column(tableName, "sync_state", Column.DataType.INTEGER, String.valueOf(BaseModel.SyncState.NONE.asInt()), false);
+        return new Column(tableName, "sync_state", Column.DataType.INTEGER, String.valueOf(BaseModel.SyncState.NONE.asInt()));
     }
 
     private static String makeCreateScript(String table, Column... columns) {
