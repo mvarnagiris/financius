@@ -64,7 +64,6 @@ public class CurrencyFragment extends ModelFragment<Currency> {
 
         // Setup
         swipeRefresh_V.setEnabled(false);
-        swipeRefresh_V.setColorScheme(R.color.refresh_color_1, R.color.refresh_color_2, R.color.refresh_color_3, R.color.refresh_color_4);
     }
 
     @Override
