@@ -41,6 +41,7 @@ dependencies {
     compile 'com.android.support:support-v4:+'
     compile 'com.google.android.gms:play-services:4.4.+'
     compile 'de.greenrobot:eventbus:2.2.0'
+    compile 'com.github.castorflex.smoothprogressbar:library:0.5.1'
     compile 'com.squareup.okhttp:okhttp:2.0.0+'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0+'
     compile 'com.squareup.retrofit:retrofit:1.6.0'

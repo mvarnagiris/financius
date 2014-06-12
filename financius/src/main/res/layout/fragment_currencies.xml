@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swipeRefresh_V"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+        android:id="@+id/loading_SPB"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:indeterminate="true" />
 
-        <LinearLayout
-            android:id="@+id/container_V"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/bg_secondary"
-            android:gravity="center_vertical"
-            android:minHeight="@dimen/recommended_touch_size"
-            android:paddingBottom="@dimen/space_normal"
-            android:paddingLeft="@dimen/space_large"
-            android:paddingRight="@dimen/space_large"
-            android:paddingTop="@dimen/space_normal">
+    <LinearLayout
+        android:id="@+id/container_V"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/bg_secondary"
+        android:gravity="center_vertical"
+        android:minHeight="@dimen/recommended_touch_size"
+        android:paddingBottom="@dimen/space_normal"
+        android:paddingLeft="@dimen/space_large"
+        android:paddingRight="@dimen/space_large"
+        android:paddingTop="@dimen/space_normal">
 
-            <TextView
-                style="@style/TextView"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="@string/l_refresh_rates_daily" />
+        <TextView
+            style="@style/TextView"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/l_refresh_rates_daily" />
 
-            <Switch
-                android:id="@+id/autoUpdateCurrencies_S"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+        <Switch
+            android:id="@+id/autoUpdateCurrencies_S"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-        </LinearLayout>
+    </LinearLayout>
 
-        <View
-            android:id="@+id/separator_V"
-            style="@style/Separator.Thin"
-            android:layout_above="@+id/container_V" />
+    <View
+        android:id="@+id/separator_V"
+        style="@style/Separator.Thin"
+        android:layout_above="@+id/container_V" />
 
-        <ListView
-            android:id="@+id/list_V"
-            style="@style/ListView"
-            android:layout_above="@+id/separator_V" />
+    <ListView
+        android:id="@+id/list_V"
+        style="@style/ListView"
+        android:layout_above="@+id/separator_V" />
 
-    </RelativeLayout>
-</android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>

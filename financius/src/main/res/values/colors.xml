@@ -26,9 +26,11 @@
     <color name="btn_borderless_pressed">#3355a72f</color>
 
     <color name="separator">@color/d_light_darker4</color>
-    <color name="refresh_color_1">#55a72f</color>
-    <color name="refresh_color_2">#66b840</color>
-    <color name="refresh_color_3">#77c951</color>
-    <color name="refresh_color_4">#88dA62</color>
+    <array name="progress_bar_colors">
+        <item>#55a72f</item>
+        <item>#cc0000</item>
+        <item>#ff8800</item>
+        <item>#0033bb</item>
+    </array>
 
 </resources>
