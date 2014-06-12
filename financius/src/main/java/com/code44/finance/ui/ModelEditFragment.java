@@ -32,7 +32,7 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        ensureModelUpdated();
+        ensureModelUpdated(model);
         outState.putParcelable(STATE_MODEL, model);
     }
 
@@ -44,11 +44,11 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
     }
 
     public boolean save() {
-        ensureModelUpdated();
+        ensureModelUpdated(model);
         return onSave();
     }
 
     public abstract boolean onSave();
 
-    protected abstract void ensureModelUpdated();
+    protected abstract void ensureModelUpdated(T model);
 }

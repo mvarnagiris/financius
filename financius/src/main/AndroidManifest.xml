@@ -26,6 +26,7 @@
         <activity android:name=".ui.currencies.CurrencyEditActivity" />
 
         <activity android:name=".ui.accounts.AccountsActivity" />
+        <activity android:name=".ui.accounts.AccountEditActivity" />
 
         <!-- Providers -->
         <!-- ======================================================================================================= -->

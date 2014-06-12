@@ -18,6 +18,8 @@
     <string name="refresh_rates">Refresh rates</string>
     <string name="accounts">Accounts</string>
     <string name="account">Account</string>
+    <string name="title">Title</string>
+    <string name="note">Note</string>
 
     <string name="l_refresh_rates_daily">Refresh rates every day</string>
 

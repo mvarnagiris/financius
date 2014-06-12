@@ -4,10 +4,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 
 import com.code44.finance.db.model.BaseModel;
+import com.code44.finance.utils.Query;
 
 public abstract class ModelFragment<T extends BaseModel> extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     protected static final int LOADER_MODEL = 1000;
@@ -40,7 +40,11 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_MODEL) {
-            return new CursorLoader(getActivity(), getUri(modelId), null, null, null, null);
+            Query query = getQuery();
+            if (query == null) {
+                query = Query.get().build();
+            }
+            return query.asCursorLoader(getActivity(), getUri(modelId));
         }
 
         return null;
@@ -63,4 +67,8 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
     protected abstract T getModelFrom(Cursor cursor);
 
     protected abstract void onModelLoaded(T model);
+
+    protected Query getQuery() {
+        return null;
+    }
 }

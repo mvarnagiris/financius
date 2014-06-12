@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.CursorLoader;
 
+import com.code44.finance.db.Column;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -53,7 +55,6 @@ public class Query {
     }
 
     public static class Builder {
-
         private final Set<String> projection = new HashSet<>();
         private final List<String> selection = new ArrayList<>();
         private final List<String> selectionArgs = new ArrayList<>();
@@ -62,69 +63,70 @@ public class Query {
         private Builder() {
         }
 
-        public Builder appendProjection(String column) {
+        public Builder projectionId(Column idColumn) {
+            projection(idColumn.getNameWithTable());
+            return this;
+        }
+
+        public Builder projection(String column) {
             projection.add(column);
             return this;
         }
 
-        public Builder appendProjection(String... columns) {
-            return appendProjection(Arrays.asList(columns));
+        public Builder projection(String... columns) {
+            return projection(Arrays.asList(columns));
         }
 
-        public Builder appendProjection(List<String> columns) {
+        public Builder projection(List<String> columns) {
             projection.addAll(columns);
             return this;
         }
 
-        public Builder appendSelection(String clause) {
+        public Builder selection(String clause) {
             selection.add(clause);
             return this;
         }
 
-        public Builder appendSelectionAnd(String clause) {
-            return appendSelection("and(" + clause + ")");
+        public Builder selection(String clause, String... args) {
+            selection(clause);
+            args(args);
+            return this;
         }
 
-        public Builder appendSelectionOr(String clause) {
-            return appendSelection("or(" + clause + ")");
+        public Builder selectionInClause(String clause, int count) {
+            return selection(makeInClause(clause, count));
         }
 
-        public Builder appendSelectionIn(String value, int count) {
-            return appendSelection(makeInClause(value, count));
+        public Builder selectionInClause(String clause, int count, String... args) {
+            selection(makeInClause(clause, count));
+            args(args);
+            return this;
         }
 
-        public Builder appendSelectionAndIn(String value, int count) {
-            return appendSelectionAnd(makeInClause(value, count));
-        }
-
-        public Builder appendSelectionOrIn(String value, int count) {
-            return appendSelectionOr(makeInClause(value, count));
-        }
-
-        public Builder appendArgs(String arg) {
+        public Builder args(String arg) {
             selectionArgs.add(arg);
             return this;
         }
 
-        public Builder appendArgs(String... args) {
-            return appendArgs(Arrays.asList(args));
+        public Builder args(String... args) {
+            return args(Arrays.asList(args));
         }
 
-        public Builder appendArgs(List<String> args) {
+        public Builder args(List<String> args) {
             selectionArgs.addAll(args);
             return this;
         }
 
-        public Builder appendSortOrder(String order) {
+        public Builder sortOrder(String order) {
             sortOrder.add(order);
             return this;
         }
 
-        public Builder appendSortOrder(String... orders) {
-            return appendSortOrder(Arrays.asList(orders));
+        public Builder sortOrder(String... orders) {
+            return sortOrder(Arrays.asList(orders));
         }
 
-        public Builder appendSortOrder(List<String> orders) {
+        public Builder sortOrder(List<String> orders) {
             sortOrder.addAll(orders);
             return this;
         }
@@ -189,5 +191,4 @@ public class Query {
             return sb.toString();
         }
     }
-
 }

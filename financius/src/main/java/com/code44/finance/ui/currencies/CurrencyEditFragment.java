@@ -43,7 +43,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> {
     }
 
     @Override
-    protected void ensureModelUpdated() {
+    protected void ensureModelUpdated(Currency model) {
 
     }
 

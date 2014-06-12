@@ -37,7 +37,7 @@ public class AccountsFragment extends ModelListFragment {
 
     @Override
     protected void startModelEditActivity(Context context, View expandFrom, long modelId) {
-        // TODO Start
+        AccountEditActivity.start(context, expandFrom, modelId);
     }
 
     @Override
@@ -53,11 +53,11 @@ public class AccountsFragment extends ModelListFragment {
     @Override
     protected Query getQuery() {
         return Query.get()
-                .appendProjection(Tables.Accounts.ID.getNameWithTable())
-                .appendProjection(Tables.Accounts.PROJECTION)
-                .appendProjection(Tables.Currencies.PROJECTION)
-                .appendSelection(Tables.Accounts.OWNER + "<>?")
-                .appendArgs(Account.Owner.SYSTEM.asString())
+                .projection(Tables.Accounts.ID.getNameWithTable())
+                .projection(Tables.Accounts.PROJECTION)
+                .projection(Tables.Currencies.PROJECTION)
+                .selection(Tables.Accounts.OWNER + "<>?")
+                .args(Account.Owner.SYSTEM.asString())
                 .build();
     }
 }

@@ -42,10 +42,10 @@ public class CurrencyRequest extends BaseRequest<Currency, CurrenciesRequestServ
         final double exchangeRate = json.get("rate").getAsDouble();
 
         final Cursor cursor = Query.get()
-                .appendProjection(Tables.Currencies.ID.getName())
-                .appendProjection(Tables.Currencies.PROJECTION)
-                .appendSelection(Tables.Currencies.CODE + "=?")
-                .appendArgs(fromCode).build()
+                .projection(Tables.Currencies.ID.getName())
+                .projection(Tables.Currencies.PROJECTION)
+                .selection(Tables.Currencies.CODE + "=?")
+                .args(fromCode).build()
                 .asCursor(context, CurrenciesProvider.uriCurrencies());
         final Currency currency = Currency.from(cursor);
         IOUtils.closeQuietly(cursor);
