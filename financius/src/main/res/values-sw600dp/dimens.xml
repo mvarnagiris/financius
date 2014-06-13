@@ -1,0 +1,16 @@
+<resources>
+
+    <dimen name="margin_edit">64dp</dimen>
+    <dimen name="edit_title_padding_top">64dp</dimen>
+
+    <dimen name="text_xxxlarge">38sp</dimen>
+    <dimen name="text_xxlarge">30sp</dimen>
+    <dimen name="text_xlarge">26sp</dimen>
+    <dimen name="text_large">22sp</dimen>
+    <dimen name="text_normal">18sp</dimen>
+    <dimen name="text_small">14sp</dimen>
+
+    <dimen name="recommended_touch_size">56dp</dimen>
+    <dimen name="big_touch_size">64dp</dimen>
+
+</resources>

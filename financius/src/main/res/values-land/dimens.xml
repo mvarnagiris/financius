@@ -9,7 +9,6 @@
     <dimen name="text_normal">14sp</dimen>
     <dimen name="text_small">10sp</dimen>
 
-    <dimen name="min_touch_size">32dp</dimen>
     <dimen name="recommended_touch_size">40dp</dimen>
     <dimen name="big_touch_size">56dp</dimen>
 

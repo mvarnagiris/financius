@@ -159,7 +159,7 @@
     <style name="Container.Title">
         <item name="android:paddingLeft">@dimen/margin_edit</item>
         <item name="android:paddingRight">@dimen/margin_edit</item>
-        <item name="android:paddingTop">@dimen/space_large</item>
+        <item name="android:paddingTop">@dimen/edit_title_padding_top</item>
         <item name="android:background">@color/bg_secondary</item>
     </style>
 
