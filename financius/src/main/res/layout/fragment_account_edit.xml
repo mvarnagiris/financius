@@ -35,8 +35,7 @@
                 <Button
                     android:id="@+id/currency_B"
                     style="@style/Button.Select"
-                    android:layout_width="wrap_content"
-                    android:typeface="monospace" />
+                    android:layout_width="wrap_content" />
 
                 <Button
                     android:id="@+id/amount_B"
