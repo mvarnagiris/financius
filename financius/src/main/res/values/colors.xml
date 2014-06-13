@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="d_brand">#55a72f</color>
+    <color name="d_brand">#9dae2a</color>
 
     <color name="d_dark">#303332</color>
     <color name="d_dark_lighter1">#4a4a4a</color>
@@ -23,11 +23,11 @@
     <color name="text_secondary">@color/d_dark_lighter2</color>
     <color name="text_accent">@color/d_brand</color>
 
-    <color name="btn_borderless_pressed">#3355a72f</color>
+    <color name="btn_borderless_pressed">#339dae2a</color>
 
     <color name="separator">@color/d_light_darker4</color>
     <array name="progress_bar_colors">
-        <item>#55a72f</item>
+        <item>#9dae2a</item>
         <item>#cc0000</item>
         <item>#ff8800</item>
         <item>#0033bb</item>
