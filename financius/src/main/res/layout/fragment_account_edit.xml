@@ -10,6 +10,10 @@
         android:focusableInTouchMode="true"
         android:orientation="vertical">
 
+        <TextView
+            style="@style/TextView.Title"
+            android:text="@string/account" />
+
         <EditText
             android:id="@+id/title_ET"
             style="@style/EditText"

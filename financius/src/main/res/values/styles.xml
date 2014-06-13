@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- TextView -->
     <!-- =========================================================================================================== -->
@@ -20,6 +20,14 @@
 
     <style name="TextView.Accent">
         <item name="android:textColor">@color/text_accent</item>
+    </style>
+
+    <style name="TextView.Title">
+        <item name="android:layout_marginBottom">@dimen/space_large</item>
+        <item name="android:textSize">@dimen/text_xxxlarge</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@string/font_thin</item>
     </style>
 
     <!-- Button -->
@@ -63,9 +71,10 @@
     <style name="EditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/text_normal</item>
+        <item name="android:textSize">@dimen/text_large</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textColorHint">@color/text_secondary</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@string/font_light</item>
     </style>
 
     <!-- List -->
