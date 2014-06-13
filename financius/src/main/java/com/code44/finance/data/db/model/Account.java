@@ -1,18 +1,16 @@
 package com.code44.finance.data.db.model;
 
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.code44.finance.App;
+import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.utils.IOUtils;
-import com.code44.finance.utils.QueryBuilder;
 
 public class Account extends BaseModel {
     public static final Parcelable.Creator<Account> CREATOR = new Parcelable.Creator<Account>() {
@@ -53,11 +51,9 @@ public class Account extends BaseModel {
 
     public static Account getSystem() {
         if (systemAccount == null) {
-            final ContentResolver contentResolver = App.getAppContext().getContentResolver();
-            final Uri uri = AccountsProvider.uriAccounts();
-            final Cursor cursor = QueryBuilder.with(contentResolver, uri)
+            final Cursor cursor = Query.get()
                     .selection(Tables.Accounts.OWNER.getName() + "=?", String.valueOf(Owner.SYSTEM.asInt()))
-                    .query();
+                    .asCursor(App.getAppContext(), AccountsProvider.uriAccounts());
 
             systemAccount = Account.from(cursor);
             IOUtils.closeQuietly(cursor);

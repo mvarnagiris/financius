@@ -1,5 +1,6 @@
 package com.code44.finance.ui.accounts;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.code44.finance.R;
+import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.model.Account;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.ui.ModelEditFragment;
@@ -47,12 +49,16 @@ public class AccountEditFragment extends ModelEditFragment<Account> {
     }
 
     @Override
-    public boolean onSave(Account model) {
+    public boolean onSave(Context context, Account model) {
         boolean canSave = true;
 
         if (TextUtils.isEmpty(model.getTitle())) {
             canSave = false;
             // TODO Show error
+        }
+
+        if (canSave) {
+            DataStore.with(context, AccountsProvider.uriAccounts()).values(model.asContentValues()).insert();
         }
 
         return canSave;

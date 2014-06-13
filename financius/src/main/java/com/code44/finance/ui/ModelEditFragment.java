@@ -1,5 +1,6 @@
 package com.code44.finance.ui;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
@@ -45,10 +46,10 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
 
     public boolean save() {
         ensureModelUpdated(model);
-        return onSave(model);
+        return onSave(getActivity(), model);
     }
 
-    public abstract boolean onSave(T model);
+    public abstract boolean onSave(Context context, T model);
 
     protected abstract void ensureModelUpdated(T model);
 }

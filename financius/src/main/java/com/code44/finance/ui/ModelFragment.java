@@ -42,7 +42,7 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
         if (id == LOADER_MODEL) {
             Query query = getQuery();
             if (query == null) {
-                query = Query.get().build();
+                query = Query.get();
             }
             return query.asCursorLoader(getActivity(), getUri(modelId));
         }

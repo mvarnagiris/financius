@@ -1,20 +1,18 @@
 package com.code44.finance.data.db.model;
 
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.code44.finance.App;
+import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.IOUtils;
-import com.code44.finance.utils.QueryBuilder;
 
 public class Currency extends BaseModel {
     public static final Parcelable.Creator<Currency> CREATOR = new Parcelable.Creator<Currency>() {
@@ -64,11 +62,9 @@ public class Currency extends BaseModel {
 
     public static Currency getDefault() {
         if (defaultCurrency == null) {
-            final ContentResolver contentResolver = App.getAppContext().getContentResolver();
-            final Uri uri = CurrenciesProvider.uriCurrencies();
-            final Cursor cursor = QueryBuilder.with(contentResolver, uri)
+            final Cursor cursor = Query.get()
                     .selection(Tables.Currencies.IS_DEFAULT.getName() + "=?", "1")
-                    .query();
+                    .asCursor(App.getAppContext(), CurrenciesProvider.uriCurrencies());
 
             defaultCurrency = Currency.from(cursor);
             IOUtils.closeQuietly(cursor);
@@ -77,9 +73,9 @@ public class Currency extends BaseModel {
     }
 
     public static void updateDefaultCurrency(SQLiteDatabase db) {
-        final Cursor cursor = QueryBuilder.with(db, Tables.Currencies.TABLE_NAME)
+        final Cursor cursor = Query.get()
                 .selection(Tables.Currencies.IS_DEFAULT + "=?", "1")
-                .query();
+                .asCursor(db, Tables.Currencies.TABLE_NAME);
 
         defaultCurrency = Currency.from(cursor);
         IOUtils.closeQuietly(cursor);

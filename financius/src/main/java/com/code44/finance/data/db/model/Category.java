@@ -1,19 +1,17 @@
 package com.code44.finance.data.db.model;
 
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.code44.finance.App;
+import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.utils.IOUtils;
-import com.code44.finance.utils.QueryBuilder;
 
 public class Category extends BaseModel {
     public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>() {
@@ -57,10 +55,8 @@ public class Category extends BaseModel {
 
     public static Category getExpense() {
         if (expenseCategory == null) {
-            final ContentResolver contentResolver = App.getAppContext().getContentResolver();
-            final Uri uri = CategoriesProvider.uriCategory(EXPENSE_ID);
-            final Cursor cursor = QueryBuilder.with(contentResolver, uri)
-                    .query();
+            final Cursor cursor = Query.get()
+                    .asCursor(App.getAppContext(), CategoriesProvider.uriCategory(EXPENSE_ID));
 
             expenseCategory = Category.from(cursor);
             IOUtils.closeQuietly(cursor);
@@ -70,10 +66,8 @@ public class Category extends BaseModel {
 
     public static Category getIncome() {
         if (incomeCategory == null) {
-            final ContentResolver contentResolver = App.getAppContext().getContentResolver();
-            final Uri uri = CategoriesProvider.uriCategory(INCOME_ID);
-            final Cursor cursor = QueryBuilder.with(contentResolver, uri)
-                    .query();
+            final Cursor cursor = Query.get()
+                    .asCursor(App.getAppContext(), CategoriesProvider.uriCategory(INCOME_ID));
 
             incomeCategory = Category.from(cursor);
             IOUtils.closeQuietly(cursor);
@@ -83,10 +77,8 @@ public class Category extends BaseModel {
 
     public static Category getTransfer() {
         if (transferCategory == null) {
-            final ContentResolver contentResolver = App.getAppContext().getContentResolver();
-            final Uri uri = CategoriesProvider.uriCategory(TRANSFER_ID);
-            final Cursor cursor = QueryBuilder.with(contentResolver, uri)
-                    .query();
+            final Cursor cursor = Query.get()
+                    .asCursor(App.getAppContext(), CategoriesProvider.uriCategory(TRANSFER_ID));
 
             transferCategory = Category.from(cursor);
             IOUtils.closeQuietly(cursor);

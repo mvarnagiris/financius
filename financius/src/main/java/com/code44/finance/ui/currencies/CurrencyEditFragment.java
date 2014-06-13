@@ -1,5 +1,6 @@
 package com.code44.finance.ui.currencies;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,7 +39,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> {
     }
 
     @Override
-    public boolean onSave(Currency model) {
+    public boolean onSave(Context context, Currency model) {
         return false;
     }
 
