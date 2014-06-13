@@ -1,11 +1,11 @@
-package com.code44.finance.db.model;
+package com.code44.finance.data.db.model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.code44.finance.db.Column;
+import com.code44.finance.data.db.Column;
 
 public abstract class BaseModel implements Parcelable {
     private long id;

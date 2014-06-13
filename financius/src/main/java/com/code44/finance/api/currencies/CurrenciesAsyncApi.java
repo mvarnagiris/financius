@@ -2,7 +2,7 @@ package com.code44.finance.api.currencies;
 
 import com.code44.finance.App;
 import com.code44.finance.BuildConfig;
-import com.code44.finance.db.model.Currency;
+import com.code44.finance.data.db.model.Currency;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

@@ -15,7 +15,7 @@ import android.widget.ListView;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
-import com.code44.finance.utils.Query;
+import com.code44.finance.data.Query;
 
 public abstract class ModelListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
     protected static final int LOADER_MODELS = 1000;

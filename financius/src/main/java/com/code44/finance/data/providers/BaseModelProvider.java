@@ -1,4 +1,4 @@
-package com.code44.finance.providers;
+package com.code44.finance.data.providers;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -7,9 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.provider.BaseColumns;
-
-import com.code44.finance.utils.ProviderUtils;
-import com.code44.finance.utils.UriUtils;
 
 public abstract class BaseModelProvider extends BaseProvider {
     private static final int URI_ITEMS = 1;
@@ -93,7 +90,7 @@ public abstract class BaseModelProvider extends BaseProvider {
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
 
-        UriUtils.notifyChangeIfNecessary(getContext(), uri);
+        ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         return count;
     }
 
@@ -115,7 +112,7 @@ public abstract class BaseModelProvider extends BaseProvider {
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
 
-        UriUtils.notifyChangeIfNecessary(getContext(), uri);
+        ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         return count;
     }
 

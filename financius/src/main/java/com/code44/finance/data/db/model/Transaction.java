@@ -1,12 +1,12 @@
-package com.code44.finance.db.model;
+package com.code44.finance.data.db.model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.code44.finance.db.Column;
-import com.code44.finance.db.Tables;
+import com.code44.finance.data.db.Column;
+import com.code44.finance.data.db.Tables;
 
 public class Transaction extends BaseModel {
     public static final Parcelable.Creator<Transaction> CREATOR = new Parcelable.Creator<Transaction>() {

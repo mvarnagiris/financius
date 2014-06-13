@@ -1,9 +1,9 @@
-package com.code44.finance.providers;
+package com.code44.finance.data.providers;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.code44.finance.db.Tables;
+import com.code44.finance.data.db.Tables;
 
 public class TransactionsProvider extends BaseModelProvider {
     public static Uri uriTransactions() {

@@ -13,7 +13,7 @@ import android.widget.ListView;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.TransactionsAdapter;
-import com.code44.finance.providers.TransactionsProvider;
+import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.ui.BaseFragment;
 
 public class TransactionsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {

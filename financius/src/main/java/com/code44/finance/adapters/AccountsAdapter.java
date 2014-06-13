@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.db.model.Account;
-import com.code44.finance.utils.AmountUtils;
+import com.code44.finance.data.db.model.Account;
+import com.code44.finance.utils.MoneyFormatter;
 
 public class AccountsAdapter extends BaseModelsAdapter {
     public AccountsAdapter(Context context) {
@@ -28,7 +28,7 @@ public class AccountsAdapter extends BaseModelsAdapter {
         final ViewHolder holder = (ViewHolder) view.getTag();
         final Account account = Account.from(cursor);
         holder.title_TV.setText(account.getTitle());
-        holder.balance_TV.setText(AmountUtils.format(account.getCurrency(), account.getBalance()));
+        holder.balance_TV.setText(MoneyFormatter.format(account.getCurrency(), account.getBalance()));
     }
 
     private static class ViewHolder {

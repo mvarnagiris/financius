@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.code44.finance.R;
-import com.code44.finance.db.model.Currency;
-import com.code44.finance.providers.CurrenciesProvider;
+import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelEditFragment;
 
 public class CurrencyEditFragment extends ModelEditFragment<Currency> {
@@ -38,7 +38,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> {
     }
 
     @Override
-    public boolean onSave() {
+    public boolean onSave(Currency model) {
         return false;
     }
 

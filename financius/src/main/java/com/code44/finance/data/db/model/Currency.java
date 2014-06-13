@@ -1,4 +1,4 @@
-package com.code44.finance.db.model;
+package com.code44.finance.data.db.model;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -10,9 +10,9 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.code44.finance.App;
-import com.code44.finance.db.Column;
-import com.code44.finance.db.Tables;
-import com.code44.finance.providers.CurrenciesProvider;
+import com.code44.finance.data.db.Column;
+import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.IOUtils;
 import com.code44.finance.utils.QueryBuilder;
 

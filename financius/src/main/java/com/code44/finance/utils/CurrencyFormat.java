@@ -1,6 +1,6 @@
 package com.code44.finance.utils;
 
-import com.code44.finance.db.model.Currency;
+import com.code44.finance.data.db.model.Currency;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;

@@ -3,6 +3,7 @@ package com.code44.finance.ui.accounts;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.code44.finance.R;
-import com.code44.finance.db.model.Account;
-import com.code44.finance.providers.AccountsProvider;
+import com.code44.finance.data.db.model.Account;
+import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.ui.ModelEditFragment;
+import com.code44.finance.utils.MoneyFormatter;
 
 public class AccountEditFragment extends ModelEditFragment<Account> {
     private EditText title_ET;
@@ -45,8 +47,15 @@ public class AccountEditFragment extends ModelEditFragment<Account> {
     }
 
     @Override
-    public boolean onSave() {
-        return false;
+    public boolean onSave(Account model) {
+        boolean canSave = true;
+
+        if (TextUtils.isEmpty(model.getTitle())) {
+            canSave = false;
+            // TODO Show error
+        }
+
+        return canSave;
     }
 
     @Override
@@ -67,6 +76,9 @@ public class AccountEditFragment extends ModelEditFragment<Account> {
 
     @Override
     protected void onModelLoaded(Account model) {
-
+        title_ET.setText(model.getTitle());
+        currency_B.setText(model.getCurrency().getCode());
+        amount_B.setText(MoneyFormatter.format(model.getCurrency(), model.getBalance()));
+        note_ET.setText(model.getNote());
     }
 }

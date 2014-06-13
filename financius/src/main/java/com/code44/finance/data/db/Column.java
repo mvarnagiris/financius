@@ -1,4 +1,4 @@
-package com.code44.finance.db;
+package com.code44.finance.data.db;
 
 import android.text.TextUtils;
 

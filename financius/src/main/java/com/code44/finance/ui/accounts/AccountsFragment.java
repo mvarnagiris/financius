@@ -10,11 +10,11 @@ import android.view.ViewGroup;
 import com.code44.finance.R;
 import com.code44.finance.adapters.AccountsAdapter;
 import com.code44.finance.adapters.BaseModelsAdapter;
-import com.code44.finance.db.Tables;
-import com.code44.finance.db.model.Account;
-import com.code44.finance.providers.AccountsProvider;
+import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.db.model.Account;
+import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.ui.ModelListFragment;
-import com.code44.finance.utils.Query;
+import com.code44.finance.data.Query;
 
 public class AccountsFragment extends ModelListFragment {
     public static AccountsFragment newInstance() {

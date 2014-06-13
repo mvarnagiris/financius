@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.db.model.Currency;
-import com.code44.finance.utils.AmountUtils;
+import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.utils.MoneyFormatter;
 
 public class CurrenciesAdapter extends BaseModelsAdapter {
     private final int textPrimaryColor;
@@ -33,7 +33,7 @@ public class CurrenciesAdapter extends BaseModelsAdapter {
         final ViewHolder holder = (ViewHolder) view.getTag();
         final Currency currency = Currency.from(cursor);
         holder.code_TV.setText(currency.getCode());
-        holder.format_TV.setText("(" + AmountUtils.format(currency, 100000) + ")");
+        holder.format_TV.setText("(" + MoneyFormatter.format(currency, 100000) + ")");
         if (currency.isDefault()) {
             holder.code_TV.setTextColor(textAccentColor);
             holder.exchangeRate_TV.setText(null);

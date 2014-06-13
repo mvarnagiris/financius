@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
-import com.code44.finance.db.model.BaseModel;
-import com.code44.finance.utils.Query;
+import com.code44.finance.data.db.model.BaseModel;
+import com.code44.finance.data.Query;
 
 public abstract class ModelFragment<T extends BaseModel> extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     protected static final int LOADER_MODEL = 1000;

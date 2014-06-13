@@ -1,8 +1,8 @@
-package com.code44.finance.providers;
+package com.code44.finance.data.providers;
 
 import android.net.Uri;
 
-import com.code44.finance.db.Tables;
+import com.code44.finance.data.db.Tables;
 
 public class CurrenciesProvider extends BaseModelProvider {
     public static Uri uriCurrencies() {

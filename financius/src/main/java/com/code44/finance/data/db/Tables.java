@@ -1,8 +1,8 @@
-package com.code44.finance.db;
+package com.code44.finance.data.db;
 
 import android.provider.BaseColumns;
 
-import com.code44.finance.db.model.BaseModel;
+import com.code44.finance.data.db.model.BaseModel;
 
 public final class Tables {
     private Tables() {

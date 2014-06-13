@@ -32,19 +32,19 @@
         <!-- Providers -->
         <!-- ======================================================================================================= -->
         <provider
-            android:name=".providers.CurrenciesProvider"
+            android:name=".data.providers.CurrenciesProvider"
             android:authorities="@string/authority_currencies"
             android:exported="false" />
         <provider
-            android:name=".providers.AccountsProvider"
+            android:name=".data.providers.AccountsProvider"
             android:authorities="@string/authority_accounts"
             android:exported="false" />
         <provider
-            android:name=".providers.CategoriesProvider"
+            android:name=".data.providers.CategoriesProvider"
             android:authorities="@string/authority_categories"
             android:exported="false" />
         <provider
-            android:name=".providers.TransactionsProvider"
+            android:name=".data.providers.TransactionsProvider"
             android:authorities="@string/authority_transactions"
             android:exported="false" />
 

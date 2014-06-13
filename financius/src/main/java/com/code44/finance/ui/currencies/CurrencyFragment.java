@@ -18,10 +18,10 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
 import com.code44.finance.api.currencies.CurrencyRequest;
-import com.code44.finance.db.model.Currency;
-import com.code44.finance.providers.CurrenciesProvider;
+import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelFragment;
-import com.code44.finance.utils.AmountUtils;
+import com.code44.finance.utils.MoneyFormatter;
 
 import de.greenrobot.event.EventBus;
 
@@ -125,10 +125,10 @@ public class CurrencyFragment extends ModelFragment<Currency> {
             code_TV.setText(ssb);
             code_TV.setTextColor(getResources().getColor(R.color.text_primary));
             exchangeRate_TV.setText(String.valueOf(currency.getExchangeRate()));
-            mainFormat_TV.setText("= " + AmountUtils.format(Currency.getDefault(), (long) (100000 * currency.getExchangeRate())));
+            mainFormat_TV.setText("= " + MoneyFormatter.format(Currency.getDefault(), (long) (100000 * currency.getExchangeRate())));
             mainFormat_TV.setVisibility(View.VISIBLE);
         }
-        format_TV.setText(AmountUtils.format(currency, 100000));
+        format_TV.setText(MoneyFormatter.format(currency, 100000));
     }
 
     @SuppressWarnings("UnusedDeclaration")

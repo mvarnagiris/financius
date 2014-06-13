@@ -6,11 +6,11 @@ import android.database.Cursor;
 
 import com.code44.finance.api.BaseRequest;
 import com.code44.finance.api.BaseRequestEvent;
-import com.code44.finance.db.Tables;
-import com.code44.finance.db.model.Currency;
-import com.code44.finance.providers.CurrenciesProvider;
+import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.IOUtils;
-import com.code44.finance.utils.Query;
+import com.code44.finance.data.Query;
 import com.google.gson.JsonObject;
 
 import retrofit.client.Response;

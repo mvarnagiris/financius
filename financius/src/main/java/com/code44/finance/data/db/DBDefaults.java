@@ -1,13 +1,13 @@
-package com.code44.finance.db;
+package com.code44.finance.data.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.code44.finance.R;
-import com.code44.finance.db.model.Account;
-import com.code44.finance.db.model.Category;
-import com.code44.finance.db.model.Currency;
+import com.code44.finance.data.db.model.Account;
+import com.code44.finance.data.db.model.Category;
+import com.code44.finance.data.db.model.Currency;
 
 import java.util.HashSet;
 import java.util.Locale;

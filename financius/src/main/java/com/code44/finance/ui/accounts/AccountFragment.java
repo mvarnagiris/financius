@@ -4,8 +4,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.code44.finance.db.model.Account;
-import com.code44.finance.providers.AccountsProvider;
+import com.code44.finance.data.db.model.Account;
+import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.ui.ModelFragment;
 
 public class AccountFragment extends ModelFragment<Account> {

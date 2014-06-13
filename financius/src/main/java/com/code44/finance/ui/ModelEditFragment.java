@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 
-import com.code44.finance.db.model.BaseModel;
+import com.code44.finance.data.db.model.BaseModel;
 
 public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragment<T> {
     private static final String STATE_MODEL = "STATE_MODEL";
@@ -45,10 +45,10 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
 
     public boolean save() {
         ensureModelUpdated(model);
-        return onSave();
+        return onSave(model);
     }
 
-    public abstract boolean onSave();
+    public abstract boolean onSave(T model);
 
     protected abstract void ensureModelUpdated(T model);
 }

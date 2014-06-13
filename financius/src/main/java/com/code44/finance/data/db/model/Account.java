@@ -1,4 +1,4 @@
-package com.code44.finance.db.model;
+package com.code44.finance.data.db.model;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -8,9 +8,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.code44.finance.App;
-import com.code44.finance.db.Column;
-import com.code44.finance.db.Tables;
-import com.code44.finance.providers.AccountsProvider;
+import com.code44.finance.data.db.Column;
+import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.utils.IOUtils;
 import com.code44.finance.utils.QueryBuilder;
 

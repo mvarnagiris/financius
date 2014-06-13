@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.db.model.Transaction;
-import com.code44.finance.utils.AmountUtils;
+import com.code44.finance.data.db.model.Transaction;
+import com.code44.finance.utils.MoneyFormatter;
 
 public class TransactionsAdapter extends CursorAdapter {
     public TransactionsAdapter(Context context) {
@@ -28,7 +28,7 @@ public class TransactionsAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         final ViewHolder holder = (ViewHolder) view.getTag();
         final Transaction transaction = Transaction.from(cursor);
-        holder.amount_TV.setText(AmountUtils.format(transaction));
+        holder.amount_TV.setText(MoneyFormatter.format(transaction));
     }
 
     private static class ViewHolder {

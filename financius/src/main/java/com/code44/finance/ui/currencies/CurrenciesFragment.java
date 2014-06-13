@@ -19,12 +19,12 @@ import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.adapters.CurrenciesAdapter;
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
 import com.code44.finance.api.currencies.CurrencyRequest;
-import com.code44.finance.db.Tables;
-import com.code44.finance.db.model.Currency;
-import com.code44.finance.providers.CurrenciesProvider;
+import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.GeneralPrefs;
-import com.code44.finance.utils.Query;
+import com.code44.finance.data.Query;
 
 import java.util.ArrayList;
 import java.util.List;
