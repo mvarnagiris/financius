@@ -5,34 +5,55 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/space_large"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical">
 
-        <TextView
-            style="@style/TextView.Title"
-            android:text="@string/account" />
+        <FrameLayout style="@style/Container.Title">
 
-        <EditText
-            android:id="@+id/title_ET"
-            style="@style/EditText"
-            android:hint="@string/title"
-            android:inputType="textCapWords" />
+            <TextView
+                style="@style/TextView.Title"
+                android:text="@string/account" />
 
-        <Button
-            android:id="@+id/currency_B"
-            style="@style/Button.Borderless" />
+        </FrameLayout>
 
-        <Button
-            android:id="@+id/amount_B"
-            style="@style/Button.Borderless" />
+        <View style="@style/Separator.Thin" />
 
-        <EditText
-            android:id="@+id/note_ET"
-            style="@style/EditText"
-            android:hint="@string/note"
-            android:inputType="textCapSentences" />
+        <LinearLayout style="@style/Container.Edit">
+
+            <EditText
+                android:id="@+id/title_ET"
+                style="@style/EditText"
+                android:hint="@string/title"
+                android:inputType="textCapWords" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_normal">
+
+                <Button
+                    android:id="@+id/currency_B"
+                    style="@style/Button.Select"
+                    android:layout_width="wrap_content"
+                    android:typeface="monospace" />
+
+                <Button
+                    android:id="@+id/amount_B"
+                    style="@style/Button.Select"
+                    android:layout_marginLeft="@dimen/space_normal"
+                    android:gravity="right|center_vertical" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/note_ET"
+                style="@style/EditText"
+                android:layout_marginTop="@dimen/space_normal"
+                android:hint="@string/note"
+                android:inputType="textCapSentences" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
