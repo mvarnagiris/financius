@@ -55,10 +55,10 @@
         <item name="android:textSize">@dimen/text_large</item>
     </style>
 
-    <style name="Button.Select">
-        <item name="android:textSize">@dimen/text_large</item>
-        <item name="android:background">@drawable/btn_borderless</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@string/font_light</item>
+    <style name="Button.Select" parent="EditText">
+        <item name="android:minHeight">0dp</item>
+        <item name="android:background">@drawable/edit_text</item>
+
     </style>
 
     <!-- ImageView -->

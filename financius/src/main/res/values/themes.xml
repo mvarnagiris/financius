@@ -4,6 +4,7 @@
     <style name="AppTheme" parent="android:Theme.Holo.Light">
         <item name="android:windowBackground">@color/bg_window</item>
         <item name="android:actionBarStyle">@style/ActionBar</item>
+        <item name="android:editTextStyle">@style/EditTextTheme</item>
         <item name="spbStyle">@style/ProgressBar</item>
     </style>
 
@@ -23,6 +24,10 @@
         <item name="spb_reversed">true</item>
         <item name="spb_colors">@array/progress_bar_colors</item>
         <item name="spb_progressiveStart_activated">true</item>
+    </style>
+
+    <style name="EditTextTheme" parent="android:Widget.EditText">
+        <item name="android:background">@drawable/edit_text</item>
     </style>
 
 </resources>
