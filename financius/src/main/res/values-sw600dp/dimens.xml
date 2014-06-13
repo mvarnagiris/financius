@@ -1,6 +1,6 @@
 <resources>
 
-    <dimen name="margin_edit">64dp</dimen>
+    <dimen name="margin_edit_content">64dp</dimen>
     <dimen name="edit_title_padding_top">64dp</dimen>
 
     <dimen name="text_xxxlarge">38sp</dimen>

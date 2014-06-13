@@ -20,12 +20,22 @@ public abstract class ModelEditActivity extends ModelActivity implements View.On
         actionBar.hide();
 
         // Get views
+        final View leftMargin_V = findViewById(R.id.leftMargin_V);
+        final View rightMargin_V = findViewById(R.id.rightMargin_V);
+        final View leftSeparator_V = findViewById(R.id.leftSeparator_V);
+        final View rightSeparator_V = findViewById(R.id.rightSeparator_V);
         final View cancel_V = findViewById(R.id.cancel_B);
         final View save_V = findViewById(R.id.save_B);
 
         // Setup
         cancel_V.setOnClickListener(this);
         save_V.setOnClickListener(this);
+        if (getResources().getDimensionPixelSize(R.dimen.margin_edit_container) == 0) {
+            leftMargin_V.setVisibility(View.GONE);
+            rightMargin_V.setVisibility(View.GONE);
+            leftSeparator_V.setVisibility(View.GONE);
+            rightSeparator_V.setVisibility(View.GONE);
+        }
     }
 
     @Override

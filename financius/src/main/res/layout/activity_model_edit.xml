@@ -2,11 +2,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <View
+        android:id="@+id/leftMargin_V"
+        android:layout_width="@dimen/margin_edit_container"
+        android:layout_height="match_parent"
+        android:background="@color/bg_secondary" />
+
+    <View
+        android:id="@+id/rightMargin_V"
+        android:layout_width="@dimen/margin_edit_container"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="@color/bg_secondary" />
+
+    <View
+        android:id="@+id/leftSeparator_V"
+        style="@style/Separator.Vertical.Thin"
+        android:layout_toRightOf="@+id/leftMargin_V" />
+
+    <View
+        android:id="@+id/rightSeparator_V"
+        style="@style/Separator.Vertical.Thin"
+        android:layout_toLeftOf="@+id/rightMargin_V" />
+
     <LinearLayout
         android:id="@+id/buttonContainer_V"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/leftSeparator_V"
+        android:layout_toLeftOf="@+id/rightSeparator_V"
         android:showDividers="middle"
         android:divider="?android:attr/dividerVertical"
         android:dividerPadding="@dimen/space_normal"
@@ -36,12 +61,42 @@
     <View
         android:id="@+id/separator_V"
         style="@style/Separator.Thin"
+        android:layout_toRightOf="@id/leftMargin_V"
+        android:layout_toLeftOf="@id/rightMargin_V"
         android:layout_above="@+id/buttonContainer_V" />
 
-    <FrameLayout
-        android:id="@+id/container_V"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/separator_V" />
+    <ScrollView
+        style="@style/ScrollView"
+        android:layout_toRightOf="@id/leftMargin_V"
+        android:layout_toLeftOf="@id/rightMargin_V"
+        android:layout_above="@+id/separator_V">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <FrameLayout style="@style/Container.Title">
+
+                <TextView
+                    android:id="@+id/title_TV"
+                    style="@style/TextView.Title"
+                    android:text="@string/account" />
+
+                <View
+                    style="@style/Separator.Thin"
+                    android:layout_gravity="bottom" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/container_V"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </ScrollView>
 </RelativeLayout>

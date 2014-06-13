@@ -1,6 +1,6 @@
 <resources>
 
-    <dimen name="margin_edit">64dp</dimen>
+    <dimen name="margin_edit_content">64dp</dimen>
 
     <dimen name="text_xxxlarge">32sp</dimen>
     <dimen name="text_xxlarge">26sp</dimen>
