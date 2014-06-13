@@ -1,6 +1,8 @@
 package com.code44.finance.ui.accounts;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,11 +16,16 @@ import android.widget.EditText;
 import com.code44.finance.R;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.model.Account;
+import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.ui.ModelEditFragment;
+import com.code44.finance.ui.ModelListActivity;
+import com.code44.finance.ui.currencies.CurrenciesActivity;
 import com.code44.finance.utils.MoneyFormatter;
 
-public class AccountEditFragment extends ModelEditFragment<Account> {
+public class AccountEditFragment extends ModelEditFragment<Account> implements View.OnClickListener {
+    private static final int REQUEST_CURRENCY = 1;
+
     private EditText title_ET;
     private Button currency_B;
     private Button amount_B;
@@ -46,6 +53,24 @@ public class AccountEditFragment extends ModelEditFragment<Account> {
         currency_B = (Button) view.findViewById(R.id.currency_B);
         amount_B = (Button) view.findViewById(R.id.amount_B);
         note_ET = (EditText) view.findViewById(R.id.note_ET);
+
+        // Setup
+        currency_B.setOnClickListener(this);
+        amount_B.setOnClickListener(this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CURRENCY:
+                    ensureModelUpdated(model);
+                    model.setCurrency(data.<Currency>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
+                    onModelLoaded(model);
+                    return;
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -86,5 +111,18 @@ public class AccountEditFragment extends ModelEditFragment<Account> {
         currency_B.setText(model.getCurrency().getCode());
         amount_B.setText(MoneyFormatter.format(model.getCurrency(), model.getBalance()));
         note_ET.setText(model.getNote());
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.currency_B:
+                CurrenciesActivity.startSelect(this, REQUEST_CURRENCY);
+                break;
+
+            case R.id.amount_B:
+                // TODO Request amount
+                break;
+        }
     }
 }

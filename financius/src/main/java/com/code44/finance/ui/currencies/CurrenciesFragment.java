@@ -19,12 +19,13 @@ import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.adapters.CurrenciesAdapter;
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
 import com.code44.finance.api.currencies.CurrencyRequest;
+import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.GeneralPrefs;
-import com.code44.finance.data.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +38,8 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
 
     private SmoothProgressBar loading_SPB;
 
-    public static CurrenciesFragment newInstance() {
-        final Bundle args = makeArgs();
+    public static CurrenciesFragment newInstance(int mode) {
+        final Bundle args = makeArgs(mode);
 
         final CurrenciesFragment fragment = new CurrenciesFragment();
         fragment.setArguments(args);
@@ -56,12 +57,17 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
 
         // Get views
         loading_SPB = (SmoothProgressBar) view.findViewById(R.id.loading_SPB);
-        //final View separator_V = view.findViewById(R.id.separator_V);
+        final View separator_V = view.findViewById(R.id.separator_V);
+        final View container_V = view.findViewById(R.id.container_V);
         final Switch autoUpdateCurrencies_S = (Switch) view.findViewById(R.id.autoUpdateCurrencies_S);
 
         // Setup
         autoUpdateCurrencies_S.setChecked(GeneralPrefs.get().isAutoUpdateCurrencies());
         autoUpdateCurrencies_S.setOnCheckedChangeListener(this);
+        if (isSelectMode()) {
+            separator_V.setVisibility(View.GONE);
+            container_V.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -111,6 +117,11 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
     @Override
     protected Uri getUri() {
         return CurrenciesProvider.uriCurrencies();
+    }
+
+    @Override
+    protected BaseModel modelFrom(Cursor cursor) {
+        return Currency.from(cursor);
     }
 
     @Override

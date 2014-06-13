@@ -20,7 +20,7 @@ public class AccountsActivity extends ModelListActivity {
     }
 
     @Override
-    protected ModelListFragment createModelsFragment() {
-        return AccountsFragment.newInstance();
+    protected ModelListFragment createModelsFragment(int mode) {
+        return AccountsFragment.newInstance(mode);
     }
 }

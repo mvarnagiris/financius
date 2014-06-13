@@ -1,6 +1,7 @@
 package com.code44.finance.ui.currencies;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.View;
 
@@ -10,7 +11,11 @@ import com.code44.finance.ui.ModelListFragment;
 
 public class CurrenciesActivity extends ModelListActivity {
     public static void start(Context context, View expandFrom) {
-        start(context, makeIntentModels(context, CurrenciesActivity.class), expandFrom);
+        start(context, makeIntentView(context, CurrenciesActivity.class), expandFrom);
+    }
+
+    public static void startSelect(Fragment fragment, int requestCode) {
+        startForResult(fragment, makeIntentSelect(fragment.getActivity(), CurrenciesActivity.class), requestCode);
     }
 
     @Override
@@ -24,7 +29,7 @@ public class CurrenciesActivity extends ModelListActivity {
     }
 
     @Override
-    protected ModelListFragment createModelsFragment() {
-        return CurrenciesFragment.newInstance();
+    protected ModelListFragment createModelsFragment(int mode) {
+        return CurrenciesFragment.newInstance(mode);
     }
 }

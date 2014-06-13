@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +30,10 @@ public class BaseActivity extends FragmentActivity {
         } else {
             context.startActivity(intent);
         }
+    }
+
+    protected static void startForResult(Fragment fragment, Intent intent, int requestCode) {
+        fragment.startActivityForResult(intent, requestCode);
     }
 
     @Override

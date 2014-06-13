@@ -1,5 +1,6 @@
 package com.code44.finance.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,20 +17,42 @@ import android.widget.ListView;
 import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.data.Query;
+import com.code44.finance.data.db.model.BaseModel;
 
 public abstract class ModelListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
     protected static final int LOADER_MODELS = 1000;
 
+    public static final String ARG_MODE = "ARG_MODE";
+
     protected BaseModelsAdapter adapter;
 
-    public static Bundle makeArgs() {
-        return new Bundle();
+    private ModelListFragmentCallbacks callbacks;
+    private boolean isSelectMode;
+
+    public static Bundle makeArgs(int mode) {
+        final Bundle args = new Bundle();
+        args.putInt(ARG_MODE, mode);
+        return args;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if (activity instanceof ModelListFragmentCallbacks) {
+            callbacks = (ModelListFragmentCallbacks) activity;
+        } else {
+            throw new IllegalStateException(activity + " must implement " + ModelListFragmentCallbacks.class.getSimpleName());
+        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        // Get arguments
+        isSelectMode = getArguments().getInt(ARG_MODE, ModelListActivity.MODE_VIEW) == ModelListActivity.MODE_SELECT;
     }
 
     @Override
@@ -98,7 +121,11 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        startModelActivity(getActivity(), view, id);
+        if (isSelectMode()) {
+            callbacks.onModelSelected(id, modelFrom(adapter.getCursor()));
+        } else {
+            startModelActivity(getActivity(), view, id);
+        }
     }
 
     protected abstract void startModelActivity(Context context, View expandFrom, long modelId);
@@ -109,7 +136,17 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
 
     protected abstract Uri getUri();
 
+    protected abstract BaseModel modelFrom(Cursor cursor);
+
     protected Query getQuery() {
         return null;
+    }
+
+    protected boolean isSelectMode() {
+        return isSelectMode;
+    }
+
+    static interface ModelListFragmentCallbacks {
+        public void onModelSelected(long id, BaseModel model);
     }
 }

@@ -1,6 +1,7 @@
 package com.code44.finance.ui.accounts;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,12 +14,13 @@ import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
+import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.ui.ModelListFragment;
 
 public class AccountsFragment extends ModelListFragment {
-    public static AccountsFragment newInstance() {
-        final Bundle args = makeArgs();
+    public static AccountsFragment newInstance(int mode) {
+        final Bundle args = makeArgs(mode);
 
         final AccountsFragment fragment = new AccountsFragment();
         fragment.setArguments(args);
@@ -48,6 +50,11 @@ public class AccountsFragment extends ModelListFragment {
     @Override
     protected Uri getUri() {
         return AccountsProvider.uriAccounts();
+    }
+
+    @Override
+    protected BaseModel modelFrom(Cursor cursor) {
+        return Account.from(cursor);
     }
 
     @Override
