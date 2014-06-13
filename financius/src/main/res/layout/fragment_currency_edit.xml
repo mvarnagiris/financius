@@ -5,16 +5,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/space_large"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/code_ET"
-            style="@style/EditText"
-            android:hint="@string/currency_code"
-            android:inputType="textCapCharacters" />
+        <FrameLayout style="@style/Container.Title">
+
+            <TextView
+                style="@style/TextView.Title"
+                android:text="@string/currency" />
+
+        </FrameLayout>
+
+        <View style="@style/Separator.Thin" />
+
+        <LinearLayout style="@style/Container.Edit">
+
+            <EditText
+                android:id="@+id/code_ET"
+                style="@style/EditText"
+                android:hint="@string/currency_code"
+                android:inputType="textCapCharacters"
+                android:maxLength="3" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
