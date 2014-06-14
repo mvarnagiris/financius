@@ -29,6 +29,10 @@ public class MoneyFormatter {
         return currencyFormat.format(number);
     }
 
+    public static void invalidateCache() {
+        currencyFormats.clear();
+    }
+
     private static CurrencyFormat getCurrencyFormat(Currency currency, boolean useCache) {
         final long currencyId = currency.getId();
         if (currencyId == 0 || !useCache) {

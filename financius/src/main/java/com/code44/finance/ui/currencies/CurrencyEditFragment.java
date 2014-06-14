@@ -24,6 +24,7 @@ import com.code44.finance.R;
 import com.code44.finance.api.BaseRequestEvent;
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
 import com.code44.finance.api.currencies.CurrencyRequest;
+import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.BaseModel;
@@ -132,7 +133,18 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
 
     @Override
     public boolean onSave(Context context, Currency model) {
-        return false;
+        boolean canSave = true;
+
+        if (TextUtils.isEmpty(model.getCode()) || model.getCode().length() != 3 || model.getCode().equals(Currency.getDefault().getCode())) {
+            canSave = false;
+            // TODO Show error
+        }
+
+        if (canSave) {
+            DataStore.with(context, CurrenciesProvider.uriCurrencies()).values(model.asContentValues()).insert();
+        }
+
+        return canSave;
     }
 
     @Override
@@ -296,7 +308,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     @SuppressWarnings("UnusedDeclaration")
     public void onEventMainThread(CurrencyRequest.CurrencyRequestEvent event) {
         updateProgressBar();
-        if (CurrencyRequest.getUniqueId(model.getCode(), Currency.getDefault().getCode()).equals(event.getRequest().getUniqueId())) {
+        if (model != null && CurrencyRequest.getUniqueId(model.getCode(), Currency.getDefault().getCode()).equals(event.getRequest().getUniqueId())) {
             model.setExchangeRate(event.getParsedResponse().getExchangeRate());
             onModelLoaded(model);
         }

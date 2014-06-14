@@ -105,7 +105,9 @@ public abstract class BaseModelProvider extends BaseProvider {
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
+                onBeforeBulkInsert();
                 count = ProviderUtils.doArrayReplaceInTransaction(database, getModelTable(), valuesArray);
+                onAfterBulkInsert();
                 break;
 
             default:
@@ -119,6 +121,12 @@ public abstract class BaseModelProvider extends BaseProvider {
     protected abstract String getModelTable();
 
     protected abstract String getQueryTables();
+
+    protected void onBeforeBulkInsert() {
+    }
+
+    protected void onAfterBulkInsert() {
+    }
 
     public Cursor queryItems(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         final SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
