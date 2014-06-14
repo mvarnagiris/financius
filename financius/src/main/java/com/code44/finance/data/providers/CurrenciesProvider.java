@@ -29,4 +29,12 @@ public class CurrenciesProvider extends BaseModelProvider {
         super.onAfterBulkInsert();
         MoneyFormatter.invalidateCache();
     }
+
+    @Override
+    protected void notifyOtherProviders() {
+        super.notifyOtherProviders();
+
+        ProviderUtils.notifyChangeIfNecessary(getContext(), AccountsProvider.uriAccounts());
+        ProviderUtils.notifyChangeIfNecessary(getContext(), TransactionsProvider.uriTransactions());
+    }
 }

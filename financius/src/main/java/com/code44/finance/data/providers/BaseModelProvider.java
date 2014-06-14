@@ -91,6 +91,7 @@ public abstract class BaseModelProvider extends BaseProvider {
         }
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
+        notifyOtherProviders();
         return count;
     }
 
@@ -115,6 +116,7 @@ public abstract class BaseModelProvider extends BaseProvider {
         }
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
+        notifyOtherProviders();
         return count;
     }
 
@@ -126,6 +128,10 @@ public abstract class BaseModelProvider extends BaseProvider {
     }
 
     protected void onAfterBulkInsert() {
+    }
+
+    protected void notifyOtherProviders() {
+
     }
 
     public Cursor queryItems(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
