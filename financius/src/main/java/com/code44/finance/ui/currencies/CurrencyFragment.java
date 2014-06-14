@@ -3,7 +3,6 @@ package com.code44.finance.ui.currencies;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -24,9 +23,10 @@ import com.code44.finance.ui.ModelFragment;
 import com.code44.finance.utils.MoneyFormatter;
 
 import de.greenrobot.event.EventBus;
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 public class CurrencyFragment extends ModelFragment<Currency> {
-    private SwipeRefreshLayout swipeRefresh_V;
+    private SmoothProgressBar loading_SPB;
     private TextView code_TV;
     private TextView format_TV;
     private TextView mainFormat_TV;
@@ -56,14 +56,11 @@ public class CurrencyFragment extends ModelFragment<Currency> {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        swipeRefresh_V = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh_V);
+        loading_SPB = (SmoothProgressBar) view.findViewById(R.id.loading_SPB);
         code_TV = (TextView) view.findViewById(R.id.code_TV);
         format_TV = (TextView) view.findViewById(R.id.format_TV);
         mainFormat_TV = (TextView) view.findViewById(R.id.mainFormat_TV);
         exchangeRate_TV = (TextView) view.findViewById(R.id.exchangeRate_TV);
-
-        // Setup
-        swipeRefresh_V.setEnabled(false);
     }
 
     @Override
@@ -139,7 +136,7 @@ public class CurrencyFragment extends ModelFragment<Currency> {
     }
 
     private void updateRefreshView() {
-        swipeRefresh_V.setRefreshing(EventBus.getDefault().getStickyEvent(CurrencyRequest.CurrencyRequestEvent.class) != null);
+        loading_SPB.setVisibility(EventBus.getDefault().getStickyEvent(CurrencyRequest.CurrencyRequestEvent.class) != null ? View.VISIBLE : View.INVISIBLE);
     }
 
     private void refreshRate() {
