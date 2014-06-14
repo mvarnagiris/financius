@@ -6,11 +6,11 @@ import android.database.Cursor;
 
 import com.code44.finance.api.BaseRequest;
 import com.code44.finance.api.BaseRequestEvent;
+import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.IOUtils;
-import com.code44.finance.data.Query;
 import com.google.gson.JsonObject;
 
 import retrofit.client.Response;
@@ -51,13 +51,15 @@ public class CurrencyRequest extends BaseRequest<Currency, CurrenciesRequestServ
         IOUtils.closeQuietly(cursor);
 
         currency.setExchangeRate(exchangeRate);
-        context.getContentResolver().bulkInsert(CurrenciesProvider.uriCurrencies(), new ContentValues[]{currency.asContentValues()});
+        if (currency.getId() > 0) {
+            context.getContentResolver().bulkInsert(CurrenciesProvider.uriCurrencies(), new ContentValues[]{currency.asContentValues()});
+        }
 
         return currency;
     }
 
     @Override
-    protected String getUniqueId() {
+    public String getUniqueId() {
         return getUniqueId(fromCode, toCode);
     }
 

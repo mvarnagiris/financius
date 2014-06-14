@@ -89,6 +89,8 @@ public class CurrencyFragment extends ModelFragment<Currency> {
         super.onPrepareOptionsMenu(menu);
         //noinspection ConstantConditions
         menu.findItem(R.id.action_refresh_rate).setVisible(model != null && !model.isDefault());
+        //noinspection ConstantConditions
+        menu.findItem(R.id.action_delete).setVisible(model != null && !model.isDefault());
     }
 
     @Override

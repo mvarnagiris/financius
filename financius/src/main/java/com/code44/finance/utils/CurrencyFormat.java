@@ -19,7 +19,8 @@ public final class CurrencyFormat {
 
         // Setup symbols
         final DecimalFormatSymbols symbols = decimalFormat.getDecimalFormatSymbols();
-        symbols.setGroupingSeparator(currency.getGroupSeparator().symbol().charAt(0));
+        final char groupSeparator = currency.getGroupSeparator() != Currency.GroupSeparator.NONE ? currency.getGroupSeparator().symbol().charAt(0) : 0;
+        symbols.setGroupingSeparator(groupSeparator);
         symbols.setDecimalSeparator(currency.getDecimalSeparator().symbol().charAt(0));
 
         // Setup format

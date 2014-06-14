@@ -1,6 +1,7 @@
 package com.code44.finance.data.db.model;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcel;
@@ -8,6 +9,7 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.code44.finance.App;
+import com.code44.finance.R;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
@@ -274,7 +276,9 @@ public class Currency extends BaseModel {
     }
 
     public static enum DecimalSeparator {
-        DOT("."), COMMA(","), SPACE(" ");
+        DOT("."),
+        COMMA(","),
+        SPACE(" ");
 
         private final String symbol;
 
@@ -301,10 +305,34 @@ public class Currency extends BaseModel {
         public String symbol() {
             return symbol;
         }
+
+        public String explanation(Context context) {
+            final int resId;
+            switch (this) {
+                case DOT:
+                    resId = R.string.dot;
+                    break;
+
+                case COMMA:
+                    resId = R.string.comma;
+                    break;
+
+                case SPACE:
+                    resId = R.string.space;
+                    break;
+
+                default:
+                    throw new IllegalArgumentException(this + " explanation is not supported.");
+            }
+            return "(" + context.getString(resId) + ") " + symbol;
+        }
     }
 
     public static enum GroupSeparator {
-        NONE(""), DOT("."), COMMA(","), SPACE(" ");
+        NONE(""),
+        DOT("."),
+        COMMA(","),
+        SPACE(" ");
 
         private final String symbol;
 
@@ -334,10 +362,38 @@ public class Currency extends BaseModel {
         public String symbol() {
             return symbol;
         }
+
+        public String explanation(Context context) {
+            final int resId;
+            switch (this) {
+                case NONE:
+                    resId = R.string.none;
+                    break;
+
+                case DOT:
+                    resId = R.string.dot;
+                    break;
+
+                case COMMA:
+                    resId = R.string.comma;
+                    break;
+
+                case SPACE:
+                    resId = R.string.space;
+                    break;
+
+                default:
+                    throw new IllegalArgumentException(this + " explanation is not supported.");
+            }
+            return "(" + context.getString(resId) + ") " + symbol;
+        }
     }
 
     public static enum SymbolPosition {
-        CLOSE_RIGHT(SymbolPosition.VALUE_CLOSE_RIGHT), FAR_RIGHT(SymbolPosition.VALUE_FAR_RIGHT), CLOSE_LEFT(SymbolPosition.VALUE_CLOSE_LEFT), FAR_LEFT(SymbolPosition.VALUE_FAR_LEFT);
+        CLOSE_RIGHT(SymbolPosition.VALUE_CLOSE_RIGHT),
+        FAR_RIGHT(SymbolPosition.VALUE_FAR_RIGHT),
+        CLOSE_LEFT(SymbolPosition.VALUE_CLOSE_LEFT),
+        FAR_LEFT(SymbolPosition.VALUE_FAR_LEFT);
 
         private static final int VALUE_CLOSE_RIGHT = 1;
         private static final int VALUE_FAR_RIGHT = 2;
@@ -371,6 +427,31 @@ public class Currency extends BaseModel {
 
         public int asInt() {
             return value;
+        }
+
+        public String explanation(Context context) {
+            final int resId;
+            switch (this) {
+                case CLOSE_RIGHT:
+                    resId = R.string.close_right;
+                    break;
+
+                case FAR_RIGHT:
+                    resId = R.string.far_right;
+                    break;
+
+                case CLOSE_LEFT:
+                    resId = R.string.close_left;
+                    break;
+
+                case FAR_LEFT:
+                    resId = R.string.far_left;
+                    break;
+
+                default:
+                    throw new IllegalArgumentException(this + " explanation is not supported.");
+            }
+            return context.getString(resId);
         }
     }
 }

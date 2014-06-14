@@ -20,14 +20,18 @@ public class MoneyFormatter {
     }
 
     public static String format(Currency currency, long amount) {
-        final CurrencyFormat currencyFormat = getCurrencyFormat(currency);
+        return format(currency, amount, true);
+    }
+
+    public static String format(Currency currency, long amount, boolean useCache) {
+        final CurrencyFormat currencyFormat = getCurrencyFormat(currency, useCache);
         final double number = amount / 100.0;
         return currencyFormat.format(number);
     }
 
-    private static CurrencyFormat getCurrencyFormat(Currency currency) {
+    private static CurrencyFormat getCurrencyFormat(Currency currency, boolean useCache) {
         final long currencyId = currency.getId();
-        if (currencyId == 0) {
+        if (currencyId == 0 || !useCache) {
             return new CurrencyFormat(currency);
         } else {
             CurrencyFormat currencyFormat = currencyFormats.get(currency.getId());

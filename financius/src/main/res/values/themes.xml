@@ -14,16 +14,16 @@
     </style>
 
     <style name="ProgressBar" parent="SmoothProgressBar">
-        <item name="spb_stroke_separator_length">0dp</item>
-        <item name="spb_sections_count">2</item>
-        <item name="spb_speed">1.7</item>
-        <item name="spb_progressiveStart_speed">2</item>
-        <item name="spb_progressiveStop_speed">3.4</item>
+        <item name="spb_stroke_separator_length">10dp</item>
+        <item name="spb_sections_count">5</item>
+        <item name="spb_speed">1.0</item>
+        <item name="spb_progressiveStart_speed">1.0</item>
+        <item name="spb_progressiveStop_speed">1.0</item>
         <item name="spb_interpolator">spb_interpolator_acceleratedecelerate</item>
-        <item name="spb_mirror_mode">true</item>
-        <item name="spb_reversed">true</item>
+        <item name="spb_mirror_mode">false</item>
+        <item name="spb_reversed">false</item>
         <item name="spb_colors">@array/progress_bar_colors</item>
-        <item name="spb_progressiveStart_activated">true</item>
+        <item name="spb_progressiveStart_activated">false</item>
     </style>
 
     <style name="EditTextTheme" parent="android:Widget.EditText">

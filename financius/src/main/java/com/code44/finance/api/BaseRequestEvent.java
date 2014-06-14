@@ -34,6 +34,10 @@ public abstract class BaseRequestEvent<R, T extends BaseRequest<R, ?>> {
         return request;
     }
 
+    public R getParsedResponse() {
+        return parsedResponse;
+    }
+
     public boolean isWorking() {
         return state == State.WORKING;
     }

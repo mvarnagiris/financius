@@ -44,7 +44,7 @@ public abstract class BaseRequest<R, S> implements Callable<R> {
 
     protected abstract R parseResponse(Response rawResponse) throws Exception;
 
-    protected String getUniqueId() {
+    public String getUniqueId() {
         return null;
     }
 

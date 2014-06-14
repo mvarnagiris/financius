@@ -6,16 +6,24 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListAdapter;
+import android.widget.ListPopupWindow;
 
 import com.code44.finance.R;
+import com.code44.finance.api.BaseRequestEvent;
+import com.code44.finance.api.currencies.CurrenciesAsyncApi;
+import com.code44.finance.api.currencies.CurrencyRequest;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.BaseModel;
@@ -28,9 +36,13 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-public class CurrencyEditFragment extends ModelEditFragment<Currency> {
+import de.greenrobot.event.EventBus;
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
+
+public class CurrencyEditFragment extends ModelEditFragment<Currency> implements View.OnClickListener {
     private static final int LOADER_CURRENCIES = 1;
 
+    private SmoothProgressBar loading_SPB;
     private AutoCompleteTextView code_ET;
     private Button thousandsSeparator_B;
     private Button decimalSeparator_B;
@@ -38,6 +50,8 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> {
     private EditText symbol_ET;
     private Button symbolPosition_B;
     private EditText exchangeRate_ET;
+    private ListPopupWindow listPopupWindow_LPW;
+    private View exchangeRateContainer_V;
 
     private Set<String> existingCurrencyCodes = new HashSet<>();
 
@@ -59,6 +73,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> {
         super.onViewCreated(view, savedInstanceState);
 
         // Get view
+        loading_SPB = (SmoothProgressBar) view.findViewById(R.id.loading_SPB);
         code_ET = (AutoCompleteTextView) view.findViewById(R.id.code_ET);
         thousandsSeparator_B = (Button) view.findViewById(R.id.thousandsSeparator_B);
         decimalSeparator_B = (Button) view.findViewById(R.id.decimalSeparator_B);
@@ -66,9 +81,16 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> {
         symbol_ET = (EditText) view.findViewById(R.id.symbol_ET);
         symbolPosition_B = (Button) view.findViewById(R.id.symbolPosition_B);
         exchangeRate_ET = (EditText) view.findViewById(R.id.exchangeRate_ET);
+        exchangeRateContainer_V = view.findViewById(R.id.exchangeRateContainer_V);
+        final ImageButton refreshRate_B = (ImageButton) view.findViewById(R.id.refreshRate_B);
 
         // Setup
         prepareCurrenciesAutoComplete();
+        decimalsCount_B.setOnClickListener(this);
+        thousandsSeparator_B.setOnClickListener(this);
+        decimalSeparator_B.setOnClickListener(this);
+        symbolPosition_B.setOnClickListener(this);
+        refreshRate_B.setOnClickListener(this);
         symbol_ET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -76,8 +98,9 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                ensureModelUpdated(model);
-                symbolPosition_B.setText(MoneyFormatter.format(model, 100000));
+                //noinspection ConstantConditions
+                model.setSymbol(symbol_ET.getText().toString());
+                updateFormatView();
             }
 
             @Override
@@ -95,6 +118,19 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        updateProgressBar();
+        EventBus.getDefault().registerSticky(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public boolean onSave(Context context, Currency model) {
         return false;
     }
@@ -105,7 +141,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> {
         model.setCode(code_ET.getText().toString());
         //noinspection ConstantConditions
         model.setSymbol(symbol_ET.getText().toString());
-        double exchangeRate = 1.0;
+        double exchangeRate;
         try {
             //noinspection ConstantConditions
             exchangeRate = Double.parseDouble(exchangeRate_ET.getText().toString());
@@ -127,13 +163,17 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> {
 
     @Override
     protected void onModelLoaded(Currency model) {
-        code_ET.setText(model.getCode());
-        thousandsSeparator_B.setText(model.getGroupSeparator().symbol());
-        decimalSeparator_B.setText(model.getDecimalSeparator().symbol());
-        decimalsCount_B.setText(String.valueOf(model.getDecimalCount()));
         symbol_ET.setText(model.getSymbol());
+        code_ET.setText(model.getCode());
+        thousandsSeparator_B.setText(model.getGroupSeparator().explanation(getActivity()));
+        decimalSeparator_B.setText(model.getDecimalSeparator().explanation(getActivity()));
+        decimalsCount_B.setText(String.valueOf(model.getDecimalCount()));
         exchangeRate_ET.setText(String.valueOf(model.getExchangeRate()));
-        symbolPosition_B.setText(MoneyFormatter.format(model, 100000));
+        updateFormatView();
+
+        code_ET.setEnabled(model.getId() == 0);
+        exchangeRateContainer_V.setVisibility(model.isDefault() ? View.GONE : View.VISIBLE);
+        updateProgressBar();
     }
 
     @Override
@@ -159,6 +199,107 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> {
             return;
         }
         super.onLoadFinished(loader, data);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.refreshRate_B: {
+                ensureModelUpdated(model);
+                final String code = model.getCode();
+                if (!TextUtils.isEmpty(code) && code.length() == 3) {
+                    CurrenciesAsyncApi.get().updateExchangeRate(code);
+                }
+                break;
+            }
+            case R.id.symbolPosition_B: {
+                final String[] values = new String[Currency.SymbolPosition.values().length];
+                int index = 0;
+                for (Currency.SymbolPosition symbolPosition : Currency.SymbolPosition.values()) {
+                    values[index++] = symbolPosition.explanation(getActivity());
+                }
+                final ListAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, values);
+                final AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                        listPopupWindow_LPW.dismiss();
+                        listPopupWindow_LPW = null;
+                        model.setSymbolPosition(Currency.SymbolPosition.values()[position]);
+                        ensureModelUpdated(model);
+                        onModelLoaded(model);
+                    }
+                };
+                showPopupList(view, adapter, itemClickListener);
+                break;
+            }
+
+            case R.id.thousandsSeparator_B: {
+                final String[] values = new String[Currency.GroupSeparator.values().length];
+                int index = 0;
+                for (Currency.GroupSeparator groupSeparator : Currency.GroupSeparator.values()) {
+                    values[index++] = groupSeparator.explanation(getActivity());
+                }
+                final ListAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, values);
+                final AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                        listPopupWindow_LPW.dismiss();
+                        listPopupWindow_LPW = null;
+                        model.setGroupSeparator(Currency.GroupSeparator.values()[position]);
+                        ensureModelUpdated(model);
+                        onModelLoaded(model);
+                    }
+                };
+                showPopupList(view, adapter, itemClickListener);
+                break;
+            }
+
+            case R.id.decimalSeparator_B: {
+                final String[] values = new String[Currency.DecimalSeparator.values().length];
+                int index = 0;
+                for (Currency.DecimalSeparator decimalSeparator : Currency.DecimalSeparator.values()) {
+                    values[index++] = decimalSeparator.explanation(getActivity());
+                }
+                final ListAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, values);
+                final AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                        listPopupWindow_LPW.dismiss();
+                        listPopupWindow_LPW = null;
+                        model.setDecimalSeparator(Currency.DecimalSeparator.values()[position]);
+                        ensureModelUpdated(model);
+                        onModelLoaded(model);
+                    }
+                };
+                showPopupList(view, adapter, itemClickListener);
+                break;
+            }
+
+            case R.id.decimalsCount_B: {
+                final ListAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, new String[]{"0", "1", "2"});
+                final AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                        listPopupWindow_LPW.dismiss();
+                        listPopupWindow_LPW = null;
+                        model.setDecimalCount(position);
+                        ensureModelUpdated(model);
+                        onModelLoaded(model);
+                    }
+                };
+                showPopupList(view, adapter, itemClickListener);
+                break;
+            }
+        }
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void onEventMainThread(CurrencyRequest.CurrencyRequestEvent event) {
+        updateProgressBar();
+        if (CurrencyRequest.getUniqueId(model.getCode(), Currency.getDefault().getCode()).equals(event.getRequest().getUniqueId())) {
+            model.setExchangeRate(event.getParsedResponse().getExchangeRate());
+            onModelLoaded(model);
+        }
     }
 
     private void prepareCurrenciesAutoComplete() {
@@ -193,8 +334,6 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //noinspection ConstantConditions
                 checkForCurrencyDuplicate(code_ET.getText().toString());
-                ensureModelUpdated(model);
-                symbolPosition_B.setText(MoneyFormatter.format(model, 100000));
             }
 
             @Override
@@ -204,7 +343,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> {
     }
 
     private void checkForCurrencyDuplicate(String code) {
-        if (isCurrencyExists(code)) {
+        if (isCurrencyExists(code) && model.getId() == 0) {
             code_ET.setTextColor(getResources().getColor(R.color.text_negative));
             code_ET.setError(getString(R.string.l_currency_exists));
         } else {
@@ -214,6 +353,33 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> {
     }
 
     private boolean isCurrencyExists(String code) {
-        return existingCurrencyCodes.contains(code);
+        return existingCurrencyCodes.contains(code.toUpperCase());
+    }
+
+    private void updateFormatView() {
+        symbolPosition_B.setText(MoneyFormatter.format(model, 100000, false));
+    }
+
+    private void showPopupList(View anchorView, ListAdapter adapter, AdapterView.OnItemClickListener itemClickListener) {
+        listPopupWindow_LPW = new ListPopupWindow(getActivity());
+        listPopupWindow_LPW.setModal(true);
+        listPopupWindow_LPW.setListSelector(getResources().getDrawable(R.drawable.btn_borderless));
+        listPopupWindow_LPW.setAdapter(adapter);
+        listPopupWindow_LPW.setOnItemClickListener(itemClickListener);
+        listPopupWindow_LPW.setAnchorView(anchorView);
+        listPopupWindow_LPW.show();
+    }
+
+    private void updateProgressBar() {
+        final boolean isFetchingCurrency = model != null && BaseRequestEvent.isWorking(CurrencyRequest.CurrencyRequestEvent.class, CurrencyRequest.getUniqueId(model.getCode(), Currency.getDefault().getCode()));
+        if (isFetchingCurrency) {
+            if (loading_SPB.getVisibility() != View.VISIBLE) {
+                loading_SPB.setVisibility(View.VISIBLE);
+            }
+        } else {
+            if (loading_SPB.getVisibility() != View.INVISIBLE) {
+                loading_SPB.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 }

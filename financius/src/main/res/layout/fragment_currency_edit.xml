@@ -128,6 +128,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/exchangeRateContainer_V"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_normal">
@@ -142,11 +143,13 @@
             android:textSize="@dimen/text_small" />
 
         <ImageButton
+            android:id="@+id/refreshRate_B"
             style="@style/Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/space_normal"
             android:layout_weight="1"
+            android:contentDescription="@string/refresh_rate"
             android:scaleType="centerInside"
             android:src="@drawable/ic_action_refresh" />
 
@@ -159,5 +162,12 @@
             android:hint="@string/exchange_rate"
             android:inputType="numberDecimal" />
     </LinearLayout>
+
+    <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+        android:id="@+id/loading_SPB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone" />
 
 </LinearLayout>
