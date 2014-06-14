@@ -22,6 +22,9 @@
     <color name="text_primary_inverse">@color/d_light</color>
     <color name="text_secondary">@color/d_dark_lighter2</color>
     <color name="text_accent">@color/d_brand</color>
+    <color name="text_positive">@color/d_brand</color>
+    <color name="text_negative">#c00</color>
+    <color name="text_neutral">#f80</color>
 
     <color name="btn_borderless_pressed">#339dae2a</color>
 

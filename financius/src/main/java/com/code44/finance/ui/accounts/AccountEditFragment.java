@@ -28,7 +28,7 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
 
     private EditText title_ET;
     private Button currency_B;
-    private Button amount_B;
+    private Button balance_B;
     private EditText note_ET;
 
     public static AccountEditFragment newInstance(long accountId) {
@@ -51,12 +51,12 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
         // Get views
         title_ET = (EditText) view.findViewById(R.id.title_ET);
         currency_B = (Button) view.findViewById(R.id.currency_B);
-        amount_B = (Button) view.findViewById(R.id.amount_B);
+        balance_B = (Button) view.findViewById(R.id.balance_B);
         note_ET = (EditText) view.findViewById(R.id.note_ET);
 
         // Setup
         currency_B.setOnClickListener(this);
-        amount_B.setOnClickListener(this);
+        balance_B.setOnClickListener(this);
     }
 
     @Override
@@ -91,7 +91,9 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
 
     @Override
     protected void ensureModelUpdated(Account model) {
+        //noinspection ConstantConditions
         model.setTitle(title_ET.getText().toString());
+        //noinspection ConstantConditions
         model.setNote(note_ET.getText().toString());
     }
 
@@ -109,7 +111,7 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
     protected void onModelLoaded(Account model) {
         title_ET.setText(model.getTitle());
         currency_B.setText(model.getCurrency().getCode());
-        amount_B.setText(MoneyFormatter.format(model.getCurrency(), model.getBalance()));
+        balance_B.setText(MoneyFormatter.format(model.getCurrency(), model.getBalance()));
         note_ET.setText(model.getNote());
     }
 
@@ -120,7 +122,7 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
                 CurrenciesActivity.startSelect(this, REQUEST_CURRENCY);
                 break;
 
-            case R.id.amount_B:
+            case R.id.balance_B:
                 // TODO Request amount
                 break;
         }

@@ -16,13 +16,15 @@
         <Button
             android:id="@+id/currency_B"
             style="@style/Button.Select"
-            android:layout_width="wrap_content" />
+            android:layout_width="wrap_content"
+            android:hint="@string/currency" />
 
         <Button
-            android:id="@+id/amount_B"
+            android:id="@+id/balance_B"
             style="@style/Button.Select"
             android:layout_marginLeft="@dimen/space_normal"
-            android:gravity="right|center_vertical" />
+            android:gravity="right|center_vertical"
+            android:hint="@string/balance" />
 
     </LinearLayout>
 

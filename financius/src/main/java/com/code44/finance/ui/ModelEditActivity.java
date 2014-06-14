@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
 import com.code44.finance.R;
 
@@ -26,8 +27,10 @@ public abstract class ModelEditActivity extends ModelActivity implements View.On
         final View rightSeparator_V = findViewById(R.id.rightSeparator_V);
         final View cancel_V = findViewById(R.id.cancel_B);
         final View save_V = findViewById(R.id.save_B);
+        final TextView title_TV = (TextView) findViewById(R.id.title_TV);
 
         // Setup
+        title_TV.setText(getActionBarTitleResId());
         cancel_V.setOnClickListener(this);
         save_V.setOnClickListener(this);
         if (getResources().getDimensionPixelSize(R.dimen.margin_edit_container) == 0) {
@@ -54,11 +57,6 @@ public abstract class ModelEditActivity extends ModelActivity implements View.On
                 save();
                 break;
         }
-    }
-
-    @Override
-    protected int getActionBarTitleResId() {
-        return 0;
     }
 
     @Override

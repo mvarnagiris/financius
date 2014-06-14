@@ -1,35 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ScrollView">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Container.Edit">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <AutoCompleteTextView
+            android:id="@+id/code_ET"
+            style="@style/EditText"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:hint="@string/currency_code"
+            android:inputType="textCapCharacters"
+            android:maxLength="3"
+            android:textAllCaps="true" />
+
+        <EditText
+            android:id="@+id/symbol_ET"
+            style="@style/EditText"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/space_normal"
+            android:gravity="right|bottom"
+            android:hint="@string/symbol"
+            android:inputType="text" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical">
+        android:layout_marginTop="@dimen/space_normal">
 
-        <FrameLayout style="@style/Container.Title">
+        <TextView
+            style="@style/TextView.Secondary"
+            android:layout_width="0dp"
+            android:layout_gravity="bottom"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="@string/symbol_position"
+            android:textSize="@dimen/text_small" />
 
-            <TextView
-                style="@style/TextView.Title"
-                android:text="@string/currency" />
-
-        </FrameLayout>
-
-        <View style="@style/Separator.Thin" />
-
-        <LinearLayout style="@style/Container.Edit">
-
-            <EditText
-                android:id="@+id/code_ET"
-                style="@style/EditText"
-                android:hint="@string/currency_code"
-                android:inputType="textCapCharacters"
-                android:maxLength="3" />
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/symbolPosition_B"
+            style="@style/Button.Select"
+            android:layout_width="0dp"
+            android:layout_marginLeft="@dimen/space_normal"
+            android:layout_weight="5"
+            android:gravity="right|bottom"
+            android:hint="@string/symbol_position" />
 
     </LinearLayout>
 
-</ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_normal">
+
+        <TextView
+            style="@style/TextView.Secondary"
+            android:layout_width="0dp"
+            android:layout_gravity="bottom"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="@string/thousands_separator"
+            android:textSize="@dimen/text_small" />
+
+        <Button
+            android:id="@+id/thousandsSeparator_B"
+            style="@style/Button.Select"
+            android:layout_width="0dp"
+            android:layout_marginLeft="@dimen/space_normal"
+            android:layout_weight="5"
+            android:gravity="right|bottom"
+            android:hint="@string/thousands_separator" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_normal">
+
+        <TextView
+            style="@style/TextView.Secondary"
+            android:layout_width="0dp"
+            android:layout_gravity="bottom"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="@string/decimal_separator"
+            android:textSize="@dimen/text_small" />
+
+        <Button
+            android:id="@+id/decimalSeparator_B"
+            style="@style/Button.Select"
+            android:layout_width="0dp"
+            android:layout_marginLeft="@dimen/space_normal"
+            android:layout_weight="5"
+            android:gravity="right|bottom"
+            android:hint="@string/decimal_separator" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_normal">
+
+        <TextView
+            style="@style/TextView.Secondary"
+            android:layout_width="0dp"
+            android:layout_gravity="bottom"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="@string/decimals_count"
+            android:textSize="@dimen/text_small" />
+
+        <Button
+            android:id="@+id/decimalsCount_B"
+            style="@style/Button.Select"
+            android:layout_width="0dp"
+            android:layout_marginLeft="@dimen/space_normal"
+            android:layout_weight="5"
+            android:gravity="right|bottom"
+            android:hint="@string/decimals_count" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_normal">
+
+        <TextView
+            style="@style/TextView.Secondary"
+            android:layout_width="0dp"
+            android:layout_gravity="bottom"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="@string/exchange_rate"
+            android:textSize="@dimen/text_small" />
+
+        <ImageButton
+            style="@style/Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/space_normal"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_action_refresh" />
+
+        <EditText
+            android:id="@+id/exchangeRate_ET"
+            style="@style/EditText"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:gravity="right|bottom"
+            android:hint="@string/exchange_rate"
+            android:inputType="numberDecimal" />
+    </LinearLayout>
+
+</LinearLayout>

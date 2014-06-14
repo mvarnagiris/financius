@@ -40,6 +40,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">@dimen/recommended_touch_size</item>
+        <item name="android:minWidth">@dimen/recommended_touch_size</item>
         <item name="android:paddingLeft">@dimen/space_normal</item>
         <item name="android:paddingRight">@dimen/space_normal</item>
         <item name="android:paddingTop">@dimen/space_small</item>
@@ -61,6 +62,7 @@
 
     <style name="Button.Select" parent="EditText">
         <item name="android:minHeight">0dp</item>
+        <item name="android:gravity">left|bottom</item>
         <item name="android:background">@drawable/edit_text</item>
 
     </style>

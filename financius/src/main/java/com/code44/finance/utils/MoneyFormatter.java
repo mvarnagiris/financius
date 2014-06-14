@@ -26,11 +26,16 @@ public class MoneyFormatter {
     }
 
     private static CurrencyFormat getCurrencyFormat(Currency currency) {
-        CurrencyFormat currencyFormat = currencyFormats.get(currency.getId());
-        if (currencyFormat == null) {
-            currencyFormat = new CurrencyFormat(currency);
-            currencyFormats.put(currency.getId(), currencyFormat);
+        final long currencyId = currency.getId();
+        if (currencyId == 0) {
+            return new CurrencyFormat(currency);
+        } else {
+            CurrencyFormat currencyFormat = currencyFormats.get(currency.getId());
+            if (currencyFormat == null) {
+                currencyFormat = new CurrencyFormat(currency);
+                currencyFormats.put(currency.getId(), currencyFormat);
+            }
+            return currencyFormat;
         }
-        return currencyFormat;
     }
 }

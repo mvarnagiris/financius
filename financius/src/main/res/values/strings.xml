@@ -16,12 +16,20 @@
     <string name="main_currency">Main currency</string>
     <string name="refresh_rate">Refresh rate</string>
     <string name="refresh_rates">Refresh rates</string>
+    <string name="exchange_rate">Exchange rate</string>
     <string name="accounts">Accounts</string>
     <string name="account">Account</string>
+    <string name="balance">Balance</string>
     <string name="title">Title</string>
     <string name="note">Note</string>
     <string name="select">Select</string>
+    <string name="thousands_separator">Thousands separator</string>
+    <string name="decimal_separator">Decimal separator</string>
+    <string name="decimals_count">Decimals count</string>
+    <string name="symbol">Symbol</string>
+    <string name="symbol_position">Symbol position</string>
 
     <string name="l_refresh_rates_daily">Refresh rates every day</string>
+    <string name="l_currency_exists">This currency already exists</string>
 
 </resources>

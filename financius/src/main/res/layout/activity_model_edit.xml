@@ -30,60 +30,59 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/leftSeparator_V"
         android:layout_toLeftOf="@+id/rightSeparator_V"
-        android:showDividers="middle"
+        android:layout_toRightOf="@+id/leftSeparator_V"
+        android:background="@color/bg_primary"
         android:divider="?android:attr/dividerVertical"
         android:dividerPadding="@dimen/space_normal"
         android:orientation="horizontal"
-        android:background="@color/bg_primary">
+        android:showDividers="middle">
 
         <Button
             android:id="@+id/cancel_B"
             style="@style/Button.Borderless"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:text="@string/cancel"
             android:textAllCaps="true"
-            android:textSize="@dimen/text_small"
-            android:text="@string/cancel" />
+            android:textSize="@dimen/text_small" />
 
         <Button
             android:id="@+id/save_B"
             style="@style/Button.Borderless"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:text="@string/save"
             android:textAllCaps="true"
-            android:textSize="@dimen/text_small"
-            android:text="@string/save" />
+            android:textSize="@dimen/text_small" />
 
     </LinearLayout>
 
     <View
         android:id="@+id/separator_V"
         style="@style/Separator.Thin"
-        android:layout_toRightOf="@id/leftMargin_V"
+        android:layout_above="@+id/buttonContainer_V"
         android:layout_toLeftOf="@id/rightMargin_V"
-        android:layout_above="@+id/buttonContainer_V" />
+        android:layout_toRightOf="@id/leftMargin_V" />
 
     <ScrollView
         style="@style/ScrollView"
-        android:layout_toRightOf="@id/leftMargin_V"
+        android:layout_above="@+id/separator_V"
         android:layout_toLeftOf="@id/rightMargin_V"
-        android:layout_above="@+id/separator_V">
+        android:layout_toRightOf="@id/leftMargin_V">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
 
             <FrameLayout style="@style/Container.Title">
 
                 <TextView
                     android:id="@+id/title_TV"
-                    style="@style/TextView.Title"
-                    android:text="@string/account" />
+                    style="@style/TextView.Title" />
 
                 <View
                     style="@style/Separator.Thin"

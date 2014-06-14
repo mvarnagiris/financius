@@ -1,5 +1,7 @@
 package com.code44.finance.utils;
 
+import android.text.TextUtils;
+
 import com.code44.finance.data.db.model.Currency;
 
 import java.text.DecimalFormat;
@@ -25,25 +27,40 @@ public final class CurrencyFormat {
         decimalFormat.setMinimumFractionDigits(currency.getDecimalCount());
         decimalFormat.setMaximumFractionDigits(currency.getDecimalCount());
         final String symbol = currency.getSymbol();
+        final boolean hasSymbol = !TextUtils.isEmpty(symbol);
         switch (currency.getSymbolPosition()) {
             case FAR_LEFT:
-                decimalFormat.setPositivePrefix(symbol + " ");
-                decimalFormat.setNegativePrefix(symbol + " -");
+                if (hasSymbol) {
+                    decimalFormat.setPositivePrefix(symbol + " ");
+                    decimalFormat.setNegativePrefix(symbol + " -");
+                } else {
+                    decimalFormat.setNegativePrefix("-");
+                }
+
                 break;
 
             case CLOSE_LEFT:
-                decimalFormat.setPositivePrefix(symbol);
-                decimalFormat.setNegativePrefix(symbol + "-");
+                if (hasSymbol) {
+                    decimalFormat.setPositivePrefix(symbol);
+                    decimalFormat.setNegativePrefix(symbol + "-");
+                } else {
+                    decimalFormat.setNegativePrefix("-");
+                }
+
                 break;
 
             case FAR_RIGHT:
-                decimalFormat.setPositiveSuffix(" " + symbol);
-                decimalFormat.setNegativeSuffix(" " + symbol);
+                if (hasSymbol) {
+                    decimalFormat.setPositiveSuffix(" " + symbol);
+                    decimalFormat.setNegativeSuffix(" " + symbol);
+                }
                 break;
 
             case CLOSE_RIGHT:
-                decimalFormat.setPositiveSuffix(symbol);
-                decimalFormat.setNegativeSuffix(symbol);
+                if (hasSymbol) {
+                    decimalFormat.setPositiveSuffix(symbol);
+                    decimalFormat.setNegativeSuffix(symbol);
+                }
                 break;
 
             default:
