@@ -29,6 +29,10 @@ android {
         }
     }
 
+    sourceSets {
+        androidTest.setRoot('src/test')
+    }
+
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -50,4 +54,7 @@ dependencies {
     testCompile 'junit:junit:4.+'
     testCompile 'org.robolectric:robolectric:2.+'
     testCompile 'org.mockito:mockito-all:+'
+    androidTestCompile 'junit:junit:4.+'
+    androidTestCompile 'org.robolectric:robolectric:2.+'
+    androidTestCompile 'org.mockito:mockito-all:+'
 }

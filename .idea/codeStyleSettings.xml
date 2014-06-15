@@ -6,7 +6,10 @@
         <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="99" />
         <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="99" />
         <option name="PACKAGES_TO_USE_IMPORT_ON_DEMAND">
-          <value />
+          <value>
+            <package name="org.junit.Assert" withSubpackages="true" static="true" />
+            <package name="org.mockito.Mockito" withSubpackages="true" static="true" />
+          </value>
         </option>
         <option name="IMPORT_LAYOUT_TABLE">
           <value>

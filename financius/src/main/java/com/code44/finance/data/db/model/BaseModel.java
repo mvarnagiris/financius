@@ -4,22 +4,28 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.code44.finance.data.db.Column;
 
+import java.util.UUID;
+
 public abstract class BaseModel implements Parcelable {
     private long id;
+    private String serverId;
     private ItemState itemState;
     private SyncState syncState;
 
     protected BaseModel() {
         setId(0);
+        setServerId(null);
         setItemState(ItemState.NORMAL);
         setSyncState(SyncState.NONE);
     }
 
     protected BaseModel(Parcel in) {
         setId(in.readLong());
+        setServerId(in.readString());
         setItemState(ItemState.fromInt(in.readInt()));
         setSyncState(SyncState.fromInt(in.readInt()));
     }
@@ -32,6 +38,7 @@ public abstract class BaseModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(getId());
+        dest.writeString(getServerId());
         dest.writeInt(getItemState().asInt());
         dest.writeInt(getSyncState().asInt());
     }
@@ -43,6 +50,11 @@ public abstract class BaseModel implements Parcelable {
             values.put(getIdColumn().getName(), id);
         }
 
+        if (TextUtils.isEmpty(serverId)) {
+            setServerId(UUID.randomUUID().toString());
+        }
+
+        values.put(getServerIdColumn().getName(), serverId);
         values.put(getItemStateColumn().getName(), itemState.asInt());
         values.put(getSyncStateColumn().getName(), syncState.asInt());
 
@@ -50,6 +62,10 @@ public abstract class BaseModel implements Parcelable {
     }
 
     public void checkValues() throws IllegalStateException {
+        if (serverId == null) {
+            throw new IllegalStateException("ServerId cannot be empty.");
+        }
+
         if (itemState == null) {
             throw new IllegalStateException("ItemState cannot be null.");
         }
@@ -65,6 +81,14 @@ public abstract class BaseModel implements Parcelable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(String serverId) {
+        this.serverId = serverId;
     }
 
     public ItemState getItemState() {
@@ -85,6 +109,8 @@ public abstract class BaseModel implements Parcelable {
 
     protected abstract Column getIdColumn();
 
+    protected abstract Column getServerIdColumn();
+
     protected abstract Column getItemStateColumn();
 
     protected abstract Column getSyncStateColumn();
@@ -95,6 +121,11 @@ public abstract class BaseModel implements Parcelable {
         index = cursor.getColumnIndex(getIdColumn().getName(columnPrefixTable));
         if (index >= 0) {
             setId(cursor.getLong(index));
+        }
+
+        index = cursor.getColumnIndex(getServerIdColumn().getName(columnPrefixTable));
+        if (index >= 0) {
+            setServerId(cursor.getString(index));
         }
 
         index = cursor.getColumnIndex(getItemStateColumn().getName(columnPrefixTable));
