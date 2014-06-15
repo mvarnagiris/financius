@@ -124,16 +124,6 @@ public abstract class BaseModelProvider extends BaseProvider {
 
     protected abstract String getQueryTables();
 
-    protected void onBeforeBulkInsert() {
-    }
-
-    protected void onAfterBulkInsert() {
-    }
-
-    protected void notifyOtherProviders() {
-
-    }
-
     public Cursor queryItems(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         final SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(getQueryTables());
@@ -148,5 +138,14 @@ public abstract class BaseModelProvider extends BaseProvider {
         qb.appendWhere(getModelTable() + "." + BaseColumns._ID + "=" + uri.getPathSegments().get(1));
 
         return qb.query(database, projection, selection, selectionArgs, null, null, sortOrder);
+    }
+
+    protected void onBeforeBulkInsert() {
+    }
+
+    protected void onAfterBulkInsert() {
+    }
+
+    protected void notifyOtherProviders() {
     }
 }
