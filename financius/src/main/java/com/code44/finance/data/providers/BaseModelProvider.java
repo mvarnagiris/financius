@@ -137,8 +137,11 @@ public abstract class BaseModelProvider extends BaseProvider {
 
                 final BaseModel.ItemState itemState;
                 switch (deleteMode) {
-                    case "undo":
+                    case "delete":
                         itemState = BaseModel.ItemState.DELETED_UNDO;
+                        break;
+                    case "undo":
+                        itemState = BaseModel.ItemState.NORMAL;
                         break;
                     case "commit":
                         itemState = BaseModel.ItemState.DELETED;
@@ -233,7 +236,17 @@ public abstract class BaseModelProvider extends BaseProvider {
         values.put(getModelTable() + "_" + Tables.SUFFIX_ITEM_STATE, itemState.asInt());
         values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, BaseModel.SyncState.LOCAL_CHANGES.asInt());
 
-        return database.update(getModelTable(), values, selection, selectionArgs);
+        final String whereClause;
+        final String[] whereArgs;
+        if (itemState == BaseModel.ItemState.DELETED_UNDO) {
+            whereClause = selection;
+            whereArgs = selectionArgs;
+        } else {
+            whereClause = getModelTable() + "_" + Tables.SUFFIX_ITEM_STATE + "=?";
+            whereArgs = new String[]{String.valueOf(BaseModel.ItemState.DELETED_UNDO.asInt())};
+        }
+
+        return database.update(getModelTable(), values, whereClause, whereArgs);
     }
 
     protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, BaseModel.ItemState itemState, Map<String, Object> extras) {

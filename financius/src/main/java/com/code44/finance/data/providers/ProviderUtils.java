@@ -117,6 +117,10 @@ public final class ProviderUtils {
         }
     }
 
+    public static Uri withQueryParameter(Uri uri, QueryParameterKey parameterKey, String value) {
+        return uri.buildUpon().appendQueryParameter(parameterKey.getKeyName(), value).build();
+    }
+
     public static enum QueryParameterKey {
         /**
          * Possible values: {@code "true"} and {@code "false"}.
@@ -124,7 +128,7 @@ public final class ProviderUtils {
         NOTIFY_URI_CHANGED("notifyUriChanged"),
 
         /**
-         * Possible values: {@code "undo"} and {@code "commit"}.
+         * Possible values: {@code "delete"}, {@code "undo"} and {@code "commit"}.
          */
         DELETE_MODE("notifyUriChanged");
 

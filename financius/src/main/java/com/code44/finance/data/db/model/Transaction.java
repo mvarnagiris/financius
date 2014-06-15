@@ -88,6 +88,11 @@ public class Transaction extends BaseModel {
     }
 
     @Override
+    protected Column getServerIdColumn() {
+        return Tables.Transactions.SERVER_ID;
+    }
+
+    @Override
     protected Column getItemStateColumn() {
         return Tables.Transactions.ITEM_STATE;
     }

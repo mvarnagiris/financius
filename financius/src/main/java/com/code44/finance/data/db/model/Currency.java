@@ -139,6 +139,11 @@ public class Currency extends BaseModel {
     }
 
     @Override
+    protected Column getServerIdColumn() {
+        return Tables.Currencies.SERVER_ID;
+    }
+
+    @Override
     protected Column getItemStateColumn() {
         return Tables.Currencies.ITEM_STATE;
     }

@@ -114,6 +114,11 @@ public class Account extends BaseModel {
     }
 
     @Override
+    protected Column getServerIdColumn() {
+        return Tables.Currencies.SERVER_ID;
+    }
+
+    @Override
     protected Column getItemStateColumn() {
         return Tables.Accounts.ITEM_STATE;
     }

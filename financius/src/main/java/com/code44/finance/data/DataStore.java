@@ -2,10 +2,10 @@ package com.code44.finance.data;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.net.Uri;
-import android.text.TextUtils;
+
+import com.code44.finance.App;
+import com.code44.finance.data.providers.ProviderUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,151 +13,134 @@ import java.util.Collection;
 import java.util.List;
 
 public final class DataStore {
-    private final Context context;
-    private final Uri uri;
-    private final SQLiteDatabase database;
-    private final String table;
-    private final List<ContentValues> valuesList;
 
-    private DataStore(Context context, Uri uri, SQLiteDatabase database, String table) {
-        this.context = context;
-        this.uri = uri;
-        this.database = database;
-        this.table = table;
-        this.valuesList = new ArrayList<>();
+    private DataStore() {
     }
 
-    public static int doArrayReplaceInTransaction(SQLiteDatabase db, String tableName, ContentValues[] valuesArray) {
-        int count = 0;
-        try {
-            db.beginTransaction();
-            count = doArrayReplace(db, tableName, valuesArray);
-            db.setTransactionSuccessful();
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-            throw e;
-        } finally {
-            db.endTransaction();
-        }
-
-        return count;
-    }
-
-    public static int doArrayReplace(SQLiteDatabase db, String tableName, ContentValues[] valuesArray) {
-        int count = 0;
-        for (final ContentValues values : valuesArray) {
-            db.replace(tableName, null, values);
-            count++;
-        }
-        return count;
-    }
-
-    public static int doArrayUpdateInTransaction(SQLiteDatabase db, String tableName, String selection, String[] selectionArgs, ContentValues[] valuesArray) {
-        int count = 0;
-        try {
-            db.beginTransaction();
-            count = doArrayUpdate(db, tableName, selection, selectionArgs, valuesArray);
-            db.setTransactionSuccessful();
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-            throw e;
-        } finally {
-            db.endTransaction();
-        }
-
-        return count;
-    }
-
-    public static int doArrayUpdate(SQLiteDatabase db, String tableName, String selection, String[] selectionArgs, ContentValues[] valuesArray) {
-        int count = 0;
-        for (final ContentValues values : valuesArray) {
-            db.update(tableName, values, selection, selectionArgs);
-            count++;
-        }
-        return count;
-    }
-
-    public static DataStore with(Context context, Uri uri) {
-        if (context == null) {
-            throw new NullPointerException("Context cannot be null.");
-        }
-
+    public static DataStoreInsert insert(Uri uri) {
         if (uri == null) {
             throw new NullPointerException("Uri cannot be null.");
         }
 
-        return new DataStore(context, uri, null, null);
+        return new DataStoreInsert(App.getAppContext(), uri);
     }
 
-    public static DataStore with(SQLiteDatabase database, String table) {
-        if (database == null) {
-            throw new NullPointerException("Database cannot be null.");
+    public static DataStoreBulkInsert bulkInsert(Uri uri) {
+        if (uri == null) {
+            throw new NullPointerException("Uri cannot be null.");
         }
 
-        if (TextUtils.isEmpty(table)) {
-            throw new IllegalArgumentException("Table cannot be empty.");
-        }
-
-        return new DataStore(null, null, database, table);
-    }
-
-    public DataStore values(ContentValues values) {
-        if (values == null) {
-            throw new NullPointerException("Values cannot be null.");
-        }
-
-        valuesList.add(values);
-        return this;
-    }
-
-    public DataStore values(ContentValues... valuesArray) {
-        if (valuesArray == null || valuesArray.length == 0) {
-            throw new IllegalArgumentException("Values array cannot be empty.");
-        }
-
-        values(Arrays.asList(valuesArray));
-        return this;
-    }
-
-    public DataStore values(Collection<ContentValues> valuesCollection) {
-        if (valuesCollection == null || valuesCollection.isEmpty()) {
-            throw new IllegalArgumentException("Values collection cannot be empty.");
-        }
-
-        valuesList.addAll(valuesCollection);
-        return this;
-    }
-
-    public DataStore clear() {
-        valuesList.clear();
-        return this;
-    }
-
-    public DataStore insert() {
-        final ContentValues[] valuesArray = getValuesArray();
-        if (context == null) {
-            doArrayReplaceInTransaction(database, table, valuesArray);
-        } else {
-            context.getContentResolver().bulkInsert(uri, valuesArray);
-        }
-
-        return clear();
+        return new DataStoreBulkInsert(App.getAppContext(), uri);
     }
 
     public DataStore update(String selection, String... selectionArgs) {
         final ContentValues[] valuesArray = getValuesArray();
-        if (context == null) {
-            doArrayUpdateInTransaction(database, table, selection, selectionArgs, valuesArray);
-        } else {
-            for (ContentValues values : valuesArray) {
-                context.getContentResolver().update(uri, values, selection, selectionArgs);
-            }
+        for (ContentValues values : valuesArray) {
+            context.getContentResolver().update(uri, values, selection, selectionArgs);
         }
 
         return clear();
     }
 
-    private ContentValues[] getValuesArray() {
-        return valuesList.toArray(new ContentValues[valuesList.size()]);
+    public DataStore delete(String selection, String... selectionArgs) {
+        context.getContentResolver().delete(ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, "delete"), selection, selectionArgs);
+
+        return clear();
+    }
+
+    public DataStore undoDelete() {
+        context.getContentResolver().delete(uri, selection, selectionArgs);
+
+        return clear();
+    }
+
+    public DataStore commitDelete() {
+        context.getContentResolver().delete(uri, selection, selectionArgs);
+
+        return clear();
+    }
+
+    public static final class DataStoreInsert {
+        private final Context context;
+        private final Uri uri;
+        private ContentValues values;
+
+        private DataStoreInsert(Context context, Uri uri) {
+            this.context = context;
+            this.uri = uri;
+        }
+
+        public DataStoreInsert values(ContentValues values) {
+            if (this.values != null) {
+                throw new IllegalStateException("Values is already set.");
+            }
+
+            if (values == null) {
+                throw new NullPointerException("Values cannot be null.");
+            }
+
+            this.values = values;
+            return this;
+        }
+
+        public void execute() {
+            if (values == null) {
+                throw new IllegalStateException("Values must be set before executing insert.");
+            }
+
+            context.getContentResolver().insert(uri, values);
+        }
+    }
+
+    public static final class DataStoreBulkInsert {
+        private final Context context;
+        private final Uri uri;
+        private final List<ContentValues> valuesList;
+
+        private DataStoreBulkInsert(Context context, Uri uri) {
+            this.context = context;
+            this.uri = uri;
+            this.valuesList = new ArrayList<>();
+        }
+
+        public DataStoreBulkInsert values(ContentValues values) {
+            if (values == null) {
+                throw new NullPointerException("Values cannot be null.");
+            }
+
+            valuesList.add(values);
+            return this;
+        }
+
+        public DataStoreBulkInsert values(ContentValues... valuesArray) {
+            if (valuesArray == null || valuesArray.length == 0) {
+                throw new IllegalArgumentException("Values array cannot be empty.");
+            }
+
+            values(Arrays.asList(valuesArray));
+            return this;
+        }
+
+        public DataStoreBulkInsert values(Collection<ContentValues> valuesCollection) {
+            if (valuesCollection == null || valuesCollection.isEmpty()) {
+                throw new IllegalArgumentException("Values collection cannot be empty.");
+            }
+
+            valuesList.addAll(valuesCollection);
+            return this;
+        }
+
+        public void execute() {
+            ContentValues[] valuesArray = getValuesArray();
+            if (valuesArray.length == 0) {
+                throw new IllegalStateException("Must have at least one ContentValues before executing bulk insert.");
+            }
+
+            context.getContentResolver().bulkInsert(uri, valuesArray);
+        }
+
+        private ContentValues[] getValuesArray() {
+            return valuesList.toArray(new ContentValues[valuesList.size()]);
+        }
     }
 }

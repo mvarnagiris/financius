@@ -126,6 +126,11 @@ public class Category extends BaseModel {
     }
 
     @Override
+    protected Column getServerIdColumn() {
+        return Tables.Currencies.SERVER_ID;
+    }
+
+    @Override
     protected Column getItemStateColumn() {
         return Tables.Categories.ITEM_STATE;
     }

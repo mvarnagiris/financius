@@ -14,22 +14,32 @@ public class CurrenciesProviderTest {
     }
 
     @Test
+    public void insert_updatesCurrency_whenCurrencyWithSameCodeExists() {
+        fail();
+    }
+
+    @Test
     public void update_doesNotAllowToChangeDefaultCurrency() {
         fail();
     }
 
     @Test
-    public void bulkInsert_doesNotInsertDuplicateCurrencies() {
+    public void delete_setsTheSameItemStateForAccounts() {
         fail();
     }
 
     @Test
-    public void bulkInsert_allowsOnlyOneDefaultCurrency() {
+    public void delete_doesNotAllowToDeleteDefaultCurrency() {
         fail();
     }
 
     @Test
-    public void bulkInsert_doesNotAllowToDeleteDefaultCurrency() {
+    public void bulkInsert_updatesCurrencies_whenCurrenciesWithSameCodeExists() {
+        fail();
+    }
+
+    @Test
+    public void bulkInsert_makesSureThatThereIsOnlyOneDefaultCurrency() {
         fail();
     }
 }
