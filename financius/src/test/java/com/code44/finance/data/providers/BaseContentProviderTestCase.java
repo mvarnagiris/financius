@@ -1,6 +1,7 @@
 package com.code44.finance.data.providers;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -42,8 +43,9 @@ public class BaseContentProviderTestCase {
         contentResolver = context.getContentResolver();
     }
 
-    protected void insert(Uri uri, BaseModel model) {
-        contentResolver.insert(uri, model.asContentValues());
+    protected long insert(Uri uri, BaseModel model) {
+        //noinspection ConstantConditions
+        return ContentUris.parseId(contentResolver.insert(uri, model.asContentValues()));
     }
 
     protected void assertQuerySize(Uri uri, Query query, int expectedSize) {
