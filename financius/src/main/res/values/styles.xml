@@ -87,6 +87,22 @@
         <item name="android:fontFamily" tools:ignore="NewApi">@string/font_light</item>
     </style>
 
+    <!-- CheckBox -->
+    <!-- =========================================================================================================== -->
+
+    <style name="CheckBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/recommended_touch_size</item>
+        <item name="android:gravity">right|center_vertical</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableEnd">@drawable/check_box</item>
+        <item name="android:drawablePadding">@dimen/space_normal</item>
+        <item name="android:textSize">@dimen/text_large</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@string/font_light</item>
+    </style>
+
     <!-- List -->
     <!-- =========================================================================================================== -->
 

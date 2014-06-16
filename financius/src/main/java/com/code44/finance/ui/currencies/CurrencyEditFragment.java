@@ -15,6 +15,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
@@ -40,7 +42,7 @@ import java.util.Set;
 import de.greenrobot.event.EventBus;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
-public class CurrencyEditFragment extends ModelEditFragment<Currency> implements View.OnClickListener {
+public class CurrencyEditFragment extends ModelEditFragment<Currency> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int LOADER_CURRENCIES = 1;
 
     private SmoothProgressBar loading_SPB;
@@ -53,6 +55,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     private EditText exchangeRate_ET;
     private ListPopupWindow listPopupWindow_LPW;
     private View exchangeRateContainer_V;
+    private CheckBox isDefault_CB;
 
     private Set<String> existingCurrencyCodes = new HashSet<>();
 
@@ -83,6 +86,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         symbolPosition_B = (Button) view.findViewById(R.id.symbolPosition_B);
         exchangeRate_ET = (EditText) view.findViewById(R.id.exchangeRate_ET);
         exchangeRateContainer_V = view.findViewById(R.id.exchangeRateContainer_V);
+        isDefault_CB = (CheckBox) view.findViewById(R.id.isDefault_CB);
         final ImageButton refreshRate_B = (ImageButton) view.findViewById(R.id.refreshRate_B);
 
         // Setup
@@ -91,6 +95,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         thousandsSeparator_B.setOnClickListener(this);
         decimalSeparator_B.setOnClickListener(this);
         symbolPosition_B.setOnClickListener(this);
+        isDefault_CB.setOnCheckedChangeListener(this);
         refreshRate_B.setOnClickListener(this);
         symbol_ET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -181,10 +186,12 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         decimalSeparator_B.setText(model.getDecimalSeparator().explanation(getActivity()));
         decimalsCount_B.setText(String.valueOf(model.getDecimalCount()));
         exchangeRate_ET.setText(String.valueOf(model.getExchangeRate()));
+        isDefault_CB.setChecked(model.isDefault());
         updateFormatView();
 
         code_ET.setEnabled(model.getId() == 0);
         exchangeRateContainer_V.setVisibility(model.isDefault() ? View.GONE : View.VISIBLE);
+        isDefault_CB.setVisibility(model.getId() == Currency.getDefault().getId() ? View.GONE : View.VISIBLE);
         updateProgressBar();
     }
 
@@ -393,5 +400,10 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
                 loading_SPB.setVisibility(View.INVISIBLE);
             }
         }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton checkBox, boolean isChecked) {
+        model.setDefault(isChecked);
     }
 }
