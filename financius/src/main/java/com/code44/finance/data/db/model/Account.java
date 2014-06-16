@@ -115,7 +115,7 @@ public class Account extends BaseModel {
 
     @Override
     protected Column getServerIdColumn() {
-        return Tables.Currencies.SERVER_ID;
+        return Tables.Accounts.SERVER_ID;
     }
 
     @Override

@@ -76,7 +76,7 @@ public final class ProviderUtils {
         if (!tryUpdate || db.update(tableName, values, columnToCheck + "=?", new String[]{valueToCheck}) == 0) {
             newId = db.insert(tableName, null, values);
             if (newId <= 0)
-                throw new SQLException("Failed to insert row");
+                throw new SQLException("Failed to insert values " + values.toString() + " into " + tableName);
         }
 
         // Get local ID if necessary

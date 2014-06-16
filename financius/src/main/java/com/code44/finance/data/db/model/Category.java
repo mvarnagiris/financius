@@ -127,7 +127,7 @@ public class Category extends BaseModel {
 
     @Override
     protected Column getServerIdColumn() {
-        return Tables.Currencies.SERVER_ID;
+        return Tables.Categories.SERVER_ID;
     }
 
     @Override
