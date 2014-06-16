@@ -1,7 +1,10 @@
 package com.code44.finance.data.providers;
 
+import android.database.Cursor;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.*;
@@ -10,7 +13,10 @@ import static org.junit.Assert.*;
 public class CurrenciesProviderTest {
     @Test
     public void insert_makesSureThatThereIsOnlyOneDefaultCurrency() {
-        fail();
+        Cursor c = Robolectric.getShadowApplication().getContentResolver().query(CurrenciesProvider.uriCurrencies(), null, null, null, null);
+        c.moveToFirst();
+        int count = c.getCount();
+        assertEquals(2, count);
     }
 
     @Test
