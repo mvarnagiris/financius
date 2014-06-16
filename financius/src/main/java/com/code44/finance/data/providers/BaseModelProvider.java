@@ -86,10 +86,18 @@ public abstract class BaseModelProvider extends BaseProvider {
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
-                final Map<String, Object> extras = new HashMap<>();
-                onBeforeInsertItem(uri, values, extras);
-                newId = insertItem(uri, values);
-                onAfterInsertItem(uri, values, extras);
+                try {
+                    database.beginTransaction();
+
+                    final Map<String, Object> extras = new HashMap<>();
+                    onBeforeInsertItem(uri, values, extras);
+                    newId = insertItem(uri, values);
+                    onAfterInsertItem(uri, values, extras);
+
+                    database.setTransactionSuccessful();
+                } finally {
+                    database.endTransaction();
+                }
                 break;
 
             default:
@@ -108,10 +116,18 @@ public abstract class BaseModelProvider extends BaseProvider {
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
-                final Map<String, Object> extras = new HashMap<>();
-                onBeforeUpdateItems(uri, values, selection, selectionArgs, extras);
-                count = updateItems(uri, values, selection, selectionArgs);
-                onAfterUpdateItems(uri, values, selection, selectionArgs, extras);
+                try {
+                    database.beginTransaction();
+
+                    final Map<String, Object> extras = new HashMap<>();
+                    onBeforeUpdateItems(uri, values, selection, selectionArgs, extras);
+                    count = updateItems(uri, values, selection, selectionArgs);
+                    onAfterUpdateItems(uri, values, selection, selectionArgs, extras);
+
+                    database.setTransactionSuccessful();
+                } finally {
+                    database.endTransaction();
+                }
                 break;
 
             default:
@@ -149,11 +165,18 @@ public abstract class BaseModelProvider extends BaseProvider {
                     default:
                         throw new IllegalArgumentException(ProviderUtils.QueryParameterKey.DELETE_MODE.getKeyName() + "=" + deleteMode + " is not supported.");
                 }
+                try {
+                    database.beginTransaction();
 
-                final Map<String, Object> extras = new HashMap<>();
-                onBeforeDeleteItems(uri, selection, selectionArgs, itemState, extras);
-                count = deleteItems(uri, selection, selectionArgs, itemState);
-                onAfterDeleteItems(uri, selection, selectionArgs, itemState, extras);
+                    final Map<String, Object> extras = new HashMap<>();
+                    onBeforeDeleteItems(uri, selection, selectionArgs, itemState, extras);
+                    count = deleteItems(uri, selection, selectionArgs, itemState);
+                    onAfterDeleteItems(uri, selection, selectionArgs, itemState, extras);
+
+                    database.setTransactionSuccessful();
+                } finally {
+                    database.endTransaction();
+                }
                 break;
 
             default:
@@ -172,10 +195,18 @@ public abstract class BaseModelProvider extends BaseProvider {
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
-                final Map<String, Object> extras = new HashMap<>();
-                onBeforeBulkInsertItems(uri, valuesArray, extras);
-                count = bulkInsertItems(uri, valuesArray);
-                onAfterBulkInsertItems(uri, valuesArray, extras);
+                try {
+                    database.beginTransaction();
+
+                    final Map<String, Object> extras = new HashMap<>();
+                    onBeforeBulkInsertItems(uri, valuesArray, extras);
+                    count = bulkInsertItems(uri, valuesArray);
+                    onAfterBulkInsertItems(uri, valuesArray, extras);
+
+                    database.setTransactionSuccessful();
+                } finally {
+                    database.endTransaction();
+                }
                 break;
 
             default:
@@ -256,7 +287,7 @@ public abstract class BaseModelProvider extends BaseProvider {
     }
 
     protected int bulkInsertItems(Uri uri, ContentValues[] valuesArray) {
-        return ProviderUtils.doArrayReplaceInTransaction(database, getModelTable(), valuesArray);
+        return ProviderUtils.doArrayReplace(database, getModelTable(), valuesArray);
     }
 
     protected void onAfterBulkInsertItems(Uri uri, ContentValues[] valuesArray, Map<String, Object> extras) {

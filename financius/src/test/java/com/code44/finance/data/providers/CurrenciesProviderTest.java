@@ -1,8 +1,14 @@
 package com.code44.finance.data.providers;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
+
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.db.model.Account;
 import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.utils.IOUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,28 +26,72 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
 
         insert(CurrenciesProvider.uriCurrencies(), currency);
 
-        assertQuerySize(CurrenciesProvider.uriCurrencies(), Query.get().projectionId(Tables.Currencies.ID).selection(Tables.Currencies.IS_DEFAULT + "=?", "1"), 1);
-        // TODO Assert that default currency is AAA
+        final Query query = Query.get()
+                .projectionId(Tables.Currencies.ID)
+                .projection(Tables.Currencies.PROJECTION)
+                .selection(Tables.Currencies.IS_DEFAULT + "=?", "1");
+        assertQuerySize(CurrenciesProvider.uriCurrencies(), query, 1);
+
+        Cursor cursor = query.asCursor(context, CurrenciesProvider.uriCurrencies());
+        final Currency currencyFromDb = Currency.from(cursor);
+        IOUtils.closeQuietly(cursor);
+
+        assertEquals(currency.getCode(), currencyFromDb.getCode());
     }
 
     @Test
     public void insert_updatesCurrency_whenCurrencyWithSameCodeExists() {
-        fail();
+        final Currency currency = new Currency();
+        currency.setCode("USD");
+        currency.setExchangeRate(1.2345);
+
+        insert(CurrenciesProvider.uriCurrencies(), currency);
+
+        final Query query = Query.get()
+                .projectionId(Tables.Currencies.ID)
+                .projection(Tables.Currencies.PROJECTION)
+                .selection(Tables.Currencies.CODE + "=?", currency.getCode());
+        assertQuerySize(CurrenciesProvider.uriCurrencies(), query, 1);
+
+        Cursor cursor = query.asCursor(context, CurrenciesProvider.uriCurrencies());
+        final Currency currencyFromDb = Currency.from(cursor);
+        IOUtils.closeQuietly(cursor);
+
+        assertEquals(currency.getExchangeRate(), currencyFromDb.getExchangeRate(), 0.0001);
     }
 
-    @Test
+    @Test(expected = IllegalAccessException.class)
     public void update_doesNotAllowToChangeDefaultCurrency() {
-        fail();
+        ContentValues values = new ContentValues();
+        values.put(Tables.Currencies.IS_DEFAULT.getName(), "1");
+
+        contentResolver.update(CurrenciesProvider.uriCurrencies(), values, null, null);
     }
 
     @Test
     public void delete_setsTheSameItemStateForAccounts() {
-        fail();
+        // Get any currency that is not default
+        final Query query = Query.get()
+                .projectionId(Tables.Currencies.ID).projection(Tables.Currencies.PROJECTION)
+                .selection(Tables.Currencies.IS_DEFAULT + "=?", "0");
+        final Cursor cursor = query.asCursor(context, CurrenciesProvider.uriCurrencies());
+        final Currency currency = Currency.from(cursor);
+        IOUtils.closeQuietly(cursor);
+
+        // Insert new account for that currency
+        final Account account = new Account();
+        account.setTitle("a");
+        account.setCurrency(currency);
+        insert(AccountsProvider.uriAccounts(), account);
+
+        // Delete currency
+        Uri uri
+        contentResolver.delete(ProviderUtils.withQueryParameter(CurrenciesProvider.uriCurrencies(), ProviderUtils.QueryParameterKey.DELETE_MODE, "delete"), Tables.Currencies.ID.getNameWithTable() + "=?", String.valueOf(currency.getId()));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void delete_doesNotAllowToDeleteDefaultCurrency() {
-        fail();
+        contentResolver.delete(CurrenciesProvider.uriCurrencies(), null, null);
     }
 
     @Test
