@@ -1,7 +1,6 @@
 package com.code44.finance.data;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.net.Uri;
 
 import com.code44.finance.App;
@@ -17,57 +16,34 @@ public final class DataStore {
     private DataStore() {
     }
 
-    public static DataStoreInsert insert(Uri uri) {
-        if (uri == null) {
-            throw new NullPointerException("Uri cannot be null.");
-        }
-
-        return new DataStoreInsert(App.getAppContext(), uri);
+    public static DataStoreInsert insert() {
+        return new DataStoreInsert();
     }
 
-    public static DataStoreBulkInsert bulkInsert(Uri uri) {
-        if (uri == null) {
-            throw new NullPointerException("Uri cannot be null.");
-        }
-
-        return new DataStoreBulkInsert(App.getAppContext(), uri);
+    public static DataStoreUpdate update() {
+        return new DataStoreUpdate();
     }
 
-    public DataStore update(String selection, String... selectionArgs) {
-        final ContentValues[] valuesArray = getValuesArray();
-        for (ContentValues values : valuesArray) {
-            context.getContentResolver().update(uri, values, selection, selectionArgs);
-        }
-
-        return clear();
+    public static DataStoreDelete delete() {
+        return new DataStoreDelete();
     }
 
-    public DataStore delete(String selection, String... selectionArgs) {
-        context.getContentResolver().delete(ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, "delete"), selection, selectionArgs);
-
-        return clear();
+    public static DataStoreUndoDelete undoDelete() {
+        return new DataStoreUndoDelete();
     }
 
-    public DataStore undoDelete() {
-        context.getContentResolver().delete(uri, selection, selectionArgs);
-
-        return clear();
+    public static DataStoreCommitDelete commitDelete() {
+        return new DataStoreCommitDelete();
     }
 
-    public DataStore commitDelete() {
-        context.getContentResolver().delete(uri, selection, selectionArgs);
-
-        return clear();
+    public static DataStoreBulkInsert bulkInsert() {
+        return new DataStoreBulkInsert();
     }
 
     public static final class DataStoreInsert {
-        private final Context context;
-        private final Uri uri;
         private ContentValues values;
 
-        private DataStoreInsert(Context context, Uri uri) {
-            this.context = context;
-            this.uri = uri;
+        private DataStoreInsert() {
         }
 
         public DataStoreInsert values(ContentValues values) {
@@ -83,23 +59,93 @@ public final class DataStore {
             return this;
         }
 
-        public void execute() {
+        public void into(Uri uri) {
             if (values == null) {
                 throw new IllegalStateException("Values must be set before executing insert.");
             }
 
-            context.getContentResolver().insert(uri, values);
+            App.getAppContext().getContentResolver().insert(uri, values);
+        }
+    }
+
+    public static final class DataStoreUpdate {
+        private ContentValues values;
+        private String selection;
+        private String[] selectionArgs;
+
+        private DataStoreUpdate() {
+        }
+
+        public DataStoreUpdate values(ContentValues values) {
+            if (this.values != null) {
+                throw new IllegalStateException("Values is already set.");
+            }
+
+            if (values == null) {
+                throw new NullPointerException("Values cannot be null.");
+            }
+
+            this.values = values;
+            return this;
+        }
+
+        public DataStoreUpdate withSelection(String selection, String... selectionArgs) {
+            this.selection = selection;
+            this.selectionArgs = selectionArgs;
+
+            return this;
+        }
+
+        public void from(Uri uri) {
+            if (values == null) {
+                throw new IllegalStateException("Values must be set before executing insert.");
+            }
+
+            App.getAppContext().getContentResolver().update(uri, values, selection, selectionArgs);
+        }
+    }
+
+    public static final class DataStoreDelete {
+        private String selection;
+        private String[] selectionArgs;
+
+        private DataStoreDelete() {
+        }
+
+        public DataStoreDelete selection(String selection, String... selectionArgs) {
+            this.selection = selection;
+            this.selectionArgs = selectionArgs;
+
+            return this;
+        }
+
+        public void from(Uri uri) {
+            App.getAppContext().getContentResolver().delete(ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, "delete"), selection, selectionArgs);
+        }
+    }
+
+    public static final class DataStoreUndoDelete {
+        private DataStoreUndoDelete() {
+        }
+
+        public void from(Uri uri) {
+            App.getAppContext().getContentResolver().delete(ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, "undo"), null, null);
+        }
+    }
+
+    public static final class DataStoreCommitDelete {
+        private DataStoreCommitDelete() {
+        }
+
+        public void from(Uri uri) {
+            App.getAppContext().getContentResolver().delete(ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, "commit"), null, null);
         }
     }
 
     public static final class DataStoreBulkInsert {
-        private final Context context;
-        private final Uri uri;
         private final List<ContentValues> valuesList;
 
-        private DataStoreBulkInsert(Context context, Uri uri) {
-            this.context = context;
-            this.uri = uri;
+        private DataStoreBulkInsert() {
             this.valuesList = new ArrayList<>();
         }
 
@@ -130,13 +176,13 @@ public final class DataStore {
             return this;
         }
 
-        public void execute() {
+        public void into(Uri uri) {
             ContentValues[] valuesArray = getValuesArray();
             if (valuesArray.length == 0) {
                 throw new IllegalStateException("Must have at least one ContentValues before executing bulk insert.");
             }
 
-            context.getContentResolver().bulkInsert(uri, valuesArray);
+            App.getAppContext().getContentResolver().bulkInsert(uri, valuesArray);
         }
 
         private ContentValues[] getValuesArray() {

@@ -141,7 +141,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         }
 
         if (canSave) {
-            DataStore.with(context, CurrenciesProvider.uriCurrencies()).values(model.asContentValues()).insert();
+            DataStore.insert().values(model.asContentValues()).into(CurrenciesProvider.uriCurrencies());
         }
 
         return canSave;
