@@ -12,6 +12,7 @@ import com.code44.finance.data.db.model.Currency;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.UUID;
 
 public final class DBDefaults {
     private DBDefaults() {
@@ -56,6 +57,7 @@ public final class DBDefaults {
 
     private static void addAccounts(SQLiteDatabase db) {
         final Account systemAccount = new Account();
+        systemAccount.setServerId(UUID.randomUUID().toString());
         systemAccount.setOwner(Account.Owner.SYSTEM);
         systemAccount.checkValues();
 

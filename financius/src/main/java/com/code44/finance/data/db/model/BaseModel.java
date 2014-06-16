@@ -62,10 +62,6 @@ public abstract class BaseModel implements Parcelable {
     }
 
     public void checkValues() throws IllegalStateException {
-        if (serverId == null) {
-            throw new IllegalStateException("ServerId cannot be empty.");
-        }
-
         if (itemState == null) {
             throw new IllegalStateException("ItemState cannot be null.");
         }

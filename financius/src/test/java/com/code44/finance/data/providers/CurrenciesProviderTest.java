@@ -1,6 +1,8 @@
 package com.code44.finance.data.providers;
 
-import android.database.Cursor;
+import com.code44.finance.data.Query;
+import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.db.model.Currency;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,10 +14,13 @@ import static org.junit.Assert.*;
 public class CurrenciesProviderTest extends BaseContentProviderTestCase {
     @Test
     public void insert_makesSureThatThereIsOnlyOneDefaultCurrency() {
-        Cursor c = contentResolver.query(CurrenciesProvider.uriCurrencies(), null, null, null, null);
-        c.moveToFirst();
-        int count = c.getCount();
-        assertEquals(2, count);
+        final Currency currency = new Currency();
+        currency.setCode("AAA");
+        currency.setDefault(true);
+
+        insert(CurrenciesProvider.uriCurrencies(), currency);
+
+        assertQuerySize(CurrenciesProvider.uriCurrencies(), Query.get().projectionId(Tables.Currencies.ID).selection(Tables.Currencies.IS_DEFAULT + "=?", "1"), 1);
     }
 
     @Test
