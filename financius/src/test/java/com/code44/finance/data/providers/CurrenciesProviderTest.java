@@ -21,6 +21,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
         insert(CurrenciesProvider.uriCurrencies(), currency);
 
         assertQuerySize(CurrenciesProvider.uriCurrencies(), Query.get().projectionId(Tables.Currencies.ID).selection(Tables.Currencies.IS_DEFAULT + "=?", "1"), 1);
+        // TODO Assert that default currency is AAA
     }
 
     @Test
