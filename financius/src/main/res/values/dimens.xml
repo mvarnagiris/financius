@@ -27,4 +27,6 @@
 
     <dimen name="navigation_drawer_width">280dp</dimen>
 
+    <dimen name="btn_corner">2dp</dimen>
+
 </resources>

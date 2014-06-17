@@ -2,6 +2,9 @@
 <resources>
 
     <color name="d_brand">#9dae2a</color>
+    <color name="d_brand_lighter1">#bdce4a</color>
+    <color name="d_brand_lighter2">#ddee6a</color>
+    <color name="d_brand_lighter3">#fdff8a</color>
 
     <color name="d_dark">#303332</color>
     <color name="d_dark_lighter1">#4a4a4a</color>
@@ -26,6 +29,8 @@
     <color name="text_negative">#c00</color>
     <color name="text_neutral">#f80</color>
 
+    <color name="btn_primary_default">@color/d_brand</color>
+    <color name="btn_primary_pressed">@color/d_brand_lighter2</color>
     <color name="btn_borderless_pressed">#339dae2a</color>
 
     <color name="separator">@color/d_light_darker4</color>

@@ -32,6 +32,7 @@
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/rightSeparator_V"
         android:layout_toRightOf="@+id/leftSeparator_V"
+        android:animateLayoutChanges="true"
         android:background="@color/bg_primary"
         android:divider="?android:attr/dividerVertical"
         android:dividerPadding="@dimen/space_normal"

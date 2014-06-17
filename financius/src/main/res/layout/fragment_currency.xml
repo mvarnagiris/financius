@@ -4,10 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/container_V"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
         android:background="@color/bg_secondary"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/space_xlarge"
@@ -28,11 +29,22 @@
             style="@style/TextView"
             android:layout_width="match_parent"
             android:layout_marginLeft="@dimen/space_normal"
+            android:layout_toRightOf="@id/code_TV"
             android:gravity="right"
             android:textSize="@dimen/text_xlarge"
             tools:text="1.2489" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/format_TV"
+            style="@style/TextView.Secondary"
+            android:layout_width="match_parent"
+            android:layout_below="@id/code_TV"
+            android:layout_marginTop="@dimen/space_normal"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/text_large"
+            tools:text="1,000.00 £" />
+
+    </RelativeLayout>
 
     <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
         android:id="@+id/loading_SPB"
@@ -46,45 +58,19 @@
         style="@style/Separator.Thin"
         android:layout_below="@id/container_V" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/separator_V"
-        android:orientation="vertical">
+    <ScrollView
+        style="@style/ScrollView"
+        android:layout_below="@id/separator_V">
 
-        <Space
+        <LinearLayout
+            android:id="@+id/accountsContainer_V"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:divider="?android:attr/dividerVertical"
+            android:orientation="vertical"
+            android:showDividers="middle|end" />
 
-        <TextView
-            android:id="@+id/format_TV"
-            style="@style/TextView"
-            android:layout_width="match_parent"
-            android:layout_marginBottom="@dimen/space_normal"
-            android:layout_marginLeft="@dimen/space_large"
-            android:layout_marginRight="@dimen/space_large"
-            android:layout_marginTop="@dimen/space_normal"
-            android:gravity="center_horizontal"
-            android:textSize="@dimen/text_xxxlarge"
-            tools:text="1,000.00 £" />
-
-        <TextView
-            android:id="@+id/mainFormat_TV"
-            style="@style/TextView.Secondary"
-            android:layout_width="match_parent"
-            android:layout_marginBottom="@dimen/space_normal"
-            android:layout_marginLeft="@dimen/space_large"
-            android:layout_marginRight="@dimen/space_large"
-            android:layout_marginTop="@dimen/space_normal"
-            android:gravity="center_horizontal"
-            tools:text="1,000.00 £" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

@@ -46,11 +46,19 @@
         <item name="android:paddingTop">@dimen/space_small</item>
         <item name="android:paddingBottom">@dimen/space_small</item>
         <item name="android:textSize">@dimen/text_normal</item>
-        <item name="android:textColor">@color/text_primary</item>
-        <!--<item name="android:background">@drawable/btn_primary</item>-->
+        <item name="android:textColor">@color/text_primary_inverse</item>
+        <item name="android:background">@drawable/btn_primary</item>
+    </style>
+
+    <style name="Button.Small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:minHeight">@dimen/min_touch_size</item>
+        <item name="android:minWidth">@dimen/min_touch_size</item>
+        <item name="android:textSize">@dimen/text_small</item>
     </style>
 
     <style name="Button.Borderless">
+        <item name="android:textColor">@color/text_primary</item>
         <item name="android:background">@drawable/btn_borderless</item>
     </style>
 
