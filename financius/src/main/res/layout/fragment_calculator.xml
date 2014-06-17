@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:divider="@drawable/divider_horizontal_empty"
+    android:orientation="vertical"
+    android:showDividers="middle|beginning|end">
+
+    <TextView
+        android:id="@+id/result_TV"
+        style="@style/TextView"
+        android:layout_width="match_parent"
+        android:gravity="right"
+        android:paddingBottom="@dimen/space_large"
+        android:paddingLeft="@dimen/space_large"
+        android:paddingRight="@dimen/space_large"
+        android:paddingTop="@dimen/space_large"
+        android:textSize="@dimen/text_xxlarge"
+        tools:text="0.00" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/divider_vertical_empty"
+        android:showDividers="middle|beginning|end">
+
+        <Button
+            android:id="@+id/divide_B"
+            style="@style/Button.Secondary.Calculator"
+            android:text="@string/divide" />
+
+        <Button
+            android:id="@+id/multiply_B"
+            style="@style/Button.Secondary.Calculator"
+            android:text="@string/multiply" />
+
+        <Button
+            android:id="@+id/minus_B"
+            style="@style/Button.Secondary.Calculator"
+            android:text="@string/minus" />
+
+        <Button
+            android:id="@+id/plus_B"
+            style="@style/Button.Secondary.Calculator"
+            android:text="@string/plus" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@drawable/divider_vertical_empty"
+        android:showDividers="middle|beginning|end">
+
+        <Button
+            android:id="@+id/number7_B"
+            style="@style/Button.Secondary.Calculator"
+            android:text="@string/number_7" />
+
+        <Button
+            android:id="@+id/number8_B"
+            style="@style/Button.Secondary.Calculator"
+            android:text="@string/number_8" />
+
+        <Button
+            android:id="@+id/number9_B"
+            style="@style/Button.Secondary.Calculator"
+            android:text="@string/number_9" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@drawable/divider_vertical_empty"
+        android:showDividers="middle|beginning|end">
+
+        <Button
+            android:id="@+id/number4_B"
+            style="@style/Button.Secondary.Calculator"
+            android:text="@string/number_4" />
+
+        <Button
+            android:id="@+id/number5_B"
+            style="@style/Button.Secondary.Calculator"
+            android:text="@string/number_5" />
+
+        <Button
+            android:id="@+id/number6_B"
+            style="@style/Button.Secondary.Calculator"
+            android:text="@string/number_6" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@drawable/divider_vertical_empty"
+        android:showDividers="middle|beginning|end">
+
+        <Button
+            android:id="@+id/number1_B"
+            style="@style/Button.Secondary.Calculator"
+            android:text="@string/number_1" />
+
+        <Button
+            android:id="@+id/number2_B"
+            style="@style/Button.Secondary.Calculator"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/number_2" />
+
+        <Button
+            android:id="@+id/number3_B"
+            style="@style/Button.Secondary.Calculator"
+            android:text="@string/number_3" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@drawable/divider_vertical_empty"
+        android:showDividers="middle|beginning|end">
+
+        <Button
+            android:id="@+id/equals_B"
+            style="@style/Button.Secondary.Calculator"
+            android:text="@string/equals" />
+
+        <Button
+            android:id="@+id/number0_B"
+            style="@style/Button.Secondary.Calculator"
+            android:text="@string/number_0" />
+
+        <Button
+            android:id="@+id/dot_B"
+            style="@style/Button.Secondary.Calculator"
+            android:text="@string/decimal" />
+
+    </LinearLayout>
+
+</LinearLayout>
