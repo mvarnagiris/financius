@@ -124,7 +124,7 @@ public class CurrencyFragment extends ModelFragment<Currency> {
             code_TV.setText(ssb);
             code_TV.setTextColor(getResources().getColor(R.color.text_primary));
             exchangeRate_TV.setText(String.valueOf(currency.getExchangeRate()));
-            mainFormat_TV.setText("= " + MoneyFormatter.format(Currency.getDefault(), (long) (100000 * currency.getExchangeRate())));
+            mainFormat_TV.setText(MoneyFormatter.format(Currency.getDefault(), (long) (100000 * currency.getExchangeRate())));
             mainFormat_TV.setVisibility(View.VISIBLE);
         }
         format_TV.setText(MoneyFormatter.format(currency, 100000));

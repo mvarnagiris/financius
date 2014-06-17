@@ -1,54 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
-        android:id="@+id/loading_SPB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:visibility="invisible" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <TextView
-        android:id="@+id/format_TV"
-        style="@style/TextView.Secondary"
-        android:layout_width="match_parent"
-        android:layout_marginBottom="@dimen/space_normal"
-        android:layout_marginLeft="@dimen/space_large"
-        android:layout_marginRight="@dimen/space_large"
-        android:layout_marginTop="@dimen/space_normal"
-        android:gravity="center_horizontal"
-        android:textSize="@dimen/text_xxxlarge"
-        tools:text="1,000.00 £" />
-
-    <TextView
-        android:id="@+id/mainFormat_TV"
-        style="@style/TextView.Secondary"
-        android:layout_width="match_parent"
-        android:layout_marginBottom="@dimen/space_normal"
-        android:layout_marginLeft="@dimen/space_large"
-        android:layout_marginRight="@dimen/space_large"
-        android:layout_marginTop="@dimen/space_normal"
-        android:gravity="center_horizontal"
-        android:textSize="@dimen/text_xlarge"
-        tools:text="1,000.00 £" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <View style="@style/Separator.Thin" />
+    android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/container_V"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/bg_secondary"
@@ -77,4 +34,57 @@
 
     </LinearLayout>
 
-</LinearLayout>
+    <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+        android:id="@+id/loading_SPB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="invisible" />
+
+    <View
+        android:id="@+id/separator_V"
+        style="@style/Separator.Thin"
+        android:layout_below="@id/container_V" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/separator_V"
+        android:orientation="vertical">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/format_TV"
+            style="@style/TextView"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/space_normal"
+            android:layout_marginLeft="@dimen/space_large"
+            android:layout_marginRight="@dimen/space_large"
+            android:layout_marginTop="@dimen/space_normal"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/text_xxxlarge"
+            tools:text="1,000.00 £" />
+
+        <TextView
+            android:id="@+id/mainFormat_TV"
+            style="@style/TextView.Secondary"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/space_normal"
+            android:layout_marginLeft="@dimen/space_large"
+            android:layout_marginRight="@dimen/space_large"
+            android:layout_marginTop="@dimen/space_normal"
+            android:gravity="center_horizontal"
+            tools:text="1,000.00 £" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+</RelativeLayout>
