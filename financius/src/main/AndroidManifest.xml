@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.code44.finance">
+<manifest
+    package="com.code44.finance"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -20,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.SettingsActivity" />
+        <activity android:name=".ui.CalculatorActivity" />
 
         <activity android:name=".ui.currencies.CurrenciesActivity" />
         <activity android:name=".ui.currencies.CurrencyActivity" />

@@ -1,5 +1,6 @@
 package com.code44.finance.ui;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,8 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
 
     private TextView result_TV;
 
+    private CalculatorListener listener;
+
     public static CalculatorFragment newInstance(long value) {
         final Bundle args = new Bundle();
         args.putLong(ARG_VALUE, value);
@@ -25,6 +28,17 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
         final CalculatorFragment fragment = new CalculatorFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if (activity instanceof CalculatorListener) {
+            listener = (CalculatorListener) activity;
+        } else {
+            throw new IllegalArgumentException("Activity " + activity.getClass().getSimpleName() + " must implement " + CalculatorListener.class.getSimpleName());
+        }
     }
 
     @Override
@@ -76,8 +90,8 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
         number8_B.setOnClickListener(this);
         number9_B.setOnClickListener(this);
 
-        divide_B.setTag("/");
-        multiply_B.setTag("*");
+        divide_B.setTag("÷");
+        multiply_B.setTag("×");
         minus_B.setTag("-");
         plus_B.setTag("+");
         dot_B.setTag(".");

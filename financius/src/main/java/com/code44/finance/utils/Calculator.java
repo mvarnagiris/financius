@@ -41,4 +41,8 @@ public class Calculator {
     public String getExpression() {
         return expressionBuilder.toString();
     }
+
+    public static enum Value {
+        DIVIDE;
+    }
 }

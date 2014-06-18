@@ -18,6 +18,7 @@ import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.model.Account;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
+import com.code44.finance.ui.CalculatorActivity;
 import com.code44.finance.ui.ModelEditFragment;
 import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.currencies.CurrenciesActivity;
@@ -25,6 +26,7 @@ import com.code44.finance.utils.MoneyFormatter;
 
 public class AccountEditFragment extends ModelEditFragment<Account> implements View.OnClickListener {
     private static final int REQUEST_CURRENCY = 1;
+    private static final int REQUEST_BALANCE = 2;
 
     private EditText title_ET;
     private Button currency_B;
@@ -66,6 +68,11 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
                 case REQUEST_CURRENCY:
                     ensureModelUpdated(model);
                     model.setCurrency(data.<Currency>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
+                    onModelLoaded(model);
+                    return;
+
+                case REQUEST_BALANCE:
+                    model.setBalance(data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0));
                     onModelLoaded(model);
                     return;
             }
@@ -123,7 +130,7 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
                 break;
 
             case R.id.balance_B:
-                // TODO Request amount
+                CalculatorActivity.start(this, REQUEST_BALANCE, model.getBalance());
                 break;
         }
     }
