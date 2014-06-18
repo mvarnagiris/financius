@@ -108,6 +108,12 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.delete_B:
