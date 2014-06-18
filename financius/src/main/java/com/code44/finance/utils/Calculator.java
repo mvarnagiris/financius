@@ -5,7 +5,6 @@ import android.text.TextUtils;
 
 import java.util.LinkedList;
 
-import bsh.EvalError;
 import bsh.Interpreter;
 
 public class Calculator {
@@ -54,17 +53,29 @@ public class Calculator {
         doAction(Type.NUMBER, String.valueOf(number));
     }
 
-    public long calculate() {
+    public void calculate() {
         String result = "";
         try {
             result = interpreter.eval(getExpression()).toString();
-        } catch (EvalError evalError) {
-            evalError.printStackTrace();
+            Double number = Double.parseDouble(result);
+            result = Double.isInfinite(number) ? null : String.valueOf(number);
+        } catch (Exception ignore) {
         }
 
         clear();
         currentPart = new NumberPart(result);
-        return 0;
+    }
+
+    public long getResult() {
+        calculate();
+        long result = 0;
+        try {
+            final Double number = Double.parseDouble(currentPart.toString());
+            result = (long) (number * 100);
+        } catch (Exception ignore) {
+        }
+
+        return result;
     }
 
     public boolean hasExpression() {
@@ -110,7 +121,7 @@ public class Calculator {
     }
 
     private void doAction(Type type, String value) {
-        final Part.Action action = currentPart.getAction(type);
+        final Part.Action action = currentPart.getAction(type, parts.size(), value);
         switch (action) {
             case NEW:
                 parts.add(currentPart);
@@ -164,7 +175,7 @@ public class Calculator {
             return stringBuilder.toString();
         }
 
-        public abstract Action getAction(Type type);
+        public abstract Action getAction(Type type, int partIndex, String value);
 
         public abstract CharSequence toFormattedString();
 
@@ -194,7 +205,7 @@ public class Calculator {
         }
 
         @Override
-        public Action getAction(Type type) {
+        public Action getAction(Type type, int partIndex, String value) {
             switch (type) {
                 case OPERATOR:
                     return Action.OVERWRITE;
@@ -218,19 +229,40 @@ public class Calculator {
         private static final int MAX_DECIMALS = 10;
 
         private NumberPart(String number) {
-            super(truncateNumber(number));
+            super(ensureMaxDecimals(number));
         }
 
-        private static String truncateNumber(String number) {
-            // TODO Truncate
-            return number;
+        private static String ensureMaxDecimals(String number) {
+            if (TextUtils.isEmpty(number)) {
+                // No number
+                return number;
+            }
+
+            final int decimalPosition = number.indexOf(DECIMAL);
+            if (decimalPosition < 0) {
+                // No decimal
+                return number;
+            }
+
+            if (number.length() - decimalPosition <= MAX_DECIMALS) {
+                // Not too many decimals
+                return number;
+            }
+
+            return number.substring(0, decimalPosition + MAX_DECIMALS);
         }
 
         @Override
-        public Action getAction(Type type) {
+        public Action getAction(Type type, int partIndex, String value) {
             switch (type) {
                 case OPERATOR:
-                    return Action.NEW;
+                    if (partIndex == 0 && stringBuilder.length() == 0 && MINUS.equals(value)) {
+                        return Action.APPEND;
+                    } else if (partIndex == 0 && stringBuilder.length() == 0) {
+                        return Action.IGNORE;
+                    } else {
+                        return Action.NEW;
+                    }
 
                 case DECIMAL:
                     if (containsDecimal()) {
@@ -249,7 +281,22 @@ public class Calculator {
 
         @Override
         public CharSequence toFormattedString() {
-            return stringBuilder.toString();
+            if (stringBuilder.length() == 0) {
+                return "0";
+            } else if (stringBuilder.charAt(0) == DECIMAL.charAt(0)) {
+                return "0" + super.toString();
+            } else {
+                return stringBuilder.toString();
+            }
+        }
+
+        @Override
+        public void append(String value) {
+            final String number = stringBuilder.toString();
+            final int decimalPosition = number.indexOf(DECIMAL);
+            if (decimalPosition < 0 || number.length() - decimalPosition <= MAX_DECIMALS) {
+                super.append(value);
+            }
         }
 
         @Override

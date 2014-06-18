@@ -17,7 +17,7 @@
 
     <Button
         android:id="@+id/currency_B"
-        style="@style/Button.Small"
+        style="@style/Button.Accent.Small"
         android:layout_width="wrap_content"
         android:layout_marginLeft="@dimen/space_normal"
         android:paddingLeft="@dimen/space_large"

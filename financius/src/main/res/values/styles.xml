@@ -46,35 +46,33 @@
         <item name="android:paddingTop">@dimen/space_small</item>
         <item name="android:paddingBottom">@dimen/space_small</item>
         <item name="android:textSize">@dimen/text_normal</item>
-        <item name="android:textColor">@color/text_primary_inverse</item>
+        <item name="android:textColor">@color/text_primary</item>
         <item name="android:background">@drawable/btn_primary</item>
     </style>
 
     <style name="Button.Secondary">
-        <item name="android:textColor">@color/text_primary</item>
         <item name="android:background">@drawable/btn_secondary</item>
     </style>
 
-    <style name="Button.Secondary.Calculator">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:textSize">@dimen/text_xlarge</item>
+    <style name="Button.Accent">
+        <item name="android:textColor">@color/text_primary_inverse</item>
+        <item name="android:background">@drawable/btn_accent</item>
     </style>
 
-    <style name="Button.Small">
-        <item name="android:layout_width">wrap_content</item>
+    <style name="Button.Accent.Small">
+    <item name="android:layout_width">wrap_content</item>
         <item name="android:minHeight">@dimen/min_touch_size</item>
         <item name="android:minWidth">@dimen/min_touch_size</item>
         <item name="android:textSize">@dimen/text_small</item>
     </style>
 
     <style name="Button.Borderless">
-        <item name="android:textColor">@color/text_primary</item>
         <item name="android:background">@drawable/btn_borderless</item>
     </style>
 
     <style name="Button.Borderless.Settings">
+        <item name="android:paddingLeft">@dimen/space_large</item>
+        <item name="android:paddingRight">@dimen/space_large</item>
         <item name="android:minHeight">@dimen/big_touch_size</item>
         <item name="android:gravity">left|center_vertical</item>
         <item name="android:textSize">@dimen/text_large</item>

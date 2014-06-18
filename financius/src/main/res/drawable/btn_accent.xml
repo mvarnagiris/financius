@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/btn_accent_pressed" />
+            <corners android:radius="@dimen/btn_corner" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@color/btn_accent_default" />
+            <corners android:radius="@dimen/btn_corner" />
+        </shape>
+    </item>
+
+</selector>

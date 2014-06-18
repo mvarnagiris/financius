@@ -29,10 +29,12 @@
     <color name="text_negative">#c00</color>
     <color name="text_neutral">#f80</color>
 
-    <color name="btn_primary_default">@color/d_brand</color>
-    <color name="btn_primary_pressed">@color/d_brand_lighter2</color>
-    <color name="btn_secondary_default">@color/d_light_darker3</color>
+    <color name="btn_primary_default">@color/d_light_darker3</color>
+    <color name="btn_primary_pressed">@color/d_light_darker2</color>
+    <color name="btn_secondary_default">@color/d_light_darker4</color>
     <color name="btn_secondary_pressed">@color/d_light_darker2</color>
+    <color name="btn_accent_default">@color/d_brand</color>
+    <color name="btn_accent_pressed">@color/d_brand_lighter2</color>
     <color name="btn_borderless_pressed">#339dae2a</color>
 
     <color name="separator">@color/d_light_darker4</color>

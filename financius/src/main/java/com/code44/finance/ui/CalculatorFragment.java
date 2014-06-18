@@ -2,11 +2,11 @@ package com.code44.finance.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.code44.finance.R;
@@ -18,6 +18,7 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
     private final Calculator calculator = new Calculator();
 
     private TextView result_TV;
+    private Button equals_B;
 
     private CalculatorListener listener;
 
@@ -52,13 +53,13 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
 
         // Get views
         result_TV = (TextView) view.findViewById(R.id.result_TV);
-        final ImageButton delete_B = (ImageButton) view.findViewById(R.id.delete_B);
+        equals_B = (Button) view.findViewById(R.id.equals_B);
+        final Button delete_B = (Button) view.findViewById(R.id.delete_B);
         final Button divide_B = (Button) view.findViewById(R.id.divide_B);
         final Button multiply_B = (Button) view.findViewById(R.id.multiply_B);
         final Button minus_B = (Button) view.findViewById(R.id.minus_B);
         final Button plus_B = (Button) view.findViewById(R.id.plus_B);
         final Button dot_B = (Button) view.findViewById(R.id.dot_B);
-        final Button equals_B = (Button) view.findViewById(R.id.equals_B);
         final Button number0_B = (Button) view.findViewById(R.id.number0_B);
         final Button number1_B = (Button) view.findViewById(R.id.number1_B);
         final Button number2_B = (Button) view.findViewById(R.id.number2_B);
@@ -89,6 +90,7 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
         number7_B.setOnClickListener(this);
         number8_B.setOnClickListener(this);
         number9_B.setOnClickListener(this);
+        updateResult();
     }
 
     @Override
@@ -106,8 +108,12 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
                 break;
 
             case R.id.equals_B:
-                calculator.calculate();
-                updateResult();
+                if (calculator.hasExpression()) {
+                    calculator.calculate();
+                    updateResult();
+                } else {
+                    listener.onCalculatorResult(calculator.getResult());
+                }
                 break;
 
             case R.id.divide_B:
@@ -200,6 +206,13 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
 
     public void updateResult() {
         result_TV.setText(calculator.getFormattedExpression());
+        if (calculator.hasExpression()) {
+            equals_B.setText(R.string.equals);
+            equals_B.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_xxxlarge));
+        } else {
+            equals_B.setText(R.string.done);
+            equals_B.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_normal));
+        }
     }
 
     static interface CalculatorListener {

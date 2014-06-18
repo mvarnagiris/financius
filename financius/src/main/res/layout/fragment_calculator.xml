@@ -7,32 +7,17 @@
     android:orientation="vertical"
     android:showDividers="middle|beginning|end">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/result_TV"
+        style="@style/TextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/result_TV"
-            style="@style/TextView"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:paddingBottom="@dimen/space_large"
-            android:paddingLeft="@dimen/space_large"
-            android:paddingRight="@dimen/space_large"
-            android:paddingTop="@dimen/space_large"
-            android:textSize="@dimen/text_xxlarge"
-            tools:text="0.00" />
-
-        <ImageButton
-            android:id="@+id/delete_B"
-            style="@style/Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/delete"
-            android:src="@drawable/ic_action_cancel" />
-
-    </LinearLayout>
+        android:gravity="right"
+        android:paddingBottom="@dimen/space_xlarge"
+        android:paddingLeft="@dimen/space_large"
+        android:paddingRight="@dimen/space_large"
+        android:paddingTop="@dimen/space_xlarge"
+        android:textSize="@dimen/text_xxxlarge"
+        tools:text="0.00" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,25 +25,19 @@
         android:divider="@drawable/divider_vertical_empty"
         android:showDividers="middle|beginning|end">
 
-        <Button
-            android:id="@+id/divide_B"
-            style="@style/Button.Secondary.Calculator"
-            android:text="@string/divide" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3" />
 
         <Button
-            android:id="@+id/multiply_B"
-            style="@style/Button.Secondary.Calculator"
-            android:text="@string/multiply" />
-
-        <Button
-            android:id="@+id/minus_B"
-            style="@style/Button.Secondary.Calculator"
-            android:text="@string/minus" />
-
-        <Button
-            android:id="@+id/plus_B"
-            style="@style/Button.Secondary.Calculator"
-            android:text="@string/plus" />
+            android:id="@+id/delete_B"
+            style="@style/Button.Secondary"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/ic_action_cancel"
+            android:text="@string/delete" />
 
     </LinearLayout>
 
@@ -71,18 +50,40 @@
 
         <Button
             android:id="@+id/number7_B"
-            style="@style/Button.Secondary.Calculator"
-            android:text="@string/number_7" />
+            style="@style/Button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_7"
+            android:textSize="@dimen/text_xxxlarge"
+            tools:ignore="NestedWeights" />
 
         <Button
             android:id="@+id/number8_B"
-            style="@style/Button.Secondary.Calculator"
-            android:text="@string/number_8" />
+            style="@style/Button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_8"
+            android:textSize="@dimen/text_xxxlarge" />
 
         <Button
             android:id="@+id/number9_B"
-            style="@style/Button.Secondary.Calculator"
-            android:text="@string/number_9" />
+            style="@style/Button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_9"
+            android:textSize="@dimen/text_xxxlarge" />
+
+        <Button
+            android:id="@+id/divide_B"
+            style="@style/Button.Secondary"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/divide"
+            android:textSize="@dimen/text_xxxlarge" />
 
     </LinearLayout>
 
@@ -95,18 +96,40 @@
 
         <Button
             android:id="@+id/number4_B"
-            style="@style/Button.Secondary.Calculator"
-            android:text="@string/number_4" />
+            style="@style/Button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_4"
+            android:textSize="@dimen/text_xxxlarge"
+            tools:ignore="NestedWeights" />
 
         <Button
             android:id="@+id/number5_B"
-            style="@style/Button.Secondary.Calculator"
-            android:text="@string/number_5" />
+            style="@style/Button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_5"
+            android:textSize="@dimen/text_xxxlarge" />
 
         <Button
             android:id="@+id/number6_B"
-            style="@style/Button.Secondary.Calculator"
-            android:text="@string/number_6" />
+            style="@style/Button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_6"
+            android:textSize="@dimen/text_xxxlarge" />
+
+        <Button
+            android:id="@+id/multiply_B"
+            style="@style/Button.Secondary"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/multiply"
+            android:textSize="@dimen/text_xxxlarge" />
 
     </LinearLayout>
 
@@ -119,20 +142,40 @@
 
         <Button
             android:id="@+id/number1_B"
-            style="@style/Button.Secondary.Calculator"
-            android:text="@string/number_1" />
+            style="@style/Button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_1"
+            android:textSize="@dimen/text_xxxlarge"
+            tools:ignore="NestedWeights" />
 
         <Button
             android:id="@+id/number2_B"
-            style="@style/Button.Secondary.Calculator"
+            style="@style/Button"
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/number_2" />
+            android:text="@string/number_2"
+            android:textSize="@dimen/text_xxxlarge" />
 
         <Button
             android:id="@+id/number3_B"
-            style="@style/Button.Secondary.Calculator"
-            android:text="@string/number_3" />
+            style="@style/Button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_3"
+            android:textSize="@dimen/text_xxxlarge" />
+
+        <Button
+            android:id="@+id/minus_B"
+            style="@style/Button.Secondary"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/minus"
+            android:textSize="@dimen/text_xxxlarge" />
 
     </LinearLayout>
 
@@ -145,18 +188,40 @@
 
         <Button
             android:id="@+id/equals_B"
-            style="@style/Button.Secondary.Calculator"
-            android:text="@string/equals" />
+            style="@style/Button.Secondary"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/equals"
+            android:textSize="@dimen/text_xxxlarge"
+            tools:ignore="NestedWeights" />
 
         <Button
             android:id="@+id/number0_B"
-            style="@style/Button.Secondary.Calculator"
-            android:text="@string/number_0" />
+            style="@style/Button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_0"
+            android:textSize="@dimen/text_xxxlarge" />
 
         <Button
             android:id="@+id/dot_B"
-            style="@style/Button.Secondary.Calculator"
-            android:text="@string/decimal" />
+            style="@style/Button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/decimal"
+            android:textSize="@dimen/text_xxxlarge" />
+
+        <Button
+            android:id="@+id/plus_B"
+            style="@style/Button.Secondary"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/plus"
+            android:textSize="@dimen/text_xxxlarge" />
 
     </LinearLayout>
 
