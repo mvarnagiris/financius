@@ -22,14 +22,23 @@ public class Calculator {
         }
     }
 
-    public long getResult() {
-        double result = 0;
+    public void clear() {
+        expressionBuilder.delete(0, expressionBuilder.length());
+    }
+
+    public void calculate() {
+        String result = "";
         try {
-            result = (double) interpreter.eval(expressionBuilder.toString());
+            result = interpreter.eval(expressionBuilder.toString()).toString();
         } catch (EvalError evalError) {
             evalError.printStackTrace();
         }
 
-        return (long) (result * 100);
+        clear();
+        expressionBuilder.append(result);
+    }
+
+    public String getExpression() {
+        return expressionBuilder.toString();
     }
 }

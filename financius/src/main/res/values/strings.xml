@@ -36,6 +36,7 @@
     <string name="far_right">Far right</string>
     <string name="close_left">Close left</string>
     <string name="far_left">Far left</string>
+    <string name="calculator">Calculator</string>
 
     <string name="f_change_to_x">Change to %s</string>
 
