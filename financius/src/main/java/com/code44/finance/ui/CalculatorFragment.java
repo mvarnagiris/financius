@@ -89,22 +89,6 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
         number7_B.setOnClickListener(this);
         number8_B.setOnClickListener(this);
         number9_B.setOnClickListener(this);
-
-        divide_B.setTag("÷");
-        multiply_B.setTag("×");
-        minus_B.setTag("-");
-        plus_B.setTag("+");
-        dot_B.setTag(".");
-        number0_B.setTag("0");
-        number1_B.setTag("1");
-        number2_B.setTag("2");
-        number3_B.setTag("3");
-        number4_B.setTag("4");
-        number5_B.setTag("5");
-        number6_B.setTag("6");
-        number7_B.setTag("7");
-        number8_B.setTag("8");
-        number9_B.setTag("9");
     }
 
     @Override
@@ -117,29 +101,88 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.delete_B:
-                delete();
+                calculator.delete();
+                updateResult();
                 break;
 
             case R.id.equals_B:
-                calculate();
+                calculator.calculate();
+                updateResult();
                 break;
 
             case R.id.divide_B:
+                calculator.divide();
+                updateResult();
+                break;
+
             case R.id.multiply_B:
+                calculator.multiply();
+                updateResult();
+                break;
+
             case R.id.minus_B:
+                calculator.minus();
+                updateResult();
+                break;
+
             case R.id.plus_B:
+                calculator.plus();
+                updateResult();
+                break;
+
             case R.id.dot_B:
+                calculator.decimal();
+                updateResult();
+                break;
+
             case R.id.number0_B:
+                calculator.number(0);
+                updateResult();
+                break;
+
             case R.id.number1_B:
+                calculator.number(1);
+                updateResult();
+                break;
+
             case R.id.number2_B:
+                calculator.number(2);
+                updateResult();
+                break;
+
             case R.id.number3_B:
+                calculator.number(3);
+                updateResult();
+                break;
+
             case R.id.number4_B:
+                calculator.number(4);
+                updateResult();
+                break;
+
             case R.id.number5_B:
+                calculator.number(5);
+                updateResult();
+                break;
+
             case R.id.number6_B:
+                calculator.number(6);
+                updateResult();
+                break;
+
             case R.id.number7_B:
+                calculator.number(7);
+                updateResult();
+                break;
+
             case R.id.number8_B:
+                calculator.number(8);
+                updateResult();
+                break;
+
             case R.id.number9_B:
-                appendExpression((String) v.getTag());
+                calculator.number(9);
+                updateResult();
                 break;
         }
     }
@@ -148,34 +191,15 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
     public boolean onLongClick(View v) {
         switch (v.getId()) {
             case R.id.delete_B:
-                clear();
+                calculator.clear();
+                updateResult();
                 return true;
         }
         return false;
     }
 
-    private void appendExpression(String value) {
-        calculator.append(value);
-        updateResult();
-    }
-
-    private void delete() {
-        calculator.delete();
-        updateResult();
-    }
-
-    private void clear() {
-        calculator.clear();
-        updateResult();
-    }
-
-    private void calculate() {
-        calculator.calculate();
-        updateResult();
-    }
-
     public void updateResult() {
-        result_TV.setText(calculator.getExpression());
+        result_TV.setText(calculator.getFormattedExpression());
     }
 
     static interface CalculatorListener {

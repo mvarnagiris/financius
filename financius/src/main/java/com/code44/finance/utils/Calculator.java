@@ -1,9 +1,11 @@
 package com.code44.finance.utils;
 
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 
 import java.util.LinkedList;
 
+import bsh.EvalError;
 import bsh.Interpreter;
 
 public class Calculator {
@@ -21,6 +23,7 @@ public class Calculator {
     public Calculator() {
         this.interpreter = new Interpreter();
         this.parts = new LinkedList<>();
+        clear();
     }
 
     public void plus() {
@@ -40,19 +43,7 @@ public class Calculator {
     }
 
     public void decimal() {
-        final Part.Action action = currentPart.getAction(Type.DECIMAL);
-        switch (action) {
-            case APPEND:
-                currentPart.append(DECIMAL);
-                break;
-
-            case OVERWRITE:
-            case IGNORE:
-            case NEW:
-            default:
-                // Ignore
-                break;
-        }
+        doAction(Type.DECIMAL, DECIMAL);
     }
 
     public void number(int number) {
@@ -60,31 +51,19 @@ public class Calculator {
             throw new IllegalArgumentException("Number must be [0, 9]");
         }
 
-        final Part.Action action = currentPart.getAction(Type.NUMBER);
-        switch (action) {
-            case APPEND:
-                currentPart.append(DECIMAL);
-                break;
-
-            case OVERWRITE:
-            case IGNORE:
-            case NEW:
-            default:
-                // Ignore
-                break;
-        }
+        doAction(Type.NUMBER, String.valueOf(number));
     }
 
     public long calculate() {
-//        String result = "";
-//        try {
-//            result = interpreter.eval(expressionBuilder.toString()).toString();
-//        } catch (EvalError evalError) {
-//            evalError.printStackTrace();
-//        }
-//
-//        clear();
-//        expressionBuilder.append(result);
+        String result = "";
+        try {
+            result = interpreter.eval(getExpression()).toString();
+        } catch (EvalError evalError) {
+            evalError.printStackTrace();
+        }
+
+        clear();
+        currentPart = new NumberPart(result);
         return 0;
     }
 
@@ -92,12 +71,38 @@ public class Calculator {
         return parts.size() > 0;
     }
 
+    public String getExpression() {
+        final StringBuilder sb = new StringBuilder();
+        for (Part part : parts) {
+            sb.append(part.toString());
+        }
+        sb.append(currentPart.toString());
+        return sb.toString();
+    }
+
+    public CharSequence getFormattedExpression() {
+        final SpannableStringBuilder ssb = new SpannableStringBuilder();
+        for (Part part : parts) {
+            ssb.append(part.toFormattedString());
+        }
+        ssb.append(currentPart.toFormattedString());
+        return ssb;
+    }
+
     public void delete() {
-        // TODO
+        if (currentPart.delete()) {
+            // Should remove this part
+            if (parts.size() == 0) {
+                clear();
+            } else {
+                currentPart = parts.removeLast();
+            }
+        }
     }
 
     public void clear() {
-        // TODO
+        parts.clear();
+        currentPart = createPart(Type.NUMBER, null);
     }
 
     private void addOperator(String value) {
@@ -154,11 +159,27 @@ public class Calculator {
             }
         }
 
+        @Override
+        public String toString() {
+            return stringBuilder.toString();
+        }
+
         public abstract Action getAction(Type type);
+
+        public abstract CharSequence toFormattedString();
 
         public void append(String value) {
             if (!TextUtils.isEmpty(value)) {
                 stringBuilder.append(value);
+            }
+        }
+
+        public boolean delete() {
+            if (stringBuilder.length() == 0) {
+                return true;
+            } else {
+                stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+                return stringBuilder.length() == 0;
             }
         }
 
@@ -186,11 +207,23 @@ public class Calculator {
                     throw new IllegalArgumentException("Type " + type + " is not supported.");
             }
         }
+
+        @Override
+        public CharSequence toFormattedString() {
+            return toString();
+        }
     }
 
     private static class NumberPart extends Part {
+        private static final int MAX_DECIMALS = 10;
+
         private NumberPart(String number) {
-            super(number);
+            super(truncateNumber(number));
+        }
+
+        private static String truncateNumber(String number) {
+            // TODO Truncate
+            return number;
         }
 
         @Override
@@ -211,6 +244,20 @@ public class Calculator {
 
                 default:
                     throw new IllegalArgumentException("Type " + type + " is not supported.");
+            }
+        }
+
+        @Override
+        public CharSequence toFormattedString() {
+            return stringBuilder.toString();
+        }
+
+        @Override
+        public String toString() {
+            if (containsDecimal()) {
+                return super.toString();
+            } else {
+                return super.toString() + ".";
             }
         }
 
