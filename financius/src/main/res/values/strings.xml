@@ -38,10 +38,21 @@
     <string name="close_left">Close left</string>
     <string name="far_left">Far left</string>
     <string name="calculator">Calculator</string>
+    <string name="categories">Categories</string>
+    <string name="category">Category</string>
 
     <string name="f_change_to_x">Change to %s</string>
 
     <string name="l_refresh_rates_daily">Refresh rates every day</string>
     <string name="l_currency_exists">This currency already exists</string>
+
+    <string name="c_food">Food</string>
+    <string name="c_leisure">Leisure</string>
+    <string name="c_clothing">Clothing</string>
+    <string name="c_transportation">Transportation</string>
+    <string name="c_health_and_beauty">Health and Beauty</string>
+    <string name="c_household">Food</string>
+    <string name="c_bills_and_utilities">Bills and Utilities</string>
+    <string name="c_salary">Salary</string>
 
 </resources>

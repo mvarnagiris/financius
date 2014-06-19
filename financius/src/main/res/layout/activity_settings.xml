@@ -1,17 +1,25 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
     style="@style/ScrollView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".SettingsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:divider="?android:attr/dividerHorizontal"
+        android:orientation="vertical"
+        android:showDividers="middle">
 
         <Button
             android:id="@+id/currencies_B"
             style="@style/Button.Borderless.Settings"
-            android:text="@string/currencies"/>
+            android:text="@string/currencies" />
+
+        <Button
+            android:id="@+id/categories_B"
+            style="@style/Button.Borderless.Settings"
+            android:text="@string/categories" />
 
     </LinearLayout>
 

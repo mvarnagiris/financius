@@ -24,11 +24,17 @@
     <string name="number_9">9</string>
 
     <string-array name="expense_categories">
-
+        <item>@string/c_food</item>
+        <item>@string/c_leisure</item>
+        <item>@string/c_transportation</item>
+        <item>@string/c_health_and_beauty</item>
+        <item>@string/c_clothing</item>
+        <item>@string/c_household</item>
+        <item>@string/c_bills_and_utilities</item>
     </string-array>
 
     <string-array name="income_categories">
-
+        <item>@string/c_salary</item>
     </string-array>
 
 </resources>

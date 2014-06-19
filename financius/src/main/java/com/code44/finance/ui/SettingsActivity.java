@@ -2,6 +2,7 @@ package com.code44.finance.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 
 import com.code44.finance.R;
@@ -21,6 +22,11 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
         // Setup
         findViewById(R.id.currencies_B).setOnClickListener(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
     }
 
     @Override
