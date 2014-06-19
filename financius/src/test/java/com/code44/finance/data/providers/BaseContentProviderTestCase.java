@@ -2,6 +2,7 @@ package com.code44.finance.data.providers;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -48,9 +49,25 @@ public class BaseContentProviderTestCase {
         return ContentUris.parseId(contentResolver.insert(uri, model.asContentValues()));
     }
 
+    protected int update(Uri uri, ContentValues values, String selection, String... selectionArgs) {
+        return contentResolver.update(uri, values, selection, selectionArgs);
+    }
+
+    protected int delete(Uri uri, String selection, String... selectionArgs) {
+        return contentResolver.delete(uri, selection, selectionArgs);
+    }
+
+    protected Cursor query(Uri uri, Query query) {
+        return contentResolver.query(uri, query.getProjection(), query.getSelection(), query.getSelectionArgs(), query.getSortOrder());
+    }
+
     protected void assertQuerySize(Uri uri, Query query, int expectedSize) {
-        Cursor cursor = contentResolver.query(uri, query.getProjection(), query.getSelection(), query.getSelectionArgs(), query.getSortOrder());
+        final Cursor cursor = query(uri, query);
         assertEquals(expectedSize, cursor.getCount());
         IOUtils.closeQuietly(cursor);
+    }
+
+    protected Uri uriWithDeleteMode(Uri uri, String mode) {
+        return ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, mode);
     }
 }

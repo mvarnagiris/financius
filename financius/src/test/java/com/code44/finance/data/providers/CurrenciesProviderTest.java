@@ -66,7 +66,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
         ContentValues values = new ContentValues();
         values.put(Tables.Currencies.IS_DEFAULT.getName(), "1");
 
-        contentResolver.update(CurrenciesProvider.uriCurrencies(), values, null, null);
+        update(CurrenciesProvider.uriCurrencies(), values, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -74,7 +74,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
         ContentValues values = new ContentValues();
         values.put(Tables.Currencies.CODE.getName(), "AAA");
 
-        contentResolver.update(CurrenciesProvider.uriCurrencies(), values, null, null);
+        update(CurrenciesProvider.uriCurrencies(), values, null);
     }
 
     @Test
@@ -94,8 +94,8 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
         final long accountId = insert(AccountsProvider.uriAccounts(), account);
 
         // Delete currency
-        final Uri uri = ProviderUtils.withQueryParameter(CurrenciesProvider.uriCurrencies(), ProviderUtils.QueryParameterKey.DELETE_MODE, "delete");
-        contentResolver.delete(uri, Tables.Currencies.ID.getNameWithTable() + "=?", new String[]{String.valueOf(currency.getId())});
+        final Uri uri = uriWithDeleteMode(CurrenciesProvider.uriCurrencies(), "delete");
+        delete(uri, Tables.Currencies.ID.getNameWithTable() + "=?", String.valueOf(currency.getId()));
 
         // Assert
         final Query accountQuery = Query.get()
@@ -104,8 +104,8 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
         final Cursor accountCursor = accountQuery.asCursor(context, AccountsProvider.uriAccounts());
         final Account accountFromDB = Account.from(accountCursor);
         IOUtils.closeQuietly(cursor);
-        assertEquals(accountFromDB.getItemState(), BaseModel.ItemState.DELETED_UNDO);
-        assertEquals(accountFromDB.getCurrency().getItemState(), BaseModel.ItemState.DELETED_UNDO);
+        assertEquals(BaseModel.ItemState.DELETED_UNDO, accountFromDB.getItemState());
+        assertEquals(BaseModel.ItemState.DELETED_UNDO, accountFromDB.getCurrency().getItemState());
     }
 
     @Test(expected = IllegalArgumentException.class)
