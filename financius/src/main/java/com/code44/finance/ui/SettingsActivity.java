@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.View;
 
 import com.code44.finance.R;
+import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.ui.currencies.CurrenciesActivity;
 
 public class SettingsActivity extends BaseActivity implements View.OnClickListener {
@@ -22,6 +23,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
         // Setup
         findViewById(R.id.currencies_B).setOnClickListener(this);
+        findViewById(R.id.categories_B).setOnClickListener(this);
     }
 
     @Override
@@ -34,6 +36,10 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         switch (view.getId()) {
             case R.id.currencies_B:
                 CurrenciesActivity.start(this, view);
+                break;
+
+            case R.id.categories_B:
+                CategoriesActivity.start(this, view);
                 break;
         }
     }
