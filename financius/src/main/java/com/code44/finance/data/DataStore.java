@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.net.Uri;
 
 import com.code44.finance.App;
+import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.providers.ProviderUtils;
 
 import java.util.ArrayList;
@@ -44,6 +45,10 @@ public final class DataStore {
         private ContentValues values;
 
         private DataStoreInsert() {
+        }
+
+        public DataStoreInsert model(BaseModel model) {
+            return values(model.asContentValues());
         }
 
         public DataStoreInsert values(ContentValues values) {

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
 import com.code44.finance.api.currencies.CurrencyRequest;
+import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
@@ -199,7 +200,8 @@ public class CurrencyFragment extends ModelFragment<Currency> {
                     currency_B.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            // TODO Update account currency
+                            account.setCurrency(model);
+                            DataStore.insert().model(account).into(AccountsProvider.uriAccounts());
                         }
                     });
                 } else {
