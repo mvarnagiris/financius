@@ -12,6 +12,7 @@ public class GeneralPrefs extends Prefs {
     private static GeneralPrefs singleton;
 
     private boolean isAutoUpdateCurrencies;
+    private long autoUpdateCurrenciesTimestamp;
 
     private GeneralPrefs(Context context) {
         super(context);
@@ -31,10 +32,11 @@ public class GeneralPrefs extends Prefs {
 
     public void refresh() {
         isAutoUpdateCurrencies = getBoolean("isAutoUpdateCurrencies", true);
+        autoUpdateCurrenciesTimestamp = getLong("autoUpdateCurrenciesTimestamp", 0);
     }
 
     public void clear() {
-        clear("isAutoUpdateCurrencies");
+        clear("isAutoUpdateCurrencies", "autoUpdateCurrenciesTimestamp");
         refresh();
     }
 
@@ -45,6 +47,15 @@ public class GeneralPrefs extends Prefs {
     public void setAutoUpdateCurrencies(boolean isAutoUpdateCurrencies) {
         this.isAutoUpdateCurrencies = isAutoUpdateCurrencies;
         setBoolean("isAutoUpdateCurrencies", isAutoUpdateCurrencies);
+    }
+
+    public long getAutoUpdateCurrenciesTimestamp() {
+        return autoUpdateCurrenciesTimestamp;
+    }
+
+    public void setAutoUpdateCurrenciesTimestamp(long autoUpdateCurrenciesTimestamp) {
+        this.autoUpdateCurrenciesTimestamp = autoUpdateCurrenciesTimestamp;
+        setLong("autoUpdateCurrenciesTimestamp", autoUpdateCurrenciesTimestamp);
     }
 
     @Override

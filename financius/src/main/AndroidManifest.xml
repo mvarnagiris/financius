@@ -50,6 +50,10 @@
             android:authorities="@string/authority_transactions"
             android:exported="false" />
 
+        <!-- Services -->
+        <!-- ======================================================================================================= -->
+        <service android:name=".services.StartupService" />
+
     </application>
 
 </manifest>
