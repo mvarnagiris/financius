@@ -9,10 +9,14 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 
+import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.BaseModel;
+import com.code44.finance.utils.IOUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("UnusedParameters")
@@ -92,7 +96,7 @@ public abstract class BaseModelProvider extends BaseProvider {
                     final Map<String, Object> extras = new HashMap<>();
                     onBeforeInsertItem(uri, values, extras);
                     newId = insertItem(uri, values);
-                    onAfterInsertItem(uri, values, extras);
+                    onAfterInsertItem(uri, values, newId, extras);
 
                     database.setTransactionSuccessful();
                 } finally {
@@ -246,7 +250,7 @@ public abstract class BaseModelProvider extends BaseProvider {
         return ProviderUtils.doUpdateOrInsert(database, getModelTable(), values, true);
     }
 
-    protected void onAfterInsertItem(Uri uri, ContentValues values, Map<String, Object> extras) {
+    protected void onAfterInsertItem(Uri uri, ContentValues values, long id, Map<String, Object> extras) {
     }
 
     protected void onBeforeUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> outExtras) {
@@ -295,5 +299,53 @@ public abstract class BaseModelProvider extends BaseProvider {
 
     protected Uri[] getOtherUrisToNotify() {
         return null;
+    }
+
+    protected List<Long> getIdList(String tableName, String selection, String[] selectionArgs) {
+        final List<Long> affectedIds = new ArrayList<>();
+
+        final Query query = Query.get().projection(tableName + "." + BaseColumns._ID);
+        if (!TextUtils.isEmpty(selection)) {
+            query.selection(selection);
+        }
+        if (selectionArgs != null && selectionArgs.length > 0) {
+            query.args(selectionArgs);
+        }
+
+        final Cursor cursor = query.asCursor(database, tableName);
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    int iId = cursor.getColumnIndex(Tables.Currencies.ID.getName());
+                    affectedIds.add(cursor.getLong(iId));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            IOUtils.closeQuietly(cursor);
+        }
+
+        return affectedIds;
+    }
+
+    protected Uri uriForDeleteFromItemState(Uri uri, BaseModel.ItemState itemState) {
+        final String deleteMode;
+        switch (itemState) {
+            case NORMAL:
+                deleteMode = "undo";
+                break;
+
+            case DELETED_UNDO:
+                deleteMode = "delete";
+                break;
+
+            case DELETED:
+                deleteMode = "commit";
+                break;
+
+            default:
+                throw new IllegalArgumentException("ItemState " + itemState + " is not supported for delete.");
+        }
+
+        return ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, deleteMode);
     }
 }

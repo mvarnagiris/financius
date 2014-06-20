@@ -13,6 +13,7 @@ import com.code44.finance.utils.IOUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.*;
@@ -25,12 +26,14 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
         account.setTitle("a");
         account.setBalance(42);
 
-        insert(AccountsProvider.uriAccounts(), account);
+        final Account accountFromDB = getAccountFromDB(insert(AccountsProvider.uriAccounts(), account));
+        assertEquals(42, accountFromDB.getBalance());
 
         final Cursor cursor = query(TransactionsProvider.uriTransactions(), getTransactionsQuery());
         final Transaction transaction = Transaction.from(cursor);
-        IOUtils.closeQuietly(cursor);
+        assertEquals(1, cursor.getCount());
         assertEquals(42, transaction.getAmount());
+        IOUtils.closeQuietly(cursor);
     }
 
     @Test
@@ -38,14 +41,17 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
         final Account account = new Account();
         account.setTitle("a");
 
-        insert(AccountsProvider.uriAccounts(), account);
-        account.setBalance(42);
-        insert(AccountsProvider.uriAccounts(), account);
+        Account accountFromDB = getAccountFromDB(insert(AccountsProvider.uriAccounts(), account));
+        assertEquals(0, accountFromDB.getBalance());
+        accountFromDB.setBalance(42);
+        accountFromDB = getAccountFromDB(insert(AccountsProvider.uriAccounts(), accountFromDB));
+        assertEquals(42, accountFromDB.getBalance());
 
         final Cursor cursor = query(TransactionsProvider.uriTransactions(), getTransactionsQuery());
         final Transaction transaction = Transaction.from(cursor);
-        IOUtils.closeQuietly(cursor);
+        assertEquals(1, cursor.getCount());
         assertEquals(42, transaction.getAmount());
+        IOUtils.closeQuietly(cursor);
     }
 
     @Test
@@ -64,7 +70,7 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
         account.setTitle("a");
         account.setBalance(42);
 
-        insert(AccountsProvider.uriAccounts(), account);
+        account.setId(insert(AccountsProvider.uriAccounts(), account));
         insert(AccountsProvider.uriAccounts(), account);
 
         assertQuerySize(TransactionsProvider.uriTransactions(), getTransactionsQuery(), 1);
@@ -82,10 +88,14 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
         account.setTitle("a");
         account.setId(insert(AccountsProvider.uriAccounts(), account));
 
-        // Insert transaction with this account
-        final Transaction transaction = new Transaction();
+        // Insert transactions with this account
+        Transaction transaction = new Transaction();
         transaction.setAccountFrom(account);
-        transaction.setId(insert(TransactionsProvider.uriTransactions(), transaction));
+        insert(TransactionsProvider.uriTransactions(), transaction);
+
+        transaction = new Transaction();
+        transaction.setAccountTo(account);
+        insert(TransactionsProvider.uriTransactions(), transaction);
 
         // Delete account
         final Uri uri = uriWithDeleteMode(AccountsProvider.uriAccounts(), "delete");
@@ -93,14 +103,31 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
 
         // Assert
         final Cursor cursor = query(TransactionsProvider.uriTransactions(), getTransactionsQuery());
-        final Transaction transactionFromDB = Transaction.from(cursor);
+        assertEquals(2, cursor.getCount());
+        final Transaction transaction1FromDB = Transaction.from(cursor);
+        cursor.moveToNext();
+        final Transaction transaction2FromDB = Transaction.from(cursor);
         IOUtils.closeQuietly(cursor);
-        assertEquals(BaseModel.ItemState.DELETED_UNDO, transactionFromDB.getItemState());
+        assertEquals(BaseModel.ItemState.DELETED_UNDO, transaction1FromDB.getItemState());
+        assertEquals(BaseModel.ItemState.DELETED_UNDO, transaction2FromDB.getItemState());
     }
+
+    // TODO Write test to check if correct transaction is created - expense or income
 
     private Query getTransactionsQuery() {
         return Query.get()
                 .projectionId(Tables.Transactions.ID)
                 .projection(Tables.Transactions.PROJECTION);
+    }
+
+    private Account getAccountFromDB(long accountId) {
+        final Cursor cursor = Query.get()
+                .projectionId(Tables.Accounts.ID)
+                .projection(Tables.Accounts.PROJECTION)
+                .projection(Tables.Currencies.PROJECTION)
+                .asCursor(Robolectric.getShadowApplication().getApplicationContext(), AccountsProvider.uriAccount(accountId));
+        final Account account = Account.from(cursor);
+        IOUtils.closeQuietly(cursor);
+        return account;
     }
 }

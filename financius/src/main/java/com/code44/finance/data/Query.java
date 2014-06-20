@@ -124,6 +124,14 @@ public class Query {
         return this;
     }
 
+    public Query selectionInClause(String clause, List<Long> ids) {
+        selection(makeInClause(clause, ids.size()));
+        for (Long id : ids) {
+            args(String.valueOf(id));
+        }
+        return this;
+    }
+
     public Query args(String arg) {
         selectionArgs.add(arg);
         return this;
