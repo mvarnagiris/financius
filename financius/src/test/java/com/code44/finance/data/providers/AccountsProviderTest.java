@@ -8,6 +8,7 @@ import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
 import com.code44.finance.data.db.model.BaseModel;
+import com.code44.finance.data.db.model.Category;
 import com.code44.finance.data.db.model.Transaction;
 import com.code44.finance.utils.IOUtils;
 
@@ -21,7 +22,7 @@ import static org.junit.Assert.*;
 @RunWith(RobolectricTestRunner.class)
 public class AccountsProviderTest extends BaseContentProviderTestCase {
     @Test
-    public void insert_createsTransactionToMakeCorrectBalance_whenAccountIsNew() {
+    public void insert_createsIncomeTransactionToMakeCorrectBalance_whenAccountIsNewAndBalanceIsPositive() {
         final Account account = new Account();
         account.setTitle("a");
         account.setBalance(42);
@@ -33,6 +34,24 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
         final Transaction transaction = Transaction.from(cursor);
         assertEquals(1, cursor.getCount());
         assertEquals(42, transaction.getAmount());
+        assertEquals(Category.Type.INCOME, transaction.getCategory().getType());
+        IOUtils.closeQuietly(cursor);
+    }
+
+    @Test
+    public void insert_createsExpenseTransactionToMakeCorrectBalance_whenAccountIsNewAndBalanceIsExpense() {
+        final Account account = new Account();
+        account.setTitle("a");
+        account.setBalance(-42);
+
+        final Account accountFromDB = getAccountFromDB(insert(AccountsProvider.uriAccounts(), account));
+        assertEquals(-42, accountFromDB.getBalance());
+
+        final Cursor cursor = query(TransactionsProvider.uriTransactions(), getTransactionsQuery());
+        final Transaction transaction = Transaction.from(cursor);
+        assertEquals(1, cursor.getCount());
+        assertEquals(42, transaction.getAmount());
+        assertEquals(Category.Type.EXPENSE, transaction.getCategory().getType());
         IOUtils.closeQuietly(cursor);
     }
 
@@ -111,8 +130,6 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
         assertEquals(BaseModel.ItemState.DELETED_UNDO, transaction1FromDB.getItemState());
         assertEquals(BaseModel.ItemState.DELETED_UNDO, transaction2FromDB.getItemState());
     }
-
-    // TODO Write test to check if correct transaction is created - expense or income
 
     private Query getTransactionsQuery() {
         return Query.get()
