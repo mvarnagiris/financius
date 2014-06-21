@@ -3,6 +3,7 @@ package com.code44.finance.data.providers;
 import android.content.ContentValues;
 import android.net.Uri;
 
+import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.BaseModel;
@@ -34,7 +35,7 @@ public class CurrenciesProvider extends BaseModelProvider {
     @Override
     protected void onBeforeInsertItem(Uri uri, ContentValues values, Map<String, Object> outExtras) {
         super.onBeforeInsertItem(uri, values, outExtras);
-        makeSureThereIsOnlyOneDefaultCategory(values);
+        makeSureThereIsOnlyOneDefaultCurrency(values);
     }
 
     @Override
@@ -86,7 +87,9 @@ public class CurrenciesProvider extends BaseModelProvider {
                     .selectionInClause(Tables.Accounts.CURRENCY_ID.getName(), affectedIds);
 
             final Uri accountsUri = uriForDeleteFromItemState(AccountsProvider.uriAccounts(), itemState);
-            getContext().getContentResolver().delete(accountsUri, query.getSelection(), query.getSelectionArgs());
+            DataStore.delete()
+                    .selection(query.getSelection(), query.getSelectionArgs())
+                    .from(accountsUri);
         }
     }
 
@@ -95,7 +98,7 @@ public class CurrenciesProvider extends BaseModelProvider {
         super.onBeforeBulkInsertItems(uri, valuesArray, outExtras);
 
         for (ContentValues values : valuesArray) {
-            makeSureThereIsOnlyOneDefaultCategory(values);
+            makeSureThereIsOnlyOneDefaultCurrency(values);
         }
     }
 
@@ -111,7 +114,7 @@ public class CurrenciesProvider extends BaseModelProvider {
         return new Uri[]{AccountsProvider.uriAccounts(), TransactionsProvider.uriTransactions()};
     }
 
-    private void makeSureThereIsOnlyOneDefaultCategory(ContentValues values) {
+    private void makeSureThereIsOnlyOneDefaultCurrency(ContentValues values) {
         //noinspection ConstantConditions
         boolean isDefault = values.getAsBoolean(Tables.Currencies.IS_DEFAULT.getName());
         //noinspection ConstantConditions

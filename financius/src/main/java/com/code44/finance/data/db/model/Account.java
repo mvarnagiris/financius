@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.code44.finance.App;
 import com.code44.finance.data.Query;
@@ -52,8 +53,11 @@ public class Account extends BaseModel {
     public static Account getSystem() {
         if (systemAccount == null) {
             final Cursor cursor = Query.get()
+                    .projectionId(Tables.Accounts.ID)
+                    .projection(Tables.Accounts.PROJECTION)
                     .selection(Tables.Accounts.OWNER.getName() + "=?", String.valueOf(Owner.SYSTEM.asInt()))
-                    .asCursor(App.getAppContext(), AccountsProvider.uriAccounts());
+                    .from(App.getAppContext(), AccountsProvider.uriAccounts())
+                    .execute();
 
             systemAccount = Account.from(cursor);
             IOUtils.closeQuietly(cursor);
@@ -147,7 +151,16 @@ public class Account extends BaseModel {
 
         int index;
 
-        Currency currency = Currency.from(cursor);
+        Currency currency;
+        if (TextUtils.isEmpty(columnPrefixTable)) {
+            currency = Currency.from(cursor);
+        } else if (columnPrefixTable.equals(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY)) {
+            currency = Currency.fromCurrencyFrom(cursor);
+        } else if (columnPrefixTable.equals(Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY)) {
+            currency = Currency.fromCurrencyTo(cursor);
+        } else {
+            throw new IllegalArgumentException("Table prefix " + columnPrefixTable + " is not supported.");
+        }
         index = cursor.getColumnIndex(Tables.Accounts.CURRENCY_ID.getName(columnPrefixTable));
         if (index >= 0) {
             currency.setId(cursor.getLong(index));

@@ -49,6 +49,8 @@ public final class Tables {
 
     public static final class Currencies {
         public static final String TABLE_NAME = "currencies";
+        public static final String TEMP_TABLE_NAME_FROM_CURRENCY = "currencies_from";
+        public static final String TEMP_TABLE_NAME_TO_CURRENCY = "currencies_to";
 
         public static final Column ID = getIdColumn(TABLE_NAME);
         public static final Column SERVER_ID = getServerIdColumn(TABLE_NAME);
@@ -150,17 +152,18 @@ public final class Tables {
         public static final Column AMOUNT = new Column(TABLE_NAME, "amount", Column.DataType.INTEGER);
         public static final Column EXCHANGE_RATE = new Column(TABLE_NAME, "exchange_rate", Column.DataType.REAL);
         public static final Column NOTE = new Column(TABLE_NAME, "note", Column.DataType.TEXT);
+        public static final Column STATE = new Column(TABLE_NAME, "state", Column.DataType.INTEGER);
 
         public static final String[] PROJECTION = {SERVER_ID.getName(), ITEM_STATE.getName(), SYNC_STATE.getName(),
                 ACCOUNT_FROM_ID.getName(), ACCOUNT_TO_ID.getName(), CATEGORY_ID.getName(),
-                DATE.getName(), AMOUNT.getName(), EXCHANGE_RATE.getName(), NOTE.getName()};
+                DATE.getName(), AMOUNT.getName(), EXCHANGE_RATE.getName(), NOTE.getName(), STATE.getName()};
 
         private Transactions() {
         }
 
         public static String createScript() {
             return makeCreateScript(TABLE_NAME, ID, SERVER_ID, ITEM_STATE, SYNC_STATE, ACCOUNT_FROM_ID,
-                    ACCOUNT_TO_ID, CATEGORY_ID, DATE, AMOUNT, EXCHANGE_RATE, NOTE);
+                    ACCOUNT_TO_ID, CATEGORY_ID, DATE, AMOUNT, EXCHANGE_RATE, NOTE, STATE);
         }
     }
 }

@@ -75,13 +75,15 @@ public final class ProviderUtils {
         // Update or insert
         if (!tryUpdate || db.update(tableName, values, columnToCheck + "=?", new String[]{valueToCheck}) == 0) {
             newId = db.insert(tableName, null, values);
-            if (newId <= 0)
+            if (newId <= 0) {
                 throw new SQLException("Failed to insert values " + values.toString() + " into " + tableName);
+            }
         }
 
         // Get local ID if necessary
-        if (newId == 0 && returnNewId && !TextUtils.isEmpty(serverId))
+        if (newId == 0 && returnNewId && !TextUtils.isEmpty(serverId)) {
             newId = getLocalId(db, tableName, serverId);
+        }
 
         return newId;
     }
@@ -91,11 +93,13 @@ public final class ProviderUtils {
         Cursor c = null;
         try {
             c = db.query(tableName, new String[]{BaseColumns._ID}, tableName + "_" + Tables.SUFFIX_SERVER_ID + "=?", new String[]{serverId}, null, null, null);
-            if (c != null && c.moveToFirst())
+            if (c != null && c.moveToFirst()) {
                 localId = c.getLong(0);
+            }
         } finally {
-            if (c != null && !c.isClosed())
+            if (c != null && !c.isClosed()) {
                 c.close();
+            }
         }
         return localId;
     }
@@ -130,7 +134,7 @@ public final class ProviderUtils {
         /**
          * Possible values: {@code "delete"}, {@code "undo"} and {@code "commit"}.
          */
-        DELETE_MODE("notifyUriChanged");
+        DELETE_MODE("deleteMode");
 
         private final String keyName;
 

@@ -65,8 +65,11 @@ public class Currency extends BaseModel {
     public static Currency getDefault() {
         if (defaultCurrency == null) {
             final Cursor cursor = Query.get()
+                    .projectionId(Tables.Currencies.ID)
+                    .projection(Tables.Currencies.PROJECTION)
                     .selection(Tables.Currencies.IS_DEFAULT.getName() + "=?", "1")
-                    .asCursor(App.getAppContext(), CurrenciesProvider.uriCurrencies());
+                    .from(App.getAppContext(), CurrenciesProvider.uriCurrencies())
+                    .execute();
 
             defaultCurrency = Currency.from(cursor);
             IOUtils.closeQuietly(cursor);
@@ -76,8 +79,11 @@ public class Currency extends BaseModel {
 
     public static void updateDefaultCurrency(SQLiteDatabase db) {
         final Cursor cursor = Query.get()
+                .projectionId(Tables.Currencies.ID)
+                .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.IS_DEFAULT + "=?", "1")
-                .asCursor(db, Tables.Currencies.TABLE_NAME);
+                .from(db, Tables.Currencies.TABLE_NAME)
+                .execute();
 
         defaultCurrency = Currency.from(cursor);
         IOUtils.closeQuietly(cursor);
@@ -87,6 +93,22 @@ public class Currency extends BaseModel {
         final Currency currency = new Currency();
         if (cursor.getCount() > 0) {
             currency.updateFrom(cursor, null);
+        }
+        return currency;
+    }
+
+    public static Currency fromCurrencyFrom(Cursor cursor) {
+        final Currency currency = new Currency();
+        if (cursor.getCount() > 0) {
+            currency.updateFrom(cursor, Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY);
+        }
+        return currency;
+    }
+
+    public static Currency fromCurrencyTo(Cursor cursor) {
+        final Currency currency = new Currency();
+        if (cursor.getCount() > 0) {
+            currency.updateFrom(cursor, Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY);
         }
         return currency;
     }

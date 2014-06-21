@@ -46,7 +46,8 @@ public class CurrencyRequest extends BaseRequest<Currency, CurrenciesRequestServ
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.CODE + "=?")
                 .args(fromCode)
-                .asCursor(context, CurrenciesProvider.uriCurrencies());
+                .from(context, CurrenciesProvider.uriCurrencies())
+                .execute();
         final Currency currency = Currency.from(cursor);
         IOUtils.closeQuietly(cursor);
 

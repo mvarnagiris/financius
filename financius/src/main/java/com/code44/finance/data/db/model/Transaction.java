@@ -26,6 +26,7 @@ public class Transaction extends BaseModel {
     private long amount;
     private double exchangeRate;
     private String note;
+    private State state;
 
     public Transaction() {
         super();
@@ -36,6 +37,7 @@ public class Transaction extends BaseModel {
         setAmount(0);
         setExchangeRate(1.0);
         setNote(null);
+        setState(State.CONFIRMED);
     }
 
     public Transaction(Parcel in) {
@@ -47,6 +49,7 @@ public class Transaction extends BaseModel {
         setAmount(in.readLong());
         setExchangeRate(in.readDouble());
         setNote(in.readString());
+        setState(State.fromInt(in.readInt()));
     }
 
     public static Transaction from(Cursor cursor) {
@@ -55,6 +58,19 @@ public class Transaction extends BaseModel {
             transaction.updateFrom(cursor, null);
         }
         return transaction;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeParcelable(getAccountFrom(), flags);
+        dest.writeParcelable(getAccountTo(), flags);
+        dest.writeParcelable(getCategory(), flags);
+        dest.writeLong(getDate());
+        dest.writeLong(getAmount());
+        dest.writeDouble(getExchangeRate());
+        dest.writeString(getNote());
+        dest.writeInt(getState().asInt());
     }
 
     @Override
@@ -79,6 +95,10 @@ public class Transaction extends BaseModel {
 
         if (Double.compare(exchangeRate, 0) < 0) {
             throw new IllegalStateException("Exchange rate must be > 0.");
+        }
+
+        if (state == null) {
+            throw new IllegalStateException("State cannot be null.");
         }
     }
 
@@ -113,6 +133,7 @@ public class Transaction extends BaseModel {
         values.put(Tables.Transactions.AMOUNT.getName(), amount);
         values.put(Tables.Transactions.EXCHANGE_RATE.getName(), exchangeRate);
         values.put(Tables.Transactions.NOTE.getName(), note);
+        values.put(Tables.Transactions.STATE.getName(), state.asInt());
 
         return values;
     }
@@ -168,6 +189,11 @@ public class Transaction extends BaseModel {
         index = cursor.getColumnIndex(Tables.Transactions.NOTE.getName(columnPrefixTable));
         if (index >= 0) {
             setNote(cursor.getString(index));
+        }
+
+        index = cursor.getColumnIndex(Tables.Transactions.STATE.getName(columnPrefixTable));
+        if (index >= 0) {
+            setState(State.fromInt(cursor.getInt(index)));
         }
     }
 
@@ -225,5 +251,43 @@ public class Transaction extends BaseModel {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public static enum State {
+        CONFIRMED(State.VALUE_CONFIRMED), PENDING(State.VALUE_PENDING);
+
+        private static final int VALUE_CONFIRMED = 1;
+        private static final int VALUE_PENDING = 2;
+
+        private final int value;
+
+        private State(int value) {
+            this.value = value;
+        }
+
+        public static State fromInt(int value) {
+            switch (value) {
+                case VALUE_CONFIRMED:
+                    return CONFIRMED;
+
+                case VALUE_PENDING:
+                    return PENDING;
+
+                default:
+                    throw new IllegalArgumentException("State " + value + " is not supported.");
+            }
+        }
+
+        public int asInt() {
+            return value;
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v4.content.CursorLoader;
+import android.text.TextUtils;
 
 import com.code44.finance.data.db.Column;
 
@@ -74,14 +75,12 @@ public class Query {
         return new CursorLoader(context, uri, getProjection(), getSelection(), getSelectionArgs(), getSortOrder());
     }
 
-    public Cursor asCursor(Context context, Uri uri) {
-        return context.getContentResolver().query(uri, getProjection(), getSelection(), getSelectionArgs(), getSortOrder());
+    public ContentProviderQuery from(Context context, Uri uri) {
+        return new ContentProviderQuery(this, context, uri);
     }
 
-    public Cursor asCursor(SQLiteDatabase database, String table) {
-        Cursor cursor = database.query(table, getProjection(), getSelection(), getSelectionArgs(), null, null, getSortOrder());
-        cursor.moveToFirst();
-        return cursor;
+    public DatabaseQuery from(SQLiteDatabase database, String table) {
+        return new DatabaseQuery(this, database, table);
     }
 
     public Query projectionId(Column idColumn) {
@@ -172,4 +171,53 @@ public class Query {
         sb.append(")");
         return sb.toString();
     }
+
+    public static class ContentProviderQuery {
+        private final Query query;
+        private final Context context;
+        private final Uri uri;
+
+        private ContentProviderQuery(Query query, Context context, Uri uri) {
+            this.query = query;
+            this.context = context;
+            this.uri = uri;
+        }
+
+        public Cursor execute() {
+            return context.getContentResolver().query(uri, query.getProjection(), query.getSelection(), query.getSelectionArgs(), query.getSortOrder());
+        }
+    }
+
+    public static class DatabaseQuery {
+        private final Query query;
+        private final SQLiteDatabase database;
+        private final List<String> tables;
+
+        private DatabaseQuery(Query query, SQLiteDatabase database, String table) {
+            this.query = query;
+            this.database = database;
+            this.tables = new ArrayList<>();
+            tables.add(table);
+        }
+
+        public String getTables() {
+            return TextUtils.join("", tables);
+        }
+
+        public DatabaseQuery innerJoin(String table, String on) {
+            tables.add(" inner join " + table + " on (" + on + ")");
+            return this;
+        }
+
+        public Cursor execute() {
+            String tables = getTables();
+            String[] projection = query.getProjection();
+            String selection = query.getSelection();
+            String[] selectionArgs = query.getSelectionArgs();
+            Cursor cursor = database.query(getTables(), query.getProjection(), query.getSelection(), query.getSelectionArgs(), null, null, query.getSortOrder());
+            cursor.moveToFirst();
+            return cursor;
+        }
+    }
+
 }

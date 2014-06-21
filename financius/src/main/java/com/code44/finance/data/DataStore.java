@@ -1,6 +1,7 @@
 package com.code44.finance.data;
 
 import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import com.code44.finance.App;
@@ -64,12 +65,20 @@ public final class DataStore {
             return this;
         }
 
-        public void into(Uri uri) {
+        public Uri into(Uri uri) {
             if (values == null) {
                 throw new IllegalStateException("Values must be set before executing insert.");
             }
 
-            App.getAppContext().getContentResolver().insert(uri, values);
+            return App.getAppContext().getContentResolver().insert(uri, values);
+        }
+
+        public long into(SQLiteDatabase database, String table) {
+            if (values == null) {
+                throw new IllegalStateException("Values must be set before executing insert.");
+            }
+
+            return database.insert(table, null, values);
         }
     }
 
@@ -101,12 +110,20 @@ public final class DataStore {
             return this;
         }
 
-        public void from(Uri uri) {
+        public int into(Uri uri) {
             if (values == null) {
                 throw new IllegalStateException("Values must be set before executing insert.");
             }
 
-            App.getAppContext().getContentResolver().update(uri, values, selection, selectionArgs);
+            return App.getAppContext().getContentResolver().update(uri, values, selection, selectionArgs);
+        }
+
+        public int into(SQLiteDatabase database, String table) {
+            if (values == null) {
+                throw new IllegalStateException("Values must be set before executing insert.");
+            }
+
+            return database.update(table, values, selection, selectionArgs);
         }
     }
 

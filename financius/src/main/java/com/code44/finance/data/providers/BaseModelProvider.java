@@ -304,7 +304,7 @@ public abstract class BaseModelProvider extends BaseProvider {
     protected List<Long> getIdList(String tableName, String selection, String[] selectionArgs) {
         final List<Long> affectedIds = new ArrayList<>();
 
-        final Query query = Query.get().projection(tableName + "." + BaseColumns._ID);
+        final Query query = Query.get().projection(BaseColumns._ID);
         if (!TextUtils.isEmpty(selection)) {
             query.selection(selection);
         }
@@ -312,11 +312,11 @@ public abstract class BaseModelProvider extends BaseProvider {
             query.args(selectionArgs);
         }
 
-        final Cursor cursor = query.asCursor(database, tableName);
+        final Cursor cursor = query.from(database, tableName).execute();
         try {
             if (cursor != null && cursor.moveToFirst()) {
                 do {
-                    int iId = cursor.getColumnIndex(Tables.Currencies.ID.getName());
+                    int iId = cursor.getColumnIndex(BaseColumns._ID);
                     affectedIds.add(cursor.getLong(iId));
                 } while (cursor.moveToNext());
             }

@@ -134,7 +134,8 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
     private Query getTransactionsQuery() {
         return Query.get()
                 .projectionId(Tables.Transactions.ID)
-                .projection(Tables.Transactions.PROJECTION);
+                .projection(Tables.Transactions.PROJECTION)
+                .projection(Tables.Categories.PROJECTION);
     }
 
     private Account getAccountFromDB(long accountId) {
@@ -142,7 +143,8 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
                 .projectionId(Tables.Accounts.ID)
                 .projection(Tables.Accounts.PROJECTION)
                 .projection(Tables.Currencies.PROJECTION)
-                .asCursor(Robolectric.getShadowApplication().getApplicationContext(), AccountsProvider.uriAccount(accountId));
+                .from(Robolectric.getShadowApplication().getApplicationContext(), AccountsProvider.uriAccount(accountId))
+                .execute();
         final Account account = Account.from(cursor);
         IOUtils.closeQuietly(cursor);
         return account;

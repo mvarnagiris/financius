@@ -32,7 +32,8 @@ public class StartupService extends IntentService {
         final Cursor cursor = Query.get()
                 .projection(Tables.Currencies.CODE.getName())
                 .selection(Tables.Currencies.ITEM_STATE + "=?", String.valueOf(BaseModel.ItemState.NORMAL.asInt()))
-                .asCursor(getApplicationContext(), CurrenciesProvider.uriCurrencies());
+                .from(getApplicationContext(), CurrenciesProvider.uriCurrencies())
+                .execute();
 
         if (cursor.moveToFirst()) {
             final CurrenciesAsyncApi api = CurrenciesAsyncApi.get();

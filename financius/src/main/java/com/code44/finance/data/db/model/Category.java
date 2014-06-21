@@ -56,7 +56,10 @@ public class Category extends BaseModel {
     public static Category getExpense() {
         if (expenseCategory == null) {
             final Cursor cursor = Query.get()
-                    .asCursor(App.getAppContext(), CategoriesProvider.uriCategory(EXPENSE_ID));
+                    .projectionId(Tables.Categories.ID)
+                    .projection(Tables.Categories.PROJECTION)
+                    .from(App.getAppContext(), CategoriesProvider.uriCategory(EXPENSE_ID))
+                    .execute();
 
             expenseCategory = Category.from(cursor);
             IOUtils.closeQuietly(cursor);
@@ -67,7 +70,10 @@ public class Category extends BaseModel {
     public static Category getIncome() {
         if (incomeCategory == null) {
             final Cursor cursor = Query.get()
-                    .asCursor(App.getAppContext(), CategoriesProvider.uriCategory(INCOME_ID));
+                    .projectionId(Tables.Categories.ID)
+                    .projection(Tables.Categories.PROJECTION)
+                    .from(App.getAppContext(), CategoriesProvider.uriCategory(INCOME_ID))
+                    .execute();
 
             incomeCategory = Category.from(cursor);
             IOUtils.closeQuietly(cursor);
@@ -78,7 +84,10 @@ public class Category extends BaseModel {
     public static Category getTransfer() {
         if (transferCategory == null) {
             final Cursor cursor = Query.get()
-                    .asCursor(App.getAppContext(), CategoriesProvider.uriCategory(TRANSFER_ID));
+                    .projectionId(Tables.Categories.ID)
+                    .projection(Tables.Categories.PROJECTION)
+                    .from(App.getAppContext(), CategoriesProvider.uriCategory(TRANSFER_ID))
+                    .execute();
 
             transferCategory = Category.from(cursor);
             IOUtils.closeQuietly(cursor);

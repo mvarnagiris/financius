@@ -24,20 +24,15 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
         final Currency currency = new Currency();
         currency.setCode("AAA");
         currency.setDefault(true);
-
-        insert(CurrenciesProvider.uriCurrencies(), currency);
-
         final Query query = Query.get()
                 .projectionId(Tables.Currencies.ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.IS_DEFAULT + "=?", "1");
+
         assertQuerySize(CurrenciesProvider.uriCurrencies(), query, 1);
-
-        Cursor cursor = query.asCursor(context, CurrenciesProvider.uriCurrencies());
-        final Currency currencyFromDb = Currency.from(cursor);
-        IOUtils.closeQuietly(cursor);
-
-        assertEquals(currency.getCode(), currencyFromDb.getCode());
+        currency.setId(insert(CurrenciesProvider.uriCurrencies(), currency));
+        assertEquals(currency.getId(), Currency.getDefault().getId());
+        assertQuerySize(CurrenciesProvider.uriCurrencies(), query, 1);
     }
 
     @Test
@@ -54,7 +49,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
                 .selection(Tables.Currencies.CODE + "=?", currency.getCode());
         assertQuerySize(CurrenciesProvider.uriCurrencies(), query, 1);
 
-        Cursor cursor = query.asCursor(context, CurrenciesProvider.uriCurrencies());
+        Cursor cursor = query.from(context, CurrenciesProvider.uriCurrencies()).execute();
         final Currency currencyFromDb = Currency.from(cursor);
         IOUtils.closeQuietly(cursor);
 
@@ -83,7 +78,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
         final Query query = Query.get()
                 .projectionId(Tables.Currencies.ID).projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.IS_DEFAULT + "=?", "0");
-        final Cursor cursor = query.asCursor(context, CurrenciesProvider.uriCurrencies());
+        final Cursor cursor = query.from(context, CurrenciesProvider.uriCurrencies()).execute();
         final Currency currency = Currency.from(cursor);
         IOUtils.closeQuietly(cursor);
 
@@ -101,7 +96,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
         final Query accountQuery = Query.get()
                 .projectionId(Tables.Accounts.ID).projection(Tables.Accounts.PROJECTION).projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Accounts.ID.getNameWithTable() + "=?", String.valueOf(accountId));
-        final Cursor accountCursor = accountQuery.asCursor(context, AccountsProvider.uriAccounts());
+        final Cursor accountCursor = accountQuery.from(context, AccountsProvider.uriAccounts()).execute();
         final Account accountFromDB = Account.from(accountCursor);
         IOUtils.closeQuietly(cursor);
         assertEquals(BaseModel.ItemState.DELETED_UNDO, accountFromDB.getItemState());
@@ -127,7 +122,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
                 .selection(Tables.Currencies.IS_DEFAULT + "=?", "1");
         assertQuerySize(CurrenciesProvider.uriCurrencies(), query, 1);
 
-        Cursor cursor = query.asCursor(context, CurrenciesProvider.uriCurrencies());
+        Cursor cursor = query.from(context, CurrenciesProvider.uriCurrencies()).execute();
         final Currency currencyFromDb = Currency.from(cursor);
         IOUtils.closeQuietly(cursor);
 
@@ -148,7 +143,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
                 .selection(Tables.Currencies.CODE + "=?", currency.getCode());
         assertQuerySize(CurrenciesProvider.uriCurrencies(), query, 1);
 
-        Cursor cursor = query.asCursor(context, CurrenciesProvider.uriCurrencies());
+        Cursor cursor = query.from(context, CurrenciesProvider.uriCurrencies()).execute();
         final Currency currencyFromDb = Currency.from(cursor);
         IOUtils.closeQuietly(cursor);
 

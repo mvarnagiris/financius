@@ -53,6 +53,7 @@ public class BaseContentProviderTestCase {
     public void tearDown() throws Exception {
         SQLiteDatabase database = DBHelper.get(Robolectric.getShadowApplication().getApplicationContext()).getWritableDatabase();
 
+        //noinspection ConstantConditions
         database.delete(Tables.Transactions.TABLE_NAME, null, null);
         database.delete(Tables.Categories.TABLE_NAME, null, null);
         database.delete(Tables.Accounts.TABLE_NAME, null, null);
@@ -71,6 +72,10 @@ public class BaseContentProviderTestCase {
 
     protected int delete(Uri uri, String selection, String... selectionArgs) {
         return contentResolver.delete(uri, selection, selectionArgs);
+    }
+
+    protected int bulkInsert(Uri uri, ContentValues... valuesArray) {
+        return contentResolver.bulkInsert(uri, valuesArray);
     }
 
     protected Cursor query(Uri uri, Query query) {
