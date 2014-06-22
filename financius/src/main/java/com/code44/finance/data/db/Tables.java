@@ -123,18 +123,19 @@ public final class Tables {
         public static final Column ITEM_STATE = getItemStateColumn(TABLE_NAME);
         public static final Column SYNC_STATE = getSyncStateColumn(TABLE_NAME);
         public static final Column TITLE = new Column(TABLE_NAME, "title", Column.DataType.TEXT);
+        public static final Column COLOR = new Column(TABLE_NAME, "color", Column.DataType.INTEGER);
         public static final Column TYPE = new Column(TABLE_NAME, "type", Column.DataType.INTEGER);
         public static final Column OWNER = new Column(TABLE_NAME, "owner", Column.DataType.INTEGER);
         public static final Column SORT_ORDER = new Column(TABLE_NAME, "sort_order", Column.DataType.INTEGER);
 
         public static final String[] PROJECTION = {SERVER_ID.getName(), ITEM_STATE.getName(), SYNC_STATE.getName(),
-                TITLE.getName(), TYPE.getName(), OWNER.getName(), SORT_ORDER.getName()};
+                TITLE.getName(), COLOR.getName(), TYPE.getName(), OWNER.getName(), SORT_ORDER.getName()};
 
         private Categories() {
         }
 
         public static String createScript() {
-            return makeCreateScript(TABLE_NAME, ID, SERVER_ID, ITEM_STATE, SYNC_STATE, TITLE, TYPE, OWNER, SORT_ORDER);
+            return makeCreateScript(TABLE_NAME, ID, SERVER_ID, ITEM_STATE, SYNC_STATE, TITLE, COLOR, TYPE, OWNER, SORT_ORDER);
         }
     }
 

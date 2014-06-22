@@ -5,6 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center_vertical">
 
+    <ImageView
+        android:id="@+id/color_IV"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/space_normal"
+        android:src="@drawable/circle"
+        tools:ignore="ContentDescription" />
+
     <TextView
         android:id="@+id/title_TV"
         style="@style/TextView"

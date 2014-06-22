@@ -33,6 +33,7 @@ public class Category extends BaseModel {
     private static Category transferCategory;
 
     private String title;
+    private int color;
     private Type type;
     private Owner owner;
     private int sortOrder;
@@ -40,6 +41,7 @@ public class Category extends BaseModel {
     public Category() {
         super();
         setTitle(null);
+        setColor(0);
         setType(Type.EXPENSE);
         setOwner(Owner.USER);
         setSortOrder(0);
@@ -48,6 +50,7 @@ public class Category extends BaseModel {
     public Category(Parcel in) {
         super(in);
         setTitle(in.readString());
+        setColor(in.readInt());
         setType(Type.fromInt(in.readInt()));
         setOwner(Owner.fromInt(in.readInt()));
         setSortOrder(in.readInt());
@@ -107,6 +110,7 @@ public class Category extends BaseModel {
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeString(getTitle());
+        dest.writeInt(getColor());
         dest.writeInt(getType().asInt());
         dest.writeInt(getOwner().asInt());
         dest.writeInt(getSortOrder());
@@ -154,6 +158,7 @@ public class Category extends BaseModel {
         final ContentValues values = super.asContentValues();
 
         values.put(Tables.Categories.TITLE.getName(), title);
+        values.put(Tables.Categories.COLOR.getName(), color);
         values.put(Tables.Categories.TYPE.getName(), type.asInt());
         values.put(Tables.Categories.OWNER.getName(), owner.asInt());
         values.put(Tables.Categories.SORT_ORDER.getName(), sortOrder);
@@ -170,6 +175,11 @@ public class Category extends BaseModel {
         index = cursor.getColumnIndex(Tables.Categories.TITLE.getName(columnPrefixTable));
         if (index >= 0) {
             setTitle(cursor.getString(index));
+        }
+
+        index = cursor.getColumnIndex(Tables.Categories.COLOR.getName(columnPrefixTable));
+        if (index >= 0) {
+            setColor(cursor.getInt(index));
         }
 
         index = cursor.getColumnIndex(Tables.Categories.TYPE.getName(columnPrefixTable));
@@ -194,6 +204,14 @@ public class Category extends BaseModel {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 
     public Type getType() {

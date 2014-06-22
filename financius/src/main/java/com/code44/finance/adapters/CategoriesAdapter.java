@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code44.finance.R;
@@ -26,14 +27,17 @@ public class CategoriesAdapter extends BaseModelsAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         final ViewHolder holder = (ViewHolder) view.getTag();
         final Category category = Category.from(cursor);
+        holder.color_IV.setColorFilter(category.getColor());
         holder.title_TV.setText(category.getTitle());
     }
 
     private static class ViewHolder {
+        public ImageView color_IV;
         public TextView title_TV;
 
         public static ViewHolder setAsTag(View view) {
             final ViewHolder holder = new ViewHolder();
+            holder.color_IV = (ImageView) view.findViewById(R.id.color_IV);
             holder.title_TV = (TextView) view.findViewById(R.id.title_TV);
             view.setTag(holder);
 

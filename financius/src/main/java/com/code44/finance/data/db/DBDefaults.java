@@ -2,6 +2,7 @@ package com.code44.finance.data.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.text.TextUtils;
 
 import com.code44.finance.R;
@@ -11,6 +12,7 @@ import com.code44.finance.data.db.model.Currency;
 
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
@@ -68,6 +70,7 @@ public final class DBDefaults {
         final Category expenseCategory = new Category();
         expenseCategory.setId(Category.EXPENSE_ID);
         expenseCategory.setTitle(context.getString(R.string.expense));
+        expenseCategory.setColor(context.getResources().getColor(R.color.text_negative));
         expenseCategory.setType(Category.Type.EXPENSE);
         expenseCategory.setOwner(Category.Owner.SYSTEM);
         expenseCategory.setSortOrder(0);
@@ -75,6 +78,7 @@ public final class DBDefaults {
         final Category incomeCategory = new Category();
         incomeCategory.setId(Category.INCOME_ID);
         incomeCategory.setTitle(context.getString(R.string.income));
+        incomeCategory.setColor(context.getResources().getColor(R.color.text_positive));
         incomeCategory.setType(Category.Type.INCOME);
         incomeCategory.setOwner(Category.Owner.SYSTEM);
         incomeCategory.setSortOrder(0);
@@ -82,6 +86,7 @@ public final class DBDefaults {
         final Category transferCategory = new Category();
         transferCategory.setId(Category.TRANSFER_ID);
         transferCategory.setTitle(context.getString(R.string.transfer));
+        transferCategory.setColor(context.getResources().getColor(R.color.text_neutral));
         transferCategory.setType(Category.Type.TRANSFER);
         transferCategory.setOwner(Category.Owner.SYSTEM);
         transferCategory.setSortOrder(0);
@@ -117,9 +122,11 @@ public final class DBDefaults {
 
     private static void insertCategories(SQLiteDatabase db, String[] titles, Category.Type type) {
         int order = 0;
+        final Random random = new Random();
         for (String title : titles) {
             final Category category = new Category();
             category.setTitle(title);
+            category.setColor(Color.HSVToColor(new float[]{random.nextInt(360), 0.7f, 0.7f}));
             category.setType(type);
             category.setOwner(Category.Owner.SYSTEM);
             category.setSortOrder(order++);
