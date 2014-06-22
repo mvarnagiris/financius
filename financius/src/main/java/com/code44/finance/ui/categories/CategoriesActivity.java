@@ -41,6 +41,7 @@ public class CategoriesActivity extends ModelListActivity {
         pager_VP.setPageMarginDrawable(new ColorDrawable(underlineColor));
         tabs_PSTS.setShouldExpand(LayoutType.isDefault() && LayoutType.isPortrait());
         tabs_PSTS.setIndicatorColorResource(R.color.d_brand);
+        tabs_PSTS.setIndicatorHeight(tabs_PSTS.getUnderlineHeight() * 2);
         tabs_PSTS.setUnderlineColor(underlineColor);
         tabs_PSTS.setTabBackground(R.drawable.btn_borderless);
         tabs_PSTS.setViewPager(pager_VP);
