@@ -13,7 +13,11 @@ public class DBHelper extends SQLiteOpenHelper {
     private final Context context;
 
     private DBHelper(Context context) {
-        super(context, NAME, null, VERSION);
+        this(context, NAME);
+    }
+
+    public DBHelper(Context context, String name) {
+        super(context, name, null, VERSION);
         this.context = context;
     }
 

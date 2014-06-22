@@ -105,7 +105,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
 
     @Test(expected = IllegalArgumentException.class)
     public void delete_throwsIllegalArgumentException_whenTryingToDeleteDefaultCurrency() {
-        contentResolver.delete(ProviderUtils.withQueryParameter(CurrenciesProvider.uriCurrencies(), ProviderUtils.QueryParameterKey.DELETE_MODE, "delete"), null, null);
+        delete(CurrenciesProvider.uriCurrencies(), null);
     }
 
     @Test
@@ -114,7 +114,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
         currency.setCode("AAA");
         currency.setDefault(true);
 
-        contentResolver.bulkInsert(CurrenciesProvider.uriCurrencies(), new ContentValues[]{currency.asContentValues()});
+        bulkInsert(CurrenciesProvider.uriCurrencies(), currency.asContentValues());
 
         final Query query = Query.get()
                 .projectionId(Tables.Currencies.ID)
@@ -135,7 +135,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
         currency.setCode("USD");
         currency.setExchangeRate(1.2345);
 
-        contentResolver.bulkInsert(CurrenciesProvider.uriCurrencies(), new ContentValues[]{currency.asContentValues()});
+        bulkInsert(CurrenciesProvider.uriCurrencies(), currency.asContentValues());
 
         final Query query = Query.get()
                 .projectionId(Tables.Currencies.ID)

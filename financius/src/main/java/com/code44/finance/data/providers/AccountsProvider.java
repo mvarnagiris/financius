@@ -43,6 +43,7 @@ public class AccountsProvider extends BaseModelProvider {
         super.onBeforeInsertItem(uri, values, outExtras);
 
         final long currentBalance = getCurrentBalance(values);
+        //noinspection ConstantConditions
         final long newBalance = values.getAsLong(Tables.Accounts.BALANCE.getName());
         outExtras.put(EXTRA_BALANCE_DELTA, newBalance - currentBalance);
         values.remove(Tables.Accounts.BALANCE.getName());

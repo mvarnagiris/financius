@@ -31,10 +31,9 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
         assertEquals(42, accountFromDB.getBalance());
 
         final Cursor cursor = query(TransactionsProvider.uriTransactions(), getTransactionsQuery());
-        final Transaction transaction = Transaction.from(cursor);
         assertEquals(1, cursor.getCount());
+        final Transaction transaction = Transaction.from(cursor);
         assertEquals(42, transaction.getAmount());
-        assertEquals(Category.Type.INCOME, transaction.getCategory().getType());
         IOUtils.closeQuietly(cursor);
     }
 
@@ -67,8 +66,8 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
         assertEquals(42, accountFromDB.getBalance());
 
         final Cursor cursor = query(TransactionsProvider.uriTransactions(), getTransactionsQuery());
-        final Transaction transaction = Transaction.from(cursor);
         assertEquals(1, cursor.getCount());
+        final Transaction transaction = Transaction.from(cursor);
         assertEquals(42, transaction.getAmount());
         IOUtils.closeQuietly(cursor);
     }

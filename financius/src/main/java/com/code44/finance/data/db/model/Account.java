@@ -154,9 +154,9 @@ public class Account extends BaseModel {
         Currency currency;
         if (TextUtils.isEmpty(columnPrefixTable)) {
             currency = Currency.from(cursor);
-        } else if (columnPrefixTable.equals(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY)) {
+        } else if (columnPrefixTable.equals(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT)) {
             currency = Currency.fromCurrencyFrom(cursor);
-        } else if (columnPrefixTable.equals(Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY)) {
+        } else if (columnPrefixTable.equals(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT)) {
             currency = Currency.fromCurrencyTo(cursor);
         } else {
             throw new IllegalArgumentException("Table prefix " + columnPrefixTable + " is not supported.");

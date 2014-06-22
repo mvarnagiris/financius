@@ -37,9 +37,10 @@ public class TransactionsProvider extends BaseModelProvider {
                 + " inner join " + Tables.Accounts.TABLE_NAME + " as " + Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT
                 + " on " + Tables.Accounts.ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT) + "=" + Tables.Transactions.ACCOUNT_TO_ID
                 + " inner join " + Tables.Categories.TABLE_NAME + " on " + Tables.Categories.ID.getNameWithTable() + "=" + Tables.Transactions.CATEGORY_ID
-                ;
-        // TODO Join currencies tables
-
+                + " left join " + Tables.Currencies.TABLE_NAME + " as " + Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY
+                + " on " + Tables.Currencies.ID.getNameWithTable(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY) + "=" + Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT)
+                + " left join " + Tables.Currencies.TABLE_NAME + " as " + Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY
+                + " on " + Tables.Currencies.ID.getNameWithTable(Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY) + "=" + Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT);
     }
 
     @Override

@@ -141,8 +141,8 @@ public final class DataStore {
             return this;
         }
 
-        public void from(Uri uri) {
-            App.getAppContext().getContentResolver().delete(ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, "delete"), selection, selectionArgs);
+        public int from(Uri uri) {
+            return App.getAppContext().getContentResolver().delete(ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, "delete"), selection, selectionArgs);
         }
     }
 
@@ -198,13 +198,13 @@ public final class DataStore {
             return this;
         }
 
-        public void into(Uri uri) {
+        public int into(Uri uri) {
             ContentValues[] valuesArray = getValuesArray();
             if (valuesArray.length == 0) {
                 throw new IllegalStateException("Must have at least one ContentValues before executing bulk insert.");
             }
 
-            App.getAppContext().getContentResolver().bulkInsert(uri, valuesArray);
+            return App.getAppContext().getContentResolver().bulkInsert(uri, valuesArray);
         }
 
         private ContentValues[] getValuesArray() {
