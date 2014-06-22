@@ -11,10 +11,12 @@ public abstract class ModelListActivity extends BaseActivity implements ModelLis
     public static final String RESULT_EXTRA_MODEL_ID = "RESULT_EXTRA_MODEL_ID";
     public static final String RESULT_EXTRA_MODEL = "RESULT_EXTRA_MODEL";
 
+    public static final int MODE_VIEW = 1;
+    public static final int MODE_SELECT = 2;
+
     private static final String EXTRA_MODE = ModelListActivity.class.getName() + ".EXTRA_MODE";
 
-    static final int MODE_VIEW = 1;
-    static final int MODE_SELECT = 2;
+    protected int mode;
 
     public static Intent makeIntentView(Context context, Class<? extends ModelListActivity> activityClass) {
         final Intent intent = makeIntent(context, activityClass);
@@ -31,9 +33,10 @@ public abstract class ModelListActivity extends BaseActivity implements ModelLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final int contentId = inflateActivity();
 
         // Get extras
-        final int mode = getIntent().getIntExtra(EXTRA_MODE, MODE_VIEW);
+        mode = getIntent().getIntExtra(EXTRA_MODE, MODE_VIEW);
 
         // Setup ActionBar
         if (mode == MODE_VIEW) {
@@ -42,8 +45,11 @@ public abstract class ModelListActivity extends BaseActivity implements ModelLis
             setActionBarTitle(R.string.select);
         }
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(android.R.id.content, createModelsFragment(mode)).commit();
+        if (contentId != 0 && savedInstanceState == null) {
+            ModelListFragment fragment = createModelsFragment(mode);
+            if (fragment != null) {
+                getSupportFragmentManager().beginTransaction().add(contentId, createModelsFragment(mode)).commit();
+            }
         }
     }
 
@@ -54,6 +60,10 @@ public abstract class ModelListActivity extends BaseActivity implements ModelLis
         data.putExtra(RESULT_EXTRA_MODEL, model);
         setResult(RESULT_OK, data);
         finish();
+    }
+
+    protected int inflateActivity() {
+        return android.R.id.content;
     }
 
     protected abstract int getActionBarTitleResId();

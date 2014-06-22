@@ -106,8 +106,9 @@ public final class DBDefaults {
         } catch (Exception ignored) {
         }
 
-        if (TextUtils.isEmpty(code))
+        if (TextUtils.isEmpty(code)) {
             code = "USD";
+        }
 
         return code;
     }
@@ -128,7 +129,7 @@ public final class DBDefaults {
             category.setTitle(title);
             category.setColor(Color.HSVToColor(new float[]{random.nextInt(360), 0.7f, 0.7f}));
             category.setType(type);
-            category.setOwner(Category.Owner.SYSTEM);
+            category.setOwner(Category.Owner.USER);
             category.setSortOrder(order++);
             db.insert(Tables.Categories.TABLE_NAME, null, category.asContentValues());
         }

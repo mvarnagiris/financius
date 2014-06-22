@@ -28,7 +28,13 @@ public class CategoriesAdapter extends BaseModelsAdapter {
         final ViewHolder holder = (ViewHolder) view.getTag();
         final Category category = Category.from(cursor);
         holder.color_IV.setColorFilter(category.getColor());
-        holder.title_TV.setText(category.getTitle());
+        if (category.getOwner() == Category.Owner.SYSTEM) {
+            holder.title_TV.setText(context.getString(R.string.no_category));
+            holder.title_TV.setTextColor(context.getResources().getColor(R.color.text_secondary));
+        } else {
+            holder.title_TV.setText(category.getTitle());
+            holder.title_TV.setTextColor(context.getResources().getColor(R.color.text_primary));
+        }
     }
 
     private static class ViewHolder {

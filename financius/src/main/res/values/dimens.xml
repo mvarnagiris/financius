@@ -29,4 +29,6 @@
 
     <dimen name="btn_corner">2dp</dimen>
 
+    <dimen name="category_color_circle_size">30dp</dimen>
+
 </resources>

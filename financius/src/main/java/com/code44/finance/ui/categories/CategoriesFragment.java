@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.adapters.CategoriesAdapter;
+import com.code44.finance.data.Query;
+import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
@@ -61,6 +63,14 @@ public class CategoriesFragment extends ModelListFragment {
     @Override
     protected Uri getUri() {
         return CategoriesProvider.uriCategories();
+    }
+
+    @Override
+    protected Query getQuery() {
+        return Query.get()
+                .projectionId(Tables.Categories.ID)
+                .projection(Tables.Categories.PROJECTION)
+                .selection(Tables.Categories.TYPE + "=?", String.valueOf(type.asInt()));
     }
 
     @Override
