@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/space_large">
+
+    <com.larswerkman.holocolorpicker.ColorPicker
+        android:id="@+id/picker_CP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.larswerkman.holocolorpicker.SaturationBar
+        android:id="@+id/saturation_SB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_normal" />
+
+    <com.larswerkman.holocolorpicker.ValueBar
+        android:id="@+id/value_SB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_normal" />
+
+</LinearLayout>

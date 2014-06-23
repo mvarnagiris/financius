@@ -53,6 +53,7 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.6.0'
     compile 'org.beanshell:bsh-core:2.0b4'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'com.larswerkman:HoloColorPicker:1.+'
     testCompile 'junit:junit:4.+'
     testCompile 'org.robolectric:robolectric:2.+'
     testCompile 'org.mockito:mockito-all:+'

@@ -33,6 +33,7 @@
 
         <activity android:name=".ui.categories.CategoriesActivity" />
         <activity android:name=".ui.categories.CategoryActivity" />
+        <activity android:name=".ui.categories.CategoryEditActivity" />
 
         <!-- Providers -->
         <!-- ======================================================================================================= -->

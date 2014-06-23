@@ -42,6 +42,7 @@
     <string name="category">Category</string>
     <string name="no_category">No category</string>
     <string name="account_balance_update">Account balance update</string>
+    <string name="color">Color</string>
 
     <string name="f_change_to_x">Change to %s</string>
 

@@ -33,6 +33,6 @@ public class CategoryActivity extends ModelActivity {
 
     @Override
     protected void startEditActivity(long modelId) {
-        // TODO Implement
+        CategoryEditActivity.start(this, null, modelId);
     }
 }
