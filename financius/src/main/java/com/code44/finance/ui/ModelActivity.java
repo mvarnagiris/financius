@@ -13,7 +13,7 @@ public abstract class ModelActivity extends BaseActivity {
 
     private static final String EXTRA_MODEL_ID = "EXTRA_MODEL_ID";
 
-    private long modelId;
+    protected long modelId;
 
     public static Intent makeIntent(Context context, Class<? extends ModelActivity> activityClass, long modelId) {
         final Intent intent = makeIntent(context, activityClass);

@@ -47,7 +47,7 @@ public class CategoriesFragment extends ModelListFragment {
 
     @Override
     protected void startModelActivity(Context context, View expandFrom, long modelId) {
-        // TODO
+        CategoryActivity.start(context, expandFrom, modelId);
     }
 
     @Override

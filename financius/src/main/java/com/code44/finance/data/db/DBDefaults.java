@@ -123,11 +123,11 @@ public final class DBDefaults {
 
     private static void insertCategories(SQLiteDatabase db, String[] titles, Category.Type type) {
         int order = 0;
-        final Random random = new Random();
+        final int startColor = new Random().nextInt(360);
         for (String title : titles) {
             final Category category = new Category();
             category.setTitle(title);
-            category.setColor(Color.HSVToColor(new float[]{random.nextInt(360), 0.7f, 0.7f}));
+            category.setColor(Color.HSVToColor(new float[]{(startColor + (order * 200)) % 360, 0.7f, 0.7f}));
             category.setType(type);
             category.setOwner(Category.Owner.USER);
             category.setSortOrder(order++);
