@@ -127,7 +127,7 @@ public final class DBDefaults {
         for (String title : titles) {
             final Category category = new Category();
             category.setTitle(title);
-            category.setColor(Color.HSVToColor(new float[]{(startColor + (order * 200)) % 360, 0.7f, 0.7f}));
+            category.setColor(Color.HSVToColor(new float[]{(startColor + (order * 200)) % 360, 0.8f, 0.7f}));
             category.setType(type);
             category.setOwner(Category.Owner.USER);
             category.setSortOrder(order++);
