@@ -101,8 +101,7 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.color_B:
-                SelectColorFragment.show(getChildFragmentManager(), FRAGMENT_SELECT_COLOR, model.getColor());
-                SelectColorFragment.setListenerIfVisible(getChildFragmentManager(), FRAGMENT_SELECT_COLOR, this);
+                SelectColorFragment.show(getChildFragmentManager(), FRAGMENT_SELECT_COLOR, model.getColor(), this);
                 break;
         }
     }
