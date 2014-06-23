@@ -2,7 +2,12 @@ package com.code44.finance.data.providers;
 
 import android.net.Uri;
 
+import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.db.model.BaseModel;
+
+import java.util.List;
+import java.util.Map;
 
 public class CategoriesProvider extends BaseModelProvider {
     public static Uri uriCategories() {
@@ -21,5 +26,27 @@ public class CategoriesProvider extends BaseModelProvider {
     @Override
     protected String getQueryTables() {
         return getModelTable();
+    }
+
+    @Override
+    protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, BaseModel.ItemState itemState, Map<String, Object> outExtras) {
+        super.onBeforeDeleteItems(uri, selection, selectionArgs, itemState, outExtras);
+
+        final List<Long> affectedIds = getIdList(Tables.Categories.TABLE_NAME, selection, selectionArgs);
+        outExtras.put("affectedIds", affectedIds);
+    }
+
+    @Override
+    protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, BaseModel.ItemState itemState, Map<String, Object> extras) {
+        super.onAfterDeleteItems(uri, selection, selectionArgs, itemState, extras);
+
+        //noinspection unchecked
+        final List<Long> affectedIds = (List<Long>) extras.get("affectedIds");
+        if (affectedIds.size() > 0) {
+            final Uri transactionsUri = uriForDeleteFromItemState(TransactionsProvider.uriTransactions(), itemState);
+
+            final Query query = Query.get().selectionInClause(Tables.Transactions.CATEGORY_ID.getName(), affectedIds);
+            getContext().getContentResolver().delete(transactionsUri, query.getSelection(), query.getSelectionArgs());
+        }
     }
 }
