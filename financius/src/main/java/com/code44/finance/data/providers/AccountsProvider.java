@@ -64,6 +64,12 @@ public class AccountsProvider extends BaseModelProvider {
     }
 
     @Override
+    protected void onBeforeUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> outExtras) {
+        super.onBeforeUpdateItems(uri, values, selection, selectionArgs, outExtras);
+        throw new IllegalArgumentException("Update is not supported.");
+    }
+
+    @Override
     protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, BaseModel.ItemState itemState, Map<String, Object> outExtras) {
         super.onBeforeDeleteItems(uri, selection, selectionArgs, itemState, outExtras);
 

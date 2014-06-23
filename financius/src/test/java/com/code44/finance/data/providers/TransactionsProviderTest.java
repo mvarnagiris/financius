@@ -46,7 +46,7 @@ public class TransactionsProviderTest extends BaseContentProviderTestCase {
         transaction.setAmount(42);
 
         insert(TransactionsProvider.uriTransactions(), transaction);
-        delete(uriWithDeleteMode(TransactionsProvider.uriTransactions(), "delete"), null);
+        delete("delete", TransactionsProvider.uriTransactions(), null);
         account = getAccount(account.getId());
 
         assertEquals(0, account.getBalance());

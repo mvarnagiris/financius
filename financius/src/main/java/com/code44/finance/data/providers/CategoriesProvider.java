@@ -1,5 +1,6 @@
 package com.code44.finance.data.providers;
 
+import android.content.ContentValues;
 import android.net.Uri;
 
 import com.code44.finance.data.Query;
@@ -26,6 +27,12 @@ public class CategoriesProvider extends BaseModelProvider {
     @Override
     protected String getQueryTables() {
         return getModelTable();
+    }
+
+    @Override
+    protected void onBeforeUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> outExtras) {
+        super.onBeforeUpdateItems(uri, values, selection, selectionArgs, outExtras);
+        throw new IllegalArgumentException("Update is not supported.");
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.code44.finance.data.providers;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.net.Uri;
 
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
@@ -20,133 +19,103 @@ import static org.junit.Assert.*;
 @RunWith(RobolectricTestRunner.class)
 public class CurrenciesProviderTest extends BaseContentProviderTestCase {
     @Test
-    public void insert_makesSureThatThereIsOnlyOneDefaultCurrency() {
-        final Currency currency = new Currency();
-        currency.setCode("AAA");
-        currency.setDefault(true);
-        final Query query = Query.get()
-                .projectionId(Tables.Currencies.ID)
-                .projection(Tables.Currencies.PROJECTION)
-                .selection(Tables.Currencies.IS_DEFAULT + "=?", "1");
+    public void insert_leavesOnlyNewDefaultCurrencyAsDefault_whenInsertingNewDefaultCurrency() {
+        Cursor cursor = queryDefaultCurrencyCursor();
+        assertEquals(1, cursor.getCount());
+        assertEquals(Currency.getDefault().getId(), Currency.from(cursor).getId());
+        IOUtils.closeQuietly(cursor);
 
-        assertQuerySize(CurrenciesProvider.uriCurrencies(), query, 1);
-        currency.setId(insert(CurrenciesProvider.uriCurrencies(), currency));
+        final Currency currency = insertCurrency(true);
+        cursor = queryDefaultCurrencyCursor();
+        assertEquals(1, cursor.getCount());
+        assertEquals(currency.getId(), Currency.from(cursor).getId());
         assertEquals(currency.getId(), Currency.getDefault().getId());
-        assertQuerySize(CurrenciesProvider.uriCurrencies(), query, 1);
+        IOUtils.closeQuietly(cursor);
     }
 
     @Test
     public void insert_updatesCurrency_whenCurrencyWithSameCodeExists() {
-        final Currency currency = new Currency();
-        currency.setCode("USD");
+        final Currency currency = insertCurrency(false);
         currency.setExchangeRate(1.2345);
+        insertCurrency(currency);
 
-        insert(CurrenciesProvider.uriCurrencies(), currency);
-
-        final Query query = Query.get()
-                .projectionId(Tables.Currencies.ID)
-                .projection(Tables.Currencies.PROJECTION)
-                .selection(Tables.Currencies.CODE + "=?", currency.getCode());
-        assertQuerySize(CurrenciesProvider.uriCurrencies(), query, 1);
-
-        Cursor cursor = query.from(context, CurrenciesProvider.uriCurrencies()).execute();
-        final Currency currencyFromDb = Currency.from(cursor);
+        final Cursor cursor = queryCurrencyCursor(currency.getCode());
+        assertEquals(1, cursor.getCount());
+        assertEquals(currency.getExchangeRate(), Currency.from(cursor).getExchangeRate(), 0.0001);
         IOUtils.closeQuietly(cursor);
-
-        assertEquals(currency.getExchangeRate(), currencyFromDb.getExchangeRate(), 0.0001);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void update_throwsIllegalArgumentException_whenValuesContainIsDefault() {
-        ContentValues values = new ContentValues();
-        values.put(Tables.Currencies.IS_DEFAULT.getName(), "1");
-
-        update(CurrenciesProvider.uriCurrencies(), values, null);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void update_throwsIllegalArgumentException_whenValuesContainCode() {
-        ContentValues values = new ContentValues();
-        values.put(Tables.Currencies.CODE.getName(), "AAA");
-
-        update(CurrenciesProvider.uriCurrencies(), values, null);
+    public void update_throwsIllegalArgumentException() {
+        update(CurrenciesProvider.uriCurrencies(), new ContentValues(), null);
     }
 
     @Test
-    public void delete_setsTheSameItemStateForAccounts() {
-        // Get any currency that is not default
-        final Query query = Query.get()
-                .projectionId(Tables.Currencies.ID).projection(Tables.Currencies.PROJECTION)
-                .selection(Tables.Currencies.IS_DEFAULT + "=?", "0");
-        final Cursor cursor = query.from(context, CurrenciesProvider.uriCurrencies()).execute();
-        final Currency currency = Currency.from(cursor);
+    public void deleteDelete_setsItemStateDeletedUndoForAccounts() {
+        final Currency currency = insertCurrency(false);
+        insertAccount(currency);
+
+        deleteCurrency(currency);
+        final Cursor cursor = queryAccountsCursor();
+
+        assertEquals(1, cursor.getCount());
+        assertEquals(BaseModel.ItemState.DELETED_UNDO, Account.from(cursor).getItemState());
         IOUtils.closeQuietly(cursor);
-
-        // Insert new account for that currency
-        final Account account = new Account();
-        account.setTitle("a");
-        account.setCurrency(currency);
-        final long accountId = insert(AccountsProvider.uriAccounts(), account);
-
-        // Delete currency
-        final Uri uri = uriWithDeleteMode(CurrenciesProvider.uriCurrencies(), "delete");
-        delete(uri, Tables.Currencies.ID.getNameWithTable() + "=?", String.valueOf(currency.getId()));
-
-        // Assert
-        final Query accountQuery = Query.get()
-                .projectionId(Tables.Accounts.ID).projection(Tables.Accounts.PROJECTION).projection(Tables.Currencies.PROJECTION)
-                .selection(Tables.Accounts.ID.getNameWithTable() + "=?", String.valueOf(accountId));
-        final Cursor accountCursor = accountQuery.from(context, AccountsProvider.uriAccounts()).execute();
-        final Account accountFromDB = Account.from(accountCursor);
-        IOUtils.closeQuietly(cursor);
-        assertEquals(BaseModel.ItemState.DELETED_UNDO, accountFromDB.getItemState());
-        assertEquals(BaseModel.ItemState.DELETED_UNDO, accountFromDB.getCurrency().getItemState());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void delete_throwsIllegalArgumentException_whenTryingToDeleteDefaultCurrency() {
-        delete(CurrenciesProvider.uriCurrencies(), null);
+        delete("delete", CurrenciesProvider.uriCurrencies(), null);
     }
 
-    @Test
-    public void bulkInsert_makesSureThatThereIsOnlyOneDefaultCurrency() {
-        final Currency currency = new Currency();
-        currency.setCode("AAA");
-        currency.setDefault(true);
-
-        bulkInsert(CurrenciesProvider.uriCurrencies(), currency.asContentValues());
-
+    private Cursor queryDefaultCurrencyCursor() {
         final Query query = Query.get()
                 .projectionId(Tables.Currencies.ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.IS_DEFAULT + "=?", "1");
-        assertQuerySize(CurrenciesProvider.uriCurrencies(), query, 1);
 
-        Cursor cursor = query.from(context, CurrenciesProvider.uriCurrencies()).execute();
-        final Currency currencyFromDb = Currency.from(cursor);
-        IOUtils.closeQuietly(cursor);
-
-        assertEquals(currency.getCode(), currencyFromDb.getCode());
+        return query(CurrenciesProvider.uriCurrencies(), query);
     }
 
-    @Test
-    public void bulkInsert_updatesCurrencies_whenCurrenciesWithSameCodeExists() {
-        final Currency currency = new Currency();
-        currency.setCode("USD");
-        currency.setExchangeRate(1.2345);
-
-        bulkInsert(CurrenciesProvider.uriCurrencies(), currency.asContentValues());
-
+    private Cursor queryCurrencyCursor(String code) {
         final Query query = Query.get()
                 .projectionId(Tables.Currencies.ID)
                 .projection(Tables.Currencies.PROJECTION)
-                .selection(Tables.Currencies.CODE + "=?", currency.getCode());
-        assertQuerySize(CurrenciesProvider.uriCurrencies(), query, 1);
+                .selection(Tables.Currencies.CODE + "=?", code);
 
-        Cursor cursor = query.from(context, CurrenciesProvider.uriCurrencies()).execute();
-        final Currency currencyFromDb = Currency.from(cursor);
-        IOUtils.closeQuietly(cursor);
+        return query(CurrenciesProvider.uriCurrencies(), query);
+    }
 
-        assertEquals(currency.getExchangeRate(), currencyFromDb.getExchangeRate(), 0.0001);
+    private Currency insertCurrency(boolean isDefault) {
+        final Currency currency = new Currency();
+        currency.setCode("AAA");
+        currency.setDefault(isDefault);
+        return insertCurrency(currency);
+    }
+
+    private Currency insertCurrency(Currency currency) {
+        currency.setId(insert(CurrenciesProvider.uriCurrencies(), currency));
+        return currency;
+    }
+
+    private int deleteCurrency(Currency currency) {
+        return delete("delete", CurrenciesProvider.uriCurrencies(), Tables.Currencies.ID + "=?", String.valueOf(currency.getId()));
+    }
+
+    private Cursor queryAccountsCursor() {
+        final Query query = Query.get()
+                .projectionId(Tables.Accounts.ID)
+                .projection(Tables.Accounts.PROJECTION)
+                .selection(Tables.Accounts.OWNER + "=?", String.valueOf(Account.Owner.USER.asInt()));
+
+        return query(AccountsProvider.uriAccounts(), query);
+    }
+
+    private Account insertAccount(Currency currency) {
+        final Account account = new Account();
+        account.setTitle("a");
+        account.setCurrency(currency);
+        account.setId(insert(AccountsProvider.uriAccounts(), account));
+        return account;
     }
 }

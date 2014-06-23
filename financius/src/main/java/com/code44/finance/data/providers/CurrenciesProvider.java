@@ -48,14 +48,7 @@ public class CurrenciesProvider extends BaseModelProvider {
     @Override
     protected void onBeforeUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> outExtras) {
         super.onBeforeUpdateItems(uri, values, selection, selectionArgs, outExtras);
-
-        if (values.containsKey(Tables.Currencies.CODE.getName())) {
-            throw new IllegalArgumentException("Cannot update " + Tables.Currencies.CODE.getName() + " use insert or bulk insert.");
-        }
-
-        if (values.containsKey(Tables.Currencies.IS_DEFAULT.getName())) {
-            throw new IllegalArgumentException("Cannot update " + Tables.Currencies.IS_DEFAULT.getName() + " use insert or bulk insert.");
-        }
+        throw new IllegalArgumentException("Update is not supported.");
     }
 
     @Override
@@ -90,15 +83,6 @@ public class CurrenciesProvider extends BaseModelProvider {
             DataStore.delete()
                     .selection(query.getSelection(), query.getSelectionArgs())
                     .from(accountsUri);
-        }
-    }
-
-    @Override
-    protected void onBeforeBulkInsertItems(Uri uri, ContentValues[] valuesArray, Map<String, Object> outExtras) {
-        super.onBeforeBulkInsertItems(uri, valuesArray, outExtras);
-
-        for (ContentValues values : valuesArray) {
-            makeSureThereIsOnlyOneDefaultCurrency(values);
         }
     }
 

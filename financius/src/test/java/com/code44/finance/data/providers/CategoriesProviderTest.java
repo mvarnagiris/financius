@@ -2,7 +2,6 @@ package com.code44.finance.data.providers;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.net.Uri;
 
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
@@ -25,33 +24,46 @@ public class CategoriesProviderTest extends BaseContentProviderTestCase {
     }
 
     @Test
-    public void delete_setsTheSameItemStateForTransactionsWithAffectedCategories() {
-        // Insert category
+    public void deleteDelete_setsItemStateDeletedUndoForTransactions() {
+        final Category category = insertCategory();
+        insertTransaction(category);
+
+        deleteCategory(category);
+        final Cursor cursor = queryTransactionsCursor();
+
+        assertEquals(1, cursor.getCount());
+        assertEquals(BaseModel.ItemState.DELETED_UNDO, Transaction.from(cursor).getItemState());
+        IOUtils.closeQuietly(cursor);
+    }
+
+    private Category insertCategory() {
         final Category category = new Category();
         category.setTitle("a");
         category.setId(insert(CategoriesProvider.uriCategories(), category));
-
-        // Insert transactions with this Category
-        final Transaction transaction = new Transaction();
-        transaction.setCategory(category);
-        insert(TransactionsProvider.uriTransactions(), transaction);
-
-        // Delete category
-        final Uri uri = uriWithDeleteMode(CategoriesProvider.uriCategories(), "delete");
-        delete(uri, Tables.Categories.ID.getNameWithTable() + "=?", String.valueOf(category.getId()));
-
-        // Assert
-        final Cursor cursor = query(TransactionsProvider.uriTransactions(), getTransactionsQuery());
-        assertEquals(1, cursor.getCount());
-        final Transaction transactionFromDB = Transaction.from(cursor);
-        IOUtils.closeQuietly(cursor);
-        assertEquals(BaseModel.ItemState.DELETED_UNDO, transactionFromDB.getItemState());
+        return category;
     }
 
-    private Query getTransactionsQuery() {
-        return Query.get()
+    private int deleteCategory(Category category) {
+        return delete("delete", CategoriesProvider.uriCategories(), Tables.Categories.ID + "=?", String.valueOf(category.getId()));
+    }
+
+    private Transaction insertTransaction(Category category) {
+        final Transaction transaction = new Transaction();
+
+        if (category != null) {
+            transaction.setCategory(category);
+        }
+
+        transaction.setId(insert(TransactionsProvider.uriTransactions(), transaction));
+        return transaction;
+    }
+
+    private Cursor queryTransactionsCursor() {
+        final Query query = Query.get()
                 .projectionId(Tables.Transactions.ID)
                 .projection(Tables.Transactions.PROJECTION)
                 .projection(Tables.Categories.PROJECTION);
+
+        return query(TransactionsProvider.uriTransactions(), query);
     }
 }

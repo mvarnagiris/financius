@@ -36,7 +36,7 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
 
     @Test
     public void insert_createsExpenseTransactionToMakeCorrectBalance_whenAccountIsNewAndBalanceIsExpense() {
-        final Account account = queryAccount(insertAccount(42).getId());
+        final Account account = queryAccount(insertAccount(-42).getId());
         assertEquals(-42, account.getBalance());
 
         final Cursor cursor = queryTransactionsCursor();
@@ -44,7 +44,7 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
 
         final Transaction transaction = Transaction.from(cursor);
         assertEquals(42, transaction.getAmount());
-        assertEquals(Category.Type.INCOME, transaction.getCategory().getType());
+        assertEquals(Category.Type.EXPENSE, transaction.getCategory().getType());
         IOUtils.closeQuietly(cursor);
     }
 
