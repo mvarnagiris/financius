@@ -58,8 +58,8 @@ public class BaseContentProviderTestCase {
         return DataStore.update().withSelection(selection, selectionArgs).values(values).into(uri);
     }
 
-    protected int delete(Uri uri, String selection, String... selectionArgs) {
-        return DataStore.delete().selection(selection, selectionArgs).from(uri);
+    protected int delete(String mode, Uri uri, String selection, String... selectionArgs) {
+        return DataStore.delete().selection(selection, selectionArgs).from(uriWithDeleteMode(uri, mode));
     }
 
     protected int bulkInsert(Uri uri, ContentValues... valuesArray) {
@@ -76,7 +76,7 @@ public class BaseContentProviderTestCase {
         IOUtils.closeQuietly(cursor);
     }
 
-    protected Uri uriWithDeleteMode(Uri uri, String mode) {
+    private Uri uriWithDeleteMode(Uri uri, String mode) {
         return ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, mode);
     }
 }

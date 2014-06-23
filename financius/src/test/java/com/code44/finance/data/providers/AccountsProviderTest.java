@@ -100,7 +100,7 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
     }
 
     @Test
-    public void delete_setsTheSameItemStateForTransactionsWithAffectedAccounts() {
+    public void deleteDelete_setsItemStateDeletedUndoForTransactions() {
         // Insert account
         final Account account = new Account();
         account.setTitle("a");
@@ -130,11 +130,46 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
         assertEquals(BaseModel.ItemState.DELETED_UNDO, transaction2FromDB.getItemState());
     }
 
+    @Test
+    public void deleteUndo_setsItemStateNormalForTransactions() {
+        final Account account = insertAccount();
+        final Transaction transactionRelated = insertTransaction(account, null);
+        final Transaction transactionNotRelated = insertTransaction(null, null);
+
+    }
+
+    @Test
+    public void deleteCommit_setsItemStateDeletedForTransactions() {
+        fail();
+    }
+
     private Query getTransactionsQuery() {
         return Query.get()
                 .projectionId(Tables.Transactions.ID)
                 .projection(Tables.Transactions.PROJECTION)
                 .projection(Tables.Categories.PROJECTION);
+    }
+
+    private Account insertAccount() {
+        final Account account = new Account();
+        account.setTitle("a");
+        account.setId(insert(AccountsProvider.uriAccounts(), account));
+        return account;
+    }
+
+    private Transaction insertTransaction(Account accountFrom, Account accountTo) {
+        final Transaction transaction = new Transaction();
+
+        if (accountFrom != null) {
+            transaction.setAccountFrom(accountFrom);
+        }
+
+        if (accountTo != null) {
+            transaction.setAccountTo(accountTo);
+        }
+
+        transaction.setId(insert(TransactionsProvider.uriTransactions(), transaction));
+        return transaction;
     }
 
     private Account getAccountFromDB(long accountId) {
