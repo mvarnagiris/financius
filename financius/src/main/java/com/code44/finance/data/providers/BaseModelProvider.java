@@ -247,6 +247,11 @@ public abstract class BaseModelProvider extends BaseProvider {
     }
 
     protected long insertItem(Uri uri, ContentValues values) {
+        if (values.containsKey(BaseColumns._ID)) {
+            values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, BaseModel.SyncState.LOCAL_CHANGES.asInt());
+        } else {
+            values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, BaseModel.SyncState.NONE.asInt());
+        }
         return ProviderUtils.doUpdateOrInsert(database, getModelTable(), values, true);
     }
 
@@ -257,6 +262,7 @@ public abstract class BaseModelProvider extends BaseProvider {
     }
 
     protected int updateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, BaseModel.SyncState.LOCAL_CHANGES.asInt());
         return database.update(getModelTable(), values, selection, selectionArgs);
     }
 
@@ -269,7 +275,9 @@ public abstract class BaseModelProvider extends BaseProvider {
     protected int deleteItems(Uri uri, String selection, String[] selectionArgs, BaseModel.ItemState itemState) {
         final ContentValues values = new ContentValues();
         values.put(getModelTable() + "_" + Tables.SUFFIX_ITEM_STATE, itemState.asInt());
-        values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, BaseModel.SyncState.LOCAL_CHANGES.asInt());
+        if (itemState == BaseModel.ItemState.DELETED) {
+            values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, BaseModel.SyncState.LOCAL_CHANGES.asInt());
+        }
 
         final String whereClause;
         final String[] whereArgs;
