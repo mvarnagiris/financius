@@ -29,6 +29,14 @@ public class LineGraphData {
         return values;
     }
 
+    public LineGraphValue getValueForGraph(int index) {
+        if (index < startIndex || index > Math.min(endIndex, startIndex + values.size() - 1)) {
+            return null;
+        }
+
+        return values.get(index - startIndex);
+    }
+
     public int getColor() {
         return color;
     }
@@ -51,12 +59,6 @@ public class LineGraphData {
 
     public int getEndIndex() {
         return endIndex;
-    }
-
-    public static interface LineGraphValue {
-        public double getValue();
-
-        public String getFormattedValue();
     }
 
     public static class Builder {
