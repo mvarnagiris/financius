@@ -2,6 +2,8 @@ package com.code44.finance.graphs.line;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.RectF;
@@ -15,6 +17,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class LineGraphView extends View {
     public static final int VISIBLE_SIZE_SHOW_ALL = 0;
@@ -40,6 +43,20 @@ public class LineGraphView extends View {
         lineGraphDataList = new ArrayList<>();
         graphPaths = new HashMap<>();
         visibleSize = VISIBLE_SIZE_SHOW_ALL;
+
+        // Edit mode
+        if (isInEditMode()) {
+            final List<LineGraphValue> values = new ArrayList<>();
+            final Random random = new Random();
+            for (int i = 0; i < 30; i++) {
+                values.add(new IntLineGraphValue(random.nextInt(100)));
+            }
+            final LineGraphData lineGraphData = new LineGraphData.Builder()
+                    .setColor(Color.RED)
+                    .setValues(values)
+                    .build();
+            setLineGraphData(lineGraphData);
+        }
     }
 
     @Override
@@ -51,6 +68,11 @@ public class LineGraphView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        for (LineGraphData lineGraphData : lineGraphDataList) {
+            final LineData lineData = graphPaths.get(lineGraphData);
+            canvas.drawPath(lineData.getPath(), lineData.getPaint());
+        }
     }
 
     public void setLineGraphData(LineGraphData... lineGraphData) {
@@ -116,8 +138,8 @@ public class LineGraphView extends View {
 
             // Padding for bounds
             final Drawable dividerDrawable = lineGraphData.getDividerDrawable();
-            paddingHorizontal = Math.max(paddingHorizontal, Math.max(dividerDrawable.getIntrinsicWidth(), lineGraphData.getLineWidth()));
-            paddingVertical = Math.max(paddingVertical, Math.max(dividerDrawable.getIntrinsicHeight(), lineGraphData.getLineWidth()));
+            paddingHorizontal = Math.max(paddingHorizontal, Math.max(dividerDrawable != null ? dividerDrawable.getIntrinsicWidth() : 0, lineGraphData.getLineWidth()));
+            paddingVertical = Math.max(paddingVertical, Math.max(dividerDrawable != null ? dividerDrawable.getIntrinsicHeight() : 0, lineGraphData.getLineWidth()));
         }
         paddingHorizontal /= 2;
         paddingVertical /= 2;
@@ -176,12 +198,17 @@ public class LineGraphView extends View {
             }
         }
 
-        return new LineData(points, path);
+        final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(lineGraphData.getColor());
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(lineGraphData.getLineWidth());
+
+        return new LineData(points, path, paint);
     }
 
     private LineData prepareGraphSmooth(LineGraphData lineGraphData, GraphPrepareData graphPrepareData) {
         final Path path = new Path();
-        return new LineData(null, path);
+        return new LineData(null, path, null);
     }
 
     private PointF getPoint(int index, GraphPrepareData graphPrepareData, LineGraphValue value) {
@@ -217,10 +244,24 @@ public class LineGraphView extends View {
     private static class LineData {
         private final List<PointF> points;
         private final Path path;
+        private final Paint paint;
 
-        private LineData(List<PointF> points, Path path) {
+        private LineData(List<PointF> points, Path path, Paint paint) {
             this.points = points;
             this.path = path;
+            this.paint = paint;
+        }
+
+        public List<PointF> getPoints() {
+            return points;
+        }
+
+        public Path getPath() {
+            return path;
+        }
+
+        public Paint getPaint() {
+            return paint;
         }
     }
 

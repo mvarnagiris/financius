@@ -43,6 +43,9 @@
         tools:ignore="UnusedAttribute"
         tools:text="This is my main spending account and some other long notes written here." />
 
-    <!-- TODO Add past 30 days balance graph -->
+    <com.code44.finance.graphs.line.LineGraphView
+        android:id="@+id/graph_LGV"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
 
 </LinearLayout>
