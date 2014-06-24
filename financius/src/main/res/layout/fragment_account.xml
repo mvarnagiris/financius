@@ -46,6 +46,7 @@
     <com.code44.finance.graphs.line.LineGraphView
         android:id="@+id/graph_LGV"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="@dimen/account_balance_graph_height"
+        android:layout_marginTop="@dimen/space_large" />
 
 </LinearLayout>
