@@ -93,7 +93,8 @@ public class AccountsFragment extends ModelListFragment {
         long balance = 0;
         if (cursor.moveToFirst()) {
             do {
-                balance += Account.from(cursor).getBalance();
+                final Account account = Account.from(cursor);
+                balance += account.getBalance() * account.getCurrency().getExchangeRate();
             } while (cursor.moveToNext());
         }
         balance_TV.setText(MoneyFormatter.format(Currency.getDefault(), balance));
