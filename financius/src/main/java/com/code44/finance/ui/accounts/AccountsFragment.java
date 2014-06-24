@@ -56,7 +56,7 @@ public class AccountsFragment extends ModelListFragment {
 
     @Override
     protected void startModelActivity(Context context, View expandFrom, long modelId) {
-        // TODO Start
+        AccountActivity.start(context, expandFrom, modelId);
     }
 
     @Override

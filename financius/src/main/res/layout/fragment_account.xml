@@ -39,6 +39,8 @@
         android:id="@+id/note_TV"
         style="@style/TextView"
         android:layout_marginTop="@dimen/space_normal"
+        android:fontFamily="@string/font_light"
+        tools:ignore="UnusedAttribute"
         tools:text="This is my main spending account and some other long notes written here." />
 
     <!-- TODO Add past 30 days balance graph -->
