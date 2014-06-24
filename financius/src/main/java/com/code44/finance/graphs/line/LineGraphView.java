@@ -52,7 +52,11 @@ public class LineGraphView extends View {
         int startingValue = random.nextInt(100);
         for (int i = 0; i < 15; i++) {
             startingValue = startingValue + (random.nextInt(5) * (random.nextBoolean() ? -1 : 1));
-            values.add(new IntLineGraphValue(startingValue));
+            if (i == 5 || i == 6) {
+                values.add(null);
+            } else {
+                values.add(new IntLineGraphValue(startingValue));
+            }
         }
         final LineGraphData lineGraphData = new LineGraphData.Builder()
                 .setColor(0xff0099cc)
@@ -230,8 +234,8 @@ public class LineGraphView extends View {
                         final PointF deltaPoint = new PointF();
 
                         final PointF firstPoint = nextPoint != null ? nextPoint : point;
-                        deltaPoint.x = ((firstPoint.x - previousPoint.x) / 3);
-                        deltaPoint.y = ((firstPoint.y - previousPoint.y) / 3);
+                        deltaPoint.x = ((firstPoint.x - previousPoint.x) / 5);
+                        deltaPoint.y = ((firstPoint.y - previousPoint.y) / 5);
                         path.cubicTo(previousPoint.x + deltaPoint.x, previousPoint.y + deltaPoint.y, point.x - deltaPoint.x, point.y - deltaPoint.y, point.x, point.y);
                     }
                 }
