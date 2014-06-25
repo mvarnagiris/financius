@@ -51,13 +51,13 @@ public class LineGraphView extends View {
         final List<LineGraphValue> values = new ArrayList<>();
         final Random random = new Random();
         int startingValue = random.nextInt(100);
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 30; i++) {
             startingValue = startingValue + (random.nextInt(5) * (random.nextBoolean() ? -1 : 1));
-//            if (i == 5 || i == 6) {
-//                values.add(null);
-//            } else {
+            if (i == 5 || i == 6 || i == 20) {
+                values.add(null);
+            } else {
                 values.add(new IntLineGraphValue(startingValue));
-//            }
+            }
         }
         final LineGraphData lineGraphData = new LineGraphData.Builder()
                 .setColor(0xff0099cc)
