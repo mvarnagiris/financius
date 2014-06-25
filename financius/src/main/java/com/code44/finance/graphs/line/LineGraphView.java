@@ -2,6 +2,7 @@ package com.code44.finance.graphs.line;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
@@ -52,11 +53,11 @@ public class LineGraphView extends View {
         int startingValue = random.nextInt(100);
         for (int i = 0; i < 15; i++) {
             startingValue = startingValue + (random.nextInt(5) * (random.nextBoolean() ? -1 : 1));
-            if (i == 5 || i == 6) {
-                values.add(null);
-            } else {
+//            if (i == 5 || i == 6) {
+//                values.add(null);
+//            } else {
                 values.add(new IntLineGraphValue(startingValue));
-            }
+//            }
         }
         final LineGraphData lineGraphData = new LineGraphData.Builder()
                 .setColor(0xff0099cc)
@@ -81,6 +82,14 @@ public class LineGraphView extends View {
         for (LineGraphData lineGraphData : lineGraphDataList) {
             final LineData lineData = graphPaths.get(lineGraphData);
             canvas.drawPath(lineData.getPath(), lineData.getPaint());
+
+            final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            paint.setColor(Color.RED);
+            for (PointF point : lineData.getPoints()) {
+                if (point != null) {
+                    canvas.drawCircle(point.x, point.y, lineGraphData.getLineWidth() / 2, paint);
+                }
+            }
         }
     }
 
@@ -179,70 +188,26 @@ public class LineGraphView extends View {
     }
 
     private LineData prepareGraph(LineGraphData lineGraphData, GraphPrepareData graphPrepareData) {
-        if (lineGraphData.isSmooth()) {
-            return prepareGraphSmooth(lineGraphData, graphPrepareData);
-        } else {
-            return prepareGraphSharp(lineGraphData, graphPrepareData);
-        }
+        final List<PointF> points = getPoints(lineGraphData, graphPrepareData);
+        final PathMaker pathMaker = lineGraphData.isSmooth() ? new SmoothPathMaker() : new SharpPathMaker();
+        final Path path = pathMaker.makePath(points);
+        final Paint paint = createLinePaint(lineGraphData);
+
+        return new LineData(points, path, paint);
     }
 
-    private LineData prepareGraphSharp(LineGraphData lineGraphData, GraphPrepareData graphPrepareData) {
+    private List<PointF> getPoints(LineGraphData lineGraphData, GraphPrepareData graphPrepareData) {
         final List<PointF> points = new ArrayList<>();
-        final Path path = new Path();
-
         for (int i = 0, size = graphPrepareData.getVisibleSize(); i < size; i++) {
             final LineGraphValue value = lineGraphData.getValueForGraph(i);
             if (value == null) {
                 points.add(null);
             } else {
-                final boolean shouldMove = points.size() == 0 || points.get(i - 1) == null;
                 final PointF point = getPoint(i, graphPrepareData, value);
                 points.add(point);
-
-                if (point != null) {
-                    if (shouldMove) {
-                        path.moveTo(point.x, point.y);
-                    } else {
-                        path.lineTo(point.x, point.y);
-                    }
-                }
             }
         }
-
-        return new LineData(points, path, createLinePaint(lineGraphData));
-    }
-
-    private LineData prepareGraphSmooth(LineGraphData lineGraphData, GraphPrepareData graphPrepareData) {
-        final List<PointF> points = new ArrayList<>();
-        final Path path = new Path();
-
-        for (int i = 0, size = graphPrepareData.getVisibleSize(); i < size; i++) {
-            final LineGraphValue value = lineGraphData.getValueForGraph(i);
-            if (value == null) {
-                points.add(null);
-            } else {
-                final PointF previousPoint = points.size() == 0 ? null : points.get(i - 1);
-                final boolean shouldMove = previousPoint == null;
-                final PointF point = getPoint(i, graphPrepareData, value);
-                points.add(point);
-
-                if (point != null) {
-                    if (shouldMove) {
-                        path.moveTo(point.x, point.y);
-                    } else {
-                        final PointF nextPoint = getPoint(i + 1, graphPrepareData, lineGraphData.getValueForGraph(i + 1));
-                        final PointF deltaPoint = new PointF();
-
-                        final PointF firstPoint = nextPoint != null ? nextPoint : point;
-                        deltaPoint.x = ((firstPoint.x - previousPoint.x) / 5);
-                        deltaPoint.y = ((firstPoint.y - previousPoint.y) / 5);
-                        path.cubicTo(previousPoint.x + deltaPoint.x, previousPoint.y + deltaPoint.y, point.x - deltaPoint.x, point.y - deltaPoint.y, point.x, point.y);
-                    }
-                }
-            }
-        }
-
-        return new LineData(points, path, createLinePaint(lineGraphData));
+        return points;
     }
 
     private PointF getPoint(int index, GraphPrepareData graphPrepareData, LineGraphValue value) {
