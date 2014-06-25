@@ -2,7 +2,6 @@ package com.code44.finance.graphs.line;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
@@ -21,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+@SuppressWarnings("UnusedDeclaration")
 public class LineGraphView extends View {
     public static final int VISIBLE_SIZE_SHOW_ALL = 0;
 
@@ -64,7 +64,9 @@ public class LineGraphView extends View {
                 .setValues(values)
                 .setLineWidth(context.getResources().getDimension(R.dimen.space_small))
                 .setSmooth(true)
+                .setDividerDrawable(context.getResources().getDrawable(R.drawable.circle))
                 .build();
+
         setLineGraphData(lineGraphData);
         //}
     }
@@ -83,11 +85,17 @@ public class LineGraphView extends View {
             final LineData lineData = lines.get(lineGraphData);
             canvas.drawPath(lineData.getPath(), lineData.getPaint());
 
-            final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            paint.setColor(Color.RED);
-            for (PointF point : lineData.getPoints()) {
-                if (point != null) {
-                    canvas.drawCircle(point.x, point.y, lineGraphData.getLineWidth() / 2, paint);
+            final Drawable dividerDrawable = lineGraphData.getDividerDrawable();
+            if (dividerDrawable != null) {
+                for (PointF point : lineData.getPoints()) {
+                    if (point == null) {
+                        continue;
+                    }
+
+                    final int drawableHalfWidth = dividerDrawable.getIntrinsicWidth() / 2;
+                    final int drawableHalfHeight = dividerDrawable.getIntrinsicHeight() / 2;
+                    dividerDrawable.setBounds((int) point.x - drawableHalfWidth, (int) point.y - drawableHalfHeight, (int) point.x + drawableHalfWidth, (int) point.y + drawableHalfHeight);
+                    dividerDrawable.draw(canvas);
                 }
             }
         }
@@ -105,9 +113,29 @@ public class LineGraphView extends View {
         prepareGraphs();
     }
 
+    public int getVisibleSize() {
+        return visibleSize;
+    }
+
     public void setVisibleSize(int visibleSize) {
         this.visibleSize = visibleSize;
         prepareGraphs();
+    }
+
+    public LineGraphValue getMinValue() {
+        return minValue;
+    }
+
+    public void setMinValue(LineGraphValue minValue) {
+        this.minValue = minValue;
+    }
+
+    public LineGraphValue getMaxValue() {
+        return maxValue;
+    }
+
+    public void setMaxValue(LineGraphValue maxValue) {
+        this.maxValue = maxValue;
     }
 
     private void prepareGraphs() {
