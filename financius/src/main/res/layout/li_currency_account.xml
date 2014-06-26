@@ -9,15 +9,15 @@
 
     <TextView
         android:id="@+id/title_TV"
-        style="@style/TextView"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         tools:text="Cash, EUR" />
 
     <Button
         android:id="@+id/currency_B"
-        style="@style/Button.Small"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_normal"
         android:paddingLeft="@dimen/space_large"
         android:paddingRight="@dimen/space_large"

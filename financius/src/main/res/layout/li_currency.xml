@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
     style="@style/ListItem"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:baselineAligned="false"
     android:gravity="center_vertical">
 
     <TextView
         android:id="@+id/code_TV"
-        style="@style/TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:fontFamily="monospace"
         android:textSize="@dimen/text_xlarge"
         tools:ignore="UnusedAttribute"
@@ -15,14 +17,15 @@
 
     <TextView
         android:id="@+id/format_TV"
-        style="@style/TextView.Secondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_normal"
         tools:text="(1,000.00 £)" />
 
     <TextView
         android:id="@+id/exchangeRate_TV"
-        style="@style/TextView"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_normal"
         android:gravity="right"
         android:textAllCaps="true"

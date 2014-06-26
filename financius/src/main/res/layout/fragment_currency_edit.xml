@@ -9,8 +9,8 @@
 
         <AutoCompleteTextView
             android:id="@+id/code_ET"
-            style="@style/EditText"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="@string/currency_code"
             android:inputType="textCapCharacters"
@@ -19,8 +19,8 @@
 
         <EditText
             android:id="@+id/symbol_ET"
-            style="@style/EditText"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
             android:gravity="right|bottom"
             android:hint="@string/symbol"
@@ -34,8 +34,8 @@
         android:layout_marginTop="@dimen/space_normal">
 
         <TextView
-            style="@style/TextView.Secondary"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="2"
             android:gravity="right"
@@ -44,8 +44,8 @@
 
         <Button
             android:id="@+id/symbolPosition_B"
-            style="@style/Button.Select"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
             android:layout_weight="5"
             android:gravity="right|bottom"
@@ -59,8 +59,8 @@
         android:layout_marginTop="@dimen/space_normal">
 
         <TextView
-            style="@style/TextView.Secondary"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="2"
             android:gravity="right"
@@ -69,8 +69,8 @@
 
         <Button
             android:id="@+id/thousandsSeparator_B"
-            style="@style/Button.Select"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
             android:layout_weight="5"
             android:gravity="right|bottom"
@@ -84,8 +84,8 @@
         android:layout_marginTop="@dimen/space_normal">
 
         <TextView
-            style="@style/TextView.Secondary"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="2"
             android:gravity="right"
@@ -94,8 +94,8 @@
 
         <Button
             android:id="@+id/decimalSeparator_B"
-            style="@style/Button.Select"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
             android:layout_weight="5"
             android:gravity="right|bottom"
@@ -109,8 +109,8 @@
         android:layout_marginTop="@dimen/space_normal">
 
         <TextView
-            style="@style/TextView.Secondary"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="2"
             android:gravity="right"
@@ -119,8 +119,8 @@
 
         <Button
             android:id="@+id/decimalsCount_B"
-            style="@style/Button.Select"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
             android:layout_weight="5"
             android:gravity="right|bottom"
@@ -135,8 +135,8 @@
         android:layout_marginTop="@dimen/space_normal">
 
         <TextView
-            style="@style/TextView.Secondary"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="2"
             android:gravity="right"
@@ -145,7 +145,6 @@
 
         <ImageButton
             android:id="@+id/refreshRate_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/space_normal"
@@ -156,8 +155,8 @@
 
         <EditText
             android:id="@+id/exchangeRate_ET"
-            style="@style/EditText"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="4"
             android:gravity="right|bottom"
             android:hint="@string/exchange_rate"
@@ -173,7 +172,8 @@
 
     <CheckBox
         android:id="@+id/isDefault_CB"
-        style="@style/CheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/main_currency" />
 
 </LinearLayout>

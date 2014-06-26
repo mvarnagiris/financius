@@ -14,12 +14,14 @@
 
         <Button
             android:id="@+id/currencies_B"
-            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/currencies" />
 
         <Button
             android:id="@+id/categories_B"
-            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/categories" />
 
     </LinearLayout>

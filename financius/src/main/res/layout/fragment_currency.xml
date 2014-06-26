@@ -19,7 +19,8 @@
 
         <TextView
             android:id="@+id/code_TV"
-            style="@style/TextView.Inverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:fontFamily="monospace"
             android:textSize="@dimen/text_xlarge"
             tools:ignore="UnusedAttribute"
@@ -27,8 +28,8 @@
 
         <TextView
             android:id="@+id/exchangeRate_TV"
-            style="@style/TextView.Secondary"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
             android:layout_toRightOf="@id/code_TV"
             android:gravity="right"
@@ -37,8 +38,8 @@
 
         <TextView
             android:id="@+id/format_TV"
-            style="@style/TextView.Secondary"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/code_TV"
             android:layout_marginTop="@dimen/space_normal"
             android:gravity="center_horizontal"

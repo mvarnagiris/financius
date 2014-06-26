@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Container.Edit">
+<LinearLayout
+    style="@style/Container.Edit"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <EditText
         android:id="@+id/title_ET"
-        style="@style/EditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:hint="@string/title"
         android:inputType="textCapWords" />
 
@@ -15,13 +17,14 @@
 
         <Button
             android:id="@+id/currency_B"
-            style="@style/Button.Select"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:hint="@string/currency" />
 
         <Button
             android:id="@+id/balance_B"
-            style="@style/Button.Select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
             android:gravity="right|center_vertical"
             android:hint="@string/balance" />
@@ -30,7 +33,8 @@
 
     <EditText
         android:id="@+id/note_ET"
-        style="@style/EditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_normal"
         android:hint="@string/note"
         android:inputType="textCapSentences" />

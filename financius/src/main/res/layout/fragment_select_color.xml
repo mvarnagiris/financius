@@ -51,8 +51,8 @@
 
         <Button
             android:id="@+id/cancel_B"
-            style="@style/Button"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/cancel"
             android:textAllCaps="true"
@@ -60,8 +60,8 @@
 
         <Button
             android:id="@+id/select_B"
-            style="@style/Button"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/select"
             android:textAllCaps="true"

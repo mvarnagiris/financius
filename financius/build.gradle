@@ -1,42 +1,38 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.1.0"
-
+    compileSdkVersion 'android-L'
+    buildToolsVersion '19.1.0'
     defaultConfig {
-        applicationId "com.code44.finance"
+        applicationId 'com.code44.finance'
         minSdkVersion 14
-        targetSdkVersion 19
+        targetSdkVersion 21
         versionCode 46
-        versionName "0.10.0"
+        versionName '0.10.0'
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
-
     buildTypes {
         debug {
-            applicationIdSuffix ".debug"
-            versionNameSuffix "-debug"
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-debug'
         }
-
         release {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     sourceSets {
         androidTest.setRoot('src/test')
     }
-
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
         }
+    }
+    productFlavors {
     }
 }
 
@@ -50,6 +46,7 @@ dependencies {
     compile 'com.github.castorflex.smoothprogressbar:library:0.5.1'
     compile 'com.squareup.okhttp:okhttp:2.0.0+'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0+'
+    compile 'com.squareup.okio:okio:1.0.+'
     compile 'com.squareup.retrofit:retrofit:1.6.0'
     compile 'org.beanshell:bsh-core:2.0b4'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'

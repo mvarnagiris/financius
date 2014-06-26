@@ -9,8 +9,8 @@
 
     <TextView
         android:id="@+id/result_TV"
-        style="@style/TextView"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="right"
         android:paddingBottom="@dimen/space_xlarge"
         android:paddingLeft="@dimen/space_large"
@@ -32,7 +32,6 @@
 
         <Button
             android:id="@+id/delete_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -50,7 +49,6 @@
 
         <Button
             android:id="@+id/number7_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -60,7 +58,6 @@
 
         <Button
             android:id="@+id/number8_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -69,7 +66,6 @@
 
         <Button
             android:id="@+id/number9_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -78,7 +74,6 @@
 
         <Button
             android:id="@+id/divide_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -96,7 +91,6 @@
 
         <Button
             android:id="@+id/number4_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -106,7 +100,6 @@
 
         <Button
             android:id="@+id/number5_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -115,7 +108,6 @@
 
         <Button
             android:id="@+id/number6_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -124,7 +116,6 @@
 
         <Button
             android:id="@+id/multiply_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -142,7 +133,6 @@
 
         <Button
             android:id="@+id/number1_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -152,7 +142,6 @@
 
         <Button
             android:id="@+id/number2_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -161,7 +150,6 @@
 
         <Button
             android:id="@+id/number3_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -170,7 +158,6 @@
 
         <Button
             android:id="@+id/minus_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -188,7 +175,6 @@
 
         <Button
             android:id="@+id/equals_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -198,7 +184,6 @@
 
         <Button
             android:id="@+id/number0_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -207,7 +192,6 @@
 
         <Button
             android:id="@+id/dot_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -216,7 +200,6 @@
 
         <Button
             android:id="@+id/plus_B"
-            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

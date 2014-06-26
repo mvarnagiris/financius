@@ -25,8 +25,8 @@
         android:paddingTop="@dimen/space_normal">
 
         <TextView
-            style="@style/TextView"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/l_refresh_rates_daily" />
 

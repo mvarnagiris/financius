@@ -13,7 +13,8 @@
 
     <TextView
         android:id="@+id/title_TV"
-        style="@style/TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/space_large"
         android:fontFamily="@string/font_thin"

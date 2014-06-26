@@ -9,8 +9,8 @@
 
     <TextView
         android:id="@+id/title_TV"
-        style="@style/TextView"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textSize="@dimen/text_large"
         tools:text="Cash" />
@@ -23,13 +23,15 @@
 
         <TextView
             android:id="@+id/balance_TV"
-            style="@style/TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
             tools:text="1234.56 $" />
 
         <TextView
             android:id="@+id/mainCurrencyBalance_TV"
-            style="@style/TextView.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
             tools:text="2012.87 Lt" />
 

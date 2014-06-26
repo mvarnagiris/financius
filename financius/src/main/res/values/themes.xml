@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-    <item name="android:windowBackground">@color/bg_window</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>
-        <item name="android:windowTranslucentNavigation" tools:ignore="NewApi">true</item>
-        <item name="android:actionBarStyle">@style/ActionBar</item>
-        <item name="android:windowActionBarOverlay">@null</item>
-        <item name="android:editTextStyle">@style/EditTextTheme</item>
+    <style name="AppTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
         <item name="spbStyle">@style/ProgressBar</item>
-    </style>
-
-    <style name="ActionBar" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
-    <item name="android:background">@color/bg_actionbar</item>
-        <item name="android:textColor">@color/text_primary_inverse</item>
     </style>
 
     <style name="ProgressBar" parent="SmoothProgressBar">
@@ -28,10 +16,6 @@
         <item name="spb_reversed">false</item>
         <item name="spb_colors">@array/progress_bar_colors</item>
         <item name="spb_progressiveStart_activated">false</item>
-    </style>
-
-    <style name="EditTextTheme" parent="android:Widget.EditText">
-        <item name="android:background">@drawable/edit_text</item>
     </style>
 
 </resources>

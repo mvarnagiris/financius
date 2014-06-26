@@ -27,6 +27,7 @@
 
     <LinearLayout
         android:id="@+id/buttonContainer_V"
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -41,8 +42,9 @@
 
         <Button
             android:id="@+id/cancel_B"
-            style="@style/Button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/cancel"
             android:textAllCaps="true"
@@ -50,8 +52,9 @@
 
         <Button
             android:id="@+id/save_B"
-            style="@style/Button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/save"
             android:textAllCaps="true"
@@ -83,7 +86,8 @@
 
                 <TextView
                     android:id="@+id/title_TV"
-                    style="@style/TextView.Title" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <View
                     style="@style/Divider.Thin"
