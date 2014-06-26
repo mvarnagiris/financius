@@ -15,8 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.code44.finance.R;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 public class BaseActivity extends FragmentActivity {
+    protected SystemBarTintManager tintManager;
+
     protected static Intent makeIntent(Context context, Class activityClass) {
         return new Intent(context, activityClass);
     }
@@ -45,6 +48,11 @@ public class BaseActivity extends FragmentActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
+        actionBar.setIcon(null);
+
+        tintManager = new SystemBarTintManager(this);
+        tintManager.setStatusBarTintEnabled(true);
+        tintManager.setStatusBarTintResource(R.color.brand_primary);
     }
 
     @Override

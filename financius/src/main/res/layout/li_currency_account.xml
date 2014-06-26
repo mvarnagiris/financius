@@ -16,11 +16,11 @@
 
     <Button
         android:id="@+id/currency_B"
-        style="@style/Button"
+        style="@style/Button.Small"
         android:layout_width="wrap_content"
         android:layout_marginLeft="@dimen/space_normal"
         android:paddingLeft="@dimen/space_large"
         android:paddingRight="@dimen/space_large"
-        tools:text="GBP" />
+        tools:text="Change to GBP" />
 
 </LinearLayout>

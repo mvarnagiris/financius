@@ -54,6 +54,7 @@ dependencies {
     compile 'org.beanshell:bsh-core:2.0b4'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.larswerkman:HoloColorPicker:1.+'
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     testCompile 'junit:junit:4.+'
     testCompile 'org.robolectric:robolectric:2.+'
     testCompile 'org.mockito:mockito-all:+'
