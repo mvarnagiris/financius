@@ -382,7 +382,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     private void showPopupList(View anchorView, ListAdapter adapter, AdapterView.OnItemClickListener itemClickListener) {
         listPopupWindow_LPW = new ListPopupWindow(getActivity());
         listPopupWindow_LPW.setModal(true);
-        listPopupWindow_LPW.setListSelector(getResources().getDrawable(R.drawable.btn_borderless));
+        // listPopupWindow_LPW.setListSelector(getResources().getDrawable(R.drawable.btn_borderless));
         listPopupWindow_LPW.setAdapter(adapter);
         listPopupWindow_LPW.setOnItemClickListener(itemClickListener);
         listPopupWindow_LPW.setAnchorView(anchorView);

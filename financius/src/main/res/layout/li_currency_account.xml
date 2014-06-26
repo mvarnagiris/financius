@@ -3,7 +3,6 @@
     style="@style/ListItem"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/btn_borderless"
     android:gravity="center_vertical"
     android:paddingBottom="0dp"
     android:paddingTop="0dp">
@@ -17,7 +16,7 @@
 
     <Button
         android:id="@+id/currency_B"
-        style="@style/Button.Accent.Small"
+        style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_marginLeft="@dimen/space_normal"
         android:paddingLeft="@dimen/space_large"

@@ -2,14 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <RelativeLayout
         android:id="@+id/container_V"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
-        android:background="@color/bg_secondary"
+        android:background="@color/brand_primary"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/space_xlarge"
         android:paddingLeft="@dimen/space_large"
@@ -18,7 +19,7 @@
 
         <TextView
             android:id="@+id/code_TV"
-            style="@style/TextView"
+            style="@style/TextView.Inverse"
             android:fontFamily="monospace"
             android:textSize="@dimen/text_xlarge"
             tools:ignore="UnusedAttribute"
@@ -26,7 +27,7 @@
 
         <TextView
             android:id="@+id/exchangeRate_TV"
-            style="@style/TextView"
+            style="@style/TextView.Secondary"
             android:layout_width="match_parent"
             android:layout_marginLeft="@dimen/space_normal"
             android:layout_toRightOf="@id/code_TV"
@@ -55,7 +56,7 @@
 
     <View
         android:id="@+id/separator_V"
-        style="@style/Separator.Thin"
+        style="@style/Divider.Thin"
         android:layout_below="@id/container_V" />
 
     <ScrollView

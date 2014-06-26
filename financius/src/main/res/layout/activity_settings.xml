@@ -2,6 +2,7 @@
     style="@style/ScrollView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
     tools:context=".SettingsActivity">
 
     <LinearLayout
@@ -13,12 +14,12 @@
 
         <Button
             android:id="@+id/currencies_B"
-            style="@style/Button.Borderless.Settings"
+            style="@style/Button"
             android:text="@string/currencies" />
 
         <Button
             android:id="@+id/categories_B"
-            style="@style/Button.Borderless.Settings"
+            style="@style/Button"
             android:text="@string/categories" />
 
     </LinearLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Container.Edit">
+<LinearLayout
+    style="@style/Container.Edit"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -144,7 +145,7 @@
 
         <ImageButton
             android:id="@+id/refreshRate_B"
-            style="@style/Button.Borderless"
+            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/space_normal"

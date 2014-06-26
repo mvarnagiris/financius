@@ -17,12 +17,12 @@
 
     <View
         android:id="@+id/leftSeparator_V"
-        style="@style/Separator.Vertical.Thin"
+        style="@style/Divider.Vertical.Thin"
         android:layout_toRightOf="@+id/leftMargin_V" />
 
     <View
         android:id="@+id/rightSeparator_V"
-        style="@style/Separator.Vertical.Thin"
+        style="@style/Divider.Vertical.Thin"
         android:layout_toLeftOf="@+id/rightMargin_V" />
 
     <LinearLayout
@@ -41,7 +41,7 @@
 
         <Button
             android:id="@+id/cancel_B"
-            style="@style/Button.Borderless"
+            style="@style/Button"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:text="@string/cancel"
@@ -50,7 +50,7 @@
 
         <Button
             android:id="@+id/save_B"
-            style="@style/Button.Borderless"
+            style="@style/Button"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:text="@string/save"
@@ -61,7 +61,7 @@
 
     <View
         android:id="@+id/separator_V"
-        style="@style/Separator.Thin"
+        style="@style/Divider.Thin"
         android:layout_above="@+id/buttonContainer_V"
         android:layout_toLeftOf="@id/rightMargin_V"
         android:layout_toRightOf="@id/leftMargin_V" />
@@ -86,7 +86,7 @@
                     style="@style/TextView.Title" />
 
                 <View
-                    style="@style/Separator.Thin"
+                    style="@style/Divider.Thin"
                     android:layout_gravity="bottom" />
 
             </FrameLayout>

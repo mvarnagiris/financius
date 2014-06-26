@@ -36,7 +36,7 @@
 
     <View
         android:id="@+id/separator_V"
-        style="@style/Separator.Thin"
+        style="@style/Divider.Thin"
         android:layout_marginTop="@dimen/space_large" />
 
     <LinearLayout
@@ -51,7 +51,7 @@
 
         <Button
             android:id="@+id/cancel_B"
-            style="@style/Button.Borderless"
+            style="@style/Button"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:text="@string/cancel"
@@ -60,7 +60,7 @@
 
         <Button
             android:id="@+id/select_B"
-            style="@style/Button.Borderless"
+            style="@style/Button"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:text="@string/select"

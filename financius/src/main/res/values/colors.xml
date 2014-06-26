@@ -1,48 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="d_brand">#9dae2a</color>
-    <color name="d_brand_lighter1">#bdce4a</color>
-    <color name="d_brand_lighter2">#ddee6a</color>
-    <color name="d_brand_lighter3">#fdff8a</color>
+    <color name="brand_primary">#607d8b</color>
+    <color name="brand_dark">#455a64</color>
 
-    <color name="d_dark">#303332</color>
-    <color name="d_dark_lighter1">#4a4a4a</color>
-    <color name="d_dark_lighter2">#767676</color>
+    <color name="bg_window">#f5f5f5</color>
+    <color name="bg_primary">#fafafa</color>
+    <color name="bg_secondary">#eeeeee</color>
+    <color name="bg_actionbar">@color/brand_primary</color>
 
-    <color name="d_light">#fefefe</color>
-    <color name="d_light_darker1">#ebebeb</color>
-    <color name="d_light_darker2">#dbdbdb</color>
-    <color name="d_light_darker3">#cbcbcb</color>
-    <color name="d_light_darker4">#bbbbbb</color>
+    <color name="text_primary">#de000000</color>
+    <color name="text_primary_inverse">#deffffff</color>
+    <color name="text_secondary">#8a000000</color>
+    <color name="text_hint">#42000000</color>
+    <color name="text_accent">@color/brand_primary</color>
+    <color name="text_positive">#de259b24</color>
+    <color name="text_negative">#dee51c23</color>
+    <color name="text_neutral">#de795548</color>
 
-    <color name="bg_window">@color/d_light_darker1</color>
-    <color name="bg_primary">@color/d_light</color>
-    <color name="bg_secondary">@color/d_light_darker2</color>
-    <color name="bg_actionbar">@color/d_light_darker2</color>
+    <color name="divider">#1f000000</color>
 
-    <color name="text_primary">@color/d_dark</color>
-    <color name="text_primary_inverse">@color/d_light</color>
-    <color name="text_secondary">@color/d_dark_lighter2</color>
-    <color name="text_accent">@color/d_brand</color>
-    <color name="text_positive">@color/d_brand</color>
-    <color name="text_negative">#c00</color>
-    <color name="text_neutral">#f80</color>
-
-    <color name="btn_primary_default">@color/d_light_darker3</color>
-    <color name="btn_primary_pressed">@color/d_light_darker2</color>
-    <color name="btn_secondary_default">@color/d_light_darker4</color>
-    <color name="btn_secondary_pressed">@color/d_light_darker2</color>
-    <color name="btn_accent_default">@color/d_brand</color>
-    <color name="btn_accent_pressed">@color/d_brand_lighter2</color>
-    <color name="btn_borderless_pressed">#339dae2a</color>
-
-    <color name="separator">@color/d_light_darker4</color>
     <array name="progress_bar_colors">
-        <item>#9dae2a</item>
-        <item>#cc0000</item>
-        <item>#ff8800</item>
-        <item>#0033bb</item>
+        <item>#90a4ae</item>
+        <item>#607d8b</item>
+        <item>#455a64</item>
+        <item>#263238</item>
     </array>
 
 </resources>

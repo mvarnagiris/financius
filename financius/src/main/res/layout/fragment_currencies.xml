@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
         android:id="@+id/loading_SPB"
@@ -38,7 +39,7 @@
 
     <View
         android:id="@+id/separator_V"
-        style="@style/Separator.Thin"
+        style="@style/Divider.Thin"
         android:layout_above="@+id/container_V" />
 
     <ListView
