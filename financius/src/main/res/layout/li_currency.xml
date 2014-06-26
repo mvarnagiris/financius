@@ -11,8 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="monospace"
-        android:textSize="@dimen/text_xlarge"
-        tools:ignore="UnusedAttribute"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textStyle="bold"
         tools:text="GBP" />
 
     <TextView
