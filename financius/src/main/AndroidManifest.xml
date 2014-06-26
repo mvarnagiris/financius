@@ -39,19 +39,19 @@
         <!-- ======================================================================================================= -->
         <provider
             android:name=".data.providers.CurrenciesProvider"
-            android:authorities="@string/authority_currencies"
+            android:authorities="${applicationId}.data.providers.CurrenciesProvider"
             android:exported="false" />
         <provider
             android:name=".data.providers.AccountsProvider"
-            android:authorities="@string/authority_accounts"
+            android:authorities="${applicationId}.data.providers.AccountsProvider"
             android:exported="false" />
         <provider
             android:name=".data.providers.CategoriesProvider"
-            android:authorities="@string/authority_categories"
+            android:authorities="${applicationId}.data.providers.CategoriesProvider"
             android:exported="false" />
         <provider
             android:name=".data.providers.TransactionsProvider"
-            android:authorities="@string/authority_transactions"
+            android:authorities="${applicationId}.data.providers.TransactionsProvider"
             android:exported="false" />
 
         <!-- Services -->
