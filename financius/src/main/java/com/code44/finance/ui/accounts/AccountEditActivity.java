@@ -9,7 +9,7 @@ import com.code44.finance.ui.ModelFragment;
 
 public class AccountEditActivity extends ModelEditActivity {
     public static void start(Context context, View expandFrom, long accountId) {
-        start(context, makeIntent(context, AccountEditActivity.class, accountId), expandFrom);
+        startScaleUp(context, makeIntent(context, AccountEditActivity.class, accountId), expandFrom);
     }
 
     @Override

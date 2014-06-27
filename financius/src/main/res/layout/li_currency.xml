@@ -11,6 +11,8 @@
         android:layout_height="wrap_content"
         android:minWidth="64dp"
         android:textAppearance="@style/Text.Title"
+        android:viewName="code"
+        tools:ignore="UnusedAttribute"
         tools:text="GBP" />
 
     <TextView

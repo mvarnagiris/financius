@@ -21,7 +21,7 @@ public class CategoriesActivity extends ModelListActivity {
 
     public static void start(Context context, View expandFrom) {
         final Intent intent = makeIntentView(context, CategoriesActivity.class);
-        start(context, intent, expandFrom);
+        startScaleUp(context, intent, expandFrom);
     }
 
     @Override

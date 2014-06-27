@@ -4,9 +4,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -155,13 +152,9 @@ public class CurrencyFragment extends ModelFragment<Currency> {
         getActivity().supportInvalidateOptionsMenu();
         if (currency.isDefault()) {
             code_TV.setText(currency.getCode());
-            code_TV.setTextColor(getResources().getColor(R.color.text_accent));
             exchangeRate_TV.setText(R.string.main_currency);
         } else {
-            final SpannableStringBuilder ssb = new SpannableStringBuilder(currency.getCode() + " \u2192 " + Currency.getDefault().getCode());
-            ssb.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.text_secondary)), ssb.length() - 3, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            code_TV.setText(ssb);
-            code_TV.setTextColor(getResources().getColor(android.R.color.primary_text_dark));
+            code_TV.setText(currency.getCode() + " \u2192 " + Currency.getDefault().getCode());
             exchangeRate_TV.setText(String.valueOf(currency.getExchangeRate()));
         }
         format_TV.setText(MoneyFormatter.format(currency, 100000));

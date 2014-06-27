@@ -24,7 +24,7 @@ public class BaseActivity extends FragmentActivity {
         return new Intent(context, activityClass);
     }
 
-    protected static void start(Context context, Intent intent, View expandFromView) {
+    protected static void startScaleUp(Context context, Intent intent, View expandFromView) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && expandFromView != null && context instanceof Activity) {
             final Bundle options = ActivityOptionsCompat
                     .makeScaleUpAnimation(expandFromView, 0, 0, expandFromView.getWidth(), expandFromView.getHeight())

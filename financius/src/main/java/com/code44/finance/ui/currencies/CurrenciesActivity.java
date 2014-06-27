@@ -11,7 +11,7 @@ import com.code44.finance.ui.ModelListFragment;
 
 public class CurrenciesActivity extends ModelListActivity {
     public static void start(Context context, View expandFrom) {
-        start(context, makeIntentView(context, CurrenciesActivity.class), expandFrom);
+        startScaleUp(context, makeIntentView(context, CurrenciesActivity.class), expandFrom);
     }
 
     public static void startSelect(Fragment fragment, int requestCode) {

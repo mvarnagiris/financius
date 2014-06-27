@@ -14,6 +14,20 @@
 
     <style name="Text.Title" parent="android:TextAppearance.Holo.Large" />
 
+    <style name="Text.Headline" parent="android:TextAppearance.Holo.Large" />
+
+    <style name="Text.Headline.Inverse" parent="android:TextAppearance.Holo.Large.Inverse" />
+
+    <style name="Text.Headline.Inverse.Secondary" parent="android:TextAppearance.Holo.Large.Inverse">
+        <item name="android:textColor">?android:textColorSecondaryInverse</item>
+    </style>
+
+    <!-- Button -->
+    <!-- =========================================================================================================== -->
+    <style name="Button" parent="android:Widget.Holo.Light.Button" />
+
+    <style name="Button.Small" parent="android:Widget.Holo.Light.Button.Small" />
+
     <!-- List -->
     <!-- =========================================================================================================== -->
 

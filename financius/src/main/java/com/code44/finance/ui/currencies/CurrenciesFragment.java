@@ -101,7 +101,7 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
 
     @Override
     protected void startModelActivity(Context context, View expandFrom, long modelId) {
-        CurrencyActivity.start(context, expandFrom, modelId);
+        CurrencyActivity.start(context, modelId);
     }
 
     @Override

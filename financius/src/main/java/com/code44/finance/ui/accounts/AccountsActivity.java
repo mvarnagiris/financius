@@ -11,7 +11,7 @@ import com.code44.finance.ui.ModelListFragment;
 public class AccountsActivity extends ModelListActivity {
     public static void start(Context context, View expandFrom) {
         final Intent intent = makeIntentView(context, AccountsActivity.class);
-        start(context, intent, expandFrom);
+        startScaleUp(context, intent, expandFrom);
     }
 
     @Override

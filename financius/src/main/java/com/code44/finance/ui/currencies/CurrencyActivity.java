@@ -2,16 +2,15 @@ package com.code44.finance.ui.currencies;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
 
 import com.code44.finance.R;
 import com.code44.finance.ui.ModelActivity;
 import com.code44.finance.ui.ModelFragment;
 
 public class CurrencyActivity extends ModelActivity {
-    public static void start(Context context, View expandFrom, long currencyId) {
+    public static void start(Context context, long currencyId) {
         final Intent intent = makeIntent(context, CurrencyActivity.class, currencyId);
-        start(context, intent, expandFrom);
+        startScaleUp(context, intent, null);
     }
 
     @Override

@@ -11,7 +11,7 @@ import com.code44.finance.ui.currencies.CurrenciesActivity;
 
 public class SettingsActivity extends BaseActivity implements View.OnClickListener {
     public static void start(Context context, View expandFrom) {
-        start(context, makeIntent(context, SettingsActivity.class), expandFrom);
+        startScaleUp(context, makeIntent(context, SettingsActivity.class), expandFrom);
     }
 
     @Override

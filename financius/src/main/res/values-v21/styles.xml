@@ -12,4 +12,20 @@
 
     <style name="Text.Title" parent="android:TextAppearance.Material.Title" />
 
+    <style name="Text.Headline" parent="android:TextAppearance.Material.Headline" />
+
+    <style name="Text.Headline.Inverse">
+        <item name="android:textColor">?android:textColorPrimaryInverse</item>
+    </style>
+
+    <style name="Text.Headline.Inverse.Secondary">
+        <item name="android:textColor">?android:textColorSecondaryInverse</item>
+    </style>
+
+    <!-- Button -->
+    <!-- =========================================================================================================== -->
+    <style name="Button" parent="android:Widget.Material.Light.Button" />
+
+    <style name="Button.Small" parent="android:Widget.Material.Light.Button.Small" />
+
 </resources>

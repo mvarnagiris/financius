@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    style="@style/ListItem"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ListItem"
     android:gravity="center_vertical"
     android:paddingBottom="0dp"
     android:paddingTop="0dp">
@@ -12,10 +11,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textAppearance="@style/Text.Subhead"
         tools:text="Cash, EUR" />
 
     <Button
         android:id="@+id/currency_B"
+        style="@style/Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_normal"

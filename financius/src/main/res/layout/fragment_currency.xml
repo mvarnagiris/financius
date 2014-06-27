@@ -11,19 +11,20 @@
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
         android:background="@color/brand_primary"
+        android:elevation="@dimen/elevation_header"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/space_xlarge"
         android:paddingLeft="@dimen/space_large"
         android:paddingRight="@dimen/space_large"
-        android:paddingTop="@dimen/space_xlarge">
+        android:paddingTop="@dimen/space_xlarge"
+        tools:ignore="UnusedAttribute">
 
         <TextView
             android:id="@+id/code_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="monospace"
-            android:textSize="@dimen/text_xlarge"
-            tools:ignore="UnusedAttribute"
+            android:textAppearance="@style/Text.Headline.Inverse"
+            android:viewName="code"
             tools:text="GBP → USD" />
 
         <TextView
@@ -33,17 +34,16 @@
             android:layout_marginLeft="@dimen/space_normal"
             android:layout_toRightOf="@id/code_TV"
             android:gravity="right"
-            android:textSize="@dimen/text_xlarge"
+            android:textAppearance="@style/Text.Headline.Inverse.Secondary"
             tools:text="1.2489" />
 
         <TextView
             android:id="@+id/format_TV"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/code_TV"
             android:layout_marginTop="@dimen/space_normal"
-            android:gravity="center_horizontal"
-            android:textSize="@dimen/text_large"
+            android:textAppearance="@style/Text.Headline.Inverse.Secondary"
             tools:text="1,000.00 £" />
 
     </RelativeLayout>

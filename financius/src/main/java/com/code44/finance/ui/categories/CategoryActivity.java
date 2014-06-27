@@ -13,7 +13,7 @@ import com.code44.finance.ui.ModelFragment;
 public class CategoryActivity extends ModelActivity {
     public static void start(Context context, View expandFrom, long categoryId) {
         final Intent intent = makeIntent(context, CategoryActivity.class, categoryId);
-        start(context, intent, expandFrom);
+        startScaleUp(context, intent, expandFrom);
     }
 
     @Override
