@@ -7,7 +7,7 @@
         <item name="android:colorAccent">@color/brand_primary</item>
         <item name="android:colorControlHighlight">@color/brand_primary_transparent</item>
 
-        <item name="android:navigationBarColor">@color/brand_primary</item>
+        <item name="android:navigationBarColor">@color/brand_dark</item>
 
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowContentTransitions">true</item>

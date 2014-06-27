@@ -177,30 +177,30 @@ public class CurrencyFragment extends ModelFragment<Currency> {
     }
 
     private void onAccountsLoaded(Cursor cursor) {
-        if (accountsContainer_V.getChildCount() > accountsContainerStaticViewCount) {
-            accountsContainer_V.removeViews(accountsContainerStaticViewCount, accountsContainer_V.getChildCount() - accountsContainerStaticViewCount);
-        }
+        accountsContainer_V.removeAllViews();
 
         final LayoutInflater inflater = LayoutInflater.from(getActivity());
         if (cursor.moveToFirst()) {
             do {
                 final Account account = Account.from(cursor);
-                final View view = inflater.inflate(R.layout.li_currency_account, accountsContainer_V, false);
-                ((TextView) view.findViewById(R.id.title_TV)).setText(account.getTitle() + ", " + account.getCurrency().getCode());
-                final Button currency_B = (Button) view.findViewById(R.id.currency_B);
                 if (account.getCurrency().getId() != model.getId()) {
-                    currency_B.setText(getString(R.string.f_change_to_x, model.getCode()));
-                    currency_B.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            account.setCurrency(model);
-                            DataStore.insert().model(account).into(AccountsProvider.uriAccounts());
-                        }
-                    });
-                } else {
-                    currency_B.setVisibility(View.GONE);
+                    final View view = inflater.inflate(R.layout.li_currency_account, accountsContainer_V, false);
+                    ((TextView) view.findViewById(R.id.title_TV)).setText(account.getTitle() + ", " + account.getCurrency().getCode());
+                    final Button currency_B = (Button) view.findViewById(R.id.currency_B);
+                    if (account.getCurrency().getId() != model.getId()) {
+                        currency_B.setText(getString(R.string.f_change_to_x, model.getCode()));
+                        currency_B.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                account.setCurrency(model);
+                                DataStore.insert().model(account).into(AccountsProvider.uriAccounts());
+                            }
+                        });
+                    } else {
+                        currency_B.setVisibility(View.GONE);
+                    }
+                    accountsContainer_V.addView(view);
                 }
-                accountsContainer_V.addView(view);
             } while (cursor.moveToNext());
         }
     }

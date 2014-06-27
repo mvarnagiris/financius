@@ -5,48 +5,57 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <RelativeLayout
-        android:id="@+id/container_V"
+    <FrameLayout
+        android:id="@+id/headerContainer_V"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
         android:background="@color/brand_primary"
         android:elevation="@dimen/elevation_header"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/space_xlarge"
-        android:paddingLeft="@dimen/space_large"
-        android:paddingRight="@dimen/space_large"
-        android:paddingTop="@dimen/space_xlarge"
+        android:paddingBottom="@dimen/space_normal"
+        android:paddingTop="@dimen/space_normal"
         tools:ignore="UnusedAttribute">
 
         <TextView
             android:id="@+id/code_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:textAppearance="@style/Text.Headline.Inverse"
             android:viewName="code"
-            tools:text="GBP → USD" />
+            tools:text="GBP" />
 
-        <TextView
-            android:id="@+id/exchangeRate_TV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/space_normal"
-            android:layout_toRightOf="@id/code_TV"
-            android:gravity="right"
-            android:textAppearance="@style/Text.Headline.Inverse.Secondary"
-            tools:text="1.2489" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/subHeaderContainer_V"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/headerContainer_V"
+        android:background="@color/bg_secondary"
+        android:elevation="@dimen/elevation_bottom_bar"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/space_large"
+        tools:ignore="UnusedAttribute">
 
         <TextView
             android:id="@+id/format_TV"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/code_TV"
-            android:layout_marginTop="@dimen/space_normal"
-            android:textAppearance="@style/Text.Headline.Inverse.Secondary"
+            android:layout_weight="1"
+            android:textAppearance="@style/Text.Subhead"
             tools:text="1,000.00 £" />
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/exchangeRate_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_normal"
+            android:gravity="right"
+            android:textAppearance="@style/Text.Subhead"
+            tools:text="1.2489" />
+
+    </LinearLayout>
 
     <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
         android:id="@+id/loading_SPB"
@@ -55,21 +64,17 @@
         android:indeterminate="true"
         android:visibility="invisible" />
 
-    <View
-        android:id="@+id/separator_V"
-        style="@style/Divider.Thin"
-        android:layout_below="@id/container_V" />
-
     <ScrollView
         style="@style/ScrollView"
-        android:layout_below="@id/separator_V">
+        android:layout_below="@id/subHeaderContainer_V">
 
         <LinearLayout
             android:id="@+id/accountsContainer_V"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            android:paddingTop="@dimen/space_normal" />
 
     </ScrollView>
 
