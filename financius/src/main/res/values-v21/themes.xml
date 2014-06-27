@@ -5,8 +5,16 @@
         <item name="android:colorPrimary">@color/brand_primary</item>
         <item name="android:colorPrimaryDark">@color/brand_dark</item>
         <item name="android:colorAccent">@color/brand_primary</item>
+        <item name="android:colorControlHighlight">@color/brand_primary_transparent</item>
+
+        <item name="android:navigationBarColor">@color/brand_primary</item>
+
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowContentTransitions">true</item>
+
+        <!--<item name="android:windowEnterTransition">@transition/explode</item>-->
+        <!--<item name="android:windowExitTransition">@transition/explode</item>-->
+
         <item name="spbStyle">@style/ProgressBar</item>
     </style>
 

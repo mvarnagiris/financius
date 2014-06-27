@@ -10,6 +10,8 @@
 
     <style name="Text.Subhead" parent="android:TextAppearance.Material.Subhead" />
 
+    <style name="Text.Caption" parent="android:TextAppearance.Material.Caption" />
+
     <style name="Text.Title" parent="android:TextAppearance.Material.Title" />
 
     <style name="Text.Headline" parent="android:TextAppearance.Material.Headline" />
@@ -27,5 +29,7 @@
     <style name="Button" parent="android:Widget.Material.Light.Button" />
 
     <style name="Button.Small" parent="android:Widget.Material.Light.Button.Small" />
+
+    <style name="Button.Borderless" parent="android:Widget.Material.Light.Button.Borderless" />
 
 </resources>
