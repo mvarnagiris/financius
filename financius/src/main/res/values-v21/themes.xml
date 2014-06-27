@@ -13,7 +13,7 @@
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowBackground">@color/bg_window</item>
 
-        <!--<item name="android:windowEnterTransition">@transition/explode</item>-->
+        <!--<item name="android:windowEnterTransition">@android:transition/</item>-->
         <!--<item name="android:windowExitTransition">@transition/explode</item>-->
 
         <item name="spbStyle">@style/ProgressBar</item>
