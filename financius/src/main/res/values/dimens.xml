@@ -34,5 +34,6 @@
 
     <dimen name="category_color_circle_size">30dp</dimen>
     <dimen name="account_balance_graph_height">128dp</dimen>
+    <dimen name="progress_bar_height">4dp</dimen>
 
 </resources>
