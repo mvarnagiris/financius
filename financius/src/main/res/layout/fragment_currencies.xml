@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -17,14 +18,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/bg_secondary"
+        android:elevation="@dimen/elevation_bottom_bar"
         android:gravity="center_vertical"
-        android:minHeight="@dimen/recommended_touch_size"
+        android:minHeight="?android:actionBarSize"
         android:paddingBottom="@dimen/space_normal"
         android:paddingLeft="@dimen/space_large"
         android:paddingRight="@dimen/space_large"
-        android:paddingTop="@dimen/space_normal">
+        android:paddingTop="@dimen/space_normal"
+        tools:ignore="UnusedAttribute">
 
         <TextView
+            style="@style/Text.Body1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -33,18 +37,14 @@
         <Switch
             android:id="@+id/autoUpdateCurrencies_S"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:checked="true" />
 
     </LinearLayout>
-
-    <View
-        android:id="@+id/separator_V"
-        style="@style/Divider.Thin"
-        android:layout_above="@+id/container_V" />
 
     <ListView
         android:id="@+id/list_V"
         style="@style/ListView"
-        android:layout_above="@+id/separator_V" />
+        android:layout_above="@+id/container_V" />
 
 </RelativeLayout>

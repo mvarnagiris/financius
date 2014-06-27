@@ -1,5 +1,19 @@
 <resources>
 
+    <!-- TextAppearance -->
+    <!-- =========================================================================================================== -->
+    <style name="Text" parent="android:TextAppearance.Holo" />
+
+    <style name="Text.Body1" parent="android:TextAppearance.Holo" />
+
+    <style name="Text.Body2" parent="android:TextAppearance.Holo.Medium" />
+
+    <style name="Text.Subhead" parent="android:TextAppearance.Holo.Medium">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="Text.Title" parent="android:TextAppearance.Holo.Large" />
+
     <!-- List -->
     <!-- =========================================================================================================== -->
 
@@ -28,7 +42,7 @@
         <item name="android:paddingRight">@dimen/space_large</item>
         <item name="android:paddingTop">@dimen/space_normal</item>
         <item name="android:paddingBottom">@dimen/space_normal</item>
-        <item name="android:minHeight">@dimen/recommended_touch_size</item>
+        <item name="android:minHeight">?android:actionBarSize</item>
     </style>
 
     <!-- ScrollView -->

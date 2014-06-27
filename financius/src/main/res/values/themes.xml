@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
+    <style name="AppTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:windowContentOverlay">@null</item>
         <item name="spbStyle">@style/ProgressBar</item>
     </style>
 

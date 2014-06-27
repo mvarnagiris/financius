@@ -33,7 +33,7 @@ public class CategoriesAdapter extends BaseModelsAdapter {
             holder.title_TV.setTextColor(context.getResources().getColor(R.color.text_secondary));
         } else {
             holder.title_TV.setText(category.getTitle());
-            holder.title_TV.setTextColor(context.getResources().getColor(R.color.text_primary));
+            holder.title_TV.setTextColor(context.getResources().getColor(android.R.color.primary_text_dark));
         }
     }
 

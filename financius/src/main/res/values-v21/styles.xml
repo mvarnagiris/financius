@@ -1,0 +1,15 @@
+<resources>
+
+    <!-- TextAppearance -->
+    <!-- =========================================================================================================== -->
+    <style name="Text" parent="android:TextAppearance.Material" />
+
+    <style name="Text.Body1" parent="android:TextAppearance.Material.Body1" />
+
+    <style name="Text.Body2" parent="android:TextAppearance.Material.Body2" />
+
+    <style name="Text.Subhead" parent="android:TextAppearance.Material.Subhead" />
+
+    <style name="Text.Title" parent="android:TextAppearance.Material.Title" />
+
+</resources>

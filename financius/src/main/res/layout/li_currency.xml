@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    style="@style/ListItem"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ListItem"
     android:baselineAligned="false"
     android:gravity="center_vertical">
 
@@ -10,9 +9,8 @@
         android:id="@+id/code_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="monospace"
-        android:textAppearance="@android:style/TextAppearance.Large"
-        android:textStyle="bold"
+        android:minWidth="64dp"
+        android:textAppearance="@style/Text.Title"
         tools:text="GBP" />
 
     <TextView
@@ -20,7 +18,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_normal"
-        tools:text="(1,000.00 £)" />
+        android:textAppearance="@style/Text.Body1"
+        tools:text="1,000.00 £" />
 
     <TextView
         android:id="@+id/exchangeRate_TV"
@@ -28,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_normal"
         android:gravity="right"
-        android:textAllCaps="true"
+        android:textAppearance="@style/Text.Body2"
         tools:text="1.2489" />
 
 </LinearLayout>

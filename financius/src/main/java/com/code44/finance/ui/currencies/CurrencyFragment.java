@@ -161,7 +161,7 @@ public class CurrencyFragment extends ModelFragment<Currency> {
             final SpannableStringBuilder ssb = new SpannableStringBuilder(currency.getCode() + " \u2192 " + Currency.getDefault().getCode());
             ssb.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.text_secondary)), ssb.length() - 3, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             code_TV.setText(ssb);
-            code_TV.setTextColor(getResources().getColor(R.color.text_primary));
+            code_TV.setTextColor(getResources().getColor(android.R.color.primary_text_dark));
             exchangeRate_TV.setText(String.valueOf(currency.getExchangeRate()));
         }
         format_TV.setText(MoneyFormatter.format(currency, 100000));
