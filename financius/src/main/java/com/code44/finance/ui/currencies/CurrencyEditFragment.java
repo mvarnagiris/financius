@@ -363,10 +363,8 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
 
     private void checkForCurrencyDuplicate(String code) {
         if (isCurrencyExists(code) && model.getId() == 0) {
-            code_ET.setTextColor(getResources().getColor(R.color.text_negative));
             code_ET.setError(getString(R.string.l_currency_exists));
         } else {
-            code_ET.setTextColor(getResources().getColor(android.R.color.primary_text_dark));
             code_ET.setError(null);
         }
     }

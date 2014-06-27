@@ -3,6 +3,7 @@
 
     <style name="AppTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/bg_window</item>
         <item name="spbStyle">@style/ProgressBar</item>
     </style>
 

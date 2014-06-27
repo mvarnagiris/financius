@@ -352,7 +352,7 @@ public class Currency extends BaseModel {
                 default:
                     throw new IllegalArgumentException(this + " explanation is not supported.");
             }
-            return "(" + context.getString(resId) + ") " + symbol;
+            return context.getString(resId) + " (" + symbol + ")";
         }
     }
 
@@ -413,7 +413,7 @@ public class Currency extends BaseModel {
                 default:
                     throw new IllegalArgumentException(this + " explanation is not supported.");
             }
-            return "(" + context.getString(resId) + ") " + symbol;
+            return context.getString(resId) + " (" + symbol + ")";
         }
     }
 
