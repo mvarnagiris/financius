@@ -21,8 +21,8 @@
     <dimen name="separator">2dp</dimen>
     <dimen name="separator_thin">1px</dimen>
 
-    <dimen name="elevation_bottom_bar">4dp</dimen>
-    <dimen name="elevation_header">6dp</dimen>
+    <dimen name="elevation_bottom_bar">2dp</dimen>
+    <dimen name="elevation_header">4dp</dimen>
 
     <dimen name="min_touch_size">32dp</dimen>
     <dimen name="recommended_touch_size">48dp</dimen>

@@ -51,6 +51,7 @@
         android:id="@+id/recycler_V"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/container_V"
         android:scrollbars="vertical" />
 
 </RelativeLayout>

@@ -2,9 +2,5 @@
 <resources>
 
     <string name="app_name">Financius D</string>
-    <string name="authority_currencies">com.code44.finance.debug.data.providers.CurrenciesProvider</string>
-    <string name="authority_accounts">com.code44.finance.debug.data.providers.AccountsProvider</string>
-    <string name="authority_categories">com.code44.finance.debug.data.providers.CategoriesProvider</string>
-    <string name="authority_transactions">com.code44.finance.debug.data.providers.TransactionsProvider</string>
 
 </resources>

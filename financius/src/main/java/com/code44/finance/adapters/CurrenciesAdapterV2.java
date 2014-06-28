@@ -56,6 +56,8 @@ public class CurrenciesAdapterV2 extends RecyclerView.Adapter<CurrenciesAdapterV
 
             textPrimaryColor = code_TV.getCurrentTextColor();
             textAccentColor = itemView.getResources().getColor(R.color.text_accent);
+
+            itemView.setBackgroundResource(R.color.bg_window);
         }
 
         public void setCurrency(Currency currency) {
@@ -64,9 +66,11 @@ public class CurrenciesAdapterV2 extends RecyclerView.Adapter<CurrenciesAdapterV
             if (currency.isDefault()) {
                 code_TV.setTextColor(textAccentColor);
                 exchangeRate_TV.setText(null);
+                itemView.setElevation(itemView.getContext().getResources().getDimension(R.dimen.elevation_bottom_bar));
             } else {
                 code_TV.setTextColor(textPrimaryColor);
                 exchangeRate_TV.setText(String.valueOf(currency.getExchangeRate()));
+                itemView.setElevation(0);
             }
         }
     }
