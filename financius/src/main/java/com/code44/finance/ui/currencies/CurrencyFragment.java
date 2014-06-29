@@ -10,14 +10,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.code44.finance.R;
+import com.code44.finance.adapters.CurrencyAccountsAdapter;
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
 import com.code44.finance.api.currencies.CurrencyRequest;
-import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
@@ -34,13 +33,12 @@ import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 public class CurrencyFragment extends ModelFragment<Currency> {
     private static final int LOADER_ACCOUNTS = 1;
 
-    private SmoothProgressBar loading_SPB;
     private TextView code_TV;
     private TextView format_TV;
     private TextView exchangeRate_TV;
-    private LinearLayout accountsContainer_V;
+    private SmoothProgressBar loading_SPB;
 
-    private int accountsContainerStaticViewCount;
+    private CurrencyAccountsAdapter adapter;
 
     public static CurrencyFragment newInstance(long currencyId) {
         final Bundle args = makeArgs(currencyId);
@@ -66,14 +64,15 @@ public class CurrencyFragment extends ModelFragment<Currency> {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        loading_SPB = (SmoothProgressBar) view.findViewById(R.id.loading_SPB);
         code_TV = (TextView) view.findViewById(R.id.code_TV);
         format_TV = (TextView) view.findViewById(R.id.format_TV);
         exchangeRate_TV = (TextView) view.findViewById(R.id.exchangeRate_TV);
-        accountsContainer_V = (LinearLayout) view.findViewById(R.id.accountsContainer_V);
+        loading_SPB = (SmoothProgressBar) view.findViewById(R.id.loading_SPB);
+        final ListView list_V = (ListView) view.findViewById(R.id.list_V);
 
         // Setup
-        accountsContainerStaticViewCount = accountsContainer_V.getChildCount();
+        adapter = new CurrencyAccountsAdapter(getActivity());
+        list_V.setAdapter(adapter);
     }
 
     @Override
@@ -131,10 +130,19 @@ public class CurrencyFragment extends ModelFragment<Currency> {
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == LOADER_ACCOUNTS) {
-            onAccountsLoaded(data);
+            adapter.swapCursor(data);
             return;
         }
         super.onLoadFinished(loader, data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        if (loader.getId() == LOADER_ACCOUNTS) {
+            adapter.swapCursor(null);
+            return;
+        }
+        super.onLoaderReset(loader);
     }
 
     @Override
@@ -149,6 +157,7 @@ public class CurrencyFragment extends ModelFragment<Currency> {
 
     @Override
     protected void onModelLoaded(Currency currency) {
+        adapter.setCurrency(currency);
         getActivity().supportInvalidateOptionsMenu();
         if (currency.isDefault()) {
             code_TV.setText(currency.getCode());
@@ -174,34 +183,5 @@ public class CurrencyFragment extends ModelFragment<Currency> {
 
     private void refreshRate() {
         CurrenciesAsyncApi.get().updateExchangeRate(model.getCode());
-    }
-
-    private void onAccountsLoaded(Cursor cursor) {
-        accountsContainer_V.removeAllViews();
-
-        final LayoutInflater inflater = LayoutInflater.from(getActivity());
-        if (cursor.moveToFirst()) {
-            do {
-                final Account account = Account.from(cursor);
-                if (account.getCurrency().getId() != model.getId()) {
-                    final View view = inflater.inflate(R.layout.li_currency_account, accountsContainer_V, false);
-                    ((TextView) view.findViewById(R.id.title_TV)).setText(account.getTitle() + ", " + account.getCurrency().getCode());
-                    final Button currency_B = (Button) view.findViewById(R.id.currency_B);
-                    if (account.getCurrency().getId() != model.getId()) {
-                        currency_B.setText(getString(R.string.f_change_to_x, model.getCode()));
-                        currency_B.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                account.setCurrency(model);
-                                DataStore.insert().model(account).into(AccountsProvider.uriAccounts());
-                            }
-                        });
-                    } else {
-                        currency_B.setVisibility(View.GONE);
-                    }
-                    accountsContainer_V.addView(view);
-                }
-            } while (cursor.moveToNext());
-        }
     }
 }

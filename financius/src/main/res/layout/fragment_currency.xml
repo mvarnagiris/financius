@@ -1,36 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/headerContainer_V"
+    <TextView
+        android:id="@+id/code_TV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/brand_primary"
         android:elevation="@dimen/elevation_header"
+        android:gravity="center"
         android:paddingBottom="@dimen/space_normal"
         android:paddingTop="@dimen/space_normal"
-        tools:ignore="UnusedAttribute">
-
-        <TextView
-            android:id="@+id/code_TV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textAppearance="@style/Text.Headline.Inverse"
-            android:viewName="code"
-            tools:text="GBP" />
-
-    </FrameLayout>
+        android:textAppearance="@style/Text.Headline.Inverse"
+        tools:text="GBP" />
 
     <LinearLayout
         android:id="@+id/subHeaderContainer_V"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/headerContainer_V"
         android:background="@color/bg_secondary"
         android:elevation="@dimen/elevation_bottom_bar"
         android:gravity="center_vertical"
@@ -60,22 +51,12 @@
     <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
         android:id="@+id/loading_SPB"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/progress_bar_height"
         android:indeterminate="true"
         android:visibility="invisible" />
 
-    <ScrollView
-        style="@style/ScrollView"
-        android:layout_below="@id/subHeaderContainer_V">
+    <ListView
+        android:id="@+id/list_V"
+        style="@style/ListView" />
 
-        <LinearLayout
-            android:id="@+id/accountsContainer_V"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/space_normal" />
-
-    </ScrollView>
-
-</RelativeLayout>
+</LinearLayout>
