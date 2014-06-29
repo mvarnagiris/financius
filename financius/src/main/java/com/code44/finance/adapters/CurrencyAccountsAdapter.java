@@ -16,6 +16,7 @@ import com.code44.finance.data.providers.AccountsProvider;
 
 public class CurrencyAccountsAdapter extends BaseModelsAdapter {
     private Currency currency;
+
     private final View.OnClickListener changeCurrencyClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
