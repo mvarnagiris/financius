@@ -31,7 +31,8 @@
                     android:hint="@string/currency_code"
                     android:inputType="textCapCharacters"
                     android:maxLength="3"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/Text.Edit" />
 
                 <FrameLayout
                     android:layout_width="0dp"
@@ -44,7 +45,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/space_normal"
                         android:hint="@string/symbol"
-                        android:inputType="textCapWords" />
+                        android:inputType="textCapWords"
+                        android:textAppearance="@style/Text.Edit" />
                 </FrameLayout>
 
             </LinearLayout>
@@ -178,6 +180,7 @@
                     android:layout_weight="3"
                     android:hint="@string/exchange_rate"
                     android:inputType="numberDecimal"
+                    android:textAppearance="@style/Text.Edit"
                     tools:stateListAnimator="@android:animator/fade_in" />
 
                 <ImageButton

@@ -11,8 +11,6 @@
         android:layout_height="wrap_content"
         android:minWidth="64dp"
         android:textAppearance="@style/Text.Title"
-        android:viewName="code"
-        tools:ignore="UnusedAttribute"
         tools:text="GBP" />
 
     <TextView
@@ -20,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_normal"
-        android:textAppearance="@style/Text.Body1"
+        android:textAppearance="@style/Text.Secondary"
         tools:text="1,000.00 £" />
 
     <TextView
@@ -29,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_normal"
         android:gravity="right"
-        android:textAppearance="@style/Text.Body2"
+        android:textAppearance="@style/Text"
         tools:text="1.2489" />
 
 </LinearLayout>

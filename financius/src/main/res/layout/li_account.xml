@@ -6,7 +6,7 @@
     android:baselineAligned="false"
     android:gravity="center_vertical">
 
-<TextView
+    <TextView
         android:id="@+id/title_TV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
-            android:textAppearance="@style/Text.Body1"
+            android:textAppearance="@style/Text"
             tools:text="1234.56 $" />
 
         <TextView
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
-            android:textAppearance="@style/Text.Caption"
+            android:textAppearance="@style/Text"
             tools:text="2012.87 Lt" />
 
     </LinearLayout>

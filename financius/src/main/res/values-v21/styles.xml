@@ -1,29 +1,5 @@
 <resources>
 
-    <!-- TextAppearance -->
-    <!-- =========================================================================================================== -->
-    <style name="Text" parent="android:TextAppearance.Material" />
-
-    <style name="Text.Body1" parent="android:TextAppearance.Material.Body1" />
-
-    <style name="Text.Body2" parent="android:TextAppearance.Material.Body2" />
-
-    <style name="Text.Subhead" parent="android:TextAppearance.Material.Subhead" />
-
-    <style name="Text.Caption" parent="android:TextAppearance.Material.Caption" />
-
-    <style name="Text.Title" parent="android:TextAppearance.Material.Title" />
-
-    <style name="Text.Headline" parent="android:TextAppearance.Material.Headline" />
-
-    <style name="Text.Headline.Inverse">
-        <item name="android:textColor">?android:textColorPrimaryInverse</item>
-    </style>
-
-    <style name="Text.Headline.Inverse.Secondary">
-        <item name="android:textColor">?android:textColorSecondaryInverse</item>
-    </style>
-
     <!-- Button -->
     <!-- =========================================================================================================== -->
     <style name="Button" parent="android:Widget.Material.Light.Button" />

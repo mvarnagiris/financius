@@ -13,9 +13,8 @@
         android:background="@color/brand_primary"
         android:elevation="@dimen/elevation_header"
         android:gravity="center"
-        android:paddingBottom="@dimen/space_normal"
-        android:paddingTop="@dimen/space_normal"
-        android:textAppearance="@style/Text.Headline.Inverse"
+        android:padding="@dimen/space_large"
+        android:textAppearance="@style/Text.Header.Inverse"
         tools:text="GBP" />
 
     <LinearLayout
@@ -34,7 +33,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAppearance="@style/Text.Subhead"
+            android:textAppearance="@style/Text.Title"
             tools:text="1,000.00 £" />
 
         <TextView
@@ -43,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
             android:gravity="right"
-            android:textAppearance="@style/Text.Subhead"
+            android:textAppearance="@style/Text.Title"
             tools:text="1.2489" />
 
     </LinearLayout>

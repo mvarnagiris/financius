@@ -2,10 +2,6 @@
 <resources>
 
     <string name="app_name">Financius</string>
-    <string name="authority_currencies">com.code44.finance.data.providers.CurrenciesProvider</string>
-    <string name="authority_accounts">com.code44.finance.data.providers.AccountsProvider</string>
-    <string name="authority_categories">com.code44.finance.data.providers.CategoriesProvider</string>
-    <string name="authority_transactions">com.code44.finance.data.providers.TransactionsProvider</string>
     <string name="divide">÷</string>
     <string name="multiply">×</string>
     <string name="plus">+</string>
