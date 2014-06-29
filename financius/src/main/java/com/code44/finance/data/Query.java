@@ -24,7 +24,7 @@ public class Query {
     private Query() {
     }
 
-    public static Query get() {
+    public static Query create() {
         return new Query();
     }
 

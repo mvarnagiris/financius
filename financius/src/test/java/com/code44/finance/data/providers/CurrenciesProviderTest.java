@@ -69,7 +69,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
     }
 
     private Cursor queryDefaultCurrencyCursor() {
-        final Query query = Query.get()
+        final Query query = Query.create()
                 .projectionId(Tables.Currencies.ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.IS_DEFAULT + "=?", "1");
@@ -78,7 +78,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
     }
 
     private Cursor queryCurrencyCursor(String code) {
-        final Query query = Query.get()
+        final Query query = Query.create()
                 .projectionId(Tables.Currencies.ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.CODE + "=?", code);
@@ -103,7 +103,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
     }
 
     private Cursor queryAccountsCursor() {
-        final Query query = Query.get()
+        final Query query = Query.create()
                 .projectionId(Tables.Accounts.ID)
                 .projection(Tables.Accounts.PROJECTION)
                 .selection(Tables.Accounts.OWNER + "=?", String.valueOf(Account.Owner.USER.asInt()));

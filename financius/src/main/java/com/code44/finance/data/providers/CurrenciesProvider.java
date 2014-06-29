@@ -76,7 +76,7 @@ public class CurrenciesProvider extends BaseModelProvider {
         //noinspection unchecked
         final List<Long> affectedIds = (List<Long>) extras.get("affectedIds");
         if (affectedIds.size() > 0) {
-            final Query query = Query.get()
+            final Query query = Query.create()
                     .selectionInClause(Tables.Accounts.CURRENCY_ID.getName(), affectedIds);
 
             final Uri accountsUri = uriForDeleteFromItemState(AccountsProvider.uriAccounts(), itemState);

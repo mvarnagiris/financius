@@ -52,7 +52,7 @@ public class Account extends BaseModel {
 
     public static Account getSystem() {
         if (systemAccount == null) {
-            final Cursor cursor = Query.get()
+            final Cursor cursor = Query.create()
                     .projectionId(Tables.Accounts.ID)
                     .projection(Tables.Accounts.PROJECTION)
                     .selection(Tables.Accounts.OWNER.getName() + "=?", String.valueOf(Owner.SYSTEM.asInt()))

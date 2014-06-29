@@ -58,7 +58,7 @@ public class Category extends BaseModel {
 
     public static Category getExpense() {
         if (expenseCategory == null) {
-            final Cursor cursor = Query.get()
+            final Cursor cursor = Query.create()
                     .projectionId(Tables.Categories.ID)
                     .projection(Tables.Categories.PROJECTION)
                     .from(App.getAppContext(), CategoriesProvider.uriCategory(EXPENSE_ID))
@@ -72,7 +72,7 @@ public class Category extends BaseModel {
 
     public static Category getIncome() {
         if (incomeCategory == null) {
-            final Cursor cursor = Query.get()
+            final Cursor cursor = Query.create()
                     .projectionId(Tables.Categories.ID)
                     .projection(Tables.Categories.PROJECTION)
                     .from(App.getAppContext(), CategoriesProvider.uriCategory(INCOME_ID))
@@ -86,7 +86,7 @@ public class Category extends BaseModel {
 
     public static Category getTransfer() {
         if (transferCategory == null) {
-            final Cursor cursor = Query.get()
+            final Cursor cursor = Query.create()
                     .projectionId(Tables.Categories.ID)
                     .projection(Tables.Categories.PROJECTION)
                     .from(App.getAppContext(), CategoriesProvider.uriCategory(TRANSFER_ID))

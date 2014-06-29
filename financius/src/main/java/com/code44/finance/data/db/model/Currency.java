@@ -64,7 +64,7 @@ public class Currency extends BaseModel {
 
     public static Currency getDefault() {
         if (defaultCurrency == null) {
-            final Cursor cursor = Query.get()
+            final Cursor cursor = Query.create()
                     .projectionId(Tables.Currencies.ID)
                     .projection(Tables.Currencies.PROJECTION)
                     .selection(Tables.Currencies.IS_DEFAULT.getName() + "=?", "1")
@@ -78,7 +78,7 @@ public class Currency extends BaseModel {
     }
 
     public static void updateDefaultCurrency(SQLiteDatabase db) {
-        final Cursor cursor = Query.get()
+        final Cursor cursor = Query.create()
                 .projectionId(Tables.Currencies.ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.IS_DEFAULT + "=?", "1")

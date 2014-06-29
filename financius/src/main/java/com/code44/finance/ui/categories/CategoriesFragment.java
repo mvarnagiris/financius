@@ -58,7 +58,7 @@ public class CategoriesFragment extends ModelListFragment {
 
     @Override
     protected Query getQuery() {
-        return Query.get()
+        return Query.create()
                 .projectionId(Tables.Categories.ID)
                 .projection(Tables.Categories.PROJECTION)
                 .selection(Tables.Categories.TYPE + "=?", String.valueOf(type.asInt()));

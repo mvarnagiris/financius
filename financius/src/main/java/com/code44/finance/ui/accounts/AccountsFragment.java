@@ -72,7 +72,7 @@ public class AccountsFragment extends ModelListFragment {
 
     @Override
     protected Query getQuery() {
-        return Query.get()
+        return Query.create()
                 .projectionId(Tables.Accounts.ID)
                 .projection(Tables.Accounts.PROJECTION)
                 .projection(Tables.Currencies.PROJECTION)

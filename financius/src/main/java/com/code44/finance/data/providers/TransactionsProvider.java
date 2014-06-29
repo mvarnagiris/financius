@@ -84,7 +84,7 @@ public class TransactionsProvider extends BaseModelProvider {
     }
 
     private void updateAccountBalance(long accountId) {
-        final Cursor cursor = Query.get()
+        final Cursor cursor = Query.create()
                 .projection("sum( case" +
                         " when " + Tables.Transactions.ACCOUNT_FROM_ID + "=? then -" + Tables.Transactions.AMOUNT + "" +
                         " when " + Tables.Categories.TYPE + "=? then " + Tables.Transactions.AMOUNT + "*" + Tables.Transactions.EXCHANGE_RATE +
@@ -112,7 +112,7 @@ public class TransactionsProvider extends BaseModelProvider {
     }
 
     private void updateAllAccountsBalances() {
-        final Cursor cursor = Query.get()
+        final Cursor cursor = Query.create()
                 .projectionId(Tables.Accounts.ID)
                 .selection(Tables.Accounts.ITEM_STATE + "=?", String.valueOf(BaseModel.ItemState.NORMAL.asInt()))
                 .from(database, Tables.Accounts.TABLE_NAME)

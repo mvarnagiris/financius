@@ -77,7 +77,7 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
         if (id == LOADER_MODELS) {
             Query query = getQuery();
             if (query == null) {
-                query = Query.get();
+                query = Query.create();
             }
             return query.asCursorLoader(getActivity(), getUri());
         }

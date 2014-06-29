@@ -105,7 +105,7 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
     }
 
     private Account queryAccount(long accountId) {
-        final Cursor cursor = Query.get()
+        final Cursor cursor = Query.create()
                 .projectionId(Tables.Accounts.ID)
                 .projection(Tables.Accounts.PROJECTION)
                 .projection(Tables.Currencies.PROJECTION)
@@ -134,7 +134,7 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
     }
 
     private Cursor queryTransactionsCursor() {
-        final Query query = Query.get()
+        final Query query = Query.create()
                 .projectionId(Tables.Transactions.ID)
                 .projection(Tables.Transactions.PROJECTION)
                 .projection(Tables.Categories.PROJECTION);

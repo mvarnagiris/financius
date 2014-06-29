@@ -115,7 +115,7 @@ public class CurrencyFragment extends ModelFragment<Currency> {
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_ACCOUNTS) {
-            return Query.get()
+            return Query.create()
                     .projectionId(Tables.Accounts.ID)
                     .projection(Tables.Accounts.PROJECTION)
                     .projection(Tables.Currencies.PROJECTION)
@@ -148,6 +148,13 @@ public class CurrencyFragment extends ModelFragment<Currency> {
     @Override
     protected Uri getUri(long modelId) {
         return CurrenciesProvider.uriCurrency(modelId);
+    }
+
+    @Override
+    protected Query getQuery() {
+        return Query.create()
+                .projectionId(Tables.Currencies.ID)
+                .projection(Tables.Currencies.PROJECTION);
     }
 
     @Override

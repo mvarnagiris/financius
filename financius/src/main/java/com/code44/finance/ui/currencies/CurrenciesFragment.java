@@ -110,7 +110,7 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
 
     @Override
     protected Query getQuery() {
-        return Query.get()
+        return Query.create()
                 .projectionId(Tables.Currencies.ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .sortOrder(Tables.Currencies.IS_DEFAULT + " desc")

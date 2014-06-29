@@ -312,7 +312,7 @@ public abstract class BaseModelProvider extends BaseProvider {
     protected List<Long> getIdList(String tableName, String selection, String[] selectionArgs) {
         final List<Long> affectedIds = new ArrayList<>();
 
-        final Query query = Query.get().projection(BaseColumns._ID);
+        final Query query = Query.create().projection(BaseColumns._ID);
         if (!TextUtils.isEmpty(selection)) {
             query.selection(selection);
         }

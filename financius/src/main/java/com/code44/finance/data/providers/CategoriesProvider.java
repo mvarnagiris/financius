@@ -52,7 +52,7 @@ public class CategoriesProvider extends BaseModelProvider {
         if (affectedIds.size() > 0) {
             final Uri transactionsUri = uriForDeleteFromItemState(TransactionsProvider.uriTransactions(), itemState);
 
-            final Query query = Query.get().selectionInClause(Tables.Transactions.CATEGORY_ID.getName(), affectedIds);
+            final Query query = Query.create().selectionInClause(Tables.Transactions.CATEGORY_ID.getName(), affectedIds);
             getContext().getContentResolver().delete(transactionsUri, query.getSelection(), query.getSelectionArgs());
         }
     }

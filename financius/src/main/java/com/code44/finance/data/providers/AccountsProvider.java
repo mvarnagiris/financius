@@ -86,10 +86,10 @@ public class AccountsProvider extends BaseModelProvider {
         if (affectedIds.size() > 0) {
             final Uri transactionsUri = uriForDeleteFromItemState(TransactionsProvider.uriTransactions(), itemState);
 
-            Query query = Query.get().selectionInClause(Tables.Transactions.ACCOUNT_FROM_ID.getName(), affectedIds);
+            Query query = Query.create().selectionInClause(Tables.Transactions.ACCOUNT_FROM_ID.getName(), affectedIds);
             getContext().getContentResolver().delete(transactionsUri, query.getSelection(), query.getSelectionArgs());
 
-            query = Query.get().selectionInClause(Tables.Transactions.ACCOUNT_TO_ID.getName(), affectedIds);
+            query = Query.create().selectionInClause(Tables.Transactions.ACCOUNT_TO_ID.getName(), affectedIds);
             getContext().getContentResolver().delete(transactionsUri, query.getSelection(), query.getSelectionArgs());
         }
     }
@@ -100,7 +100,7 @@ public class AccountsProvider extends BaseModelProvider {
             return 0;
         }
 
-        final Cursor cursor = Query.get()
+        final Cursor cursor = Query.create()
                 .projection(Tables.Accounts.BALANCE.getName())
                 .selection(Tables.Accounts.ID + "=?", String.valueOf(accountId))
                 .from(database, Tables.Accounts.TABLE_NAME)

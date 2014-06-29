@@ -41,7 +41,7 @@ public class CurrencyRequest extends BaseRequest<Currency, CurrenciesRequestServ
         final JsonObject json = IOUtils.readJsonObject(rawResponse);
         final double exchangeRate = json.get("rate").getAsDouble();
 
-        final Cursor cursor = Query.get()
+        final Cursor cursor = Query.create()
                 .projection(Tables.Currencies.ID.getName())
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.CODE + "=?")

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    style="@style/ListItem"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ListItem"
     android:baselineAligned="false"
     android:gravity="center_vertical"
     android:minHeight="@dimen/big_touch_size">
@@ -12,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="@dimen/text_large"
+        android:textAppearance="@style/Text.Title"
         tools:text="Cash" />
 
     <LinearLayout
@@ -26,6 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
+            android:textAppearance="@style/Text.Body1"
             tools:text="1234.56 $" />
 
         <TextView
@@ -33,6 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
+            android:textAppearance="@style/Text.Caption"
             tools:text="2012.87 Lt" />
 
     </LinearLayout>

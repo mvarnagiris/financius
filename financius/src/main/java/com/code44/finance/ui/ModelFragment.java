@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
-import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.Query;
+import com.code44.finance.data.db.model.BaseModel;
 
 public abstract class ModelFragment<T extends BaseModel> extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     protected static final int LOADER_MODEL = 1000;
@@ -42,7 +42,7 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
         if (id == LOADER_MODEL) {
             Query query = getQuery();
             if (query == null) {
-                query = Query.get();
+                query = Query.create();
             }
             return query.asCursorLoader(getActivity(), getUri(modelId));
         }
@@ -64,11 +64,9 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
 
     protected abstract Uri getUri(long modelId);
 
+    protected abstract Query getQuery();
+
     protected abstract T getModelFrom(Cursor cursor);
 
     protected abstract void onModelLoaded(T model);
-
-    protected Query getQuery() {
-        return null;
-    }
 }

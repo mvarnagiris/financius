@@ -74,7 +74,7 @@ public class TransactionsProviderTest extends BaseContentProviderTestCase {
     }
 
     private Account getAccount(long accountId) {
-        final Cursor cursor = Query.get()
+        final Cursor cursor = Query.create()
                 .projectionId(Tables.Accounts.ID)
                 .projection(Tables.Accounts.PROJECTION)
                 .projection(Tables.Currencies.PROJECTION)

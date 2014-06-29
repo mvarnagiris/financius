@@ -198,7 +198,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_CURRENCIES) {
-            return Query.get()
+            return Query.create()
                     .projection(Tables.Currencies.CODE.getName())
                     .selection(Tables.Currencies.ITEM_STATE + "=?", String.valueOf(BaseModel.ItemState.NORMAL.asInt()))
                     .asCursorLoader(getActivity(), CurrenciesProvider.uriCurrencies());
