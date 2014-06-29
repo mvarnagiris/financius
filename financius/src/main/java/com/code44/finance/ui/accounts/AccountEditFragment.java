@@ -15,6 +15,8 @@ import android.widget.EditText;
 
 import com.code44.finance.R;
 import com.code44.finance.data.DataStore;
+import com.code44.finance.data.Query;
+import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
@@ -107,6 +109,14 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
     @Override
     protected Uri getUri(long modelId) {
         return AccountsProvider.uriAccount(modelId);
+    }
+
+    @Override
+    protected Query getQuery() {
+        return Query.create()
+                .projectionId(Tables.Accounts.ID)
+                .projection(Tables.Accounts.PROJECTION)
+                .projection(Tables.Currencies.PROJECTION);
     }
 
     @Override

@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.code44.finance.R;
+import com.code44.finance.data.Query;
+import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
@@ -48,6 +50,14 @@ public class AccountFragment extends ModelFragment<Account> {
     @Override
     protected Uri getUri(long modelId) {
         return AccountsProvider.uriAccount(modelId);
+    }
+
+    @Override
+    protected Query getQuery() {
+        return Query.create()
+                .projectionId(Tables.Accounts.ID)
+                .projection(Tables.Accounts.PROJECTION)
+                .projection(Tables.Currencies.PROJECTION);
     }
 
     @Override
