@@ -18,6 +18,8 @@ import android.widget.EditText;
 
 import com.code44.finance.R;
 import com.code44.finance.data.DataStore;
+import com.code44.finance.data.Query;
+import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.ui.ModelEditFragment;
@@ -90,6 +92,13 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
     @Override
     protected Uri getUri(long modelId) {
         return CategoriesProvider.uriCategory(modelId);
+    }
+
+    @Override
+    protected Query getQuery() {
+        return Query.create()
+                .projectionId(Tables.Categories.ID)
+                .projection(Tables.Categories.PROJECTION);
     }
 
     @Override

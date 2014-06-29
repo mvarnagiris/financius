@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code44.finance.R;
+import com.code44.finance.data.Query;
+import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.ui.ModelFragment;
@@ -43,6 +45,13 @@ public class CategoryFragment extends ModelFragment<Category> {
     @Override
     protected Uri getUri(long modelId) {
         return CategoriesProvider.uriCategory(modelId);
+    }
+
+    @Override
+    protected Query getQuery() {
+        return Query.create()
+                .projectionId(Tables.Categories.ID)
+                .projection(Tables.Categories.PROJECTION);
     }
 
     @Override
