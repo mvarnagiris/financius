@@ -12,7 +12,6 @@ import android.view.View;
 import com.astuetz.PagerSlidingTabStrip;
 import com.code44.finance.R;
 import com.code44.finance.adapters.CategoriesPagerAdapter;
-import com.code44.finance.data.db.model.Category;
 import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.LayoutType;
@@ -58,8 +57,19 @@ public class CategoriesActivity extends ModelListActivity {
     }
 
     @Override
-    protected ModelListFragment createModelsFragment(int mode) {
-        return CategoriesFragment.newInstance(mode, Category.Type.EXPENSE);
+    protected ModelListFragment createModelsFragment(Mode mode) {
+        // Fragments are created in adapter
+        return null;
+    }
+
+    @Override
+    protected void startModelActivity(View expandFrom, long modelId) {
+        CategoryActivity.start(this, expandFrom, modelId);
+    }
+
+    @Override
+    protected void startModelEditActivity(View expandFrom, long modelId) {
+        CategoryEditActivity.start(this, expandFrom, modelId);
     }
 
     @Override

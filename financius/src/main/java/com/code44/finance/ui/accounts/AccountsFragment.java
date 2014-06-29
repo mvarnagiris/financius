@@ -19,13 +19,14 @@ import com.code44.finance.data.db.model.Account;
 import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
+import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.MoneyFormatter;
 
 public class AccountsFragment extends ModelListFragment {
     private TextView balance_TV;
 
-    public static AccountsFragment newInstance(int mode) {
+    public static AccountsFragment newInstance(ModelListActivity.Mode mode) {
         final Bundle args = makeArgs(mode);
 
         final AccountsFragment fragment = new AccountsFragment();
@@ -52,16 +53,6 @@ public class AccountsFragment extends ModelListFragment {
             updateBalance(data);
         }
         super.onLoadFinished(loader, data);
-    }
-
-    @Override
-    protected void startModelActivity(Context context, View expandFrom, long modelId) {
-        AccountActivity.start(context, expandFrom, modelId);
-    }
-
-    @Override
-    protected void startModelEditActivity(Context context, View expandFrom, long modelId) {
-        AccountEditActivity.start(context, expandFrom, modelId);
     }
 
     @Override

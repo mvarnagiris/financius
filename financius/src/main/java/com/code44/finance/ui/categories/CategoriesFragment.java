@@ -16,6 +16,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
+import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.ModelListFragment;
 
 public class CategoriesFragment extends ModelListFragment {
@@ -23,7 +24,7 @@ public class CategoriesFragment extends ModelListFragment {
 
     private Category.Type type;
 
-    public static CategoriesFragment newInstance(int mode, Category.Type type) {
+    public static CategoriesFragment newInstance(ModelListActivity.Mode mode, Category.Type type) {
         final Bundle args = makeArgs(mode);
         args.putSerializable(ARG_TYPE, type);
 
@@ -43,16 +44,6 @@ public class CategoriesFragment extends ModelListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_categories, container, false);
-    }
-
-    @Override
-    protected void startModelActivity(Context context, View expandFrom, long modelId) {
-        CategoryActivity.start(context, expandFrom, modelId);
-    }
-
-    @Override
-    protected void startModelEditActivity(Context context, View expandFrom, long modelId) {
-        // TODO
     }
 
     @Override

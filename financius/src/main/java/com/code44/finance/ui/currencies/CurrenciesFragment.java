@@ -24,6 +24,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
+import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.GeneralPrefs;
 
@@ -38,7 +39,7 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
 
     private SmoothProgressBar loading_SPB;
 
-    public static CurrenciesFragment newInstance(int mode) {
+    public static CurrenciesFragment newInstance(ModelListActivity.Mode mode) {
         final Bundle args = makeArgs(mode);
 
         final CurrenciesFragment fragment = new CurrenciesFragment();
@@ -63,7 +64,7 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         // Setup
         autoUpdateCurrencies_S.setChecked(GeneralPrefs.get().isAutoUpdateCurrencies());
         autoUpdateCurrencies_S.setOnCheckedChangeListener(this);
-        if (isSelectMode()) {
+        if (getMode() == ModelListActivity.Mode.SELECT) {
             settingsContainer_V.setVisibility(View.GONE);
         }
     }
@@ -98,16 +99,6 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
     }
 
     @Override
-    protected void startModelActivity(Context context, View expandFrom, long modelId) {
-        CurrencyActivity.start(context, modelId);
-    }
-
-    @Override
-    protected void startModelEditActivity(Context context, View expandFrom, long modelId) {
-        CurrencyEditActivity.start(context, expandFrom, modelId);
-    }
-
-    @Override
     protected BaseModelsAdapter createAdapter(Context context) {
         return new CurrenciesAdapter(context);
     }
@@ -118,17 +109,17 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
     }
 
     @Override
-    protected BaseModel modelFrom(Cursor cursor) {
-        return Currency.from(cursor);
-    }
-
-    @Override
     protected Query getQuery() {
         return Query.get()
                 .projectionId(Tables.Currencies.ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .sortOrder(Tables.Currencies.IS_DEFAULT + " desc")
                 .sortOrder(Tables.Currencies.CODE.getName());
+    }
+
+    @Override
+    protected BaseModel modelFrom(Cursor cursor) {
+        return Currency.from(cursor);
     }
 
     @Override

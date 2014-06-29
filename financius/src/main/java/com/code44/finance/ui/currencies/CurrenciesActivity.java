@@ -29,7 +29,17 @@ public class CurrenciesActivity extends ModelListActivity {
     }
 
     @Override
-    protected ModelListFragment createModelsFragment(int mode) {
+    protected ModelListFragment createModelsFragment(Mode mode) {
         return CurrenciesFragment.newInstance(mode);
+    }
+
+    @Override
+    protected void startModelActivity(View expandFrom, long modelId) {
+        CurrencyActivity.start(this, expandFrom, modelId);
+    }
+
+    @Override
+    protected void startModelEditActivity(View expandFrom, long modelId) {
+        CurrencyEditActivity.start(this, expandFrom, modelId);
     }
 }

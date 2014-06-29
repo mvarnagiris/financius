@@ -20,7 +20,17 @@ public class AccountsActivity extends ModelListActivity {
     }
 
     @Override
-    protected ModelListFragment createModelsFragment(int mode) {
+    protected ModelListFragment createModelsFragment(Mode mode) {
         return AccountsFragment.newInstance(mode);
+    }
+
+    @Override
+    protected void startModelActivity(View expandFrom, long modelId) {
+        AccountActivity.start(this, expandFrom, modelId);
+    }
+
+    @Override
+    protected void startModelEditActivity(View expandFrom, long modelId) {
+        AccountEditActivity.start(this, expandFrom, modelId);
     }
 }
