@@ -41,7 +41,7 @@ public class CurrencyAccountsAdapter extends BaseModelsAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         final ViewHolder holder = (ViewHolder) view.getTag();
         final Account account = Account.from(cursor);
-        holder.title_TV.setText(account.getTitle());
+        holder.title_TV.setText(account.getTitle() + ", " + account.getCurrency().getCode());
         if (currency.getId() == account.getCurrency().getId()) {
             holder.currency_B.setVisibility(View.INVISIBLE);
         } else {

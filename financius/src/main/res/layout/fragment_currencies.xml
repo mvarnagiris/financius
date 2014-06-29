@@ -20,7 +20,7 @@
         android:background="@color/bg_secondary"
         android:elevation="@dimen/elevation_bottom_bar"
         android:gravity="center_vertical"
-        android:minHeight="?android:actionBarSize"
+        android:minHeight="@dimen/recommended_touch_size"
         android:paddingBottom="@dimen/space_normal"
         android:paddingLeft="@dimen/space_large"
         android:paddingRight="@dimen/space_large"

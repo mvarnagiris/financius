@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
     style="@style/ListItem"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:baselineAligned="false"
-    android:gravity="center_vertical"
-    android:minHeight="@dimen/big_touch_size">
+    android:gravity="center_vertical">
 
-    <TextView
+<TextView
         android:id="@+id/title_TV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

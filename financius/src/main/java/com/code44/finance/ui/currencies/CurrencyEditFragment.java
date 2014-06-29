@@ -174,6 +174,13 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     }
 
     @Override
+    protected Query getQuery() {
+        return Query.create()
+                .projectionId(Tables.Currencies.ID)
+                .projection(Tables.Currencies.PROJECTION);
+    }
+
+    @Override
     protected Currency getModelFrom(Cursor cursor) {
         return Currency.from(cursor);
     }

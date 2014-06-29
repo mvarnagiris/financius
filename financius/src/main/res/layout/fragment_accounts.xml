@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/bg_secondary"
+        android:elevation="@dimen/elevation_bottom_bar"
         android:gravity="center_vertical"
         android:minHeight="@dimen/recommended_touch_size"
         android:paddingBottom="@dimen/space_normal"
@@ -21,24 +22,21 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/balance" />
+            android:text="@string/balance"
+            android:textAppearance="@style/Text.Subhead" />
 
         <TextView
             android:id="@+id/balance_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="@style/Text.Subhead"
             tools:text="20,461.39 $" />
 
     </LinearLayout>
 
-    <View
-        android:id="@+id/separator_V"
-        style="@style/Divider.Thin"
-        android:layout_above="@+id/container_V" />
-
     <ListView
         android:id="@+id/list_V"
         style="@style/ListView"
-        android:layout_above="@id/separator_V" />
+        android:layout_above="@id/container_V" />
 
 </RelativeLayout>
