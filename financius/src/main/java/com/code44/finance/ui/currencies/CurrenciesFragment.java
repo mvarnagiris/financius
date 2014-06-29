@@ -5,8 +5,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +17,6 @@ import android.widget.Switch;
 import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.adapters.CurrenciesAdapter;
-import com.code44.finance.adapters.CurrenciesAdapterV2;
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
 import com.code44.finance.api.currencies.CurrencyRequest;
 import com.code44.finance.data.Query;
@@ -39,11 +36,7 @@ import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 public class CurrenciesFragment extends ModelListFragment implements CompoundButton.OnCheckedChangeListener {
     private final List<Currency> currencies = new ArrayList<>();
 
-    private RecyclerView recycler_V;
     private SmoothProgressBar loading_SPB;
-
-    private CurrenciesAdapterV2 adapterV2;
-    private RecyclerView.LayoutManager layoutManager;
 
     public static CurrenciesFragment newInstance(int mode) {
         final Bundle args = makeArgs(mode);
@@ -63,24 +56,15 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        recycler_V = (RecyclerView) view.findViewById(R.id.recycler_V);
         loading_SPB = (SmoothProgressBar) view.findViewById(R.id.loading_SPB);
-        final View separator_V = view.findViewById(R.id.separator_V);
-        final View container_V = view.findViewById(R.id.container_V);
+        final View settingsContainer_V = view.findViewById(R.id.settingsContainer_V);
         final Switch autoUpdateCurrencies_S = (Switch) view.findViewById(R.id.autoUpdateCurrencies_S);
 
         // Setup
-        layoutManager = new LinearLayoutManager(getActivity());
-        adapterV2 = new CurrenciesAdapterV2();
-        recycler_V.setHasFixedSize(true);
-        recycler_V.setLayoutManager(layoutManager);
-        recycler_V.setAdapter(adapterV2);
-        view.findViewById(R.id.list_V).setVisibility(View.GONE);
         autoUpdateCurrencies_S.setChecked(GeneralPrefs.get().isAutoUpdateCurrencies());
         autoUpdateCurrencies_S.setOnCheckedChangeListener(this);
         if (isSelectMode()) {
-            separator_V.setVisibility(View.GONE);
-            container_V.setVisibility(View.GONE);
+            settingsContainer_V.setVisibility(View.GONE);
         }
     }
 
@@ -157,8 +141,7 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
                 } while (data.moveToNext());
             }
         }
-        adapterV2.swapCursor(data);
-        //super.onLoadFinished(loader, data);
+        super.onLoadFinished(loader, data);
     }
 
     @Override

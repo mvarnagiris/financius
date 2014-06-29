@@ -13,7 +13,7 @@
         android:visibility="invisible" />
 
     <LinearLayout
-        android:id="@+id/container_V"
+        android:id="@+id/settingsContainer_V"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -37,21 +37,13 @@
         <Switch
             android:id="@+id/autoUpdateCurrencies_S"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:checked="true" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
     <ListView
         android:id="@+id/list_V"
         style="@style/ListView"
-        android:layout_above="@+id/container_V" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_V"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/container_V"
-        android:scrollbars="vertical" />
+        android:layout_above="@+id/settingsContainer_V" />
 
 </RelativeLayout>
