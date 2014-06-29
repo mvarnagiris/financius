@@ -27,7 +27,6 @@ public class CurrencyAccountsAdapter extends BaseModelsAdapter {
 
     public CurrencyAccountsAdapter(Context context) {
         super(context);
-        this.currency = currency;
     }
 
     @Override
