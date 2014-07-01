@@ -52,7 +52,7 @@ public class BaseActivity extends FragmentActivity {
 
         tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
-        tintManager.setStatusBarTintResource(R.color.brand_primary);
+        tintManager.setStatusBarTintResource(R.color.brand);
     }
 
     @Override

@@ -39,7 +39,7 @@ public class CategoriesActivity extends ModelListActivity {
         pager_VP.setPageMargin(tabs_PSTS.getUnderlineHeight());
         pager_VP.setPageMarginDrawable(new ColorDrawable(underlineColor));
         tabs_PSTS.setShouldExpand(LayoutType.isDefault() && LayoutType.isPortrait());
-        tabs_PSTS.setIndicatorColorResource(R.color.brand_primary);
+        tabs_PSTS.setIndicatorColorResource(R.color.brand);
         tabs_PSTS.setIndicatorHeight(tabs_PSTS.getUnderlineHeight() * 2);
         tabs_PSTS.setUnderlineColor(underlineColor);
         //tabs_PSTS.setTabBackground(R.drawable.btn_borderless);

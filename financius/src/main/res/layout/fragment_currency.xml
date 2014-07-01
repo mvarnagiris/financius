@@ -10,7 +10,7 @@
         android:id="@+id/code_TV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/brand_primary"
+        android:background="@color/brand"
         android:elevation="@dimen/elevation_header"
         android:gravity="center"
         android:padding="@dimen/space_large"
