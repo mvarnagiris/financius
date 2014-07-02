@@ -62,7 +62,7 @@
         android:layout_height="@dimen/recommended_touch_size"
         android:layout_alignBottom="@+id/headerContainer_V"
         android:layout_centerHorizontal="true"
-        android:elevation="@dimen/elevation_header"
+        android:elevation="@dimen/elevation_fab"
         android:src="@drawable/ic_action_refresh" />
 
     <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
