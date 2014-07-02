@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="brand">#607d8b</color>
-    <color name="brand_transparent">#8f607d8b</color>
-    <color name="brand_dark">#455a64</color>
+    <color name="brand">#00bcd4</color>
+    <color name="brand_transparent">#8f00bcd4</color>
+    <color name="brand_dark">#0097a7</color>
     <color name="accent">#cddc39</color>
 
     <color name="bg_window">#f5f5f5</color>
