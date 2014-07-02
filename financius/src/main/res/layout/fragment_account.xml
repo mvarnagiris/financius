@@ -16,14 +16,14 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/space_normal"
             android:layout_weight="1"
-            android:textSize="@dimen/text_large"
+            android:textSize="@dimen/text_subhead"
             tools:text="Lloyds TSB" />
 
         <TextView
             android:id="@+id/balance_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_large"
+            android:textSize="@dimen/text_subhead"
             tools:text="15,349.78 $" />
 
     </LinearLayout>
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginTop="@dimen/space_normal"
-        android:textSize="@dimen/text_large"
+        android:textSize="@dimen/text_subhead"
         tools:text="9,294.24 Lt" />
 
     <TextView

@@ -5,10 +5,10 @@
 
     <dimen name="text_xxxlarge">38sp</dimen>
     <dimen name="text_xxlarge">30sp</dimen>
-    <dimen name="text_xlarge">26sp</dimen>
-    <dimen name="text_large">22sp</dimen>
-    <dimen name="text_normal">18sp</dimen>
-    <dimen name="text_small">14sp</dimen>
+    <dimen name="text_title">26sp</dimen>
+    <dimen name="text_subhead">22sp</dimen>
+    <dimen name="text_body">18sp</dimen>
+    <dimen name="text_caption">14sp</dimen>
 
     <dimen name="recommended_touch_size">56dp</dimen>
     <dimen name="big_touch_size">64dp</dimen>

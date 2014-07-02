@@ -211,7 +211,7 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
             equals_B.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_xxxlarge));
         } else {
             equals_B.setText(R.string.done);
-            equals_B.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_normal));
+            equals_B.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_body));
         }
     }
 

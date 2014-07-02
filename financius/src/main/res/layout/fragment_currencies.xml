@@ -17,22 +17,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/bg_secondary"
+        android:background="@color/brand"
         android:elevation="@dimen/elevation_bottom_bar"
         android:gravity="center_vertical"
-        android:minHeight="@dimen/recommended_touch_size"
+        android:minHeight="?android:actionBarSize"
         android:paddingBottom="@dimen/space_normal"
-        android:paddingLeft="@dimen/space_large"
-        android:paddingRight="@dimen/space_large"
+        android:paddingLeft="@dimen/keyline_content"
+        android:paddingRight="@dimen/keyline"
         android:paddingTop="@dimen/space_normal"
         tools:ignore="UnusedAttribute">
 
         <TextView
-            style="@style/Text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/l_refresh_rates_daily" />
+            android:text="@string/l_refresh_rates_daily"
+            android:textAppearance="@style/Text.Body2.Inverse" />
 
         <Switch
             android:id="@+id/autoUpdateCurrencies_S"

@@ -112,7 +112,7 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
 
         final Drawable circleDrawable = getResources().getDrawable(R.drawable.circle);
         circleDrawable.setColorFilter(model.getColor(), PorterDuff.Mode.SRC_ATOP);
-        circleDrawable.setBounds(0, 0, getResources().getDimensionPixelSize(R.dimen.text_large), getResources().getDimensionPixelSize(R.dimen.text_large));
+        circleDrawable.setBounds(0, 0, getResources().getDimensionPixelSize(R.dimen.text_subhead), getResources().getDimensionPixelSize(R.dimen.text_subhead));
 
         final SpannableStringBuilder ssb = new SpannableStringBuilder(" ");
         ssb.setSpan(new ImageSpan(circleDrawable), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

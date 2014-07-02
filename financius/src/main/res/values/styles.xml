@@ -4,17 +4,42 @@
     <!-- =========================================================================================================== -->
 
     <style name="Text">
-        <item name="android:textSize">@dimen/text_normal</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">@dimen/text_body</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textColorHint">@color/text_secondary</item>
+    </style>
+
+    <style name="Text.Body" />
+
+    <style name="Text.Body.Inverse">
+        <item name="android:textColor">@color/text_primary_inverse</item>
+    </style>
+
+    <style name="Text.Body2">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="Text.Body2.Inverse">
+        <item name="android:textColor">@color/text_primary_inverse</item>
+    </style>
+
+    <style name="Text.Body.Secondary">
+        <item name="android:textColor">@color/text_secondary</item>
     </style>
 
     <style name="Text.Secondary">
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
+    <style name="Text.Title">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">@dimen/text_title</item>
+    </style>
+
+
     <style name="Text.Small">
-        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:textSize">@dimen/text_caption</item>
     </style>
 
     <style name="Text.Small.Secondary">
@@ -22,18 +47,16 @@
     </style>
 
     <style name="Text.Large">
-        <item name="android:textSize">@dimen/text_large</item>
+        <item name="android:textSize">@dimen/text_subhead</item>
     </style>
 
     <style name="Text.XLarge">
-        <item name="android:textSize">@dimen/text_xlarge</item>
+        <item name="android:textSize">@dimen/text_title</item>
     </style>
 
     <style name="Text.XXLarge">
         <item name="android:textSize">@dimen/text_xxlarge</item>
     </style>
-
-    <style name="Text.Title" parent="Text.Large" />
 
     <style name="Text.Header" parent="Text.XXLarge" />
 
@@ -78,8 +101,8 @@
     <style name="ListItem">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingLeft">@dimen/space_large</item>
-        <item name="android:paddingRight">@dimen/space_large</item>
+        <item name="android:paddingLeft">@dimen/keyline</item>
+        <item name="android:paddingRight">@dimen/keyline</item>
         <item name="android:paddingTop">@dimen/space_normal</item>
         <item name="android:paddingBottom">@dimen/space_normal</item>
         <item name="android:minHeight">?android:actionBarSize</item>
