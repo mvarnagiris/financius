@@ -25,10 +25,10 @@
     <color name="divider">#1f000000</color>
 
     <array name="progress_bar_colors">
-        <item>#90a4ae</item>
-        <item>#607d8b</item>
-        <item>#455a64</item>
-        <item>#263238</item>
+        <item>#cddc39</item>
+        <item>#8bc34a</item>
+        <item>#259b24</item>
+        <item>#ffeb3b</item>
     </array>
 
 </resources>

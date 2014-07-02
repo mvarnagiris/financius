@@ -69,7 +69,8 @@
         android:id="@+id/loading_SPB"
         android:layout_width="match_parent"
         android:layout_height="@dimen/progress_bar_height"
-        android:layout_below="@+id/subHeaderContainer_V"
+        android:layout_below="@+id/headerContainer_V"
+        android:elevation="@dimen/elevation_sub_header"
         android:indeterminate="true"
         android:visibility="invisible" />
 
