@@ -66,7 +66,7 @@ public class CurrenciesAdapterV2 extends RecyclerView.Adapter<CurrenciesAdapterV
             if (currency.isDefault()) {
                 code_TV.setTextColor(textAccentColor);
                 exchangeRate_TV.setText(null);
-                itemView.setElevation(itemView.getContext().getResources().getDimension(R.dimen.elevation_bottom_bar));
+                itemView.setElevation(itemView.getContext().getResources().getDimension(R.dimen.elevation_sub_header));
             } else {
                 code_TV.setTextColor(textPrimaryColor);
                 exchangeRate_TV.setText(String.valueOf(currency.getExchangeRate()));

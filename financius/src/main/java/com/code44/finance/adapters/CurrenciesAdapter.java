@@ -13,12 +13,12 @@ import com.code44.finance.utils.MoneyFormatter;
 
 public class CurrenciesAdapter extends BaseModelsAdapter {
     private final int textPrimaryColor;
-    private final int textAccentColor;
+    private final int textBrandColor;
 
     public CurrenciesAdapter(Context context) {
         super(context);
         textPrimaryColor = context.getResources().getColor(R.color.text_primary);
-        textAccentColor = context.getResources().getColor(R.color.text_accent);
+        textBrandColor = context.getResources().getColor(R.color.text_brand);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class CurrenciesAdapter extends BaseModelsAdapter {
         holder.code_TV.setText(currency.getCode());
         holder.format_TV.setText(MoneyFormatter.format(currency, 100000));
         if (currency.isDefault()) {
-            holder.code_TV.setTextColor(textAccentColor);
+            holder.code_TV.setTextColor(textBrandColor);
             holder.exchangeRate_TV.setText(null);
         } else {
             holder.code_TV.setTextColor(textPrimaryColor);

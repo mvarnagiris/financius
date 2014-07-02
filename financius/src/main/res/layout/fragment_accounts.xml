@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/bg_secondary"
-        android:elevation="@dimen/elevation_bottom_bar"
+        android:elevation="@dimen/elevation_sub_header"
         android:gravity="center_vertical"
         android:minHeight="@dimen/recommended_touch_size"
         android:paddingBottom="@dimen/space_normal"

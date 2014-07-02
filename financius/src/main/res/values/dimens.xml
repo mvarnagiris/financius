@@ -16,6 +16,8 @@
 
     <dimen name="text_xxxlarge">34sp</dimen>
     <dimen name="text_xxlarge">28sp</dimen>
+    <dimen name="text_display4">112sp</dimen>
+    <dimen name="text_display3">56sp</dimen>
     <dimen name="text_title">20sp</dimen>
     <dimen name="text_subhead">16sp</dimen>
     <dimen name="text_body">14sp</dimen>
@@ -24,8 +26,8 @@
     <dimen name="separator">2dp</dimen>
     <dimen name="separator_thin">1px</dimen>
 
-    <dimen name="elevation_bottom_bar">2dp</dimen>
-    <dimen name="elevation_header">4dp</dimen>
+    <dimen name="elevation_header">3dp</dimen>
+    <dimen name="elevation_sub_header">2dp</dimen>
 
     <dimen name="min_touch_size">32dp</dimen>
     <dimen name="recommended_touch_size">48dp</dimen>

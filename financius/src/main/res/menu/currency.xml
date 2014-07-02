@@ -1,6 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/action_refresh_rate"
-        android:title="@string/refresh_rate"
-        android:showAsAction="never" />
-</menu>

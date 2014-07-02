@@ -5,6 +5,7 @@
     <color name="brand_transparent">#8f00bcd4</color>
     <color name="brand_dark">#0097a7</color>
     <color name="accent">#cddc39</color>
+    <color name="accent_dark_transparent">#8fafb42b</color>
 
     <color name="bg_window">#f5f5f5</color>
     <color name="bg_primary">#fafafa</color>
@@ -15,7 +16,8 @@
     <color name="text_primary_inverse">#deffffff</color>
     <color name="text_secondary">#8a000000</color>
     <color name="text_hint">#42000000</color>
-    <color name="text_accent">@color/brand</color>
+    <color name="text_brand">@color/brand</color>
+    <color name="text_accent">@color/accent</color>
     <color name="text_positive">#de259b24</color>
     <color name="text_negative">#dee51c23</color>
     <color name="text_neutral">#de795548</color>

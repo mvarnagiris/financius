@@ -28,13 +28,22 @@
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
-    <style name="Text.Secondary">
-        <item name="android:textColor">@color/text_secondary</item>
-    </style>
-
     <style name="Text.Title">
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textSize">@dimen/text_title</item>
+    </style>
+
+    <style name="Text.Display3">
+        <item name="android:textSize">@dimen/text_display3</item>
+    </style>
+
+    <style name="Text.Display4">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">@dimen/text_display4</item>
+    </style>
+
+    <style name="Text.Secondary">
+        <item name="android:textColor">@color/text_secondary</item>
     </style>
 
 

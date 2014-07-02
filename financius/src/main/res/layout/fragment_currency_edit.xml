@@ -191,7 +191,7 @@
                     android:layout_weight="1"
                     android:contentDescription="@string/refresh_rate"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_action_refresh"
+                    android:src="@drawable/ic_action_refresh_inverse"
                     tools:stateListAnimator="@android:animator/fade_in" />
 
             </LinearLayout>

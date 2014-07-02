@@ -1,31 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/code_TV"
+    <FrameLayout
+        android:id="@+id/headerContainer_V"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/brand"
         android:elevation="@dimen/elevation_header"
-        android:gravity="center"
-        android:padding="@dimen/space_large"
-        android:textAppearance="@style/Text.Header.Inverse"
-        tools:text="GBP" />
+        android:padding="@dimen/keyline">
+
+        <TextView
+            android:id="@+id/code_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAppearance="@style/Text.Display4"
+            android:textColor="@color/text_primary_inverse"
+            tools:text="GBP" />
+
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/subHeaderContainer_V"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bg_secondary"
-        android:elevation="@dimen/elevation_bottom_bar"
+        android:layout_below="@+id/headerContainer_V"
+        android:background="@color/bg_primary"
+        android:elevation="@dimen/elevation_sub_header"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="@dimen/space_large"
+        android:padding="@dimen/keyline"
         tools:ignore="UnusedAttribute">
 
         <TextView
@@ -47,15 +56,26 @@
 
     </LinearLayout>
 
+    <com.code44.finance.views.FabImageButton
+        android:id="@+id/refreshRate_IB"
+        android:layout_width="@dimen/recommended_touch_size"
+        android:layout_height="@dimen/recommended_touch_size"
+        android:layout_alignBottom="@+id/headerContainer_V"
+        android:layout_centerHorizontal="true"
+        android:elevation="@dimen/elevation_header"
+        android:src="@drawable/ic_action_refresh" />
+
     <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
         android:id="@+id/loading_SPB"
         android:layout_width="match_parent"
         android:layout_height="@dimen/progress_bar_height"
+        android:layout_below="@+id/subHeaderContainer_V"
         android:indeterminate="true"
         android:visibility="invisible" />
 
     <ListView
         android:id="@+id/list_V"
-        style="@style/ListView" />
+        style="@style/ListView"
+        android:layout_below="@+id/subHeaderContainer_V" />
 
-</LinearLayout>
+</RelativeLayout>
