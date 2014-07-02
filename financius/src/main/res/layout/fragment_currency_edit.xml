@@ -16,38 +16,71 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/space_large">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/brand"
+                android:elevation="@dimen/elevation_header"
+                android:orientation="vertical"
+                android:padding="@dimen/keyline">
 
-                <AutoCompleteTextView
-                    android:id="@+id/code_ET"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:hint="@string/currency_code"
-                    android:inputType="textCapCharacters"
-                    android:maxLength="3"
-                    android:textAllCaps="true"
-                    android:textAppearance="@style/Text.Edit" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="2"
+                        android:labelFor="@+id/code_ET"
+                        android:text="@string/currency_code"
+                        android:textAppearance="@style/Text.Caption"
+                        android:textColor="@color/text_accent" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:labelFor="@+id/symbol_ET"
+                        android:paddingLeft="@dimen/space_normal"
+                        android:text="@string/symbol"
+                        android:textAppearance="@style/Text.Caption"
+                        android:textColor="@color/text_accent" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/code_ET"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:contentDescription="@string/currency_code"
+                        android:inputType="textCapCharacters"
+                        android:maxLength="3"
+                        android:textAllCaps="true"
+                        android:textAppearance="@style/Text.Display3.Inverse" />
 
                     <EditText
                         android:id="@+id/symbol_ET"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/space_normal"
-                        android:hint="@string/symbol"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/symbol"
                         android:inputType="textCapWords"
-                        android:textAppearance="@style/Text.Edit" />
-                </FrameLayout>
+                        android:textAppearance="@style/Text.Display3.Inverse" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -177,6 +210,7 @@
                     android:id="@+id/exchangeRate_ET"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_normal"
                     android:layout_weight="3"
                     android:hint="@string/exchange_rate"
                     android:inputType="numberDecimal"

@@ -37,6 +37,10 @@
         <item name="android:textSize">@dimen/text_display3</item>
     </style>
 
+    <style name="Text.Display3.Inverse">
+        <item name="android:textColor">@color/text_primary_inverse</item>
+    </style>
+
     <style name="Text.Display4">
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textSize">@dimen/text_display4</item>
