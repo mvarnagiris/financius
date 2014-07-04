@@ -4,12 +4,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.code44.finance.R;
+import com.code44.finance.adapters.SettingsAdapter;
 import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.ui.currencies.CurrenciesActivity;
 
-public class SettingsActivity extends BaseActivity implements View.OnClickListener {
+public class SettingsActivity extends BaseActivity implements AdapterView.OnItemClickListener {
     public static void start(Context context, View expandFrom) {
         startScaleUp(context, makeIntent(context, SettingsActivity.class), expandFrom);
     }
@@ -21,9 +24,13 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
         setActionBarTitle(R.string.settings);
 
+        // Get views
+        final ListView list_V = (ListView) findViewById(R.id.list_V);
+
         // Setup
-        findViewById(R.id.currencies_B).setOnClickListener(this);
-        findViewById(R.id.categories_B).setOnClickListener(this);
+        final SettingsAdapter adapter = new SettingsAdapter(this);
+        list_V.setAdapter(adapter);
+        list_V.setOnItemClickListener(this);
     }
 
     @Override
@@ -32,15 +39,11 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.currencies_B:
-                CurrenciesActivity.start(this, view);
-                break;
-
-            case R.id.categories_B:
-                CategoriesActivity.start(this, view);
-                break;
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (id == SettingsAdapter.ID_CURRENCIES) {
+            CurrenciesActivity.start(this, view);
+        } else if (id == SettingsAdapter.ID_CATEGORIES) {
+            CategoriesActivity.start(this, view);
         }
     }
 }

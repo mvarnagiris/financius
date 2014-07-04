@@ -7,9 +7,8 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <ScrollView
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/ScrollView"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="0px"
         android:layout_weight="1">
 
@@ -33,10 +32,11 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="2"
+                        android:layout_marginRight="@dimen/space_small"
+                        android:layout_weight="1"
                         android:labelFor="@+id/code_ET"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:text="@string/currency_code"
                         android:textAppearance="@style/Text.Caption"
                         android:textColor="@color/text_accent" />
@@ -44,11 +44,11 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="@dimen/space_small"
                         android:layout_weight="1"
                         android:labelFor="@+id/symbol_ET"
-                        android:paddingLeft="@dimen/space_normal"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:text="@string/symbol"
                         android:textAppearance="@style/Text.Caption"
                         android:textColor="@color/text_accent" />
@@ -63,7 +63,8 @@
                         android:id="@+id/code_ET"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_marginRight="@dimen/space_small"
+                        android:layout_weight="1"
                         android:contentDescription="@string/currency_code"
                         android:inputType="textCapCharacters"
                         android:maxLength="3"
@@ -74,7 +75,7 @@
                         android:id="@+id/symbol_ET"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/space_normal"
+                        android:layout_marginLeft="@dimen/space_small"
                         android:layout_weight="1"
                         android:contentDescription="@string/symbol"
                         android:inputType="textCapWords"

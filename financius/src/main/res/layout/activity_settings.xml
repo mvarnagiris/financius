@@ -1,29 +1,5 @@
-<ScrollView
-    style="@style/ScrollView"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:fitsSystemWindows="true"
-    tools:context=".SettingsActivity">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="?android:attr/dividerHorizontal"
-        android:orientation="vertical"
-        android:showDividers="middle|end">
-
-        <Button
-            android:id="@+id/currencies_B"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/currencies" />
-
-        <Button
-            android:id="@+id/categories_B"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/categories" />
-
-    </LinearLayout>
-
-</ScrollView>
+    android:id="@+id/list_V"
+    style="@style/ScrollView"
+    tools:context=".SettingsActivity" />
