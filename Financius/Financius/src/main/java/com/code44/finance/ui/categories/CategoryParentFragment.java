@@ -9,6 +9,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.AbstractCursorAdapter;
@@ -111,6 +112,17 @@ public class CategoryParentFragment extends ItemListFragment
     protected void startItemCreate(Context context, View view)
     {
         // Ignore this.
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
+    {
+        switch (selectionType)
+        {
+            case SELECTION_TYPE_NONE:
+                startItemDetails(getActivity(), id, position, adapter, adapter.getCursor(), view);
+                break;
+        }
     }
 
     public static interface Callbacks

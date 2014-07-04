@@ -62,6 +62,9 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
         periodFilter_V.setCallbacks(this);
         accountsFilter_V.setCallbacks(this);
         categoriesFilter_V.setCallbacks(this);
+
+        // Reset filterHelper before start new period
+        filterHelper.clearPeriod();
     }
 
     @Override
