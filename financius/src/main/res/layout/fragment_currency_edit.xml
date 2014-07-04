@@ -22,68 +22,67 @@
                 android:layout_height="wrap_content"
                 android:background="@color/brand"
                 android:elevation="@dimen/elevation_header"
-                android:orientation="vertical"
                 android:padding="@dimen/keyline">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/space_small"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:id="@+id/code_TV"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/space_small"
-                        android:layout_weight="1"
                         android:labelFor="@+id/code_ET"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
                         android:text="@string/currency_code"
                         android:textAppearance="@style/Text.Caption"
-                        android:textColor="@color/text_accent" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/space_small"
-                        android:layout_weight="1"
-                        android:labelFor="@+id/symbol_ET"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:text="@string/symbol"
-                        android:textAppearance="@style/Text.Caption"
-                        android:textColor="@color/text_accent" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                        android:textColor="@color/text_primary_inverse" />
 
                     <AutoCompleteTextView
                         android:id="@+id/code_ET"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/space_small"
-                        android:layout_weight="1"
                         android:contentDescription="@string/currency_code"
                         android:inputType="textCapCharacters"
                         android:maxLength="3"
                         android:textAllCaps="true"
-                        android:textAppearance="@style/Text.Display3.Inverse" />
-
-                    <EditText
-                        android:id="@+id/symbol_ET"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/space_small"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/symbol"
-                        android:inputType="textCapWords"
-                        android:textAppearance="@style/Text.Display3.Inverse" />
+                        android:textAppearance="@style/Text.Display1.Inverse" />
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_small"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/symbol_TV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@+id/symbol_ET"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:text="@string/symbol"
+                        android:textAppearance="@style/Text.Caption"
+                        android:textColor="@color/text_primary_inverse" />
+
+                    <EditText
+                        android:id="@+id/symbol_ET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/symbol"
+                        android:inputType="textCapWords"
+                        android:textAppearance="@style/Text.Display1.Inverse" />
+                </LinearLayout>
+
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,21 +92,22 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_marginRight="@dimen/space_small"
+                    android:layout_weight="1"
                     android:gravity="right"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
                     android:text="@string/symbol_position"
                     android:textAppearance="@style/Text.Caption" />
 
                 <Button
                     android:id="@+id/symbolPosition_B"
-                    style="@style/Button.Borderless"
+                    style="@style/Button.Borderless.Select"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/space_normal"
-                    android:layout_weight="4"
-                    android:gravity="left|center_vertical"
-                    android:hint="@string/symbol_position"
-                    android:textAllCaps="false"
+                    android:layout_marginLeft="@dimen/space_small"
+                    android:layout_weight="1"
+                    android:textColor="@color/text_brand"
                     tools:stateListAnimator="@android:animator/fade_in" />
 
             </LinearLayout>
@@ -120,21 +120,21 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_marginRight="@dimen/space_small"
+                    android:layout_weight="1"
                     android:gravity="right"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
                     android:text="@string/thousands_separator"
                     android:textAppearance="@style/Text.Caption" />
 
                 <Button
                     android:id="@+id/thousandsSeparator_B"
-                    style="@style/Button.Borderless"
+                    style="@style/Button.Borderless.Select"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/space_normal"
-                    android:layout_weight="4"
-                    android:gravity="left|center_vertical"
-                    android:hint="@string/thousands_separator"
-                    android:textAllCaps="false"
+                    android:layout_marginLeft="@dimen/space_small"
+                    android:layout_weight="1"
                     tools:stateListAnimator="@android:animator/fade_in" />
 
             </LinearLayout>
@@ -147,21 +147,21 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_marginRight="@dimen/space_small"
+                    android:layout_weight="1"
                     android:gravity="right"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
                     android:text="@string/decimal_separator"
                     android:textAppearance="@style/Text.Caption" />
 
                 <Button
                     android:id="@+id/decimalSeparator_B"
-                    style="@style/Button.Borderless"
+                    style="@style/Button.Borderless.Select"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/space_normal"
-                    android:layout_weight="4"
-                    android:gravity="left|center_vertical"
-                    android:hint="@string/decimal_separator"
-                    android:textAllCaps="false"
+                    android:layout_marginLeft="@dimen/space_small"
+                    android:layout_weight="1"
                     tools:stateListAnimator="@android:animator/fade_in" />
 
             </LinearLayout>
@@ -174,21 +174,21 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_marginRight="@dimen/space_small"
+                    android:layout_weight="1"
                     android:gravity="right"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
                     android:text="@string/decimals_count"
                     android:textAppearance="@style/Text.Caption" />
 
                 <Button
                     android:id="@+id/decimalsCount_B"
-                    style="@style/Button.Borderless"
+                    style="@style/Button.Borderless.Select"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/space_normal"
-                    android:layout_weight="4"
-                    android:gravity="left|center_vertical"
-                    android:hint="@string/decimals_count"
-                    android:textAllCaps="false"
+                    android:layout_marginLeft="@dimen/space_small"
+                    android:layout_weight="1"
                     tools:stateListAnimator="@android:animator/fade_in" />
 
             </LinearLayout>
@@ -196,38 +196,51 @@
             <LinearLayout
                 android:id="@+id/exchangeRateContainer_V"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_normal">
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/space_normal"
+                android:layout_weight="1"
+                android:background="@color/bg_secondary"
+                android:elevation="2dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_marginRight="@dimen/space_small"
+                    android:layout_weight="1"
                     android:gravity="right"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
                     android:text="@string/exchange_rate"
                     android:textAppearance="@style/Text.Caption" />
 
-                <EditText
-                    android:id="@+id/exchangeRate_ET"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/space_normal"
-                    android:layout_weight="3"
-                    android:hint="@string/exchange_rate"
-                    android:inputType="numberDecimal"
-                    android:textAppearance="@style/Text.Edit"
-                    tools:stateListAnimator="@android:animator/fade_in" />
+                    android:layout_weight="1">
 
-                <ImageButton
-                    android:id="@+id/refreshRate_B"
-                    style="@style/Button.Borderless"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/refresh_rate"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_action_refresh_inverse"
-                    tools:stateListAnimator="@android:animator/fade_in" />
+                    <EditText
+                        android:id="@+id/exchangeRate_ET"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/space_normal"
+                        android:layout_weight="1"
+                        android:hint="@string/exchange_rate"
+                        android:inputType="numberDecimal"
+                        android:textAppearance="@style/Text.Title"
+                        tools:ignore="NestedWeights"
+                        tools:stateListAnimator="@android:animator/fade_in" />
+
+                    <ImageButton
+                        android:id="@+id/refreshRate_B"
+                        style="@style/Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/refresh_rate"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_action_refresh_inverse"
+                        tools:stateListAnimator="@android:animator/fade_in" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

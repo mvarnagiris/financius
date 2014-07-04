@@ -33,6 +33,22 @@
         <item name="android:textSize">@dimen/text_title</item>
     </style>
 
+    <style name="Text.Display1">
+        <item name="android:textSize">@dimen/text_display1</item>
+    </style>
+
+    <style name="Text.Display1.Inverse">
+        <item name="android:textColor">@color/text_primary_inverse</item>
+    </style>
+
+    <style name="Text.Display2">
+        <item name="android:textSize">@dimen/text_display2</item>
+    </style>
+
+    <style name="Text.Display2.Inverse">
+        <item name="android:textColor">@color/text_primary_inverse</item>
+    </style>
+
     <style name="Text.Display3">
         <item name="android:textSize">@dimen/text_display3</item>
     </style>
@@ -89,6 +105,12 @@
     <style name="Button.Small" parent="android:Widget.Holo.Light.Button.Small" />
 
     <style name="Button.Borderless" parent="android:Widget.Holo.Button.Borderless" />
+
+    <style name="Button.Borderless.Select">
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
 
     <!-- List -->
     <!-- =========================================================================================================== -->

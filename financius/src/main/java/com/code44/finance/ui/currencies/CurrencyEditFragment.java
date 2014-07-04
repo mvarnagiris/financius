@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListPopupWindow;
+import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.api.BaseRequestEvent;
@@ -50,6 +51,8 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     private Button thousandsSeparator_B;
     private Button decimalSeparator_B;
     private Button decimalsCount_B;
+    private TextView code_TV;
+    private TextView symbol_TV;
     private EditText symbol_ET;
     private Button symbolPosition_B;
     private EditText exchangeRate_ET;
@@ -82,6 +85,8 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         thousandsSeparator_B = (Button) view.findViewById(R.id.thousandsSeparator_B);
         decimalSeparator_B = (Button) view.findViewById(R.id.decimalSeparator_B);
         decimalsCount_B = (Button) view.findViewById(R.id.decimalsCount_B);
+        code_TV = (TextView) view.findViewById(R.id.code_TV);
+        symbol_TV = (TextView) view.findViewById(R.id.symbol_TV);
         symbol_ET = (EditText) view.findViewById(R.id.symbol_ET);
         symbolPosition_B = (Button) view.findViewById(R.id.symbolPosition_B);
         exchangeRate_ET = (EditText) view.findViewById(R.id.exchangeRate_ET);
@@ -107,10 +112,27 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
                 //noinspection ConstantConditions
                 model.setSymbol(symbol_ET.getText().toString());
                 updateFormatView();
+
+                updateSymbolTitlePosition();
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
+            }
+        });
+        code_ET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                updateCodeTitlePosition();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }
@@ -195,6 +217,8 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         exchangeRate_ET.setText(String.valueOf(model.getExchangeRate()));
         isDefault_CB.setChecked(model.isDefault());
         updateFormatView();
+        updateCodeTitlePosition();
+        updateSymbolTitlePosition();
 
         code_ET.setEnabled(model.getId() == 0);
         exchangeRateContainer_V.setVisibility(model.isDefault() ? View.GONE : View.VISIBLE);
@@ -404,6 +428,22 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
             if (loading_SPB.getVisibility() != View.INVISIBLE) {
                 loading_SPB.setVisibility(View.INVISIBLE);
             }
+        }
+    }
+
+    private void updateCodeTitlePosition() {
+        if (TextUtils.isEmpty(code_ET.getText())) {
+            code_TV.animate().translationY(code_ET.getBaseline() + (code_TV.getHeight() - code_TV.getBaseline())).setDuration(100).start();
+        } else {
+            code_TV.animate().translationY(0).setDuration(100).start();
+        }
+    }
+
+    private void updateSymbolTitlePosition() {
+        if (TextUtils.isEmpty(symbol_ET.getText())) {
+            symbol_TV.animate().translationY(symbol_ET.getBaseline() + (symbol_TV.getHeight() - symbol_TV.getBaseline())).setDuration(100).start();
+        } else {
+            symbol_TV.animate().translationY(0).setDuration(100).start();
         }
     }
 
