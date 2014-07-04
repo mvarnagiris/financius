@@ -215,7 +215,7 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Cal
     {
         super.onAttachFragment(fragment);
 
-        FilterHelper.getDefault(this).clearAll();
+        //FilterHelper.getDefault(this).clearAll();
         if (fragment instanceof NavigationContentFragment)
         {
             setActionBarTitle(((NavigationContentFragment) fragment).getTitle());
