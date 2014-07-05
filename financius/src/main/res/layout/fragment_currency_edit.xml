@@ -5,16 +5,19 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.currencies.CurrencyEditActivity">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         style="@style/ScrollView"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="0px"
         android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
             android:orientation="vertical">
 
             <LinearLayout
@@ -50,7 +53,8 @@
                         android:inputType="textCapCharacters"
                         android:maxLength="3"
                         android:textAllCaps="true"
-                        android:textAppearance="@style/Text.Display1.Inverse" />
+                        android:textAppearance="@style/Text.Display1.Inverse"
+                        tools:text="USD" />
 
                 </LinearLayout>
 
@@ -78,7 +82,8 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/symbol"
                         android:inputType="textCapWords"
-                        android:textAppearance="@style/Text.Display1.Inverse" />
+                        android:textAppearance="@style/Text.Display1.Inverse"
+                        tools:text="$" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -87,6 +92,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_content"
+                android:layout_marginRight="@dimen/keyline"
                 android:layout_marginTop="@dimen/space_normal">
 
                 <TextView
@@ -94,9 +101,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/space_small"
                     android:layout_weight="1"
-                    android:gravity="right"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
                     android:text="@string/symbol_position"
                     android:textAppearance="@style/Text.Caption" />
 
@@ -108,13 +112,16 @@
                     android:layout_marginLeft="@dimen/space_small"
                     android:layout_weight="1"
                     android:textColor="@color/text_brand"
-                    tools:stateListAnimator="@android:animator/fade_in" />
+                    tools:stateListAnimator="@android:animator/fade_in"
+                    tools:text="1,000.00 $" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_content"
+                android:layout_marginRight="@dimen/keyline"
                 android:layout_marginTop="@dimen/space_normal">
 
                 <TextView
@@ -122,9 +129,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/space_small"
                     android:layout_weight="1"
-                    android:gravity="right"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
                     android:text="@string/thousands_separator"
                     android:textAppearance="@style/Text.Caption" />
 
@@ -135,13 +139,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/space_small"
                     android:layout_weight="1"
-                    tools:stateListAnimator="@android:animator/fade_in" />
+                    tools:stateListAnimator="@android:animator/fade_in"
+                    tools:text="Comma" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_content"
+                android:layout_marginRight="@dimen/keyline"
                 android:layout_marginTop="@dimen/space_normal">
 
                 <TextView
@@ -149,9 +156,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/space_small"
                     android:layout_weight="1"
-                    android:gravity="right"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
                     android:text="@string/decimal_separator"
                     android:textAppearance="@style/Text.Caption" />
 
@@ -162,13 +166,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/space_small"
                     android:layout_weight="1"
-                    tools:stateListAnimator="@android:animator/fade_in" />
+                    tools:stateListAnimator="@android:animator/fade_in"
+                    tools:text="Dot" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_content"
+                android:layout_marginRight="@dimen/keyline"
                 android:layout_marginTop="@dimen/space_normal">
 
                 <TextView
@@ -176,9 +183,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/space_small"
                     android:layout_weight="1"
-                    android:gravity="right"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
                     android:text="@string/decimals_count"
                     android:textAppearance="@style/Text.Caption" />
 
@@ -189,44 +193,60 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/space_small"
                     android:layout_weight="1"
-                    tools:stateListAnimator="@android:animator/fade_in" />
+                    tools:stateListAnimator="@android:animator/fade_in"
+                    tools:text="2" />
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/exchangeRateContainer_V"
+            <RelativeLayout
+                android:id="@+id/mainCurrencyContainer_V"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/space_normal"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_large"
+                android:animateLayoutChanges="true"
                 android:background="@color/bg_secondary"
-                android:elevation="2dp">
+                android:clipToPadding="false"
+                android:elevation="@dimen/elevation_sub_header"
+                android:paddingBottom="@dimen/keyline"
+                android:paddingLeft="@dimen/keyline_content"
+                android:paddingRight="@dimen/keyline"
+                android:paddingTop="@dimen/keyline"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <CheckBox
+                    android:id="@+id/isDefault_CB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="-48dp"
+                    android:paddingStart="@dimen/keyline"
+                    android:text="@string/set_as_main_currency" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/currentMainCurrency_TV"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/space_small"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:text="@string/exchange_rate"
-                    android:textAppearance="@style/Text.Caption" />
+                    android:layout_below="@id/isDefault_CB"
+                    android:layout_marginTop="@dimen/space_normal"
+                    android:textAppearance="@style/Text.Secondary"
+                    tools:text="Current main currency GBP" />
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/exchangeRateContainer_V"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_below="@+id/currentMainCurrency_TV"
+                    android:layout_marginLeft="-12dp">
 
                     <EditText
                         android:id="@+id/exchangeRate_ET"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/space_normal"
+                        android:layout_marginRight="@dimen/space_normal"
                         android:layout_weight="1"
                         android:hint="@string/exchange_rate"
                         android:inputType="numberDecimal"
-                        android:textAppearance="@style/Text.Title"
+                        android:textAppearance="@style/Text.Edit"
                         tools:ignore="NestedWeights"
                         tools:stateListAnimator="@android:animator/fade_in" />
 
@@ -236,39 +256,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:contentDescription="@string/refresh_rate"
+                        android:minHeight="0dp"
+                        android:minWidth="0dp"
                         android:scaleType="centerInside"
                         android:src="@drawable/ic_action_refresh_inverse"
                         tools:stateListAnimator="@android:animator/fade_in" />
 
                 </LinearLayout>
 
-            </LinearLayout>
+                <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+                    android:id="@+id/loading_SPB"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/progress_bar_height"
+                    android:layout_below="@+id/exchangeRateContainer_V"
+                    android:indeterminate="true"
+                    android:visibility="invisible" />
 
-            <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
-                android:id="@+id/loading_SPB"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                android:visibility="invisible" />
+            </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_normal">
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3" />
-
-                <CheckBox
-                    android:id="@+id/isDefault_CB"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_weight="4"
-                    android:text="@string/main_currency" />
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

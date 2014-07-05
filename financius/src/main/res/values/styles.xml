@@ -28,6 +28,11 @@
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
+    <style name="Text.Subhead">
+        <item name="android:textSize">@dimen/text_subhead</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
     <style name="Text.Title">
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textSize">@dimen/text_title</item>

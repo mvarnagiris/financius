@@ -57,10 +57,14 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     private Button symbolPosition_B;
     private EditText exchangeRate_ET;
     private ListPopupWindow listPopupWindow_LPW;
+    private View mainCurrencyContainer_V;
     private View exchangeRateContainer_V;
     private CheckBox isDefault_CB;
 
     private Set<String> existingCurrencyCodes = new HashSet<>();
+
+    public CurrencyEditFragment() {
+    }
 
     public static CurrencyEditFragment newInstance(long currencyId) {
         final Bundle args = makeArgs(currencyId);
@@ -90,12 +94,15 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         symbol_ET = (EditText) view.findViewById(R.id.symbol_ET);
         symbolPosition_B = (Button) view.findViewById(R.id.symbolPosition_B);
         exchangeRate_ET = (EditText) view.findViewById(R.id.exchangeRate_ET);
+        mainCurrencyContainer_V = view.findViewById(R.id.mainCurrencyContainer_V);
         exchangeRateContainer_V = view.findViewById(R.id.exchangeRateContainer_V);
         isDefault_CB = (CheckBox) view.findViewById(R.id.isDefault_CB);
+        final TextView currentMainCurrency_TV = (TextView) view.findViewById(R.id.currentMainCurrency_TV);
         final ImageButton refreshRate_B = (ImageButton) view.findViewById(R.id.refreshRate_B);
 
         // Setup
         prepareCurrenciesAutoComplete();
+        currentMainCurrency_TV.setText(getString(R.string.f_current_main_currency_x, Currency.getDefault().getCode()));
         decimalsCount_B.setOnClickListener(this);
         thousandsSeparator_B.setOnClickListener(this);
         decimalSeparator_B.setOnClickListener(this);
@@ -221,8 +228,8 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         updateSymbolTitlePosition();
 
         code_ET.setEnabled(model.getId() == 0);
+        mainCurrencyContainer_V.setVisibility(model.getId() == Currency.getDefault().getId() ? View.GONE : View.VISIBLE);
         exchangeRateContainer_V.setVisibility(model.isDefault() ? View.GONE : View.VISIBLE);
-        isDefault_CB.setVisibility(model.getId() == Currency.getDefault().getId() ? View.GONE : View.VISIBLE);
         updateProgressBar();
     }
 
@@ -450,5 +457,6 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     @Override
     public void onCheckedChanged(CompoundButton checkBox, boolean isChecked) {
         model.setDefault(isChecked);
+        onModelLoaded(model);
     }
 }
