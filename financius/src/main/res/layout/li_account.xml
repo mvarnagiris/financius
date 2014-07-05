@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
-            android:textAppearance="@style/Text"
+            android:textAppearance="@style/Text.Body2"
             tools:text="1234.56 $" />
 
         <TextView
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
-            android:textAppearance="@style/Text"
+            android:textAppearance="@style/Text.Body"
             tools:text="2012.87 Lt" />
 
     </LinearLayout>

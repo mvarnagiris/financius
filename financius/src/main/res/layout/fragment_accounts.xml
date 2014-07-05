@@ -9,13 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/bg_secondary"
+        android:background="@color/bg_brand"
         android:elevation="@dimen/elevation_sub_header"
         android:gravity="center_vertical"
-        android:minHeight="@dimen/recommended_touch_size"
+        android:minHeight="?android:actionBarSize"
         android:paddingBottom="@dimen/space_normal"
-        android:paddingLeft="@dimen/space_large"
-        android:paddingRight="@dimen/space_large"
+        android:paddingLeft="@dimen/keyline"
+        android:paddingRight="@dimen/keyline"
         android:paddingTop="@dimen/space_normal">
 
         <TextView
@@ -23,13 +23,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/balance"
-            android:textAppearance="@style/Text" />
+            android:textAppearance="@style/Text.Title"
+            android:textColor="@color/text_primary_inverse" />
 
         <TextView
             android:id="@+id/balance_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/Text"
+            android:textAppearance="@style/Text.Title"
+            android:textColor="@color/text_primary_inverse"
             tools:text="20,461.39 $" />
 
     </LinearLayout>

@@ -11,6 +11,7 @@
     <color name="bg_primary">#fafafa</color>
     <color name="bg_secondary">#eeeeee</color>
     <color name="bg_actionbar">@color/brand</color>
+    <color name="bg_brand">@color/brand</color>
 
     <color name="text_primary">#de000000</color>
     <color name="text_primary_inverse">#deffffff</color>
