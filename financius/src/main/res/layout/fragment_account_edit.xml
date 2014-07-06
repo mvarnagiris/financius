@@ -8,9 +8,8 @@
     android:orientation="vertical"
     tools:context=".ui.currencies.CurrencyEditActivity">
 
-    <ScrollView
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/ScrollView"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="0px"
         android:layout_weight="1">
 
@@ -50,7 +49,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="@string/currency"
-                    tools:stateListAnimator="@android:animator/fade_in" />
+                    tools:stateListAnimator="@android:animator/fade_in"
+                    tools:text="GBP" />
 
                 <Button
                     android:id="@+id/balance_B"
@@ -60,7 +60,8 @@
                     android:layout_marginLeft="@dimen/space_normal"
                     android:gravity="right|center_vertical"
                     android:hint="@string/balance"
-                    tools:stateListAnimator="@android:animator/fade_in" />
+                    tools:stateListAnimator="@android:animator/fade_in"
+                    tools:text="1,234.56 £" />
 
             </LinearLayout>
 

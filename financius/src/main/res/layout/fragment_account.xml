@@ -1,55 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/space_large">
+    style="@style/ScrollView">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/title_TV"
-            android:layout_width="0dp"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/space_normal"
-            android:layout_weight="1"
-            android:textSize="@dimen/text_subhead"
-            tools:text="Lloyds TSB" />
+            android:background="@color/bg_brand"
+            android:elevation="@dimen/elevation_header"
+            android:padding="@dimen/keyline">
+
+            <TextView
+                android:id="@+id/title_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Text.Display2.Inverse"
+                tools:text="Lloyds TSB" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_primary"
+            android:elevation="@dimen/elevation_sub_header"
+            android:orientation="vertical"
+            android:padding="@dimen/keyline">
+
+            <TextView
+                android:id="@+id/balance_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Text.Display1"
+                tools:text="15,349.78 $" />
+
+            <TextView
+                android:id="@+id/mainCurrencyBalance_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Text.Subhead"
+                tools:text="9,294.24 Lt" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/balance_TV"
+            android:id="@+id/note_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_subhead"
-            tools:text="15,349.78 $" />
+            android:layout_marginTop="@dimen/space_normal"
+            android:fontFamily="@string/font_light"
+            tools:ignore="UnusedAttribute"
+            tools:text="This is my main spending account and some other long notes written here." />
+
+        <com.code44.finance.graphs.line.LineGraphView
+            android:id="@+id/graph_LGV"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/account_balance_graph_height"
+            android:layout_marginTop="@dimen/space_large" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/mainCurrencyBalance_TV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginTop="@dimen/space_normal"
-        android:textSize="@dimen/text_subhead"
-        tools:text="9,294.24 Lt" />
-
-    <TextView
-        android:id="@+id/note_TV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_normal"
-        android:fontFamily="@string/font_light"
-        tools:ignore="UnusedAttribute"
-        tools:text="This is my main spending account and some other long notes written here." />
-
-    <com.code44.finance.graphs.line.LineGraphView
-        android:id="@+id/graph_LGV"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/account_balance_graph_height"
-        android:layout_marginTop="@dimen/space_large" />
-
-</LinearLayout>
+</ScrollView>
