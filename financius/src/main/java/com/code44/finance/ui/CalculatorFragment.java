@@ -1,11 +1,16 @@
 package com.code44.finance.ui;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewAnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -18,6 +23,7 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
     private final Calculator calculator = new Calculator();
 
     private TextView result_TV;
+    private View result_clearer;
     private Button equals_B;
 
     private CalculatorListener listener;
@@ -53,6 +59,7 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
 
         // Get views
         result_TV = (TextView) view.findViewById(R.id.result_TV);
+        result_clearer = view.findViewById(R.id.viewClearer);
         equals_B = (Button) view.findViewById(R.id.equals_B);
         final Button delete_B = (Button) view.findViewById(R.id.delete_B);
         final Button divide_B = (Button) view.findViewById(R.id.divide_B);
@@ -198,7 +205,30 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
         switch (v.getId()) {
             case R.id.delete_B:
                 calculator.clear();
-                updateResult();
+
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+                    int cx = result_clearer.getRight();
+                    int cy = result_clearer.getBottom();
+                    float radius = Math.max(result_clearer.getWidth(), result_clearer.getHeight()) * 2.0f;
+
+                    if (result_clearer.getVisibility() == View.INVISIBLE) {
+                        result_clearer.setVisibility(View.VISIBLE);
+
+                        ValueAnimator reveal = ViewAnimationUtils.createCircularReveal(result_clearer, cx, cy, 0, radius);
+                        reveal.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                updateResult();
+                                result_clearer.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                        reveal.start();
+                    }
+                }
+                else {
+                    updateResult();
+                }
+
                 return true;
         }
         return false;

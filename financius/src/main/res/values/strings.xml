@@ -60,4 +60,6 @@
     <string name="c_bills_and_utilities">Bills and Utilities</string>
     <string name="c_salary">Salary</string>
 
+    <string name="lbl_delete">DEL</string>
+
 </resources>
