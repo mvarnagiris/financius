@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="settings">Settings</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
+    <string name="expense">Expense</string>
+    <string name="income">Income</string>
+    <string name="transfer">Transfer</string>
+    <string name="currencies">Currencies</string>
+    <string name="currency">Currency</string>
+    <string name="currency_code">Currency code</string>
+    <string name="create">Create</string>
+    <string name="main_currency">Main currency</string>
+    <string name="set_as_main_currency">Set as main currency</string>
+    <string name="refresh_rate">Refresh rate</string>
+    <string name="refresh_rates">Refresh rates</string>
+    <string name="exchange_rate">Exchange rate</string>
+    <string name="accounts">Accounts</string>
+    <string name="account">Account</string>
+    <string name="balance">Balance</string>
+    <string name="title">Title</string>
+    <string name="note">Note</string>
+    <string name="select">Select</string>
+    <string name="thousands_separator">Thousands separator</string>
+    <string name="decimal_separator">Decimal separator</string>
+    <string name="decimals_count">Decimals count</string>
+    <string name="symbol">Symbol</string>
+    <string name="symbol_position">Symbol position</string>
+    <string name="none">None</string>
+    <string name="comma">Comma</string>
+    <string name="dot">Dot</string>
+    <string name="space">Space</string>
+    <string name="close_right">Close right</string>
+    <string name="far_right">Far right</string>
+    <string name="close_left">Close left</string>
+    <string name="far_left">Far left</string>
+    <string name="calculator">Calculator</string>
+    <string name="categories">Categories</string>
+    <string name="category">Category</string>
+    <string name="no_category">No category</string>
+    <string name="account_balance_update">Account balance update</string>
+    <string name="color">Color</string>
+
+    <string name="f_change_to_x">Change to %s</string>
+    <string name="f_current_main_currency_x">Current main currency %s</string>
+
+    <string name="l_refresh_rates_daily">Refresh rates every day</string>
+    <string name="l_currency_exists">This currency already exists</string>
+
+    <string name="c_food">Food</string>
+    <string name="c_leisure">Leisure</string>
+    <string name="c_clothing">Clothing</string>
+    <string name="c_transportation">Transportation</string>
+    <string name="c_health_and_beauty">Health and Beauty</string>
+    <string name="c_household">Household</string>
+    <string name="c_bills_and_utilities">Bills and Utilities</string>
+    <string name="c_salary">Salary</string>
+
+</resources>

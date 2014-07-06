@@ -1,0 +1,106 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/leftMargin_V"
+        android:layout_width="@dimen/margin_edit_container"
+        android:layout_height="match_parent"
+        android:background="@color/bg_secondary" />
+
+    <View
+        android:id="@+id/rightMargin_V"
+        android:layout_width="@dimen/margin_edit_container"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="@color/bg_secondary" />
+
+    <View
+        android:id="@+id/leftSeparator_V"
+        style="@style/Divider.Vertical.Thin"
+        android:layout_toRightOf="@+id/leftMargin_V" />
+
+    <View
+        android:id="@+id/rightSeparator_V"
+        style="@style/Divider.Vertical.Thin"
+        android:layout_toLeftOf="@+id/rightMargin_V" />
+
+    <LinearLayout
+        android:id="@+id/buttonContainer_V"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/rightSeparator_V"
+        android:layout_toRightOf="@+id/leftSeparator_V"
+        android:animateLayoutChanges="true"
+        android:background="@color/bg_primary"
+        android:divider="?android:attr/dividerVertical"
+        android:dividerPadding="@dimen/space_normal"
+        android:orientation="horizontal"
+        android:showDividers="middle">
+
+        <Button
+            android:id="@+id/cancel_B"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/cancel"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_caption" />
+
+        <Button
+            android:id="@+id/save_B"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/save"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_caption" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/separator_V"
+        style="@style/Divider.Thin"
+        android:layout_above="@+id/buttonContainer_V"
+        android:layout_toLeftOf="@id/rightMargin_V"
+        android:layout_toRightOf="@id/leftMargin_V" />
+
+    <ScrollView
+        style="@style/ScrollView"
+        android:layout_above="@+id/separator_V"
+        android:layout_toLeftOf="@id/rightMargin_V"
+        android:layout_toRightOf="@id/leftMargin_V">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <FrameLayout style="@style/Container.Title">
+
+                <TextView
+                    android:id="@+id/title_TV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    style="@style/Divider.Thin"
+                    android:layout_gravity="bottom" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/container_V"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>

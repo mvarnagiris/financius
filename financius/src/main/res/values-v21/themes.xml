@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
+        <item name="android:colorPrimary">@color/brand</item>
+        <item name="android:colorPrimaryDark">@color/brand_dark</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:colorControlHighlight">@color/brand_transparent</item>
+
+        <!--<item name="android:navigationBarColor">@color/brand_dark</item>-->
+
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowBackground">@color/bg_window</item>
+
+        <!--<item name="android:windowEnterTransition">@android:transition/</item>-->
+        <!--<item name="android:windowExitTransition">@transition/explode</item>-->
+
+        <item name="spbStyle">@style/ProgressBar</item>
+    </style>
+
+</resources>

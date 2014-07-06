@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    tools:context=".ui.currencies.CurrencyEditActivity">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/ScrollView"
+        android:layout_height="0px"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_brand"
+                android:elevation="@dimen/elevation_header"
+                android:padding="@dimen/keyline">
+
+                <EditText
+                    android:id="@+id/title_ET"
+                    style="@style/Text.Display2.Inverse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title"
+                    android:inputType="textCapWords|textNoSuggestions" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_large"
+                android:paddingLeft="@dimen/keyline"
+                android:paddingRight="@dimen/keyline">
+
+                <Button
+                    android:id="@+id/currency_B"
+                    style="@style/Button.Borderless.Select"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/currency"
+                    tools:stateListAnimator="@android:animator/fade_in"
+                    tools:text="GBP" />
+
+                <Button
+                    android:id="@+id/balance_B"
+                    style="@style/Button.Borderless.Select"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_normal"
+                    android:gravity="right|center_vertical"
+                    android:hint="@string/balance"
+                    tools:stateListAnimator="@android:animator/fade_in"
+                    tools:text="1,234.56 £" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/note_ET"
+                style="@style/Text.Edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline"
+                android:layout_marginRight="@dimen/keyline"
+                android:layout_marginTop="@dimen/space_normal"
+                android:hint="@string/note"
+                android:inputType="textCapSentences" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <include layout="@layout/include_edit_buttons" />
+</LinearLayout>

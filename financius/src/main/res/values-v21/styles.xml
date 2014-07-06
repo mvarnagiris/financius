@@ -1,0 +1,11 @@
+<resources>
+
+    <!-- Button -->
+    <!-- =========================================================================================================== -->
+    <style name="Button" parent="android:Widget.Material.Light.Button" />
+
+    <style name="Button.Small" parent="android:Widget.Material.Light.Button.Small" />
+
+    <style name="Button.Borderless" parent="android:Widget.Material.Light.Button.Borderless" />
+
+</resources>

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:divider="@drawable/divider_horizontal_empty"
+    android:orientation="vertical"
+    android:showDividers="middle|beginning|end">
+
+    <TextView
+        android:id="@+id/result_TV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:paddingBottom="@dimen/space_xlarge"
+        android:paddingLeft="@dimen/space_large"
+        android:paddingRight="@dimen/space_large"
+        android:paddingTop="@dimen/space_xlarge"
+        android:textSize="@dimen/text_xxxlarge"
+        tools:text="0.00" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/divider_vertical_empty"
+        android:showDividers="middle|beginning|end">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3" />
+
+        <Button
+            android:id="@+id/delete_B"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/ic_action_cancel"
+            android:text="@string/delete" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@drawable/divider_vertical_empty"
+        android:showDividers="middle|beginning|end">
+
+        <Button
+            android:id="@+id/number7_B"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_7"
+            android:textSize="@dimen/text_xxxlarge"
+            tools:ignore="NestedWeights" />
+
+        <Button
+            android:id="@+id/number8_B"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_8"
+            android:textSize="@dimen/text_xxxlarge" />
+
+        <Button
+            android:id="@+id/number9_B"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_9"
+            android:textSize="@dimen/text_xxxlarge" />
+
+        <Button
+            android:id="@+id/divide_B"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/divide"
+            android:textSize="@dimen/text_xxxlarge" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@drawable/divider_vertical_empty"
+        android:showDividers="middle|beginning|end">
+
+        <Button
+            android:id="@+id/number4_B"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_4"
+            android:textSize="@dimen/text_xxxlarge"
+            tools:ignore="NestedWeights" />
+
+        <Button
+            android:id="@+id/number5_B"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_5"
+            android:textSize="@dimen/text_xxxlarge" />
+
+        <Button
+            android:id="@+id/number6_B"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_6"
+            android:textSize="@dimen/text_xxxlarge" />
+
+        <Button
+            android:id="@+id/multiply_B"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/multiply"
+            android:textSize="@dimen/text_xxxlarge" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@drawable/divider_vertical_empty"
+        android:showDividers="middle|beginning|end">
+
+        <Button
+            android:id="@+id/number1_B"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_1"
+            android:textSize="@dimen/text_xxxlarge"
+            tools:ignore="NestedWeights" />
+
+        <Button
+            android:id="@+id/number2_B"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_2"
+            android:textSize="@dimen/text_xxxlarge" />
+
+        <Button
+            android:id="@+id/number3_B"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_3"
+            android:textSize="@dimen/text_xxxlarge" />
+
+        <Button
+            android:id="@+id/minus_B"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/minus"
+            android:textSize="@dimen/text_xxxlarge" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@drawable/divider_vertical_empty"
+        android:showDividers="middle|beginning|end">
+
+        <Button
+            android:id="@+id/equals_B"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/equals"
+            android:textSize="@dimen/text_xxxlarge"
+            tools:ignore="NestedWeights" />
+
+        <Button
+            android:id="@+id/number0_B"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/number_0"
+            android:textSize="@dimen/text_xxxlarge" />
+
+        <Button
+            android:id="@+id/dot_B"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/decimal"
+            android:textSize="@dimen/text_xxxlarge" />
+
+        <Button
+            android:id="@+id/plus_B"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/plus"
+            android:textSize="@dimen/text_xxxlarge" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/recommended_touch_size"
+    android:background="@color/bg_primary"
+    android:divider="?android:attr/dividerVertical"
+    android:dividerPadding="@dimen/space_normal"
+    android:elevation="@dimen/elevation_sub_header"
+    android:orientation="horizontal"
+    android:showDividers="middle"
+    tools:ignore="UnusedAttribute">
+
+    <Button
+        android:id="@+id/cancel_B"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="@string/cancel"
+        tools:stateListAnimator="@android:animator/fade_in" />
+
+    <Button
+        android:id="@+id/save_B"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="@string/save"
+        tools:stateListAnimator="@android:animator/fade_in" />
+
+</LinearLayout>

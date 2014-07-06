@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <com.larswerkman.holocolorpicker.ColorPicker
+        android:id="@+id/picker_CP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_large"
+        android:layout_marginRight="@dimen/space_large"
+        android:layout_marginTop="@dimen/space_large" />
+
+    <com.larswerkman.holocolorpicker.SaturationBar
+        android:id="@+id/saturation_SB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_large"
+        android:layout_marginRight="@dimen/space_large"
+        android:layout_marginTop="@dimen/space_normal" />
+
+    <com.larswerkman.holocolorpicker.ValueBar
+        android:id="@+id/value_SB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_large"
+        android:layout_marginRight="@dimen/space_large"
+        android:layout_marginTop="@dimen/space_normal" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <View
+        android:id="@+id/separator_V"
+        style="@style/Divider.Thin"
+        android:layout_marginTop="@dimen/space_large" />
+
+    <LinearLayout
+        android:id="@+id/buttonContainer_V"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_primary"
+        android:divider="?android:attr/dividerVertical"
+        android:dividerPadding="@dimen/space_normal"
+        android:orientation="horizontal"
+        android:showDividers="middle">
+
+        <Button
+            android:id="@+id/cancel_B"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cancel"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_caption" />
+
+        <Button
+            android:id="@+id/select_B"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/select"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_caption" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    tools:context=".ui.currencies.CurrencyEditActivity">
+
+    <ScrollView
+        style="@style/ScrollView"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="0px"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/brand"
+                android:elevation="@dimen/elevation_header"
+                android:padding="@dimen/keyline">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/space_small"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/code_TV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@+id/code_ET"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:text="@string/currency_code"
+                        android:textAppearance="@style/Text.Caption"
+                        android:textColor="@color/text_primary_inverse" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/code_ET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/currency_code"
+                        android:inputType="textCapCharacters"
+                        android:maxLength="3"
+                        android:textAllCaps="true"
+                        android:textAppearance="@style/Text.Display1.Inverse"
+                        tools:text="USD" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_small"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/symbol_TV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@+id/symbol_ET"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:text="@string/symbol"
+                        android:textAppearance="@style/Text.Caption"
+                        android:textColor="@color/text_primary_inverse" />
+
+                    <EditText
+                        android:id="@+id/symbol_ET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/symbol"
+                        android:inputType="textCapWords"
+                        android:textAppearance="@style/Text.Display1.Inverse"
+                        tools:text="$" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_content"
+                android:layout_marginRight="@dimen/keyline"
+                android:layout_marginTop="@dimen/space_normal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/space_small"
+                    android:layout_weight="1"
+                    android:text="@string/symbol_position"
+                    android:textAppearance="@style/Text.Caption" />
+
+                <Button
+                    android:id="@+id/symbolPosition_B"
+                    style="@style/Button.Borderless.Select"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_small"
+                    android:layout_weight="1"
+                    android:textColor="@color/text_brand"
+                    tools:stateListAnimator="@android:animator/fade_in"
+                    tools:text="1,000.00 $" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_content"
+                android:layout_marginRight="@dimen/keyline"
+                android:layout_marginTop="@dimen/space_normal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/space_small"
+                    android:layout_weight="1"
+                    android:text="@string/thousands_separator"
+                    android:textAppearance="@style/Text.Caption" />
+
+                <Button
+                    android:id="@+id/thousandsSeparator_B"
+                    style="@style/Button.Borderless.Select"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_small"
+                    android:layout_weight="1"
+                    tools:stateListAnimator="@android:animator/fade_in"
+                    tools:text="Comma" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_content"
+                android:layout_marginRight="@dimen/keyline"
+                android:layout_marginTop="@dimen/space_normal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/space_small"
+                    android:layout_weight="1"
+                    android:text="@string/decimal_separator"
+                    android:textAppearance="@style/Text.Caption" />
+
+                <Button
+                    android:id="@+id/decimalSeparator_B"
+                    style="@style/Button.Borderless.Select"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_small"
+                    android:layout_weight="1"
+                    tools:stateListAnimator="@android:animator/fade_in"
+                    tools:text="Dot" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_content"
+                android:layout_marginRight="@dimen/keyline"
+                android:layout_marginTop="@dimen/space_normal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/space_small"
+                    android:layout_weight="1"
+                    android:text="@string/decimals_count"
+                    android:textAppearance="@style/Text.Caption" />
+
+                <Button
+                    android:id="@+id/decimalsCount_B"
+                    style="@style/Button.Borderless.Select"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_small"
+                    android:layout_weight="1"
+                    tools:stateListAnimator="@android:animator/fade_in"
+                    tools:text="2" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/mainCurrencyContainer_V"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_large"
+                android:animateLayoutChanges="true"
+                android:background="@color/bg_secondary"
+                android:clipToPadding="false"
+                android:elevation="@dimen/elevation_sub_header"
+                android:paddingBottom="@dimen/keyline"
+                android:paddingLeft="@dimen/keyline_content"
+                android:paddingRight="@dimen/keyline"
+                android:paddingTop="@dimen/keyline"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <CheckBox
+                    android:id="@+id/isDefault_CB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="-48dp"
+                    android:paddingStart="@dimen/keyline"
+                    android:text="@string/set_as_main_currency" />
+
+                <TextView
+                    android:id="@+id/currentMainCurrency_TV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/isDefault_CB"
+                    android:layout_marginTop="@dimen/space_normal"
+                    android:textAppearance="@style/Text.Secondary"
+                    tools:text="Current main currency GBP" />
+
+                <LinearLayout
+                    android:id="@+id/exchangeRateContainer_V"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/currentMainCurrency_TV"
+                    android:layout_marginLeft="-12dp">
+
+                    <EditText
+                        android:id="@+id/exchangeRate_ET"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/space_normal"
+                        android:layout_weight="1"
+                        android:hint="@string/exchange_rate"
+                        android:inputType="numberDecimal"
+                        android:textAppearance="@style/Text.Edit"
+                        tools:ignore="NestedWeights"
+                        tools:stateListAnimator="@android:animator/fade_in" />
+
+                    <ImageButton
+                        android:id="@+id/refreshRate_B"
+                        style="@style/Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/refresh_rate"
+                        android:minHeight="0dp"
+                        android:minWidth="0dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_action_refresh_inverse"
+                        tools:stateListAnimator="@android:animator/fade_in" />
+
+                </LinearLayout>
+
+                <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+                    android:id="@+id/loading_SPB"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/progress_bar_height"
+                    android:layout_below="@+id/exchangeRateContainer_V"
+                    android:indeterminate="true"
+                    android:visibility="invisible" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <include layout="@layout/include_edit_buttons" />
+</LinearLayout>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Financius</string>
+    <string name="divide">÷</string>
+    <string name="multiply">×</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
+    <string name="equals">=</string>
+    <string name="decimal">.</string>
+    <string name="number_0">0</string>
+    <string name="number_1">1</string>
+    <string name="number_2">2</string>
+    <string name="number_3">3</string>
+    <string name="number_4">4</string>
+    <string name="number_5">5</string>
+    <string name="number_6">6</string>
+    <string name="number_7">7</string>
+    <string name="number_8">8</string>
+    <string name="number_9">9</string>
+
+    <string-array name="expense_categories">
+        <item>@string/c_food</item>
+        <item>@string/c_leisure</item>
+        <item>@string/c_transportation</item>
+        <item>@string/c_health_and_beauty</item>
+        <item>@string/c_clothing</item>
+        <item>@string/c_household</item>
+        <item>@string/c_bills_and_utilities</item>
+    </string-array>
+
+    <string-array name="income_categories">
+        <item>@string/c_salary</item>
+    </string-array>
+
+</resources>

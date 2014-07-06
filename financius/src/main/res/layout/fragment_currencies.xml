@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+        android:id="@+id/loading_SPB"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/progress_bar_height"
+        android:indeterminate="true"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/settingsContainer_V"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/brand"
+        android:elevation="@dimen/elevation_sub_header"
+        android:gravity="center_vertical"
+        android:minHeight="?android:actionBarSize"
+        android:paddingBottom="@dimen/space_normal"
+        android:paddingLeft="@dimen/keyline_content"
+        android:paddingRight="@dimen/keyline"
+        android:paddingTop="@dimen/space_normal"
+        tools:ignore="UnusedAttribute">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/l_refresh_rates_daily"
+            android:textAppearance="@style/Text.Body2.Inverse" />
+
+        <Switch
+            android:id="@+id/autoUpdateCurrencies_S"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/list_V"
+        style="@style/ListView"
+        android:layout_above="@+id/settingsContainer_V" />
+
+</RelativeLayout>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    package="com.code44.finance"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.SettingsActivity" />
+        <activity android:name=".ui.CalculatorActivity" />
+
+        <activity android:name=".ui.currencies.CurrenciesActivity" />
+        <activity android:name=".ui.currencies.CurrencyActivity" />
+        <activity android:name=".ui.currencies.CurrencyEditActivity" />
+
+        <activity android:name=".ui.accounts.AccountsActivity" />
+        <activity android:name=".ui.accounts.AccountActivity" />
+        <activity android:name=".ui.accounts.AccountEditActivity" />
+
+        <activity android:name=".ui.categories.CategoriesActivity" />
+        <activity android:name=".ui.categories.CategoryActivity" />
+        <activity android:name=".ui.categories.CategoryEditActivity" />
+
+        <!-- Providers -->
+        <!-- ======================================================================================================= -->
+        <provider
+            android:name=".data.providers.CurrenciesProvider"
+            android:authorities="${applicationId}.data.providers.CurrenciesProvider"
+            android:exported="false" />
+        <provider
+            android:name=".data.providers.AccountsProvider"
+            android:authorities="${applicationId}.data.providers.AccountsProvider"
+            android:exported="false" />
+        <provider
+            android:name=".data.providers.CategoriesProvider"
+            android:authorities="${applicationId}.data.providers.CategoriesProvider"
+            android:exported="false" />
+        <provider
+            android:name=".data.providers.TransactionsProvider"
+            android:authorities="${applicationId}.data.providers.TransactionsProvider"
+            android:exported="false" />
+
+        <!-- Services -->
+        <!-- ======================================================================================================= -->
+        <service android:name=".services.StartupService" />
+
+    </application>
+
+</manifest>

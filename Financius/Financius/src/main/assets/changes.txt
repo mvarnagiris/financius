@@ -1,2 +1,0 @@
-<b>v0.9.7</b><br>
-- Everything has changed :)

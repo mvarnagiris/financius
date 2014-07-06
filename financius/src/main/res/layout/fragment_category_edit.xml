@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    style="@style/Container.Edit"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:baselineAligned="false"
+    android:gravity="bottom"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/color_B"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/space_normal"
+        android:gravity="center|bottom"
+        android:hint="@string/color" />
+
+    <EditText
+        android:id="@+id/title_ET"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/title"
+        android:inputType="textCapWords" />
+
+</LinearLayout>

@@ -1,0 +1,62 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 'android-L'
+    buildToolsVersion '20.0.0'
+    defaultConfig {
+        applicationId 'com.code44.finance'
+        targetSdkVersion 'L'
+        minSdkVersion 'L'
+        versionCode 46
+        versionName '0.10.0'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-debug'
+        }
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        androidTest.setRoot('src/test')
+    }
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+        }
+    }
+    productFlavors {
+    }
+}
+
+apply plugin: 'android-unit-test'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:support-v4:+'
+    compile 'com.android.support:support-v13:+'
+    compile 'com.android.support:recyclerview-v7:+'
+    compile 'com.google.android.gms:play-services:4.4.+'
+    compile 'de.greenrobot:eventbus:2.2.0'
+    compile 'com.github.castorflex.smoothprogressbar:library:0.5.1'
+    //    compile 'com.squareup.okhttp:okhttp:2.0.0+'
+    //    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0+'
+    compile 'com.squareup.retrofit:retrofit:1.6.0'
+    compile 'org.beanshell:bsh-core:2.0b4'
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'com.larswerkman:HoloColorPicker:1.+'
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    testCompile 'junit:junit:4.+'
+    testCompile 'org.robolectric:robolectric:2.+'
+    testCompile 'org.mockito:mockito-all:+'
+    androidTestCompile 'junit:junit:4.+'
+    androidTestCompile 'org.robolectric:robolectric:2.+'
+    androidTestCompile 'org.mockito:mockito-all:+'
+}
