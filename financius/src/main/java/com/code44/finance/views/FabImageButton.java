@@ -34,7 +34,7 @@ public class FabImageButton extends ImageButton {
     }
 
     private void init() {
-        setBackgroundResource(R.drawable.ripple_fab);
+        setBackgroundResource(R.drawable.btn_fab);
         setClipToOutline(true);
     }
 
