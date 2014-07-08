@@ -3,6 +3,9 @@ package com.code44.finance.utils;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 
+import com.code44.finance.App;
+import com.code44.finance.R;
+
 import java.util.LinkedList;
 
 import bsh.Interpreter;
@@ -26,23 +29,23 @@ public class Calculator {
     }
 
     public void plus() {
-        addOperator(PLUS);
+        addOperator(PLUS, App.getAppContext().getString(R.string.plus));
     }
 
     public void minus() {
-        addOperator(MINUS);
+        addOperator(MINUS, App.getAppContext().getString(R.string.minus));
     }
 
     public void multiply() {
-        addOperator(MULTIPLY);
+        addOperator(MULTIPLY, App.getAppContext().getString(R.string.multiply));
     }
 
     public void divide() {
-        addOperator(DIVIDE);
+        addOperator(DIVIDE, App.getAppContext().getString(R.string.divide));
     }
 
     public void decimal() {
-        doAction(Type.DECIMAL, DECIMAL);
+        doAction(Type.DECIMAL, DECIMAL, DECIMAL);
     }
 
     public void number(int number) {
@@ -50,7 +53,7 @@ public class Calculator {
             throw new IllegalArgumentException("Number must be [0, 9]");
         }
 
-        doAction(Type.NUMBER, String.valueOf(number));
+        doAction(Type.NUMBER, String.valueOf(number), null);
     }
 
     public void calculate() {
@@ -113,23 +116,23 @@ public class Calculator {
 
     public void clear() {
         parts.clear();
-        currentPart = createPart(Type.NUMBER, null);
+        currentPart = createPart(Type.NUMBER, null, null);
     }
 
-    private void addOperator(String value) {
-        doAction(Type.OPERATOR, value);
+    private void addOperator(String value, String formattedValue) {
+        doAction(Type.OPERATOR, value, formattedValue);
     }
 
-    private void doAction(Type type, String value) {
-        final Part.Action action = currentPart.getAction(type, currentPart, parts.size(), value);
+    private void doAction(Type type, String value, String formattedValue) {
+        final Part.Action action = currentPart.getAction(type, parts.size(), value);
         switch (action) {
             case NEW:
                 parts.add(currentPart);
-                currentPart = createPart(type, value);
+                currentPart = createPart(type, value, formattedValue);
                 break;
 
             case OVERWRITE:
-                currentPart = createPart(type, value);
+                currentPart = createPart(type, value, formattedValue);
                 break;
 
             case APPEND:
@@ -143,13 +146,13 @@ public class Calculator {
         }
     }
 
-    private Part createPart(Type type, String value) {
+    private Part createPart(Type type, String value, String formattedString) {
         switch (type) {
             case NUMBER:
                 return new NumberPart(value);
 
             case OPERATOR:
-                return new OperatorPart(value);
+                return new OperatorPart(value, formattedString);
 
             default:
                 throw new IllegalArgumentException("Cannot create part for type " + type);
@@ -175,7 +178,7 @@ public class Calculator {
             return stringBuilder.toString();
         }
 
-        public abstract Action getAction(Type type, Part currentPart, int partIndex, String value);
+        public abstract Action getAction(Type type, int partIndex, String value);
 
         public abstract CharSequence toFormattedString();
 
@@ -204,12 +207,15 @@ public class Calculator {
     }
 
     private static class OperatorPart extends Part {
-        private OperatorPart(String operator) {
+        final String formattedString;
+
+        private OperatorPart(String operator, String formattedString) {
             super(operator);
+            this.formattedString = formattedString;
         }
 
         @Override
-        public Action getAction(Type type, Part currentPart, int partIndex, String value) {
+        public Action getAction(Type type, int partIndex, String value) {
             switch (type) {
                 case OPERATOR:
                     return Action.OVERWRITE;
@@ -225,7 +231,7 @@ public class Calculator {
 
         @Override
         public CharSequence toFormattedString() {
-            return toString();
+            return formattedString;
         }
     }
 
@@ -257,12 +263,12 @@ public class Calculator {
         }
 
         @Override
-        public Action getAction(Type type, Part currentPart, int partIndex, String value) {
+        public Action getAction(Type type, int partIndex, String value) {
             switch (type) {
                 case OPERATOR:
                     if (partIndex == 0 && stringBuilder.length() == 0 && MINUS.equals(value)) {
                         return Action.APPEND;
-                    } else if (partIndex == 0 && stringBuilder.length() == 0) {
+                    } else if ((partIndex == 0 && stringBuilder.length() == 0) || (length() == 1 && MINUS.equals(stringBuilder.toString()))) {
                         return Action.IGNORE;
                     } else {
                         return Action.NEW;
@@ -276,7 +282,7 @@ public class Calculator {
                     }
 
                 case NUMBER:
-                    if (currentPart.length() == 0 && value.equals("0")) {
+                    if (length() == 0 && value.equals("0")) {
                         return Action.IGNORE;
                     } else {
                         return Action.APPEND;
