@@ -121,7 +121,7 @@ public class Calculator {
     }
 
     private void doAction(Type type, String value) {
-        final Part.Action action = currentPart.getAction(type, parts.size(), value);
+        final Part.Action action = currentPart.getAction(type, currentPart, parts.size(), value);
         switch (action) {
             case NEW:
                 parts.add(currentPart);
@@ -175,7 +175,7 @@ public class Calculator {
             return stringBuilder.toString();
         }
 
-        public abstract Action getAction(Type type, int partIndex, String value);
+        public abstract Action getAction(Type type, Part currentPart, int partIndex, String value);
 
         public abstract CharSequence toFormattedString();
 
@@ -194,6 +194,10 @@ public class Calculator {
             }
         }
 
+        public int length() {
+            return stringBuilder.length();
+        }
+
         public static enum Action {
             IGNORE, APPEND, OVERWRITE, NEW
         }
@@ -205,7 +209,7 @@ public class Calculator {
         }
 
         @Override
-        public Action getAction(Type type, int partIndex, String value) {
+        public Action getAction(Type type, Part currentPart, int partIndex, String value) {
             switch (type) {
                 case OPERATOR:
                     return Action.OVERWRITE;
@@ -253,7 +257,7 @@ public class Calculator {
         }
 
         @Override
-        public Action getAction(Type type, int partIndex, String value) {
+        public Action getAction(Type type, Part currentPart, int partIndex, String value) {
             switch (type) {
                 case OPERATOR:
                     if (partIndex == 0 && stringBuilder.length() == 0 && MINUS.equals(value)) {
@@ -272,7 +276,11 @@ public class Calculator {
                     }
 
                 case NUMBER:
-                    return Action.APPEND;
+                    if (currentPart.length() == 0 && value.equals("0")) {
+                        return Action.IGNORE;
+                    } else {
+                        return Action.APPEND;
+                    }
 
                 default:
                     throw new IllegalArgumentException("Type " + type + " is not supported.");

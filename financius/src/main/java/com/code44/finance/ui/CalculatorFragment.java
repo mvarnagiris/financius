@@ -25,7 +25,6 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
     private ViewGroup resultContainer_V;
     private TextView result_TV;
     private View resultClearer_V;
-    private Button equals_B;
 
     private CalculatorListener listener;
 
@@ -67,7 +66,7 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
         resultContainer_V = (ViewGroup) view.findViewById(R.id.resultContainer_V);
         result_TV = (TextView) view.findViewById(R.id.result_TV);
         resultClearer_V = view.findViewById(R.id.resultClearer_V);
-        equals_B = (Button) view.findViewById(R.id.equals_B);
+        final Button equals_B = (Button) view.findViewById(R.id.equals_B);
         final Button delete_B = (Button) view.findViewById(R.id.delete_B);
         final Button divide_B = (Button) view.findViewById(R.id.divide_B);
         final Button multiply_B = (Button) view.findViewById(R.id.multiply_B);
