@@ -239,7 +239,7 @@ public class Calculator {
         private static final int MAX_DECIMALS = 10;
 
         private NumberPart(String number) {
-            super(ensureMaxDecimals(number));
+            super(cleanupDecimals(ensureMaxDecimals(number)));
         }
 
         private static String ensureMaxDecimals(String number) {
@@ -260,6 +260,25 @@ public class Calculator {
             }
 
             return number.substring(0, decimalPosition + MAX_DECIMALS);
+        }
+
+        private static String cleanupDecimals(String number) {
+            if (TextUtils.isEmpty(number)) {
+                return number;
+            }
+
+            final int decimalPosition = number.indexOf(DECIMAL);
+            if (decimalPosition < 0) {
+                return number;
+            }
+
+            int index = number.length() - 1;
+            while (index >= decimalPosition && (number.charAt(index) == '0' || number.charAt(index) == '.')) {
+                number = number.substring(0, index);
+                index--;
+            }
+
+            return number;
         }
 
         @Override
