@@ -50,6 +50,7 @@
 
     <string name="l_refresh_rates_daily">Refresh rates every day</string>
     <string name="l_currency_exists">This currency already exists</string>
+    <string name="l_delete_short">DEL</string>
 
     <string name="c_food">Food</string>
     <string name="c_leisure">Leisure</string>
