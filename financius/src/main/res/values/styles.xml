@@ -62,6 +62,10 @@
         <item name="android:textSize">@dimen/text_display3</item>
     </style>
 
+    <style name="Text.Display3.Secondary">
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
     <style name="Text.Display3.Inverse">
         <item name="android:textColor">@color/text_primary_inverse</item>
         <item name="android:textColorHint">@color/text_secondary_inverse</item>
@@ -123,6 +127,24 @@
         <item name="android:textSize">@dimen/text_title</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:background">?android:editTextBackground</item>
+    </style>
+
+    <style name="Button.Calc">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_display1</item>
+        <item name="android:textColor">@color/text_primary_inverse</item>
+        <item name="android:fontFamily">@string/font_light</item>
+        <item name="android:background">@drawable/btn_calc</item>
+    </style>
+
+    <style name="Button.Calc.Action">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:background">@drawable/btn_calc_action</item>
     </style>
 
     <!-- List -->

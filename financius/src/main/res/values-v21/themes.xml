@@ -5,7 +5,8 @@
         <item name="android:colorPrimary">@color/brand</item>
         <item name="android:colorPrimaryDark">@color/brand_dark</item>
         <item name="android:colorAccent">@color/accent</item>
-        <item name="android:colorControlHighlight">@color/brand_transparent</item>
+        <item name="android:colorControlHighlight">@color/accent_transparent</item>
+        <item name="android:colorButtonNormal">@color/brand</item>
 
         <!--<item name="android:navigationBarColor">@color/brand_dark</item>-->
 

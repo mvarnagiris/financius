@@ -4,12 +4,13 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
 
     private final Calculator calculator = new Calculator();
 
+    private ViewGroup resultContainer_V;
     private TextView result_TV;
     private View resultClearer_V;
     private Button equals_B;
@@ -48,6 +50,11 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_calculator, container, false);
     }
@@ -57,6 +64,7 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
+        resultContainer_V = (ViewGroup) view.findViewById(R.id.resultContainer_V);
         result_TV = (TextView) view.findViewById(R.id.result_TV);
         resultClearer_V = view.findViewById(R.id.resultClearer_V);
         equals_B = (Button) view.findViewById(R.id.equals_B);
@@ -97,6 +105,20 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
         number8_B.setOnClickListener(this);
         number9_B.setOnClickListener(this);
         updateResult();
+
+        //noinspection ConstantConditions
+        getView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                } else {
+                    getView().getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+
+                onLayoutFinished();
+            }
+        });
     }
 
     @Override
@@ -203,26 +225,7 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
     public boolean onLongClick(View v) {
         switch (v.getId()) {
             case R.id.delete_B:
-                calculator.clear();
-
-                int cx = resultClearer_V.getRight();
-                int cy = resultClearer_V.getBottom();
-                float radius = Math.max(resultClearer_V.getWidth(), resultClearer_V.getHeight()) * 2.0f;
-
-                if (resultClearer_V.getVisibility() == View.INVISIBLE) {
-                    resultClearer_V.setVisibility(View.VISIBLE);
-
-                    ValueAnimator reveal = ViewAnimationUtils.createCircularReveal(resultClearer_V, cx, cy, 0, radius);
-                    reveal.addListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                updateResult();
-                                resultClearer_V.setVisibility(View.INVISIBLE);
-                            }
-                    });
-                    reveal.start();
-                }
-
+                clear();
                 return true;
         }
         return false;
@@ -230,12 +233,43 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
 
     public void updateResult() {
         result_TV.setText(calculator.getFormattedExpression());
-        if (calculator.hasExpression()) {
-            equals_B.setText(R.string.equals);
-            equals_B.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_xxxlarge));
-        } else {
-            equals_B.setText(R.string.done);
-            equals_B.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_body));
+    }
+
+    private void onLayoutFinished() {
+        final ViewGroup.LayoutParams params = resultClearer_V.getLayoutParams();
+        params.width = resultContainer_V.getWidth();
+        params.height = resultContainer_V.getHeight();
+    }
+
+    private void clear() {
+        int cx = resultClearer_V.getRight();
+        int cy = resultClearer_V.getBottom();
+        float radius = Math.max(resultClearer_V.getWidth(), resultClearer_V.getHeight()) * 2.0f;
+
+        if (resultClearer_V.getVisibility() != View.VISIBLE) {
+            ValueAnimator reveal = ViewAnimationUtils.createCircularReveal(resultClearer_V, cx, cy, 0, radius);
+            reveal.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
+                    resultClearer_V.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    calculator.clear();
+                    updateResult();
+                    resultClearer_V.animate().alpha(0.0f).setDuration(200).withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            resultClearer_V.setVisibility(View.INVISIBLE);
+                            resultClearer_V.setAlpha(1.0f);
+                        }
+                    }).start();
+                }
+            });
+            reveal.setDuration(600);
+            reveal.start();
         }
     }
 
