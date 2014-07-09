@@ -27,8 +27,15 @@ Checklist for creating issues:
 I do accept and review Pull Requests on **dev** branch. So if you want to contribute, you are very welcome to do so.
 
 ##License
+```
+GNU GENERAL PUBLIC LICENSE
+Version 2, June 1991
 
-You may copy, distribute and modify the software as long as you track changes/dates of in source files and keep modifications under GPL. You can distribute your application using a GPL library commercially, but you must also provide the source code. GPL v3 tries to close some loopholes in GPL v2.
+Copyright (C) 1989, 1991 Free Software Foundation, Inc., <http://fsf.org/>
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+Everyone is permitted to copy and distribute verbatim copies
+of this license document, but changing it is not allowed.
+```
 
 [1]: https://play.google.com/store/apps/details?id=com.code44.finance
 [2]: https://plus.google.com/communities/105052097023793642366
