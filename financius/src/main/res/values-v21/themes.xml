@@ -7,14 +7,9 @@
         <item name="android:colorAccent">@color/accent</item>
         <item name="android:colorControlHighlight">@color/accent_transparent</item>
 
-        <!--<item name="android:navigationBarColor">@color/brand_dark</item>-->
-
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowBackground">@color/bg_window</item>
-
-        <!--<item name="android:windowEnterTransition">@android:transition/</item>-->
-        <!--<item name="android:windowExitTransition">@transition/explode</item>-->
 
         <item name="spbStyle">@style/ProgressBar</item>
     </style>

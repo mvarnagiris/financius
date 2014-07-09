@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/brand"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:elevation="@dimen/elevation_header"
         android:padding="@dimen/keyline">
 
@@ -21,6 +23,7 @@
             android:gravity="center"
             android:textAppearance="@style/Text.Display4"
             android:textColor="@color/text_primary_inverse"
+            android:viewName="code"
             tools:text="GBP" />
 
     </FrameLayout>
@@ -43,6 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAppearance="@style/Text.Title"
+            android:viewName="format"
             tools:text="1,000.00 £" />
 
         <TextView
@@ -52,6 +56,7 @@
             android:layout_marginLeft="@dimen/space_normal"
             android:gravity="right"
             android:textAppearance="@style/Text.Title"
+            android:viewName="exchangeRate"
             tools:text="1.2489" />
 
     </LinearLayout>
