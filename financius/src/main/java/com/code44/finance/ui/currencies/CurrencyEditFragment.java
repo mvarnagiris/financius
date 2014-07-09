@@ -102,7 +102,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
 
         // Setup
         prepareCurrenciesAutoComplete();
-        currentMainCurrency_TV.setText(getString(R.string.f_current_main_currency_x, Currency.getDefault().getCode()));
+        currentMainCurrency_TV.setText(getString(R.string.f_current_main_currency_is_x, Currency.getDefault().getCode()));
         decimalsCount_B.setOnClickListener(this);
         thousandsSeparator_B.setOnClickListener(this);
         decimalSeparator_B.setOnClickListener(this);

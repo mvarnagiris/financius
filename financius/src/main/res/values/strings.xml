@@ -46,7 +46,7 @@
     <string name="color">Color</string>
 
     <string name="f_change_to_x">Change to %s</string>
-    <string name="f_current_main_currency_x">Current main currency %s</string>
+    <string name="f_current_main_currency_is_x">Current main currency is %s</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s will be deleted</string>
 
     <string name="l_refresh_rates_daily">Refresh rates every day</string>

@@ -7,6 +7,12 @@
         <item name="spbStyle">@style/ProgressBar</item>
     </style>
 
+    <style name="BaseButton" parent="android:Widget.Holo.Light.Button" />
+
+    <style name="BaseButtonSmall" parent="android:Widget.Holo.Light.Button.Small" />
+
+    <style name="BaseButtonBorderless" parent="android:Widget.Holo.Button.Borderless" />
+
     <style name="ProgressBar" parent="SmoothProgressBar">
         <item name="spb_stroke_separator_length">4dp</item>
         <item name="spb_sections_count">5</item>
