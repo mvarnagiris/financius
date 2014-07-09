@@ -1,11 +1,11 @@
 package com.code44.finance.ui;
 
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -17,28 +17,42 @@ public class DeleteFragment extends BaseFragment implements View.OnClickListener
 
     private static final String FRAGMENT_DELETE = DeleteFragment.class.getName() + ".FRAGMENT_DELETE";
 
-    private TextView title_TV;
+    private static final int LOADER_CURRENCIES = 1;
+    private static final int LOADER_ACCOUNTS = 2;
+    private static final int LOADER_CATEGORIES = 3;
+    private static final int LOADER_TRANSACTIONS = 4;
+
     private TextView currencies_TV;
     private TextView accounts_TV;
     private TextView categories_TV;
     private TextView transactions_TV;
 
-    public static void show(FragmentActivity activity, int containerId, Uri uri) {
+    private Uri mainDeleteUri;
+
+    public static void show(FragmentActivity activity, int containerId, Uri mainDeleteUri) {
         activity.getSupportFragmentManager()
                 .beginTransaction()
                 .addToBackStack(null)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .add(containerId, newInstance(uri), FRAGMENT_DELETE)
+                .add(containerId, newInstance(mainDeleteUri), FRAGMENT_DELETE)
                 .commit();
     }
 
-    private static DeleteFragment newInstance(Uri uri) {
+    private static DeleteFragment newInstance(Uri mainDeleteUri) {
         final Bundle args = new Bundle();
-        args.putParcelable(ARG_MAIN_DELETE_URI, uri);
+        args.putParcelable(ARG_MAIN_DELETE_URI, mainDeleteUri);
 
         final DeleteFragment fragment = new DeleteFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Get arguments
+        mainDeleteUri = getArguments().getParcelable(ARG_MAIN_DELETE_URI);
     }
 
     @Override
@@ -51,20 +65,20 @@ public class DeleteFragment extends BaseFragment implements View.OnClickListener
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        //Button undo_B = (Button) view.findViewById(R.id.undo_B);
+        currencies_TV = (TextView) view.findViewById(R.id.currencies_TV);
+        accounts_TV = (TextView) view.findViewById(R.id.accounts_TV);
+        categories_TV = (TextView) view.findViewById(R.id.categories_TV);
+        transactions_TV = (TextView) view.findViewById(R.id.transactions_TV);
+    }
 
-        // Setup
-        //undo_B.setOnClickListener(this);
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    // This will trigger onDestroy() and changes will be committed
-                    dismiss();
-                }
-                return false;
-            }
-        });
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
     }
 
     @Override
