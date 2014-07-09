@@ -62,7 +62,7 @@ public class CurrenciesProvider extends BaseModelProvider {
         super.onBeforeDeleteItems(uri, selection, selectionArgs, itemState, outExtras);
 
         final List<Long> affectedIds = getIdList(Tables.Currencies.TABLE_NAME, selection, selectionArgs);
-        if (affectedIds.contains(Currency.getDefault().getId())) {
+        if (itemState.equals(BaseModel.ItemState.DELETED_UNDO) && affectedIds.contains(Currency.getDefault().getId())) {
             throw new IllegalArgumentException("Cannot delete default currency.");
         }
         outExtras.put("affectedIds", affectedIds);

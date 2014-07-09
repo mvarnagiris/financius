@@ -119,6 +119,7 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         return Query.create()
                 .projectionId(Tables.Currencies.ID)
                 .projection(Tables.Currencies.PROJECTION)
+                .selection(Tables.Currencies.ITEM_STATE + "=?", String.valueOf(BaseModel.ItemState.NORMAL.asInt()))
                 .sortOrder(Tables.Currencies.IS_DEFAULT + " desc")
                 .sortOrder(Tables.Currencies.CODE.getName());
     }

@@ -44,6 +44,8 @@
     <string name="no_category">No category</string>
     <string name="account_balance_update">Account balance update</string>
     <string name="color">Color</string>
+    <string name="transaction">Transaction</string>
+    <string name="transactions">Transactions</string>
 
     <string name="f_change_to_x">Change to %s</string>
     <string name="f_current_main_currency_is_x">Current main currency is %s</string>
@@ -63,12 +65,39 @@
     <string name="c_salary">Salary</string>
 
     <plurals name="currency">
-        <item quantity="zero">Currencies</item>
-        <item quantity="one">Currency</item>
-        <item quantity="two">Currencies</item>
-        <item quantity="few">Currencies</item>
-        <item quantity="many">Currencies</item>
-        <item quantity="other">Currencies</item>
+        <item quantity="zero">@string/currencies</item>
+        <item quantity="one">@string/currency</item>
+        <item quantity="two">@string/currencies</item>
+        <item quantity="few">@string/currencies</item>
+        <item quantity="many">@string/currencies</item>
+        <item quantity="other">@string/currencies</item>
+    </plurals>
+
+    <plurals name="account">
+        <item quantity="zero">@string/accounts</item>
+        <item quantity="one">@string/account</item>
+        <item quantity="two">@string/accounts</item>
+        <item quantity="few">@string/accounts</item>
+        <item quantity="many">@string/accounts</item>
+        <item quantity="other">@string/accounts</item>
+    </plurals>
+
+    <plurals name="category">
+        <item quantity="zero">@string/categories</item>
+        <item quantity="one">@string/category</item>
+        <item quantity="two">@string/categories</item>
+        <item quantity="few">@string/categories</item>
+        <item quantity="many">@string/categories</item>
+        <item quantity="other">@string/categories</item>
+    </plurals>
+
+    <plurals name="transaction">
+        <item quantity="zero">@string/transactions</item>
+        <item quantity="one">@string/transaction</item>
+        <item quantity="two">@string/transactions</item>
+        <item quantity="few">@string/transactions</item>
+        <item quantity="many">@string/transactions</item>
+        <item quantity="other">@string/transactions</item>
     </plurals>
 
 </resources>

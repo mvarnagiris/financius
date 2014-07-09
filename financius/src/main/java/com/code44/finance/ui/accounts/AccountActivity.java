@@ -2,9 +2,13 @@ package com.code44.finance.ui.accounts;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.util.Pair;
 import android.view.View;
 
 import com.code44.finance.R;
+import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.ui.ModelActivity;
 import com.code44.finance.ui.ModelFragment;
 
@@ -27,5 +31,15 @@ public class AccountActivity extends ModelActivity {
     @Override
     protected void startEditActivity(long modelId) {
         AccountEditActivity.start(this, null, modelId);
+    }
+
+    @Override
+    protected Uri getDeleteUri() {
+        return AccountsProvider.uriAccounts();
+    }
+
+    @Override
+    protected Pair<String, String[]> getDeleteSelection() {
+        return Pair.create(Tables.Accounts.ID + "=?", new String[]{String.valueOf(modelId)});
     }
 }

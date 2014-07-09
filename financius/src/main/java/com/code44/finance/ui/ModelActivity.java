@@ -2,11 +2,15 @@ package com.code44.finance.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.code44.finance.R;
+
+import de.greenrobot.event.EventBus;
 
 public abstract class ModelActivity extends BaseActivity {
     protected static final String FRAGMENT_MODEL = "FRAGMENT_MODEL";
@@ -26,6 +30,9 @@ public abstract class ModelActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         final int contentId = inflateActivity();
 
+        // Register events
+        EventBus.getDefault().register(this);
+
         // Setup ActionBar
         setActionBarTitle(getActionBarTitleResId());
 
@@ -36,6 +43,14 @@ public abstract class ModelActivity extends BaseActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().add(contentId, createModelFragment(modelId), FRAGMENT_MODEL).commit();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // Unregister events
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -52,10 +67,17 @@ public abstract class ModelActivity extends BaseActivity {
                 return true;
 
             case R.id.action_delete:
-                delete();
+                final Uri deleteUri = getDeleteUri();
+                final Pair<String, String[]> deleteSelection = getDeleteSelection();
+                DeleteFragment.show(getSupportFragmentManager(), deleteUri, deleteSelection.first, deleteSelection.second);
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void onEventMainThread(DeleteFragment.DeleteEvent event) {
+        finish();
     }
 
     protected abstract int getActionBarTitleResId();
@@ -64,11 +86,11 @@ public abstract class ModelActivity extends BaseActivity {
 
     protected abstract void startEditActivity(long modelId);
 
+    protected abstract Uri getDeleteUri();
+
+    protected abstract Pair<String, String[]> getDeleteSelection();
+
     protected int inflateActivity() {
         return android.R.id.content;
-    }
-
-    private void delete() {
-
     }
 }

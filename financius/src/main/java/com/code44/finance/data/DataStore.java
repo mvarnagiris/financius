@@ -127,14 +127,14 @@ public final class DataStore {
         }
     }
 
-    public static final class DataStoreDelete {
+    public abstract static class BaseDataStoreDelete {
         private String selection;
         private String[] selectionArgs;
 
-        private DataStoreDelete() {
+        protected BaseDataStoreDelete() {
         }
 
-        public DataStoreDelete selection(String selection, String... selectionArgs) {
+        public BaseDataStoreDelete selection(String selection, String... selectionArgs) {
             this.selection = selection;
             this.selectionArgs = selectionArgs;
 
@@ -142,25 +142,39 @@ public final class DataStore {
         }
 
         public int from(Uri uri) {
-            return App.getAppContext().getContentResolver().delete(ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, "delete"), selection, selectionArgs);
+            return App.getAppContext().getContentResolver().delete(ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, getMode()), selection, selectionArgs);
+        }
+
+        protected abstract String getMode();
+    }
+
+    public static final class DataStoreDelete extends BaseDataStoreDelete {
+        private DataStoreDelete() {
+        }
+
+        @Override
+        protected String getMode() {
+            return "delete";
         }
     }
 
-    public static final class DataStoreUndoDelete {
+    public static final class DataStoreUndoDelete extends BaseDataStoreDelete {
         private DataStoreUndoDelete() {
         }
 
-        public void from(Uri uri) {
-            App.getAppContext().getContentResolver().delete(ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, "undo"), null, null);
+        @Override
+        protected String getMode() {
+            return "undo";
         }
     }
 
-    public static final class DataStoreCommitDelete {
+    public static final class DataStoreCommitDelete extends BaseDataStoreDelete {
         private DataStoreCommitDelete() {
         }
 
-        public void from(Uri uri) {
-            App.getAppContext().getContentResolver().delete(ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, "commit"), null, null);
+        @Override
+        protected String getMode() {
+            return "commit";
         }
     }
 
