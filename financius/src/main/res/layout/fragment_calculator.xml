@@ -16,11 +16,11 @@
             android:id="@+id/result_TV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/keyline"
+            android:layout_marginRight="@dimen/keyline"
+            android:layout_marginTop="@dimen/keyline"
             android:fontFamily="@string/font_light"
             android:gravity="right"
-            android:paddingLeft="@dimen/keyline"
-            android:paddingRight="@dimen/keyline"
-            android:paddingTop="@dimen/keyline"
             android:singleLine="true"
             android:textAppearance="@style/Text.Display3.Secondary"
             tools:text="0.00" />
@@ -30,11 +30,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/result_TV"
+            android:layout_marginLeft="@dimen/keyline"
+            android:layout_marginRight="@dimen/keyline"
             android:fontFamily="@string/font_light"
             android:gravity="right"
             android:paddingBottom="@dimen/keyline"
-            android:paddingLeft="@dimen/keyline"
-            android:paddingRight="@dimen/keyline"
             android:singleLine="true"
             android:textAppearance="@style/Text.Display3.Secondary"
             android:visibility="invisible"
@@ -58,6 +58,7 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:background="@color/bg_primary_inverse"
+            android:elevation="@dimen/elevation_sub_header"
             android:orientation="vertical"
             tools:ignore="NestedWeights">
 
@@ -199,7 +200,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/bg_secondary"
-            android:elevation="@dimen/elevation_sub_header"
             android:orientation="vertical">
 
             <Button

@@ -8,14 +8,20 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
 
 import com.code44.finance.R;
 
 public class DeleteFragment extends BaseFragment implements View.OnClickListener {
-    private static final String ARG_URI = "ARG_URI";
+    private static final String ARG_MAIN_DELETE_URI = "ARG_MAIN_DELETE_URI";
 
     private static final String FRAGMENT_DELETE = DeleteFragment.class.getName() + ".FRAGMENT_DELETE";
+
+    private TextView title_TV;
+    private TextView currencies_TV;
+    private TextView accounts_TV;
+    private TextView categories_TV;
+    private TextView transactions_TV;
 
     public static void show(FragmentActivity activity, int containerId, Uri uri) {
         activity.getSupportFragmentManager()
@@ -28,7 +34,7 @@ public class DeleteFragment extends BaseFragment implements View.OnClickListener
 
     private static DeleteFragment newInstance(Uri uri) {
         final Bundle args = new Bundle();
-        args.putParcelable(ARG_URI, uri);
+        args.putParcelable(ARG_MAIN_DELETE_URI, uri);
 
         final DeleteFragment fragment = new DeleteFragment();
         fragment.setArguments(args);
@@ -45,10 +51,10 @@ public class DeleteFragment extends BaseFragment implements View.OnClickListener
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        Button undo_B = (Button) view.findViewById(R.id.undo_B);
+        //Button undo_B = (Button) view.findViewById(R.id.undo_B);
 
         // Setup
-        undo_B.setOnClickListener(this);
+        //undo_B.setOnClickListener(this);
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -70,9 +76,9 @@ public class DeleteFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.undo_B:
-                undo();
-                break;
+//            case R.id.undo_B:
+//                undo();
+//                break;
         }
     }
 
@@ -91,7 +97,7 @@ public class DeleteFragment extends BaseFragment implements View.OnClickListener
         dismiss();
     }
 
-    private void dismiss() {
-        getActivity().getSupportFragmentManager().popBackStack();
-    }
+//    private void dismiss() {
+//        getActivity().getSupportFragmentManager().popBackStack();
+//    }
 }

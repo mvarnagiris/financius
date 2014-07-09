@@ -20,7 +20,14 @@ public class StartupService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        undoUncommittedDeletes();
         updateCurrenciesIfNecessary();
+    }
+
+    private void undoUncommittedDeletes() {
+        // This is necessary, because while DeleteFragment is visible, the app can terminate and we woud need to handle
+        // uncommitted deletes.
+        // TODO Undo
     }
 
     private void updateCurrenciesIfNecessary() {

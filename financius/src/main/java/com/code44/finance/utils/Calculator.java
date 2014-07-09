@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.code44.finance.App;
 import com.code44.finance.R;
 
+import java.text.NumberFormat;
 import java.util.LinkedList;
 
 import bsh.Interpreter;
@@ -60,8 +61,10 @@ public class Calculator {
         String result = "";
         try {
             result = interpreter.eval(getExpression()).toString();
-            Double number = Double.parseDouble(result);
-            result = Double.isInfinite(number) ? null : String.valueOf(number);
+            final Double number = Double.parseDouble(result);
+            final NumberFormat format = NumberFormat.getInstance();
+            format.setGroupingUsed(false);
+            result = Double.isInfinite(number) ? null : format.format(number);
         } catch (Exception ignore) {
         }
 
@@ -337,7 +340,7 @@ public class Calculator {
             if (containsDecimal()) {
                 return super.toString();
             } else {
-                return super.toString() + ".";
+                return super.toString() + ".0";
             }
         }
 

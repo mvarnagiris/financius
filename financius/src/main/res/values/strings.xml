@@ -47,6 +47,7 @@
 
     <string name="f_change_to_x">Change to %s</string>
     <string name="f_current_main_currency_x">Current main currency %s</string>
+    <string name="f_x_y_will_be_deleted">%1$d %2$s will be deleted</string>
 
     <string name="l_refresh_rates_daily">Refresh rates every day</string>
     <string name="l_currency_exists">This currency already exists</string>
@@ -60,5 +61,14 @@
     <string name="c_household">Household</string>
     <string name="c_bills_and_utilities">Bills and Utilities</string>
     <string name="c_salary">Salary</string>
+
+    <plurals name="currency">
+        <item quantity="zero">Currencies</item>
+        <item quantity="one">Currency</item>
+        <item quantity="two">Currencies</item>
+        <item quantity="few">Currencies</item>
+        <item quantity="many">Currencies</item>
+        <item quantity="other">Currencies</item>
+    </plurals>
 
 </resources>

@@ -1,12 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/undo_B"
+    <TextView
+        android:id="@+id/title_TV"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/Text.Title"
+        tools:text="Are you sure you want to delete?" />
+
+    <TextView
+        android:id="@+id/currencies_TV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/Text.Body2"
+        tools:text="1 Currencies to be deleted: 1" />
+
+    <TextView
+        android:id="@+id/accounts_TV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/Text.Body2"
+        tools:text="Accounts to be deleted: 3" />
+
+    <TextView
+        android:id="@+id/categories_TV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/Text.Body2"
+        tools:text="Categories to be deleted: 2" />
+
+    <TextView
+        android:id="@+id/transactions_TV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/Text.Body2"
+        tools:text="Transactions to be deleted: 2" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <include layout="@layout/include_edit_buttons" />
 
 </LinearLayout>
