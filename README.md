@@ -26,6 +26,10 @@ Checklist for creating issues:
 ##Contribute
 I do accept and review Pull Requests on **dev** branch. So if you want to contribute, you are very welcome to do so.
 
+##License
+
+You may copy, distribute and modify the software as long as you track changes/dates of in source files and keep modifications under GPL. You can distribute your application using a GPL library commercially, but you must also provide the source code. GPL v3 tries to close some loopholes in GPL v2.
+
 [1]: https://play.google.com/store/apps/details?id=com.code44.finance
 [2]: https://plus.google.com/communities/105052097023793642366
 [3]: https://play.google.com/apps/testing/com.code44.finance
