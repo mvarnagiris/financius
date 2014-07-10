@@ -300,5 +300,9 @@ public class Category extends BaseModel {
         public int asInt() {
             return value;
         }
+
+        public String asString() {
+            return String.valueOf(value);
+        }
     }
 }

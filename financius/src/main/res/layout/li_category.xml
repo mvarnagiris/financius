@@ -16,10 +16,9 @@
 
     <TextView
         android:id="@+id/title_TV"
+        style="@style/Text.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@string/font_light"
-        android:textSize="@dimen/text_subhead"
         tools:text="Bills and Utilities" />
 
 </LinearLayout>

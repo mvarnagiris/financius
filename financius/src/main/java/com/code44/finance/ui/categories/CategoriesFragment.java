@@ -58,10 +58,14 @@ public class CategoriesFragment extends ModelListFragment {
 
     @Override
     protected Query getQuery() {
-        return Query.create()
+        Query query = Query.create()
                 .projectionId(Tables.Categories.ID)
                 .projection(Tables.Categories.PROJECTION)
                 .selection(Tables.Categories.TYPE + "=?", String.valueOf(type.asInt()));
+        if (getMode() == ModelListActivity.Mode.VIEW) {
+            query.selection(" and " + Tables.Categories.OWNER + "<>?", Category.Owner.SYSTEM.asString());
+        }
+        return query;
     }
 
     @Override
