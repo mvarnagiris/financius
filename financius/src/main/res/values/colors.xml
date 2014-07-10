@@ -24,7 +24,7 @@
     <color name="text_accent">@color/accent</color>
     <color name="text_positive">#de259b24</color>
     <color name="text_negative">#dee51c23</color>
-    <color name="text_neutral">#de795548</color>
+    <color name="text_neutral">#607d8b</color>
 
     <color name="divider">#1f000000</color>
 

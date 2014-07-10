@@ -12,7 +12,6 @@ import com.code44.finance.data.db.model.Currency;
 
 import java.util.HashSet;
 import java.util.Locale;
-import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
@@ -95,8 +94,8 @@ public final class DBDefaults {
         db.insert(Tables.Categories.TABLE_NAME, null, incomeCategory.asContentValues());
         db.insert(Tables.Categories.TABLE_NAME, null, transferCategory.asContentValues());
 
-        insertCategories(db, context.getResources().getStringArray(R.array.expense_categories), Category.Type.EXPENSE);
-        insertCategories(db, context.getResources().getStringArray(R.array.income_categories), Category.Type.INCOME);
+        insertCategories(db, context.getResources().getStringArray(R.array.expense_categories), context.getResources().getStringArray(R.array.expense_categories_colors), Category.Type.EXPENSE);
+        insertCategories(db, context.getResources().getStringArray(R.array.income_categories), context.getResources().getStringArray(R.array.income_categories_colors), Category.Type.INCOME);
     }
 
     private static String getMainCurrencyCode() {
@@ -121,13 +120,12 @@ public final class DBDefaults {
         }
     }
 
-    private static void insertCategories(SQLiteDatabase db, String[] titles, Category.Type type) {
+    private static void insertCategories(SQLiteDatabase db, String[] titles, String[] colors, Category.Type type) {
         int order = 0;
-        final int startColor = new Random().nextInt(360);
         for (String title : titles) {
             final Category category = new Category();
             category.setTitle(title);
-            category.setColor(Color.HSVToColor(new float[]{(startColor + (order * 200)) % 360, 0.8f, 0.7f}));
+            category.setColor(Color.parseColor(colors[order % colors.length]));
             category.setType(type);
             category.setOwner(Category.Owner.USER);
             category.setSortOrder(order++);

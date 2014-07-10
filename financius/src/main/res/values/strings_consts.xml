@@ -29,8 +29,22 @@
         <item>@string/c_bills_and_utilities</item>
     </string-array>
 
+    <string-array name="expense_categories_colors">
+        <item>#8bc34a</item>
+        <item>#03a9f4</item>
+        <item>#ffc107</item>
+        <item>#9c27b0</item>
+        <item>#ff5722</item>
+        <item>#3f51b5</item>
+        <item>#795548</item>
+    </string-array>
+
     <string-array name="income_categories">
         <item>@string/c_salary</item>
+    </string-array>
+
+    <string-array name="income_categories_colors">
+        <item>#259b24</item>
     </string-array>
 
 </resources>
