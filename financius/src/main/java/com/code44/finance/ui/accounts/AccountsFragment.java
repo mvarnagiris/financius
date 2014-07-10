@@ -76,8 +76,8 @@ public class AccountsFragment extends ModelListFragment {
                 .projectionId(Tables.Accounts.ID)
                 .projection(Tables.Accounts.PROJECTION)
                 .projection(Tables.Currencies.PROJECTION)
-                .selection(Tables.Accounts.OWNER + "<>?")
-                .args(Account.Owner.SYSTEM.asString());
+                .selection(Tables.Accounts.ITEM_STATE + "=?", BaseModel.ItemState.NORMAL.asString())
+                .selection(" and " + Tables.Accounts.OWNER + "<>?", Account.Owner.SYSTEM.asString());
     }
 
     private void updateBalance(Cursor cursor) {

@@ -167,6 +167,10 @@ public abstract class BaseModel implements Parcelable {
         public int asInt() {
             return value;
         }
+
+        public String asString() {
+            return String.valueOf(value);
+        }
     }
 
     public static enum SyncState {
