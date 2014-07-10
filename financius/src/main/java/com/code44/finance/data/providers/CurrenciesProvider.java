@@ -1,6 +1,7 @@
 package com.code44.finance.data.providers;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.net.Uri;
 
 import com.code44.finance.data.DataStore;
@@ -8,6 +9,7 @@ import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.services.StartupService;
 import com.code44.finance.utils.MoneyFormatter;
 
 import java.util.List;
@@ -110,6 +112,7 @@ public class CurrenciesProvider extends BaseModelProvider {
             newValues.put(Tables.Currencies.SYNC_STATE.getName(), BaseModel.SyncState.LOCAL_CHANGES.asInt());
 
             database.update(Tables.Currencies.TABLE_NAME, newValues, null, null);
+            getContext().startService(new Intent(getContext(), StartupService.class));
         }
     }
 }

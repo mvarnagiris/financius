@@ -186,7 +186,7 @@ public class Currency extends BaseModel {
         values.put(Tables.Currencies.GROUP_SEPARATOR.getName(), groupSeparator.symbol());
         values.put(Tables.Currencies.DECIMAL_COUNT.getName(), decimalCount);
         values.put(Tables.Currencies.IS_DEFAULT.getName(), isDefault);
-        values.put(Tables.Currencies.EXCHANGE_RATE.getName(), exchangeRate);
+        values.put(Tables.Currencies.EXCHANGE_RATE.getName(), isDefault ? 1.0f : exchangeRate);
 
         return values;
     }
