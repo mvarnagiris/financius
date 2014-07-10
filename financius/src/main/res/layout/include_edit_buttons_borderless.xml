@@ -1,34 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/btn_touch_size"
-    android:layout_marginTop="@dimen/space_xlarge"
-    android:layout_marginBottom="@dimen/space_large"
-    android:paddingRight="@dimen/space_large"
-    android:orientation="horizontal"
-    android:gravity="right">
+    style="@style/Container.DialogButtons"
+    android:orientation="horizontal" >
 
     <Button
         android:id="@+id/cancel_B"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:paddingLeft="@dimen/space_large"
-        android:paddingRight="@dimen/space_large"
-        android:text="@string/cancel"
-        android:textSize="@dimen/text_subhead"
-        android:textAlignment="center" />
+        style="@style/Button.Borderless.Dialog"
+        android:text="@string/cancel" />
 
     <Button
         android:id="@+id/save_B"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:paddingLeft="@dimen/space_large"
-        android:paddingRight="@dimen/space_large"
+        style="@style/Button.Borderless.Dialog"
         android:text="@string/delete"
-        android:textColor="@color/text_negative"
-        android:textSize="@dimen/text_subhead"
-        android:textAlignment="center" />
+        android:textColor="@color/text_negative" />
 
 </LinearLayout>
