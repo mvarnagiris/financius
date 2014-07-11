@@ -154,6 +154,15 @@
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:background">@drawable/btn_calc_action</item>
     </style>
+    
+    <style name="Button.Borderless.Dialog">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/btn_touch_size</item>
+        <item name="android:paddingLeft">@dimen/space_large</item>
+        <item name="android:paddingRight">@dimen/space_large</item>
+        <item name="android:textSize">@dimen/text_subhead</item>
+        <item name="android:textAlignment">center</item>
+    </style>
 
     <!-- List -->
     <!-- =========================================================================================================== -->
@@ -238,6 +247,13 @@
         <item name="android:paddingTop">@dimen/space_large</item>
         <item name="android:paddingBottom">@dimen/space_large</item>
         <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="Container.DialogButtons">
+        <item name="android:layout_marginTop">@dimen/space_xlarge</item>
+        <item name="android:layout_marginBottom">@dimen/space_large</item>
+        <item name="android:paddingRight">@dimen/space_large</item>
+        <item name="android:gravity">right</item>
     </style>
 
 </resources>

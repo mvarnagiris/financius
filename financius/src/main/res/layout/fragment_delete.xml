@@ -61,11 +61,6 @@
         tools:text="254 transactions will be deleted"
         tools:visibility="visible" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <include layout="@layout/include_edit_buttons" />
+    <include layout="@layout/include_edit_buttons_borderless" />
 
 </LinearLayout>
