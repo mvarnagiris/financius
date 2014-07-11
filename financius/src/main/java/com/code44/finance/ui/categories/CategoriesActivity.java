@@ -2,7 +2,6 @@ package com.code44.finance.ui.categories;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -32,17 +31,11 @@ public class CategoriesActivity extends ModelListActivity {
         final ViewPager pager_VP = (ViewPager) findViewById(R.id.pager_VP);
 
         // Setup
-        int underlineColor = getResources().getColor(R.color.divider);
-        underlineColor = Color.argb(128, Color.red(underlineColor), Color.green(underlineColor), Color.blue(underlineColor));
         final CategoriesPagerAdapter adapter = new CategoriesPagerAdapter(this, getSupportFragmentManager());
         pager_VP.setAdapter(adapter);
-        pager_VP.setPageMargin(tabs_PSTS.getUnderlineHeight());
-        pager_VP.setPageMarginDrawable(new ColorDrawable(underlineColor));
+        pager_VP.setPageMargin(getResources().getDimensionPixelSize(R.dimen.separator));
+        pager_VP.setPageMarginDrawable(new ColorDrawable(getResources().getColor(R.color.divider)));
         tabs_PSTS.setShouldExpand(LayoutType.isDefault() && LayoutType.isPortrait());
-        tabs_PSTS.setIndicatorColorResource(R.color.brand);
-        tabs_PSTS.setIndicatorHeight(tabs_PSTS.getUnderlineHeight() * 2);
-        tabs_PSTS.setUnderlineColor(underlineColor);
-        //tabs_PSTS.setTabBackground(R.drawable.btn_borderless);
         tabs_PSTS.setViewPager(pager_VP);
     }
 

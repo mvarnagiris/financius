@@ -10,7 +10,7 @@
         android:layout_width="@dimen/category_color_circle_size"
         android:layout_height="@dimen/category_color_circle_size"
         android:layout_gravity="center_vertical"
-        android:layout_marginRight="@dimen/space_normal"
+        android:layout_marginRight="@dimen/keyline"
         android:src="@drawable/circle"
         tools:ignore="ContentDescription" />
 
