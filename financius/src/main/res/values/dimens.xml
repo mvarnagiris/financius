@@ -40,6 +40,7 @@
     <dimen name="navigation_drawer_width">280dp</dimen>
 
     <dimen name="btn_corner">2dp</dimen>
+    <dimen name="btn_width">88dp</dimen>
 
     <dimen name="category_color_circle_size">32dp</dimen>
     <dimen name="account_balance_graph_height">128dp</dimen>

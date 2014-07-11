@@ -1,9 +1,11 @@
 package com.code44.finance.ui;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -80,6 +82,14 @@ public class DeleteFragment extends BaseFragment implements LoaderManager.Loader
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_delete, container, false);
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.setTitle(R.string.delete);
+        dialog.requestWindowFeature(DialogFragment.STYLE_NO_FRAME);
+        return dialog;
     }
 
     @Override
