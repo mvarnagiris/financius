@@ -61,7 +61,8 @@ public class CategoriesFragment extends ModelListFragment {
         Query query = Query.create()
                 .projectionId(Tables.Categories.ID)
                 .projection(Tables.Categories.PROJECTION)
-                .selection(Tables.Categories.TYPE + "=?", String.valueOf(type.asInt()));
+                .selection(Tables.Categories.TYPE + "=?", String.valueOf(type.asInt()))
+                .selection(" and " + Tables.Categories.ITEM_STATE + "=?", BaseModel.ItemState.NORMAL.asString());
         if (getMode() == ModelListActivity.Mode.VIEW) {
             query.selection(" and " + Tables.Categories.OWNER + "<>?", Category.Owner.SYSTEM.asString());
         }

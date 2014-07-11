@@ -10,8 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/keyline"
-        android:textAppearance="@style/Text.Title"
-        tools:text="Are you sure you want to delete?" />
+        android:text="@string/l_delete_confirmation"
+        android:textAppearance="@style/Text.Title" />
 
     <TextView
         android:id="@+id/currencies_TV"

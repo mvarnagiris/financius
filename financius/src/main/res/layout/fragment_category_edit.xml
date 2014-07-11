@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    style="@style/Container.Edit"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:baselineAligned="false"
-    android:gravity="bottom"
-    android:orientation="horizontal">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    tools:context=".ui.currencies.CurrencyEditActivity">
 
-    <Button
-        android:id="@+id/color_B"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/space_normal"
-        android:gravity="center|bottom"
-        android:hint="@string/color" />
+    <ScrollView
+        style="@style/ScrollView"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="0px"
+        android:layout_weight="1">
 
-    <EditText
-        android:id="@+id/title_ET"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/title"
-        android:inputType="textCapWords" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <Button
+                android:id="@+id/color_B"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/space_normal"
+                android:gravity="center|bottom"
+                android:hint="@string/color" />
+
+            <EditText
+                android:id="@+id/title_ET"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/title"
+                android:inputType="textCapWords" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <include layout="@layout/include_edit_buttons" />
 </LinearLayout>
