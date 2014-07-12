@@ -9,4 +9,37 @@
         android:layout_height="wrap_content"
         android:text="Accounts"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="?android:colorPrimary">
+
+        <ImageButton
+            android:id="@+id/addTransfer_B"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/btn_touch_size"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_action_new" />
+
+        <ImageButton
+            android:id="@+id/addIncome_B"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/btn_touch_size"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_action_new" />
+
+        <ImageButton
+            android:id="@+id/addExpense_B"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/btn_touch_size"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_action_new" />
+
+    </LinearLayout>
+
 </RelativeLayout>

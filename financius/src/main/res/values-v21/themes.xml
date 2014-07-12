@@ -7,6 +7,8 @@
         <item name="android:colorAccent">@color/accent</item>
         <item name="android:colorControlHighlight">@color/accent_transparent</item>
 
+        <item name="android:navigationBarColor">?android:colorPrimary</item>
+
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowBackground">@color/bg_window</item>
