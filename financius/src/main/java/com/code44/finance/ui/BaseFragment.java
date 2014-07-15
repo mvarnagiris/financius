@@ -1,6 +1,6 @@
 package com.code44.finance.ui;
 
-import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 
-public class BaseFragment extends DialogFragment {
+public class BaseFragment extends Fragment {
 }

@@ -46,6 +46,9 @@
     <string name="color">Color</string>
     <string name="transaction">Transaction</string>
     <string name="transactions">Transactions</string>
+    <string name="overview">Overview</string>
+    <string name="open_navigation">Open navigation</string>
+    <string name="close_navigation">Close navigation</string>
 
     <string name="f_change_to_x">Change to %s</string>
     <string name="f_current_main_currency_is_x">Current main currency is %s</string>
@@ -54,6 +57,7 @@
     <string name="l_refresh_rates_daily">Refresh rates every day</string>
     <string name="l_currency_exists">This currency already exists</string>
     <string name="l_delete_short">DEL</string>
+    <string name="l_delete_confirmation">Are you sure you want to delete?</string>
 
     <string name="c_food">Food</string>
     <string name="c_leisure">Leisure</string>

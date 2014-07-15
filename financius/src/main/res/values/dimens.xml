@@ -28,9 +28,9 @@
     <dimen name="separator">2dp</dimen>
     <dimen name="separator_thin">1px</dimen>
 
-    <dimen name="elevation_header">5dp</dimen>
-    <dimen name="elevation_sub_header">3dp</dimen>
-    <dimen name="elevation_fab">7dp</dimen>
+    <dimen name="elevation_header">4dp</dimen>
+    <dimen name="elevation_sub_header">2dp</dimen>
+    <dimen name="elevation_fab">6dp</dimen>
 
     <dimen name="min_touch_size">32dp</dimen>
     <dimen name="btn_touch_size">36dp</dimen>
