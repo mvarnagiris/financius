@@ -27,7 +27,7 @@ import com.code44.finance.data.providers.TransactionsProvider;
 
 import de.greenrobot.event.EventBus;
 
-public class DeleteFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
+public class DeleteFragment extends DialogFragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
     private static final String ARG_DELETE_URI = "ARG_DELETE_URI";
     private static final String ARG_DELETE_SELECTION = "ARG_DELETE_SELECTION";
     private static final String ARG_DELETE_SELECTION_ARGS = "ARG_DELETE_SELECTION_ARGS";
