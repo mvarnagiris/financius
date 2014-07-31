@@ -6,6 +6,9 @@ import android.graphics.Color;
 import android.text.TextUtils;
 
 import com.code44.finance.R;
+import com.code44.finance.common.model.AccountOwner;
+import com.code44.finance.common.model.CategoryOwner;
+import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.data.db.model.Account;
 import com.code44.finance.data.db.model.Category;
 import com.code44.finance.data.db.model.Currency;
@@ -59,7 +62,7 @@ public final class DBDefaults {
     private static void addAccounts(SQLiteDatabase db) {
         final Account systemAccount = new Account();
         systemAccount.setServerId(UUID.randomUUID().toString());
-        systemAccount.setOwner(Account.Owner.SYSTEM);
+        systemAccount.setAccountOwner(AccountOwner.SYSTEM);
         systemAccount.checkValues();
 
         db.insert(Tables.Accounts.TABLE_NAME, null, systemAccount.asContentValues());
@@ -70,32 +73,32 @@ public final class DBDefaults {
         expenseCategory.setId(Category.EXPENSE_ID);
         expenseCategory.setTitle(context.getString(R.string.expense));
         expenseCategory.setColor(context.getResources().getColor(R.color.text_negative));
-        expenseCategory.setType(Category.Type.EXPENSE);
-        expenseCategory.setOwner(Category.Owner.SYSTEM);
+        expenseCategory.setCategoryType(CategoryType.EXPENSE);
+        expenseCategory.setCategoryOwner(CategoryOwner.SYSTEM);
         expenseCategory.setSortOrder(0);
 
         final Category incomeCategory = new Category();
         incomeCategory.setId(Category.INCOME_ID);
         incomeCategory.setTitle(context.getString(R.string.income));
         incomeCategory.setColor(context.getResources().getColor(R.color.text_positive));
-        incomeCategory.setType(Category.Type.INCOME);
-        incomeCategory.setOwner(Category.Owner.SYSTEM);
+        incomeCategory.setCategoryType(CategoryType.INCOME);
+        incomeCategory.setCategoryOwner(CategoryOwner.SYSTEM);
         incomeCategory.setSortOrder(0);
 
         final Category transferCategory = new Category();
         transferCategory.setId(Category.TRANSFER_ID);
         transferCategory.setTitle(context.getString(R.string.transfer));
         transferCategory.setColor(context.getResources().getColor(R.color.text_neutral));
-        transferCategory.setType(Category.Type.TRANSFER);
-        transferCategory.setOwner(Category.Owner.SYSTEM);
+        transferCategory.setCategoryType(CategoryType.TRANSFER);
+        transferCategory.setCategoryOwner(CategoryOwner.SYSTEM);
         transferCategory.setSortOrder(0);
 
         db.insert(Tables.Categories.TABLE_NAME, null, expenseCategory.asContentValues());
         db.insert(Tables.Categories.TABLE_NAME, null, incomeCategory.asContentValues());
         db.insert(Tables.Categories.TABLE_NAME, null, transferCategory.asContentValues());
 
-        insertCategories(db, context.getResources().getStringArray(R.array.expense_categories), context.getResources().getStringArray(R.array.expense_categories_colors), Category.Type.EXPENSE);
-        insertCategories(db, context.getResources().getStringArray(R.array.income_categories), context.getResources().getStringArray(R.array.income_categories_colors), Category.Type.INCOME);
+        insertCategories(db, context.getResources().getStringArray(R.array.expense_categories), context.getResources().getStringArray(R.array.expense_categories_colors), CategoryType.EXPENSE);
+        insertCategories(db, context.getResources().getStringArray(R.array.income_categories), context.getResources().getStringArray(R.array.income_categories_colors), CategoryType.INCOME);
     }
 
     private static String getMainCurrencyCode() {
@@ -120,14 +123,14 @@ public final class DBDefaults {
         }
     }
 
-    private static void insertCategories(SQLiteDatabase db, String[] titles, String[] colors, Category.Type type) {
+    private static void insertCategories(SQLiteDatabase db, String[] titles, String[] colors, CategoryType type) {
         int order = 0;
         for (String title : titles) {
             final Category category = new Category();
             category.setTitle(title);
             category.setColor(Color.parseColor(colors[order % colors.length]));
-            category.setType(type);
-            category.setOwner(Category.Owner.USER);
+            category.setCategoryType(type);
+            category.setCategoryOwner(CategoryOwner.USER);
             category.setSortOrder(order++);
             db.insert(Tables.Categories.TABLE_NAME, null, category.asContentValues());
         }

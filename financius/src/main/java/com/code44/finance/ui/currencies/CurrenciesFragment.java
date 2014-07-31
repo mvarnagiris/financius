@@ -19,6 +19,7 @@ import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.adapters.CurrenciesAdapter;
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
 import com.code44.finance.api.currencies.CurrencyRequest;
+import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.BaseModel;
@@ -119,7 +120,7 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         return Query.create()
                 .projectionId(Tables.Currencies.ID)
                 .projection(Tables.Currencies.PROJECTION)
-                .selection(Tables.Currencies.ITEM_STATE + "=?", String.valueOf(BaseModel.ItemState.NORMAL.asInt()))
+                .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
                 .sortOrder(Tables.Currencies.IS_DEFAULT + " desc")
                 .sortOrder(Tables.Currencies.CODE.getName());
     }

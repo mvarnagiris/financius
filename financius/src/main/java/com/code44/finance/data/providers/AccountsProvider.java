@@ -5,11 +5,11 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.code44.finance.R;
+import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
-import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Category;
 import com.code44.finance.data.db.model.Transaction;
 import com.code44.finance.utils.IOUtils;
@@ -70,21 +70,21 @@ public class AccountsProvider extends BaseModelProvider {
     }
 
     @Override
-    protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, BaseModel.ItemState itemState, Map<String, Object> outExtras) {
-        super.onBeforeDeleteItems(uri, selection, selectionArgs, itemState, outExtras);
+    protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> outExtras) {
+        super.onBeforeDeleteItems(uri, selection, selectionArgs, modelState, outExtras);
 
         final List<Long> affectedIds = getIdList(Tables.Accounts.TABLE_NAME, selection, selectionArgs);
         outExtras.put("affectedIds", affectedIds);
     }
 
     @Override
-    protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, BaseModel.ItemState itemState, Map<String, Object> extras) {
-        super.onAfterDeleteItems(uri, selection, selectionArgs, itemState, extras);
+    protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> extras) {
+        super.onAfterDeleteItems(uri, selection, selectionArgs, modelState, extras);
 
         //noinspection unchecked
         final List<Long> affectedIds = (List<Long>) extras.get("affectedIds");
         if (affectedIds.size() > 0) {
-            final Uri transactionsUri = uriForDeleteFromItemState(TransactionsProvider.uriTransactions(), itemState);
+            final Uri transactionsUri = uriForDeleteFromItemState(TransactionsProvider.uriTransactions(), modelState);
 
             Query query = Query.create().selectionInClause(Tables.Transactions.ACCOUNT_FROM_ID.getName(), affectedIds);
             getContext().getContentResolver().delete(transactionsUri, query.getSelection(), query.getSelectionArgs());

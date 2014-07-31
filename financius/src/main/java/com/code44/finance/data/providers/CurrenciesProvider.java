@@ -4,11 +4,12 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.data.db.model.SyncState;
 import com.code44.finance.services.StartupService;
 import com.code44.finance.utils.MoneyFormatter;
 
@@ -60,19 +61,19 @@ public class CurrenciesProvider extends BaseModelProvider {
     }
 
     @Override
-    protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, BaseModel.ItemState itemState, Map<String, Object> outExtras) {
-        super.onBeforeDeleteItems(uri, selection, selectionArgs, itemState, outExtras);
+    protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> outExtras) {
+        super.onBeforeDeleteItems(uri, selection, selectionArgs, modelState, outExtras);
 
         final List<Long> affectedIds = getIdList(Tables.Currencies.TABLE_NAME, selection, selectionArgs);
-        if (itemState.equals(BaseModel.ItemState.DELETED_UNDO) && affectedIds.contains(Currency.getDefault().getId())) {
+        if (modelState.equals(ModelState.DELETED_UNDO) && affectedIds.contains(Currency.getDefault().getId())) {
             throw new IllegalArgumentException("Cannot delete default currency.");
         }
         outExtras.put("affectedIds", affectedIds);
     }
 
     @Override
-    protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, BaseModel.ItemState itemState, Map<String, Object> extras) {
-        super.onAfterDeleteItems(uri, selection, selectionArgs, itemState, extras);
+    protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> extras) {
+        super.onAfterDeleteItems(uri, selection, selectionArgs, modelState, extras);
         MoneyFormatter.invalidateCache();
 
         //noinspection unchecked
@@ -81,7 +82,7 @@ public class CurrenciesProvider extends BaseModelProvider {
             final Query query = Query.create()
                     .selectionInClause(Tables.Accounts.CURRENCY_ID.getName(), affectedIds);
 
-            final Uri accountsUri = uriForDeleteFromItemState(AccountsProvider.uriAccounts(), itemState);
+            final Uri accountsUri = uriForDeleteFromItemState(AccountsProvider.uriAccounts(), modelState);
             DataStore.delete()
                     .selection(query.getSelection(), query.getSelectionArgs())
                     .from(accountsUri);
@@ -109,7 +110,7 @@ public class CurrenciesProvider extends BaseModelProvider {
             ContentValues newValues = new ContentValues();
             newValues.put(Tables.Currencies.EXCHANGE_RATE.getName(), 1.0);
             newValues.put(Tables.Currencies.IS_DEFAULT.getName(), false);
-            newValues.put(Tables.Currencies.SYNC_STATE.getName(), BaseModel.SyncState.LOCAL_CHANGES.asInt());
+            newValues.put(Tables.Currencies.SYNC_STATE.getName(), SyncState.LOCAL_CHANGES.asInt());
 
             database.update(Tables.Currencies.TABLE_NAME, newValues, null, null);
             getContext().startService(new Intent(getContext(), StartupService.class));

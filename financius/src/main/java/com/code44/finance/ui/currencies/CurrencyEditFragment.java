@@ -27,10 +27,13 @@ import com.code44.finance.R;
 import com.code44.finance.api.BaseRequestEvent;
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
 import com.code44.finance.api.currencies.CurrencyRequest;
+import com.code44.finance.common.model.DecimalSeparator;
+import com.code44.finance.common.model.GroupSeparator;
+import com.code44.finance.common.model.ModelState;
+import com.code44.finance.common.model.SymbolPosition;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelEditFragment;
@@ -218,8 +221,8 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     protected void onModelLoaded(Currency model) {
         symbol_ET.setText(model.getSymbol());
         code_ET.setText(model.getCode());
-        thousandsSeparator_B.setText(model.getGroupSeparator().explanation(getActivity()));
-        decimalSeparator_B.setText(model.getDecimalSeparator().explanation(getActivity()));
+        thousandsSeparator_B.setText(getGroupSeparatorExplanation(model.getGroupSeparator()));
+        decimalSeparator_B.setText(getDecimalSeparatorExplanation(model.getDecimalSeparator()));
         decimalsCount_B.setText(String.valueOf(model.getDecimalCount()));
         exchangeRate_ET.setText(String.valueOf(model.getExchangeRate()));
         isDefault_CB.setChecked(model.isDefault());
@@ -238,7 +241,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         if (id == LOADER_CURRENCIES) {
             return Query.create()
                     .projection(Tables.Currencies.CODE.getName())
-                    .selection(Tables.Currencies.ITEM_STATE + "=?", String.valueOf(BaseModel.ItemState.NORMAL.asInt()))
+                    .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
                     .asCursorLoader(getActivity(), CurrenciesProvider.uriCurrencies());
         }
         return super.onCreateLoader(id, args);
@@ -270,10 +273,10 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
                 break;
             }
             case R.id.symbolPosition_B: {
-                final String[] values = new String[Currency.SymbolPosition.values().length];
+                final String[] values = new String[SymbolPosition.values().length];
                 int index = 0;
-                for (Currency.SymbolPosition symbolPosition : Currency.SymbolPosition.values()) {
-                    values[index++] = symbolPosition.explanation(getActivity());
+                for (SymbolPosition symbolPosition : SymbolPosition.values()) {
+                    values[index++] = getSymbolPositionExplanation(symbolPosition);
                 }
                 final ListAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, values);
                 final AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
@@ -281,7 +284,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                         listPopupWindow_LPW.dismiss();
                         listPopupWindow_LPW = null;
-                        model.setSymbolPosition(Currency.SymbolPosition.values()[position]);
+                        model.setSymbolPosition(SymbolPosition.values()[position]);
                         ensureModelUpdated(model);
                         onModelLoaded(model);
                     }
@@ -291,10 +294,10 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
             }
 
             case R.id.thousandsSeparator_B: {
-                final String[] values = new String[Currency.GroupSeparator.values().length];
+                final String[] values = new String[GroupSeparator.values().length];
                 int index = 0;
-                for (Currency.GroupSeparator groupSeparator : Currency.GroupSeparator.values()) {
-                    values[index++] = groupSeparator.explanation(getActivity());
+                for (GroupSeparator groupSeparator : GroupSeparator.values()) {
+                    values[index++] = getGroupSeparatorExplanation(groupSeparator);
                 }
                 final ListAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, values);
                 final AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
@@ -302,7 +305,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                         listPopupWindow_LPW.dismiss();
                         listPopupWindow_LPW = null;
-                        model.setGroupSeparator(Currency.GroupSeparator.values()[position]);
+                        model.setGroupSeparator(GroupSeparator.values()[position]);
                         ensureModelUpdated(model);
                         onModelLoaded(model);
                     }
@@ -312,10 +315,10 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
             }
 
             case R.id.decimalSeparator_B: {
-                final String[] values = new String[Currency.DecimalSeparator.values().length];
+                final String[] values = new String[DecimalSeparator.values().length];
                 int index = 0;
-                for (Currency.DecimalSeparator decimalSeparator : Currency.DecimalSeparator.values()) {
-                    values[index++] = decimalSeparator.explanation(getActivity());
+                for (DecimalSeparator decimalSeparator : DecimalSeparator.values()) {
+                    values[index++] = getDecimalSeparatorExplanation(decimalSeparator);
                 }
                 final ListAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, values);
                 final AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
@@ -323,7 +326,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                         listPopupWindow_LPW.dismiss();
                         listPopupWindow_LPW = null;
-                        model.setDecimalSeparator(Currency.DecimalSeparator.values()[position]);
+                        model.setDecimalSeparator(DecimalSeparator.values()[position]);
                         ensureModelUpdated(model);
                         onModelLoaded(model);
                     }
@@ -348,6 +351,12 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
                 break;
             }
         }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton checkBox, boolean isChecked) {
+        model.setDefault(isChecked);
+        onModelLoaded(model);
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -454,9 +463,43 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         }
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton checkBox, boolean isChecked) {
-        model.setDefault(isChecked);
-        onModelLoaded(model);
+    private String getDecimalSeparatorExplanation(DecimalSeparator decimalSeparator) {
+        switch (decimalSeparator) {
+            case DOT:
+                return getString(R.string.dot);
+            case COMMA:
+                return getString(R.string.comma);
+            case SPACE:
+                return getString(R.string.space);
+        }
+        return null;
+    }
+
+    private String getGroupSeparatorExplanation(GroupSeparator groupSeparator) {
+        switch (groupSeparator) {
+            case NONE:
+                return getString(R.string.none);
+            case DOT:
+                return getString(R.string.dot);
+            case COMMA:
+                return getString(R.string.comma);
+            case SPACE:
+                return getString(R.string.space);
+        }
+        return null;
+    }
+
+    private String getSymbolPositionExplanation(SymbolPosition symbolPosition) {
+        switch (symbolPosition) {
+            case CLOSE_RIGHT:
+                return getString(R.string.close_right);
+            case FAR_RIGHT:
+                return getString(R.string.far_right);
+            case CLOSE_LEFT:
+                return getString(R.string.close_left);
+            case FAR_LEFT:
+                return getString(R.string.far_left);
+        }
+        return null;
     }
 }

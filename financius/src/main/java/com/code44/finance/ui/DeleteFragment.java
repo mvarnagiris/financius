@@ -16,10 +16,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.code44.finance.R;
+import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
@@ -140,25 +140,25 @@ public class DeleteFragment extends DialogFragment implements LoaderManager.Load
             case LOADER_CURRENCIES:
                 return Query.create()
                         .projectionId(Tables.Currencies.ID)
-                        .selection(Tables.Currencies.ITEM_STATE + "=?", String.valueOf(BaseModel.ItemState.DELETED_UNDO.asInt()))
+                        .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
                         .asCursorLoader(getActivity(), CurrenciesProvider.uriCurrencies());
 
             case LOADER_ACCOUNTS:
                 return Query.create()
                         .projectionId(Tables.Accounts.ID)
-                        .selection(Tables.Accounts.ITEM_STATE + "=?", String.valueOf(BaseModel.ItemState.DELETED_UNDO.asInt()))
+                        .selection(Tables.Accounts.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
                         .asCursorLoader(getActivity(), AccountsProvider.uriAccounts());
 
             case LOADER_CATEGORIES:
                 return Query.create()
                         .projectionId(Tables.Categories.ID)
-                        .selection(Tables.Categories.ITEM_STATE + "=?", String.valueOf(BaseModel.ItemState.DELETED_UNDO.asInt()))
+                        .selection(Tables.Categories.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
                         .asCursorLoader(getActivity(), CategoriesProvider.uriCategories());
 
             case LOADER_TRANSACTIONS:
                 return Query.create()
                         .projectionId(Tables.Transactions.ID)
-                        .selection(Tables.Transactions.ITEM_STATE + "=?", String.valueOf(BaseModel.ItemState.DELETED_UNDO.asInt()))
+                        .selection(Tables.Transactions.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
                         .asCursorLoader(getActivity(), TransactionsProvider.uriTransactions());
         }
         return null;

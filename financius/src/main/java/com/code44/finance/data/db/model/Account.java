@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.code44.finance.App;
+import com.code44.finance.common.model.AccountOwner;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
@@ -30,7 +31,7 @@ public class Account extends BaseModel {
     private String title;
     private String note;
     private long balance;
-    private Owner owner;
+    private AccountOwner accountOwner;
 
     public Account() {
         super();
@@ -38,16 +39,11 @@ public class Account extends BaseModel {
         setTitle(null);
         setNote(null);
         setBalance(0);
-        setOwner(Owner.USER);
+        setAccountOwner(AccountOwner.USER);
     }
 
     public Account(Parcel in) {
         super(in);
-        setCurrency((Currency) in.readParcelable(Currency.class.getClassLoader()));
-        setTitle(in.readString());
-        setNote(in.readString());
-        setBalance(in.readLong());
-        setOwner(Owner.fromInt(in.readInt()));
     }
 
     public static Account getSystem() {
@@ -55,7 +51,7 @@ public class Account extends BaseModel {
             final Cursor cursor = Query.create()
                     .projectionId(Tables.Accounts.ID)
                     .projection(Tables.Accounts.PROJECTION)
-                    .selection(Tables.Accounts.OWNER.getName() + "=?", String.valueOf(Owner.SYSTEM.asInt()))
+                    .selection(Tables.Accounts.OWNER.getName() + "=?", String.valueOf(AccountOwner.SYSTEM.asInt()))
                     .from(App.getAppContext(), AccountsProvider.uriAccounts())
                     .execute();
 
@@ -90,29 +86,6 @@ public class Account extends BaseModel {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
-        dest.writeParcelable(getCurrency(), flags);
-        dest.writeString(getTitle());
-        dest.writeString(getNote());
-        dest.writeLong(getBalance());
-        dest.writeInt(getOwner().asInt());
-    }
-
-    @Override
-    public void checkValues() throws IllegalStateException {
-        super.checkValues();
-
-        if (currency == null) {
-            throw new IllegalStateException("Currency cannot be null.");
-        }
-
-        if (owner == null) {
-            throw new IllegalStateException("Owner cannot be null.");
-        }
-    }
-
-    @Override
     protected Column getIdColumn() {
         return Tables.Accounts.ID;
     }
@@ -123,8 +96,8 @@ public class Account extends BaseModel {
     }
 
     @Override
-    protected Column getItemStateColumn() {
-        return Tables.Accounts.ITEM_STATE;
+    protected Column getModelStateColumn() {
+        return Tables.Accounts.MODEL_STATE;
     }
 
     @Override
@@ -133,24 +106,37 @@ public class Account extends BaseModel {
     }
 
     @Override
-    public ContentValues asContentValues() {
-        final ContentValues values = super.asContentValues();
+    protected void fromParcel(Parcel parcel) {
+        setCurrency((Currency) parcel.readParcelable(Currency.class.getClassLoader()));
+        setTitle(parcel.readString());
+        setNote(parcel.readString());
+        setBalance(parcel.readLong());
+        setAccountOwner(AccountOwner.fromInt(parcel.readInt()));
+    }
 
+    @Override
+    protected void toParcel(Parcel parcel) {
+        parcel.writeParcelable(getCurrency(), 0);
+        parcel.writeString(getTitle());
+        parcel.writeString(getNote());
+        parcel.writeLong(getBalance());
+        parcel.writeInt(getAccountOwner().asInt());
+    }
+
+    @Override
+    protected void toValues(ContentValues values) {
         values.put(Tables.Accounts.CURRENCY_ID.getName(), currency.getId());
         values.put(Tables.Accounts.TITLE.getName(), title);
         values.put(Tables.Accounts.NOTE.getName(), note);
         values.put(Tables.Accounts.BALANCE.getName(), balance);
-        values.put(Tables.Accounts.OWNER.getName(), owner.asInt());
-
-        return values;
+        values.put(Tables.Accounts.OWNER.getName(), accountOwner.asInt());
     }
 
     @Override
-    protected void updateFrom(Cursor cursor, String columnPrefixTable) {
-        super.updateFrom(cursor, columnPrefixTable);
-
+    protected void fromCursor(Cursor cursor, String columnPrefixTable) {
         int index;
 
+        // Currency
         Currency currency;
         if (TextUtils.isEmpty(columnPrefixTable)) {
             currency = Currency.from(cursor);
@@ -169,24 +155,41 @@ public class Account extends BaseModel {
         }
         setCurrency(currency);
 
+        // Title
         index = cursor.getColumnIndex(Tables.Accounts.TITLE.getName(columnPrefixTable));
         if (index >= 0) {
             setTitle(cursor.getString(index));
         }
 
+        // Note
         index = cursor.getColumnIndex(Tables.Accounts.NOTE.getName(columnPrefixTable));
         if (index >= 0) {
             setNote(cursor.getString(index));
         }
 
+        // Balance
         index = cursor.getColumnIndex(Tables.Accounts.BALANCE.getName(columnPrefixTable));
         if (index >= 0) {
             setBalance(cursor.getInt(index));
         }
 
+        // Owner
         index = cursor.getColumnIndex(Tables.Accounts.OWNER.getName(columnPrefixTable));
         if (index >= 0) {
-            setOwner(Owner.fromInt(cursor.getInt(index)));
+            setAccountOwner(AccountOwner.fromInt(cursor.getInt(index)));
+        }
+    }
+
+    @Override
+    public void checkValues() throws IllegalStateException {
+        super.checkValues();
+
+        if (currency == null) {
+            throw new IllegalStateException("Currency cannot be null.");
+        }
+
+        if (accountOwner == null) {
+            throw new IllegalStateException("Owner cannot be null.");
         }
     }
 
@@ -222,45 +225,11 @@ public class Account extends BaseModel {
         this.balance = balance;
     }
 
-    public Owner getOwner() {
-        return owner;
+    public AccountOwner getAccountOwner() {
+        return accountOwner;
     }
 
-    public void setOwner(Owner owner) {
-        this.owner = owner;
-    }
-
-    public static enum Owner {
-        SYSTEM(Owner.VALUE_SYSTEM), USER(Owner.VALUE_USER);
-
-        private static final int VALUE_SYSTEM = 1;
-        private static final int VALUE_USER = 2;
-
-        private final int value;
-
-        private Owner(int value) {
-            this.value = value;
-        }
-
-        public static Owner fromInt(int value) {
-            switch (value) {
-                case VALUE_SYSTEM:
-                    return SYSTEM;
-
-                case VALUE_USER:
-                    return USER;
-
-                default:
-                    throw new IllegalArgumentException("Value " + value + " is not supported.");
-            }
-        }
-
-        public int asInt() {
-            return value;
-        }
-
-        public String asString() {
-            return String.valueOf(value);
-        }
+    public void setAccountOwner(AccountOwner accountOwner) {
+        this.accountOwner = accountOwner;
     }
 }

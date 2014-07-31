@@ -41,6 +41,7 @@ apply plugin: 'android-unit-test'
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(path: ':backend', configuration: 'android-endpoints')
+    compile project(path: ':common')
     compile 'com.android.support:support-v4:+'
     compile 'com.android.support:support-v13:+'
     compile 'com.android.support:recyclerview-v7:+'

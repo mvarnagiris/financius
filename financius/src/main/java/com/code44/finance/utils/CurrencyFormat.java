@@ -2,6 +2,7 @@ package com.code44.finance.utils;
 
 import android.text.TextUtils;
 
+import com.code44.finance.common.model.GroupSeparator;
 import com.code44.finance.data.db.model.Currency;
 
 import java.text.DecimalFormat;
@@ -19,7 +20,7 @@ public final class CurrencyFormat {
 
         // Setup symbols
         final DecimalFormatSymbols symbols = decimalFormat.getDecimalFormatSymbols();
-        final char groupSeparator = currency.getGroupSeparator() != Currency.GroupSeparator.NONE ? currency.getGroupSeparator().symbol().charAt(0) : 0;
+        final char groupSeparator = currency.getGroupSeparator() != GroupSeparator.NONE ? currency.getGroupSeparator().symbol().charAt(0) : 0;
         symbols.setGroupingSeparator(groupSeparator);
         symbols.setDecimalSeparator(currency.getDecimalSeparator().symbol().charAt(0));
 

@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.adapters.CategoriesAdapter;
+import com.code44.finance.common.model.CategoryOwner;
+import com.code44.finance.common.model.CategoryType;
+import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.BaseModel;
@@ -22,9 +25,9 @@ import com.code44.finance.ui.ModelListFragment;
 public class CategoriesFragment extends ModelListFragment {
     private static final String ARG_TYPE = "ARG_TYPE";
 
-    private Category.Type type;
+    private CategoryType type;
 
-    public static CategoriesFragment newInstance(ModelListActivity.Mode mode, Category.Type type) {
+    public static CategoriesFragment newInstance(ModelListActivity.Mode mode, CategoryType type) {
         final Bundle args = makeArgs(mode);
         args.putSerializable(ARG_TYPE, type);
 
@@ -38,7 +41,7 @@ public class CategoriesFragment extends ModelListFragment {
         super.onCreate(savedInstanceState);
 
         // Get arguments
-        type = (Category.Type) getArguments().getSerializable(ARG_TYPE);
+        type = (CategoryType) getArguments().getSerializable(ARG_TYPE);
     }
 
     @Override
@@ -62,9 +65,9 @@ public class CategoriesFragment extends ModelListFragment {
                 .projectionId(Tables.Categories.ID)
                 .projection(Tables.Categories.PROJECTION)
                 .selection(Tables.Categories.TYPE + "=?", String.valueOf(type.asInt()))
-                .selection(" and " + Tables.Categories.ITEM_STATE + "=?", BaseModel.ItemState.NORMAL.asString());
+                .selection(" and " + Tables.Categories.MODEL_STATE + "=?", ModelState.NORMAL.asString());
         if (getMode() == ModelListActivity.Mode.VIEW) {
-            query.selection(" and " + Tables.Categories.OWNER + "<>?", Category.Owner.SYSTEM.asString());
+            query.selection(" and " + Tables.Categories.OWNER + "<>?", CategoryOwner.SYSTEM.asString());
         }
         return query;
     }

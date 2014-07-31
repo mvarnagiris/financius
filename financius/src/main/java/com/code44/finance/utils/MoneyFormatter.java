@@ -2,7 +2,7 @@ package com.code44.finance.utils;
 
 import android.support.v4.util.LongSparseArray;
 
-import com.code44.finance.data.db.model.Category;
+import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.db.model.Transaction;
 
@@ -11,7 +11,7 @@ public class MoneyFormatter {
 
     public static String format(Transaction transaction) {
         final Currency currency;
-        if (transaction.getCategory().getType() == Category.Type.INCOME) {
+        if (transaction.getCategory().getCategoryType() == CategoryType.INCOME) {
             currency = transaction.getAccountTo().getCurrency();
         } else {
             currency = transaction.getAccountFrom().getCurrency();

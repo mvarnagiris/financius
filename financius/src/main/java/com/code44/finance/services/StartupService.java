@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.text.format.DateUtils;
 
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
+import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.IOUtils;
@@ -38,7 +38,7 @@ public class StartupService extends IntentService {
 
         final Cursor cursor = Query.create()
                 .projection(Tables.Currencies.CODE.getName())
-                .selection(Tables.Currencies.ITEM_STATE + "=?", String.valueOf(BaseModel.ItemState.NORMAL.asInt()))
+                .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
                 .from(getApplicationContext(), CurrenciesProvider.uriCurrencies())
                 .execute();
 

@@ -36,12 +36,12 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
     @Test
     public void insert_updatesCurrency_whenCurrencyWithSameCodeExists() {
         final Currency currency = insertCurrency(false);
-        currency.setExchangeRate(1.2345);
+        currency.getEntity().setExchangeRate(1.2345);
         insertCurrency(currency);
 
-        final Cursor cursor = queryCurrencyCursor(currency.getCode());
+        final Cursor cursor = queryCurrencyCursor(currency.getEntity().getCode());
         assertEquals(1, cursor.getCount());
-        assertEquals(currency.getExchangeRate(), Currency.from(cursor).getExchangeRate(), 0.0001);
+        assertEquals(currency.getEntity().getExchangeRate(), Currency.from(cursor).getEntity().getExchangeRate(), 0.0001);
         IOUtils.closeQuietly(cursor);
     }
 
@@ -88,8 +88,8 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
 
     private Currency insertCurrency(boolean isDefault) {
         final Currency currency = new Currency();
-        currency.setCode("AAA");
-        currency.setDefault(isDefault);
+        currency.getEntity().setCode("AAA");
+        currency.getEntity().setDefault(isDefault);
         return insertCurrency(currency);
     }
 

@@ -30,7 +30,7 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
 
         final Transaction transaction = Transaction.from(cursor);
         assertEquals(42, transaction.getAmount());
-        assertEquals(Category.Type.INCOME, transaction.getCategory().getType());
+        assertEquals(Category.Type.INCOME, transaction.getCategory().getCategoryType());
         IOUtils.closeQuietly(cursor);
     }
 
@@ -44,7 +44,7 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
 
         final Transaction transaction = Transaction.from(cursor);
         assertEquals(42, transaction.getAmount());
-        assertEquals(Category.Type.EXPENSE, transaction.getCategory().getType());
+        assertEquals(Category.Type.EXPENSE, transaction.getCategory().getCategoryType());
         IOUtils.closeQuietly(cursor);
     }
 

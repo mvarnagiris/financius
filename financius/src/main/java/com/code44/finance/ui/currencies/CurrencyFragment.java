@@ -17,10 +17,10 @@ import com.code44.finance.R;
 import com.code44.finance.adapters.CurrencyAccountsAdapter;
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
 import com.code44.finance.api.currencies.CurrencyRequest;
+import com.code44.finance.common.model.AccountOwner;
+import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.Account;
-import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
@@ -113,8 +113,8 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
                     .projectionId(Tables.Accounts.ID)
                     .projection(Tables.Accounts.PROJECTION)
                     .projection(Tables.Currencies.PROJECTION)
-                    .selection(Tables.Accounts.OWNER + "=?", String.valueOf(Account.Owner.USER.asInt()))
-                    .selection(" and " + Tables.Accounts.ITEM_STATE + "=?", String.valueOf(BaseModel.ItemState.NORMAL.asInt()))
+                    .selection(Tables.Accounts.OWNER + "=?", String.valueOf(AccountOwner.USER.asInt()))
+                    .selection(" and " + Tables.Accounts.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
                     .asCursorLoader(getActivity(), AccountsProvider.uriAccounts());
         }
 

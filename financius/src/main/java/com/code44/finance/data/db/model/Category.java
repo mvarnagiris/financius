@@ -7,6 +7,8 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.code44.finance.App;
+import com.code44.finance.common.model.CategoryOwner;
+import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
@@ -34,26 +36,21 @@ public class Category extends BaseModel {
 
     private String title;
     private int color;
-    private Type type;
-    private Owner owner;
+    private CategoryType categoryType;
+    private CategoryOwner categoryOwner;
     private int sortOrder;
 
     public Category() {
         super();
         setTitle(null);
         setColor(0);
-        setType(Type.EXPENSE);
-        setOwner(Owner.USER);
+        setCategoryType(CategoryType.EXPENSE);
+        setCategoryOwner(CategoryOwner.USER);
         setSortOrder(0);
     }
 
     public Category(Parcel in) {
         super(in);
-        setTitle(in.readString());
-        setColor(in.readInt());
-        setType(Type.fromInt(in.readInt()));
-        setOwner(Owner.fromInt(in.readInt()));
-        setSortOrder(in.readInt());
     }
 
     public static Category getExpense() {
@@ -107,33 +104,6 @@ public class Category extends BaseModel {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
-        dest.writeString(getTitle());
-        dest.writeInt(getColor());
-        dest.writeInt(getType().asInt());
-        dest.writeInt(getOwner().asInt());
-        dest.writeInt(getSortOrder());
-    }
-
-    @Override
-    public void checkValues() throws IllegalStateException {
-        super.checkValues();
-
-        if (TextUtils.isEmpty(title)) {
-            throw new IllegalStateException("Title cannot be empty");
-        }
-
-        if (type == null) {
-            throw new IllegalStateException("Type cannot be null.");
-        }
-
-        if (owner == null) {
-            throw new IllegalStateException("Owner cannot be null.");
-        }
-    }
-
-    @Override
     protected Column getIdColumn() {
         return Tables.Categories.ID;
     }
@@ -144,8 +114,8 @@ public class Category extends BaseModel {
     }
 
     @Override
-    protected Column getItemStateColumn() {
-        return Tables.Categories.ITEM_STATE;
+    protected Column getModelStateColumn() {
+        return Tables.Categories.MODEL_STATE;
     }
 
     @Override
@@ -154,47 +124,81 @@ public class Category extends BaseModel {
     }
 
     @Override
-    public ContentValues asContentValues() {
-        final ContentValues values = super.asContentValues();
-
-        values.put(Tables.Categories.TITLE.getName(), title);
-        values.put(Tables.Categories.COLOR.getName(), color);
-        values.put(Tables.Categories.TYPE.getName(), type.asInt());
-        values.put(Tables.Categories.OWNER.getName(), owner.asInt());
-        values.put(Tables.Categories.SORT_ORDER.getName(), sortOrder);
-
-        return values;
+    protected void fromParcel(Parcel parcel) {
+        setTitle(parcel.readString());
+        setColor(parcel.readInt());
+        setCategoryType(CategoryType.fromInt(parcel.readInt()));
+        setCategoryOwner(CategoryOwner.fromInt(parcel.readInt()));
+        setSortOrder(parcel.readInt());
     }
 
     @Override
-    protected void updateFrom(Cursor cursor, String columnPrefixTable) {
-        super.updateFrom(cursor, columnPrefixTable);
+    protected void toParcel(Parcel parcel) {
+        parcel.writeString(getTitle());
+        parcel.writeInt(getColor());
+        parcel.writeInt(getCategoryType().asInt());
+        parcel.writeInt(getCategoryOwner().asInt());
+        parcel.writeInt(getSortOrder());
+    }
 
+    @Override
+    protected void toValues(ContentValues values) {
+        values.put(Tables.Categories.TITLE.getName(), title);
+        values.put(Tables.Categories.COLOR.getName(), color);
+        values.put(Tables.Categories.TYPE.getName(), categoryType.asInt());
+        values.put(Tables.Categories.OWNER.getName(), categoryOwner.asInt());
+        values.put(Tables.Categories.SORT_ORDER.getName(), sortOrder);
+    }
+
+    @Override
+    protected void fromCursor(Cursor cursor, String columnPrefixTable) {
         int index;
 
+        // Title
         index = cursor.getColumnIndex(Tables.Categories.TITLE.getName(columnPrefixTable));
         if (index >= 0) {
             setTitle(cursor.getString(index));
         }
 
+        // Color
         index = cursor.getColumnIndex(Tables.Categories.COLOR.getName(columnPrefixTable));
         if (index >= 0) {
             setColor(cursor.getInt(index));
         }
 
+        // Type
         index = cursor.getColumnIndex(Tables.Categories.TYPE.getName(columnPrefixTable));
         if (index >= 0) {
-            setType(Type.fromInt(cursor.getInt(index)));
+            setCategoryType(CategoryType.fromInt(cursor.getInt(index)));
         }
 
+        // Owner
         index = cursor.getColumnIndex(Tables.Categories.OWNER.getName(columnPrefixTable));
         if (index >= 0) {
-            setOwner(Owner.fromInt(cursor.getInt(index)));
+            setCategoryOwner(CategoryOwner.fromInt(cursor.getInt(index)));
         }
 
+        // Sort order
         index = cursor.getColumnIndex(Tables.Categories.SORT_ORDER.getName(columnPrefixTable));
         if (index >= 0) {
             setSortOrder(cursor.getInt(index));
+        }
+    }
+
+    @Override
+    public void checkValues() throws IllegalStateException {
+        super.checkValues();
+
+        if (TextUtils.isEmpty(title)) {
+            throw new IllegalStateException("Title cannot be empty");
+        }
+
+        if (categoryType == null) {
+            throw new IllegalStateException("Type cannot be null.");
+        }
+
+        if (categoryOwner == null) {
+            throw new IllegalStateException("Owner cannot be null.");
         }
     }
 
@@ -214,20 +218,20 @@ public class Category extends BaseModel {
         this.color = color;
     }
 
-    public Type getType() {
-        return type;
+    public CategoryType getCategoryType() {
+        return categoryType;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setCategoryType(CategoryType categoryType) {
+        this.categoryType = categoryType;
     }
 
-    public Owner getOwner() {
-        return owner;
+    public CategoryOwner getCategoryOwner() {
+        return categoryOwner;
     }
 
-    public void setOwner(Owner owner) {
-        this.owner = owner;
+    public void setCategoryOwner(CategoryOwner categoryOwner) {
+        this.categoryOwner = categoryOwner;
     }
 
     public int getSortOrder() {
@@ -236,73 +240,5 @@ public class Category extends BaseModel {
 
     public void setSortOrder(int sortOrder) {
         this.sortOrder = sortOrder;
-    }
-
-    public static enum Type {
-        EXPENSE(Type.VALUE_EXPENSE), INCOME(Type.VALUE_INCOME), TRANSFER(Type.VALUE_TRANSFER);
-
-        private static final int VALUE_EXPENSE = 1;
-        private static final int VALUE_INCOME = 2;
-        private static final int VALUE_TRANSFER = 3;
-
-        private final int value;
-
-        private Type(int value) {
-            this.value = value;
-        }
-
-        public static Type fromInt(int value) {
-            switch (value) {
-                case VALUE_EXPENSE:
-                    return EXPENSE;
-
-                case VALUE_INCOME:
-                    return INCOME;
-
-                case VALUE_TRANSFER:
-                    return TRANSFER;
-
-                default:
-                    throw new IllegalArgumentException("Value " + value + " is not supported.");
-            }
-        }
-
-        public int asInt() {
-            return value;
-        }
-    }
-
-    public static enum Owner {
-        SYSTEM(Owner.VALUE_SYSTEM), USER(Owner.VALUE_USER);
-
-        private static final int VALUE_SYSTEM = 1;
-        private static final int VALUE_USER = 2;
-
-        private final int value;
-
-        private Owner(int value) {
-            this.value = value;
-        }
-
-        public static Owner fromInt(int value) {
-            switch (value) {
-                case VALUE_SYSTEM:
-                    return SYSTEM;
-
-                case VALUE_USER:
-                    return USER;
-
-                default:
-                    throw new IllegalArgumentException("Value " + value + " is not supported.");
-            }
-        }
-
-        public int asInt() {
-            return value;
-        }
-
-        public String asString() {
-            return String.valueOf(value);
-        }
     }
 }

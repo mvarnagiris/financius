@@ -4,8 +4,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
 
+import com.code44.finance.common.model.ModelState;
+import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.db.Column;
 
 import java.util.UUID;
@@ -13,22 +14,39 @@ import java.util.UUID;
 public abstract class BaseModel implements Parcelable {
     private long id;
     private String serverId;
-    private ItemState itemState;
+    private ModelState modelState;
     private SyncState syncState;
 
     protected BaseModel() {
         setId(0);
         setServerId(null);
-        setItemState(ItemState.NORMAL);
+        setModelState(ModelState.NORMAL);
         setSyncState(SyncState.NONE);
     }
 
-    protected BaseModel(Parcel in) {
-        setId(in.readLong());
-        setServerId(in.readString());
-        setItemState(ItemState.fromInt(in.readInt()));
-        setSyncState(SyncState.fromInt(in.readInt()));
+    protected BaseModel(Parcel parcel) {
+        setId(parcel.readLong());
+        setServerId(parcel.readString());
+        setModelState(ModelState.fromInt(parcel.readInt()));
+        setSyncState(SyncState.fromInt(parcel.readInt()));
+        fromParcel(parcel);
     }
+
+    protected abstract Column getIdColumn();
+
+    protected abstract Column getServerIdColumn();
+
+    protected abstract Column getModelStateColumn();
+
+    protected abstract Column getSyncStateColumn();
+
+    protected abstract void fromParcel(Parcel parcel);
+
+    protected abstract void toParcel(Parcel parcel);
+
+    protected abstract void toValues(ContentValues values);
+
+    protected abstract void fromCursor(Cursor cursor, String columnPrefixTable);
 
     @Override
     public int describeContents() {
@@ -36,38 +54,53 @@ public abstract class BaseModel implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(getId());
-        dest.writeString(getServerId());
-        dest.writeInt(getItemState().asInt());
-        dest.writeInt(getSyncState().asInt());
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeLong(getId());
+        parcel.writeString(getServerId());
+        parcel.writeInt(getModelState().asInt());
+        parcel.writeInt(getSyncState().asInt());
+        toParcel(parcel);
     }
 
     public ContentValues asContentValues() {
+        checkValues();
+
         final ContentValues values = new ContentValues();
 
+        // Local id
         if (id != 0) {
             values.put(getIdColumn().getName(), id);
         }
 
-        if (TextUtils.isEmpty(serverId)) {
+        // Server id
+        if (StringUtils.isEmpty(getServerId())) {
             setServerId(UUID.randomUUID().toString());
         }
+        values.put(getServerIdColumn().getName(), getServerId());
 
-        values.put(getServerIdColumn().getName(), serverId);
-        values.put(getItemStateColumn().getName(), itemState.asInt());
-        values.put(getSyncStateColumn().getName(), syncState.asInt());
+        // Model state
+        values.put(getModelStateColumn().getName(), getModelState().asInt());
+
+        // Sync state
+        values.put(getSyncStateColumn().getName(), getSyncState().asInt());
+
+        // Other values
+        toValues(values);
 
         return values;
     }
 
     public void checkValues() throws IllegalStateException {
-        if (itemState == null) {
-            throw new IllegalStateException("ItemState cannot be null.");
+        if (StringUtils.isEmpty(serverId)) {
+            throw new IllegalStateException("Server id cannot be empty.");
+        }
+
+        if (modelState == null) {
+            throw new NullPointerException("ModelState cannot be null.");
         }
 
         if (syncState == null) {
-            throw new IllegalStateException("SyncState cannot be null.");
+            throw new NullPointerException("SyncState cannot be null.");
         }
     }
 
@@ -87,12 +120,12 @@ public abstract class BaseModel implements Parcelable {
         this.serverId = serverId;
     }
 
-    public ItemState getItemState() {
-        return itemState;
+    public ModelState getModelState() {
+        return modelState;
     }
 
-    public void setItemState(ItemState itemState) {
-        this.itemState = itemState;
+    public void setModelState(ModelState modelState) {
+        this.modelState = modelState;
     }
 
     public SyncState getSyncState() {
@@ -103,111 +136,34 @@ public abstract class BaseModel implements Parcelable {
         this.syncState = syncState;
     }
 
-    protected abstract Column getIdColumn();
-
-    protected abstract Column getServerIdColumn();
-
-    protected abstract Column getItemStateColumn();
-
-    protected abstract Column getSyncStateColumn();
-
     protected void updateFrom(Cursor cursor, String columnPrefixTable) {
         int index;
 
+        // Local id
         index = cursor.getColumnIndex(getIdColumn().getName(columnPrefixTable));
         if (index >= 0) {
             setId(cursor.getLong(index));
         }
 
+        // Server id
         index = cursor.getColumnIndex(getServerIdColumn().getName(columnPrefixTable));
         if (index >= 0) {
             setServerId(cursor.getString(index));
         }
 
-        index = cursor.getColumnIndex(getItemStateColumn().getName(columnPrefixTable));
+        // Model state
+        index = cursor.getColumnIndex(getModelStateColumn().getName(columnPrefixTable));
         if (index >= 0) {
-            setItemState(ItemState.fromInt(cursor.getInt(index)));
+            setModelState(ModelState.fromInt(cursor.getInt(index)));
         }
 
+        // Sync state
         index = cursor.getColumnIndex(getSyncStateColumn().getName(columnPrefixTable));
         if (index >= 0) {
             setSyncState(SyncState.fromInt(cursor.getInt(index)));
         }
-    }
 
-    public static enum ItemState {
-        NORMAL(ItemState.VALUE_NORMAL), DELETED(ItemState.VALUE_DELETED), DELETED_UNDO(ItemState.VALUE_DELETED_UNDO);
-
-        private static final int VALUE_NORMAL = 1;
-        private static final int VALUE_DELETED = 2;
-        private static final int VALUE_DELETED_UNDO = 3;
-
-        private final int value;
-
-        private ItemState(int value) {
-            this.value = value;
-        }
-
-        public static ItemState fromInt(int value) {
-            switch (value) {
-                case VALUE_NORMAL:
-                    return NORMAL;
-
-                case VALUE_DELETED:
-                    return DELETED;
-
-                case VALUE_DELETED_UNDO:
-                    return DELETED_UNDO;
-
-                default:
-                    throw new IllegalArgumentException("Value " + value + " is not supported.");
-            }
-        }
-
-        public int asInt() {
-            return value;
-        }
-
-        public String asString() {
-            return String.valueOf(value);
-        }
-    }
-
-    public static enum SyncState {
-        NONE(SyncState.VALUE_NONE), IN_PROGRESS(SyncState.VALUE_IN_PROGRESS), SYNCED(SyncState.VALUE_SYNCED), LOCAL_CHANGES(SyncState.VALUE_LOCAL_CHANGES);
-
-        private static final int VALUE_NONE = 1;
-        private static final int VALUE_IN_PROGRESS = 2;
-        private static final int VALUE_SYNCED = 3;
-        private static final int VALUE_LOCAL_CHANGES = 4;
-
-        private final int value;
-
-        private SyncState(int value) {
-            this.value = value;
-        }
-
-        public static SyncState fromInt(int value) {
-            switch (value) {
-                case VALUE_NONE:
-                    return NONE;
-
-                case VALUE_IN_PROGRESS:
-                    return IN_PROGRESS;
-
-                case VALUE_SYNCED:
-                    return SYNCED;
-
-                case VALUE_LOCAL_CHANGES:
-                    return LOCAL_CHANGES;
-
-                default:
-                    throw new IllegalArgumentException("Value " + value + " is not supported.");
-            }
-        }
-
-        public int asInt() {
-            return value;
-        }
+        // Other values
+        fromCursor(cursor, columnPrefixTable);
     }
 }

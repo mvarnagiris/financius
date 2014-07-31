@@ -1,1 +1,1 @@
-include ':financius', ':backend'
+include ':financius', ':backend', ':common'

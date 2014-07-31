@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.adapters.AccountsAdapter;
 import com.code44.finance.adapters.BaseModelsAdapter;
+import com.code44.finance.common.model.AccountOwner;
+import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
@@ -76,8 +78,8 @@ public class AccountsFragment extends ModelListFragment {
                 .projectionId(Tables.Accounts.ID)
                 .projection(Tables.Accounts.PROJECTION)
                 .projection(Tables.Currencies.PROJECTION)
-                .selection(Tables.Accounts.ITEM_STATE + "=?", BaseModel.ItemState.NORMAL.asString())
-                .selection(" and " + Tables.Accounts.OWNER + "<>?", Account.Owner.SYSTEM.asString());
+                .selection(Tables.Accounts.MODEL_STATE + "=?", ModelState.NORMAL.asString())
+                .selection(" and " + Tables.Accounts.OWNER + "<>?", AccountOwner.SYSTEM.asString());
     }
 
     private void updateBalance(Cursor cursor) {

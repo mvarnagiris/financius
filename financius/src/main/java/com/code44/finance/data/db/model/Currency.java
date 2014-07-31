@@ -1,15 +1,16 @@
 package com.code44.finance.data.db.model;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
 
 import com.code44.finance.App;
-import com.code44.finance.R;
+import com.code44.finance.common.model.DecimalSeparator;
+import com.code44.finance.common.model.GroupSeparator;
+import com.code44.finance.common.model.SymbolPosition;
+import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
@@ -52,14 +53,6 @@ public class Currency extends BaseModel {
 
     public Currency(Parcel in) {
         super(in);
-        setCode(in.readString());
-        setSymbol(in.readString());
-        setSymbolPosition(SymbolPosition.fromInt(in.readInt()));
-        setDecimalSeparator(DecimalSeparator.fromSymbol(in.readString()));
-        setGroupSeparator(GroupSeparator.fromSymbol(in.readString()));
-        setDecimalCount(in.readInt());
-        setDefault(in.readInt() != 0);
-        setExchangeRate(in.readDouble());
     }
 
     public static Currency getDefault() {
@@ -114,24 +107,124 @@ public class Currency extends BaseModel {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
-        dest.writeString(getCode());
-        dest.writeString(getSymbol());
-        dest.writeInt(getSymbolPosition().asInt());
-        dest.writeString(getDecimalSeparator().symbol());
-        dest.writeString(getGroupSeparator().symbol());
-        dest.writeInt(getDecimalCount());
-        dest.writeInt(isDefault() ? 1 : 0);
-        dest.writeDouble(getExchangeRate());
+    protected Column getIdColumn() {
+        return Tables.Currencies.ID;
+    }
+
+    @Override
+    protected Column getServerIdColumn() {
+        return Tables.Currencies.SERVER_ID;
+    }
+
+    @Override
+    protected Column getModelStateColumn() {
+        return Tables.Currencies.MODEL_STATE;
+    }
+
+    @Override
+    protected Column getSyncStateColumn() {
+        return Tables.Currencies.SYNC_STATE;
+    }
+
+    @Override
+    protected void fromParcel(Parcel parcel) {
+        setCode(parcel.readString());
+        setSymbol(parcel.readString());
+        setSymbolPosition(SymbolPosition.fromInt(parcel.readInt()));
+        setDecimalSeparator(DecimalSeparator.fromSymbol(parcel.readString()));
+        setGroupSeparator(GroupSeparator.fromSymbol(parcel.readString()));
+        setDecimalCount(parcel.readInt());
+        setDefault(parcel.readInt() != 0);
+        setExchangeRate(parcel.readDouble());
+    }
+
+    @Override
+    protected void toParcel(Parcel parcel) {
+        parcel.writeString(getCode());
+        parcel.writeString(getSymbol());
+        parcel.writeInt(getSymbolPosition().asInt());
+        parcel.writeString(getDecimalSeparator().symbol());
+        parcel.writeString(getGroupSeparator().symbol());
+        parcel.writeInt(getDecimalCount());
+        parcel.writeInt(isDefault() ? 1 : 0);
+        parcel.writeDouble(getExchangeRate());
+    }
+
+    @Override
+    protected void toValues(ContentValues values) {
+        values.put(Tables.Currencies.CODE.getName(), getCode());
+        values.put(Tables.Currencies.SYMBOL.getName(), getSymbol());
+        values.put(Tables.Currencies.SYMBOL_POSITION.getName(), getSymbolPosition().asInt());
+        values.put(Tables.Currencies.DECIMAL_SEPARATOR.getName(), getDecimalSeparator().symbol());
+        values.put(Tables.Currencies.GROUP_SEPARATOR.getName(), getGroupSeparator().symbol());
+        values.put(Tables.Currencies.DECIMAL_COUNT.getName(), getDecimalCount());
+        values.put(Tables.Currencies.IS_DEFAULT.getName(), isDefault());
+        values.put(Tables.Currencies.EXCHANGE_RATE.getName(), isDefault() ? 1.0f : getExchangeRate());
+    }
+
+    @Override
+    protected void fromCursor(Cursor cursor, String columnPrefixTable) {
+        int index;
+
+        // Code
+        index = cursor.getColumnIndex(Tables.Currencies.CODE.getName(columnPrefixTable));
+        if (index >= 0) {
+            setCode(cursor.getString(index));
+        }
+
+        // Symbol
+        index = cursor.getColumnIndex(Tables.Currencies.SYMBOL.getName(columnPrefixTable));
+        if (index >= 0) {
+            setSymbol(cursor.getString(index));
+        }
+
+        // Symbol position
+        index = cursor.getColumnIndex(Tables.Currencies.SYMBOL_POSITION.getName(columnPrefixTable));
+        if (index >= 0) {
+            setSymbolPosition(SymbolPosition.fromInt(cursor.getInt(index)));
+        }
+
+        // Decimal separator
+        index = cursor.getColumnIndex(Tables.Currencies.DECIMAL_SEPARATOR.getName(columnPrefixTable));
+        if (index >= 0) {
+            setDecimalSeparator(DecimalSeparator.fromSymbol(cursor.getString(index)));
+        }
+
+        // Group separator
+        index = cursor.getColumnIndex(Tables.Currencies.GROUP_SEPARATOR.getName(columnPrefixTable));
+        if (index >= 0) {
+            setGroupSeparator(GroupSeparator.fromSymbol(cursor.getString(index)));
+        }
+
+        // Decimal count
+        index = cursor.getColumnIndex(Tables.Currencies.DECIMAL_COUNT.getName(columnPrefixTable));
+        if (index >= 0) {
+            setDecimalCount(cursor.getInt(index));
+        }
+
+        // Is default
+        index = cursor.getColumnIndex(Tables.Currencies.IS_DEFAULT.getName(columnPrefixTable));
+        if (index >= 0) {
+            setDefault(cursor.getInt(index) != 0);
+        }
+
+        // Exchange rate
+        index = cursor.getColumnIndex(Tables.Currencies.EXCHANGE_RATE.getName(columnPrefixTable));
+        if (index >= 0) {
+            setExchangeRate(cursor.getDouble(index));
+        }
     }
 
     @Override
     public void checkValues() throws IllegalStateException {
         super.checkValues();
 
-        if (TextUtils.isEmpty(code)) {
+        if (StringUtils.isEmpty(code)) {
             throw new IllegalStateException("Code cannot be empty.");
+        }
+
+        if (code.length() != 3) {
+            throw new IllegalStateException("Code length must be 3.");
         }
 
         if (symbolPosition == null) {
@@ -155,96 +248,12 @@ public class Currency extends BaseModel {
         }
     }
 
-    @Override
-    protected Column getIdColumn() {
-        return Tables.Currencies.ID;
-    }
-
-    @Override
-    protected Column getServerIdColumn() {
-        return Tables.Currencies.SERVER_ID;
-    }
-
-    @Override
-    protected Column getItemStateColumn() {
-        return Tables.Currencies.ITEM_STATE;
-    }
-
-    @Override
-    protected Column getSyncStateColumn() {
-        return Tables.Currencies.SYNC_STATE;
-    }
-
-    @Override
-    public ContentValues asContentValues() {
-        final ContentValues values = super.asContentValues();
-
-        values.put(Tables.Currencies.CODE.getName(), code);
-        values.put(Tables.Currencies.SYMBOL.getName(), symbol);
-        values.put(Tables.Currencies.SYMBOL_POSITION.getName(), symbolPosition.asInt());
-        values.put(Tables.Currencies.DECIMAL_SEPARATOR.getName(), decimalSeparator.symbol());
-        values.put(Tables.Currencies.GROUP_SEPARATOR.getName(), groupSeparator.symbol());
-        values.put(Tables.Currencies.DECIMAL_COUNT.getName(), decimalCount);
-        values.put(Tables.Currencies.IS_DEFAULT.getName(), isDefault);
-        values.put(Tables.Currencies.EXCHANGE_RATE.getName(), isDefault ? 1.0f : exchangeRate);
-
-        return values;
-    }
-
-    @Override
-    protected void updateFrom(Cursor cursor, String columnPrefixTable) {
-        super.updateFrom(cursor, columnPrefixTable);
-
-        int index;
-
-        index = cursor.getColumnIndex(Tables.Currencies.CODE.getName(columnPrefixTable));
-        if (index >= 0) {
-            setCode(cursor.getString(index));
-        }
-
-        index = cursor.getColumnIndex(Tables.Currencies.SYMBOL.getName(columnPrefixTable));
-        if (index >= 0) {
-            setSymbol(cursor.getString(index));
-        }
-
-        index = cursor.getColumnIndex(Tables.Currencies.SYMBOL_POSITION.getName(columnPrefixTable));
-        if (index >= 0) {
-            setSymbolPosition(SymbolPosition.fromInt(cursor.getInt(index)));
-        }
-
-        index = cursor.getColumnIndex(Tables.Currencies.DECIMAL_SEPARATOR.getName(columnPrefixTable));
-        if (index >= 0) {
-            setDecimalSeparator(DecimalSeparator.fromSymbol(cursor.getString(index)));
-        }
-
-        index = cursor.getColumnIndex(Tables.Currencies.GROUP_SEPARATOR.getName(columnPrefixTable));
-        if (index >= 0) {
-            setGroupSeparator(GroupSeparator.fromSymbol(cursor.getString(index)));
-        }
-
-        index = cursor.getColumnIndex(Tables.Currencies.DECIMAL_COUNT.getName(columnPrefixTable));
-        if (index >= 0) {
-            setDecimalCount(cursor.getInt(index));
-        }
-
-        index = cursor.getColumnIndex(Tables.Currencies.IS_DEFAULT.getName(columnPrefixTable));
-        if (index >= 0) {
-            setDefault(cursor.getInt(index) != 0);
-        }
-
-        index = cursor.getColumnIndex(Tables.Currencies.EXCHANGE_RATE.getName(columnPrefixTable));
-        if (index >= 0) {
-            setExchangeRate(cursor.getDouble(index));
-        }
-    }
-
     public String getCode() {
         return code;
     }
 
     public void setCode(String code) {
         this.code = code;
-        setServerId(code);
     }
 
     public String getSymbol() {
@@ -301,185 +310,5 @@ public class Currency extends BaseModel {
 
     public void setExchangeRate(double exchangeRate) {
         this.exchangeRate = exchangeRate;
-    }
-
-    public static enum DecimalSeparator {
-        DOT("."),
-        COMMA(","),
-        SPACE(" ");
-
-        private final String symbol;
-
-        private DecimalSeparator(String symbol) {
-            this.symbol = symbol;
-        }
-
-        public static DecimalSeparator fromSymbol(String symbol) {
-            switch (symbol) {
-                case ".":
-                    return DOT;
-
-                case ",":
-                    return COMMA;
-
-                case " ":
-                    return SPACE;
-
-                default:
-                    throw new IllegalArgumentException("Symbol '" + symbol + "' is not supported.");
-            }
-        }
-
-        public String symbol() {
-            return symbol;
-        }
-
-        public String explanation(Context context) {
-            final int resId;
-            switch (this) {
-                case DOT:
-                    resId = R.string.dot;
-                    break;
-
-                case COMMA:
-                    resId = R.string.comma;
-                    break;
-
-                case SPACE:
-                    resId = R.string.space;
-                    break;
-
-                default:
-                    throw new IllegalArgumentException(this + " explanation is not supported.");
-            }
-            return context.getString(resId);
-        }
-    }
-
-    public static enum GroupSeparator {
-        NONE(""),
-        DOT("."),
-        COMMA(","),
-        SPACE(" ");
-
-        private final String symbol;
-
-        private GroupSeparator(String symbol) {
-            this.symbol = symbol;
-        }
-
-        public static GroupSeparator fromSymbol(String symbol) {
-            switch (symbol) {
-                case "":
-                    return NONE;
-
-                case ".":
-                    return DOT;
-
-                case ",":
-                    return COMMA;
-
-                case " ":
-                    return SPACE;
-
-                default:
-                    throw new IllegalArgumentException("Symbol '" + symbol + "' is not supported.");
-            }
-        }
-
-        public String symbol() {
-            return symbol;
-        }
-
-        public String explanation(Context context) {
-            final int resId;
-            switch (this) {
-                case NONE:
-                    resId = R.string.none;
-                    break;
-
-                case DOT:
-                    resId = R.string.dot;
-                    break;
-
-                case COMMA:
-                    resId = R.string.comma;
-                    break;
-
-                case SPACE:
-                    resId = R.string.space;
-                    break;
-
-                default:
-                    throw new IllegalArgumentException(this + " explanation is not supported.");
-            }
-            return context.getString(resId);
-        }
-    }
-
-    public static enum SymbolPosition {
-        CLOSE_RIGHT(SymbolPosition.VALUE_CLOSE_RIGHT),
-        FAR_RIGHT(SymbolPosition.VALUE_FAR_RIGHT),
-        CLOSE_LEFT(SymbolPosition.VALUE_CLOSE_LEFT),
-        FAR_LEFT(SymbolPosition.VALUE_FAR_LEFT);
-
-        private static final int VALUE_CLOSE_RIGHT = 1;
-        private static final int VALUE_FAR_RIGHT = 2;
-        private static final int VALUE_CLOSE_LEFT = 3;
-        private static final int VALUE_FAR_LEFT = 4;
-
-        private final int value;
-
-        private SymbolPosition(int value) {
-            this.value = value;
-        }
-
-        public static SymbolPosition fromInt(int value) {
-            switch (value) {
-                case VALUE_CLOSE_RIGHT:
-                    return CLOSE_RIGHT;
-
-                case VALUE_FAR_RIGHT:
-                    return FAR_RIGHT;
-
-                case VALUE_CLOSE_LEFT:
-                    return CLOSE_LEFT;
-
-                case VALUE_FAR_LEFT:
-                    return FAR_LEFT;
-
-                default:
-                    throw new IllegalArgumentException("Value " + value + " is not supported.");
-            }
-        }
-
-        public int asInt() {
-            return value;
-        }
-
-        public String explanation(Context context) {
-            final int resId;
-            switch (this) {
-                case CLOSE_RIGHT:
-                    resId = R.string.close_right;
-                    break;
-
-                case FAR_RIGHT:
-                    resId = R.string.far_right;
-                    break;
-
-                case CLOSE_LEFT:
-                    resId = R.string.close_left;
-                    break;
-
-                case FAR_LEFT:
-                    resId = R.string.far_left;
-                    break;
-
-                default:
-                    throw new IllegalArgumentException(this + " explanation is not supported.");
-            }
-            return context.getString(resId);
-        }
     }
 }

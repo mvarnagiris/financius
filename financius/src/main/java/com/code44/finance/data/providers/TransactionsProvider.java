@@ -4,13 +4,13 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 
+import com.code44.finance.common.model.CategoryType;
+import com.code44.finance.common.model.ModelState;
+import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
-import com.code44.finance.data.db.model.BaseModel;
-import com.code44.finance.data.db.model.Category;
-import com.code44.finance.data.db.model.Transaction;
 import com.code44.finance.utils.IOUtils;
 
 import java.util.Map;
@@ -67,8 +67,8 @@ public class TransactionsProvider extends BaseModelProvider {
     }
 
     @Override
-    protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, BaseModel.ItemState itemState, Map<String, Object> extras) {
-        super.onAfterDeleteItems(uri, selection, selectionArgs, itemState, extras);
+    protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> extras) {
+        super.onAfterDeleteItems(uri, selection, selectionArgs, modelState, extras);
         updateAllAccountsBalances();
     }
 
@@ -89,9 +89,9 @@ public class TransactionsProvider extends BaseModelProvider {
                         " when " + Tables.Transactions.ACCOUNT_FROM_ID + "=? then -" + Tables.Transactions.AMOUNT + "" +
                         " when " + Tables.Categories.TYPE + "=? then " + Tables.Transactions.AMOUNT + "*" + Tables.Transactions.EXCHANGE_RATE +
                         " else " + Tables.Transactions.AMOUNT + " end)")
-                .args(String.valueOf(accountId), String.valueOf(Category.Type.TRANSFER.asInt()))
-                .selection(Tables.Transactions.ITEM_STATE + "=?", String.valueOf(BaseModel.ItemState.NORMAL.asInt()))
-                .selection(" and " + Tables.Transactions.STATE + "=?", String.valueOf(Transaction.State.CONFIRMED.asInt()))
+                .args(String.valueOf(accountId), String.valueOf(CategoryType.TRANSFER.asInt()))
+                .selection(Tables.Transactions.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
+                .selection(" and " + Tables.Transactions.STATE + "=?", String.valueOf(TransactionState.CONFIRMED.asInt()))
                 .selection(" and (" + Tables.Transactions.ACCOUNT_FROM_ID + "=? or " + Tables.Transactions.ACCOUNT_TO_ID + "=?)", String.valueOf(accountId), String.valueOf(accountId))
                 .from(database, Tables.Transactions.TABLE_NAME)
                 .innerJoin(Tables.Categories.TABLE_NAME, Tables.Categories.ID.getNameWithTable() + "=" + Tables.Transactions.CATEGORY_ID)
@@ -114,7 +114,7 @@ public class TransactionsProvider extends BaseModelProvider {
     private void updateAllAccountsBalances() {
         final Cursor cursor = Query.create()
                 .projectionId(Tables.Accounts.ID)
-                .selection(Tables.Accounts.ITEM_STATE + "=?", String.valueOf(BaseModel.ItemState.NORMAL.asInt()))
+                .selection(Tables.Accounts.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
                 .from(database, Tables.Accounts.TABLE_NAME)
                 .execute();
         if (cursor.moveToFirst()) {
