@@ -3,19 +3,16 @@ package com.code44.finance.api;
 import android.text.TextUtils;
 
 import de.greenrobot.event.EventBus;
-import retrofit.client.Response;
 
-public abstract class BaseRequestEvent<R, T extends BaseRequest<R, ?>> {
+public abstract class BaseRequestEvent<R, T extends BaseRequest<R>> {
     private final T request;
-    private final Response rawResponse;
-    private final R parsedResponse;
+    private final R result;
     private final Exception error;
     private final State state;
 
-    protected BaseRequestEvent(T request, Response rawResponse, R parsedResponse, Exception error, State state) {
+    protected BaseRequestEvent(T request, R result, Exception error, State state) {
         this.request = request;
-        this.rawResponse = rawResponse;
-        this.parsedResponse = parsedResponse;
+        this.result = result;
         this.error = error;
         this.state = state;
     }
@@ -34,8 +31,8 @@ public abstract class BaseRequestEvent<R, T extends BaseRequest<R, ?>> {
         return request;
     }
 
-    public R getParsedResponse() {
-        return parsedResponse;
+    public R getResult() {
+        return result;
     }
 
     public boolean isWorking() {

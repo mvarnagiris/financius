@@ -1,4 +1,4 @@
-package com.code44.finance.backend;
+package com.code44.finance.common;
 
 public class Constants {
     public static final String WEB_CLIENT_ID = "208536911875-r4cls9on68n2bojsc49ucq6594eh3ool.apps.googleusercontent.com";

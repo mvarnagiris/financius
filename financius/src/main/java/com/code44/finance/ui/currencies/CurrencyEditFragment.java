@@ -363,7 +363,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     public void onEventMainThread(CurrencyRequest.CurrencyRequestEvent event) {
         updateProgressBar();
         if (model != null && CurrencyRequest.getUniqueId(model.getCode(), Currency.getDefault().getCode()).equals(event.getRequest().getUniqueId())) {
-            model.setExchangeRate(event.getParsedResponse().getExchangeRate());
+            model.setExchangeRate(event.getResult().getExchangeRate());
             onModelLoaded(model);
         }
     }

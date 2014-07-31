@@ -1,11 +1,11 @@
 package com.code44.finance.backend.endpoint;
 
-import com.code44.finance.backend.Constants;
 import com.code44.finance.backend.endpoint.body.RegisterBody;
 import com.code44.finance.backend.endpoint.body.RegisterDeviceBody;
 import com.code44.finance.backend.entity.Device;
 import com.code44.finance.backend.entity.UserAccount;
 import com.code44.finance.backend.utils.EndpointUtils;
+import com.code44.finance.common.Constants;
 import com.google.api.server.spi.Constant;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -15,8 +15,6 @@ import com.google.api.server.spi.response.ForbiddenException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
-
-import java.util.logging.Logger;
 
 import javax.inject.Named;
 
@@ -35,8 +33,6 @@ import static com.code44.finance.backend.OfyService.ofy;
         )
 )
 public class UsersEndpoint {
-    private static final Logger LOGGER = Logger.getLogger(UsersEndpoint.class.getName());
-
     @ApiMethod(name = "register", httpMethod = "POST", path = "")
     public UserAccount register(RegisterBody body, User user) throws OAuthRequestException, BadRequestException {
         EndpointUtils.verifyUserNotNull(user);
@@ -79,10 +75,9 @@ public class UsersEndpoint {
 
         final UserAccount userAccount = EndpointUtils.getUserAccountAndVerifyPermissions(user);
 
+        body.verifyRequiredFields();
         Device device = Device.find(body.getRegId());
         if (device == null) {
-            body.verifyRequiredFields();
-
             device = new Device();
             device.onCreate();
         } else {
