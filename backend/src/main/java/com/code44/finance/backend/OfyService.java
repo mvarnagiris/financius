@@ -1,5 +1,7 @@
 package com.code44.finance.backend;
 
+import com.code44.finance.backend.entity.Device;
+import com.code44.finance.backend.entity.UserAccount;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
@@ -11,7 +13,8 @@ import com.googlecode.objectify.ObjectifyService;
 public class OfyService {
 
     static {
-        ObjectifyService.register(RegistrationRecord.class);
+        ObjectifyService.register(UserAccount.class);
+        ObjectifyService.register(Device.class);
     }
 
     public static Objectify ofy() {
