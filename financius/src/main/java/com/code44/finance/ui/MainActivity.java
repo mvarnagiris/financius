@@ -16,6 +16,7 @@ import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.ui.accounts.AccountsFragment;
 import com.code44.finance.ui.transactions.TransactionsFragment;
+import com.code44.finance.ui.user.UserFragment;
 
 public class MainActivity extends BaseActivity implements NavigationFragment.NavigationListener, ModelListFragment.ModelListFragmentCallbacks {
     private static final String FRAGMENT_CONTENT = "FRAGMENT_CONTENT";
@@ -87,6 +88,11 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
         String title = null;
         BaseFragment baseFragment = null;
         switch (item.getId()) {
+            case NavigationAdapter.NAV_ID_USER:
+                baseFragment = UserFragment.newInstance();
+                title = getString(R.string.user);
+                break;
+
             case NavigationAdapter.NAV_ID_OVERVIEW:
                 baseFragment = OverviewFragment.newInstance();
                 title = getString(R.string.overview);

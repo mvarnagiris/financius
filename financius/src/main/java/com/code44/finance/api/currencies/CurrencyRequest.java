@@ -15,13 +15,15 @@ import com.google.gson.JsonObject;
 
 import retrofit.client.Response;
 
-public class CurrencyRequest extends BaseRequest<Currency, CurrenciesRequestService> {
+public class CurrencyRequest extends BaseRequest<Currency> {
+    private final CurrenciesRequestService requestService;
     private final Context context;
     private final String fromCode;
     private final String toCode;
 
     public CurrencyRequest(CurrenciesRequestService requestService, Context context, String fromCode, String toCode) {
-        super(requestService);
+        super(getUniqueId(fromCode, toCode));
+        this.requestService = requestService;
         this.context = context;
         this.fromCode = fromCode;
         this.toCode = toCode;
@@ -32,12 +34,11 @@ public class CurrencyRequest extends BaseRequest<Currency, CurrenciesRequestServ
     }
 
     @Override
-    protected Response performRequest(CurrenciesRequestService requestService) throws Exception {
-        return requestService.getExchangeRate(fromCode, toCode);
+    protected Currency performRequest() throws Exception {
+        return parseResponse(requestService.getExchangeRate(fromCode, toCode));
     }
 
-    @Override
-    protected Currency parseResponse(Response rawResponse) throws Exception {
+    private Currency parseResponse(Response rawResponse) throws Exception {
         final JsonObject json = IOUtils.readJsonObject(rawResponse);
         final double exchangeRate = json.get("rate").getAsDouble();
 
@@ -65,13 +66,13 @@ public class CurrencyRequest extends BaseRequest<Currency, CurrenciesRequestServ
     }
 
     @Override
-    protected BaseRequestEvent<Currency, ? extends BaseRequest<Currency, CurrenciesRequestService>> createEvent(Response rawResponse, Currency parsedResponse, Exception error, BaseRequestEvent.State state) {
-        return new CurrencyRequestEvent(this, rawResponse, parsedResponse, error, state);
+    protected BaseRequestEvent<Currency, ? extends BaseRequest<Currency>> createEvent(Currency result, Exception error, BaseRequestEvent.State state) {
+        return new CurrencyRequestEvent(this, result, error, state);
     }
 
     public static class CurrencyRequestEvent extends BaseRequestEvent<Currency, CurrencyRequest> {
-        protected CurrencyRequestEvent(CurrencyRequest request, Response rawResponse, Currency parsedResponse, Exception error, State state) {
-            super(request, rawResponse, parsedResponse, error, state);
+        protected CurrencyRequestEvent(CurrencyRequest request, Currency result, Exception error, State state) {
+            super(request, result, error, state);
         }
     }
 }

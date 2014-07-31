@@ -51,7 +51,6 @@ public final class DBDefaults {
                 currency.setSymbol(javaCurrency.getSymbol());
                 currency.setDecimalCount(javaCurrency.getDefaultFractionDigits());
                 currency.setDefault(code.equals(mainCurrencyCode));
-                currency.checkValues();
                 db.insert(Tables.Currencies.TABLE_NAME, null, currency.asContentValues());
             }
         }
@@ -71,6 +70,7 @@ public final class DBDefaults {
     private static void addCategories(Context context, SQLiteDatabase db) {
         final Category expenseCategory = new Category();
         expenseCategory.setId(Category.EXPENSE_ID);
+        expenseCategory.setServerId(UUID.randomUUID().toString());
         expenseCategory.setTitle(context.getString(R.string.expense));
         expenseCategory.setColor(context.getResources().getColor(R.color.text_negative));
         expenseCategory.setCategoryType(CategoryType.EXPENSE);
@@ -79,6 +79,7 @@ public final class DBDefaults {
 
         final Category incomeCategory = new Category();
         incomeCategory.setId(Category.INCOME_ID);
+        incomeCategory.setServerId(UUID.randomUUID().toString());
         incomeCategory.setTitle(context.getString(R.string.income));
         incomeCategory.setColor(context.getResources().getColor(R.color.text_positive));
         incomeCategory.setCategoryType(CategoryType.INCOME);
@@ -87,6 +88,7 @@ public final class DBDefaults {
 
         final Category transferCategory = new Category();
         transferCategory.setId(Category.TRANSFER_ID);
+        transferCategory.setServerId(UUID.randomUUID().toString());
         transferCategory.setTitle(context.getString(R.string.transfer));
         transferCategory.setColor(context.getResources().getColor(R.color.text_neutral));
         transferCategory.setCategoryType(CategoryType.TRANSFER);
@@ -127,6 +129,7 @@ public final class DBDefaults {
         int order = 0;
         for (String title : titles) {
             final Category category = new Category();
+            category.setServerId(UUID.randomUUID().toString());
             category.setTitle(title);
             category.setColor(Color.parseColor(colors[order % colors.length]));
             category.setCategoryType(type);

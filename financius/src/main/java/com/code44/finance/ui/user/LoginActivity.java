@@ -15,15 +15,14 @@ import de.greenrobot.event.EventBus;
 
 public class LoginActivity extends BaseActivity {
     private static final String FRAGMENT_GOOGLE_PLUS = "FRAGMENT_GOOGLE_PLUS";
-    // -----------------------------------------------------------------------------------------------------------------
-    private static final String STATE_CLEAR_DEFAULT_ACCOUNT = "STATE_CLEAR_DEFAULT_ACCOUNT";
-    // -----------------------------------------------------------------------------------------------------------------
-    private static final String UNIQUE_GOOGLE_CLIENT_ID = LoginActivity.class.getName();
-    // -----------------------------------------------------------------------------------------------------------------
-    private GoogleApiFragment googleApi_F;
-    // -----------------------------------------------------------------------------------------------------------------
-    private boolean clearDefaultAccount;
 
+    private static final String STATE_CLEAR_DEFAULT_ACCOUNT = "STATE_CLEAR_DEFAULT_ACCOUNT";
+
+    private static final String UNIQUE_GOOGLE_CLIENT_ID = LoginActivity.class.getName();
+
+    private GoogleApiFragment googleApi_F;
+
+    private boolean clearDefaultAccount;
 
     public static void start(Context context, View expandFrom) {
         startScaleUp(context, makeIntent(context, LoginActivity.class), expandFrom);

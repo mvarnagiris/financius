@@ -13,9 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NavigationAdapter extends BaseAdapter {
-    public static final int NAV_ID_OVERVIEW = 1;
-    public static final int NAV_ID_ACCOUNTS = 2;
-    public static final int NAV_ID_TRANSACTIONS = 3;
+    public static final int NAV_ID_USER = 1;
+    public static final int NAV_ID_OVERVIEW = 2;
+    public static final int NAV_ID_ACCOUNTS = 3;
+    public static final int NAV_ID_TRANSACTIONS = 4;
 
     private final Context context;
     private final List<NavigationItem> items;
@@ -26,6 +27,7 @@ public class NavigationAdapter extends BaseAdapter {
         this.context = context;
 
         items = new ArrayList<>();
+        items.add(new NavigationItem(NAV_ID_USER, context.getString(R.string.user)));
         items.add(new NavigationItem(NAV_ID_OVERVIEW, context.getString(R.string.overview)));
         items.add(new NavigationItem(NAV_ID_ACCOUNTS, context.getString(R.string.accounts)));
         items.add(new NavigationItem(NAV_ID_TRANSACTIONS, context.getString(R.string.transactions)));
