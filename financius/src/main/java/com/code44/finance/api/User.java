@@ -1,8 +1,10 @@
 package com.code44.finance.api;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.code44.finance.App;
+import com.code44.finance.data.db.DBHelper;
 import com.code44.finance.utils.Prefs;
 
 import de.greenrobot.event.EventBus;
@@ -11,6 +13,8 @@ public class User extends Prefs {
     private static final String PREFIX = "user_";
 
     private static User singleton;
+
+    private final DBHelper dbHelper;
 
     private String id;
     private String googleId;
@@ -21,14 +25,15 @@ public class User extends Prefs {
     private String coverUrl;
     private boolean isPremium;
 
-    private User(Context context) {
+    private User(Context context, DBHelper dbHelper) {
         super(context);
+        this.dbHelper = dbHelper;
         refresh();
     }
 
     public static synchronized User get() {
         if (singleton == null) {
-            singleton = new User(App.getAppContext());
+            singleton = new User(App.getAppContext(), DBHelper.get(App.getAppContext()));
         }
         return singleton;
     }
@@ -51,6 +56,22 @@ public class User extends Prefs {
         photoUrl = getString("photoUrl", null);
         coverUrl = getString("coverUrl", null);
         isPremium = getBoolean("isPremium", false);
+    }
+
+    public void clear() {
+        clear("id", "googleId", "email", "firstName", "lastName", "photoUrl", "coverUrl", "isPremium");
+        refresh();
+    }
+
+    public void logout() {
+        clear();
+        EventBus.getDefault().post(new UserChangedEvent());
+        //gcmRegistration.clear();
+        dbHelper.clearDatabase();
+    }
+
+    public boolean isLoggedIn() {
+        return !TextUtils.isEmpty(email);
     }
 
     public String getId() {

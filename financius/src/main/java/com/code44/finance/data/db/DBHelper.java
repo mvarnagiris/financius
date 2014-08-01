@@ -22,8 +22,9 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public static synchronized DBHelper get(Context context) {
-        if (singleton == null)
+        if (singleton == null) {
             singleton = new DBHelper(context);
+        }
         return singleton;
     }
 
@@ -41,5 +42,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    }
+
+    public void clearDatabase() {
+        // TODO Clear database for the user
     }
 }

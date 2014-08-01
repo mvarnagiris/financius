@@ -50,6 +50,7 @@
     <string name="open_navigation">Open navigation</string>
     <string name="close_navigation">Close navigation</string>
     <string name="login">Login</string>
+    <string name="logout">Logout</string>
     <string name="user">User</string>
 
     <string name="f_change_to_x">Change to %s</string>
