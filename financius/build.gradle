@@ -50,6 +50,7 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.2.0'
     compile 'com.github.castorflex.smoothprogressbar:library:0.5.1'
     compile 'com.squareup.retrofit:retrofit:1.6.0'
+    compile 'com.squareup.picasso:picasso:2.+'
     compile 'org.beanshell:bsh-core:2.0b4'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.larswerkman:HoloColorPicker:1.+'
