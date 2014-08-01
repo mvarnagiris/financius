@@ -35,8 +35,20 @@ public abstract class BaseRequestEvent<R, T extends BaseRequest<R>> {
         return result;
     }
 
+    public Exception getError() {
+        return error;
+    }
+
     public boolean isWorking() {
         return state == State.WORKING;
+    }
+
+    public boolean isFinished() {
+        return state == State.FINISHED;
+    }
+
+    public boolean isError() {
+        return error != null;
     }
 
     public static enum State {

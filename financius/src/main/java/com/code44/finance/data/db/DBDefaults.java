@@ -47,6 +47,7 @@ public final class DBDefaults {
             java.util.Currency javaCurrency = getCurrencyFromCode(code);
             if (javaCurrency != null) {
                 Currency currency = new Currency();
+                currency.setServerId(code);
                 currency.setCode(code);
                 currency.setSymbol(javaCurrency.getSymbol());
                 currency.setDecimalCount(javaCurrency.getDefaultFractionDigits());

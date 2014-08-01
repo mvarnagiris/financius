@@ -254,7 +254,6 @@ public class Currency extends BaseModel {
 
     public void setCode(String code) {
         this.code = code;
-        setServerId(code);
     }
 
     public String getSymbol() {

@@ -4,7 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
+import com.code44.finance.R;
+import com.code44.finance.api.financius.FinanciusApi;
+import com.code44.finance.api.financius.requests.RegisterRequest;
 import com.code44.finance.ui.BaseActivity;
 import com.code44.finance.ui.GoogleApiFragment;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -37,7 +41,7 @@ public class LoginActivity extends BaseActivity {
         // Setup ActionBar
         //noinspection ConstantConditions
         getActionBar().setDisplayHomeAsUpEnabled(false);
-        //setActionBarTitle(R.string.log_in);
+        setActionBarTitle(R.string.login);
 
 
         // Restore state
@@ -57,7 +61,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         EventBus.getDefault().unregister(this);
     }
 
@@ -78,21 +81,21 @@ public class LoginActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-//    @SuppressWarnings("UnusedDeclaration")
-//    public void onEventMainThread(RegisterUserRequest.RegisterUserEvent event) {
-//        if (event.isFinished()) {
-//            if (event.isError()) {
-//                GoogleApiClient client = googleApi_F.getClient();
-//                if (client != null && client.isConnected()) {
-//                    Plus.AccountApi.clearDefaultAccount(client);
-//                }
-//
-//                //noinspection ThrowableResultOfMethodCallIgnored
-//                Toast.makeText(this, event.getError().getMessage(), Toast.LENGTH_LONG).show();
-//            }
-//            finish();
-//        }
-//    }
+    @SuppressWarnings("UnusedDeclaration")
+    public void onEventMainThread(RegisterRequest.RegisterRequestEvent event) {
+        if (event.isFinished()) {
+            if (event.isError()) {
+                GoogleApiClient client = googleApi_F.getClient();
+                if (client != null && client.isConnected()) {
+                    Plus.AccountApi.clearDefaultAccount(client);
+                }
+
+                //noinspection ThrowableResultOfMethodCallIgnored
+                Toast.makeText(this, event.getError().getMessage(), Toast.LENGTH_LONG).show();
+            }
+            finish();
+        }
+    }
 
     @SuppressWarnings("UnusedDeclaration")
     public void onEventMainThread(GoogleApiFragment.GoogleApiConnectedEvent event) {
@@ -123,10 +126,10 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void login(Person person, String email) {
-        String googleId = person.getId();
-        String firstName = person.getName().getGivenName();
-        String lastName = person.getName().getFamilyName();
-        String photoUrl = person.getImage().getUrl();
-//        EndpointsApi.get().registerUser(googleId, email, firstName, lastName, photoUrl);
+        final String googleId = person.getId();
+        final String firstName = person.getName().getGivenName();
+        final String lastName = person.getName().getFamilyName();
+        final String photoUrl = person.getImage().getUrl();
+        FinanciusApi.get().register(email, googleId, firstName, lastName, photoUrl);
     }
 }

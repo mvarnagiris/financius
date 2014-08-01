@@ -13,8 +13,8 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 
 public abstract class FinanciusBaseRequest<R> extends BaseRequest<R> {
-    private final Context context;
-    private final User user;
+    protected final Context context;
+    protected final User user;
 
     public FinanciusBaseRequest(String uniqueId, Context context, User user) {
         super(uniqueId);
