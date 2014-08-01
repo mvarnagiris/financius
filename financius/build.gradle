@@ -9,7 +9,7 @@ android {
         minSdkVersion 'L'
         versionCode 46
         versionName '0.10.0'
-        buildConfigField "String", "TEST_SERVER_IP", "\"192.168.228.143\""
+        buildConfigField "String", "TEST_SERVER_IP", "\"192.168.0.7\""
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
