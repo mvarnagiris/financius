@@ -9,12 +9,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.api.User;
 import com.code44.finance.ui.BaseFragment;
 
+import de.greenrobot.event.EventBus;
+
 public class UserFragment extends BaseFragment implements View.OnClickListener {
+    private ImageView cover_IV;
+    private ImageView photo_IV;
+    private TextView name_TV;
     private Button login_B;
 
     public static UserFragment newInstance() {
@@ -37,10 +44,26 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
+        cover_IV = (ImageView) view.findViewById(R.id.cover_IV);
+        photo_IV = (ImageView) view.findViewById(R.id.photo_IV);
+        name_TV = (TextView) view.findViewById(R.id.name_TV);
         login_B = (Button) view.findViewById(R.id.login_B);
 
         // Setup
         login_B.setOnClickListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateViews();
+        EventBus.getDefault().registerSticky(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -65,6 +88,28 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
             case R.id.login_B:
                 LoginActivity.start(getActivity(), view);
                 break;
+        }
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void onEventMainThread(User.UserChangedEvent event) {
+        updateViews();
+    }
+
+    private void updateViews() {
+        final User user = User.get();
+        if (user.isLoggedIn()) {
+            cover_IV.setVisibility(View.VISIBLE);
+            photo_IV.setVisibility(View.VISIBLE);
+            name_TV.setVisibility(View.VISIBLE);
+            login_B.setVisibility(View.GONE);
+
+            name_TV.setText(user.getFirstName() + " " + user.getLastName());
+        } else {
+            cover_IV.setVisibility(View.GONE);
+            photo_IV.setVisibility(View.GONE);
+            name_TV.setVisibility(View.GONE);
+            login_B.setVisibility(View.VISIBLE);
         }
     }
 

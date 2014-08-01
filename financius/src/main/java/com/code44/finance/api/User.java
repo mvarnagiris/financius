@@ -15,6 +15,7 @@ public class User extends Prefs {
     private static User singleton;
 
     private final DBHelper dbHelper;
+    private final GcmRegistration gcmRegistration;
 
     private String id;
     private String googleId;
@@ -25,15 +26,16 @@ public class User extends Prefs {
     private String coverUrl;
     private boolean isPremium;
 
-    private User(Context context, DBHelper dbHelper) {
+    private User(Context context, DBHelper dbHelper, GcmRegistration gcmRegistration) {
         super(context);
         this.dbHelper = dbHelper;
+        this.gcmRegistration = gcmRegistration;
         refresh();
     }
 
     public static synchronized User get() {
         if (singleton == null) {
-            singleton = new User(App.getAppContext(), DBHelper.get(App.getAppContext()));
+            singleton = new User(App.getAppContext(), DBHelper.get(App.getAppContext()), GcmRegistration.get());
         }
         return singleton;
     }
@@ -66,7 +68,7 @@ public class User extends Prefs {
     public void logout() {
         clear();
         EventBus.getDefault().post(new UserChangedEvent());
-        //gcmRegistration.clear();
+        gcmRegistration.clear();
         dbHelper.clearDatabase();
     }
 

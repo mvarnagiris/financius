@@ -30,17 +30,22 @@ public class RegisterRequest extends FinanciusBaseRequest<User> {
 
     @Override
     protected User performRequest(HttpTransport httpTransport, JsonFactory jsonFactory, HttpRequestInitializer httpRequestInitializer) throws Exception {
-        final UserAccount userAccount = new Users.Builder(httpTransport, jsonFactory, httpRequestInitializer)
-                .build()
-                .register(body)
-                .execute();
+        try {
+            final UserAccount userAccount = new Users.Builder(httpTransport, jsonFactory, httpRequestInitializer)
+                    .build()
+                    .register(body)
+                    .execute();
 
-        user.setId(userAccount.getId());
-        user.setEmail(userAccount.getEmail());
-        user.setGoogleId(userAccount.getGoogleId());
-        user.setFirstName(userAccount.getFirstName());
-        user.setLastName(userAccount.getLastName());
-        user.setPremium(userAccount.getPremium());
+            user.setId(userAccount.getId());
+            user.setEmail(userAccount.getEmail());
+            user.setGoogleId(userAccount.getGoogleId());
+            user.setFirstName(userAccount.getFirstName());
+            user.setLastName(userAccount.getLastName());
+            user.setPremium(userAccount.getPremium());
+        } catch (Exception e) {
+            user.clear();
+            throw e;
+        }
         User.notifyUserChanged();
 
         return user;
