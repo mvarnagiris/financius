@@ -2,6 +2,7 @@ package com.code44.finance.api.financius.requests;
 
 import android.content.Context;
 
+import com.code44.finance.BuildConfig;
 import com.code44.finance.api.BaseRequest;
 import com.code44.finance.api.BaseRequestEvent;
 import com.code44.finance.api.User;
@@ -32,6 +33,7 @@ public class RegisterRequest extends FinanciusBaseRequest<User> {
     protected User performRequest(HttpTransport httpTransport, JsonFactory jsonFactory, HttpRequestInitializer httpRequestInitializer) throws Exception {
         try {
             final UserAccount userAccount = new Users.Builder(httpTransport, jsonFactory, httpRequestInitializer)
+                    .setRootUrl("http://" + BuildConfig.TEST_SERVER_IP + ":8080/_ah/api")
                     .build()
                     .register(body)
                     .execute();

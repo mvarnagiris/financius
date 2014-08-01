@@ -38,7 +38,7 @@ public abstract class FinanciusBaseRequest<R> extends BaseRequest<R> {
     }
 
     protected HttpRequestInitializer getHttpRequestInitializer() {
-        final GoogleAccountCredential credential = GoogleAccountCredential.usingAudience(context, Constants.ANDROID_AUDIENCE);
+        final GoogleAccountCredential credential = GoogleAccountCredential.usingAudience(context, "server:client_id:" + Constants.ANDROID_AUDIENCE);
         credential.setSelectedAccountName(getAccountName());
         return credential;
     }
