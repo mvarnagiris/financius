@@ -30,8 +30,8 @@ public final class FinanciusApi {
         return singleton;
     }
 
-    public void register(String email, String googleId, String firstName, String lastName, String photoUrl) {
-        final RegisterRequest request = new RegisterRequest(context, user, email, googleId, firstName, lastName, photoUrl);
+    public void register(String email, String googleId, String firstName, String lastName, String photoUrl, String coverUrl) {
+        final RegisterRequest request = new RegisterRequest(context, user, email, googleId, firstName, lastName, photoUrl, coverUrl);
         execute(request);
     }
 

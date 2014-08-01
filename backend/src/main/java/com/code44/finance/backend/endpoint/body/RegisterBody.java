@@ -17,6 +17,9 @@ public class RegisterBody implements Body {
     @SerializedName(value = "photo_url")
     private String photoUrl;
 
+    @SerializedName(value = "cover_url")
+    private String coverUrl;
+
     public void verifyRequiredFields() throws BadRequestException {
         if (StringUtils.isEmpty(googleId)) {
             throw new BadRequestException("google_id cannot be empty.");
@@ -57,5 +60,13 @@ public class RegisterBody implements Body {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 }

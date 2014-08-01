@@ -14,7 +14,8 @@ public class UserAccount extends BaseEntity {
     private String googleId;
     @Index
     private String email;
-    private String photoURL;
+    private String photoUrl;
+    private String coverUrl;
     private String firstName;
     private String lastName;
     private boolean isPremium;
@@ -40,12 +41,20 @@ public class UserAccount extends BaseEntity {
         this.email = email;
     }
 
-    public String getPhotoURL() {
-        return photoURL;
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 
-    public void setPhotoURL(String photoURL) {
-        this.photoURL = photoURL;
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 
     public String getFirstName() {

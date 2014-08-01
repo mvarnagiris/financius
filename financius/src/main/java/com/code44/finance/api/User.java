@@ -18,6 +18,7 @@ public class User extends Prefs {
     private String firstName;
     private String lastName;
     private String photoUrl;
+    private String coverUrl;
     private boolean isPremium;
 
     private User(Context context) {
@@ -48,6 +49,7 @@ public class User extends Prefs {
         firstName = getString("firstName", null);
         lastName = getString("lastName", null);
         photoUrl = getString("photoUrl", null);
+        coverUrl = getString("coverUrl", null);
         isPremium = getBoolean("isPremium", false);
     }
 
@@ -103,6 +105,15 @@ public class User extends Prefs {
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
         setString("photoUrl", photoUrl);
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
+        setString("coverUrl", coverUrl);
     }
 
     public boolean isPremium() {

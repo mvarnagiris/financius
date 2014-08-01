@@ -15,7 +15,7 @@ import com.google.api.client.json.JsonFactory;
 public class RegisterRequest extends FinanciusBaseRequest<User> {
     private final RegisterBody body;
 
-    public RegisterRequest(Context context, User user, String email, String googleId, String firstName, String lastName, String photoUrl) {
+    public RegisterRequest(Context context, User user, String email, String googleId, String firstName, String lastName, String photoUrl, String coverUrl) {
         super(null, context, user);
 
         user.setEmail(email);
@@ -25,6 +25,7 @@ public class RegisterRequest extends FinanciusBaseRequest<User> {
         body.setFirstName(firstName);
         body.setLastName(lastName);
         body.setPhotoUrl(photoUrl);
+        body.setCoverUrl(coverUrl);
     }
 
     @Override

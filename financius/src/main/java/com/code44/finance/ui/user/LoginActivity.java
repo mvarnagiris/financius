@@ -130,6 +130,7 @@ public class LoginActivity extends BaseActivity {
         final String firstName = person.getName().getGivenName();
         final String lastName = person.getName().getFamilyName();
         final String photoUrl = person.getImage().getUrl();
-        FinanciusApi.get().register(email, googleId, firstName, lastName, photoUrl);
+        final String coverUrl = person.getCover().getCoverPhoto().getUrl();
+        FinanciusApi.get().register(email, googleId, firstName, lastName, photoUrl, coverUrl);
     }
 }

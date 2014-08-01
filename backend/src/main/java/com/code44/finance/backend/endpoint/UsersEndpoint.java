@@ -121,7 +121,11 @@ public class UsersEndpoint {
         }
 
         if (body.getPhotoUrl() != null) {
-            userAccount.setPhotoURL(body.getPhotoUrl());
+            userAccount.setPhotoUrl(body.getPhotoUrl());
+        }
+
+        if (body.getCoverUrl() != null) {
+            userAccount.setCoverUrl(body.getCoverUrl());
         }
     }
 
