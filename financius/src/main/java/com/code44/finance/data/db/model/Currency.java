@@ -9,6 +9,7 @@ import android.os.Parcelable;
 import com.code44.finance.App;
 import com.code44.finance.common.model.DecimalSeparator;
 import com.code44.finance.common.model.GroupSeparator;
+import com.code44.finance.common.model.ModelState;
 import com.code44.finance.common.model.SymbolPosition;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.Query;
@@ -103,6 +104,21 @@ public class Currency extends BaseModel {
         if (cursor.getCount() > 0) {
             currency.updateFrom(cursor, Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY);
         }
+        return currency;
+    }
+
+    public static Currency from(com.code44.finance.backend.endpoint.currencies.model.Currency serverCurrency) {
+        final Currency currency = new Currency();
+        currency.setServerId(serverCurrency.getId());
+        currency.setModelState(ModelState.valueOf(serverCurrency.getModelState()));
+        currency.setSyncState(SyncState.SYNCED);
+        currency.setCode(serverCurrency.getCode());
+        currency.setSymbol(serverCurrency.getSymbol());
+        currency.setSymbolPosition(SymbolPosition.valueOf(serverCurrency.getSymbolPosition()));
+        currency.setDecimalSeparator(DecimalSeparator.valueOf(serverCurrency.getDecimalSeparator()));
+        currency.setGroupSeparator(GroupSeparator.valueOf(serverCurrency.getGroupSeparator()));
+        currency.setDecimalCount(serverCurrency.getDecimalCount());
+        currency.setDefault(serverCurrency.getDefault());
         return currency;
     }
 
@@ -246,6 +262,20 @@ public class Currency extends BaseModel {
         if (Double.compare(exchangeRate, 0.0) < 0) {
             throw new IllegalStateException("Exchange rate must be > 0");
         }
+    }
+
+    public com.code44.finance.backend.endpoint.currencies.model.Currency toEntity() {
+        final com.code44.finance.backend.endpoint.currencies.model.Currency entity = new com.code44.finance.backend.endpoint.currencies.model.Currency();
+        entity.setId(getServerId());
+        entity.setModelState(getModelState().toString());
+        entity.setCode(getCode());
+        entity.setSymbol(getSymbol());
+        entity.setSymbolPosition(getSymbolPosition().toString());
+        entity.setDecimalSeparator(getDecimalSeparator().toString());
+        entity.setGroupSeparator(getGroupSeparator().toString());
+        entity.setDecimalCount(getDecimalCount());
+        entity.setIsDefault(isDefault());
+        return entity;
     }
 
     public String getCode() {

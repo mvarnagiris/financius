@@ -2,16 +2,11 @@ package com.code44.finance.api.financius.requests;
 
 import android.content.Context;
 
-import com.code44.finance.BuildConfig;
 import com.code44.finance.api.BaseRequest;
 import com.code44.finance.api.BaseRequestEvent;
 import com.code44.finance.api.User;
-import com.code44.finance.backend.endpoint.users.Users;
 import com.code44.finance.backend.endpoint.users.model.RegisterBody;
 import com.code44.finance.backend.endpoint.users.model.UserAccount;
-import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
 
 public class RegisterRequest extends FinanciusBaseRequest<User> {
     private final RegisterBody body;
@@ -30,13 +25,9 @@ public class RegisterRequest extends FinanciusBaseRequest<User> {
     }
 
     @Override
-    protected User performRequest(HttpTransport httpTransport, JsonFactory jsonFactory, HttpRequestInitializer httpRequestInitializer) throws Exception {
+    protected User performRequest() throws Exception {
         try {
-            final UserAccount userAccount = new Users.Builder(httpTransport, jsonFactory, httpRequestInitializer)
-                    .setRootUrl("http://" + BuildConfig.TEST_SERVER_IP + ":8080/_ah/api")
-                    .build()
-                    .register(body)
-                    .execute();
+            final UserAccount userAccount = getUsersService().register(body).execute();
 
             user.setId(userAccount.getId());
             user.setEmail(userAccount.getEmail());

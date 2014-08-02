@@ -3,9 +3,11 @@ package com.code44.finance.api.financius;
 import android.content.Context;
 
 import com.code44.finance.App;
+import com.code44.finance.api.BaseRequestEvent;
 import com.code44.finance.api.User;
 import com.code44.finance.api.financius.requests.FinanciusBaseRequest;
 import com.code44.finance.api.financius.requests.RegisterRequest;
+import com.code44.finance.api.financius.requests.SyncRequest;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -31,7 +33,20 @@ public final class FinanciusApi {
     }
 
     public void register(String email, String googleId, String firstName, String lastName, String photoUrl, String coverUrl) {
+        if (BaseRequestEvent.isWorking(RegisterRequest.RegisterRequestEvent.class, null)) {
+            return;
+        }
+
         final RegisterRequest request = new RegisterRequest(context, user, email, googleId, firstName, lastName, photoUrl, coverUrl);
+        execute(request);
+    }
+
+    public void sync() {
+        if (BaseRequestEvent.isWorking(SyncRequest.SyncRequestEvent.class, null)) {
+            return;
+        }
+
+        final SyncRequest request = new SyncRequest(context, user);
         execute(request);
     }
 

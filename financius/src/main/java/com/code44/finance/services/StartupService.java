@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.text.format.DateUtils;
 
+import com.code44.finance.api.User;
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
+import com.code44.finance.api.financius.FinanciusApi;
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
@@ -22,10 +24,14 @@ public class StartupService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         undoUncommittedDeletes();
         updateCurrenciesIfNecessary();
+
+        if (User.get().isPremium()) {
+            FinanciusApi.get().sync();
+        }
     }
 
     private void undoUncommittedDeletes() {
-        // This is necessary, because while DeleteFragment is visible, the app can terminate and we woud need to handle
+        // This is necessary, because while DeleteFragment is visible, the app can terminate and we would need to handle
         // uncommitted deletes.
         // TODO Undo
     }
