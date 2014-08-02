@@ -1,15 +1,24 @@
 package com.code44.finance.backend.entity;
 
 import com.code44.finance.common.model.ModelState;
+import com.code44.finance.common.utils.StringUtils;
+import com.google.api.server.spi.config.ApiResourceProperty;
 import com.googlecode.objectify.annotation.Id;
 
 import java.util.UUID;
 
 public class BaseEntity {
     @Id
+    @ApiResourceProperty(name = "id")
     private String id;
+
+    @ApiResourceProperty(name = "model_state")
     private ModelState modelState;
+
+    @ApiResourceProperty(name = "create_ts")
     private long createTimestamp;
+
+    @ApiResourceProperty(name = "edit_ts")
     private long editTimestamp;
 
     protected BaseEntity() {
@@ -17,7 +26,9 @@ public class BaseEntity {
     }
 
     public void onCreate() {
-        setId(UUID.randomUUID().toString());
+        if (StringUtils.isEmpty(getId())) {
+            setId(UUID.randomUUID().toString());
+        }
         final long timestamp = System.currentTimeMillis();
         setCreateTimestamp(timestamp);
         setEditTimestamp(timestamp);

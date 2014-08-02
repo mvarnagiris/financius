@@ -1,29 +1,26 @@
 package com.code44.finance.backend.entity;
 
+import com.google.api.server.spi.config.AnnotationBoolean;
+import com.google.api.server.spi.config.ApiResourceProperty;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 
 import static com.code44.finance.backend.OfyService.ofy;
 
 @Entity
 public class Device extends BaseEntity {
-    private UserAccount userAccount;
+    @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
+    private Key<UserAccount> userAccount;
 
     public static Device find(String id) {
         return ofy().load().type(Device.class).id(id).now();
     }
 
-    public UserAccount getUserAccount() {
+    public Key<UserAccount> getUserAccount() {
         return userAccount;
     }
 
-    public void setUserAccount(UserAccount userAccount) {
-        if (userAccount == null) {
-            throw new NullPointerException("UserAccount cannot be null.");
-        }
-
+    public void setUserAccount(Key<UserAccount> userAccount) {
         this.userAccount = userAccount;
-        if (!userAccount.getDevices().contains(this)) {
-            userAccount.addDevice(this);
-        }
     }
 }

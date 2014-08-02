@@ -1,36 +1,38 @@
 package com.code44.finance.backend.entity;
 
+import com.google.api.server.spi.config.ApiResourceProperty;
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import static com.code44.finance.backend.OfyService.ofy;
 
 @Entity
 public class UserAccount extends BaseEntity {
-    private String googleId;
     @Index
+    @ApiResourceProperty(name = "email")
     private String email;
+
+    @ApiResourceProperty(name = "google_id")
+    private String googleId;
+
+    @ApiResourceProperty(name = "photo_url")
     private String photoUrl;
+
+    @ApiResourceProperty(name = "cover_url")
     private String coverUrl;
+
+    @ApiResourceProperty(name = "first_name")
     private String firstName;
+
+    @ApiResourceProperty(name = "last_name")
     private String lastName;
+
+    @ApiResourceProperty(name = "is_premium")
     private boolean isPremium;
-    private Set<Device> devices = new HashSet<Device>();
 
     public static UserAccount find(User user) {
         return ofy().load().type(UserAccount.class).filter("email", user.getEmail()).first().now();
-    }
-
-    public String getGoogleId() {
-        return googleId;
-    }
-
-    public void setGoogleId(String googleId) {
-        this.googleId = googleId;
     }
 
     public String getEmail() {
@@ -39,6 +41,14 @@ public class UserAccount extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
     }
 
     public String getPhotoUrl() {
@@ -79,20 +89,5 @@ public class UserAccount extends BaseEntity {
 
     public void setPremium(boolean isPremium) {
         this.isPremium = isPremium;
-    }
-
-    public Set<Device> getDevices() {
-        return devices;
-    }
-
-    public void addDevice(Device device) {
-        if (device == null) {
-            throw new NullPointerException("Device cannot be null.");
-        }
-
-        this.devices.add(device);
-        if (device.getUserAccount() != this) {
-            device.setUserAccount(this);
-        }
     }
 }

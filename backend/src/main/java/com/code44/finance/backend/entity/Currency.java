@@ -3,18 +3,50 @@ package com.code44.finance.backend.entity;
 import com.code44.finance.common.model.DecimalSeparator;
 import com.code44.finance.common.model.GroupSeparator;
 import com.code44.finance.common.model.SymbolPosition;
+import com.google.api.server.spi.config.AnnotationBoolean;
+import com.google.api.server.spi.config.ApiResourceProperty;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
+
+import static com.code44.finance.backend.OfyService.ofy;
 
 @Entity
 public class Currency extends BaseEntity {
+    @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
+    private Key<UserAccount> userAccount;
+
+    @ApiResourceProperty(name = "code")
     private String code;
+
+    @ApiResourceProperty(name = "symbol")
     private String symbol;
+
+    @ApiResourceProperty(name = "symbol_position")
     private SymbolPosition symbolPosition;
+
+    @ApiResourceProperty(name = "decimal_separator")
     private DecimalSeparator decimalSeparator;
+
+    @ApiResourceProperty(name = "group_separator")
     private GroupSeparator groupSeparator;
+
+    @ApiResourceProperty(name = "decimal_count")
     private int decimalCount;
+
+    @ApiResourceProperty(name = "is_default")
     private boolean isDefault;
-    private double exchangeRate;
+
+    public static Currency find(String id) {
+        return ofy().load().type(Currency.class).id(id).now();
+    }
+
+    public Key<UserAccount> getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(Key<UserAccount> userAccount) {
+        this.userAccount = userAccount;
+    }
 
     public String getCode() {
         return code;
@@ -70,13 +102,5 @@ public class Currency extends BaseEntity {
 
     public void setDefault(boolean isDefault) {
         this.isDefault = isDefault;
-    }
-
-    public double getExchangeRate() {
-        return exchangeRate;
-    }
-
-    public void setExchangeRate(double exchangeRate) {
-        this.exchangeRate = exchangeRate;
     }
 }

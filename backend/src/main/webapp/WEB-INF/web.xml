@@ -5,7 +5,9 @@
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>com.code44.finance.backend.endpoint.UsersEndpoint
+            <param-value>
+                com.code44.finance.backend.endpoint.UsersEndpoint,
+                com.code44.finance.backend.endpoint.CurrenciesEndpoint
             </param-value>
         </init-param>
     </servlet>

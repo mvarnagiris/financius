@@ -1,11 +1,33 @@
 package com.code44.finance.backend.endpoint;
 
+import com.code44.finance.backend.endpoint.body.CurrenciesBody;
+import com.code44.finance.backend.entity.Currency;
+import com.code44.finance.backend.entity.UserAccount;
+import com.code44.finance.backend.utils.EndpointUtils;
+import com.code44.finance.common.Constants;
+import com.google.api.server.spi.Constant;
 import com.google.api.server.spi.config.Api;
+import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.CollectionResponse;
+import com.google.api.server.spi.response.ForbiddenException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.users.User;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Objectify;
+
+import java.util.List;
+
+import static com.code44.finance.backend.OfyService.ofy;
 
 @Api(
-        name = "currenciesEndpoint",
+        name = "currencies",
         version = "v1",
+        scopes = {Constants.EMAIL_SCOPE},
+        clientIds = {Constant.API_EXPLORER_CLIENT_ID, Constants.WEB_CLIENT_ID, Constants.ANDROID_CLIENT_ID, Constants.IOS_CLIENT_ID},
+        audiences = {Constants.ANDROID_AUDIENCE},
         namespace = @ApiNamespace(
                 ownerDomain = "endpoint.backend.finance.code44.com",
                 ownerName = "endpoint.backend.finance.code44.com",
@@ -13,31 +35,29 @@ import com.google.api.server.spi.config.ApiNamespace;
         )
 )
 public class CurrenciesEndpoint {
-//    private static final Logger LOG = Logger.getLogger(CurrenciesEndpoint.class.getName());
+    @ApiMethod(name = "list", httpMethod = "GET", path = "")
+    public CollectionResponse<Currency> list(User user) throws BadRequestException, OAuthRequestException, ForbiddenException, NotFoundException {
+        final UserAccount userAccount = EndpointUtils.getUserAccountAndVerifyPermissions(user);
+        final List<Currency> currencies = ofy().load().type(Currency.class).filter("userAccount", userAccount).list();
 
-//    /**
-//     * This method gets the <code>CurrencyEntity</code> object associated with the specified <code>id</code>.
-//     * @param id The id of the object to be returned.
-//     * @return The <code>CurrencyEntity</code> associated with <code>id</code>.
-//     */
-//    @ApiMethod(name = "getCurrencyEntity")
-//    public CurrencyEntity getCurrencyEntity(@Named("id") Long id) {
-//        // Implement this function
-//
-//        LOG.info("Calling getCurrencyEntity method");
-//        return null;
-//    }
-//
-//    /**
-//     * This inserts a new <code>CurrencyEntity</code> object.
-//     * @param currencyEntity The object to be added.
-//     * @return The object to be added.
-//     */
-//    @ApiMethod(name = "insertCurrencyEntity")
-//    public CurrencyEntity insertCurrencyEntity(CurrencyEntity currencyEntity) {
-//        // Implement this function
-//
-//        LOG.info("Calling insertCurrencyEntity method");
-//        return currencyEntity;
-//    }
+        return CollectionResponse.<Currency>builder().setItems(currencies).build();
+    }
+
+    @ApiMethod(name = "save", httpMethod = "POST", path = "")
+    public void save(CurrenciesBody body, User user) throws BadRequestException, OAuthRequestException, ForbiddenException, NotFoundException {
+        final UserAccount userAccount = EndpointUtils.getUserAccountAndVerifyPermissions(user);
+        final Key<UserAccount> key = Key.create(userAccount);
+        final List<Currency> currencies = body.getCurrencies();
+
+        final Objectify ofy = ofy();
+        for (Currency currency : currencies) {
+            if (ofy.load().type(Currency.class).id(currency.getId()).now() == null) {
+                currency.onCreate();
+            } else {
+                currency.onUpdate();
+            }
+            currency.setUserAccount(key);
+        }
+        ofy.save().entities(currencies).now();
+    }
 }

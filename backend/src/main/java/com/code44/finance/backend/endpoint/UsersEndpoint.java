@@ -15,6 +15,7 @@ import com.google.api.server.spi.response.ForbiddenException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
+import com.googlecode.objectify.Key;
 
 import javax.inject.Named;
 
@@ -60,16 +61,11 @@ public class UsersEndpoint {
         EndpointUtils.verifyIdNotEmpty(id);
         EndpointUtils.verifyUserNotNull(user);
 
-        final UserAccount userAccount = EndpointUtils.getUserAccount(user);
-        if (userAccount == null) {
-            throw new NotFoundException("User not found.");
-        }
-
-        return userAccount;
+        return EndpointUtils.getUserAccount(user);
     }
 
     @ApiMethod(name = "registerDevice", httpMethod = "POST", path = "devices")
-    public Device registerDevice(RegisterDeviceBody body, User user) throws OAuthRequestException, BadRequestException, ForbiddenException {
+    public Device registerDevice(RegisterDeviceBody body, User user) throws OAuthRequestException, BadRequestException, ForbiddenException, NotFoundException {
         EndpointUtils.verifyUserNotNull(user);
         EndpointUtils.verifyBodyNotNull(body);
 
@@ -84,9 +80,9 @@ public class UsersEndpoint {
             device.onUpdate();
         }
 
+        device.setUserAccount(Key.create(userAccount));
         updateDeviceFromBody(device, body);
         ofy().save().entity(device).now();
-        userAccount.addDevice(device);
 
         return device;
     }
@@ -96,14 +92,13 @@ public class UsersEndpoint {
         EndpointUtils.verifyUserNotNull(user);
         EndpointUtils.verifyIdNotEmpty(id);
 
-        final UserAccount userAccount = EndpointUtils.getUserAccountAndVerifyPermissions(user);
+        EndpointUtils.getUserAccountAndVerifyPermissions(user);
 
         final Device device = Device.find(id);
         if (device == null) {
             throw new NotFoundException("Device not found.");
         }
 
-        userAccount.getDevices().remove(device);
         ofy().delete().entity(device).now();
     }
 
