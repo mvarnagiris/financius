@@ -14,6 +14,7 @@ import android.view.View;
 import com.code44.finance.R;
 import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.data.db.model.BaseModel;
+import com.code44.finance.services.StartupService;
 import com.code44.finance.ui.accounts.AccountsFragment;
 import com.code44.finance.ui.transactions.TransactionsFragment;
 import com.code44.finance.ui.user.UserFragment;
@@ -39,6 +40,10 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
 
         // Setup drawer
         drawer_V.setDrawerListener(drawerToggle_V);
+
+        if (savedInstanceState == null) {
+            StartupService.start(this);
+        }
     }
 
     @Override

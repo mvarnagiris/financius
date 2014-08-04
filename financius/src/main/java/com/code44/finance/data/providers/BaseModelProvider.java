@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 
+import com.code44.finance.api.financius.FinanciusApi;
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
@@ -111,6 +112,7 @@ public abstract class BaseModelProvider extends BaseProvider {
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
+        FinanciusApi.get().sync();
 
         return ContentUris.withAppendedId(uri, newId);
     }
@@ -141,6 +143,7 @@ public abstract class BaseModelProvider extends BaseProvider {
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
+        FinanciusApi.get().sync();
 
         return count;
     }
@@ -190,6 +193,7 @@ public abstract class BaseModelProvider extends BaseProvider {
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
+        FinanciusApi.get().sync();
 
         return count;
     }

@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.code44.finance.api.User;
 import com.code44.finance.data.DataStore;
+import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
 
@@ -18,11 +19,13 @@ public class GetCurrenciesRequest extends FinanciusBaseRequest<Void> {
 
     @Override
     protected Void performRequest() throws Exception {
-        final List<com.code44.finance.backend.endpoint.currencies.model.Currency> serverCurrencies = getCurrenciesService().list(user.getCurrenciesTimestamp()).execute().getItems();
+        long currenciesTimestamp = user.getCurrenciesTimestamp();
+        final List<com.code44.finance.backend.endpoint.currencies.model.Currency> serverCurrencies = getCurrenciesService().list(currenciesTimestamp).execute().getItems();
         final List<ContentValues> currenciesValues = new ArrayList<>();
-        long currenciesTimestamp = 0;
         for (com.code44.finance.backend.endpoint.currencies.model.Currency serverCurrency : serverCurrencies) {
-            currenciesValues.add(Currency.from(serverCurrency).asContentValues());
+            final ContentValues values = Currency.from(serverCurrency).asContentValues();
+            values.remove(Tables.Currencies.EXCHANGE_RATE.getName());
+            currenciesValues.add(values);
             if (currenciesTimestamp < serverCurrency.getEditTs()) {
                 currenciesTimestamp = serverCurrency.getEditTs();
             }

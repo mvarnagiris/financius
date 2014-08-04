@@ -1,6 +1,7 @@
 package com.code44.finance.services;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.text.format.DateUtils;
@@ -18,6 +19,10 @@ import com.code44.finance.utils.IOUtils;
 public class StartupService extends IntentService {
     public StartupService() {
         super(StartupService.class.getSimpleName());
+    }
+
+    public static void start(Context context) {
+        context.startService(new Intent(context, StartupService.class));
     }
 
     @Override
