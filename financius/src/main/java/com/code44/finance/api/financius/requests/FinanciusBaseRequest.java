@@ -57,8 +57,8 @@ public abstract class FinanciusBaseRequest<R> extends BaseRequest<R> {
     }
 
     private void prepareRootUrl(AbstractGoogleJsonClient.Builder builder) {
-        if (BuildConfig.DEBUG) {
-            builder.setRootUrl("http://" + BuildConfig.TEST_SERVER_IP + ":8080/_ah/api");
+        if (BuildConfig.USE_LOCAL_SERVER) {
+            builder.setRootUrl("http://" + BuildConfig.LOCAL_SERVER_IP + ":8080/_ah/api");
         }
     }
 }
