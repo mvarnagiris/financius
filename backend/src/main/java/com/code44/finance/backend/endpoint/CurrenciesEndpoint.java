@@ -20,6 +20,8 @@ import com.googlecode.objectify.Objectify;
 
 import java.util.List;
 
+import javax.inject.Named;
+
 import static com.code44.finance.backend.OfyService.ofy;
 
 @Api(
@@ -36,9 +38,14 @@ import static com.code44.finance.backend.OfyService.ofy;
 )
 public class CurrenciesEndpoint {
     @ApiMethod(name = "list", httpMethod = "GET", path = "")
-    public CollectionResponse<Currency> list(User user) throws BadRequestException, OAuthRequestException, ForbiddenException, NotFoundException {
+    public CollectionResponse<Currency> list(@Named("timestamp") long timestamp, User user) throws BadRequestException, OAuthRequestException, ForbiddenException, NotFoundException {
         final UserAccount userAccount = EndpointUtils.getUserAccountAndVerifyPermissions(user);
-        final List<Currency> currencies = ofy().load().type(Currency.class).filter("userAccount", userAccount).list();
+        final List<Currency> currencies = ofy()
+                .load()
+                .type(Currency.class)
+                .filter("userAccount", userAccount)
+                .filter("editTimestamp >=", timestamp)
+                .list();
 
         return CollectionResponse.<Currency>builder().setItems(currencies).build();
     }

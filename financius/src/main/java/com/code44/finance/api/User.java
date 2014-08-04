@@ -26,6 +26,8 @@ public class User extends Prefs {
     private String coverUrl;
     private boolean isPremium;
 
+    private long currenciesTimestamp;
+
     private User(Context context, DBHelper dbHelper, GcmRegistration gcmRegistration) {
         super(context);
         this.dbHelper = dbHelper;
@@ -58,10 +60,11 @@ public class User extends Prefs {
         photoUrl = getString("photoUrl", null);
         coverUrl = getString("coverUrl", null);
         isPremium = getBoolean("isPremium", false);
+        currenciesTimestamp = getLong("currenciesTimestamp", 0);
     }
 
     public void clear() {
-        clear("id", "googleId", "email", "firstName", "lastName", "photoUrl", "coverUrl", "isPremium");
+        clear("id", "googleId", "email", "firstName", "lastName", "photoUrl", "coverUrl", "isPremium", "currenciesTimestamp");
         refresh();
     }
 
@@ -146,6 +149,15 @@ public class User extends Prefs {
     public void setPremium(boolean isPremium) {
         this.isPremium = isPremium;
         setBoolean("isPremium", isPremium);
+    }
+
+    public long getCurrenciesTimestamp() {
+        return currenciesTimestamp;
+    }
+
+    public void setCurrenciesTimestamp(long currenciesTimestamp) {
+        this.currenciesTimestamp = currenciesTimestamp;
+        setLong("currenciesTimestamp", currenciesTimestamp);
     }
 
     public static final class UserChangedEvent {

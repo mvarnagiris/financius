@@ -4,6 +4,7 @@ import com.code44.finance.common.model.ModelState;
 import com.code44.finance.common.utils.StringUtils;
 import com.google.api.server.spi.config.ApiResourceProperty;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 import java.util.UUID;
 
@@ -18,6 +19,7 @@ public class BaseEntity {
     @ApiResourceProperty(name = "create_ts")
     private long createTimestamp;
 
+    @Index
     @ApiResourceProperty(name = "edit_ts")
     private long editTimestamp;
 

@@ -18,13 +18,18 @@ public class GetCurrenciesRequest extends FinanciusBaseRequest<Void> {
 
     @Override
     protected Void performRequest() throws Exception {
-        final List<com.code44.finance.backend.endpoint.currencies.model.Currency> serverCurrencies = getCurrenciesService().list().execute().getItems();
+        final List<com.code44.finance.backend.endpoint.currencies.model.Currency> serverCurrencies = getCurrenciesService().list(user.getCurrenciesTimestamp()).execute().getItems();
         final List<ContentValues> currenciesValues = new ArrayList<>();
+        long currenciesTimestamp = 0;
         for (com.code44.finance.backend.endpoint.currencies.model.Currency serverCurrency : serverCurrencies) {
             currenciesValues.add(Currency.from(serverCurrency).asContentValues());
+            if (currenciesTimestamp < serverCurrency.getEditTs()) {
+                currenciesTimestamp = serverCurrency.getEditTs();
+            }
         }
 
         DataStore.bulkInsert().values(currenciesValues).into(CurrenciesProvider.uriCurrencies());
+        user.setCurrenciesTimestamp(currenciesTimestamp);
         return null;
     }
 }
