@@ -5,10 +5,10 @@ import android.content.Context;
 import com.code44.finance.api.BaseRequest;
 import com.code44.finance.api.BaseRequestEvent;
 import com.code44.finance.api.User;
-import com.code44.finance.api.financius.FinanciusApi;
 import com.code44.finance.backend.endpoint.users.model.RegisterBody;
 import com.code44.finance.backend.endpoint.users.model.UserAccount;
 import com.code44.finance.data.db.DBHelper;
+import com.code44.finance.services.StartupService;
 
 public class RegisterRequest extends FinanciusBaseRequest<User> {
     private final RegisterBody body;
@@ -45,7 +45,7 @@ public class RegisterRequest extends FinanciusBaseRequest<User> {
             if (isExistingUser) {
                 dbHelper.clear();
             }
-            FinanciusApi.get().sync();
+            StartupService.start(context);
         } catch (Exception e) {
             e.printStackTrace();
             user.clear();

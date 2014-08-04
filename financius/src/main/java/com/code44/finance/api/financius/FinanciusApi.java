@@ -6,6 +6,7 @@ import com.code44.finance.App;
 import com.code44.finance.api.BaseRequestEvent;
 import com.code44.finance.api.User;
 import com.code44.finance.api.financius.requests.FinanciusBaseRequest;
+import com.code44.finance.api.financius.requests.RegisterDeviceRequest;
 import com.code44.finance.api.financius.requests.RegisterRequest;
 import com.code44.finance.api.financius.requests.SyncRequest;
 import com.code44.finance.data.db.DBHelper;
@@ -39,6 +40,15 @@ public final class FinanciusApi {
         }
 
         final RegisterRequest request = new RegisterRequest(context, user, DBHelper.get(context), email, googleId, firstName, lastName, photoUrl, coverUrl);
+        execute(request);
+    }
+
+    public void registerDevice() {
+        if (BaseRequestEvent.isWorking(RegisterDeviceRequest.RegisterDeviceRequestEvent.class, null)) {
+            return;
+        }
+
+        final RegisterDeviceRequest request = new RegisterDeviceRequest(context, user);
         execute(request);
     }
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.text.format.DateUtils;
 
+import com.code44.finance.api.GcmRegistration;
 import com.code44.finance.api.User;
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
 import com.code44.finance.api.financius.FinanciusApi;
@@ -32,6 +33,10 @@ public class StartupService extends IntentService {
 
         if (User.get().isPremium()) {
             FinanciusApi.get().sync();
+
+            if (!GcmRegistration.get().isRegisteredWithServer()) {
+                FinanciusApi.get().registerDevice();
+            }
         }
     }
 
