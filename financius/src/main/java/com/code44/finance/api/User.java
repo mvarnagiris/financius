@@ -67,9 +67,9 @@ public class User extends Prefs {
 
     public void logout() {
         clear();
-        EventBus.getDefault().post(new UserChangedEvent());
         gcmRegistration.clear();
-        dbHelper.clearDatabase();
+        dbHelper.clear();
+        EventBus.getDefault().post(new UserChangedEvent());
     }
 
     public boolean isLoggedIn() {

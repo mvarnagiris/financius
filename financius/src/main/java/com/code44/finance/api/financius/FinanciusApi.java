@@ -8,6 +8,7 @@ import com.code44.finance.api.User;
 import com.code44.finance.api.financius.requests.FinanciusBaseRequest;
 import com.code44.finance.api.financius.requests.RegisterRequest;
 import com.code44.finance.api.financius.requests.SyncRequest;
+import com.code44.finance.data.db.DBHelper;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -37,7 +38,7 @@ public final class FinanciusApi {
             return;
         }
 
-        final RegisterRequest request = new RegisterRequest(context, user, email, googleId, firstName, lastName, photoUrl, coverUrl);
+        final RegisterRequest request = new RegisterRequest(context, user, DBHelper.get(context), email, googleId, firstName, lastName, photoUrl, coverUrl);
         execute(request);
     }
 

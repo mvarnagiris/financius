@@ -36,15 +36,24 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(Tables.Categories.createScript());
         db.execSQL(Tables.Transactions.createScript());
 
-        // Add defaults
-        DBDefaults.addDefaults(context, db);
+        addDefaults(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
-    public void clearDatabase() {
+    public void clear() {
+        final SQLiteDatabase database = getWritableDatabase();
+        database.delete(Tables.Currencies.TABLE_NAME, null, null);
         // TODO Clear database for the user
+    }
+
+    public void addDefaults() {
+        addDefaults(getWritableDatabase());
+    }
+
+    private void addDefaults(SQLiteDatabase db) {
+        DBDefaults.addDefaults(context, db);
     }
 }

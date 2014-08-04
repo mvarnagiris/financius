@@ -46,7 +46,7 @@ public class CurrenciesEndpoint {
     @ApiMethod(name = "save", httpMethod = "POST", path = "")
     public void save(CurrenciesBody body, User user) throws BadRequestException, OAuthRequestException, ForbiddenException, NotFoundException {
         final UserAccount userAccount = EndpointUtils.getUserAccountAndVerifyPermissions(user);
-        final Key<UserAccount> key = Key.create(userAccount);
+        final Key<UserAccount> key = Key.create(UserAccount.class, userAccount.getId());
         final List<Currency> currencies = body.getCurrencies();
 
         final Objectify ofy = ofy();

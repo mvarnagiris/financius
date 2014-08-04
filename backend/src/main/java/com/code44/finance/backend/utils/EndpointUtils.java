@@ -33,7 +33,7 @@ public class EndpointUtils {
 
         final UserAccount userAccount = UserAccount.find(user);
         if (userAccount == null) {
-            throw new NotFoundException("User is not registered");
+            throw new NotFoundException("User " + user.getEmail() + " is not registered");
         }
 
         return userAccount;

@@ -20,7 +20,7 @@ public class SaveCurrenciesRequest extends FinanciusBaseRequest<Void> {
 
     @Override
     protected Void performRequest() throws Exception {
-        getCurrenciesService().save(body);
+        getCurrenciesService().save(body).execute();
         return null;
     }
 

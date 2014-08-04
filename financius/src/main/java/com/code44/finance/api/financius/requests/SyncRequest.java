@@ -68,7 +68,7 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
         values.put(syncStateColumn.getName(), SyncState.IN_PROGRESS.asInt());
         DataStore.update()
                 .values(values)
-                .withSelection(syncStateColumn + "<>?", SyncState.SYNCED.asString())
+                .withSelection(syncStateColumn.getName() + "<>?", SyncState.SYNCED.asString())
                 .into(database, syncStateColumn.getTableName());
     }
 

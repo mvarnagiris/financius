@@ -50,6 +50,9 @@ public class UsersEndpoint {
             userAccount.onUpdate();
         }
 
+        // TODO Remove setPremium, when IAB is implemented
+        userAccount.setPremium(true);
+
         updateUserAccountFromBody(userAccount, body);
         ofy().save().entity(userAccount).now();
 
@@ -80,7 +83,7 @@ public class UsersEndpoint {
             device.onUpdate();
         }
 
-        device.setUserAccount(Key.create(userAccount));
+        device.setUserAccount(Key.create(UserAccount.class, userAccount.getId()));
         updateDeviceFromBody(device, body);
         ofy().save().entity(device).now();
 

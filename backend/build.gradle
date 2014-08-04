@@ -31,7 +31,7 @@ dependencies {
     compile 'com.google.appengine:appengine-endpoints:1.9.6'
     compile 'com.google.appengine:appengine-endpoints-deps:1.9.6'
     compile 'javax.servlet:servlet-api:2.5'
-    compile 'com.googlecode.objectify:objectify:4.0b3'
+    compile 'com.googlecode.objectify:objectify:5.0+'
     compile 'com.ganyo:gcm-server:1.0.2'
     compile 'com.google.code.gson:gson:2.+'
 }

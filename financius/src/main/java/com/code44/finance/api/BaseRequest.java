@@ -25,6 +25,7 @@ public abstract class BaseRequest<R> implements Callable<R> {
         try {
             result = performRequest();
         } catch (Exception e) {
+            e.printStackTrace();
             error = e;
         }
 
