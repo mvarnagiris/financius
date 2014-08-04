@@ -7,11 +7,13 @@ import com.google.api.server.spi.config.AnnotationBoolean;
 import com.google.api.server.spi.config.ApiResourceProperty;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Index;
 
 import static com.code44.finance.backend.OfyService.ofy;
 
 @Entity
 public class Currency extends BaseEntity {
+    @Index
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     private Key<UserAccount> userAccount;
 

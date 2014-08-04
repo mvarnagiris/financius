@@ -60,7 +60,7 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
     }
 
     private void getCurrencies() throws Exception {
-        new GetCurrenciesRequest(context, User.get()).call();
+        new GetCurrenciesRequest(context, user).call();
     }
 
     private void markInProgress(SQLiteDatabase database, Column syncStateColumn) {

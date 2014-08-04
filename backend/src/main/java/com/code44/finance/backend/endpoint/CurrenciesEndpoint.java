@@ -43,7 +43,7 @@ public class CurrenciesEndpoint {
         final List<Currency> currencies = ofy()
                 .load()
                 .type(Currency.class)
-                .filter("userAccount", userAccount)
+                .filter("userAccount", Key.create(UserAccount.class, userAccount.getId()))
                 .filter("editTimestamp >=", timestamp)
                 .list();
 
