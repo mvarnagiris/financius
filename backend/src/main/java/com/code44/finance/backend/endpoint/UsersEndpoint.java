@@ -2,7 +2,7 @@ package com.code44.finance.backend.endpoint;
 
 import com.code44.finance.backend.endpoint.body.RegisterBody;
 import com.code44.finance.backend.endpoint.body.RegisterDeviceBody;
-import com.code44.finance.backend.entity.Device;
+import com.code44.finance.backend.entity.DeviceEntity;
 import com.code44.finance.backend.entity.UserAccount;
 import com.code44.finance.backend.utils.EndpointUtils;
 import com.code44.finance.common.Constants;
@@ -68,16 +68,16 @@ public class UsersEndpoint {
     }
 
     @ApiMethod(name = "registerDevice", httpMethod = "POST", path = "devices")
-    public Device registerDevice(RegisterDeviceBody body, User user) throws OAuthRequestException, BadRequestException, ForbiddenException, NotFoundException {
+    public DeviceEntity registerDevice(RegisterDeviceBody body, User user) throws OAuthRequestException, BadRequestException, ForbiddenException, NotFoundException {
         EndpointUtils.verifyUserNotNull(user);
         EndpointUtils.verifyBodyNotNull(body);
 
         final UserAccount userAccount = EndpointUtils.getUserAccountAndVerifyPermissions(user);
 
         body.verifyRequiredFields();
-        Device device = Device.find(body.getRegId());
+        DeviceEntity device = DeviceEntity.find(body.getRegId());
         if (device == null) {
-            device = new Device();
+            device = new DeviceEntity();
             device.onCreate();
         } else {
             device.onUpdate();
@@ -97,7 +97,7 @@ public class UsersEndpoint {
 
         EndpointUtils.getUserAccountAndVerifyPermissions(user);
 
-        final Device device = Device.find(id);
+        final DeviceEntity device = DeviceEntity.find(id);
         if (device == null) {
             throw new NotFoundException("Device not found.");
         }
@@ -127,7 +127,7 @@ public class UsersEndpoint {
         }
     }
 
-    private void updateDeviceFromBody(Device device, RegisterDeviceBody body) {
+    private void updateDeviceFromBody(DeviceEntity device, RegisterDeviceBody body) {
         if (body.getRegId() != null) {
             device.setId(body.getRegId());
         }

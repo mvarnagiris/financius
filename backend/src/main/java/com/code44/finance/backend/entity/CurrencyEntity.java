@@ -12,7 +12,7 @@ import com.googlecode.objectify.annotation.Index;
 import static com.code44.finance.backend.OfyService.ofy;
 
 @Entity
-public class Currency extends BaseEntity {
+public class CurrencyEntity extends BaseEntity {
     @Index
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     private Key<UserAccount> userAccount;
@@ -38,8 +38,8 @@ public class Currency extends BaseEntity {
     @ApiResourceProperty(name = "is_default")
     private boolean isDefault;
 
-    public static Currency find(String id) {
-        return ofy().load().type(Currency.class).id(id).now();
+    public static CurrencyEntity find(String id) {
+        return ofy().load().type(CurrencyEntity.class).id(id).now();
     }
 
     public Key<UserAccount> getUserAccount() {

@@ -11,7 +11,7 @@ import com.googlecode.objectify.annotation.Index;
 import static com.code44.finance.backend.OfyService.ofy;
 
 @Entity
-public class Category extends BaseEntity {
+public class CategoryEntity extends BaseEntity {
     @Index
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     private Key<UserAccount> userAccount;
@@ -31,8 +31,8 @@ public class Category extends BaseEntity {
     @ApiResourceProperty(name = "sort_order")
     private int sortOrder;
 
-    public static Category find(String id) {
-        return ofy().load().type(Category.class).id(id).now();
+    public static CategoryEntity find(String id) {
+        return ofy().load().type(CategoryEntity.class).id(id).now();
     }
 
     public Key<UserAccount> getUserAccount() {

@@ -1,7 +1,7 @@
 package com.code44.finance.backend.endpoint;
 
 import com.code44.finance.backend.endpoint.body.CurrenciesBody;
-import com.code44.finance.backend.entity.Currency;
+import com.code44.finance.backend.entity.CurrencyEntity;
 import com.code44.finance.backend.entity.UserAccount;
 import com.code44.finance.backend.utils.EndpointUtils;
 import com.code44.finance.common.Constants;
@@ -38,27 +38,27 @@ import static com.code44.finance.backend.OfyService.ofy;
 )
 public class CurrenciesEndpoint {
     @ApiMethod(name = "list", httpMethod = "GET", path = "")
-    public CollectionResponse<Currency> list(@Named("timestamp") long timestamp, User user) throws BadRequestException, OAuthRequestException, ForbiddenException, NotFoundException {
+    public CollectionResponse<CurrencyEntity> list(@Named("timestamp") long timestamp, User user) throws BadRequestException, OAuthRequestException, ForbiddenException, NotFoundException {
         final UserAccount userAccount = EndpointUtils.getUserAccountAndVerifyPermissions(user);
-        final List<Currency> currencies = ofy()
+        final List<CurrencyEntity> currencies = ofy()
                 .load()
-                .type(Currency.class)
+                .type(CurrencyEntity.class)
                 .filter("userAccount", Key.create(UserAccount.class, userAccount.getId()))
                 .filter("editTimestamp >=", timestamp)
                 .list();
 
-        return CollectionResponse.<Currency>builder().setItems(currencies).build();
+        return CollectionResponse.<CurrencyEntity>builder().setItems(currencies).build();
     }
 
     @ApiMethod(name = "save", httpMethod = "POST", path = "")
     public void save(CurrenciesBody body, User user) throws BadRequestException, OAuthRequestException, ForbiddenException, NotFoundException {
         final UserAccount userAccount = EndpointUtils.getUserAccountAndVerifyPermissions(user);
         final Key<UserAccount> key = Key.create(UserAccount.class, userAccount.getId());
-        final List<Currency> currencies = body.getCurrencies();
+        final List<CurrencyEntity> currencies = body.getCurrencies();
 
         final Objectify ofy = ofy();
-        for (Currency currency : currencies) {
-            if (ofy.load().type(Currency.class).id(currency.getId()).now() == null) {
+        for (CurrencyEntity currency : currencies) {
+            if (ofy.load().type(CurrencyEntity.class).id(currency.getId()).now() == null) {
                 currency.onCreate();
             } else {
                 currency.onUpdate();
