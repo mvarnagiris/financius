@@ -5,6 +5,7 @@ import android.content.Context;
 import com.code44.finance.BuildConfig;
 import com.code44.finance.api.BaseRequest;
 import com.code44.finance.api.User;
+import com.code44.finance.backend.endpoint.categories.Categories;
 import com.code44.finance.backend.endpoint.currencies.Currencies;
 import com.code44.finance.backend.endpoint.users.Users;
 import com.code44.finance.common.Constants;
@@ -52,6 +53,12 @@ public abstract class FinanciusBaseRequest<R> extends BaseRequest<R> {
 
     protected Currencies getCurrenciesService() {
         final Currencies.Builder builder = new Currencies.Builder(getHttpTransport(), getJsonFactory(), getHttpRequestInitializer());
+        prepareRootUrl(builder);
+        return builder.build();
+    }
+
+    protected Categories getCategoriesService() {
+        final Categories.Builder builder = new Categories.Builder(getHttpTransport(), getJsonFactory(), getHttpRequestInitializer());
         prepareRootUrl(builder);
         return builder.build();
     }

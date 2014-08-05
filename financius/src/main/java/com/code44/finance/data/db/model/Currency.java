@@ -7,6 +7,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.code44.finance.App;
+import com.code44.finance.backend.endpoint.currencies.model.CurrencyEntity;
 import com.code44.finance.common.model.DecimalSeparator;
 import com.code44.finance.common.model.GroupSeparator;
 import com.code44.finance.common.model.ModelState;
@@ -107,18 +108,18 @@ public class Currency extends BaseModel {
         return currency;
     }
 
-    public static Currency from(com.code44.finance.backend.endpoint.currencies.model.Currency serverCurrency) {
+    public static Currency from(CurrencyEntity entity) {
         final Currency currency = new Currency();
-        currency.setServerId(serverCurrency.getId());
-        currency.setModelState(ModelState.valueOf(serverCurrency.getModelState()));
+        currency.setServerId(entity.getId());
+        currency.setModelState(ModelState.valueOf(entity.getModelState()));
         currency.setSyncState(SyncState.SYNCED);
-        currency.setCode(serverCurrency.getCode());
-        currency.setSymbol(serverCurrency.getSymbol());
-        currency.setSymbolPosition(SymbolPosition.valueOf(serverCurrency.getSymbolPosition()));
-        currency.setDecimalSeparator(DecimalSeparator.valueOf(serverCurrency.getDecimalSeparator()));
-        currency.setGroupSeparator(GroupSeparator.valueOf(serverCurrency.getGroupSeparator()));
-        currency.setDecimalCount(serverCurrency.getDecimalCount());
-        currency.setDefault(serverCurrency.getDefault());
+        currency.setCode(entity.getCode());
+        currency.setSymbol(entity.getSymbol());
+        currency.setSymbolPosition(SymbolPosition.valueOf(entity.getSymbolPosition()));
+        currency.setDecimalSeparator(DecimalSeparator.valueOf(entity.getDecimalSeparator()));
+        currency.setGroupSeparator(GroupSeparator.valueOf(entity.getGroupSeparator()));
+        currency.setDecimalCount(entity.getDecimalCount());
+        currency.setDefault(entity.getDefault());
         return currency;
     }
 
@@ -264,8 +265,8 @@ public class Currency extends BaseModel {
         }
     }
 
-    public com.code44.finance.backend.endpoint.currencies.model.Currency toEntity() {
-        final com.code44.finance.backend.endpoint.currencies.model.Currency entity = new com.code44.finance.backend.endpoint.currencies.model.Currency();
+    public CurrencyEntity toEntity() {
+        final CurrencyEntity entity = new CurrencyEntity();
         entity.setId(getServerId());
         entity.setModelState(getModelState().toString());
         entity.setCode(getCode());

@@ -7,8 +7,10 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.code44.finance.App;
+import com.code44.finance.backend.endpoint.categories.model.CategoryEntity;
 import com.code44.finance.common.model.CategoryOwner;
 import com.code44.finance.common.model.CategoryType;
+import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
@@ -100,6 +102,19 @@ public class Category extends BaseModel {
         if (cursor.getCount() > 0) {
             category.updateFrom(cursor, null);
         }
+        return category;
+    }
+
+    public static Category from(CategoryEntity entity) {
+        final Category category = new Category();
+        category.setServerId(entity.getId());
+        category.setModelState(ModelState.valueOf(entity.getModelState()));
+        category.setSyncState(SyncState.SYNCED);
+        category.setTitle(entity.getTitle());
+        category.setColor(entity.getColor());
+        category.setCategoryType(CategoryType.valueOf(entity.getCategoryType()));
+        category.setCategoryOwner(CategoryOwner.valueOf(entity.getCategoryOwner()));
+        category.setSortOrder(entity.getSortOrder());
         return category;
     }
 
@@ -200,6 +215,18 @@ public class Category extends BaseModel {
         if (categoryOwner == null) {
             throw new IllegalStateException("Owner cannot be null.");
         }
+    }
+
+    public CategoryEntity toEntity() {
+        final CategoryEntity entity = new CategoryEntity();
+        entity.setId(getServerId());
+        entity.setModelState(getModelState().toString());
+        entity.setTitle(getTitle());
+        entity.setColor(getColor());
+        entity.setCategoryType(getCategoryType().toString());
+        entity.setCategoryOwner(getCategoryOwner().toString());
+        entity.setSortOrder(getSortOrder());
+        return entity;
     }
 
     public String getTitle() {

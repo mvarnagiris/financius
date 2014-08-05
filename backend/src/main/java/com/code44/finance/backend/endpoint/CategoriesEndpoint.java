@@ -1,6 +1,6 @@
 package com.code44.finance.backend.endpoint;
 
-import com.code44.finance.backend.endpoint.body.EntitiesBody;
+import com.code44.finance.backend.endpoint.body.CategoriesBody;
 import com.code44.finance.backend.entity.CategoryEntity;
 import com.code44.finance.backend.entity.UserAccount;
 import com.code44.finance.backend.utils.EndpointUtils;
@@ -52,10 +52,10 @@ public class CategoriesEndpoint {
     }
 
     @ApiMethod(name = "save", httpMethod = "POST", path = "")
-    public void save(EntitiesBody<CategoryEntity> body, User user) throws BadRequestException, OAuthRequestException, ForbiddenException, NotFoundException, IOException {
+    public void save(CategoriesBody body, User user) throws BadRequestException, OAuthRequestException, ForbiddenException, NotFoundException, IOException {
         final UserAccount userAccount = EndpointUtils.getUserAccountAndVerifyPermissions(user);
         final Key<UserAccount> key = Key.create(UserAccount.class, userAccount.getId());
-        final List<CategoryEntity> categories = body.getEntities();
+        final List<CategoryEntity> categories = body.getCategories();
 
         final Objectify ofy = ofy();
         for (CategoryEntity category : categories) {

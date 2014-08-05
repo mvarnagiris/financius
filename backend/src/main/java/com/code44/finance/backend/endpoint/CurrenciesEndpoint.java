@@ -1,6 +1,6 @@
 package com.code44.finance.backend.endpoint;
 
-import com.code44.finance.backend.endpoint.body.EntitiesBody;
+import com.code44.finance.backend.endpoint.body.CurrenciesBody;
 import com.code44.finance.backend.entity.CurrencyEntity;
 import com.code44.finance.backend.entity.UserAccount;
 import com.code44.finance.backend.utils.EndpointUtils;
@@ -52,10 +52,10 @@ public class CurrenciesEndpoint {
     }
 
     @ApiMethod(name = "save", httpMethod = "POST", path = "")
-    public void save(EntitiesBody<CurrencyEntity> body, User user) throws BadRequestException, OAuthRequestException, ForbiddenException, NotFoundException, IOException {
+    public void save(CurrenciesBody body, User user) throws BadRequestException, OAuthRequestException, ForbiddenException, NotFoundException, IOException {
         final UserAccount userAccount = EndpointUtils.getUserAccountAndVerifyPermissions(user);
         final Key<UserAccount> key = Key.create(UserAccount.class, userAccount.getId());
-        final List<CurrencyEntity> currencies = body.getEntities();
+        final List<CurrencyEntity> currencies = body.getCurrencies();
 
         final Objectify ofy = ofy();
         for (CurrencyEntity currency : currencies) {

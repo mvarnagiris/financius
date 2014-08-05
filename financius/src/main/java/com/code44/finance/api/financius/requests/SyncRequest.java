@@ -13,8 +13,10 @@ import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.DBHelper;
 import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.db.model.Category;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.db.model.SyncState;
+import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.IOUtils;
 
@@ -31,6 +33,8 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
         final SQLiteDatabase database = DBHelper.get(context).getWritableDatabase();
         pushCurrencies(database);
         getCurrencies();
+        pushCategories(database);
+        getCategories();
         return null;
     }
 
@@ -61,6 +65,30 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
 
     private void getCurrencies() throws Exception {
         new GetCurrenciesRequest(context, user).call();
+    }
+
+    private void pushCategories(SQLiteDatabase database) throws Exception {
+        markInProgress(database, Tables.Categories.SYNC_STATE);
+
+        final Cursor cursor = Query.create()
+                .projectionId(Tables.Categories.ID)
+                .projection(Tables.Categories.PROJECTION)
+                .selection(Tables.Categories.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
+                .from(context, CategoriesProvider.uriCategories())
+                .execute();
+        final List<Category> categories = new ArrayList<>();
+        do {
+            categories.add(Category.from(cursor));
+        } while (cursor.moveToNext());
+        IOUtils.closeQuietly(cursor);
+
+        new SaveCateoriesRequest(context, User.get(), categories).call();
+
+        markSynced(database, Tables.Categories.SYNC_STATE);
+    }
+
+    private void getCategories() throws Exception {
+        new GetCategoriesRequest(context, user).call();
     }
 
     private void markInProgress(SQLiteDatabase database, Column syncStateColumn) {
