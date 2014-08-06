@@ -43,6 +43,7 @@
     <dimen name="btn_corner">2dp</dimen>
     <dimen name="btn_width">88dp</dimen>
     <dimen name="btn_fab">56dp</dimen>
+    <dimen name="btn_fab_half">28dp</dimen>
     <dimen name="btn_fab_half_negative">-28dp</dimen>
 
     <dimen name="category_color_circle_size">32dp</dimen>

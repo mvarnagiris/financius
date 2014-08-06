@@ -25,7 +25,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/keyline"
+            android:paddingTop="@dimen/btn_fab_half">
+
+            <com.code44.finance.views.AccountsView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
