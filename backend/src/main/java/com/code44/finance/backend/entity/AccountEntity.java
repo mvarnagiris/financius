@@ -1,5 +1,6 @@
 package com.code44.finance.backend.entity;
 
+import com.code44.finance.common.model.AccountOwner;
 import com.google.api.server.spi.config.AnnotationBoolean;
 import com.google.api.server.spi.config.ApiResourceProperty;
 import com.googlecode.objectify.Key;
@@ -27,6 +28,9 @@ public class AccountEntity extends BaseEntity {
 
     @ApiResourceProperty(name = "note")
     private String note;
+
+    @ApiResourceProperty(name = "account_owner")
+    private AccountOwner accountOwner;
 
     public static AccountEntity find(String id) {
         return ofy().load().type(AccountEntity.class).id(id).now();
@@ -70,5 +74,13 @@ public class AccountEntity extends BaseEntity {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public AccountOwner getAccountOwner() {
+        return accountOwner;
+    }
+
+    public void setAccountOwner(AccountOwner accountOwner) {
+        this.accountOwner = accountOwner;
     }
 }

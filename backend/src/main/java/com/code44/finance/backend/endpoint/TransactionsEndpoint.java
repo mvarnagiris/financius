@@ -61,7 +61,7 @@ public class TransactionsEndpoint {
 
         final Objectify ofy = ofy();
         for (TransactionEntity transaction : transactions) {
-            if (ofy.load().type(TransactionEntity.class).id(transaction.getId()).now() == null) {
+            if (TransactionEntity.find(transaction.getId()) == null) {
                 transaction.onCreate();
             } else {
                 transaction.onUpdate();

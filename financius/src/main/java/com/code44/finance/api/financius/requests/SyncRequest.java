@@ -71,8 +71,6 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
         IOUtils.closeQuietly(cursor);
 
         new SaveCurrenciesRequest(context, User.get(), currencies).call();
-
-        markSynced(database, Tables.Currencies.SYNC_STATE);
     }
 
     private void getCurrencies() throws Exception {
@@ -95,8 +93,6 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
         IOUtils.closeQuietly(cursor);
 
         new SaveCateoriesRequest(context, User.get(), categories).call();
-
-        markSynced(database, Tables.Categories.SYNC_STATE);
     }
 
     private void getCategories() throws Exception {
@@ -120,8 +116,6 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
         IOUtils.closeQuietly(cursor);
 
         new SaveAccountsRequest(context, User.get(), accounts).call();
-
-        markSynced(database, Tables.Accounts.SYNC_STATE);
     }
 
     private void getAccounts() throws Exception {
@@ -149,8 +143,6 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
         IOUtils.closeQuietly(cursor);
 
         new SaveTransactionsRequest(context, User.get(), transactions).call();
-
-        markSynced(database, Tables.Transactions.SYNC_STATE);
     }
 
     private void getTransactions() throws Exception {
@@ -163,15 +155,6 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
         DataStore.update()
                 .values(values)
                 .withSelection(syncStateColumn.getName() + "<>?", SyncState.SYNCED.asString())
-                .into(database, syncStateColumn.getTableName());
-    }
-
-    private void markSynced(SQLiteDatabase database, Column syncStateColumn) {
-        final ContentValues values = new ContentValues();
-        values.put(syncStateColumn.getName(), SyncState.SYNCED.asInt());
-        DataStore.update()
-                .values(values)
-                .withSelection(syncStateColumn + "=?", SyncState.IN_PROGRESS.asString())
                 .into(database, syncStateColumn.getTableName());
     }
 

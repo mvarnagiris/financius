@@ -59,7 +59,7 @@ public class CategoriesEndpoint {
 
         final Objectify ofy = ofy();
         for (CategoryEntity category : categories) {
-            if (ofy.load().type(CategoryEntity.class).id(category.getId()).now() == null) {
+            if (CategoryEntity.find(category.getId()) == null) {
                 category.onCreate();
             } else {
                 category.onUpdate();

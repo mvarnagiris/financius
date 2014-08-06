@@ -60,7 +60,7 @@ public class AccountsEndpoint {
 
         final Objectify ofy = ofy();
         for (AccountEntity account : accounts) {
-            if (ofy.load().type(AccountEntity.class).id(account.getId()).now() == null) {
+            if (AccountEntity.find(account.getId()) == null) {
                 account.onCreate();
             } else {
                 account.onUpdate();

@@ -95,6 +95,7 @@ public class Account extends BaseModel {
         account.setCurrency(currency);
         account.setTitle(entity.getTitle());
         account.setNote(entity.getNote());
+        account.setAccountOwner(AccountOwner.valueOf(entity.getAccountOwner()));
         return account;
     }
 
@@ -213,6 +214,7 @@ public class Account extends BaseModel {
         entity.setCurrencyId(getCurrency().getServerId());
         entity.setTitle(getTitle());
         entity.setNote(getNote());
+        entity.setAccountOwner(getAccountOwner().toString());
         return entity;
     }
 

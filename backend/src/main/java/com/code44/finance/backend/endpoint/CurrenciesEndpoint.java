@@ -59,7 +59,7 @@ public class CurrenciesEndpoint {
 
         final Objectify ofy = ofy();
         for (CurrencyEntity currency : currencies) {
-            if (ofy.load().type(CurrencyEntity.class).id(currency.getId()).now() == null) {
+            if (CurrencyEntity.find(currency.getId()) == null) {
                 currency.onCreate();
             } else {
                 currency.onUpdate();
