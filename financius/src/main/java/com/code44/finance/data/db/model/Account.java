@@ -7,7 +7,9 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.code44.finance.App;
+import com.code44.finance.backend.endpoint.accounts.model.AccountEntity;
 import com.code44.finance.common.model.AccountOwner;
+import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
@@ -82,6 +84,16 @@ public class Account extends BaseModel {
         if (cursor.getCount() > 0) {
             account.updateFrom(cursor, Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT);
         }
+        return account;
+    }
+
+    public static Account from(AccountEntity entity) {
+        final Account account = new Account();
+        account.setServerId(entity.getId());
+        account.setModelState(ModelState.valueOf(entity.getModelState()));
+        account.setSyncState(SyncState.SYNCED);
+        account.setTitle(entity.getTitle());
+        account.setNote(entity.getNote());
         return account;
     }
 
@@ -191,6 +203,15 @@ public class Account extends BaseModel {
         if (accountOwner == null) {
             throw new IllegalStateException("Owner cannot be null.");
         }
+    }
+
+    public AccountEntity toEntity() {
+        final AccountEntity entity = new AccountEntity();
+        entity.setId(getServerId());
+        entity.setModelState(getModelState().toString());
+        entity.setTitle(getTitle());
+        entity.setNote(getNote());
+        return entity;
     }
 
     public Currency getCurrency() {

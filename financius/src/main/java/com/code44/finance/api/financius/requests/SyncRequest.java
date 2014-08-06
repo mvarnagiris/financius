@@ -13,9 +13,11 @@ import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.DBHelper;
 import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.db.model.Account;
 import com.code44.finance.data.db.model.Category;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.db.model.SyncState;
+import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.IOUtils;
@@ -31,10 +33,16 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
     @Override
     protected Void performRequest() throws Exception {
         final SQLiteDatabase database = DBHelper.get(context).getWritableDatabase();
+
         pushCurrencies(database);
         getCurrencies();
+
         pushCategories(database);
         getCategories();
+
+        pushAccounts(database);
+        getAccounts();
+
         return null;
     }
 
@@ -89,6 +97,31 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
 
     private void getCategories() throws Exception {
         new GetCategoriesRequest(context, user).call();
+    }
+
+    private void pushAccounts(SQLiteDatabase database) throws Exception {
+        markInProgress(database, Tables.Accounts.SYNC_STATE);
+
+        final Cursor cursor = Query.create()
+                .projectionId(Tables.Accounts.ID)
+                .projection(Tables.Accounts.PROJECTION)
+                .projection(Tables.Currencies.PROJECTION)
+                .selection(Tables.Accounts.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
+                .from(context, AccountsProvider.uriAccounts())
+                .execute();
+        final List<Account> accounts = new ArrayList<>();
+        do {
+            accounts.add(Account.from(cursor));
+        } while (cursor.moveToNext());
+        IOUtils.closeQuietly(cursor);
+
+        new SaveAccountsRequest(context, User.get(), accounts).call();
+
+        markSynced(database, Tables.Accounts.SYNC_STATE);
+    }
+
+    private void getAccounts() throws Exception {
+        new GetAccountsRequest(context, user).call();
     }
 
     private void markInProgress(SQLiteDatabase database, Column syncStateColumn) {

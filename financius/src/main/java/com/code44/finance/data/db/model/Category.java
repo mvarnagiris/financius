@@ -113,7 +113,6 @@ public class Category extends BaseModel {
         category.setTitle(entity.getTitle());
         category.setColor(entity.getColor());
         category.setCategoryType(CategoryType.valueOf(entity.getCategoryType()));
-        category.setCategoryOwner(CategoryOwner.valueOf(entity.getCategoryOwner()));
         category.setSortOrder(entity.getSortOrder());
         return category;
     }
@@ -224,7 +223,6 @@ public class Category extends BaseModel {
         entity.setTitle(getTitle());
         entity.setColor(getColor());
         entity.setCategoryType(getCategoryType().toString());
-        entity.setCategoryOwner(getCategoryOwner().toString());
         entity.setSortOrder(getSortOrder());
         return entity;
     }
