@@ -32,4 +32,7 @@ public class PeriodHelper extends Prefs {
     public static enum Type {
         DAY, WEEK, MONTH, YEAR, CUSTOM
     }
+
+    public static class PeriodChangedEvent {
+    }
 }

@@ -10,7 +10,6 @@
 
     <ScrollView
         style="@style/ScrollView"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="0px"
         android:layout_weight="1">
 

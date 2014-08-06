@@ -9,6 +9,7 @@ import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.services.StartupService;
 import com.code44.finance.ui.accounts.AccountsFragment;
+import com.code44.finance.ui.overview.OverviewFragment;
 import com.code44.finance.ui.transactions.TransactionsFragment;
 import com.code44.finance.ui.user.UserFragment;
 

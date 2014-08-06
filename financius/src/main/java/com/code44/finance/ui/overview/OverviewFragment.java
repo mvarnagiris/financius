@@ -1,4 +1,4 @@
-package com.code44.finance.ui;
+package com.code44.finance.ui.overview;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,9 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.code44.finance.R;
-import com.code44.finance.ui.accounts.AccountsActivity;
+import com.code44.finance.ui.BaseFragment;
+import com.code44.finance.views.OverviewGraphView;
 
 public class OverviewFragment extends BaseFragment {
+    private OverviewGraphView overviewGraph_V;
+
     public static OverviewFragment newInstance() {
         return new OverviewFragment();
     }
@@ -22,11 +25,7 @@ public class OverviewFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.accounts_B).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AccountsActivity.start(getActivity(), v);
-            }
-        });
+        // Get views
+        overviewGraph_V = (OverviewGraphView) view.findViewById(R.id.overviewGraph_V);
     }
 }
