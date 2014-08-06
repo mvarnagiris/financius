@@ -43,16 +43,16 @@ public abstract class ModelListActivity extends BaseActivity implements ModelLis
 
         // Setup ActionBar
         if (mode == Mode.SELECT) {
-            setActionBarTitle(R.string.select);
+            setTitle(R.string.select);
         } else {
-            setActionBarTitle(getActionBarTitleResId());
+            setTitle(getActionBarTitleResId());
         }
 
         final boolean addFragmentHere = containerId != 0;
         if (addFragmentHere && savedInstanceState == null) {
             ModelListFragment fragment = createModelsFragment(mode);
             if (fragment != null) {
-                getSupportFragmentManager().beginTransaction().add(containerId, fragment).commit();
+                getFragmentManager().beginTransaction().add(containerId, fragment).commit();
             }
         }
     }

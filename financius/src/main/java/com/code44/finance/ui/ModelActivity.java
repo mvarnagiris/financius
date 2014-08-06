@@ -34,14 +34,14 @@ public abstract class ModelActivity extends BaseActivity {
         EventBus.getDefault().register(this);
 
         // Setup ActionBar
-        setActionBarTitle(getActionBarTitleResId());
+        setTitle(getActionBarTitleResId());
 
         // Get extras
         modelId = getIntent().getLongExtra(EXTRA_MODEL_ID, 0);
 
         // Fragment
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(contentId, createModelFragment(modelId), FRAGMENT_MODEL).commit();
+            getFragmentManager().beginTransaction().add(contentId, createModelFragment(modelId), FRAGMENT_MODEL).commit();
         }
     }
 
@@ -69,7 +69,7 @@ public abstract class ModelActivity extends BaseActivity {
             case R.id.action_delete:
                 final Uri deleteUri = getDeleteUri();
                 final Pair<String, String[]> deleteSelection = getDeleteSelection();
-                DeleteFragment.show(getSupportFragmentManager(), deleteUri, deleteSelection.first, deleteSelection.second);
+                DeleteFragment.show(getFragmentManager(), deleteUri, deleteSelection.first, deleteSelection.second);
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -1,22 +1,24 @@
 package com.code44.finance.ui;
 
-import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.code44.finance.R;
+import com.code44.finance.adapters.NavigationAdapter;
+import com.code44.finance.utils.ToolbarHelper;
 
-public class BaseActivity extends FragmentActivity {
+public class BaseActivity extends Activity implements NavigationFragment.NavigationListener {
+    protected ToolbarHelper toolbarHelper;
+
     protected static Intent makeIntent(Context context, Class activityClass) {
         return new Intent(context, activityClass);
     }
@@ -37,15 +39,11 @@ public class BaseActivity extends FragmentActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
 
-        // Setup ActionBar
-//        final ActionBar actionBar = getActionBar();
-//        assert actionBar != null;
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-//        actionBar.setHomeButtonEnabled(true);
-//        actionBar.setIcon(null);
+        // Init
+        toolbarHelper = new ToolbarHelper(this);
     }
 
     @Override
@@ -56,6 +54,10 @@ public class BaseActivity extends FragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (toolbarHelper.onOptionsItemSelected(item)) {
+            return true;
+        }
+
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
@@ -69,17 +71,8 @@ public class BaseActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    protected void setActionBarTitle(int resId) {
-        if (resId != 0) {
-            setActionBarTitle(getString(resId));
-        } else {
-            setActionBarTitle("");
-        }
-    }
+    @Override
+    public void onNavigationItemSelected(NavigationAdapter.NavigationItem item) {
 
-    protected void setActionBarTitle(String title) {
-        final ActionBar actionBar = getActionBar();
-        assert actionBar != null;
-        actionBar.setTitle(title);
     }
 }

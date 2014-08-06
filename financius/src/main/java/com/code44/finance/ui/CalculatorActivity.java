@@ -1,8 +1,8 @@
 package com.code44.finance.ui;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
 import com.code44.finance.R;
 
@@ -22,7 +22,7 @@ public class CalculatorActivity extends BaseActivity implements CalculatorFragme
         super.onCreate(savedInstanceState);
 
         // Setup ActionBar
-        setActionBarTitle(R.string.calculator);
+        setTitle(R.string.calculator);
         //noinspection ConstantConditions
         getActionBar().hide();
 
@@ -32,7 +32,7 @@ public class CalculatorActivity extends BaseActivity implements CalculatorFragme
 
         // Fragment
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(android.R.id.content, CalculatorFragment.newInstance(value)).commit();
+            getFragmentManager().beginTransaction().add(android.R.id.content, CalculatorFragment.newInstance(value)).commit();
         }
     }
 

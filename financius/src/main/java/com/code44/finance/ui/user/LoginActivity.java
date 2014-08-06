@@ -41,16 +41,16 @@ public class LoginActivity extends BaseActivity {
         // Setup ActionBar
         //noinspection ConstantConditions
         getActionBar().setDisplayHomeAsUpEnabled(false);
-        setActionBarTitle(R.string.login);
+        setTitle(R.string.login);
 
 
         // Restore state
         clearDefaultAccount = savedInstanceState == null || savedInstanceState.getBoolean(STATE_CLEAR_DEFAULT_ACCOUNT);
 
-        googleApi_F = (GoogleApiFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_GOOGLE_PLUS);
+        googleApi_F = (GoogleApiFragment) getFragmentManager().findFragmentByTag(FRAGMENT_GOOGLE_PLUS);
         if (googleApi_F == null) {
             googleApi_F = new GoogleApiFragment.Builder(UNIQUE_GOOGLE_CLIENT_ID).setUsePlus(true).build();
-            getSupportFragmentManager()
+            getFragmentManager()
                     .beginTransaction()
                     .add(googleApi_F, FRAGMENT_GOOGLE_PLUS)
                     .commit();

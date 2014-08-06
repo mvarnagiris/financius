@@ -1,10 +1,10 @@
 package com.code44.finance.ui.currencies;
 
+import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -168,7 +168,7 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
         format_TV.setText(MoneyFormatter.format(currency, 100000));
         refreshRate_IB.setVisibility(model != null && !model.isDefault() ? View.VISIBLE : View.GONE);
 
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
 
         // Loader
         getLoaderManager().restartLoader(LOADER_ACCOUNTS, null, this);

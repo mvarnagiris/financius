@@ -31,7 +31,7 @@ public class CategoriesActivity extends ModelListActivity {
         final ViewPager pager_VP = (ViewPager) findViewById(R.id.pager_VP);
 
         // Setup
-        final CategoriesPagerAdapter adapter = new CategoriesPagerAdapter(this, getSupportFragmentManager());
+        final CategoriesPagerAdapter adapter = new CategoriesPagerAdapter(this, getFragmentManager());
         pager_VP.setAdapter(adapter);
         pager_VP.setPageMargin(getResources().getDimensionPixelSize(R.dimen.separator));
         pager_VP.setPageMarginDrawable(new ColorDrawable(getResources().getColor(R.color.divider)));

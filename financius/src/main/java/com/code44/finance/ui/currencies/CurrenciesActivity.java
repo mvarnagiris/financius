@@ -1,7 +1,7 @@
 package com.code44.finance.ui.currencies;
 
+import android.app.Fragment;
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.View;
 

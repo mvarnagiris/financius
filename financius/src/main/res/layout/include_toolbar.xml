@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Toolbar
-    android:id="@+id/toolbar_T"
+    android:id="@+id/toolbar"
     style="@style/ToolbarStyle"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"

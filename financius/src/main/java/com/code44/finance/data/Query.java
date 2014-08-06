@@ -1,10 +1,10 @@
 package com.code44.finance.data;
 
 import android.content.Context;
+import android.content.CursorLoader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
 
 import com.code44.finance.data.db.Column;
