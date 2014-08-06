@@ -39,6 +39,8 @@ public class RegisterRequest extends FinanciusBaseRequest<User> {
             user.setGoogleId(userAccount.getGoogleId());
             user.setFirstName(userAccount.getFirstName());
             user.setLastName(userAccount.getLastName());
+            user.setPhotoUrl(userAccount.getPhotoUrl());
+            user.setCoverUrl(userAccount.getCoverUrl());
             user.setPremium(userAccount.getPremium());
 
             final boolean isExistingUser = !userAccount.getCreateTs().equals(userAccount.getEditTs());

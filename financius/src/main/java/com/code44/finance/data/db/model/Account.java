@@ -87,11 +87,12 @@ public class Account extends BaseModel {
         return account;
     }
 
-    public static Account from(AccountEntity entity) {
+    public static Account from(AccountEntity entity, Currency currency) {
         final Account account = new Account();
         account.setServerId(entity.getId());
         account.setModelState(ModelState.valueOf(entity.getModelState()));
         account.setSyncState(SyncState.SYNCED);
+        account.setCurrency(currency);
         account.setTitle(entity.getTitle());
         account.setNote(entity.getNote());
         return account;
@@ -209,6 +210,7 @@ public class Account extends BaseModel {
         final AccountEntity entity = new AccountEntity();
         entity.setId(getServerId());
         entity.setModelState(getModelState().toString());
+        entity.setCurrencyId(getCurrency().getServerId());
         entity.setTitle(getTitle());
         entity.setNote(getNote());
         return entity;

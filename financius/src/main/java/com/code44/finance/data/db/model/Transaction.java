@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.code44.finance.backend.endpoint.transactions.model.TransactionEntity;
+import com.code44.finance.common.model.ModelState;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
@@ -50,6 +52,22 @@ public class Transaction extends BaseModel {
         if (cursor.getCount() > 0) {
             transaction.updateFrom(cursor, null);
         }
+        return transaction;
+    }
+
+    public static Transaction from(TransactionEntity entity, Account accountFrom, Account accountTo, Category category) {
+        final Transaction transaction = new Transaction();
+        transaction.setServerId(entity.getId());
+        transaction.setModelState(ModelState.valueOf(entity.getModelState()));
+        transaction.setSyncState(SyncState.SYNCED);
+        transaction.setAccountFrom(accountFrom);
+        transaction.setAccountTo(accountTo);
+        transaction.setCategory(category);
+        transaction.setDate(entity.getDate());
+        transaction.setAmount(entity.getAmount());
+        transaction.setExchangeRate(entity.getExchangeRate());
+        transaction.setNote(entity.getNote());
+        transaction.setTransactionState(TransactionState.valueOf(entity.getTransactionState()));
         return transaction;
     }
 
@@ -201,6 +219,21 @@ public class Transaction extends BaseModel {
         if (transactionState == null) {
             throw new IllegalStateException("State cannot be null.");
         }
+    }
+
+    public TransactionEntity toEntity() {
+        final TransactionEntity entity = new TransactionEntity();
+        entity.setId(getServerId());
+        entity.setModelState(getModelState().toString());
+        entity.setAccountFromId(getAccountFrom().getServerId());
+        entity.setAccountToId(getAccountTo().getServerId());
+        entity.setCategoryId(getCategory().getServerId());
+        entity.setDate(getDate());
+        entity.setAmount(getAmount());
+        entity.setExchangeRate(getExchangeRate());
+        entity.setNote(getNote());
+        entity.setTransactionState(getTransactionState().toString());
+        return entity;
     }
 
     public Account getAccountFrom() {

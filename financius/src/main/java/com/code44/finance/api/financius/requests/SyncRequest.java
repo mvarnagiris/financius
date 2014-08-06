@@ -17,6 +17,7 @@ import com.code44.finance.data.db.model.Account;
 import com.code44.finance.data.db.model.Category;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.db.model.SyncState;
+import com.code44.finance.data.db.model.Transaction;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
@@ -42,6 +43,9 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
 
         pushAccounts(database);
         getAccounts();
+
+        pushTransactions(database);
+        getTransactions();
 
         return null;
     }
@@ -122,6 +126,35 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
 
     private void getAccounts() throws Exception {
         new GetAccountsRequest(context, user).call();
+    }
+
+    private void pushTransactions(SQLiteDatabase database) throws Exception {
+        markInProgress(database, Tables.Transactions.SYNC_STATE);
+
+        final Cursor cursor = Query.create()
+                .projectionId(Tables.Transactions.ID)
+                .projection(Tables.Transactions.PROJECTION)
+                .projection(Tables.Accounts.PROJECTION_ACCOUNT_FROM)
+                .projection(Tables.Accounts.PROJECTION_ACCOUNT_TO)
+                .projection(Tables.Currencies.PROJECTION_ACCOUNT_FROM)
+                .projection(Tables.Currencies.PROJECTION_ACCOUNT_TO)
+                .projection(Tables.Categories.PROJECTION)
+                .selection(Tables.Transactions.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
+                .from(context, AccountsProvider.uriAccounts())
+                .execute();
+        final List<Transaction> transactions = new ArrayList<>();
+        do {
+            transactions.add(Transaction.from(cursor));
+        } while (cursor.moveToNext());
+        IOUtils.closeQuietly(cursor);
+
+        new SaveTransactionsRequest(context, User.get(), transactions).call();
+
+        markSynced(database, Tables.Transactions.SYNC_STATE);
+    }
+
+    private void getTransactions() throws Exception {
+        new GetTransactionsRequest(context, user).call();
     }
 
     private void markInProgress(SQLiteDatabase database, Column syncStateColumn) {

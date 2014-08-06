@@ -29,6 +29,7 @@ public class User extends Prefs {
     private long currenciesTimestamp;
     private long categoriesTimestamp;
     private long accountsTimestamp;
+    private long transactionsTimestamp;
 
     private User(Context context, DBHelper dbHelper, GcmRegistration gcmRegistration) {
         super(context);
@@ -65,10 +66,11 @@ public class User extends Prefs {
         currenciesTimestamp = getLong("currenciesTimestamp", 0);
         categoriesTimestamp = getLong("categoriesTimestamp", 0);
         accountsTimestamp = getLong("accountsTimestamp", 0);
+        transactionsTimestamp = getLong("transactionsTimestamp", 0);
     }
 
     public void clear() {
-        clear("id", "googleId", "email", "firstName", "lastName", "photoUrl", "coverUrl", "isPremium", "currenciesTimestamp", "categoriesTimestamp", "accountsTimestamp");
+        clear("id", "googleId", "email", "firstName", "lastName", "photoUrl", "coverUrl", "isPremium", "currenciesTimestamp", "categoriesTimestamp", "accountsTimestamp", "transactionsTimestamp");
         refresh();
     }
 
@@ -180,6 +182,14 @@ public class User extends Prefs {
     public void setAccountsTimestamp(long accountsTimestamp) {
         this.accountsTimestamp = accountsTimestamp;
         setLong("accountsTimestamp", accountsTimestamp);
+    }
+
+    public long getTransactionsTimestamp() {
+        return transactionsTimestamp;
+    }
+
+    public void setTransactionsTimestamp(long transactionsTimestamp) {
+        this.transactionsTimestamp = transactionsTimestamp;
     }
 
     public static final class UserChangedEvent {
