@@ -6,7 +6,7 @@
     <dimen name="text_xxlarge">26sp</dimen>
     <dimen name="text_title">22sp</dimen>
     <dimen name="text_subhead">18sp</dimen>
-    <dimen name="text_body">14sp</dimen>
+    <dimen name="text_default">14sp</dimen>
     <dimen name="text_caption">10sp</dimen>
 
     <dimen name="recommended_touch_size">40dp</dimen>

@@ -12,13 +12,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:colorPrimary"
-            android:elevation="@dimen/elevation_header"
-            android:padding="@dimen/keyline">
+            android:elevation="@dimen/elevation_header">
 
             <com.code44.finance.views.OverviewGraphView
                 android:id="@+id/overviewGraph_V"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="@dimen/keyline" />
 
         </FrameLayout>
 

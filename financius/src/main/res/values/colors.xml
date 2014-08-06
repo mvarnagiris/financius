@@ -16,7 +16,7 @@
     <color name="bg_brand">@color/brand</color>
 
     <color name="text_primary">#de000000</color>
-    <color name="text_primary_inverse">#deffffff</color>
+    <color name="text_primary_inverse">#fff</color>
     <color name="text_secondary">#8a000000</color>
     <color name="text_secondary_inverse">#8af8f8f8</color>
     <color name="text_hint">#42000000</color>

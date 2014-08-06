@@ -15,6 +15,7 @@ public class OverviewGraphView extends LinearLayout {
     private final PieChartView pieChart_V;
     private final TextView totalExpense_TV;
 
+    @SuppressWarnings("UnusedDeclaration")
     public OverviewGraphView(Context context) {
         this(context, null);
     }
@@ -30,13 +31,20 @@ public class OverviewGraphView extends LinearLayout {
     public OverviewGraphView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         inflate(context, R.layout.v_overview_graph, this);
+        setBackgroundResource(R.drawable.btn_borderless);
 
         // Get views
         pieChart_V = (PieChartView) findViewById(R.id.pieChart_V);
         totalExpense_TV = (TextView) findViewById(R.id.totalExpense_TV);
 
+        // Setup
+        pieChart_V.setEmptyColor(totalExpense_TV.getCurrentTextColor());
         setPieChartData(null);
-        setTotalExpense(0);
+        if (isInEditMode()) {
+            totalExpense_TV.setText("0.00 $");
+        } else {
+            setTotalExpense(0);
+        }
     }
 
     @Override
