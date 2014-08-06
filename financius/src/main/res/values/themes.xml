@@ -10,6 +10,8 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowBackground">@color/bg_window</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
 
         <item name="spbStyle">@style/ProgressBar</item>
     </style>
@@ -31,6 +33,17 @@
         <item name="spb_reversed">true</item>
         <item name="spb_colors">@array/progress_bar_colors</item>
         <item name="spb_progressiveStart_activated">false</item>
+    </style>
+
+    <style name="ToolbarTheme">
+        <item name="android:textColorPrimary">#fff</item>
+        <item name="android:colorControlNormal">#fff</item>
+        <item name="android:colorControlHighlight">#3fff</item>
+    </style>
+
+    <style name="ToolbarStyle">
+        <item name="android:elevation">@dimen/elevation_header</item>
+        <item name="android:background">?android:colorPrimary</item>
     </style>
 
 </resources>

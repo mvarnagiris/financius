@@ -7,10 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
-    <FrameLayout
-        android:id="@+id/content_V"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar" />
+
+        <FrameLayout
+            android:id="@+id/content_V"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
     <fragment
         android:id="@+id/navigation_F"

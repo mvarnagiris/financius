@@ -41,11 +41,11 @@ public class BaseActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         // Setup ActionBar
-        final ActionBar actionBar = getActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setIcon(null);
+//        final ActionBar actionBar = getActionBar();
+//        assert actionBar != null;
+//        actionBar.setDisplayHomeAsUpEnabled(true);
+//        actionBar.setHomeButtonEnabled(true);
+//        actionBar.setIcon(null);
     }
 
     @Override

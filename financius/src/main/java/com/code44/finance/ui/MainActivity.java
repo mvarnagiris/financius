@@ -36,7 +36,7 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
 
         // Get views
         drawer_V = (DrawerLayout) findViewById(R.id.drawer_V);
-        drawerToggle_V = new CustomActionBarDrawerToggle(this, drawer_V, R.drawable.ic_navigation, R.string.open_navigation, R.string.close_navigation);
+        drawerToggle_V = new CustomActionBarDrawerToggle(this, drawer_V, R.drawable.ic_drawer, R.string.open_navigation, R.string.close_navigation);
 
         // Setup drawer
         drawer_V.setDrawerListener(drawerToggle_V);
@@ -44,6 +44,8 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
         if (savedInstanceState == null) {
             StartupService.start(this);
         }
+
+        setActionBar((android.widget.Toolbar) findViewById(R.id.toolbar_T));
     }
 
     @Override
