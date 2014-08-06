@@ -55,6 +55,10 @@ public class ToolbarHelper {
         toolbar.setTitle(resId);
     }
 
+    public void setTitle(String title) {
+        toolbar.setTitle(title);
+    }
+
     private class CustomActionBarDrawerToggle extends ActionBarDrawerToggle {
         public CustomActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, int drawerImageRes, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
             super(activity, drawerLayout, drawerImageRes, openDrawerContentDescRes, closeDrawerContentDescRes);
