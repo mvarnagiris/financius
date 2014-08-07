@@ -21,8 +21,7 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
-        setTitle(R.string.settings);
+        toolbarHelper.setTitle(R.string.settings);
 
         // Get views
         final ListView list_V = (ListView) findViewById(R.id.list_V);

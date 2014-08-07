@@ -11,10 +11,13 @@ import android.widget.Toolbar;
 import com.code44.finance.R;
 
 public class ToolbarHelper {
+    private final Activity activity;
     private final Toolbar toolbar;
     private final DrawerLayout drawer;
 
-    public ToolbarHelper(Activity activity) {
+    public ToolbarHelper(final Activity activity) {
+        this.activity = activity;
+
         // Get views
         toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
         drawer = (DrawerLayout) activity.findViewById(R.id.drawer);
@@ -33,6 +36,14 @@ public class ToolbarHelper {
                         } else {
                             drawer.openDrawer(Gravity.START);
                         }
+                    }
+                });
+            } else {
+                toolbar.setNavigationIcon(R.drawable.ic_up);
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        activity.finish();
                     }
                 });
             }

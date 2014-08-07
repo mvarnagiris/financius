@@ -1,5 +1,14 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list_V"
-    style="@style/ScrollView"
-    tools:context=".SettingsActivity" />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SettingsActivity">
+
+    <include layout="@layout/include_toolbar" />
+
+    <ListView
+        android:id="@+id/list_V"
+        style="@style/ScrollView" />
+
+</LinearLayout>
