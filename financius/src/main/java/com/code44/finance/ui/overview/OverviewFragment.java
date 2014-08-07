@@ -46,10 +46,10 @@ public class OverviewFragment extends BaseFragment implements View.OnClickListen
 
     private void setOverviewGraphData(Cursor cursor) {
         final PieChartData pieChartData = PieChartData.builder()
-                .addValues(new PieChartValue(15215, 0xff8bc34a))
-                .addValues(new PieChartValue(10458, 0xff03a9f4))
-                .addValues(new PieChartValue(5790, 0xffffc107))
-                .addValues(new PieChartValue(2000, 0xff673ab7))
+                .addValues(new PieChartValue(152151, 0xff8bc34a))
+                .addValues(new PieChartValue(107458, 0xff03a9f4))
+                .addValues(new PieChartValue(57590, 0xffffc107))
+                .addValues(new PieChartValue(40302, 0xff673ab7))
                 .build();
         overviewGraph_V.setPieChartData(pieChartData);
         overviewGraph_V.setTotalExpense(pieChartData.getTotalValue());

@@ -19,6 +19,19 @@
         <item name="android:textColorHint">@color/text_secondary_inverse</item>
     </style>
 
+    <style name="Text.Title">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:textColor">?android:colorPrimary</item>
+    </style>
+
+    <style name="Text.Subtitle">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">@dimen/text_subtitle</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+
     <style name="Text.Body" />
 
     <style name="Text.Body.Inverse">
@@ -42,11 +55,6 @@
     <style name="Text.Subhead">
         <item name="android:textSize">@dimen/text_subhead</item>
         <item name="android:textColor">@color/text_secondary</item>
-    </style>
-
-    <style name="Text.Title">
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">@dimen/text_title</item>
     </style>
 
     <style name="Text.Display1">
@@ -147,7 +155,7 @@
     </style>
 
     <style name="Button.Borderless.Calc">
-    <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_display1</item>
@@ -157,13 +165,13 @@
     </style>
 
     <style name="Button.Borderless.Calc.Action">
-    <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:background">@drawable/btn_calc_action</item>
     </style>
-    
+
     <style name="Button.Borderless.Dialog">
         <item name="android:layout_width">@dimen/btn_width</item>
         <item name="android:layout_height">@dimen/btn_touch_size</item>
