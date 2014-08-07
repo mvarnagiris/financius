@@ -22,11 +22,12 @@
     <dimen name="text_display1">34sp</dimen>
     <dimen name="text_title">20sp</dimen>
     <dimen name="text_subhead">16sp</dimen>
-    <dimen name="text_body">14sp</dimen>
+    <dimen name="text_title_large">56sp</dimen>
+    <dimen name="text_default">16sp</dimen>
     <dimen name="text_caption">12sp</dimen>
 
-    <dimen name="separator">2dp</dimen>
-    <dimen name="separator_thin">1px</dimen>
+    <dimen name="divider">2dp</dimen>
+    <dimen name="divider_thin">1dp</dimen>
 
     <dimen name="elevation_header">4dp</dimen>
     <dimen name="elevation_sub_header">2dp</dimen>
@@ -41,6 +42,9 @@
 
     <dimen name="btn_corner">2dp</dimen>
     <dimen name="btn_width">88dp</dimen>
+    <dimen name="btn_fab">56dp</dimen>
+    <dimen name="btn_fab_half">28dp</dimen>
+    <dimen name="btn_fab_half_negative">-28dp</dimen>
 
     <dimen name="category_color_circle_size">32dp</dimen>
     <dimen name="account_balance_graph_height">128dp</dimen>

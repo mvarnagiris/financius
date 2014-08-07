@@ -63,8 +63,8 @@
 
     <com.code44.finance.views.FabImageButton
         android:id="@+id/refreshRate_IB"
-        android:layout_width="@dimen/recommended_touch_size"
-        android:layout_height="@dimen/recommended_touch_size"
+        android:layout_width="@dimen/btn_fab"
+        android:layout_height="@dimen/btn_fab"
         android:layout_alignBottom="@+id/headerContainer_V"
         android:layout_centerHorizontal="true"
         android:elevation="@dimen/elevation_fab"

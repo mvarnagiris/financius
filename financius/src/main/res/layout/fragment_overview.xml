@@ -1,27 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    style="@style/ScrollView"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/overviewGraphContainer_V"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="?android:colorPrimary"
+        android:elevation="@dimen/elevation_header">
 
-        <FrameLayout
+        <com.code44.finance.views.OverviewGraphView
+            android:id="@+id/overviewGraph_V"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?android:colorPrimary"
-            android:elevation="@dimen/elevation_header"
-            android:padding="@dimen/keyline">
+            android:padding="@dimen/keyline" />
 
-            <com.code44.finance.views.OverviewGraphView
-                android:id="@+id/overviewGraph_V"
+    </FrameLayout>
+
+    <ScrollView
+        style="@style/ScrollView"
+        android:layout_below="@+id/overviewGraphContainer_V">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/keyline"
+            android:paddingTop="@dimen/btn_fab_half">
+
+            <com.code44.finance.views.AccountsView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-        </FrameLayout>
+        </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
-</ScrollView>
+    <com.code44.finance.views.FabImageButton
+        android:id="@+id/newTransaction_FAB"
+        android:layout_width="@dimen/btn_fab"
+        android:layout_height="@dimen/btn_fab"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/overviewGraphContainer_V"
+        android:layout_marginRight="@dimen/keyline"
+        android:layout_marginTop="@dimen/btn_fab_half_negative"
+        android:elevation="@dimen/elevation_fab"
+        android:src="@drawable/ic_action_new" />
+</RelativeLayout>

@@ -36,14 +36,19 @@
     </style>
 
     <style name="ToolbarTheme">
-        <item name="android:textColorPrimary">#fff</item>
-        <item name="android:colorControlNormal">#fff</item>
-        <item name="android:colorControlHighlight">#3fff</item>
+        <item name="android:textColorPrimary">@color/text_primary_inverse</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/ToolbarPopupTextAppearance</item>
+        <item name="android:colorControlNormal">@color/text_primary_inverse</item>
+        <item name="android:colorControlHighlight">@color/accent_transparent</item>
     </style>
 
     <style name="ToolbarStyle">
         <item name="android:elevation">@dimen/elevation_header</item>
         <item name="android:background">?android:colorPrimary</item>
+    </style>
+
+    <style name="ToolbarPopupTextAppearance" parent="@android:style/TextAppearance.Material.Widget.PopupMenu.Large">
+        <item name="android:textColor">@color/text_primary</item>
     </style>
 
 </resources>

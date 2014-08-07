@@ -22,7 +22,7 @@ public class ToolbarHelper {
         // Setup
         if (toolbar != null) {
             activity.setActionBar(toolbar);
-
+            toolbar.setContentInsetsAbsolute(toolbar.getResources().getDimensionPixelSize(R.dimen.keyline_content), 0);
             if (drawer != null) {
                 toolbar.setNavigationIcon(R.drawable.ic_drawer);
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
