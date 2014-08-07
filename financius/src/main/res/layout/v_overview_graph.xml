@@ -9,7 +9,7 @@
 
     <me.grantland.widget.AutofitTextView
         android:id="@+id/totalExpense_TV"
-        style="@style/Text.Resize.Inverse"
+        style="@style/Text.Display3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -17,6 +17,6 @@
         android:layout_weight="2"
         android:gravity="right"
         android:singleLine="true"
-        android:textSize="@dimen/text_title_large" />
+        android:textColor="@color/text_primary_inverse" />
 
 </merge>

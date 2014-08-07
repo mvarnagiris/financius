@@ -8,8 +8,9 @@
     android:orientation="vertical"
     tools:context=".ui.currencies.CurrencyEditActivity">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         style="@style/ScrollView"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="0px"
         android:layout_weight="1">
 
@@ -28,11 +29,13 @@
 
                 <EditText
                     android:id="@+id/title_ET"
-                    style="@style/Text.Display2.Inverse"
+                    style="@style/Text.Display2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/title"
-                    android:inputType="textCapWords|textNoSuggestions" />
+                    android:inputType="textCapWords|textNoSuggestions"
+                    android:textColor="@color/text_primary_inverse"
+                    android:textColorHint="@color/text_secondary_inverse" />
 
             </FrameLayout>
 
@@ -67,7 +70,7 @@
 
             <EditText
                 android:id="@+id/note_ET"
-                style="@style/Text.Edit"
+                style="@style/Text.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/keyline"

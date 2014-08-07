@@ -6,7 +6,8 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
-    tools:context=".ui.currencies.CurrencyEditActivity">
+    tools:context=".ui.currencies.CurrencyEditActivity"
+    tools:ignore="RtlSymmetry">
 
     <ScrollView
         style="@style/ScrollView"
@@ -47,13 +48,14 @@
 
                     <AutoCompleteTextView
                         android:id="@+id/code_ET"
+                        style="@style/Text.Display1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/currency_code"
                         android:inputType="textCapCharacters"
                         android:maxLength="3"
                         android:textAllCaps="true"
-                        android:textAppearance="@style/Text.Display1.Inverse"
+                        android:textColor="@color/text_primary_inverse"
                         tools:text="USD" />
 
                 </LinearLayout>
@@ -78,11 +80,12 @@
 
                     <EditText
                         android:id="@+id/symbol_ET"
+                        style="@style/Text.Display1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/symbol"
                         android:inputType="textCapWords"
-                        android:textAppearance="@style/Text.Display1.Inverse"
+                        android:textColor="@color/text_primary_inverse"
                         tools:text="$" />
                 </LinearLayout>
 
@@ -232,7 +235,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/isDefault_CB"
                     android:layout_marginTop="@dimen/space_normal"
-                    android:textAppearance="@style/Text.Secondary"
+                    android:textAppearance="@style/Text"
+                    android:textColor="@color/text_secondary"
                     tools:text="Current main currency GBP" />
 
                 <LinearLayout
@@ -250,7 +254,7 @@
                         android:layout_weight="1"
                         android:hint="@string/exchange_rate"
                         android:inputType="numberDecimal"
-                        android:textAppearance="@style/Text.Edit"
+                        android:textAppearance="@style/Text.Subhead"
                         tools:ignore="NestedWeights"
                         tools:stateListAnimator="@android:animator/fade_in" />
 

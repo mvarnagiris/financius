@@ -6,11 +6,12 @@
     android:padding="@dimen/keyline">
 
     <TextView
-        style="@style/Text.Title.Primary"
+        style="@style/Text.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/space_large"
-        android:text="@string/accounts" />
+        android:text="@string/accounts"
+        android:textColor="?android:colorPrimary" />
 
     <include layout="@layout/include_account" />
 
@@ -24,18 +25,20 @@
         android:layout_marginTop="@dimen/keyline">
 
         <TextView
-            style="@style/Text.Secondary"
+            style="@style/Text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/balance" />
+            android:text="@string/balance"
+            android:textColor="@color/text_secondary" />
 
         <TextView
             android:id="@+id/totalBalance_TV"
-            style="@style/Text.Secondary"
+            style="@style/Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="5892.58 $" />
+            android:text="5892.58 $"
+            android:textColor="@color/text_secondary" />
 
     </LinearLayout>
 

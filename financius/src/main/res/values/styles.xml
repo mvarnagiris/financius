@@ -5,65 +5,29 @@
 
     <style name="Text">
         <item name="android:textStyle">normal</item>
-        <item name="android:textSize">@dimen/text_default</item>
+        <item name="android:textSize">@dimen/text_body</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textColorHint">@color/text_secondary</item>
     </style>
 
-    <style name="Text.Inverse">
-        <item name="android:textColor">@color/text_primary_inverse</item>
-    </style>
-
-    <style name="Text.Secondary">
+    <style name="Text.Caption">
+        <item name="android:textSize">@dimen/text_caption</item>
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
-    <style name="Text.Resize">
-        <item name="android:textSize">128sp</item>
+    <style name="Text.Menu">
+        <item name="android:textSize">@dimen/text_menu</item>
+        <item name="android:fontFamily">@string/font_medium</item>
     </style>
 
-    <style name="Text.Resize.Inverse">
-        <item name="android:textColor">@color/text_primary_inverse</item>
-        <item name="android:textColorHint">@color/text_secondary_inverse</item>
-    </style>
-
-    <style name="Text.Title">
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">@dimen/text_title</item>
-    </style>
-
-    <style name="Text.Title.Primary">
-        <item name="android:textColor">?android:colorPrimary</item>
-    </style>
-
-    <style name="Text.Subtitle">
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">@dimen/text_subtitle</item>
-        <item name="android:textColor">@color/text_secondary</item>
-    </style>
-
-    <style name="Text.Settings">
-        <item name="android:textSize">@dimen/text_subtitle</item>
-    </style>
-
-    <style name="Text.Body" />
-
-    <style name="Text.Body.Inverse">
-        <item name="android:textColor">@color/text_primary_inverse</item>
-        <item name="android:textColorHint">@color/text_secondary_inverse</item>
+    <style name="Text.Button">
+        <item name="android:textSize">@dimen/text_button</item>
+        <item name="android:fontFamily">@string/font_medium</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="Text.Body2">
-        <item name="android:fontFamily">sans-serif-medium</item>
-    </style>
-
-    <style name="Text.Body2.Inverse">
-        <item name="android:textColor">@color/text_primary_inverse</item>
-        <item name="android:textColorHint">@color/text_secondary_inverse</item>
-    </style>
-
-    <style name="Text.Body.Secondary">
-        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:fontFamily">@string/font_medium</item>
     </style>
 
     <style name="Text.Subhead">
@@ -71,86 +35,48 @@
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
-    <style name="Text.Display1">
-        <item name="android:textSize">@dimen/text_display1</item>
+    <style name="Text.Title">
+        <item name="android:fontFamily">@string/font_medium</item>
+        <item name="android:textSize">@dimen/text_title</item>
     </style>
 
-    <style name="Text.Display1.Inverse">
-        <item name="android:textColor">@color/text_primary_inverse</item>
-        <item name="android:textColorHint">@color/text_secondary_inverse</item>
+    <style name="Text.Headline">
+        <item name="android:textSize">@dimen/text_headline</item>
+    </style>
+
+    <style name="Text.Display1">
+        <item name="android:textSize">@dimen/text_display1</item>
+        <item name="android:textColor">@color/text_secondary</item>
     </style>
 
     <style name="Text.Display2">
         <item name="android:textSize">@dimen/text_display2</item>
-    </style>
-
-    <style name="Text.Display2.Inverse">
-        <item name="android:textColor">@color/text_primary_inverse</item>
-        <item name="android:textColorHint">@color/text_secondary_inverse</item>
+        <item name="android:textColor">@color/text_secondary</item>
     </style>
 
     <style name="Text.Display3">
         <item name="android:textSize">@dimen/text_display3</item>
-    </style>
-
-    <style name="Text.Display3.Secondary">
         <item name="android:textColor">@color/text_secondary</item>
-    </style>
-
-    <style name="Text.Display3.Inverse">
-        <item name="android:textColor">@color/text_primary_inverse</item>
-        <item name="android:textColorHint">@color/text_secondary_inverse</item>
     </style>
 
     <style name="Text.Display4">
-        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:fontFamily">@string/font_light</item>
         <item name="android:textSize">@dimen/text_display4</item>
-    </style>
-
-    <style name="Text.Small">
-        <item name="android:textSize">@dimen/text_caption</item>
-    </style>
-
-    <style name="Text.Small.Secondary">
         <item name="android:textColor">@color/text_secondary</item>
-    </style>
-
-    <style name="Text.Large">
-        <item name="android:textSize">@dimen/text_subhead</item>
-    </style>
-
-    <style name="Text.XLarge">
-        <item name="android:textSize">@dimen/text_title</item>
-    </style>
-
-    <style name="Text.XXLarge">
-        <item name="android:textSize">@dimen/text_xxlarge</item>
-    </style>
-
-    <style name="Text.Header" parent="Text.XXLarge" />
-
-    <style name="Text.Header.Inverse">
-        <item name="android:textColor">@color/text_primary_inverse</item>
-    </style>
-
-    <style name="Text.Caption" parent="Text.Small.Secondary" />
-
-    <style name="Text.Edit" parent="Text">
-        <item name="android:textSize">@dimen/text_title</item>
     </style>
 
     <!-- Button -->
     <!-- =========================================================================================================== -->
 
-    <style name="Button" parent="BaseButton">
-        <item name="android:textColor">@color/text_primary_inverse</item>
+    <style name="Button">
+        <item name="android:textAppearance">@style/Text.Button</item>
     </style>
 
     <style name="Button.Small" parent="BaseButtonSmall">
         <item name="android:minHeight">@dimen/min_touch_size</item>
         <item name="android:paddingTop">@dimen/space_normal</item>
         <item name="android:paddingBottom">@dimen/space_normal</item>
-        <item name="android:textSize">@dimen/text_default</item>
+        <item name="android:textSize">@dimen/text_body</item>
         <item name="android:textAllCaps">false</item>
     </style>
 
@@ -185,7 +111,7 @@
         <item name="android:layout_width">@dimen/btn_width</item>
         <item name="android:layout_height">@dimen/btn_touch_size</item>
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">@dimen/text_default</item>
+        <item name="android:textSize">@dimen/text_body</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textAlignment">center</item>
     </style>

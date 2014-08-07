@@ -3,6 +3,6 @@
     <item name="layout_type" format="integer" type="integer">0</item>
     <item name="font_regular" format="string" type="string">sans-serif</item>
     <item name="font_light" format="string" type="string">sans-serif-light</item>
-    <item name="font_thin" format="string" type="string">sans-serif-light</item>
-    <item name="font_medium" format="string" type="string">sans-serif-light</item>
+    <item name="font_thin" format="string" type="string">sans-serif-thin</item>
+    <item name="font_medium" format="string" type="string">sans-serif-medium</item>
 </resources>

@@ -17,12 +17,13 @@
 
         <TextView
             android:id="@+id/code_TV"
-            style="@style/Text.Resize.Inverse"
+            style="@style/Text.Display4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@string/font_light"
             android:gravity="center"
+            android:textColor="@color/text_primary_inverse"
             android:viewName="code"
             tools:text="GBP" />
 

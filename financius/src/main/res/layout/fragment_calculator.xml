@@ -22,7 +22,8 @@
             android:fontFamily="@string/font_light"
             android:gravity="right"
             android:singleLine="true"
-            android:textAppearance="@style/Text.Display3.Secondary"
+            android:textAppearance="@style/Text.Display3"
+            android:textColor="@color/text_primary_inverse"
             tools:text="0.00" />
 
         <TextView
@@ -36,7 +37,8 @@
             android:gravity="right"
             android:paddingBottom="@dimen/keyline"
             android:singleLine="true"
-            android:textAppearance="@style/Text.Display3.Secondary"
+            android:textAppearance="@style/Text.Display3"
+            android:textColor="@color/text_primary_inverse"
             android:visibility="invisible"
             tools:text="0.00" />
 

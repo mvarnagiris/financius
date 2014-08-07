@@ -9,15 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="@dimen/space_normal"
         android:paddingLeft="@dimen/space_large"
-        android:paddingRight="@dimen/space_large">
+        android:paddingRight="@dimen/space_large"
+        android:paddingTop="@dimen/space_normal">
 
         <TextView
             android:id="@+id/currencies_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/Text.Body"
+            android:textAppearance="@style/Text"
             android:visibility="gone"
             tools:text="1 currency will be deleted"
             tools:visibility="visible" />
@@ -26,7 +26,7 @@
             android:id="@+id/accounts_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/Text.Body"
+            android:textAppearance="@style/Text"
             android:visibility="gone"
             tools:text="3 accounts will be deleted"
             tools:visibility="visible" />
@@ -35,7 +35,7 @@
             android:id="@+id/categories_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/Text.Body"
+            android:textAppearance="@style/Text"
             android:visibility="gone"
             tools:text="2 categories will be deleted"
             tools:visibility="visible" />
@@ -44,7 +44,7 @@
             android:id="@+id/transactions_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/Text.Body"
+            android:textAppearance="@style/Text"
             android:visibility="gone"
             tools:text="254 transactions will be deleted"
             tools:visibility="visible" />

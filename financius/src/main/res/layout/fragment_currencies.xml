@@ -28,11 +28,12 @@
         tools:ignore="RtlHardcoded,UnusedAttribute">
 
         <TextView
-            style="@style/Text.Inverse"
+            style="@style/Text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/l_refresh_rates_daily" />
+            android:text="@string/l_refresh_rates_daily"
+            android:textColor="@color/text_primary_inverse" />
 
         <Switch
             android:id="@+id/autoUpdateCurrencies_S"
