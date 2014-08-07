@@ -3,6 +3,7 @@ package com.code44.finance.ui.currencies;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
 
@@ -16,6 +17,12 @@ public class CurrencyActivity extends ModelActivity {
     public static void start(Context context, View expandFrom, long currencyId) {
         final Intent intent = makeIntent(context, CurrencyActivity.class, currencyId);
         startScaleUp(context, intent, expandFrom);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        toolbarHelper.setElevation(0);
     }
 
     @Override

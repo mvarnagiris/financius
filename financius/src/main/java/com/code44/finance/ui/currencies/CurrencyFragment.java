@@ -3,13 +3,11 @@ package com.code44.finance.ui.currencies;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -71,20 +69,6 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
         adapter = new CurrencyAccountsAdapter(getActivity());
         list_V.setAdapter(adapter);
         refreshRate_IB.setOnClickListener(this);
-        //noinspection ConstantConditions
-        getView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                } else {
-                    //noinspection deprecation
-                    getView().getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                }
-
-                ((ViewGroup.MarginLayoutParams) refreshRate_IB.getLayoutParams()).bottomMargin = -refreshRate_IB.getHeight() / 2;
-            }
-        });
     }
 
     @Override

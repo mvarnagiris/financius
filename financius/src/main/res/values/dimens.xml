@@ -30,9 +30,9 @@
     <dimen name="divider">2dp</dimen>
     <dimen name="divider_thin">1dp</dimen>
 
-    <dimen name="elevation_header">4dp</dimen>
+    <dimen name="elevation_header">3dp</dimen>
     <dimen name="elevation_sub_header">2dp</dimen>
-    <dimen name="elevation_fab">6dp</dimen>
+    <dimen name="elevation_fab">4dp</dimen>
 
     <dimen name="min_touch_size">32dp</dimen>
     <dimen name="btn_touch_size">36dp</dimen>

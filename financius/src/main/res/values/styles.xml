@@ -10,6 +10,10 @@
         <item name="android:textColorHint">@color/text_secondary</item>
     </style>
 
+    <style name="Text.Inverse">
+        <item name="android:textColor">@color/text_primary_inverse</item>
+    </style>
+
     <style name="Text.Secondary">
         <item name="android:textColor">@color/text_secondary</item>
     </style>
@@ -26,6 +30,9 @@
     <style name="Text.Title">
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textSize">@dimen/text_title</item>
+    </style>
+
+    <style name="Text.Title.Primary">
         <item name="android:textColor">?android:colorPrimary</item>
     </style>
 

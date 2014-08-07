@@ -4,33 +4,34 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center_vertical"
-    android:paddingLeft="0dp">
+    android:paddingLeft="0dp"
+    tools:ignore="RtlHardcoded,RtlSymmetry">
 
     <TextView
         android:id="@+id/code_TV"
+        style="@style/Text.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="@dimen/keyline_content"
         android:paddingLeft="@dimen/keyline"
-        android:textAppearance="@style/Text.Title"
         android:viewName="code"
         tools:text="GBP" />
 
     <TextView
         android:id="@+id/format_TV"
+        style="@style/Text.Secondary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/Text.Secondary"
         android:viewName="format"
         tools:text="1,000.00 £" />
 
     <TextView
         android:id="@+id/exchangeRate_TV"
+        style="@style/Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_normal"
         android:gravity="right"
-        android:textAppearance="@style/Text.Body2"
         android:viewName="exchangeRate"
         tools:text="1.2489" />
 

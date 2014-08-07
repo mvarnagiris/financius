@@ -43,9 +43,9 @@ public abstract class ModelListActivity extends BaseActivity implements ModelLis
 
         // Setup ActionBar
         if (mode == Mode.SELECT) {
-            setTitle(R.string.select);
+            toolbarHelper.setTitle(R.string.select);
         } else {
-            setTitle(getActionBarTitleResId());
+            toolbarHelper.setTitle(getActionBarTitleResId());
         }
 
         final boolean addFragmentHere = containerId != 0;
@@ -88,7 +88,8 @@ public abstract class ModelListActivity extends BaseActivity implements ModelLis
     }
 
     protected int inflateActivity() {
-        return android.R.id.content;
+        setContentView(R.layout.activity_simple);
+        return R.id.content_V;
     }
 
     protected abstract int getActionBarTitleResId();

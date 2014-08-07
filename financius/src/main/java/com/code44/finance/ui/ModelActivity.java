@@ -34,7 +34,7 @@ public abstract class ModelActivity extends BaseActivity {
         EventBus.getDefault().register(this);
 
         // Setup ActionBar
-        setTitle(getActionBarTitleResId());
+        toolbarHelper.setTitle(getActionBarTitleResId());
 
         // Get extras
         modelId = getIntent().getLongExtra(EXTRA_MODEL_ID, 0);
@@ -91,6 +91,7 @@ public abstract class ModelActivity extends BaseActivity {
     protected abstract Pair<String, String[]> getDeleteSelection();
 
     protected int inflateActivity() {
-        return android.R.id.content;
+        setContentView(R.layout.activity_simple);
+        return R.id.content_V;
     }
 }

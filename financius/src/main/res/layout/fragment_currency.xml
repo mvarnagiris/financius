@@ -9,7 +9,7 @@
         android:id="@+id/headerContainer_V"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/brand"
+        android:background="?android:colorPrimary"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:elevation="@dimen/elevation_header"
@@ -17,12 +17,12 @@
 
         <TextView
             android:id="@+id/code_TV"
+            style="@style/Text.Resize.Inverse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@string/font_light"
             android:gravity="center"
-            android:textAppearance="@style/Text.Display4"
-            android:textColor="@color/text_primary_inverse"
             android:viewName="code"
             tools:text="GBP" />
 
@@ -42,21 +42,22 @@
 
         <TextView
             android:id="@+id/format_TV"
+            style="@style/Text.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAppearance="@style/Text.Title"
             android:viewName="format"
             tools:text="1,000.00 £" />
 
         <TextView
             android:id="@+id/exchangeRate_TV"
+            style="@style/Text.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
             android:gravity="right"
-            android:textAppearance="@style/Text.Title"
             android:viewName="exchangeRate"
+            tools:ignore="RtlHardcoded"
             tools:text="1.2489" />
 
     </LinearLayout>
@@ -67,6 +68,7 @@
         android:layout_height="@dimen/btn_fab"
         android:layout_alignBottom="@+id/headerContainer_V"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/btn_fab_half_negative"
         android:elevation="@dimen/elevation_fab"
         android:src="@drawable/ic_action_refresh" />
 

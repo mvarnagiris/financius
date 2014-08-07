@@ -63,6 +63,9 @@ public abstract class BaseModel implements Parcelable {
     }
 
     public ContentValues asContentValues() {
+        if (StringUtils.isEmpty(getServerId())) {
+            setServerId(UUID.randomUUID().toString());
+        }
         checkValues();
 
         final ContentValues values = new ContentValues();
@@ -73,9 +76,6 @@ public abstract class BaseModel implements Parcelable {
         }
 
         // Server id
-        if (StringUtils.isEmpty(getServerId())) {
-            setServerId(UUID.randomUUID().toString());
-        }
         values.put(getServerIdColumn().getName(), getServerId());
 
         // Model state

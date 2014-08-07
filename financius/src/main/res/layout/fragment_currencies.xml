@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/brand"
+        android:background="?android:colorPrimary"
         android:elevation="@dimen/elevation_sub_header"
         android:gravity="center_vertical"
         android:minHeight="?android:actionBarSize"
@@ -25,14 +25,14 @@
         android:paddingLeft="@dimen/keyline_content"
         android:paddingRight="@dimen/keyline"
         android:paddingTop="@dimen/space_normal"
-        tools:ignore="UnusedAttribute">
+        tools:ignore="RtlHardcoded,UnusedAttribute">
 
         <TextView
+            style="@style/Text.Inverse"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/l_refresh_rates_daily"
-            android:textAppearance="@style/Text.Body2.Inverse" />
+            android:text="@string/l_refresh_rates_daily" />
 
         <Switch
             android:id="@+id/autoUpdateCurrencies_S"
