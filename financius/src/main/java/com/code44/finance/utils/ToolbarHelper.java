@@ -74,6 +74,14 @@ public class ToolbarHelper {
         toolbar.setElevation(elevation);
     }
 
+    public void closeDrawer() {
+        if (drawer == null) {
+            return;
+        }
+
+        drawer.closeDrawer(Gravity.START);
+    }
+
     private class CustomActionBarDrawerToggle extends ActionBarDrawerToggle {
         public CustomActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, int drawerImageRes, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
             super(activity, drawerLayout, drawerImageRes, openDrawerContentDescRes, closeDrawerContentDescRes);

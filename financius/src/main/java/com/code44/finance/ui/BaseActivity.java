@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.view.Menu;
@@ -14,9 +15,12 @@ import android.view.View;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.NavigationAdapter;
+import com.code44.finance.ui.accounts.AccountsActivity;
 import com.code44.finance.utils.ToolbarHelper;
 
 public class BaseActivity extends Activity implements NavigationFragment.NavigationListener {
+    private static final long NAV_DRAWER_LAUNCH_DELAY = 250;
+
     protected ToolbarHelper toolbarHelper;
 
     protected static Intent makeIntent(Context context, Class activityClass) {
@@ -72,7 +76,24 @@ public class BaseActivity extends Activity implements NavigationFragment.Navigat
     }
 
     @Override
-    public void onNavigationItemSelected(NavigationAdapter.NavigationItem item) {
+    public void onNavigationItemSelected(final NavigationAdapter.NavigationItem item) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                openNavigationItem(item);
+            }
+        }, NAV_DRAWER_LAUNCH_DELAY);
 
+        toolbarHelper.closeDrawer();
+    }
+
+    private void openNavigationItem(NavigationAdapter.NavigationItem item) {
+        switch (item.getId()) {
+            case NavigationAdapter.NAV_ID_ACCOUNTS:
+                startActivity(AccountsActivity.makeIntentView(this, AccountsActivity.class));
+                break;
+        }
+
+        overridePendingTransition(0, 0);
     }
 }

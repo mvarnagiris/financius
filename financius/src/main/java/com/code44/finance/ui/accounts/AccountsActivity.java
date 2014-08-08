@@ -33,4 +33,10 @@ public class AccountsActivity extends ModelListActivity {
     protected void startModelEditActivity(View expandFrom, long modelId) {
         AccountEditActivity.start(this, expandFrom, modelId);
     }
+
+    @Override
+    protected int inflateActivity() {
+        setContentView(R.layout.activity_drawer);
+        return R.id.content_V;
+    }
 }
