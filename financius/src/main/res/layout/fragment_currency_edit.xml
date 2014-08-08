@@ -10,8 +10,8 @@
     tools:ignore="RtlSymmetry">
 
     <ScrollView
-        style="@style/ScrollView"
         xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/ScrollView"
         android:layout_height="0px"
         android:layout_weight="1">
 
@@ -48,7 +48,7 @@
 
                     <AutoCompleteTextView
                         android:id="@+id/code_ET"
-                        style="@style/Text.Display1"
+                        style="@style/EditText.Large"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/currency_code"
@@ -80,7 +80,7 @@
 
                     <EditText
                         android:id="@+id/symbol_ET"
-                        style="@style/Text.Display1"
+                        style="@style/EditText.Large"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/symbol"
@@ -248,13 +248,13 @@
 
                     <EditText
                         android:id="@+id/exchangeRate_ET"
+                        style="@style/EditText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/space_normal"
                         android:layout_weight="1"
                         android:hint="@string/exchange_rate"
                         android:inputType="numberDecimal"
-                        android:textAppearance="@style/Text.Subhead"
                         tools:ignore="NestedWeights"
                         tools:stateListAnimator="@android:animator/fade_in" />
 

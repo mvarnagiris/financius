@@ -65,6 +65,16 @@
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
+    <!-- EditText -->
+    <!-- =========================================================================================================== -->
+    <style name="EditText">
+        <item name="android:textAppearance">@style/Text.Subhead</item>
+    </style>
+
+    <style name="EditText.Large">
+        <item name="android:textAppearance">@style/Text.Display1</item>
+    </style>
+
     <!-- Button -->
     <!-- =========================================================================================================== -->
 
@@ -84,7 +94,7 @@
 
     <style name="Button.Borderless.Select">
         <item name="android:gravity">left|center_vertical</item>
-        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:textAppearance">@style/Text.Title</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:background">?android:editTextBackground</item>
     </style>
