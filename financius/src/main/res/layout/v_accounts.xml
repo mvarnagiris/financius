@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -13,13 +14,8 @@
         android:text="@string/accounts"
         android:textColor="?android:colorPrimary" />
 
-    <include layout="@layout/include_account" />
-
-    <include layout="@layout/include_account" />
-
-    <include layout="@layout/include_account" />
-
     <LinearLayout
+        android:id="@+id/balanceContainer_V"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/keyline">
@@ -37,8 +33,8 @@
             style="@style/Text.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="5892.58 $"
-            android:textColor="@color/text_secondary" />
+            android:textColor="@color/text_secondary"
+            tools:text="5892.58 $" />
 
     </LinearLayout>
 
