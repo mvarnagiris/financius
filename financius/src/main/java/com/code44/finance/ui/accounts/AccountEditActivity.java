@@ -1,15 +1,14 @@
 package com.code44.finance.ui.accounts;
 
 import android.content.Context;
-import android.view.View;
 
 import com.code44.finance.R;
 import com.code44.finance.ui.ModelEditActivity;
 import com.code44.finance.ui.ModelFragment;
 
 public class AccountEditActivity extends ModelEditActivity {
-    public static void start(Context context, View expandFrom, long accountId) {
-        startScaleUp(context, makeIntent(context, AccountEditActivity.class, accountId), expandFrom);
+    public static void start(Context context, long accountId) {
+        start(context, makeIntent(context, AccountEditActivity.class, accountId));
     }
 
     @Override

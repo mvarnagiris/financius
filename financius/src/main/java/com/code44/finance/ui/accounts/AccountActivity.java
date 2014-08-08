@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Pair;
-import android.view.View;
 
 import com.code44.finance.R;
 import com.code44.finance.data.db.Tables;
@@ -13,9 +12,9 @@ import com.code44.finance.ui.ModelActivity;
 import com.code44.finance.ui.ModelFragment;
 
 public class AccountActivity extends ModelActivity {
-    public static void start(Context context, View expandFrom, long accountId) {
+    public static void start(Context context, long accountId) {
         final Intent intent = makeIntent(context, AccountActivity.class, accountId);
-        startScaleUp(context, intent, expandFrom);
+        start(context, intent);
     }
 
     @Override
@@ -30,7 +29,7 @@ public class AccountActivity extends ModelActivity {
 
     @Override
     protected void startEditActivity(long modelId) {
-        AccountEditActivity.start(this, null, modelId);
+        AccountEditActivity.start(this, modelId);
     }
 
     @Override

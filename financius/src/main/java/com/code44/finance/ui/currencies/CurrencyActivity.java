@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Pair;
-import android.view.View;
 
 import com.code44.finance.R;
 import com.code44.finance.data.db.Tables;
@@ -14,9 +13,9 @@ import com.code44.finance.ui.ModelActivity;
 import com.code44.finance.ui.ModelFragment;
 
 public class CurrencyActivity extends ModelActivity {
-    public static void start(Context context, View expandFrom, long currencyId) {
+    public static void start(Context context, long currencyId) {
         final Intent intent = makeIntent(context, CurrencyActivity.class, currencyId);
-        startScaleUp(context, intent, expandFrom);
+        start(context, intent);
     }
 
     @Override
@@ -37,7 +36,7 @@ public class CurrencyActivity extends ModelActivity {
 
     @Override
     protected void startEditActivity(long modelId) {
-        CurrencyEditActivity.start(this, null, modelId);
+        CurrencyEditActivity.start(this, modelId);
     }
 
     @Override

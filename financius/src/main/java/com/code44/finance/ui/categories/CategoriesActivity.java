@@ -17,9 +17,9 @@ import com.code44.finance.utils.LayoutType;
 
 public class CategoriesActivity extends ModelListActivity {
 
-    public static void start(Context context, View expandFrom) {
+    public static void start(Context context) {
         final Intent intent = makeIntentView(context, CategoriesActivity.class);
-        startScaleUp(context, intent, expandFrom);
+        start(context, intent);
     }
 
     @Override
@@ -59,12 +59,12 @@ public class CategoriesActivity extends ModelListActivity {
 
     @Override
     protected void startModelActivity(View expandFrom, long modelId) {
-        CategoryActivity.start(this, expandFrom, modelId);
+        CategoryActivity.start(this, modelId);
     }
 
     @Override
     protected void startModelEditActivity(View expandFrom, long modelId) {
-        CategoryEditActivity.start(this, expandFrom, modelId);
+        CategoryEditActivity.start(this, modelId);
     }
 
     @Override

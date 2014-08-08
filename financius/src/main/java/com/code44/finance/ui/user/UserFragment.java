@@ -86,7 +86,7 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_B:
-                LoginActivity.start(getActivity(), view);
+                LoginActivity.start(getActivity());
                 break;
         }
     }

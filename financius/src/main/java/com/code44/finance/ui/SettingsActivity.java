@@ -13,8 +13,8 @@ import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.ui.currencies.CurrenciesActivity;
 
 public class SettingsActivity extends BaseActivity implements AdapterView.OnItemClickListener {
-    public static void start(Context context, View expandFrom) {
-        startScaleUp(context, makeIntent(context, SettingsActivity.class), expandFrom);
+    public static void start(Context context) {
+        start(context, makeIntent(context, SettingsActivity.class));
     }
 
     @Override
@@ -40,9 +40,9 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (id == SettingsAdapter.ID_CURRENCIES) {
-            CurrenciesActivity.start(this, view);
+            CurrenciesActivity.start(this);
         } else if (id == SettingsAdapter.ID_CATEGORIES) {
-            CategoriesActivity.start(this, view);
+            CategoriesActivity.start(this);
         }
     }
 }

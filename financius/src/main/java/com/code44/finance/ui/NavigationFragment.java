@@ -49,7 +49,7 @@ public class NavigationFragment extends BaseFragment implements AdapterView.OnIt
         select(id);
     }
 
-    private void select(long navigationId) {
+    public void select(long navigationId) {
         adapter.setSelectedId(navigationId);
         navigationListener.onNavigationItemSelected(adapter.getSelectedItem());
     }

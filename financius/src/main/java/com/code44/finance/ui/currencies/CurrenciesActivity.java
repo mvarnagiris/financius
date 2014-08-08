@@ -10,8 +10,8 @@ import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.ModelListFragment;
 
 public class CurrenciesActivity extends ModelListActivity {
-    public static void start(Context context, View expandFrom) {
-        startScaleUp(context, makeIntentView(context, CurrenciesActivity.class), expandFrom);
+    public static void start(Context context) {
+        start(context, makeIntentView(context, CurrenciesActivity.class));
     }
 
     public static void startSelect(Fragment fragment, int requestCode) {
@@ -37,11 +37,11 @@ public class CurrenciesActivity extends ModelListActivity {
 
     @Override
     protected void startModelActivity(View expandFrom, long modelId) {
-        CurrencyActivity.start(this, expandFrom, modelId);
+        CurrencyActivity.start(this, modelId);
     }
 
     @Override
     protected void startModelEditActivity(View expandFrom, long modelId) {
-        CurrencyEditActivity.start(this, expandFrom, modelId);
+        CurrencyEditActivity.start(this, modelId);
     }
 }

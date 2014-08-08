@@ -4,38 +4,21 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.code44.finance.R;
-import com.code44.finance.adapters.NavigationAdapter;
-import com.code44.finance.ui.accounts.AccountsActivity;
 import com.code44.finance.utils.ToolbarHelper;
 
-public class BaseActivity extends Activity implements NavigationFragment.NavigationListener {
-    private static final long NAV_DRAWER_LAUNCH_DELAY = 250;
-
+public class BaseActivity extends Activity {
     protected ToolbarHelper toolbarHelper;
 
     protected static Intent makeIntent(Context context, Class activityClass) {
         return new Intent(context, activityClass);
     }
 
-    protected static void startScaleUp(Context context, Intent intent, View expandFromView) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && expandFromView != null && context instanceof Activity) {
-            final Bundle options = ActivityOptionsCompat
-                    .makeScaleUpAnimation(expandFromView, 0, 0, expandFromView.getWidth(), expandFromView.getHeight())
-                    .toBundle();
-            ActivityCompat.startActivity((Activity) context, intent, options);
-        } else {
-            context.startActivity(intent);
-        }
+    protected static void start(Context context, Intent intent) {
+        context.startActivity(intent);
     }
 
     protected static void startForResult(Fragment fragment, Intent intent, int requestCode) {
@@ -63,37 +46,11 @@ public class BaseActivity extends Activity implements NavigationFragment.Navigat
         }
 
         switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-
             case R.id.action_settings:
                 SettingsActivity.start(this, null);
                 return true;
-
         }
+
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onNavigationItemSelected(final NavigationAdapter.NavigationItem item) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                openNavigationItem(item);
-            }
-        }, NAV_DRAWER_LAUNCH_DELAY);
-
-        toolbarHelper.closeDrawer();
-    }
-
-    private void openNavigationItem(NavigationAdapter.NavigationItem item) {
-        switch (item.getId()) {
-            case NavigationAdapter.NAV_ID_ACCOUNTS:
-                startActivity(AccountsActivity.makeIntentView(this, AccountsActivity.class));
-                break;
-        }
-
-        overridePendingTransition(0, 0);
     }
 }

@@ -3,7 +3,6 @@ package com.code44.finance.ui.user;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import com.code44.finance.R;
@@ -28,8 +27,8 @@ public class LoginActivity extends BaseActivity {
 
     private boolean clearDefaultAccount;
 
-    public static void start(Context context, View expandFrom) {
-        startScaleUp(context, makeIntent(context, LoginActivity.class), expandFrom);
+    public static void start(Context context) {
+        start(context, makeIntent(context, LoginActivity.class));
     }
 
     @Override
