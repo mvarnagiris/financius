@@ -1,8 +1,8 @@
 package com.code44.finance.ui.categories;
 
 import android.content.Context;
+import android.content.CursorLoader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +13,11 @@ import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.adapters.CategoriesAdapter;
 import com.code44.finance.common.model.CategoryOwner;
 import com.code44.finance.common.model.CategoryType;
-import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
-import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.ModelListFragment;
 
 public class CategoriesFragment extends ModelListFragment {
@@ -27,7 +25,7 @@ public class CategoriesFragment extends ModelListFragment {
 
     private CategoryType type;
 
-    public static CategoriesFragment newInstance(ModelListActivity.Mode mode, CategoryType type) {
+    public static CategoriesFragment newInstance(Mode mode, CategoryType type) {
         final Bundle args = makeArgs(mode);
         args.putSerializable(ARG_TYPE, type);
 
@@ -55,25 +53,26 @@ public class CategoriesFragment extends ModelListFragment {
     }
 
     @Override
-    protected Uri getUri() {
-        return CategoriesProvider.uriCategories();
-    }
-
-    @Override
-    protected Query getQuery() {
-        Query query = Query.create()
-                .projectionId(Tables.Categories.ID)
-                .projection(Tables.Categories.PROJECTION)
-                .selection(Tables.Categories.TYPE + "=?", String.valueOf(type.asInt()))
-                .selection(" and " + Tables.Categories.MODEL_STATE + "=?", ModelState.NORMAL.asString());
-        if (getMode() == ModelListActivity.Mode.VIEW) {
+    protected CursorLoader getModelsCursorLoader(Context context) {
+        final Query query = Tables.Categories.getQuery(type);
+        if (getMode() == Mode.VIEW) {
             query.selection(" and " + Tables.Categories.OWNER + "<>?", CategoryOwner.SYSTEM.asString());
         }
-        return query;
+        return query.asCursorLoader(context, CategoriesProvider.uriCategories());
     }
 
     @Override
     protected BaseModel modelFrom(Cursor cursor) {
         return Category.from(cursor);
+    }
+
+    @Override
+    protected void onModelClick(Context context, View view, int position, String modelServerId, BaseModel model) {
+        CategoryActivity.start(context, modelServerId);
+    }
+
+    @Override
+    protected void startModelEdit(Context context, String modelServerId) {
+        CategoryEditActivity.start(context, modelServerId);
     }
 }

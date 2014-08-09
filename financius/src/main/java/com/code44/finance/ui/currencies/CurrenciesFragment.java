@@ -1,9 +1,9 @@
 package com.code44.finance.ui.currencies;
 
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,13 +19,10 @@ import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.adapters.CurrenciesAdapter;
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
 import com.code44.finance.api.currencies.CurrencyRequest;
-import com.code44.finance.common.model.ModelState;
-import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
-import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.GeneralPrefs;
 
@@ -40,18 +37,12 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
 
     private SmoothProgressBar loading_SPB;
 
-    public static CurrenciesFragment newInstance(ModelListActivity.Mode mode) {
+    public static CurrenciesFragment newInstance(Mode mode) {
         final Bundle args = makeArgs(mode);
 
         final CurrenciesFragment fragment = new CurrenciesFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -71,7 +62,7 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         // Setup
         autoUpdateCurrencies_S.setChecked(GeneralPrefs.get().isAutoUpdateCurrencies());
         autoUpdateCurrencies_S.setOnCheckedChangeListener(this);
-        if (getMode() == ModelListActivity.Mode.SELECT) {
+        if (getMode() == Mode.SELECT) {
             settingsContainer_V.setVisibility(View.GONE);
         }
     }
@@ -80,13 +71,6 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
     public void onResume() {
         super.onResume();
         updateRefreshView();
-        EventBus.getDefault().registerSticky(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -111,23 +95,23 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
     }
 
     @Override
-    protected Uri getUri() {
-        return CurrenciesProvider.uriCurrencies();
-    }
-
-    @Override
-    protected Query getQuery() {
-        return Query.create()
-                .projectionId(Tables.Currencies.ID)
-                .projection(Tables.Currencies.PROJECTION)
-                .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
-                .sortOrder(Tables.Currencies.IS_DEFAULT + " desc")
-                .sortOrder(Tables.Currencies.CODE.getName());
+    protected CursorLoader getModelsCursorLoader(Context context) {
+        return Tables.Currencies.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrencies());
     }
 
     @Override
     protected BaseModel modelFrom(Cursor cursor) {
         return Currency.from(cursor);
+    }
+
+    @Override
+    protected void onModelClick(Context context, View view, int position, String modelServerId, BaseModel model) {
+        CurrencyActivity.start(context, modelServerId);
+    }
+
+    @Override
+    protected void startModelEdit(Context context, String modelServerId) {
+        CurrencyEditActivity.start(context, modelServerId);
     }
 
     @Override
@@ -149,11 +133,6 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         if (isChecked) {
             refreshRates();
         }
-    }
-
-    @SuppressWarnings("UnusedDeclaration")
-    public void onEventMainThread(CurrencyRequest.CurrencyRequestEvent event) {
-        updateRefreshView();
     }
 
     private void refreshRates() {

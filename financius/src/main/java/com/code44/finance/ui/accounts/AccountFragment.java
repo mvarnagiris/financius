@@ -1,15 +1,17 @@
 package com.code44.finance.ui.accounts;
 
+import android.content.Context;
+import android.content.CursorLoader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
 import com.code44.finance.data.db.model.Currency;
@@ -23,8 +25,8 @@ public class AccountFragment extends ModelFragment<Account> {
     private TextView mainCurrencyBalance_TV;
     private TextView note_TV;
 
-    public static AccountFragment newInstance(long accountId) {
-        final Bundle args = makeArgs(accountId);
+    public static AccountFragment newInstance(String accountServerId) {
+        final Bundle args = makeArgs(accountServerId);
 
         final AccountFragment fragment = new AccountFragment();
         fragment.setArguments(args);
@@ -48,16 +50,8 @@ public class AccountFragment extends ModelFragment<Account> {
     }
 
     @Override
-    protected Uri getUri(long modelId) {
-        return AccountsProvider.uriAccount(modelId);
-    }
-
-    @Override
-    protected Query getQuery() {
-        return Query.create()
-                .projectionId(Tables.Accounts.ID)
-                .projection(Tables.Accounts.PROJECTION)
-                .projection(Tables.Currencies.PROJECTION);
+    protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
+        return Tables.Accounts.getQuery().asCursorLoader(context, AccountsProvider.uriAccount(modelServerId));
     }
 
     @Override
@@ -76,5 +70,20 @@ public class AccountFragment extends ModelFragment<Account> {
             mainCurrencyBalance_TV.setVisibility(View.VISIBLE);
             mainCurrencyBalance_TV.setText(MoneyFormatter.format(Currency.getDefault(), (long) (model.getBalance() * model.getCurrency().getExchangeRate())));
         }
+    }
+
+    @Override
+    protected Uri getDeleteUri() {
+        return AccountsProvider.uriAccounts();
+    }
+
+    @Override
+    protected Pair<String, String[]> getDeleteSelection() {
+        return Pair.create(Tables.Accounts.SERVER_ID + "=?", new String[]{modelServerId});
+    }
+
+    @Override
+    protected void startModelEdit(Context context, String modelServerId) {
+        AccountEditActivity.start(context, modelServerId);
     }
 }

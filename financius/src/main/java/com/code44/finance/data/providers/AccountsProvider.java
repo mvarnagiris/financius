@@ -8,6 +8,7 @@ import com.code44.finance.R;
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
+import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
 import com.code44.finance.data.db.model.Category;
@@ -24,8 +25,8 @@ public class AccountsProvider extends BaseModelProvider {
         return uriModels(AccountsProvider.class, Tables.Accounts.TABLE_NAME);
     }
 
-    public static Uri uriAccount(long accountId) {
-        return uriModel(AccountsProvider.class, Tables.Accounts.TABLE_NAME, accountId);
+    public static Uri uriAccount(String accountServerId) {
+        return uriModel(AccountsProvider.class, Tables.Accounts.TABLE_NAME, accountServerId);
     }
 
     @Override
@@ -35,12 +36,17 @@ public class AccountsProvider extends BaseModelProvider {
 
     @Override
     protected String getQueryTables() {
-        return getModelTable() + " inner join " + Tables.Currencies.TABLE_NAME + " on " + Tables.Currencies.ID.getNameWithTable() + "=" + Tables.Accounts.CURRENCY_ID.getName();
+        return getModelTable() + " inner join " + Tables.Currencies.TABLE_NAME + " on " + Tables.Currencies.SERVER_ID + "=" + Tables.Accounts.CURRENCY_ID;
     }
 
     @Override
-    protected void onBeforeInsertItem(Uri uri, ContentValues values, Map<String, Object> outExtras) {
-        super.onBeforeInsertItem(uri, values, outExtras);
+    protected Column getServerIdColumn() {
+        return Tables.Accounts.SERVER_ID;
+    }
+
+    @Override
+    protected void onBeforeInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> outExtras) {
+        super.onBeforeInsertItem(uri, values, serverId, outExtras);
 
         final long currentBalance = getCurrentBalance(values);
         //noinspection ConstantConditions
@@ -50,11 +56,11 @@ public class AccountsProvider extends BaseModelProvider {
     }
 
     @Override
-    protected void onAfterInsertItem(Uri uri, ContentValues values, long id, Map<String, Object> extras) {
-        super.onAfterInsertItem(uri, values, id, extras);
+    protected void onAfterInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> extras) {
+        super.onAfterInsertItem(uri, values, serverId, extras);
 
         final Account account = new Account();
-        account.setId(id);
+        account.setServerId(serverId);
 
         long balanceDelta = (long) extras.get(EXTRA_BALANCE_DELTA);
         final Transaction transaction = createBalanceTransaction(account, balanceDelta);

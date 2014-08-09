@@ -1,9 +1,9 @@
 package com.code44.finance.ui.accounts;
 
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,22 +13,18 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.adapters.AccountsAdapter;
 import com.code44.finance.adapters.BaseModelsAdapter;
-import com.code44.finance.common.model.AccountOwner;
-import com.code44.finance.common.model.ModelState;
-import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
 import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
-import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.MoneyFormatter;
 
 public class AccountsFragment extends ModelListFragment {
     private TextView balance_TV;
 
-    public static AccountsFragment newInstance(ModelListActivity.Mode mode) {
+    public static AccountsFragment newInstance(Mode mode) {
         final Bundle args = makeArgs(mode);
 
         final AccountsFragment fragment = new AccountsFragment();
@@ -63,8 +59,8 @@ public class AccountsFragment extends ModelListFragment {
     }
 
     @Override
-    protected Uri getUri() {
-        return AccountsProvider.uriAccounts();
+    protected CursorLoader getModelsCursorLoader(Context context) {
+        return Tables.Accounts.getQuery().asCursorLoader(context, AccountsProvider.uriAccounts());
     }
 
     @Override
@@ -73,13 +69,13 @@ public class AccountsFragment extends ModelListFragment {
     }
 
     @Override
-    protected Query getQuery() {
-        return Query.create()
-                .projectionId(Tables.Accounts.ID)
-                .projection(Tables.Accounts.PROJECTION)
-                .projection(Tables.Currencies.PROJECTION)
-                .selection(Tables.Accounts.MODEL_STATE + "=?", ModelState.NORMAL.asString())
-                .selection(" and " + Tables.Accounts.OWNER + "<>?", AccountOwner.SYSTEM.asString());
+    protected void onModelClick(Context context, View view, int position, String modelServerId, BaseModel model) {
+        AccountActivity.start(context, modelServerId);
+    }
+
+    @Override
+    protected void startModelEdit(Context context, String modelServerId) {
+        AccountEditActivity.start(context, modelServerId);
     }
 
     private void updateBalance(Cursor cursor) {

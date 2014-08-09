@@ -9,6 +9,7 @@ import com.code44.finance.common.model.ModelState;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
+import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
 import com.code44.finance.utils.IOUtils;
@@ -20,8 +21,8 @@ public class TransactionsProvider extends BaseModelProvider {
         return uriModels(TransactionsProvider.class, Tables.Transactions.TABLE_NAME);
     }
 
-    public static Uri uriTransaction(long transactionId) {
-        return uriModel(TransactionsProvider.class, Tables.Transactions.TABLE_NAME, transactionId);
+    public static Uri uriTransaction(String transactionServerId) {
+        return uriModel(TransactionsProvider.class, Tables.Transactions.TABLE_NAME, transactionServerId);
     }
 
     @Override
@@ -33,19 +34,24 @@ public class TransactionsProvider extends BaseModelProvider {
     protected String getQueryTables() {
         return getModelTable()
                 + " inner join " + Tables.Accounts.TABLE_NAME + " as " + Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT
-                + " on " + Tables.Accounts.ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT) + "=" + Tables.Transactions.ACCOUNT_FROM_ID
+                + " on " + Tables.Accounts.SERVER_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT) + "=" + Tables.Transactions.ACCOUNT_FROM_ID
                 + " inner join " + Tables.Accounts.TABLE_NAME + " as " + Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT
-                + " on " + Tables.Accounts.ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT) + "=" + Tables.Transactions.ACCOUNT_TO_ID
-                + " inner join " + Tables.Categories.TABLE_NAME + " on " + Tables.Categories.ID.getNameWithTable() + "=" + Tables.Transactions.CATEGORY_ID
+                + " on " + Tables.Accounts.SERVER_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT) + "=" + Tables.Transactions.ACCOUNT_TO_ID
+                + " inner join " + Tables.Categories.TABLE_NAME + " on " + Tables.Categories.SERVER_ID.getNameWithTable() + "=" + Tables.Transactions.CATEGORY_ID
                 + " left join " + Tables.Currencies.TABLE_NAME + " as " + Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY
-                + " on " + Tables.Currencies.ID.getNameWithTable(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY) + "=" + Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT)
+                + " on " + Tables.Currencies.SERVER_ID.getNameWithTable(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY) + "=" + Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT)
                 + " left join " + Tables.Currencies.TABLE_NAME + " as " + Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY
-                + " on " + Tables.Currencies.ID.getNameWithTable(Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY) + "=" + Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT);
+                + " on " + Tables.Currencies.SERVER_ID.getNameWithTable(Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY) + "=" + Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT);
     }
 
     @Override
-    protected void onAfterInsertItem(Uri uri, ContentValues values, long id, Map<String, Object> extras) {
-        super.onAfterInsertItem(uri, values, id, extras);
+    protected Column getServerIdColumn() {
+        return Tables.Transactions.SERVER_ID;
+    }
+
+    @Override
+    protected void onAfterInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> extras) {
+        super.onAfterInsertItem(uri, values, serverId, extras);
 
         //noinspection ConstantConditions
         final long accountFromId = values.getAsLong(Tables.Transactions.ACCOUNT_FROM_ID.getName());

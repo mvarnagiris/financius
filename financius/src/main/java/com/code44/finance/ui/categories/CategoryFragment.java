@@ -1,8 +1,11 @@
 package com.code44.finance.ui.categories;
 
+import android.content.Context;
+import android.content.CursorLoader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
@@ -20,8 +22,8 @@ public class CategoryFragment extends ModelFragment<Category> {
     private ImageView color_IV;
     private TextView title_TV;
 
-    public static CategoryFragment newInstance(long categoryId) {
-        final Bundle args = makeArgs(categoryId);
+    public static CategoryFragment newInstance(String categoryServerId) {
+        final Bundle args = makeArgs(categoryServerId);
 
         final CategoryFragment fragment = new CategoryFragment();
         fragment.setArguments(args);
@@ -43,15 +45,8 @@ public class CategoryFragment extends ModelFragment<Category> {
     }
 
     @Override
-    protected Uri getUri(long modelId) {
-        return CategoriesProvider.uriCategory(modelId);
-    }
-
-    @Override
-    protected Query getQuery() {
-        return Query.create()
-                .projectionId(Tables.Categories.ID)
-                .projection(Tables.Categories.PROJECTION);
+    protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
+        return Tables.Categories.getQuery(null).asCursorLoader(context, CategoriesProvider.uriCategory(modelServerId));
     }
 
     @Override
@@ -63,5 +58,20 @@ public class CategoryFragment extends ModelFragment<Category> {
     protected void onModelLoaded(Category model) {
         color_IV.setColorFilter(model.getColor());
         title_TV.setText(model.getTitle());
+    }
+
+    @Override
+    protected Uri getDeleteUri() {
+        return CategoriesProvider.uriCategories();
+    }
+
+    @Override
+    protected Pair<String, String[]> getDeleteSelection() {
+        return Pair.create(Tables.Categories.SERVER_ID + "=?", new String[]{String.valueOf(modelServerId)});
+    }
+
+    @Override
+    protected void startModelEdit(Context context, String modelServerId) {
+        CategoryEditActivity.start(context, modelServerId);
     }
 }

@@ -1,9 +1,12 @@
 package com.code44.finance.ui.currencies;
 
+import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -15,9 +18,6 @@ import com.code44.finance.R;
 import com.code44.finance.adapters.CurrencyAccountsAdapter;
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
 import com.code44.finance.api.currencies.CurrencyRequest;
-import com.code44.finance.common.model.AccountOwner;
-import com.code44.finance.common.model.ModelState;
-import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
@@ -40,8 +40,8 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
 
     private CurrencyAccountsAdapter adapter;
 
-    public static CurrencyFragment newInstance(long currencyId) {
-        final Bundle args = makeArgs(currencyId);
+    public static CurrencyFragment newInstance(String currencyServerId) {
+        final Bundle args = makeArgs(currencyServerId);
 
         final CurrencyFragment fragment = new CurrencyFragment();
         fragment.setArguments(args);
@@ -72,36 +72,16 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        EventBus.getDefault().registerSticky(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        //noinspection ConstantConditions
         menu.findItem(R.id.action_delete).setVisible(model != null && !model.isDefault());
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_ACCOUNTS) {
-            return Query.create()
-                    .projectionId(Tables.Accounts.ID)
-                    .projection(Tables.Accounts.PROJECTION)
-                    .projection(Tables.Currencies.PROJECTION)
-                    .selection(Tables.Accounts.OWNER + "=?", String.valueOf(AccountOwner.USER.asInt()))
-                    .selection(" and " + Tables.Accounts.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
-                    .asCursorLoader(getActivity(), AccountsProvider.uriAccounts());
+            return Tables.Accounts.getQuery().asCursorLoader(getActivity(), AccountsProvider.uriAccounts());
         }
-
         return super.onCreateLoader(id, args);
     }
 
@@ -124,15 +104,8 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
     }
 
     @Override
-    protected Uri getUri(long modelId) {
-        return CurrenciesProvider.uriCurrency(modelId);
-    }
-
-    @Override
-    protected Query getQuery() {
-        return Query.create()
-                .projectionId(Tables.Currencies.ID)
-                .projection(Tables.Currencies.PROJECTION);
+    protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
+        return Tables.Currencies.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrency(modelServerId));
     }
 
     @Override
@@ -158,9 +131,19 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
         getLoaderManager().restartLoader(LOADER_ACCOUNTS, null, this);
     }
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void onEventMainThread(CurrencyRequest.CurrencyRequestEvent event) {
-        updateRefreshView();
+    @Override
+    protected Uri getDeleteUri() {
+        return CurrenciesProvider.uriCurrencies();
+    }
+
+    @Override
+    protected Pair<String, String[]> getDeleteSelection() {
+        return Pair.create(Tables.Currencies.SERVER_ID + "=?", new String[]{String.valueOf(modelServerId)});
+    }
+
+    @Override
+    protected void startModelEdit(Context context, String modelServerId) {
+        CurrencyEditActivity.start(context, modelServerId);
     }
 
     private void updateRefreshView() {

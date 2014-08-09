@@ -7,6 +7,7 @@ import android.net.Uri;
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
+import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.db.model.SyncState;
@@ -21,8 +22,8 @@ public class CurrenciesProvider extends BaseModelProvider {
         return uriModels(CurrenciesProvider.class, Tables.Currencies.TABLE_NAME);
     }
 
-    public static Uri uriCurrency(long currencyId) {
-        return uriModel(CurrenciesProvider.class, Tables.Currencies.TABLE_NAME, currencyId);
+    public static Uri uriCurrency(String currencyServerId) {
+        return uriModel(CurrenciesProvider.class, Tables.Currencies.TABLE_NAME, currencyServerId);
     }
 
     @Override
@@ -36,14 +37,19 @@ public class CurrenciesProvider extends BaseModelProvider {
     }
 
     @Override
-    protected void onBeforeInsertItem(Uri uri, ContentValues values, Map<String, Object> outExtras) {
-        super.onBeforeInsertItem(uri, values, outExtras);
+    protected Column getServerIdColumn() {
+        return Tables.Currencies.SERVER_ID;
+    }
+
+    @Override
+    protected void onBeforeInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> outExtras) {
+        super.onBeforeInsertItem(uri, values, serverId, outExtras);
         makeSureThereIsOnlyOneDefaultCurrency(values);
     }
 
     @Override
-    protected void onAfterInsertItem(Uri uri, ContentValues values, long id, Map<String, Object> extras) {
-        super.onAfterInsertItem(uri, values, id, extras);
+    protected void onAfterInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> extras) {
+        super.onAfterInsertItem(uri, values, serverId, extras);
         Currency.updateDefaultCurrency(database);
         MoneyFormatter.invalidateCache();
     }

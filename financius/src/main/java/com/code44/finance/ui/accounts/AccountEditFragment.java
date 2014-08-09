@@ -2,9 +2,9 @@ package com.code44.finance.ui.accounts;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,7 +15,6 @@ import android.widget.EditText;
 
 import com.code44.finance.R;
 import com.code44.finance.data.DataStore;
-import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
 import com.code44.finance.data.db.model.Currency;
@@ -35,8 +34,8 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
     private Button balance_B;
     private EditText note_ET;
 
-    public static AccountEditFragment newInstance(long accountId) {
-        final Bundle args = makeArgs(accountId);
+    public static AccountEditFragment newInstance(String accountServerId) {
+        final Bundle args = makeArgs(accountServerId);
 
         final AccountEditFragment fragment = new AccountEditFragment();
         fragment.setArguments(args);
@@ -100,23 +99,13 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
 
     @Override
     protected void ensureModelUpdated(Account model) {
-        //noinspection ConstantConditions
         model.setTitle(title_ET.getText().toString());
-        //noinspection ConstantConditions
         model.setNote(note_ET.getText().toString());
     }
 
     @Override
-    protected Uri getUri(long modelId) {
-        return AccountsProvider.uriAccount(modelId);
-    }
-
-    @Override
-    protected Query getQuery() {
-        return Query.create()
-                .projectionId(Tables.Accounts.ID)
-                .projection(Tables.Accounts.PROJECTION)
-                .projection(Tables.Currencies.PROJECTION);
+    protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
+        return Tables.Accounts.getQuery().asCursorLoader(context, AccountsProvider.uriAccount(modelServerId));
     }
 
     @Override

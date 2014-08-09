@@ -1,5 +1,7 @@
 package com.code44.finance.ui.overview;
 
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,13 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.code44.finance.R;
+import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.db.model.Account;
+import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartValue;
 import com.code44.finance.ui.BaseFragment;
+import com.code44.finance.views.AccountsView;
 import com.code44.finance.views.OverviewGraphView;
 
-public class OverviewFragment extends BaseFragment implements View.OnClickListener {
+import java.util.ArrayList;
+import java.util.List;
+
+public class OverviewFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
+    private static final int LOADER_ACCOUNTS = 1;
+
     private OverviewGraphView overviewGraph_V;
+    private AccountsView accounts_V;
 
     public static OverviewFragment newInstance() {
         return new OverviewFragment();
@@ -30,10 +42,42 @@ public class OverviewFragment extends BaseFragment implements View.OnClickListen
 
         // Get views
         overviewGraph_V = (OverviewGraphView) view.findViewById(R.id.overviewGraph_V);
+        accounts_V = (AccountsView) view.findViewById(R.id.accounts_V);
 
         // Setup
         overviewGraph_V.setOnClickListener(this);
-        setOverviewGraphData(null);
+        setOverviewGraph(null);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // Loader
+        getLoaderManager().initLoader(LOADER_ACCOUNTS, null, this);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case LOADER_ACCOUNTS:
+                return Tables.Accounts.getQuery().asCursorLoader(getActivity(), AccountsProvider.uriAccounts());
+        }
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        switch (loader.getId()) {
+            case LOADER_ACCOUNTS:
+                onAccountsLoaded(cursor);
+                break;
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 
     @Override
@@ -44,7 +88,21 @@ public class OverviewFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    private void setOverviewGraphData(Cursor cursor) {
+    @Override
+    public String getTitle() {
+        return getString(R.string.overview);
+    }
+
+    private void onAccountsLoaded(Cursor cursor) {
+        final List<Account> accounts = new ArrayList<>();
+        cursor.moveToFirst();
+        do {
+            accounts.add(Account.from(cursor));
+        } while (cursor.moveToNext());
+        accounts_V.setAccounts(accounts);
+    }
+
+    private void setOverviewGraph(Cursor cursor) {
         final PieChartData pieChartData = PieChartData.builder()
                 .addValues(new PieChartValue(152151, 0xff8bc34a))
                 .addValues(new PieChartValue(107458, 0xff03a9f4))

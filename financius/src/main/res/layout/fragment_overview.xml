@@ -29,18 +29,7 @@
             android:paddingBottom="@dimen/keyline">
 
             <com.code44.finance.views.AccountsView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <View style="@style/Divider.Thin" />
-
-            <com.code44.finance.views.AccountsView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <View style="@style/Divider.Thin" />
-
-            <com.code44.finance.views.AccountsView
+                android:id="@+id/accounts_V"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

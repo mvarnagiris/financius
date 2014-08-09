@@ -3,17 +3,19 @@ package com.code44.finance.ui;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
-import com.code44.finance.data.Query;
 import com.code44.finance.data.db.model.BaseModel;
 
 public abstract class ModelListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
@@ -22,11 +24,11 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
     protected static final int LOADER_MODELS = 1000;
 
     protected BaseModelsAdapter adapter;
-    protected ModelListActivity.Mode mode;
+    protected Mode mode;
 
-    private ModelListFragmentCallbacks callbacks;
+    private ModelListCallback callback;
 
-    public static Bundle makeArgs(ModelListActivity.Mode mode) {
+    public static Bundle makeArgs(Mode mode) {
         final Bundle args = new Bundle();
         args.putSerializable(ARG_MODE, mode);
         return args;
@@ -36,19 +38,18 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        if (activity instanceof ModelListFragmentCallbacks) {
-            callbacks = (ModelListFragmentCallbacks) activity;
-        } else {
-            throw new IllegalStateException(activity + " must implement " + ModelListFragmentCallbacks.class.getSimpleName());
+        if (activity instanceof ModelListCallback) {
+            callback = (ModelListCallback) activity;
         }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         // Get arguments
-        mode = (ModelListActivity.Mode) getArguments().getSerializable(ARG_MODE);
+        mode = (Mode) getArguments().getSerializable(ARG_MODE);
     }
 
     @Override
@@ -73,15 +74,26 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.models, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_new:
+                startModelEdit(getActivity(), null);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_MODELS) {
-            Query query = getQuery();
-            if (query == null) {
-                query = Query.create();
-            }
-            return query.asCursorLoader(getActivity(), getUri());
+            return getModelsCursorLoader(getActivity());
         }
-
         return null;
     }
 
@@ -101,22 +113,33 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        callbacks.onModelClickListener(view, position, id, modelFrom(adapter.getCursor()));
+        final BaseModel model = modelFrom(adapter.getCursor());
+        if (mode == Mode.VIEW) {
+            onModelClick(getActivity(), view, position, model.getServerId(), model);
+        } else if (callback != null) {
+            callback.onModelSelected(model.getServerId(), model);
+        }
     }
 
     protected abstract BaseModelsAdapter createAdapter(Context context);
 
-    protected abstract Uri getUri();
-
-    protected abstract Query getQuery();
+    protected abstract CursorLoader getModelsCursorLoader(Context context);
 
     protected abstract BaseModel modelFrom(Cursor cursor);
 
-    protected ModelListActivity.Mode getMode() {
+    protected abstract void onModelClick(Context context, View view, int position, String modelServerId, BaseModel model);
+
+    protected abstract void startModelEdit(Context context, String modelServerId);
+
+    protected Mode getMode() {
         return mode;
     }
 
-    public static interface ModelListFragmentCallbacks {
-        public void onModelClickListener(View view, int position, long modelId, BaseModel model);
+    public static enum Mode {
+        VIEW, SELECT
+    }
+
+    public static interface ModelListCallback {
+        public void onModelSelected(String modelServerId, BaseModel model);
     }
 }

@@ -19,18 +19,18 @@
         android:paddingTop="@dimen/space_normal">
 
         <TextView
+            style="@style/Text.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/balance"
-            android:textAppearance="@style/Text.Title"
             android:textColor="@color/text_primary_inverse" />
 
         <TextView
             android:id="@+id/balance_TV"
+            style="@style/Text.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/Text.Title"
             android:textColor="@color/text_primary_inverse"
             tools:text="20,461.39 $" />
 

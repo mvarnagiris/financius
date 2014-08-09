@@ -2,7 +2,10 @@ package com.code44.finance.data.db;
 
 import android.provider.BaseColumns;
 
+import com.code44.finance.common.model.AccountOwner;
+import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.common.model.ModelState;
+import com.code44.finance.data.Query;
 import com.code44.finance.data.db.model.SyncState;
 
 public final class Tables {
@@ -86,6 +89,15 @@ public final class Tables {
                     SYMBOL_POSITION, DECIMAL_SEPARATOR, GROUP_SEPARATOR, DECIMAL_COUNT, IS_DEFAULT,
                     EXCHANGE_RATE);
         }
+
+        public static Query getQuery() {
+            return Query.create()
+                    .projectionId(Tables.Currencies.ID)
+                    .projection(Tables.Currencies.PROJECTION)
+                    .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
+                    .sortOrder(Tables.Currencies.IS_DEFAULT + " desc")
+                    .sortOrder(Tables.Currencies.CODE.getName());
+        }
     }
 
     public static final class Accounts {
@@ -97,7 +109,7 @@ public final class Tables {
         public static final Column SERVER_ID = getServerIdColumn(TABLE_NAME);
         public static final Column MODEL_STATE = getModelStateColumn(TABLE_NAME);
         public static final Column SYNC_STATE = getSyncStateColumn(TABLE_NAME);
-        public static final Column CURRENCY_ID = new Column(TABLE_NAME, "currency_id", Column.DataType.INTEGER);
+        public static final Column CURRENCY_ID = new Column(TABLE_NAME, "currency_id", Column.DataType.TEXT);
         public static final Column TITLE = new Column(TABLE_NAME, "title", Column.DataType.TEXT);
         public static final Column NOTE = new Column(TABLE_NAME, "note", Column.DataType.TEXT);
         public static final Column BALANCE = new Column(TABLE_NAME, "balance", Column.DataType.INTEGER);
@@ -121,6 +133,15 @@ public final class Tables {
 
         public static String createScript() {
             return makeCreateScript(TABLE_NAME, ID, SERVER_ID, MODEL_STATE, SYNC_STATE, CURRENCY_ID, TITLE, NOTE, BALANCE, OWNER);
+        }
+
+        public static Query getQuery() {
+            return Query.create()
+                    .projectionId(Tables.Accounts.ID)
+                    .projection(Tables.Accounts.PROJECTION)
+                    .projection(Tables.Currencies.PROJECTION)
+                    .selection(Accounts.MODEL_STATE + "=?", ModelState.NORMAL.asString())
+                    .selection(" and " + Tables.Accounts.OWNER + "=?", AccountOwner.USER.asString());
         }
     }
 
@@ -146,6 +167,20 @@ public final class Tables {
         public static String createScript() {
             return makeCreateScript(TABLE_NAME, ID, SERVER_ID, MODEL_STATE, SYNC_STATE, TITLE, COLOR, TYPE, OWNER, SORT_ORDER);
         }
+
+        public static Query getQuery(CategoryType type) {
+            final Query query = Query.create()
+                    .projectionId(Tables.Categories.ID)
+                    .projection(Tables.Categories.PROJECTION)
+                    .selection(" and " + Tables.Categories.MODEL_STATE + "=?", ModelState.NORMAL.asString())
+                    .sortOrder(Categories.SORT_ORDER.getName());
+
+            if (type != null) {
+                query.selection(Tables.Categories.TYPE + "=?", String.valueOf(type.asInt()));
+            }
+
+            return query;
+        }
     }
 
     public static final class Transactions {
@@ -155,9 +190,9 @@ public final class Tables {
         public static final Column SERVER_ID = getServerIdColumn(TABLE_NAME);
         public static final Column MODEL_STATE = getModelStateColumn(TABLE_NAME);
         public static final Column SYNC_STATE = getSyncStateColumn(TABLE_NAME);
-        public static final Column ACCOUNT_FROM_ID = new Column(TABLE_NAME, "account_from_id", Column.DataType.INTEGER);
-        public static final Column ACCOUNT_TO_ID = new Column(TABLE_NAME, "account_to_id", Column.DataType.INTEGER);
-        public static final Column CATEGORY_ID = new Column(TABLE_NAME, "category_id", Column.DataType.INTEGER);
+        public static final Column ACCOUNT_FROM_ID = new Column(TABLE_NAME, "account_from_id", Column.DataType.TEXT);
+        public static final Column ACCOUNT_TO_ID = new Column(TABLE_NAME, "account_to_id", Column.DataType.TEXT);
+        public static final Column CATEGORY_ID = new Column(TABLE_NAME, "category_id", Column.DataType.TEXT);
         public static final Column DATE = new Column(TABLE_NAME, "date", Column.DataType.DATETIME);
         public static final Column AMOUNT = new Column(TABLE_NAME, "amount", Column.DataType.INTEGER);
         public static final Column EXCHANGE_RATE = new Column(TABLE_NAME, "exchange_rate", Column.DataType.REAL);

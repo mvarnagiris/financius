@@ -60,7 +60,8 @@ public class Category extends BaseModel {
             final Cursor cursor = Query.create()
                     .projectionId(Tables.Categories.ID)
                     .projection(Tables.Categories.PROJECTION)
-                    .from(App.getAppContext(), CategoriesProvider.uriCategory(EXPENSE_ID))
+                    .selection(Tables.Categories.ID + "=?", String.valueOf(EXPENSE_ID))
+                    .from(App.getAppContext(), CategoriesProvider.uriCategories())
                     .execute();
 
             expenseCategory = Category.from(cursor);
@@ -74,7 +75,8 @@ public class Category extends BaseModel {
             final Cursor cursor = Query.create()
                     .projectionId(Tables.Categories.ID)
                     .projection(Tables.Categories.PROJECTION)
-                    .from(App.getAppContext(), CategoriesProvider.uriCategory(INCOME_ID))
+                    .selection(Tables.Categories.ID + "=?", String.valueOf(INCOME_ID))
+                    .from(App.getAppContext(), CategoriesProvider.uriCategories())
                     .execute();
 
             incomeCategory = Category.from(cursor);
@@ -88,7 +90,8 @@ public class Category extends BaseModel {
             final Cursor cursor = Query.create()
                     .projectionId(Tables.Categories.ID)
                     .projection(Tables.Categories.PROJECTION)
-                    .from(App.getAppContext(), CategoriesProvider.uriCategory(TRANSFER_ID))
+                    .selection(Tables.Categories.ID + "=?", String.valueOf(TRANSFER_ID))
+                    .from(App.getAppContext(), CategoriesProvider.uriCategories())
                     .execute();
 
             transferCategory = Category.from(cursor);

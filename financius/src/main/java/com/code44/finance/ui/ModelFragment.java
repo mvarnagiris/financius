@@ -1,32 +1,39 @@
 package com.code44.finance.ui;
 
 import android.app.LoaderManager;
+import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
-import com.code44.finance.data.Query;
+import com.code44.finance.R;
 import com.code44.finance.data.db.model.BaseModel;
 
 public abstract class ModelFragment<T extends BaseModel> extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     protected static final int LOADER_MODEL = 1000;
-    private static final String ARG_MODEL_ID = "ARG_MODEL_ID";
-    protected long modelId;
+    private static final String ARG_MODEL_SERVER_ID = "ARG_MODEL_SERVER_ID";
+    protected String modelServerId;
     protected T model;
 
-    public static Bundle makeArgs(long modelId) {
+    public static Bundle makeArgs(String modelServerId) {
         final Bundle args = new Bundle();
-        args.putLong(ARG_MODEL_ID, modelId);
+        args.putString(ARG_MODEL_SERVER_ID, modelServerId);
         return args;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         // Get arguments
-        modelId = getArguments().getLong(ARG_MODEL_ID, 0);
+        modelServerId = getArguments().getString(ARG_MODEL_SERVER_ID, "");
     }
 
     @Override
@@ -38,13 +45,31 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.model, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                startModelEdit(getActivity(), modelServerId);
+                return true;
+
+            case R.id.action_delete:
+                final Uri deleteUri = getDeleteUri();
+                final Pair<String, String[]> deleteSelection = getDeleteSelection();
+                DeleteFragment.show(getFragmentManager(), deleteUri, deleteSelection.first, deleteSelection.second);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_MODEL) {
-            Query query = getQuery();
-            if (query == null) {
-                query = Query.create();
-            }
-            return query.asCursorLoader(getActivity(), getUri(modelId));
+            return getModelCursorLoader(getActivity(), modelServerId);
         }
 
         return null;
@@ -62,11 +87,15 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
     public void onLoaderReset(Loader<Cursor> loader) {
     }
 
-    protected abstract Uri getUri(long modelId);
-
-    protected abstract Query getQuery();
+    protected abstract CursorLoader getModelCursorLoader(Context context, String modelServerId);
 
     protected abstract T getModelFrom(Cursor cursor);
 
     protected abstract void onModelLoaded(T model);
+
+    protected abstract Uri getDeleteUri();
+
+    protected abstract Pair<String, String[]> getDeleteSelection();
+
+    protected abstract void startModelEdit(Context context, String modelServerId);
 }

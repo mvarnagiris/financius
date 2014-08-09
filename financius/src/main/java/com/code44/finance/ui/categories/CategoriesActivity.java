@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
-import android.view.View;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.code44.finance.R;
@@ -52,19 +51,9 @@ public class CategoriesActivity extends ModelListActivity {
     }
 
     @Override
-    protected ModelListFragment createModelsFragment(Mode mode) {
+    protected ModelListFragment createModelsFragment(ModelListFragment.Mode mode) {
         // Fragments are created in adapter
         return null;
-    }
-
-    @Override
-    protected void startModelActivity(View expandFrom, long modelId) {
-        CategoryActivity.start(this, modelId);
-    }
-
-    @Override
-    protected void startModelEditActivity(View expandFrom, long modelId) {
-        CategoryEditActivity.start(this, modelId);
     }
 
     @Override

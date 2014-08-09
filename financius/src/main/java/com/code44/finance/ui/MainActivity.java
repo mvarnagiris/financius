@@ -1,5 +1,6 @@
 package com.code44.finance.ui;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 
@@ -23,38 +24,43 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
             StartupService.start(this);
         }
 
-        if (getFragmentManager().findFragmentByTag(FRAGMENT_CONTENT) == null) {
+        final BaseFragment fragment = (BaseFragment) getFragmentManager().findFragmentByTag(FRAGMENT_CONTENT);
+        if (fragment == null) {
             ((NavigationFragment) getFragmentManager().findFragmentById(R.id.navigation_F)).select(NavigationAdapter.NAV_ID_OVERVIEW);
+        } else {
+            onFragmentLoaded(fragment);
+        }
+    }
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+        if (toolbarHelper != null && !(fragment instanceof NavigationFragment)) {
+            onFragmentLoaded((BaseFragment) fragment);
         }
     }
 
     @Override
     public void onNavigationItemSelected(NavigationAdapter.NavigationItem item) {
-        String title = null;
         BaseFragment baseFragment = null;
         switch (item.getId()) {
             case NavigationAdapter.NAV_ID_USER:
                 baseFragment = UserFragment.newInstance();
-                title = getString(R.string.user);
                 break;
 
             case NavigationAdapter.NAV_ID_OVERVIEW:
                 baseFragment = OverviewFragment.newInstance();
-                title = getString(R.string.overview);
                 break;
 
             case NavigationAdapter.NAV_ID_ACCOUNTS:
-                baseFragment = AccountsFragment.newInstance(ModelListActivity.Mode.VIEW);
-                title = getString(R.string.accounts);
+                baseFragment = AccountsFragment.newInstance(ModelListFragment.Mode.VIEW);
                 break;
 
             case NavigationAdapter.NAV_ID_TRANSACTIONS:
                 baseFragment = TransactionsFragment.newInstance();
-                title = getString(R.string.transactions);
                 break;
         }
 
-        toolbarHelper.setTitle(title);
         toolbarHelper.closeDrawer();
         if (baseFragment != null) {
             loadFragment(baseFragment);
@@ -62,16 +68,19 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
     }
 
     private void loadFragment(BaseFragment fragment) {
-        if (fragment instanceof OverviewFragment) {
-            toolbarHelper.setElevation(0);
-        } else {
-            toolbarHelper.setElevation(getResources().getDimension(R.dimen.elevation_header));
-        }
-
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content_V, fragment, FRAGMENT_CONTENT)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
+    }
+
+    private void onFragmentLoaded(BaseFragment fragment) {
+        if (fragment instanceof OverviewFragment) {
+            toolbarHelper.setElevation(0);
+        } else {
+            toolbarHelper.setElevation(getResources().getDimension(R.dimen.elevation_header));
+        }
+        toolbarHelper.setTitle(fragment.getTitle());
     }
 }

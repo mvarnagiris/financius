@@ -1,10 +1,10 @@
 package com.code44.finance.ui.categories;
 
 import android.content.Context;
+import android.content.CursorLoader;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -18,7 +18,6 @@ import android.widget.EditText;
 
 import com.code44.finance.R;
 import com.code44.finance.data.DataStore;
-import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
@@ -31,8 +30,8 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
     private EditText title_ET;
     private Button color_B;
 
-    public static CategoryEditFragment newInstance(long categoryId) {
-        final Bundle args = makeArgs(categoryId);
+    public static CategoryEditFragment newInstance(String categoryServerId) {
+        final Bundle args = makeArgs(categoryServerId);
 
         final CategoryEditFragment fragment = new CategoryEditFragment();
         fragment.setArguments(args);
@@ -90,15 +89,8 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
     }
 
     @Override
-    protected Uri getUri(long modelId) {
-        return CategoriesProvider.uriCategory(modelId);
-    }
-
-    @Override
-    protected Query getQuery() {
-        return Query.create()
-                .projectionId(Tables.Categories.ID)
-                .projection(Tables.Categories.PROJECTION);
+    protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
+        return Tables.Categories.getQuery(null).asCursorLoader(context, CategoriesProvider.uriCategory(modelServerId));
     }
 
     @Override

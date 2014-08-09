@@ -1,9 +1,9 @@
 package com.code44.finance.ui.currencies;
 
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -29,10 +29,8 @@ import com.code44.finance.api.currencies.CurrenciesAsyncApi;
 import com.code44.finance.api.currencies.CurrencyRequest;
 import com.code44.finance.common.model.DecimalSeparator;
 import com.code44.finance.common.model.GroupSeparator;
-import com.code44.finance.common.model.ModelState;
 import com.code44.finance.common.model.SymbolPosition;
 import com.code44.finance.data.DataStore;
-import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
@@ -43,7 +41,6 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import de.greenrobot.event.EventBus;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 public class CurrencyEditFragment extends ModelEditFragment<Currency> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
@@ -69,8 +66,8 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     public CurrencyEditFragment() {
     }
 
-    public static CurrencyEditFragment newInstance(long currencyId) {
-        final Bundle args = makeArgs(currencyId);
+    public static CurrencyEditFragment newInstance(String currencyServerId) {
+        final Bundle args = makeArgs(currencyServerId);
 
         final CurrencyEditFragment fragment = new CurrencyEditFragment();
         fragment.setArguments(args);
@@ -159,13 +156,6 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     public void onResume() {
         super.onResume();
         updateProgressBar();
-        EventBus.getDefault().registerSticky(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -186,30 +176,15 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
 
     @Override
     protected void ensureModelUpdated(Currency model) {
-        //noinspection ConstantConditions
         model.setCode(code_ET.getText().toString());
-        //noinspection ConstantConditions
         model.setSymbol(symbol_ET.getText().toString());
         double exchangeRate;
         try {
-            //noinspection ConstantConditions
             exchangeRate = Double.parseDouble(exchangeRate_ET.getText().toString());
         } catch (Exception e) {
             exchangeRate = 1.0;
         }
         model.setExchangeRate(exchangeRate);
-    }
-
-    @Override
-    protected Uri getUri(long modelId) {
-        return CurrenciesProvider.uriCurrency(modelId);
-    }
-
-    @Override
-    protected Query getQuery() {
-        return Query.create()
-                .projectionId(Tables.Currencies.ID)
-                .projection(Tables.Currencies.PROJECTION);
     }
 
     @Override
@@ -239,10 +214,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_CURRENCIES) {
-            return Query.create()
-                    .projection(Tables.Currencies.CODE.getName())
-                    .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
-                    .asCursorLoader(getActivity(), CurrenciesProvider.uriCurrencies());
+            return Tables.Currencies.getQuery().asCursorLoader(getActivity(), CurrenciesProvider.uriCurrencies());
         }
         return super.onCreateLoader(id, args);
     }
@@ -259,6 +231,11 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
             return;
         }
         super.onLoadFinished(loader, data);
+    }
+
+    @Override
+    protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
+        return Tables.Currencies.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrency(modelServerId));
     }
 
     @Override
@@ -359,7 +336,6 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         onModelLoaded(model);
     }
 
-    @SuppressWarnings("UnusedDeclaration")
     public void onEventMainThread(CurrencyRequest.CurrencyRequestEvent event) {
         updateProgressBar();
         if (model != null && CurrencyRequest.getUniqueId(model.getCode(), Currency.getDefault().getCode()).equals(event.getRequest().getUniqueId())) {

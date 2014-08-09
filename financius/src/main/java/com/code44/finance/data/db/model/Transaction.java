@@ -117,9 +117,9 @@ public class Transaction extends BaseModel {
 
     @Override
     protected void toValues(ContentValues values) {
-        values.put(Tables.Transactions.ACCOUNT_FROM_ID.getName(), accountFrom.getId());
-        values.put(Tables.Transactions.ACCOUNT_TO_ID.getName(), accountTo.getId());
-        values.put(Tables.Transactions.CATEGORY_ID.getName(), category.getId());
+        values.put(Tables.Transactions.ACCOUNT_FROM_ID.getName(), accountFrom.getServerId());
+        values.put(Tables.Transactions.ACCOUNT_TO_ID.getName(), accountTo.getServerId());
+        values.put(Tables.Transactions.CATEGORY_ID.getName(), category.getServerId());
         values.put(Tables.Transactions.DATE.getName(), date);
         values.put(Tables.Transactions.AMOUNT.getName(), amount);
         values.put(Tables.Transactions.EXCHANGE_RATE.getName(), exchangeRate);

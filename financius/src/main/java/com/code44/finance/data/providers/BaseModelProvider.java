@@ -1,6 +1,5 @@
 package com.code44.finance.data.providers;
 
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,7 +10,9 @@ import android.text.TextUtils;
 
 import com.code44.finance.api.financius.FinanciusApi;
 import com.code44.finance.common.model.ModelState;
+import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.Query;
+import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.SyncState;
 import com.code44.finance.utils.IOUtils;
@@ -30,8 +31,8 @@ public abstract class BaseModelProvider extends BaseProvider {
         return Uri.parse(CONTENT_URI_BASE + getAuthority(providerClass) + "/" + modelTable);
     }
 
-    public static Uri uriModel(Class<? extends BaseModelProvider> providerClass, String modelTable, long modelId) {
-        return ContentUris.withAppendedId(uriModels(providerClass, modelTable), modelId);
+    public static Uri uriModel(Class<? extends BaseModelProvider> providerClass, String modelTable, String modelServerId) {
+        return Uri.withAppendedPath(uriModels(providerClass, modelTable), modelServerId);
     }
 
     @Override
@@ -41,7 +42,7 @@ public abstract class BaseModelProvider extends BaseProvider {
         final String authority = getAuthority();
         final String mainTable = getModelTable();
         uriMatcher.addURI(authority, mainTable, URI_ITEMS);
-        uriMatcher.addURI(authority, mainTable + "/#", URI_ITEMS_ID);
+        uriMatcher.addURI(authority, mainTable + "/*", URI_ITEMS_ID);
 
         return result;
     }
@@ -88,7 +89,11 @@ public abstract class BaseModelProvider extends BaseProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        long newId;
+        final String serverId = values.getAsString(getServerIdColumn().getName());
+        if (StringUtils.isEmpty(serverId)) {
+            throw new IllegalArgumentException("Server Id cannot be empty.");
+        }
+
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
@@ -96,9 +101,9 @@ public abstract class BaseModelProvider extends BaseProvider {
                     database.beginTransaction();
 
                     final Map<String, Object> extras = new HashMap<>();
-                    onBeforeInsertItem(uri, values, extras);
-                    newId = insertItem(uri, values);
-                    onAfterInsertItem(uri, values, newId, extras);
+                    onBeforeInsertItem(uri, values, serverId, extras);
+                    insertItem(uri, values, serverId);
+                    onAfterInsertItem(uri, values, serverId, extras);
 
                     database.setTransactionSuccessful();
                 } finally {
@@ -114,7 +119,7 @@ public abstract class BaseModelProvider extends BaseProvider {
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
         FinanciusApi.get().sync();
 
-        return ContentUris.withAppendedId(uri, newId);
+        return Uri.withAppendedPath(uri, serverId);
     }
 
     @Override
@@ -232,6 +237,8 @@ public abstract class BaseModelProvider extends BaseProvider {
 
     protected abstract String getQueryTables();
 
+    protected abstract Column getServerIdColumn();
+
     protected Cursor queryItems(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         final SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(getQueryTables());
@@ -243,15 +250,15 @@ public abstract class BaseModelProvider extends BaseProvider {
         final SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(getQueryTables());
         //noinspection ConstantConditions
-        qb.appendWhere(getModelTable() + "." + BaseColumns._ID + "=" + uri.getPathSegments().get(1));
+        qb.appendWhere(getServerIdColumn() + "=" + uri.getPathSegments().get(1));
 
         return qb.query(database, projection, selection, selectionArgs, null, null, sortOrder);
     }
 
-    protected void onBeforeInsertItem(Uri uri, ContentValues values, Map<String, Object> outExtras) {
+    protected void onBeforeInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> outExtras) {
     }
 
-    protected long insertItem(Uri uri, ContentValues values) {
+    protected long insertItem(Uri uri, ContentValues values, String serverId) {
         if (values.containsKey(BaseColumns._ID)) {
             values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, SyncState.LOCAL_CHANGES.asInt());
         } else {
@@ -260,7 +267,7 @@ public abstract class BaseModelProvider extends BaseProvider {
         return ProviderUtils.doUpdateOrInsert(database, getModelTable(), values, true);
     }
 
-    protected void onAfterInsertItem(Uri uri, ContentValues values, long id, Map<String, Object> extras) {
+    protected void onAfterInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> extras) {
     }
 
     protected void onBeforeUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> outExtras) {

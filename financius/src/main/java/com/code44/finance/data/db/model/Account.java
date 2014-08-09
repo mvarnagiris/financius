@@ -139,7 +139,7 @@ public class Account extends BaseModel {
 
     @Override
     protected void toValues(ContentValues values) {
-        values.put(Tables.Accounts.CURRENCY_ID.getName(), currency.getId());
+        values.put(Tables.Accounts.CURRENCY_ID.getName(), currency.getServerId());
         values.put(Tables.Accounts.TITLE.getName(), title);
         values.put(Tables.Accounts.NOTE.getName(), note);
         values.put(Tables.Accounts.BALANCE.getName(), balance);

@@ -36,6 +36,13 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(Tables.Categories.createScript());
         db.execSQL(Tables.Transactions.createScript());
 
+        // Create indexes
+        createIndex(db, Tables.Currencies.SERVER_ID);
+        createIndex(db, Tables.Accounts.SERVER_ID);
+        createIndex(db, Tables.Categories.SERVER_ID);
+        createIndex(db, Tables.Transactions.SERVER_ID);
+
+        // Add defaults
         addDefaults(db);
     }
 
@@ -55,5 +62,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private void addDefaults(SQLiteDatabase db) {
         DBDefaults.addDefaults(context, db);
+    }
+
+    private void createIndex(SQLiteDatabase db, Column serverIdColumn) {
+        db.execSQL("create index " + serverIdColumn.getName() + "_idx ON " + serverIdColumn.getTableName() + "(" + serverIdColumn.getName() + ");");
     }
 }

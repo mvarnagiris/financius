@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.data.db.model.Account;
+import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.utils.MoneyFormatter;
 
 import java.util.List;
@@ -35,6 +36,9 @@ public class AccountsView extends LinearLayout {
 
     public AccountsView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        setOrientation(VERTICAL);
+        final int padding = getResources().getDimensionPixelSize(R.dimen.keyline);
+        setPadding(padding, padding, padding, padding);
         inflate(context, R.layout.v_accounts, this);
 
         // Get views
@@ -62,11 +66,15 @@ public class AccountsView extends LinearLayout {
     }
 
     private void updateAccountViews(List<Account> accounts) {
+        long totalBalance = 0;
         for (int i = TOP_STATIC_VIEWS_COUNT, size = getChildCount() - BOTTOM_STATIC_VIEWS_COUNT; i < size; i++) {
             final Account account = accounts.get(i - TOP_STATIC_VIEWS_COUNT);
             final View view = getChildAt(i);
             ((TextView) view.findViewById(R.id.title_TV)).setText(account.getTitle());
             ((TextView) view.findViewById(R.id.balance_TV)).setText(MoneyFormatter.format(account.getCurrency(), account.getBalance()));
+            totalBalance += account.getBalance() * account.getCurrency().getExchangeRate();
         }
+
+        totalBalance_TV.setText(MoneyFormatter.format(Currency.getDefault(), totalBalance));
     }
 }

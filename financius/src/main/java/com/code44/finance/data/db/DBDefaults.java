@@ -63,7 +63,6 @@ public final class DBDefaults {
         final Account systemAccount = new Account();
         systemAccount.setServerId(UUID.randomUUID().toString());
         systemAccount.setAccountOwner(AccountOwner.SYSTEM);
-        systemAccount.checkValues();
 
         db.insert(Tables.Accounts.TABLE_NAME, null, systemAccount.asContentValues());
     }

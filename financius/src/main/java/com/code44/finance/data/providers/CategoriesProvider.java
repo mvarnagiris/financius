@@ -5,6 +5,7 @@ import android.net.Uri;
 
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
+import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 
 import java.util.List;
@@ -15,8 +16,8 @@ public class CategoriesProvider extends BaseModelProvider {
         return uriModels(CategoriesProvider.class, Tables.Categories.TABLE_NAME);
     }
 
-    public static Uri uriCategory(long categoryId) {
-        return uriModel(CategoriesProvider.class, Tables.Categories.TABLE_NAME, categoryId);
+    public static Uri uriCategory(String categoryServerId) {
+        return uriModel(CategoriesProvider.class, Tables.Categories.TABLE_NAME, categoryServerId);
     }
 
     @Override
@@ -27,6 +28,11 @@ public class CategoriesProvider extends BaseModelProvider {
     @Override
     protected String getQueryTables() {
         return getModelTable();
+    }
+
+    @Override
+    protected Column getServerIdColumn() {
+        return Tables.Categories.SERVER_ID;
     }
 
     @Override

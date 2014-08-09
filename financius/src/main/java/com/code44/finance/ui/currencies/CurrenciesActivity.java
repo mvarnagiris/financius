@@ -3,7 +3,6 @@ package com.code44.finance.ui.currencies;
 import android.app.Fragment;
 import android.content.Context;
 import android.view.Menu;
-import android.view.View;
 
 import com.code44.finance.R;
 import com.code44.finance.ui.ModelListActivity;
@@ -31,17 +30,7 @@ public class CurrenciesActivity extends ModelListActivity {
     }
 
     @Override
-    protected ModelListFragment createModelsFragment(Mode mode) {
+    protected ModelListFragment createModelsFragment(ModelListFragment.Mode mode) {
         return CurrenciesFragment.newInstance(mode);
-    }
-
-    @Override
-    protected void startModelActivity(View expandFrom, long modelId) {
-        CurrencyActivity.start(this, modelId);
-    }
-
-    @Override
-    protected void startModelEditActivity(View expandFrom, long modelId) {
-        CurrencyEditActivity.start(this, modelId);
     }
 }

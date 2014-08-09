@@ -47,7 +47,7 @@ public class BaseActivity extends Activity {
 
         switch (item.getItemId()) {
             case R.id.action_settings:
-                SettingsActivity.start(this, null);
+                SettingsActivity.start(this);
                 return true;
         }
 

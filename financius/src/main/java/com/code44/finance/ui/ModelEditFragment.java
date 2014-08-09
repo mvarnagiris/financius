@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,22 +17,23 @@ import com.code44.finance.data.db.model.BaseModel;
 public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragment<T> {
     private static final String STATE_MODEL = "STATE_MODEL";
 
-    private ModelEditFragmentListener listener;
+    private ModelEditListener listener;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        if (activity instanceof ModelEditFragmentListener) {
-            listener = (ModelEditFragmentListener) activity;
+        if (activity instanceof ModelEditListener) {
+            listener = (ModelEditListener) activity;
         } else {
-            throw new IllegalStateException(activity.getClass().getName() + " must implement " + ModelEditFragmentListener.class.getName());
+            throw new IllegalStateException(activity.getClass().getName() + " must implement " + ModelEditListener.class.getName());
         }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(false);
 
         // Restore state
         if (savedInstanceState != null) {
@@ -85,6 +88,23 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
         }
     }
 
+    @Override
+    protected Uri getDeleteUri() {
+        // Ignore
+        return null;
+    }
+
+    @Override
+    protected Pair<String, String[]> getDeleteSelection() {
+        // Ignore
+        return null;
+    }
+
+    @Override
+    protected void startModelEdit(Context context, String modelServerId) {
+        // Ignore
+    }
+
     protected abstract boolean onSave(Context context, T model);
 
     protected abstract void ensureModelUpdated(T model);
@@ -100,7 +120,7 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
         listener.onModelCanceled();
     }
 
-    public static interface ModelEditFragmentListener {
+    public static interface ModelEditListener {
         public void onModelSaved();
 
         public void onModelCanceled();

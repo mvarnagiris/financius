@@ -7,8 +7,8 @@ import com.code44.finance.ui.ModelEditActivity;
 import com.code44.finance.ui.ModelFragment;
 
 public class CurrencyEditActivity extends ModelEditActivity {
-    public static void start(Context context, long currencyId) {
-        start(context, makeIntent(context, CurrencyEditActivity.class, currencyId));
+    public static void start(Context context, String currencyServerId) {
+        start(context, makeIntent(context, CurrencyEditActivity.class, currencyServerId));
     }
 
     @Override
@@ -17,7 +17,7 @@ public class CurrencyEditActivity extends ModelEditActivity {
     }
 
     @Override
-    protected ModelFragment createModelFragment(long modelId) {
-        return CurrencyEditFragment.newInstance(modelId);
+    protected ModelFragment createModelFragment(String modelServerId) {
+        return CurrencyEditFragment.newInstance(modelServerId);
     }
 }
