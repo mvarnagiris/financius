@@ -133,32 +133,17 @@ public class Transaction extends BaseModel {
 
         // Account from
         final Account accountFrom = Account.fromAccountFrom(cursor);
-        index = cursor.getColumnIndex(Tables.Transactions.ACCOUNT_FROM_ID.getName(columnPrefixTable));
-        if (index >= 0) {
-            accountFrom.setId(cursor.getLong(index));
-        } else {
-            accountFrom.setId(0);
-        }
+        accountFrom.setId(0);
         setAccountFrom(accountFrom);
 
         // Account to
         final Account accountTo = Account.fromAccountTo(cursor);
-        index = cursor.getColumnIndex(Tables.Transactions.ACCOUNT_TO_ID.getName(columnPrefixTable));
-        if (index >= 0) {
-            accountTo.setId(cursor.getLong(index));
-        } else {
-            accountTo.setId(0);
-        }
+        accountTo.setId(0);
         setAccountTo(accountTo);
 
         // Category
         final Category category = Category.from(cursor);
-        index = cursor.getColumnIndex(Tables.Transactions.CATEGORY_ID.getName(columnPrefixTable));
-        if (index >= 0) {
-            category.setId(cursor.getLong(index));
-        } else {
-            category.setId(0);
-        }
+        category.setId(0);
         setCategory(category);
 
         // Date

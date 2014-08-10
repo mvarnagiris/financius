@@ -21,6 +21,7 @@ import com.code44.finance.data.db.model.Transaction;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
+import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.utils.IOUtils;
 
 import java.util.ArrayList;
@@ -134,7 +135,7 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
                 .projection(Tables.Currencies.PROJECTION_ACCOUNT_TO)
                 .projection(Tables.Categories.PROJECTION)
                 .selection(Tables.Transactions.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
-                .from(context, AccountsProvider.uriAccounts())
+                .from(context, TransactionsProvider.uriTransactions())
                 .execute();
         final List<Transaction> transactions = new ArrayList<>();
         do {

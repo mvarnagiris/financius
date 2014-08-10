@@ -249,8 +249,7 @@ public abstract class BaseModelProvider extends BaseProvider {
     protected Cursor queryItem(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         final SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(getQueryTables());
-        //noinspection ConstantConditions
-        qb.appendWhere(getServerIdColumn() + "=" + uri.getPathSegments().get(1));
+        qb.appendWhere(getServerIdColumn() + "='" + uri.getPathSegments().get(1) + "'");
 
         return qb.query(database, projection, selection, selectionArgs, null, null, sortOrder);
     }

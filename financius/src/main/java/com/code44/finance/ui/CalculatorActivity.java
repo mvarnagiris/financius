@@ -4,8 +4,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.code44.finance.R;
-
 public class CalculatorActivity extends BaseActivity implements CalculatorFragment.CalculatorListener {
     public static final String RESULT_EXTRA_RESULT = "RESULT_EXTRA_RESULT";
 
@@ -20,11 +18,6 @@ public class CalculatorActivity extends BaseActivity implements CalculatorFragme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Setup ActionBar
-        setTitle(R.string.calculator);
-        //noinspection ConstantConditions
-        getActionBar().hide();
 
         // Get extras
         final long value = getIntent().getLongExtra(EXTRA_VALUE, 0);

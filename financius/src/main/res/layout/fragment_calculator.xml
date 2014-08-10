@@ -12,7 +12,7 @@
         android:background="@color/bg_primary"
         android:elevation="@dimen/elevation_header">
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/result_TV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,10 +20,9 @@
             android:layout_marginRight="@dimen/keyline"
             android:layout_marginTop="@dimen/keyline"
             android:fontFamily="@string/font_light"
-            android:gravity="right"
+            android:gravity="end"
             android:singleLine="true"
             android:textAppearance="@style/Text.Display3"
-            android:textColor="@color/text_primary_inverse"
             tools:text="0.00" />
 
         <TextView
@@ -34,11 +33,10 @@
             android:layout_marginLeft="@dimen/keyline"
             android:layout_marginRight="@dimen/keyline"
             android:fontFamily="@string/font_light"
-            android:gravity="right"
+            android:gravity="end"
             android:paddingBottom="@dimen/keyline"
             android:singleLine="true"
             android:textAppearance="@style/Text.Display3"
-            android:textColor="@color/text_primary_inverse"
             android:visibility="invisible"
             tools:text="0.00" />
 
@@ -53,7 +51,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:baselineAligned="false">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -207,6 +206,7 @@
             <Button
                 android:id="@+id/delete_B"
                 style="@style/Button.Borderless.Calc.Action"
+                android:fontFamily="@string/font_regular"
                 android:text="@string/l_delete_short"
                 android:textSize="@dimen/text_subhead" />
 

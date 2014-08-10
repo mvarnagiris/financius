@@ -30,7 +30,7 @@ public class AccountsAdapter extends BaseModelsAdapter {
         final Account account = Account.from(cursor);
         holder.title_TV.setText(account.getTitle());
         holder.balance_TV.setText(MoneyFormatter.format(account.getCurrency(), account.getBalance()));
-        if (account.getCurrency().getId() == Currency.getDefault().getId()) {
+        if (account.getCurrency().getServerId().equals(Currency.getDefault().getServerId())) {
             holder.mainCurrencyBalance_TV.setVisibility(View.GONE);
         } else {
             holder.mainCurrencyBalance_TV.setVisibility(View.VISIBLE);

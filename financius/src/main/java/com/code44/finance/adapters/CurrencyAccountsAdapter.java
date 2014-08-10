@@ -49,7 +49,7 @@ public class CurrencyAccountsAdapter extends BaseModelsAdapter {
         final Account account = Account.from(cursor);
 
         final String accountText = account.getTitle() + ", " + account.getCurrency().getCode();
-        if (currency.getId() == account.getCurrency().getId()) {
+        if (currency.getServerId().equals(account.getCurrency().getServerId())) {
             holder.currency_B.setVisibility(View.INVISIBLE);
             final SpannableStringBuilder ssb = new SpannableStringBuilder(accountText);
             ssb.setSpan(new ForegroundColorSpan(textBrandColor), ssb.length() - account.getCurrency().getCode().length(), ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

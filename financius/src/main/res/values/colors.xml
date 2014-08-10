@@ -18,7 +18,7 @@
     <color name="text_primary">#212121</color>
     <color name="text_primary_inverse">#ffffff</color>
     <color name="text_secondary">#757575</color>
-    <color name="text_secondary_inverse">#f0f0f0</color>
+    <color name="text_secondary_inverse">#8ef0f0f0</color>
     <color name="text_hint">#42000000</color>
     <color name="text_brand">@color/brand</color>
     <color name="text_accent">@color/accent</color>

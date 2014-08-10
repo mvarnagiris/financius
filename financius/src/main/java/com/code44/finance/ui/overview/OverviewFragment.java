@@ -95,10 +95,11 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
 
     private void onAccountsLoaded(Cursor cursor) {
         final List<Account> accounts = new ArrayList<>();
-        cursor.moveToFirst();
-        do {
-            accounts.add(Account.from(cursor));
-        } while (cursor.moveToNext());
+        if (cursor.moveToFirst()) {
+            do {
+                accounts.add(Account.from(cursor));
+            } while (cursor.moveToNext());
+        }
         accounts_V.setAccounts(accounts);
     }
 

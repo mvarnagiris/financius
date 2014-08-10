@@ -161,12 +161,7 @@ public class Account extends BaseModel {
         } else {
             throw new IllegalArgumentException("Table prefix " + columnPrefixTable + " is not supported.");
         }
-        index = cursor.getColumnIndex(Tables.Accounts.CURRENCY_ID.getName(columnPrefixTable));
-        if (index >= 0) {
-            currency.setId(cursor.getLong(index));
-        } else {
-            currency.setId(0);
-        }
+        currency.setId(0);
         setCurrency(currency);
 
         // Title
