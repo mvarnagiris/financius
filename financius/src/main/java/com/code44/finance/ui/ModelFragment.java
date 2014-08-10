@@ -33,7 +33,7 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
         setHasOptionsMenu(true);
 
         // Get arguments
-        modelServerId = getArguments().getString(ARG_MODEL_SERVER_ID, "");
+        modelServerId = getArguments().getString(ARG_MODEL_SERVER_ID, "0");
     }
 
     @Override
