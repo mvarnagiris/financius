@@ -93,12 +93,12 @@ public class TransactionsProvider extends BaseModelProvider {
                         " when " + Tables.Transactions.ACCOUNT_FROM_ID + "=? then -" + Tables.Transactions.AMOUNT + "" +
                         " when " + Tables.Categories.TYPE + "=? then " + Tables.Transactions.AMOUNT + "*" + Tables.Transactions.EXCHANGE_RATE +
                         " else " + Tables.Transactions.AMOUNT + " end)")
-                .args(accountId, String.valueOf(CategoryType.TRANSFER.asInt()))
-                .selection(Tables.Transactions.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
-                .selection(" and " + Tables.Transactions.STATE + "=?", String.valueOf(TransactionState.CONFIRMED.asInt()))
+                .args(accountId, CategoryType.TRANSFER.asString())
+                .selection(Tables.Transactions.MODEL_STATE + "=?", ModelState.NORMAL.asString())
+                .selection(" and " + Tables.Transactions.STATE + "=?", TransactionState.CONFIRMED.asString())
                 .selection(" and (" + Tables.Transactions.ACCOUNT_FROM_ID + "=? or " + Tables.Transactions.ACCOUNT_TO_ID + "=?)", accountId, accountId)
                 .from(database, Tables.Transactions.TABLE_NAME)
-                .innerJoin(Tables.Categories.TABLE_NAME, Tables.Categories.ID.getNameWithTable() + "=" + Tables.Transactions.CATEGORY_ID)
+                .innerJoin(Tables.Categories.TABLE_NAME, Tables.Categories.SERVER_ID.getNameWithTable() + "=" + Tables.Transactions.CATEGORY_ID)
                 .execute();
 
         long balance = 0;
@@ -111,7 +111,7 @@ public class TransactionsProvider extends BaseModelProvider {
         values.put(Tables.Accounts.BALANCE.getName(), balance);
         DataStore.update()
                 .values(values)
-                .withSelection(Tables.Accounts.ID + "=?", String.valueOf(accountId))
+                .withSelection(Tables.Accounts.SERVER_ID + "=?", accountId)
                 .into(database, Tables.Accounts.TABLE_NAME);
     }
 
