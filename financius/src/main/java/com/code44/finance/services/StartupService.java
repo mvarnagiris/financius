@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.text.format.DateUtils;
 
+import com.code44.finance.api.Api;
 import com.code44.finance.api.GcmRegistration;
 import com.code44.finance.api.User;
 import com.code44.finance.api.currencies.CurrenciesAsyncApi;
-import com.code44.finance.api.financius.FinanciusApi;
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
@@ -32,10 +32,10 @@ public class StartupService extends IntentService {
         updateCurrenciesIfNecessary();
 
         if (User.get().isPremium()) {
-            FinanciusApi.get().sync();
+            Api.get().sync();
 
             if (!GcmRegistration.get().isRegisteredWithServer()) {
-                FinanciusApi.get().registerDevice();
+                Api.get().registerDevice();
             }
         }
     }

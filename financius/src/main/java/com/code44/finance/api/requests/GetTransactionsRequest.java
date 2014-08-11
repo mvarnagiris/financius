@@ -1,15 +1,15 @@
-package com.code44.finance.api.financius.requests;
+package com.code44.finance.api.requests;
 
-import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 
 import com.code44.finance.api.User;
+import com.code44.finance.backend.endpoint.transactions.Transactions;
 import com.code44.finance.backend.endpoint.transactions.model.TransactionEntity;
-import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
+import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Category;
 import com.code44.finance.data.db.model.Transaction;
 import com.code44.finance.data.providers.AccountsProvider;
@@ -17,37 +17,40 @@ import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.utils.IOUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GetTransactionsRequest extends FinanciusBaseRequest<Void> {
+import javax.inject.Inject;
+
+public class GetTransactionsRequest extends GetRequest<TransactionEntity> {
     private final Map<String, Account> accounts;
     private final Map<String, Category> categories;
+    @Inject Transactions transactionsService;
 
-    public GetTransactionsRequest(Context context, User user) {
-        super(null, context, user);
+    public GetTransactionsRequest() {
         accounts = new HashMap<>();
         categories = new HashMap<>();
     }
 
-    @Override
-    protected Void performRequest() throws Exception {
-        long transactionsTimestamp = user.getTransactionsTimestamp();
-        final List<TransactionEntity> transactionEntities = getTransactionsService().list(transactionsTimestamp).execute().getItems();
-        final List<ContentValues> transactionValues = new ArrayList<>();
+    @Override protected long getLastTimestamp(User user) {
+        return user.getTransactionsTimestamp();
+    }
 
-        for (TransactionEntity entity : transactionEntities) {
-            transactionValues.add(Transaction.from(entity, getAccountFor(entity.getAccountFromId()), getAccountFor(entity.getAccountToId()), getCategoryFor(entity)).asContentValues());
-            if (transactionsTimestamp < entity.getEditTs()) {
-                transactionsTimestamp = entity.getEditTs();
-            }
-        }
+    @Override protected List<TransactionEntity> performRequest(long timestamp) throws Exception {
+        return transactionsService.list(timestamp).execute().getItems();
+    }
 
-        DataStore.bulkInsert().values(transactionValues).into(TransactionsProvider.uriTransactions());
-        user.setTransactionsTimestamp(transactionsTimestamp);
-        return null;
+    @Override protected BaseModel getModelFrom(TransactionEntity entity) {
+        return Transaction.from(entity, getAccountFor(entity.getAccountFromId()), getAccountFor(entity.getAccountToId()), getCategoryFor(entity));
+    }
+
+    @Override protected void saveNewTimestamp(User user, long newTimestamp) {
+        user.setTransactionsTimestamp(newTimestamp);
+    }
+
+    @Override protected Uri getSaveUri() {
+        return TransactionsProvider.uriTransactions();
     }
 
     private Account getAccountFor(String serverId) {
@@ -59,7 +62,7 @@ public class GetTransactionsRequest extends FinanciusBaseRequest<Void> {
                     .projection(Tables.Accounts.PROJECTION)
                     .projection(Tables.Currencies.PROJECTION)
                     .selection(Tables.Accounts.SERVER_ID + "=?", serverId)
-                    .from(context, AccountsProvider.uriAccounts())
+                    .from(AccountsProvider.uriAccounts())
                     .execute();
             account = Account.from(cursor);
             IOUtils.closeQuietly(cursor);
@@ -77,7 +80,7 @@ public class GetTransactionsRequest extends FinanciusBaseRequest<Void> {
                     .projectionId(Tables.Categories.ID)
                     .projection(Tables.Categories.PROJECTION)
                     .selection(Tables.Accounts.SERVER_ID + "=?", entity.getId())
-                    .from(context, CategoriesProvider.uriCategories())
+                    .from(CategoriesProvider.uriCategories())
                     .execute();
             category = Category.from(cursor);
             IOUtils.closeQuietly(cursor);

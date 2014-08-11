@@ -1,6 +1,7 @@
 package com.code44.finance.utils;
 
-import com.code44.finance.App;
+import android.content.Context;
+
 import com.code44.finance.R;
 
 public final class LayoutType {
@@ -11,34 +12,37 @@ public final class LayoutType {
     private static final int SW720 = 4;
     private static final int SW720_LAND = 5;
 
-    private LayoutType() {
+    private final Context context;
+
+    public LayoutType(Context context) {
+        this.context = context;
     }
 
-    public static boolean isDefault() {
+    public boolean isDefault() {
         final int layoutType = getLayoutType();
         return layoutType == DEFAULT || layoutType == DEFAULT_LAND;
     }
 
-    public static boolean isSW600() {
+    public boolean isSW600() {
         final int layoutType = getLayoutType();
         return layoutType == SW600 || layoutType == SW600_LAND;
     }
 
-    public static boolean isSW720() {
+    public boolean isSW720() {
         final int layoutType = getLayoutType();
         return layoutType == SW720 || layoutType == SW720_LAND;
     }
 
-    public static boolean isPortrait() {
+    public boolean isPortrait() {
         final int layoutType = getLayoutType();
         return layoutType % 2 == 0;
     }
 
-    public static boolean isLandscape() {
+    public boolean isLandscape() {
         return !isPortrait();
     }
 
-    private static int getLayoutType() {
-        return App.getAppContext().getResources().getInteger(R.integer.layout_type);
+    private int getLayoutType() {
+        return context.getResources().getInteger(R.integer.layout_type);
     }
 }

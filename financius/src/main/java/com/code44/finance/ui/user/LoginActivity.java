@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.code44.finance.R;
-import com.code44.finance.api.financius.FinanciusApi;
-import com.code44.finance.api.financius.requests.RegisterRequest;
+import com.code44.finance.api.Api;
+import com.code44.finance.api.requests.RegisterRequest;
 import com.code44.finance.ui.BaseActivity;
 import com.code44.finance.ui.GoogleApiFragment;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -130,6 +130,6 @@ public class LoginActivity extends BaseActivity {
         final String lastName = person.getName().getFamilyName();
         final String photoUrl = person.getImage().getUrl();
         final String coverUrl = person.getCover().getCoverPhoto().getUrl();
-        FinanciusApi.get().register(email, googleId, firstName, lastName, photoUrl, coverUrl);
+        Api.get().register(email, googleId, firstName, lastName, photoUrl, coverUrl);
     }
 }

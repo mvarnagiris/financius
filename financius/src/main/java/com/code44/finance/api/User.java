@@ -3,19 +3,19 @@ package com.code44.finance.api;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.code44.finance.App;
 import com.code44.finance.data.db.DBHelper;
 import com.code44.finance.utils.Prefs;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Produce;
 
-import de.greenrobot.event.EventBus;
+import javax.inject.Inject;
 
 public class User extends Prefs {
     private static final String PREFIX = "user_";
 
-    private static User singleton;
-
-    private final DBHelper dbHelper;
-    private final GcmRegistration gcmRegistration;
+    @Inject DBHelper dbHelper;
+    @Inject GcmRegistration gcmRegistration;
+    @Inject Bus bus;
 
     private String id;
     private String googleId;
@@ -31,22 +31,10 @@ public class User extends Prefs {
     private long accountsTimestamp;
     private long transactionsTimestamp;
 
-    private User(Context context, DBHelper dbHelper, GcmRegistration gcmRegistration) {
+    public User(Context context) {
         super(context);
-        this.dbHelper = dbHelper;
-        this.gcmRegistration = gcmRegistration;
         refresh();
-    }
-
-    public static synchronized User get() {
-        if (singleton == null) {
-            singleton = new User(App.getAppContext(), DBHelper.get(App.getAppContext()), GcmRegistration.get());
-        }
-        return singleton;
-    }
-
-    public static void notifyUserChanged() {
-        EventBus.getDefault().post(new UserChangedEvent());
+        bus.register(this);
     }
 
     @Override
@@ -78,7 +66,7 @@ public class User extends Prefs {
         clear();
         gcmRegistration.clear();
         dbHelper.clear();
-        EventBus.getDefault().post(new UserChangedEvent());
+        notifyChanged();
     }
 
     public boolean isLoggedIn() {
@@ -192,6 +180,11 @@ public class User extends Prefs {
         this.transactionsTimestamp = transactionsTimestamp;
     }
 
-    public static final class UserChangedEvent {
+    public void notifyChanged() {
+        bus.post(this);
+    }
+
+    @Produce public User produceUser() {
+        return this;
     }
 }

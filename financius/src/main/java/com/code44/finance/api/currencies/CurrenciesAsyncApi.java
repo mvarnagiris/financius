@@ -1,6 +1,5 @@
 package com.code44.finance.api.currencies;
 
-import com.code44.finance.App;
 import com.code44.finance.BuildConfig;
 import com.code44.finance.data.db.model.Currency;
 
@@ -37,7 +36,7 @@ public class CurrenciesAsyncApi {
         final String toCode = Currency.getDefault().getCode();
         final boolean isWorking = CurrencyRequest.CurrencyRequestEvent.isWorking(CurrencyRequest.CurrencyRequestEvent.class, CurrencyRequest.getUniqueId(fromCode, toCode));
         if (!isWorking) {
-            final CurrencyRequest request = new CurrencyRequest(currenciesRequestService, App.getAppContext(), fromCode, toCode);
+            final CurrencyRequest request = new CurrencyRequest(currenciesRequestService, fromCode, toCode);
             executeRequest(request);
         }
     }

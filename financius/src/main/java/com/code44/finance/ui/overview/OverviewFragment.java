@@ -15,6 +15,7 @@ import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartValue;
 import com.code44.finance.ui.BaseFragment;
+import com.code44.finance.utils.PeriodHelper;
 import com.code44.finance.views.AccountsView;
 import com.code44.finance.views.OverviewGraphView;
 
@@ -90,7 +91,7 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
 
     @Override
     public String getTitle() {
-        return getString(R.string.overview);
+        return PeriodHelper.get().getTitle();
     }
 
     private void onAccountsLoaded(Cursor cursor) {

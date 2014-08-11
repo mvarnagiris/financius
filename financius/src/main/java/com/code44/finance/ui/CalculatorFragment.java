@@ -112,6 +112,7 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 } else {
+                    //noinspection deprecation
                     getView().getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 }
 

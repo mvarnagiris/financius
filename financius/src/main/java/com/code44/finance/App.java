@@ -1,22 +1,29 @@
 package com.code44.finance;
 
 import android.app.Application;
-import android.content.Context;
+
+import com.code44.finance.modules.AppModule;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-public class App extends Application {
-    private static Context context;
+import java.util.Arrays;
+import java.util.List;
 
-    public static Context getAppContext() {
-        return context;
-    }
+import dagger.ObjectGraph;
+
+public class App extends Application {
+    @SuppressWarnings("FieldCanBeLocal")
+    private ObjectGraph objectGraph;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        context = getApplicationContext();
-
+        objectGraph = ObjectGraph.create(getModules().toArray());
+        objectGraph.inject(this);
         JodaTimeAndroid.init(this);
+    }
+
+    private List<Object> getModules() {
+        return Arrays.<Object>asList(new AppModule(this));
     }
 }

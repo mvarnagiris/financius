@@ -7,7 +7,6 @@ public class EntitiesBody<T> {
         this.deviceRegId = deviceRegId;
     }
 
-
     public String getDeviceRegId() {
         return deviceRegId;
     }

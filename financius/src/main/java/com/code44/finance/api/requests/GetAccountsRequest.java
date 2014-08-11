@@ -1,49 +1,52 @@
-package com.code44.finance.api.financius.requests;
+package com.code44.finance.api.requests;
 
-import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 
 import com.code44.finance.api.User;
+import com.code44.finance.backend.endpoint.accounts.Accounts;
 import com.code44.finance.backend.endpoint.accounts.model.AccountEntity;
-import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
+import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.IOUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GetAccountsRequest extends FinanciusBaseRequest<Void> {
-    private final Map<String, Currency> currencies;
+import javax.inject.Inject;
 
-    public GetAccountsRequest(Context context, User user) {
-        super(null, context, user);
+public class GetAccountsRequest extends GetRequest<AccountEntity> {
+    private final Map<String, Currency> currencies;
+    @Inject Accounts accountsService;
+
+    public GetAccountsRequest() {
         currencies = new HashMap<>();
     }
 
-    @Override
-    protected Void performRequest() throws Exception {
-        long accountsTimestamp = user.getAccountsTimestamp();
-        final List<AccountEntity> accountEntities = getAccountsService().list(accountsTimestamp).execute().getItems();
-        final List<ContentValues> accountValues = new ArrayList<>();
+    @Override protected long getLastTimestamp(User user) {
+        return user.getAccountsTimestamp();
+    }
 
-        for (AccountEntity entity : accountEntities) {
-            accountValues.add(Account.from(entity, getCurrencyFor(entity)).asContentValues());
-            if (accountsTimestamp < entity.getEditTs()) {
-                accountsTimestamp = entity.getEditTs();
-            }
-        }
+    @Override protected List<AccountEntity> performRequest(long timestamp) throws Exception {
+        return accountsService.list(timestamp).execute().getItems();
+    }
 
-        DataStore.bulkInsert().values(accountValues).into(AccountsProvider.uriAccounts());
-        user.setAccountsTimestamp(accountsTimestamp);
-        return null;
+    @Override protected BaseModel getModelFrom(AccountEntity entity) {
+        return Account.from(entity, getCurrencyFor(entity));
+    }
+
+    @Override protected void saveNewTimestamp(User user, long newTimestamp) {
+        user.setAccountsTimestamp(newTimestamp);
+    }
+
+    @Override protected Uri getSaveUri() {
+        return AccountsProvider.uriAccounts();
     }
 
     private Currency getCurrencyFor(AccountEntity entity) {
@@ -54,7 +57,7 @@ public class GetAccountsRequest extends FinanciusBaseRequest<Void> {
                     .projectionId(Tables.Currencies.ID)
                     .projection(Tables.Currencies.PROJECTION)
                     .selection(Tables.Currencies.SERVER_ID + "=?", entity.getCurrencyId())
-                    .from(context, CurrenciesProvider.uriCurrencies())
+                    .from(CurrenciesProvider.uriCurrencies())
                     .execute();
             currency = Currency.from(cursor);
             IOUtils.closeQuietly(cursor);

@@ -1,11 +1,10 @@
 package com.code44.finance.api.currencies;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 
-import com.code44.finance.api.BaseRequest;
 import com.code44.finance.api.BaseRequestEvent;
+import com.code44.finance.api.Request;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Currency;
@@ -15,16 +14,14 @@ import com.google.gson.JsonObject;
 
 import retrofit.client.Response;
 
-public class CurrencyRequest extends BaseRequest<Currency> {
+public class CurrencyRequest extends Request<Currency> {
     private final CurrenciesRequestService requestService;
-    private final Context context;
     private final String fromCode;
     private final String toCode;
 
-    public CurrencyRequest(CurrenciesRequestService requestService, Context context, String fromCode, String toCode) {
+    public CurrencyRequest(CurrenciesRequestService requestService, String fromCode, String toCode) {
         super(getUniqueId(fromCode, toCode));
         this.requestService = requestService;
-        this.context = context;
         this.fromCode = fromCode;
         this.toCode = toCode;
     }
@@ -47,7 +44,7 @@ public class CurrencyRequest extends BaseRequest<Currency> {
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.CODE + "=?")
                 .args(fromCode)
-                .from(context, CurrenciesProvider.uriCurrencies())
+                .from(CurrenciesProvider.uriCurrencies())
                 .execute();
         final Currency currency = Currency.from(cursor);
         IOUtils.closeQuietly(cursor);
@@ -66,7 +63,7 @@ public class CurrencyRequest extends BaseRequest<Currency> {
     }
 
     @Override
-    protected BaseRequestEvent<Currency, ? extends BaseRequest<Currency>> createEvent(Currency result, Exception error, BaseRequestEvent.State state) {
+    protected BaseRequestEvent<Currency, ? extends Request<Currency>> createEvent(Currency result, Exception error, BaseRequestEvent.State state) {
         return new CurrencyRequestEvent(this, result, error, state);
     }
 

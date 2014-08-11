@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.code44.finance.App;
 import com.code44.finance.backend.endpoint.currencies.model.CurrencyEntity;
 import com.code44.finance.common.model.DecimalSeparator;
 import com.code44.finance.common.model.GroupSeparator;
@@ -63,7 +62,7 @@ public class Currency extends BaseModel {
                     .projectionId(Tables.Currencies.ID)
                     .projection(Tables.Currencies.PROJECTION)
                     .selection(Tables.Currencies.IS_DEFAULT.getName() + "=?", "1")
-                    .from(App.getAppContext(), CurrenciesProvider.uriCurrencies())
+                    .from(CurrenciesProvider.uriCurrencies())
                     .execute();
 
             defaultCurrency = Currency.from(cursor);

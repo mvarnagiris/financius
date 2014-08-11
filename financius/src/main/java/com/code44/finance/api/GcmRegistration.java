@@ -4,13 +4,10 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
-import com.code44.finance.App;
 import com.code44.finance.utils.Prefs;
 
 public class GcmRegistration extends Prefs {
     private static final String PREFIX = "gcm_";
-
-    private static GcmRegistration singleton;
 
     private final AppVersionProvider appVersionProvider;
 
@@ -18,17 +15,10 @@ public class GcmRegistration extends Prefs {
     private int registeredVersion;
     private boolean isRegisteredWithServer;
 
-    private GcmRegistration(Context context, AppVersionProvider appVersionProvider) {
+    public GcmRegistration(Context context, AppVersionProvider appVersionProvider) {
         super(context);
         this.appVersionProvider = appVersionProvider;
         refresh();
-    }
-
-    public synchronized static GcmRegistration get() {
-        if (singleton == null) {
-            singleton = new GcmRegistration(App.getAppContext(), new DefaultAppVersionProvider());
-        }
-        return singleton;
     }
 
     public void refresh() {
@@ -79,7 +69,7 @@ public class GcmRegistration extends Prefs {
         public int getAppVersion(Context context);
     }
 
-    static class DefaultAppVersionProvider implements AppVersionProvider {
+    public static class DefaultAppVersionProvider implements AppVersionProvider {
         @Override
         public int getAppVersion(Context context) {
             try {

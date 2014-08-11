@@ -1,23 +1,23 @@
-package com.code44.finance.api.financius.requests;
+package com.code44.finance.api.requests;
 
-import android.content.Context;
-
-import com.code44.finance.api.BaseRequest;
-import com.code44.finance.api.BaseRequestEvent;
+import com.code44.finance.api.Request;
 import com.code44.finance.api.User;
+import com.code44.finance.backend.endpoint.users.Users;
 import com.code44.finance.backend.endpoint.users.model.RegisterBody;
 import com.code44.finance.backend.endpoint.users.model.UserAccount;
 import com.code44.finance.data.db.DBHelper;
 import com.code44.finance.services.StartupService;
 
-public class RegisterRequest extends FinanciusBaseRequest<User> {
+import javax.inject.Inject;
+
+public class RegisterRequest extends Request {
     private final RegisterBody body;
-    private final DBHelper dbHelper;
+    @Inject User user;
+    @Inject DBHelper dbHelper;
+    @Inject Users usersService;
 
-    public RegisterRequest(Context context, User user, DBHelper dbHelper, String email, String googleId, String firstName, String lastName, String photoUrl, String coverUrl) {
-        super(null, context, user);
-
-        this.dbHelper = dbHelper;
+    public RegisterRequest(String email, String googleId, String firstName, String lastName, String photoUrl, String coverUrl) {
+        super();
 
         user.setEmail(email);
 
@@ -30,9 +30,9 @@ public class RegisterRequest extends FinanciusBaseRequest<User> {
     }
 
     @Override
-    protected User performRequest() throws Exception {
+    protected void performRequest() throws Exception {
         try {
-            final UserAccount userAccount = getUsersService().register(body).execute();
+            final UserAccount userAccount = usersService.register(body).execute();
 
             user.setId(userAccount.getId());
             user.setEmail(userAccount.getEmail());
@@ -53,19 +53,6 @@ public class RegisterRequest extends FinanciusBaseRequest<User> {
             user.clear();
             throw e;
         }
-        User.notifyUserChanged();
-
-        return user;
-    }
-
-    @Override
-    protected BaseRequestEvent<User, ? extends BaseRequest<User>> createEvent(User result, Exception error, BaseRequestEvent.State state) {
-        return new RegisterRequestEvent(this, result, error, state);
-    }
-
-    public static class RegisterRequestEvent extends BaseRequestEvent<User, RegisterRequest> {
-        protected RegisterRequestEvent(RegisterRequest request, User result, Exception error, State state) {
-            super(request, result, error, state);
-        }
+        user.notifyChanged();
     }
 }

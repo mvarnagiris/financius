@@ -15,11 +15,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 public class Query {
     private final Set<String> projection = new HashSet<>();
     private final List<String> selection = new ArrayList<>();
     private final List<String> selectionArgs = new ArrayList<>();
     private final List<String> sortOrder = new ArrayList<>();
+    @Inject Context context;
 
     private Query() {
     }
@@ -71,11 +74,11 @@ public class Query {
         return sb.toString();
     }
 
-    public CursorLoader asCursorLoader(Context context, Uri uri) {
+    public CursorLoader asCursorLoader(Uri uri) {
         return new CursorLoader(context, uri, getProjection(), getSelection(), getSelectionArgs(), getSortOrder());
     }
 
-    public ContentProviderQuery from(Context context, Uri uri) {
+    public ContentProviderQuery from(Uri uri) {
         return new ContentProviderQuery(this, context, uri);
     }
 
@@ -214,7 +217,8 @@ public class Query {
             String[] projection = query.getProjection();
             String selection = query.getSelection();
             String[] selectionArgs = query.getSelectionArgs();
-            Cursor cursor = database.query(getTables(), query.getProjection(), query.getSelection(), query.getSelectionArgs(), null, null, query.getSortOrder());
+            String sortOrder = query.getSortOrder();
+            Cursor cursor = database.query(tables, projection, selection, selectionArgs, null, null, sortOrder);
             cursor.moveToFirst();
             return cursor;
         }

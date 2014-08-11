@@ -3,12 +3,13 @@ package com.code44.finance.data.providers;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 
-import com.code44.finance.api.financius.FinanciusApi;
+import com.code44.finance.api.Api;
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.Query;
@@ -37,14 +38,12 @@ public abstract class BaseModelProvider extends BaseProvider {
 
     @Override
     public boolean onCreate() {
-        final boolean result = super.onCreate();
-
         final String authority = getAuthority();
         final String mainTable = getModelTable();
         uriMatcher.addURI(authority, mainTable, URI_ITEMS);
         uriMatcher.addURI(authority, mainTable + "/*", URI_ITEMS_ID);
 
-        return result;
+        return true;
     }
 
     @Override
@@ -94,6 +93,7 @@ public abstract class BaseModelProvider extends BaseProvider {
             throw new IllegalArgumentException("Server Id cannot be empty.");
         }
 
+        final SQLiteDatabase database = getDatabase();
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
@@ -117,7 +117,7 @@ public abstract class BaseModelProvider extends BaseProvider {
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
-        FinanciusApi.get().sync();
+        Api.get().sync();
 
         return Uri.withAppendedPath(uri, serverId);
     }
@@ -125,6 +125,7 @@ public abstract class BaseModelProvider extends BaseProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         int count;
+        final SQLiteDatabase database = getDatabase();
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
@@ -148,7 +149,7 @@ public abstract class BaseModelProvider extends BaseProvider {
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
-        FinanciusApi.get().sync();
+        Api.get().sync();
 
         return count;
     }
@@ -156,6 +157,7 @@ public abstract class BaseModelProvider extends BaseProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         int count;
+        final SQLiteDatabase database = getDatabase();
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
@@ -198,7 +200,7 @@ public abstract class BaseModelProvider extends BaseProvider {
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
-        FinanciusApi.get().sync();
+        Api.get().sync();
 
         return count;
     }
@@ -206,6 +208,7 @@ public abstract class BaseModelProvider extends BaseProvider {
     @Override
     public int bulkInsert(Uri uri, @SuppressWarnings("NullableProblems") ContentValues[] valuesArray) {
         int count;
+        final SQLiteDatabase database = getDatabase();
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
@@ -243,6 +246,7 @@ public abstract class BaseModelProvider extends BaseProvider {
         final SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(getQueryTables());
 
+        final SQLiteDatabase database = getDatabase();
         return qb.query(database, projection, selection, selectionArgs, null, null, sortOrder);
     }
 
@@ -251,6 +255,7 @@ public abstract class BaseModelProvider extends BaseProvider {
         qb.setTables(getQueryTables());
         qb.appendWhere(getServerIdColumn() + "='" + uri.getPathSegments().get(1) + "'");
 
+        final SQLiteDatabase database = getDatabase();
         return qb.query(database, projection, selection, selectionArgs, null, null, sortOrder);
     }
 
@@ -263,6 +268,8 @@ public abstract class BaseModelProvider extends BaseProvider {
         } else {
             values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, SyncState.NONE.asInt());
         }
+
+        final SQLiteDatabase database = getDatabase();
         return ProviderUtils.doUpdateOrInsert(database, getModelTable(), values, true);
     }
 
@@ -274,7 +281,7 @@ public abstract class BaseModelProvider extends BaseProvider {
 
     protected int updateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, SyncState.LOCAL_CHANGES.asInt());
-        return database.update(getModelTable(), values, selection, selectionArgs);
+        return getDatabase().update(getModelTable(), values, selection, selectionArgs);
     }
 
     protected void onAfterUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> extras) {
@@ -300,7 +307,7 @@ public abstract class BaseModelProvider extends BaseProvider {
             whereArgs = new String[]{String.valueOf(ModelState.DELETED_UNDO.asInt())};
         }
 
-        return database.update(getModelTable(), values, whereClause, whereArgs);
+        return getDatabase().update(getModelTable(), values, whereClause, whereArgs);
     }
 
     protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> extras) {
@@ -310,7 +317,7 @@ public abstract class BaseModelProvider extends BaseProvider {
     }
 
     protected int bulkInsertItems(Uri uri, ContentValues[] valuesArray) {
-        return ProviderUtils.doArrayReplace(database, getModelTable(), valuesArray);
+        return ProviderUtils.doArrayReplace(getDatabase(), getModelTable(), valuesArray);
     }
 
     protected void onAfterBulkInsertItems(Uri uri, ContentValues[] valuesArray, Map<String, Object> extras) {
@@ -331,7 +338,7 @@ public abstract class BaseModelProvider extends BaseProvider {
             query.args(selectionArgs);
         }
 
-        final Cursor cursor = query.from(database, tableName).execute();
+        final Cursor cursor = query.from(getDatabase(), tableName).execute();
         try {
             if (cursor != null && cursor.moveToFirst()) {
                 do {

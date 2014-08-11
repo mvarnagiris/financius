@@ -1,13 +1,10 @@
-package com.code44.finance.api.financius.requests;
+package com.code44.finance.api.requests;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.code44.finance.api.BaseRequest;
-import com.code44.finance.api.BaseRequestEvent;
-import com.code44.finance.api.User;
+import com.code44.finance.api.Request;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
@@ -27,14 +24,14 @@ import com.code44.finance.utils.IOUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SyncRequest extends FinanciusBaseRequest<Void> {
-    public SyncRequest(Context context, User user) {
-        super(null, context, user);
-    }
+import javax.inject.Inject;
+
+public class SyncRequest extends Request {
+    @Inject DBHelper dbHelper;
 
     @Override
-    protected Void performRequest() throws Exception {
-        final SQLiteDatabase database = DBHelper.get(context).getWritableDatabase();
+    protected void performRequest() throws Exception {
+        final SQLiteDatabase database = dbHelper.getWritableDatabase();
 
         pushCurrencies(database);
         getCurrencies();
@@ -47,13 +44,6 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
 
         pushTransactions(database);
         getTransactions();
-
-        return null;
-    }
-
-    @Override
-    protected BaseRequestEvent<Void, ? extends BaseRequest<Void>> createEvent(Void result, Exception error, BaseRequestEvent.State state) {
-        return new SyncRequestEvent(this, result, error, state);
     }
 
     private void pushCurrencies(SQLiteDatabase database) throws Exception {
@@ -63,7 +53,7 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
                 .projectionId(Tables.Currencies.ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
-                .from(context, CurrenciesProvider.uriCurrencies())
+                .from(CurrenciesProvider.uriCurrencies())
                 .execute();
         final List<Currency> currencies = new ArrayList<>();
         do {
@@ -71,11 +61,11 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
         } while (cursor.moveToNext());
         IOUtils.closeQuietly(cursor);
 
-        new SaveCurrenciesRequest(context, User.get(), currencies).call();
+        new PostCurrenciesRequest(currencies).run();
     }
 
     private void getCurrencies() throws Exception {
-        new GetCurrenciesRequest(context, user).call();
+        new GetCurrenciesRequest().run();
     }
 
     private void pushCategories(SQLiteDatabase database) throws Exception {
@@ -85,7 +75,7 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
                 .projectionId(Tables.Categories.ID)
                 .projection(Tables.Categories.PROJECTION)
                 .selection(Tables.Categories.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
-                .from(context, CategoriesProvider.uriCategories())
+                .from(CategoriesProvider.uriCategories())
                 .execute();
         final List<Category> categories = new ArrayList<>();
         do {
@@ -93,11 +83,11 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
         } while (cursor.moveToNext());
         IOUtils.closeQuietly(cursor);
 
-        new SaveCateoriesRequest(context, User.get(), categories).call();
+        new PostCategoriesRequest(categories).run();
     }
 
     private void getCategories() throws Exception {
-        new GetCategoriesRequest(context, user).call();
+        new GetCategoriesRequest().run();
     }
 
     private void pushAccounts(SQLiteDatabase database) throws Exception {
@@ -108,7 +98,7 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
                 .projection(Tables.Accounts.PROJECTION)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Accounts.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
-                .from(context, AccountsProvider.uriAccounts())
+                .from(AccountsProvider.uriAccounts())
                 .execute();
         final List<Account> accounts = new ArrayList<>();
         do {
@@ -116,11 +106,11 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
         } while (cursor.moveToNext());
         IOUtils.closeQuietly(cursor);
 
-        new SaveAccountsRequest(context, User.get(), accounts).call();
+        new PostAccountsRequest(accounts).run();
     }
 
     private void getAccounts() throws Exception {
-        new GetAccountsRequest(context, user).call();
+        new GetAccountsRequest().run();
     }
 
     private void pushTransactions(SQLiteDatabase database) throws Exception {
@@ -135,7 +125,7 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
                 .projection(Tables.Currencies.PROJECTION_ACCOUNT_TO)
                 .projection(Tables.Categories.PROJECTION)
                 .selection(Tables.Transactions.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
-                .from(context, TransactionsProvider.uriTransactions())
+                .from(TransactionsProvider.uriTransactions())
                 .execute();
         final List<Transaction> transactions = new ArrayList<>();
         do {
@@ -143,11 +133,11 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
         } while (cursor.moveToNext());
         IOUtils.closeQuietly(cursor);
 
-        new SaveTransactionsRequest(context, User.get(), transactions).call();
+        new PostTransactionsRequest(transactions).run();
     }
 
     private void getTransactions() throws Exception {
-        new GetTransactionsRequest(context, user).call();
+        new GetTransactionsRequest().run();
     }
 
     private void markInProgress(SQLiteDatabase database, Column syncStateColumn) {
@@ -157,11 +147,5 @@ public class SyncRequest extends FinanciusBaseRequest<Void> {
                 .values(values)
                 .withSelection(syncStateColumn.getName() + "<>?", SyncState.SYNCED.asString())
                 .into(database, syncStateColumn.getTableName());
-    }
-
-    public static class SyncRequestEvent extends BaseRequestEvent<Void, SyncRequest> {
-        protected SyncRequestEvent(SyncRequest request, Void result, Exception error, State state) {
-            super(request, result, error, state);
-        }
     }
 }
