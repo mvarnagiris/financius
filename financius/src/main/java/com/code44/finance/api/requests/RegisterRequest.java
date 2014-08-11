@@ -21,8 +21,6 @@ public class RegisterRequest extends Request {
     @Inject Users usersService;
 
     public RegisterRequest(String email, String googleId, String firstName, String lastName, String photoUrl, String coverUrl) {
-        super();
-
         user.setEmail(email);
 
         body = new RegisterBody();

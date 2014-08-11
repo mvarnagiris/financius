@@ -5,10 +5,12 @@ import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
 
+import dagger.Lazy;
+
 public abstract class Request implements Runnable {
     private static final String TAG = LogUtils.makeLogTag(Request.class);
 
-    @Inject public Bus bus;
+    @Inject Lazy<Bus> bus;
 
     private Exception error;
 
@@ -20,7 +22,7 @@ public abstract class Request implements Runnable {
             error = e;
         }
 
-        bus.post(this);
+        bus.get().post(this);
     }
 
     public Exception getError() {

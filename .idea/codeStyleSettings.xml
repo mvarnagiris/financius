@@ -35,10 +35,12 @@
           <option name="USE_CUSTOM_SETTINGS" value="true" />
         </AndroidXmlCodeStyleSettings>
         <XML>
-          <option name="XML_KEEP_LINE_BREAKS" value="false" />
-          <option name="XML_ALIGN_ATTRIBUTES" value="false" />
-          <option name="XML_SPACE_INSIDE_EMPTY_TAG" value="true" />
+          <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>
+        <codeStyleSettings language="JAVA">
+          <option name="METHOD_ANNOTATION_WRAP" value="0" />
+          <option name="FIELD_ANNOTATION_WRAP" value="0" />
+        </codeStyleSettings>
         <codeStyleSettings language="XML">
           <option name="FORCE_REARRANGE_MODE" value="1" />
           <indentOptions>
@@ -50,7 +52,7 @@
                 <match>
                   <AND>
                     <NAME>xmlns:android</NAME>
-                    <XML_NAMESPACE />
+                    <XML_NAMESPACE>Namespace:</XML_NAMESPACE>
                   </AND>
                 </match>
               </rule>
@@ -58,7 +60,7 @@
                 <match>
                   <AND>
                     <NAME>xmlns:.*</NAME>
-                    <XML_NAMESPACE />
+                    <XML_NAMESPACE>Namespace:</XML_NAMESPACE>
                   </AND>
                 </match>
                 <order>BY_NAME</order>
@@ -170,7 +172,7 @@
         </codeStyleSettings>
       </value>
     </option>
-    <option name="PREFERRED_PROJECT_CODE_STYLE" value="Default (1)" />
+    <option name="USE_PER_PROJECT_SETTINGS" value="true" />
   </component>
 </project>
 

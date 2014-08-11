@@ -40,7 +40,7 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
 
     @Override public void onAttach(Activity activity) {
         super.onAttach(activity);
-        App.get().inject(this);
+        App.from(activity).inject(periodHelper);
     }
 
     @Override

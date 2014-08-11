@@ -1,28 +1,29 @@
 package com.code44.finance.api;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 
+import com.code44.finance.BuildConfig;
 import com.code44.finance.utils.Prefs;
 
 public class GcmRegistration extends Prefs {
     private static final String PREFIX = "gcm_";
 
-    private final AppVersionProvider appVersionProvider;
-
     private String registrationId;
     private int registeredVersion;
     private boolean isRegisteredWithServer;
 
-    public GcmRegistration(Context context, AppVersionProvider appVersionProvider) {
+    public GcmRegistration(Context context) {
         super(context);
-        this.appVersionProvider = appVersionProvider;
         refresh();
     }
 
+    @Override
+    protected String getPrefix() {
+        return PREFIX;
+    }
+
     public void refresh() {
-        int currentVersion = appVersionProvider.getAppVersion(getContext());
+        int currentVersion = BuildConfig.VERSION_CODE;
         registeredVersion = getInteger("registeredVersion", Integer.MIN_VALUE);
 
         if (currentVersion > registeredVersion) {
@@ -45,7 +46,7 @@ public class GcmRegistration extends Prefs {
 
     public void setRegistrationId(String registrationId) {
         this.registrationId = registrationId;
-        this.registeredVersion = appVersionProvider.getAppVersion(getContext());
+        this.registeredVersion = BuildConfig.VERSION_CODE;
         setString("registrationId", registrationId);
         setInteger("registeredVersion", registeredVersion);
         setRegisteredWithServer(false);
@@ -58,28 +59,5 @@ public class GcmRegistration extends Prefs {
     public void setRegisteredWithServer(boolean isRegisteredWithServer) {
         this.isRegisteredWithServer = isRegisteredWithServer;
         setBoolean("isRegisteredWithServer", isRegisteredWithServer);
-    }
-
-    @Override
-    protected String getPrefix() {
-        return PREFIX;
-    }
-
-    public static interface AppVersionProvider {
-        public int getAppVersion(Context context);
-    }
-
-    public static class DefaultAppVersionProvider implements AppVersionProvider {
-        @Override
-        public int getAppVersion(Context context) {
-            try {
-                //noinspection ConstantConditions
-                PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                return packageInfo.versionCode;
-            } catch (PackageManager.NameNotFoundException e) {
-                // should never happen
-                throw new RuntimeException("Could not get package name: " + e);
-            }
-        }
     }
 }

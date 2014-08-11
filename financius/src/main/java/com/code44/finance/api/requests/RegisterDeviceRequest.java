@@ -18,10 +18,6 @@ public class RegisterDeviceRequest extends Request {
     @Inject Users usersService;
     @Inject GcmRegistration gcmRegistration;
 
-    public RegisterDeviceRequest() {
-        super();
-    }
-
     @Override
     protected void performRequest() throws Exception {
         String registrationId = gcmRegistration.getRegistrationId();

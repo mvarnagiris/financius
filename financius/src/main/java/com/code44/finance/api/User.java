@@ -8,14 +8,12 @@ import com.code44.finance.utils.Prefs;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Produce;
 
-import javax.inject.Inject;
-
 public class User extends Prefs {
     private static final String PREFIX = "user_";
 
-    @Inject DBHelper dbHelper;
-    @Inject GcmRegistration gcmRegistration;
-    @Inject Bus bus;
+    private final DBHelper dbHelper;
+    private final GcmRegistration gcmRegistration;
+    private final Bus bus;
 
     private String id;
     private String googleId;
@@ -31,8 +29,12 @@ public class User extends Prefs {
     private long accountsTimestamp;
     private long transactionsTimestamp;
 
-    public User(Context context) {
+    public User(Context context, DBHelper dbHelper, GcmRegistration gcmRegistration, Bus bus) {
         super(context);
+        this.dbHelper = dbHelper;
+        this.gcmRegistration = gcmRegistration;
+        this.bus = bus;
+
         refresh();
         bus.register(this);
     }

@@ -19,8 +19,6 @@ import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 
@@ -37,10 +35,6 @@ import dagger.Provides;
         complete = false
 )
 public class ApiProvider {
-    @Provides @Singleton public Api provideFinanciusApi() {
-        return new Api();
-    }
-
     @Provides public Users provideUsersService(HttpTransport httpTransport, JsonFactory jsonFactory, HttpRequestInitializer httpRequestInitializer) {
         final Users.Builder builder = new Users.Builder(httpTransport, jsonFactory, httpRequestInitializer);
         prepareRootUrl(builder);

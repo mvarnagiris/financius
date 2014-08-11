@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.code44.finance.App;
 import com.code44.finance.data.db.Column;
 
 import java.util.ArrayList;
@@ -16,17 +15,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.inject.Inject;
-
 public class Query {
     private final Set<String> projection = new HashSet<>();
     private final List<String> selection = new ArrayList<>();
     private final List<String> selectionArgs = new ArrayList<>();
     private final List<String> sortOrder = new ArrayList<>();
-    @Inject Context context;
 
     private Query() {
-        App.get().inject(this);
     }
 
     public static Query create() {
@@ -76,11 +71,11 @@ public class Query {
         return sb.toString();
     }
 
-    public CursorLoader asCursorLoader(Uri uri) {
+    public CursorLoader asCursorLoader(Context context, Uri uri) {
         return new CursorLoader(context, uri, getProjection(), getSelection(), getSelectionArgs(), getSortOrder());
     }
 
-    public ContentProviderQuery from(Uri uri) {
+    public ContentProviderQuery from(Context context, Uri uri) {
         return new ContentProviderQuery(this, context, uri);
     }
 
