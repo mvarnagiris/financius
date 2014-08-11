@@ -97,7 +97,7 @@ public class TransactionsProvider extends BaseModelProvider {
                 .selection(Tables.Transactions.MODEL_STATE + "=?", ModelState.NORMAL.asString())
                 .selection(" and " + Tables.Transactions.STATE + "=?", TransactionState.CONFIRMED.asString())
                 .selection(" and (" + Tables.Transactions.ACCOUNT_FROM_ID + "=? or " + Tables.Transactions.ACCOUNT_TO_ID + "=?)", accountId, accountId)
-                .from(database, Tables.Transactions.TABLE_NAME)
+                .from(getDatabase(), Tables.Transactions.TABLE_NAME)
                 .innerJoin(Tables.Categories.TABLE_NAME, Tables.Categories.SERVER_ID.getNameWithTable() + "=" + Tables.Transactions.CATEGORY_ID)
                 .execute();
 
@@ -112,14 +112,14 @@ public class TransactionsProvider extends BaseModelProvider {
         DataStore.update()
                 .values(values)
                 .withSelection(Tables.Accounts.SERVER_ID + "=?", accountId)
-                .into(database, Tables.Accounts.TABLE_NAME);
+                .into(getDatabase(), Tables.Accounts.TABLE_NAME);
     }
 
     private void updateAllAccountsBalances() {
         final Cursor cursor = Query.create()
                 .projection(Tables.Accounts.SERVER_ID.getName())
                 .selection(Tables.Accounts.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
-                .from(database, Tables.Accounts.TABLE_NAME)
+                .from(getDatabase(), Tables.Accounts.TABLE_NAME)
                 .execute();
         if (cursor.moveToFirst()) {
             final int iId = cursor.getColumnIndex(Tables.Accounts.SERVER_ID.getName());

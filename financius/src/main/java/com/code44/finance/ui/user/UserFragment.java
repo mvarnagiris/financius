@@ -16,9 +16,10 @@ import com.code44.finance.R;
 import com.code44.finance.api.User;
 import com.code44.finance.ui.BaseFragment;
 
-import de.greenrobot.event.EventBus;
+import javax.inject.Inject;
 
 public class UserFragment extends BaseFragment implements View.OnClickListener {
+    @Inject User user;
     private ImageView cover_IV;
     private ImageView photo_IV;
     private TextView name_TV;
@@ -57,13 +58,6 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         updateViews();
-        EventBus.getDefault().registerSticky(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -91,13 +85,12 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void onEventMainThread(User.UserChangedEvent event) {
-        updateViews();
-    }
+//    @SuppressWarnings("UnusedDeclaration")
+// TODO    public void onEventMainThread(User.UserChangedEvent event) {
+//        updateViews();
+//    }
 
     private void updateViews() {
-        final User user = User.get();
         if (user.isLoggedIn()) {
             cover_IV.setVisibility(View.VISIBLE);
             photo_IV.setVisibility(View.VISIBLE);
@@ -114,6 +107,6 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void logout() {
-        User.get().logout();
+        user.logout();
     }
 }

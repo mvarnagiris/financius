@@ -50,7 +50,7 @@ public class CurrenciesProvider extends BaseModelProvider {
     @Override
     protected void onAfterInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> extras) {
         super.onAfterInsertItem(uri, values, serverId, extras);
-        Currency.updateDefaultCurrency(database);
+        Currency.updateDefaultCurrency(getDatabase());
         MoneyFormatter.invalidateCache();
     }
 
@@ -98,7 +98,7 @@ public class CurrenciesProvider extends BaseModelProvider {
     @Override
     protected void onAfterBulkInsertItems(Uri uri, ContentValues[] valuesArray, Map<String, Object> extras) {
         super.onAfterBulkInsertItems(uri, valuesArray, extras);
-        Currency.updateDefaultCurrency(database);
+        Currency.updateDefaultCurrency(getDatabase());
         MoneyFormatter.invalidateCache();
     }
 
@@ -118,7 +118,7 @@ public class CurrenciesProvider extends BaseModelProvider {
             newValues.put(Tables.Currencies.IS_DEFAULT.getName(), false);
             newValues.put(Tables.Currencies.SYNC_STATE.getName(), SyncState.LOCAL_CHANGES.asInt());
 
-            database.update(Tables.Currencies.TABLE_NAME, newValues, null, null);
+            getDatabase().update(Tables.Currencies.TABLE_NAME, newValues, null, null);
             getContext().startService(new Intent(getContext(), StartupService.class));
         }
     }

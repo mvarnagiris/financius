@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.code44.finance.App;
 import com.code44.finance.data.db.Column;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class Query {
     @Inject Context context;
 
     private Query() {
+        App.get().inject(this);
     }
 
     public static Query create() {

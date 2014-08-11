@@ -14,8 +14,6 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 
-import de.greenrobot.event.EventBus;
-
 public class GoogleApiFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final String ARG_UNIQUE_CLIENT_ID = "ARG_UNIQUE_CLIENT_ID";
     private static final String ARG_USE_PLUS = "ARG_USE_PLUS";
@@ -119,15 +117,15 @@ public class GoogleApiFragment extends Fragment implements GoogleApiClient.Conne
     }
 
     protected void sendEventConnected() {
-        EventBus.getDefault().post(new GoogleApiConnectedEvent(client, uniqueClientId));
+        // TODO EventBus.getDefault().post(new GoogleApiConnectedEvent(client, uniqueClientId));
     }
 
     protected void sendEventSuspended(int cause) {
-        EventBus.getDefault().post(new GoogleApiSuspendedEvent(client, uniqueClientId, cause));
+        // TODO EventBus.getDefault().post(new GoogleApiSuspendedEvent(client, uniqueClientId, cause));
     }
 
     protected void sendEventFailed(ConnectionResult connectionResult) {
-        EventBus.getDefault().post(new GoogleApiFailedEvent(client, uniqueClientId, connectionResult));
+        // TODO EventBus.getDefault().post(new GoogleApiFailedEvent(client, uniqueClientId, connectionResult));
     }
 
     private void buildGoogleApiClient() {

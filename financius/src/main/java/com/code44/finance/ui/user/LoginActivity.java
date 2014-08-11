@@ -3,18 +3,17 @@ package com.code44.finance.ui.user;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.code44.finance.R;
 import com.code44.finance.api.Api;
-import com.code44.finance.api.requests.RegisterRequest;
 import com.code44.finance.ui.BaseActivity;
 import com.code44.finance.ui.GoogleApiFragment;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
-import de.greenrobot.event.EventBus;
+import javax.inject.Inject;
+
 
 public class LoginActivity extends BaseActivity {
     private static final String FRAGMENT_GOOGLE_PLUS = "FRAGMENT_GOOGLE_PLUS";
@@ -22,9 +21,8 @@ public class LoginActivity extends BaseActivity {
     private static final String STATE_CLEAR_DEFAULT_ACCOUNT = "STATE_CLEAR_DEFAULT_ACCOUNT";
 
     private static final String UNIQUE_GOOGLE_CLIENT_ID = LoginActivity.class.getName();
-
+    @Inject Api api;
     private GoogleApiFragment googleApi_F;
-
     private boolean clearDefaultAccount;
 
     public static void start(Context context) {
@@ -34,8 +32,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        EventBus.getDefault().registerSticky(this);
 
         // Setup ActionBar
         //noinspection ConstantConditions
@@ -58,12 +54,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_CLEAR_DEFAULT_ACCOUNT, clearDefaultAccount);
@@ -80,21 +70,21 @@ public class LoginActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void onEventMainThread(RegisterRequest.RegisterRequestEvent event) {
-        if (event.isFinished()) {
-            if (event.isError()) {
-                GoogleApiClient client = googleApi_F.getClient();
-                if (client != null && client.isConnected()) {
-                    Plus.AccountApi.clearDefaultAccount(client);
-                }
-
-                //noinspection ThrowableResultOfMethodCallIgnored
-                Toast.makeText(this, event.getError().getMessage(), Toast.LENGTH_LONG).show();
-            }
-            finish();
-        }
-    }
+//    @SuppressWarnings("UnusedDeclaration")
+// TODO     public void onEventMainThread(RegisterRequest.RegisterRequestEvent event) {
+//        if (event.isFinished()) {
+//            if (event.isError()) {
+//                GoogleApiClient client = googleApi_F.getClient();
+//                if (client != null && client.isConnected()) {
+//                    Plus.AccountApi.clearDefaultAccount(client);
+//                }
+//
+//                //noinspection ThrowableResultOfMethodCallIgnored
+//                Toast.makeText(this, event.getError().getMessage(), Toast.LENGTH_LONG).show();
+//            }
+//            finish();
+//        }
+//    }
 
     @SuppressWarnings("UnusedDeclaration")
     public void onEventMainThread(GoogleApiFragment.GoogleApiConnectedEvent event) {
@@ -130,6 +120,6 @@ public class LoginActivity extends BaseActivity {
         final String lastName = person.getName().getFamilyName();
         final String photoUrl = person.getImage().getUrl();
         final String coverUrl = person.getCover().getCoverPhoto().getUrl();
-        Api.get().register(email, googleId, firstName, lastName, photoUrl, coverUrl);
+        api.register(email, googleId, firstName, lastName, photoUrl, coverUrl);
     }
 }

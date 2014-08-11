@@ -6,7 +6,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.code44.finance.App;
 import com.code44.finance.backend.endpoint.categories.model.CategoryEntity;
 import com.code44.finance.common.model.CategoryOwner;
 import com.code44.finance.common.model.CategoryType;
@@ -61,7 +60,7 @@ public class Category extends BaseModel {
                     .projectionId(Tables.Categories.ID)
                     .projection(Tables.Categories.PROJECTION)
                     .selection(Tables.Categories.ID + "=?", String.valueOf(EXPENSE_ID))
-                    .from(App.getAppContext(), CategoriesProvider.uriCategories())
+                    .from(CategoriesProvider.uriCategories())
                     .execute();
 
             expenseCategory = Category.from(cursor);
@@ -76,7 +75,7 @@ public class Category extends BaseModel {
                     .projectionId(Tables.Categories.ID)
                     .projection(Tables.Categories.PROJECTION)
                     .selection(Tables.Categories.ID + "=?", String.valueOf(INCOME_ID))
-                    .from(App.getAppContext(), CategoriesProvider.uriCategories())
+                    .from(CategoriesProvider.uriCategories())
                     .execute();
 
             incomeCategory = Category.from(cursor);
@@ -91,7 +90,7 @@ public class Category extends BaseModel {
                     .projectionId(Tables.Categories.ID)
                     .projection(Tables.Categories.PROJECTION)
                     .selection(Tables.Categories.ID + "=?", String.valueOf(TRANSFER_ID))
-                    .from(App.getAppContext(), CategoriesProvider.uriCategories())
+                    .from(CategoriesProvider.uriCategories())
                     .execute();
 
             transferCategory = Category.from(cursor);

@@ -1,5 +1,6 @@
 package com.code44.finance.ui.overview;
 
+import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.code44.finance.App;
 import com.code44.finance.R;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
@@ -22,14 +24,23 @@ import com.code44.finance.views.OverviewGraphView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class OverviewFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
     private static final int LOADER_ACCOUNTS = 1;
+
+    @Inject PeriodHelper periodHelper;
 
     private OverviewGraphView overviewGraph_V;
     private AccountsView accounts_V;
 
     public static OverviewFragment newInstance() {
         return new OverviewFragment();
+    }
+
+    @Override public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        App.get().inject(this);
     }
 
     @Override
@@ -62,7 +73,7 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case LOADER_ACCOUNTS:
-                return Tables.Accounts.getQuery().asCursorLoader(getActivity(), AccountsProvider.uriAccounts());
+                return Tables.Accounts.getQuery().asCursorLoader(AccountsProvider.uriAccounts());
         }
         return null;
     }
@@ -91,7 +102,7 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
 
     @Override
     public String getTitle() {
-        return PeriodHelper.get().getTitle();
+        return periodHelper.getTitle();
     }
 
     private void onAccountsLoaded(Cursor cursor) {

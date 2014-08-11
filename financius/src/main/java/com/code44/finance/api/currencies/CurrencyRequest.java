@@ -1,10 +1,10 @@
 package com.code44.finance.api.currencies;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.code44.finance.api.BaseRequestEvent;
 import com.code44.finance.api.Request;
+import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Currency;
@@ -12,64 +12,38 @@ import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.IOUtils;
 import com.google.gson.JsonObject;
 
+import javax.inject.Inject;
+
 import retrofit.client.Response;
 
-public class CurrencyRequest extends Request<Currency> {
-    private final CurrenciesRequestService requestService;
+public class CurrencyRequest extends Request {
     private final String fromCode;
     private final String toCode;
+    @Inject CurrenciesRequestService requestService;
 
-    public CurrencyRequest(CurrenciesRequestService requestService, String fromCode, String toCode) {
-        super(getUniqueId(fromCode, toCode));
-        this.requestService = requestService;
+    public CurrencyRequest(String fromCode, String toCode) {
         this.fromCode = fromCode;
         this.toCode = toCode;
     }
 
-    public static String getUniqueId(String fromCode, String toCode) {
-        return fromCode + "_" + toCode;
-    }
-
     @Override
-    protected Currency performRequest() throws Exception {
-        return parseResponse(requestService.getExchangeRate(fromCode, toCode));
-    }
-
-    private Currency parseResponse(Response rawResponse) throws Exception {
+    protected void performRequest() throws Exception {
+        final Response rawResponse = requestService.getExchangeRate(fromCode, toCode);
         final JsonObject json = IOUtils.readJsonObject(rawResponse);
         final double exchangeRate = json.get("rate").getAsDouble();
 
         final Cursor cursor = Query.create()
                 .projection(Tables.Currencies.ID.getName())
                 .projection(Tables.Currencies.PROJECTION)
-                .selection(Tables.Currencies.CODE + "=?")
-                .args(fromCode)
+                .selection(Tables.Currencies.CODE + "=?", fromCode)
                 .from(CurrenciesProvider.uriCurrencies())
                 .execute();
         final Currency currency = Currency.from(cursor);
         IOUtils.closeQuietly(cursor);
 
         currency.setExchangeRate(exchangeRate);
-        if (currency.getId() > 0) {
-            context.getContentResolver().bulkInsert(CurrenciesProvider.uriCurrencies(), new ContentValues[]{currency.asContentValues()});
-        }
-
-        return currency;
-    }
-
-    @Override
-    public String getUniqueId() {
-        return getUniqueId(fromCode, toCode);
-    }
-
-    @Override
-    protected BaseRequestEvent<Currency, ? extends Request<Currency>> createEvent(Currency result, Exception error, BaseRequestEvent.State state) {
-        return new CurrencyRequestEvent(this, result, error, state);
-    }
-
-    public static class CurrencyRequestEvent extends BaseRequestEvent<Currency, CurrencyRequest> {
-        protected CurrencyRequestEvent(CurrencyRequest request, Currency result, Exception error, State state) {
-            super(request, result, error, state);
+        if (!StringUtils.isEmpty(currency.getServerId())) {
+            DataStore.bulkInsert().values(currency.asContentValues()).into(CurrenciesProvider.uriCurrencies());
         }
     }
 }

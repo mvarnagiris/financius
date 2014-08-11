@@ -6,24 +6,26 @@ import com.code44.finance.modules.AppModule;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import java.util.Arrays;
-import java.util.List;
-
 import dagger.ObjectGraph;
 
 public class App extends Application {
-    @SuppressWarnings("FieldCanBeLocal")
+    private static App app;
+
     private ObjectGraph objectGraph;
+
+    public static App get() {
+        return app;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        objectGraph = ObjectGraph.create(getModules().toArray());
-        objectGraph.inject(this);
+        app = this;
+        objectGraph = ObjectGraph.create(new AppModule(this));
         JodaTimeAndroid.init(this);
     }
 
-    private List<Object> getModules() {
-        return Arrays.<Object>asList(new AppModule(this));
+    public void inject(Object object) {
+        objectGraph.inject(object);
     }
 }

@@ -53,12 +53,12 @@ public class CategoriesFragment extends ModelListFragment {
     }
 
     @Override
-    protected CursorLoader getModelsCursorLoader(Context context) {
+    protected CursorLoader getModelsCursorLoader() {
         final Query query = Tables.Categories.getQuery(type);
         if (getMode() == Mode.VIEW) {
             query.selection(" and " + Tables.Categories.OWNER + "<>?", CategoryOwner.SYSTEM.asString());
         }
-        return query.asCursorLoader(context, CategoriesProvider.uriCategories());
+        return query.asCursorLoader(CategoriesProvider.uriCategories());
     }
 
     @Override

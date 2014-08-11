@@ -1,5 +1,7 @@
 package com.code44.finance.api.requests;
 
+import android.content.Context;
+
 import com.code44.finance.api.Request;
 import com.code44.finance.api.User;
 import com.code44.finance.backend.endpoint.users.Users;
@@ -12,6 +14,8 @@ import javax.inject.Inject;
 
 public class RegisterRequest extends Request {
     private final RegisterBody body;
+
+    @Inject Context context;
     @Inject User user;
     @Inject DBHelper dbHelper;
     @Inject Users usersService;

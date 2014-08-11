@@ -104,8 +104,8 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
     }
 
     @Override
-    protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
-        return Tables.Accounts.getQuery().asCursorLoader(context, AccountsProvider.uriAccount(modelServerId));
+    protected CursorLoader getModelCursorLoader(String modelServerId) {
+        return Tables.Accounts.getQuery().asCursorLoader(AccountsProvider.uriAccount(modelServerId));
     }
 
     @Override

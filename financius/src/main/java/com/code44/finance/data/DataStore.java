@@ -1,10 +1,10 @@
 package com.code44.finance.data;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
-import com.code44.finance.App;
 import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.providers.ProviderUtils;
 
@@ -13,8 +13,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public final class DataStore {
+import javax.inject.Inject;
 
+public final class DataStore {
     private DataStore() {
     }
 
@@ -43,10 +44,8 @@ public final class DataStore {
     }
 
     public static final class DataStoreInsert {
+        @Inject Context context;
         private ContentValues values;
-
-        private DataStoreInsert() {
-        }
 
         public DataStoreInsert model(BaseModel model) {
             return values(model.asContentValues());
@@ -70,7 +69,7 @@ public final class DataStore {
                 throw new IllegalStateException("Values must be set before executing insert.");
             }
 
-            return App.getAppContext().getContentResolver().insert(uri, values);
+            return context.getContentResolver().insert(uri, values);
         }
 
         public long into(SQLiteDatabase database, String table) {
@@ -83,6 +82,7 @@ public final class DataStore {
     }
 
     public static final class DataStoreUpdate {
+        @Inject Context context;
         private ContentValues values;
         private String selection;
         private String[] selectionArgs;
@@ -115,7 +115,7 @@ public final class DataStore {
                 throw new IllegalStateException("Values must be set before executing insert.");
             }
 
-            return App.getAppContext().getContentResolver().update(uri, values, selection, selectionArgs);
+            return context.getContentResolver().update(uri, values, selection, selectionArgs);
         }
 
         public int into(SQLiteDatabase database, String table) {
@@ -128,11 +128,9 @@ public final class DataStore {
     }
 
     public abstract static class BaseDataStoreDelete {
+        @Inject Context context;
         private String selection;
         private String[] selectionArgs;
-
-        protected BaseDataStoreDelete() {
-        }
 
         public BaseDataStoreDelete selection(String selection, String... selectionArgs) {
             this.selection = selection;
@@ -142,16 +140,13 @@ public final class DataStore {
         }
 
         public int from(Uri uri) {
-            return App.getAppContext().getContentResolver().delete(ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, getMode()), selection, selectionArgs);
+            return context.getContentResolver().delete(ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, getMode()), selection, selectionArgs);
         }
 
         protected abstract String getMode();
     }
 
     public static final class DataStoreDelete extends BaseDataStoreDelete {
-        private DataStoreDelete() {
-        }
-
         @Override
         protected String getMode() {
             return "delete";
@@ -159,9 +154,6 @@ public final class DataStore {
     }
 
     public static final class DataStoreUndoDelete extends BaseDataStoreDelete {
-        private DataStoreUndoDelete() {
-        }
-
         @Override
         protected String getMode() {
             return "undo";
@@ -169,9 +161,6 @@ public final class DataStore {
     }
 
     public static final class DataStoreCommitDelete extends BaseDataStoreDelete {
-        private DataStoreCommitDelete() {
-        }
-
         @Override
         protected String getMode() {
             return "commit";
@@ -180,6 +169,7 @@ public final class DataStore {
 
     public static final class DataStoreBulkInsert {
         private final List<ContentValues> valuesList;
+        @Inject Context context;
 
         private DataStoreBulkInsert() {
             this.valuesList = new ArrayList<>();
@@ -218,7 +208,7 @@ public final class DataStore {
                 throw new IllegalStateException("Must have at least one ContentValues before executing bulk insert.");
             }
 
-            return App.getAppContext().getContentResolver().bulkInsert(uri, valuesArray);
+            return context.getContentResolver().bulkInsert(uri, valuesArray);
         }
 
         private ContentValues[] getValuesArray() {

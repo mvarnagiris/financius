@@ -25,8 +25,6 @@ import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.data.providers.TransactionsProvider;
 
-import de.greenrobot.event.EventBus;
-
 public class DeleteFragment extends DialogFragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
     private static final String ARG_DELETE_URI = "ARG_DELETE_URI";
     private static final String ARG_DELETE_SELECTION = "ARG_DELETE_SELECTION";
@@ -141,25 +139,25 @@ public class DeleteFragment extends DialogFragment implements LoaderManager.Load
                 return Query.create()
                         .projectionId(Tables.Currencies.ID)
                         .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
-                        .asCursorLoader(getActivity(), CurrenciesProvider.uriCurrencies());
+                        .asCursorLoader(CurrenciesProvider.uriCurrencies());
 
             case LOADER_ACCOUNTS:
                 return Query.create()
                         .projectionId(Tables.Accounts.ID)
                         .selection(Tables.Accounts.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
-                        .asCursorLoader(getActivity(), AccountsProvider.uriAccounts());
+                        .asCursorLoader(AccountsProvider.uriAccounts());
 
             case LOADER_CATEGORIES:
                 return Query.create()
                         .projectionId(Tables.Categories.ID)
                         .selection(Tables.Categories.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
-                        .asCursorLoader(getActivity(), CategoriesProvider.uriCategories());
+                        .asCursorLoader(CategoriesProvider.uriCategories());
 
             case LOADER_TRANSACTIONS:
                 return Query.create()
                         .projectionId(Tables.Transactions.ID)
                         .selection(Tables.Transactions.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
-                        .asCursorLoader(getActivity(), TransactionsProvider.uriTransactions());
+                        .asCursorLoader(TransactionsProvider.uriTransactions());
         }
         return null;
     }
@@ -225,7 +223,7 @@ public class DeleteFragment extends DialogFragment implements LoaderManager.Load
     private void delete() {
         DataStore.commitDelete().selection(deleteSelection, deleteSelectionArgs).from(deleteUri);
         dismiss();
-        EventBus.getDefault().post(new DeleteEvent(deleteUri, deleteSelection, deleteSelectionArgs));
+        // TODO EventBus.getDefault().post(new DeleteEvent(deleteUri, deleteSelection, deleteSelectionArgs));
     }
 
     public static class DeleteEvent {

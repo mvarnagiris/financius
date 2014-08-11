@@ -1,5 +1,6 @@
 package com.code44.finance.api.requests;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.code44.finance.api.GcmRegistration;
@@ -13,6 +14,7 @@ import javax.inject.Inject;
 public class RegisterDeviceRequest extends Request {
     private static final String PROJECT_NUMBER = "1007413878843";
 
+    @Inject Context context;
     @Inject Users usersService;
     @Inject GcmRegistration gcmRegistration;
 

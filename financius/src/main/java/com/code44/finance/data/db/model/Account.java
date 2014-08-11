@@ -6,7 +6,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.code44.finance.App;
 import com.code44.finance.backend.endpoint.accounts.model.AccountEntity;
 import com.code44.finance.common.model.AccountOwner;
 import com.code44.finance.common.model.ModelState;
@@ -54,7 +53,7 @@ public class Account extends BaseModel {
                     .projectionId(Tables.Accounts.ID)
                     .projection(Tables.Accounts.PROJECTION)
                     .selection(Tables.Accounts.OWNER.getName() + "=?", String.valueOf(AccountOwner.SYSTEM.asInt()))
-                    .from(App.getAppContext(), AccountsProvider.uriAccounts())
+                    .from(AccountsProvider.uriAccounts())
                     .execute();
 
             systemAccount = Account.from(cursor);

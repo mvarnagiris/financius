@@ -9,7 +9,7 @@ import android.text.format.DateUtils;
 import com.code44.finance.api.Api;
 import com.code44.finance.api.GcmRegistration;
 import com.code44.finance.api.User;
-import com.code44.finance.api.currencies.CurrenciesAsyncApi;
+import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
@@ -17,7 +17,15 @@ import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.IOUtils;
 
+import javax.inject.Inject;
+
 public class StartupService extends IntentService {
+    @Inject User user;
+    @Inject GcmRegistration gcmRegistration;
+    @Inject Api api;
+    @Inject CurrenciesApi currenciesApi;
+    @Inject GeneralPrefs generalPrefs;
+
     public StartupService() {
         super(StartupService.class.getSimpleName());
     }
@@ -31,11 +39,11 @@ public class StartupService extends IntentService {
         undoUncommittedDeletes();
         updateCurrenciesIfNecessary();
 
-        if (User.get().isPremium()) {
-            Api.get().sync();
+        if (user.isPremium()) {
+            api.sync();
 
-            if (!GcmRegistration.get().isRegisteredWithServer()) {
-                Api.get().registerDevice();
+            if (!gcmRegistration.isRegisteredWithServer()) {
+                api.registerDevice();
             }
         }
     }
@@ -47,7 +55,6 @@ public class StartupService extends IntentService {
     }
 
     private void updateCurrenciesIfNecessary() {
-        final GeneralPrefs generalPrefs = GeneralPrefs.get();
         if (!generalPrefs.isAutoUpdateCurrencies() && DateUtils.isToday(generalPrefs.getAutoUpdateCurrenciesTimestamp())) {
             return;
         }
@@ -55,14 +62,13 @@ public class StartupService extends IntentService {
         final Cursor cursor = Query.create()
                 .projection(Tables.Currencies.CODE.getName())
                 .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
-                .from(getApplicationContext(), CurrenciesProvider.uriCurrencies())
+                .from(CurrenciesProvider.uriCurrencies())
                 .execute();
 
         if (cursor.moveToFirst()) {
-            final CurrenciesAsyncApi api = CurrenciesAsyncApi.get();
             final int iCode = cursor.getColumnIndex(Tables.Currencies.CODE.getName());
             do {
-                api.updateExchangeRate(cursor.getString(iCode));
+                currenciesApi.updateExchangeRate(cursor.getString(iCode));
             } while (cursor.moveToNext());
         }
         IOUtils.closeQuietly(cursor);

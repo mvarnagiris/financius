@@ -109,7 +109,7 @@ public class AccountsProvider extends BaseModelProvider {
         final Cursor cursor = Query.create()
                 .projection(Tables.Accounts.BALANCE.getName())
                 .selection(Tables.Accounts.ID + "=?", String.valueOf(accountId))
-                .from(database, Tables.Accounts.TABLE_NAME)
+                .from(getDatabase(), Tables.Accounts.TABLE_NAME)
                 .execute();
         final long balance = cursor.getLong(cursor.getColumnIndex(Tables.Accounts.BALANCE.getName()));
         IOUtils.closeQuietly(cursor);

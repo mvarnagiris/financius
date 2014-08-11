@@ -17,8 +17,7 @@ import android.widget.Switch;
 import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.adapters.CurrenciesAdapter;
-import com.code44.finance.api.currencies.CurrenciesAsyncApi;
-import com.code44.finance.api.currencies.CurrencyRequest;
+import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Currency;
@@ -29,11 +28,15 @@ import com.code44.finance.utils.GeneralPrefs;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
+import javax.inject.Inject;
+
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 public class CurrenciesFragment extends ModelListFragment implements CompoundButton.OnCheckedChangeListener {
     private final List<Currency> currencies = new ArrayList<>();
+
+    @Inject CurrenciesApi currenciesApi;
+    @Inject GeneralPrefs generalPrefs;
 
     private SmoothProgressBar loading_SPB;
 
@@ -60,7 +63,7 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         final Switch autoUpdateCurrencies_S = (Switch) view.findViewById(R.id.autoUpdateCurrencies_S);
 
         // Setup
-        autoUpdateCurrencies_S.setChecked(GeneralPrefs.get().isAutoUpdateCurrencies());
+        autoUpdateCurrencies_S.setChecked(generalPrefs.isAutoUpdateCurrencies());
         autoUpdateCurrencies_S.setOnCheckedChangeListener(this);
         if (getMode() == Mode.SELECT) {
             settingsContainer_V.setVisibility(View.GONE);
@@ -95,8 +98,8 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
     }
 
     @Override
-    protected CursorLoader getModelsCursorLoader(Context context) {
-        return Tables.Currencies.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrencies());
+    protected CursorLoader getModelsCursorLoader() {
+        return Tables.Currencies.getQuery().asCursorLoader(CurrenciesProvider.uriCurrencies());
     }
 
     @Override
@@ -129,7 +132,7 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        GeneralPrefs.get().setAutoUpdateCurrencies(isChecked);
+        generalPrefs.setAutoUpdateCurrencies(isChecked);
         if (isChecked) {
             refreshRates();
         }
@@ -138,13 +141,14 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
     private void refreshRates() {
         for (Currency currency : currencies) {
             if (!currency.isDefault()) {
-                CurrenciesAsyncApi.get().updateExchangeRate(currency.getCode());
+                currenciesApi.updateExchangeRate(currency.getCode());
             }
         }
     }
 
     private void updateRefreshView() {
-        final boolean isFetchingCurrencies = EventBus.getDefault().getStickyEvent(CurrencyRequest.CurrencyRequestEvent.class) != null;
-        loading_SPB.setVisibility(isFetchingCurrencies ? View.VISIBLE : View.GONE);
+        // TODO
+//        final boolean isFetchingCurrencies = EventBus.getDefault().getStickyEvent(CurrencyRequest.CurrencyRequestEvent.class) != null;
+//        loading_SPB.setVisibility(isFetchingCurrencies ? View.VISIBLE : View.GONE);
     }
 }

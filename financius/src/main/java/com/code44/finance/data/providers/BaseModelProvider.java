@@ -23,10 +23,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 @SuppressWarnings("UnusedParameters")
 public abstract class BaseModelProvider extends BaseProvider {
     private static final int URI_ITEMS = 1;
     private static final int URI_ITEMS_ID = 2;
+
+    @Inject Api api;
 
     public static Uri uriModels(Class<? extends BaseModelProvider> providerClass, String modelTable) {
         return Uri.parse(CONTENT_URI_BASE + getAuthority(providerClass) + "/" + modelTable);
@@ -38,6 +42,8 @@ public abstract class BaseModelProvider extends BaseProvider {
 
     @Override
     public boolean onCreate() {
+        super.onCreate();
+
         final String authority = getAuthority();
         final String mainTable = getModelTable();
         uriMatcher.addURI(authority, mainTable, URI_ITEMS);
@@ -117,7 +123,7 @@ public abstract class BaseModelProvider extends BaseProvider {
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
-        Api.get().sync();
+        api.sync();
 
         return Uri.withAppendedPath(uri, serverId);
     }
@@ -149,7 +155,7 @@ public abstract class BaseModelProvider extends BaseProvider {
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
-        Api.get().sync();
+        api.sync();
 
         return count;
     }
@@ -200,7 +206,7 @@ public abstract class BaseModelProvider extends BaseProvider {
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
-        Api.get().sync();
+        api.sync();
 
         return count;
     }

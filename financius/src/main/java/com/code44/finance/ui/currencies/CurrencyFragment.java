@@ -16,8 +16,7 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.CurrencyAccountsAdapter;
-import com.code44.finance.api.currencies.CurrenciesAsyncApi;
-import com.code44.finance.api.currencies.CurrencyRequest;
+import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
@@ -26,18 +25,18 @@ import com.code44.finance.ui.ModelFragment;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.views.FabImageButton;
 
-import de.greenrobot.event.EventBus;
+import javax.inject.Inject;
+
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 public class CurrencyFragment extends ModelFragment<Currency> implements View.OnClickListener {
     private static final int LOADER_ACCOUNTS = 1;
-
+    @Inject CurrenciesApi currenciesApi;
     private TextView code_TV;
     private TextView format_TV;
     private TextView exchangeRate_TV;
     private SmoothProgressBar loading_SPB;
     private FabImageButton refreshRate_IB;
-
     private CurrencyAccountsAdapter adapter;
 
     public static CurrencyFragment newInstance(String currencyServerId) {
@@ -80,7 +79,7 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_ACCOUNTS) {
-            return Tables.Accounts.getQuery().asCursorLoader(getActivity(), AccountsProvider.uriAccounts());
+            return Tables.Accounts.getQuery().asCursorLoader(AccountsProvider.uriAccounts());
         }
         return super.onCreateLoader(id, args);
     }
@@ -104,8 +103,8 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
     }
 
     @Override
-    protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
-        return Tables.Currencies.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrency(modelServerId));
+    protected CursorLoader getModelCursorLoader(String modelServerId) {
+        return Tables.Currencies.getQuery().asCursorLoader(CurrenciesProvider.uriCurrency(modelServerId));
     }
 
     @Override
@@ -147,11 +146,11 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
     }
 
     private void updateRefreshView() {
-        loading_SPB.setVisibility(EventBus.getDefault().getStickyEvent(CurrencyRequest.CurrencyRequestEvent.class) != null ? View.VISIBLE : View.INVISIBLE);
+        // TODO loading_SPB.setVisibility(EventBus.getDefault().getStickyEvent(CurrencyRequest.CurrencyRequestEvent.class) != null ? View.VISIBLE : View.INVISIBLE);
     }
 
     private void refreshRate() {
-        CurrenciesAsyncApi.get().updateExchangeRate(model.getCode());
+        currenciesApi.updateExchangeRate(model.getCode());
     }
 
     @Override

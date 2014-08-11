@@ -24,9 +24,7 @@ import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.api.BaseRequestEvent;
-import com.code44.finance.api.currencies.CurrenciesAsyncApi;
-import com.code44.finance.api.currencies.CurrencyRequest;
+import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.common.model.DecimalSeparator;
 import com.code44.finance.common.model.GroupSeparator;
 import com.code44.finance.common.model.SymbolPosition;
@@ -41,11 +39,13 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 public class CurrencyEditFragment extends ModelEditFragment<Currency> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int LOADER_CURRENCIES = 1;
-
+    @Inject CurrenciesApi currenciesApi;
     private SmoothProgressBar loading_SPB;
     private AutoCompleteTextView code_ET;
     private Button thousandsSeparator_B;
@@ -60,7 +60,6 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     private View mainCurrencyContainer_V;
     private View exchangeRateContainer_V;
     private CheckBox isDefault_CB;
-
     private Set<String> existingCurrencyCodes = new HashSet<>();
 
     public CurrencyEditFragment() {
@@ -214,7 +213,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_CURRENCIES) {
-            return Tables.Currencies.getQuery().asCursorLoader(getActivity(), CurrenciesProvider.uriCurrencies());
+            return Tables.Currencies.getQuery().asCursorLoader(CurrenciesProvider.uriCurrencies());
         }
         return super.onCreateLoader(id, args);
     }
@@ -234,8 +233,8 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     }
 
     @Override
-    protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
-        return Tables.Currencies.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrency(modelServerId));
+    protected CursorLoader getModelCursorLoader(String modelServerId) {
+        return Tables.Currencies.getQuery().asCursorLoader(CurrenciesProvider.uriCurrency(modelServerId));
     }
 
     @Override
@@ -245,7 +244,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
                 ensureModelUpdated(model);
                 final String code = model.getCode();
                 if (!TextUtils.isEmpty(code) && code.length() == 3) {
-                    CurrenciesAsyncApi.get().updateExchangeRate(code);
+                    currenciesApi.updateExchangeRate(code);
                 }
                 break;
             }
@@ -336,13 +335,13 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         onModelLoaded(model);
     }
 
-    public void onEventMainThread(CurrencyRequest.CurrencyRequestEvent event) {
-        updateProgressBar();
-        if (model != null && CurrencyRequest.getUniqueId(model.getCode(), Currency.getDefault().getCode()).equals(event.getRequest().getUniqueId())) {
-            model.setExchangeRate(event.getResult().getExchangeRate());
-            onModelLoaded(model);
-        }
-    }
+// TODO    public void onEventMainThread(CurrencyRequest.CurrencyRequestEvent event) {
+//        updateProgressBar();
+//        if (model != null && CurrencyRequest.getUniqueId(model.getCode(), Currency.getDefault().getCode()).equals(event.getRequest().getUniqueId())) {
+//            model.setExchangeRate(event.getResult().getExchangeRate());
+//            onModelLoaded(model);
+//        }
+//    }
 
     private void prepareCurrenciesAutoComplete() {
         // Build currencies set
@@ -411,16 +410,16 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     }
 
     private void updateProgressBar() {
-        final boolean isFetchingCurrency = model != null && BaseRequestEvent.isWorking(CurrencyRequest.CurrencyRequestEvent.class, CurrencyRequest.getUniqueId(model.getCode(), Currency.getDefault().getCode()));
-        if (isFetchingCurrency) {
-            if (loading_SPB.getVisibility() != View.VISIBLE) {
-                loading_SPB.setVisibility(View.VISIBLE);
-            }
-        } else {
-            if (loading_SPB.getVisibility() != View.INVISIBLE) {
-                loading_SPB.setVisibility(View.INVISIBLE);
-            }
-        }
+// TODO        final boolean isFetchingCurrency = model != null && BaseRequestEvent.isWorking(CurrencyRequest.CurrencyRequestEvent.class, CurrencyRequest.getUniqueId(model.getCode(), Currency.getDefault().getCode()));
+//        if (isFetchingCurrency) {
+//            if (loading_SPB.getVisibility() != View.VISIBLE) {
+//                loading_SPB.setVisibility(View.VISIBLE);
+//            }
+//        } else {
+//            if (loading_SPB.getVisibility() != View.INVISIBLE) {
+//                loading_SPB.setVisibility(View.INVISIBLE);
+//            }
+//        }
     }
 
     private void updateCodeTitlePosition() {

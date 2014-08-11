@@ -45,8 +45,8 @@ public class CategoryFragment extends ModelFragment<Category> {
     }
 
     @Override
-    protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
-        return Tables.Categories.getQuery(null).asCursorLoader(context, CategoriesProvider.uriCategory(modelServerId));
+    protected CursorLoader getModelCursorLoader(String modelServerId) {
+        return Tables.Categories.getQuery(null).asCursorLoader(CategoriesProvider.uriCategory(modelServerId));
     }
 
     @Override
