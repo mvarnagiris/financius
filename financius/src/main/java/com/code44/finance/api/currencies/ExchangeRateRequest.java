@@ -18,13 +18,16 @@ import com.google.gson.JsonObject;
 
 import retrofit.client.Response;
 
-public class CurrencyRequest extends Request {
+public class ExchangeRateRequest extends Request {
     private final Context context;
     private final CurrenciesRequestService requestService;
     private final String fromCode;
     private final String toCode;
+    private final boolean storeData;
 
-    public CurrencyRequest(EventBus eventBus, Context context, CurrenciesRequestService requestService, String fromCode, String toCode) {
+    private Currency currency;
+
+    public ExchangeRateRequest(EventBus eventBus, Context context, CurrenciesRequestService requestService, String fromCode, String toCode, boolean storeData) {
         super(eventBus);
         Preconditions.checkNotNull(eventBus, "EventBus cannot be empty.");
         Preconditions.checkNotNull(context, "Context cannot be null.");
@@ -36,6 +39,7 @@ public class CurrencyRequest extends Request {
         this.requestService = requestService;
         this.fromCode = fromCode;
         this.toCode = toCode;
+        this.storeData = storeData;
     }
 
     @Override
@@ -50,12 +54,40 @@ public class CurrencyRequest extends Request {
                 .selection(Tables.Currencies.CODE + "=?", fromCode)
                 .from(App.getContext(), CurrenciesProvider.uriCurrencies())
                 .execute();
-        final Currency currency = Currency.from(cursor);
+        if (cursor.moveToFirst()) {
+            currency = Currency.from(cursor);
+        }
         IOUtils.closeQuietly(cursor);
 
+        if (currency == null || StringUtils.isEmpty(currency.getServerId())) {
+            currency = null;
+            return;
+        }
+
         currency.setExchangeRate(exchangeRate);
-        if (!StringUtils.isEmpty(currency.getServerId())) {
+        if (storeData) {
             DataStore.bulkInsert().values(currency.asContentValues()).into(context, CurrenciesProvider.uriCurrencies());
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ExchangeRateRequest)) return false;
+
+        ExchangeRateRequest that = (ExchangeRateRequest) o;
+
+        return fromCode.equals(that.fromCode) && toCode.equals(that.toCode);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = fromCode.hashCode();
+        result = 31 * result + toCode.hashCode();
+        return result;
+    }
+
+    public Currency getCurrency() {
+        return currency;
     }
 }

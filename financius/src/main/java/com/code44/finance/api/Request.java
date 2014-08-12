@@ -6,9 +6,9 @@ import com.code44.finance.utils.LogUtils;
 public abstract class Request implements Runnable {
     private static final String TAG = LogUtils.makeLogTag(Request.class);
 
-    private final EventBus eventBus;
+    protected final EventBus eventBus;
 
-    private Exception error;
+    protected Exception error;
 
     /**
      * @param eventBus If {@code null}, then event will not be posted.

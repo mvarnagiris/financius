@@ -18,12 +18,15 @@ import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.adapters.CurrenciesAdapter;
 import com.code44.finance.api.currencies.CurrenciesApi;
+import com.code44.finance.api.currencies.ExchangeRatesRequest;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelListFragment;
+import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.GeneralPrefs;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +38,6 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
     private final GeneralPrefs generalPrefs = GeneralPrefs.get();
     private final CurrenciesApi currenciesApi = CurrenciesApi.get();
 
-
     private SmoothProgressBar loading_SPB;
 
     public static CurrenciesFragment newInstance(Mode mode) {
@@ -46,13 +48,11 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         return fragment;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_currencies, container, false);
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
@@ -68,20 +68,22 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         }
     }
 
-    @Override
-    public void onResume() {
+    @Override public void onResume() {
         super.onResume();
-        updateRefreshView();
+        EventBus.get().register(this);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    @Override public void onPause() {
+        super.onPause();
+        EventBus.get().unregister(this);
+    }
+
+    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.currencies, menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh_rates:
                 refreshRates();
@@ -90,33 +92,27 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected BaseModelsAdapter createAdapter(Context context) {
+    @Override protected BaseModelsAdapter createAdapter(Context context) {
         return new CurrenciesAdapter(context);
     }
 
-    @Override
-    protected CursorLoader getModelsCursorLoader(Context context) {
+    @Override protected CursorLoader getModelsCursorLoader(Context context) {
         return Tables.Currencies.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrencies());
     }
 
-    @Override
-    protected BaseModel modelFrom(Cursor cursor) {
+    @Override protected BaseModel modelFrom(Cursor cursor) {
         return Currency.from(cursor);
     }
 
-    @Override
-    protected void onModelClick(Context context, View view, int position, String modelServerId, BaseModel model) {
+    @Override protected void onModelClick(Context context, View view, int position, String modelServerId, BaseModel model) {
         CurrencyActivity.start(context, modelServerId);
     }
 
-    @Override
-    protected void startModelEdit(Context context, String modelServerId) {
+    @Override protected void startModelEdit(Context context, String modelServerId) {
         CurrencyEditActivity.start(context, modelServerId);
     }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == LOADER_MODELS) {
             currencies.clear();
             if (data.moveToFirst()) {
@@ -128,25 +124,36 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         super.onLoadFinished(loader, data);
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+    @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         generalPrefs.setAutoUpdateCurrencies(isChecked);
         if (isChecked) {
             refreshRates();
         }
     }
 
+    @Subscribe public void onRefreshFinished(ExchangeRatesRequest request) {
+        loading_SPB.post(new Runnable() {
+            @Override public void run() {
+                setRefreshing(false);
+            }
+        });
+    }
+
     private void refreshRates() {
+        final List<String> fromCodes = new ArrayList<>();
         for (Currency currency : currencies) {
             if (!currency.isDefault()) {
-                currenciesApi.updateExchangeRate(currency.getCode());
+                fromCodes.add(currency.getCode());
             }
+        }
+
+        if (!fromCodes.isEmpty()) {
+            currenciesApi.updateExchangeRates(fromCodes);
+            setRefreshing(true);
         }
     }
 
-    private void updateRefreshView() {
-        // TODO
-//        final boolean isFetchingCurrencies = EventBus.getDefault().getStickyEvent(CurrencyRequest.CurrencyRequestEvent.class) != null;
-//        loading_SPB.setVisibility(isFetchingCurrencies ? View.VISIBLE : View.GONE);
+    private void setRefreshing(boolean refreshing) {
+        loading_SPB.setVisibility(refreshing ? View.VISIBLE : View.GONE);
     }
 }

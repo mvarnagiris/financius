@@ -38,8 +38,8 @@ public class DefaultNetworkExecutor extends ThreadPoolExecutor implements Networ
         workingRequests.remove(r);
     }
 
-    @Override public void isWorking(Request request) {
-        workingRequests.contains(request);
+    @Override public boolean isWorking(Request request) {
+        return workingRequests.contains(request);
     }
 
     @Override public void execute(Request request) {

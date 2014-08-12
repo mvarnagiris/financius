@@ -6,9 +6,12 @@ import com.code44.finance.App;
 import com.code44.finance.BuildConfig;
 import com.code44.finance.api.DefaultNetworkExecutor;
 import com.code44.finance.api.NetworkExecutor;
+import com.code44.finance.api.Request;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.utils.EventBus;
+
+import java.util.List;
 
 import retrofit.RestAdapter;
 
@@ -48,11 +51,25 @@ public class CurrenciesApi {
 
     public void updateExchangeRate(String fromCode) {
         final String toCode = Currency.getDefault().getCode();
-        final CurrencyRequest request = new CurrencyRequest(eventBus, context, requestService, fromCode, toCode);
-        executeRequest(request);
+        final ExchangeRateRequest request = new ExchangeRateRequest(eventBus, context, requestService, fromCode, toCode, true);
+        if (!isWorking(request)) {
+            executeRequest(request);
+        }
     }
 
-    private void executeRequest(CurrencyRequest request) {
+    public void updateExchangeRates(List<String> fromCodes) {
+        final String toCode = Currency.getDefault().getCode();
+        final ExchangeRatesRequest request = new ExchangeRatesRequest(eventBus, context, requestService, fromCodes, toCode);
+        if (!isWorking(request)) {
+            executeRequest(request);
+        }
+    }
+
+    public boolean isWorking(Request request) {
+        return executor.isWorking(request);
+    }
+
+    private void executeRequest(Request request) {
         executor.execute(request);
     }
 }
