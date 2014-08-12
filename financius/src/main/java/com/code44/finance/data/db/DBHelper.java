@@ -10,6 +10,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String NAME = "financius.db";
     private static final int VERSION = 1;
 
+    private static DBHelper singleton;
+
     private final Context context;
 
     public DBHelper(Context context) {
@@ -21,8 +23,11 @@ public class DBHelper extends SQLiteOpenHelper {
         this.context = context;
     }
 
-    public static DBHelper get() {
-        return App.getDBHelper();
+    public static synchronized DBHelper get() {
+        if (singleton == null) {
+            singleton = new DBHelper(App.getContext());
+        }
+        return singleton;
     }
 
     @Override

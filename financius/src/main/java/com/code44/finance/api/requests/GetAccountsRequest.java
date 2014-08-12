@@ -7,6 +7,7 @@ import com.code44.finance.App;
 import com.code44.finance.api.User;
 import com.code44.finance.backend.endpoint.accounts.Accounts;
 import com.code44.finance.backend.endpoint.accounts.model.AccountEntity;
+import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
@@ -20,13 +21,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 public class GetAccountsRequest extends GetRequest<AccountEntity> {
+    private final Accounts accountsService;
     private final Map<String, Currency> currencies;
-    @Inject Accounts accountsService;
 
-    public GetAccountsRequest() {
+    public GetAccountsRequest(User user, Accounts accountsService) {
+        super(null, user);
+        Preconditions.checkNotNull(accountsService, "Accounts cannot be null.");
+
+        this.accountsService = accountsService;
         currencies = new HashMap<>();
     }
 

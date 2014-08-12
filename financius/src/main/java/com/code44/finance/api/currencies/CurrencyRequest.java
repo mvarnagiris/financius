@@ -23,6 +23,7 @@ public class CurrencyRequest extends Request {
     @Inject CurrenciesRequestService requestService;
 
     public CurrencyRequest(String fromCode, String toCode) {
+        super(eventBus);
         this.fromCode = fromCode;
         this.toCode = toCode;
     }

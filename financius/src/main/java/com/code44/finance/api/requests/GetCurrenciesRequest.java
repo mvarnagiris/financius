@@ -6,6 +6,7 @@ import android.net.Uri;
 import com.code44.finance.api.User;
 import com.code44.finance.backend.endpoint.currencies.Currencies;
 import com.code44.finance.backend.endpoint.currencies.model.CurrencyEntity;
+import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Currency;
@@ -13,10 +14,15 @@ import com.code44.finance.data.providers.CurrenciesProvider;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class GetCurrenciesRequest extends GetRequest<CurrencyEntity> {
-    @Inject Currencies currenciesService;
+    private final Currencies currenciesService;
+
+    public GetCurrenciesRequest(User user, Currencies currenciesService) {
+        super(null, user);
+        Preconditions.checkNotNull(currenciesService, "Currencies cannot be null.");
+
+        this.currenciesService = currenciesService;
+    }
 
     @Override protected long getLastTimestamp(User user) {
         return user.getCurrenciesTimestamp();

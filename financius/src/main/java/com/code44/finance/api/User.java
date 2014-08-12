@@ -3,17 +3,20 @@ package com.code44.finance.api;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.code44.finance.App;
 import com.code44.finance.data.db.DBHelper;
+import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.Prefs;
-import com.squareup.otto.Bus;
 import com.squareup.otto.Produce;
 
 public class User extends Prefs {
     private static final String PREFIX = "user_";
 
+    private static User singleton;
+
     private final DBHelper dbHelper;
     private final GcmRegistration gcmRegistration;
-    private final Bus bus;
+    private final EventBus eventBus;
 
     private String id;
     private String googleId;
@@ -29,14 +32,25 @@ public class User extends Prefs {
     private long accountsTimestamp;
     private long transactionsTimestamp;
 
-    public User(Context context, DBHelper dbHelper, GcmRegistration gcmRegistration, Bus bus) {
+    public User(Context context, DBHelper dbHelper, GcmRegistration gcmRegistration, EventBus eventBus) {
         super(context);
         this.dbHelper = dbHelper;
         this.gcmRegistration = gcmRegistration;
-        this.bus = bus;
+        this.eventBus = eventBus;
 
         refresh();
-        bus.register(this);
+        eventBus.register(this);
+    }
+
+    public static synchronized User get() {
+        if (singleton == null) {
+            final Context context = App.getContext();
+            final DBHelper dbHelper = DBHelper.get();
+            final GcmRegistration gcmRegistration = GcmRegistration.get();
+            final EventBus eventBus = EventBus.get();
+            singleton = new User(context, dbHelper, gcmRegistration, eventBus);
+        }
+        return singleton;
     }
 
     @Override
@@ -183,7 +197,7 @@ public class User extends Prefs {
     }
 
     public void notifyChanged() {
-        bus.post(this);
+        eventBus.post(this);
     }
 
     @Produce public User produceUser() {

@@ -1,20 +1,25 @@
 package com.code44.finance.api.requests;
 
+import com.code44.finance.api.GcmRegistration;
 import com.code44.finance.backend.endpoint.transactions.Transactions;
 import com.code44.finance.backend.endpoint.transactions.model.TransactionEntity;
 import com.code44.finance.backend.endpoint.transactions.model.TransactionsBody;
+import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.model.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class PostTransactionsRequest extends PostRequest<TransactionsBody> {
+    private final Transactions transactionsService;
     private final List<Transaction> transactions;
-    @Inject Transactions transactionsService;
 
-    public PostTransactionsRequest(List<Transaction> transactions) {
+    public PostTransactionsRequest(GcmRegistration gcmRegistration, Transactions transactionsService, List<Transaction> transactions) {
+        super(null, gcmRegistration);
+        Preconditions.checkNotNull(transactionsService, "Transactions service cannot be null.");
+        Preconditions.checkNotNull(transactions, "Transactions list cannot be null.");
+
+        this.transactionsService = transactionsService;
         this.transactions = transactions;
     }
 
@@ -28,6 +33,10 @@ public class PostTransactionsRequest extends PostRequest<TransactionsBody> {
             transactionEntities.add(transaction.toEntity());
         }
         body.setTransactions(transactionEntities);
+    }
+
+    @Override protected boolean isPostDataEmpty(TransactionsBody body) {
+        return body.getTransactions().size() == 0;
     }
 
     @Override protected void performRequest(TransactionsBody body) throws Exception {

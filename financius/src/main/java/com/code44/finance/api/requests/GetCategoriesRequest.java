@@ -5,16 +5,22 @@ import android.net.Uri;
 import com.code44.finance.api.User;
 import com.code44.finance.backend.endpoint.categories.Categories;
 import com.code44.finance.backend.endpoint.categories.model.CategoryEntity;
+import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.model.BaseModel;
 import com.code44.finance.data.db.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class GetCategoriesRequest extends GetRequest<CategoryEntity> {
-    @Inject Categories categoriesService;
+    private final Categories categoriesService;
+
+    public GetCategoriesRequest(User user, Categories categoriesService) {
+        super(null, user);
+        Preconditions.checkNotNull(categoriesService, "Categories cannot be null.");
+
+        this.categoriesService = categoriesService;
+    }
 
     @Override protected long getLastTimestamp(User user) {
         return user.getCategoriesTimestamp();

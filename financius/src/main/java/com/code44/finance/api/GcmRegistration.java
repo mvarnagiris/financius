@@ -2,11 +2,14 @@ package com.code44.finance.api;
 
 import android.content.Context;
 
+import com.code44.finance.App;
 import com.code44.finance.BuildConfig;
 import com.code44.finance.utils.Prefs;
 
 public class GcmRegistration extends Prefs {
     private static final String PREFIX = "gcm_";
+
+    private static GcmRegistration singleton;
 
     private String registrationId;
     private int registeredVersion;
@@ -15,6 +18,13 @@ public class GcmRegistration extends Prefs {
     public GcmRegistration(Context context) {
         super(context);
         refresh();
+    }
+
+    public static synchronized GcmRegistration get() {
+        if (singleton == null) {
+            singleton = new GcmRegistration(App.getContext());
+        }
+        return singleton;
     }
 
     @Override

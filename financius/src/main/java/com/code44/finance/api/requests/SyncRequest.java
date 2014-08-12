@@ -5,7 +5,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.code44.finance.App;
+import com.code44.finance.api.GcmRegistration;
 import com.code44.finance.api.Request;
+import com.code44.finance.api.User;
+import com.code44.finance.backend.endpoint.accounts.Accounts;
+import com.code44.finance.backend.endpoint.categories.Categories;
+import com.code44.finance.backend.endpoint.currencies.Currencies;
+import com.code44.finance.backend.endpoint.transactions.Transactions;
+import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
@@ -20,15 +27,40 @@ import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.data.providers.TransactionsProvider;
+import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.IOUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class SyncRequest extends Request {
-    @Inject DBHelper dbHelper;
+    private final DBHelper dbHelper;
+    private final User user;
+    private final GcmRegistration gcmRegistration;
+    private final Currencies currenciesService;
+    private final Categories categoriesService;
+    private final Accounts accountsService;
+    private final Transactions transactionsService;
+
+    public SyncRequest(EventBus eventBus, DBHelper dbHelper, User user, GcmRegistration gcmRegistration, Currencies currenciesService, Categories categoriesService, Accounts accountsService, Transactions transactionsService) {
+        super(eventBus);
+        Preconditions.checkNotNull(eventBus, "EventBus cannot be null.");
+        Preconditions.checkNotNull(dbHelper, "DBHelper cannot be null.");
+        Preconditions.checkNotNull(user, "User cannot be null.");
+        Preconditions.checkNotNull(gcmRegistration, "Gcm registration cannot be null.");
+        Preconditions.checkNotNull(currenciesService, "Currencies service cannot be null.");
+        Preconditions.checkNotNull(categoriesService, "Categories service cannot be null.");
+        Preconditions.checkNotNull(accountsService, "Accounts service cannot be null.");
+        Preconditions.checkNotNull(transactionsService, "Transactions service cannot be null.");
+
+        this.dbHelper = dbHelper;
+        this.user = user;
+        this.gcmRegistration = gcmRegistration;
+        this.currenciesService = currenciesService;
+        this.categoriesService = categoriesService;
+        this.accountsService = accountsService;
+        this.transactionsService = transactionsService;
+    }
 
     @Override
     protected void performRequest() throws Exception {
@@ -62,11 +94,11 @@ public class SyncRequest extends Request {
         } while (cursor.moveToNext());
         IOUtils.closeQuietly(cursor);
 
-        new PostCurrenciesRequest(currencies).run();
+        new PostCurrenciesRequest(gcmRegistration, currenciesService, currencies).run();
     }
 
     private void getCurrencies() throws Exception {
-        new GetCurrenciesRequest().run();
+        new GetCurrenciesRequest(user, currenciesService).run();
     }
 
     private void pushCategories(SQLiteDatabase database) throws Exception {
@@ -84,11 +116,11 @@ public class SyncRequest extends Request {
         } while (cursor.moveToNext());
         IOUtils.closeQuietly(cursor);
 
-        new PostCategoriesRequest(categories).run();
+        new PostCategoriesRequest(gcmRegistration, categoriesService, categories).run();
     }
 
     private void getCategories() throws Exception {
-        new GetCategoriesRequest().run();
+        new GetCategoriesRequest(user, categoriesService).run();
     }
 
     private void pushAccounts(SQLiteDatabase database) throws Exception {
@@ -107,11 +139,11 @@ public class SyncRequest extends Request {
         } while (cursor.moveToNext());
         IOUtils.closeQuietly(cursor);
 
-        new PostAccountsRequest(accounts).run();
+        new PostAccountsRequest(gcmRegistration, accountsService, accounts).run();
     }
 
     private void getAccounts() throws Exception {
-        new GetAccountsRequest().run();
+        new GetAccountsRequest(user, accountsService).run();
     }
 
     private void pushTransactions(SQLiteDatabase database) throws Exception {
@@ -134,11 +166,11 @@ public class SyncRequest extends Request {
         } while (cursor.moveToNext());
         IOUtils.closeQuietly(cursor);
 
-        new PostTransactionsRequest(transactions).run();
+        new PostTransactionsRequest(gcmRegistration, transactionsService, transactions).run();
     }
 
     private void getTransactions() throws Exception {
-        new GetTransactionsRequest().run();
+        new GetTransactionsRequest(user, transactionsService).run();
     }
 
     private void markInProgress(SQLiteDatabase database, Column syncStateColumn) {

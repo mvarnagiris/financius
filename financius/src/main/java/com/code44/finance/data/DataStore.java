@@ -13,8 +13,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import javax.inject.Inject;
-
 public final class DataStore {
     private DataStore() {
     }
@@ -44,7 +42,6 @@ public final class DataStore {
     }
 
     public static final class DataStoreInsert {
-        @Inject Context context;
         private ContentValues values;
 
         public DataStoreInsert model(BaseModel model) {
@@ -64,7 +61,7 @@ public final class DataStore {
             return this;
         }
 
-        public Uri into(Uri uri) {
+        public Uri into(Context context, Uri uri) {
             if (values == null) {
                 throw new IllegalStateException("Values must be set before executing insert.");
             }
@@ -82,7 +79,6 @@ public final class DataStore {
     }
 
     public static final class DataStoreUpdate {
-        @Inject Context context;
         private ContentValues values;
         private String selection;
         private String[] selectionArgs;
@@ -110,7 +106,7 @@ public final class DataStore {
             return this;
         }
 
-        public int into(Uri uri) {
+        public int into(Context context, Uri uri) {
             if (values == null) {
                 throw new IllegalStateException("Values must be set before executing insert.");
             }
@@ -128,7 +124,6 @@ public final class DataStore {
     }
 
     public abstract static class BaseDataStoreDelete {
-        @Inject Context context;
         private String selection;
         private String[] selectionArgs;
 
@@ -139,7 +134,7 @@ public final class DataStore {
             return this;
         }
 
-        public int from(Uri uri) {
+        public int from(Context context, Uri uri) {
             return context.getContentResolver().delete(ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, getMode()), selection, selectionArgs);
         }
 
@@ -169,7 +164,6 @@ public final class DataStore {
 
     public static final class DataStoreBulkInsert {
         private final List<ContentValues> valuesList;
-        @Inject Context context;
 
         private DataStoreBulkInsert() {
             this.valuesList = new ArrayList<>();
@@ -202,7 +196,7 @@ public final class DataStore {
             return this;
         }
 
-        public int into(Uri uri) {
+        public int into(Context context, Uri uri) {
             ContentValues[] valuesArray = getValuesArray();
             if (valuesArray.length == 0) {
                 throw new IllegalStateException("Must have at least one ContentValues before executing bulk insert.");

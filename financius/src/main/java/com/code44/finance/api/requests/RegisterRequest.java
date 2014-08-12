@@ -7,20 +7,34 @@ import com.code44.finance.api.User;
 import com.code44.finance.backend.endpoint.users.Users;
 import com.code44.finance.backend.endpoint.users.model.RegisterBody;
 import com.code44.finance.backend.endpoint.users.model.UserAccount;
+import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.DBHelper;
 import com.code44.finance.services.StartupService;
-
-import javax.inject.Inject;
+import com.code44.finance.utils.EventBus;
 
 public class RegisterRequest extends Request {
+    private final Context context;
+    private final Users usersService;
+    private final User user;
+    private final DBHelper dbHelper;
     private final RegisterBody body;
 
-    @Inject Context context;
-    @Inject User user;
-    @Inject DBHelper dbHelper;
-    @Inject Users usersService;
+    public RegisterRequest(EventBus eventBus, Context context, Users usersService, User user, DBHelper dbHelper, String email, String googleId, String firstName, String lastName, String photoUrl, String coverUrl) {
+        super(eventBus);
 
-    public RegisterRequest(String email, String googleId, String firstName, String lastName, String photoUrl, String coverUrl) {
+        Preconditions.checkNotNull(eventBus, "EventBus cannot be null.");
+        Preconditions.checkNotNull(context, "Context cannot be null.");
+        Preconditions.checkNotNull(usersService, "Users cannot be null.");
+        Preconditions.checkNotNull(dbHelper, "DBHelper cannot be null.");
+        Preconditions.checkNotEmpty(email, "Email cannot be empty.");
+        Preconditions.checkNotEmpty(googleId, "Google Id cannot be empty.");
+        Preconditions.checkNotEmpty(firstName, "First name cannot be empty.");
+
+        this.context = context;
+        this.usersService = usersService;
+        this.user = user;
+        this.dbHelper = dbHelper;
+
         user.setEmail(email);
 
         body = new RegisterBody();

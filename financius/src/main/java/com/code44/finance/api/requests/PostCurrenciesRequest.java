@@ -1,20 +1,25 @@
 package com.code44.finance.api.requests;
 
+import com.code44.finance.api.GcmRegistration;
 import com.code44.finance.backend.endpoint.currencies.Currencies;
 import com.code44.finance.backend.endpoint.currencies.model.CurrenciesBody;
 import com.code44.finance.backend.endpoint.currencies.model.CurrencyEntity;
+import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.model.Currency;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class PostCurrenciesRequest extends PostRequest<CurrenciesBody> {
+    private final Currencies currenciesService;
     private final List<Currency> currencies;
-    @Inject Currencies currenciesService;
 
-    public PostCurrenciesRequest(List<Currency> currencies) {
+    public PostCurrenciesRequest(GcmRegistration gcmRegistration, Currencies currenciesService, List<Currency> currencies) {
+        super(null, gcmRegistration);
+        Preconditions.checkNotNull(currenciesService, "Currencies service cannot be null.");
+        Preconditions.checkNotNull(currencies, "Currencies list cannot be null.");
+
+        this.currenciesService = currenciesService;
         this.currencies = currencies;
     }
 
@@ -28,6 +33,10 @@ public class PostCurrenciesRequest extends PostRequest<CurrenciesBody> {
             serverCurrencies.add(currency.toEntity());
         }
         body.setCurrencies(serverCurrencies);
+    }
+
+    @Override protected boolean isPostDataEmpty(CurrenciesBody body) {
+        return body.getCurrencies().size() == 0;
     }
 
     @Override protected void performRequest(CurrenciesBody body) throws Exception {

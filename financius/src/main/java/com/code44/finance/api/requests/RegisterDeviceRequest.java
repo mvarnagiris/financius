@@ -7,16 +7,27 @@ import com.code44.finance.api.GcmRegistration;
 import com.code44.finance.api.Request;
 import com.code44.finance.backend.endpoint.users.Users;
 import com.code44.finance.backend.endpoint.users.model.RegisterDeviceBody;
+import com.code44.finance.common.utils.Preconditions;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-
-import javax.inject.Inject;
 
 public class RegisterDeviceRequest extends Request {
     private static final String PROJECT_NUMBER = "1007413878843";
 
-    @Inject Context context;
-    @Inject Users usersService;
-    @Inject GcmRegistration gcmRegistration;
+    private final Context context;
+    private final Users usersService;
+    private final GcmRegistration gcmRegistration;
+
+    public RegisterDeviceRequest(Context context, Users usersService, GcmRegistration gcmRegistration) {
+        super(null);
+
+        Preconditions.checkNotNull(context, "Context cannot be null.");
+        Preconditions.checkNotNull(usersService, "Users cannot be null.");
+        Preconditions.checkNotNull(gcmRegistration, "GCM Registration cannot be null.");
+
+        this.context = context;
+        this.usersService = usersService;
+        this.gcmRegistration = gcmRegistration;
+    }
 
     @Override
     protected void performRequest() throws Exception {

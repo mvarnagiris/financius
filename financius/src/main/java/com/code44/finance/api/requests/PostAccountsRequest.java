@@ -1,20 +1,25 @@
 package com.code44.finance.api.requests;
 
+import com.code44.finance.api.GcmRegistration;
 import com.code44.finance.backend.endpoint.accounts.Accounts;
 import com.code44.finance.backend.endpoint.accounts.model.AccountEntity;
 import com.code44.finance.backend.endpoint.accounts.model.AccountsBody;
+import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.model.Account;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class PostAccountsRequest extends PostRequest<AccountsBody> {
+    private final Accounts accountsService;
     private final List<Account> accounts;
-    @Inject Accounts accountsService;
 
-    public PostAccountsRequest(List<Account> accounts) {
+    public PostAccountsRequest(GcmRegistration gcmRegistration, Accounts accountsService, List<Account> accounts) {
+        super(null, gcmRegistration);
+        Preconditions.checkNotNull(accountsService, "Accounts service cannot be null.");
+        Preconditions.checkNotNull(accounts, "Accounts list cannot be null.");
+
+        this.accountsService = accountsService;
         this.accounts = accounts;
     }
 
@@ -28,6 +33,10 @@ public class PostAccountsRequest extends PostRequest<AccountsBody> {
             accountEntities.add(account.toEntity());
         }
         body.setAccounts(accountEntities);
+    }
+
+    @Override protected boolean isPostDataEmpty(AccountsBody body) {
+        return body.getAccounts().size() == 0;
     }
 
     @Override protected void performRequest(AccountsBody body) throws Exception {
