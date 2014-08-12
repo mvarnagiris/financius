@@ -3,16 +3,17 @@
     style="@style/ListItem"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    tools:ignore="UseCompoundDrawables">
 
     <ImageView
         android:id="@+id/color_IV"
-        android:layout_width="@dimen/category_color_circle_size"
-        android:layout_height="@dimen/category_color_circle_size"
+        android:layout_width="@dimen/keyline_between"
+        android:layout_height="@dimen/keyline_between"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="@dimen/keyline"
         android:src="@drawable/circle"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription,RtlHardcoded" />
 
     <TextView
         android:id="@+id/title_TV"

@@ -1,68 +1,56 @@
 package com.code44.finance.ui.transactions;
 
-import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
-import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.code44.finance.R;
+import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.adapters.TransactionsAdapter;
+import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.db.model.BaseModel;
+import com.code44.finance.data.db.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
-import com.code44.finance.ui.BaseFragment;
+import com.code44.finance.ui.ModelListFragment;
 
-public class TransactionsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final int LOADER_TRANSACTIONS = 1;
-
-    private TransactionsAdapter adapter;
-
+public class TransactionsFragment extends ModelListFragment {
     public static TransactionsFragment newInstance() {
-        return new TransactionsFragment();
+        final Bundle args = makeArgs(Mode.VIEW);
+
+        final TransactionsFragment fragment = new TransactionsFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_transactions, container, false);
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        // Get views
-        final ListView list_V = (ListView) view.findViewById(R.id.list_V);
-
-        // Setup
-        adapter = new TransactionsAdapter(getActivity());
-        list_V.setAdapter(adapter);
+    @Override protected BaseModelsAdapter createAdapter(Context context) {
+        return new TransactionsAdapter(context);
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        // Loader
-        getLoaderManager().initLoader(LOADER_TRANSACTIONS, null, this);
+    @Override protected CursorLoader getModelsCursorLoader(Context context) {
+        return Tables.Transactions.getQuery().asCursorLoader(context, TransactionsProvider.uriTransactions());
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        final Uri uri = TransactionsProvider.uriTransactions();
-        return new CursorLoader(getActivity(), uri, null, null, null, null);
+    @Override protected BaseModel modelFrom(Cursor cursor) {
+        return Transaction.from(cursor);
     }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        adapter.swapCursor(data);
+    @Override protected void onModelClick(Context context, View view, int position, String modelServerId, BaseModel model) {
+        // TODO Open TransactionActivity
     }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        adapter.swapCursor(null);
+    @Override protected void startModelEdit(Context context, String modelServerId) {
+        // TODO Open TransactionEditActivity
+    }
+
+    @Override public String getTitle() {
+        return getString(R.string.transactions);
     }
 }

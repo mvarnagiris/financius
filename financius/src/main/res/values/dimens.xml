@@ -2,6 +2,7 @@
 
     <dimen name="keyline">16dp</dimen>
     <dimen name="keyline_content">72dp</dimen>
+    <dimen name="keyline_between">40dp</dimen>
 
     <dimen name="margin_edit_container">0dp</dimen>
     <dimen name="margin_edit_content">16dp</dimen>
@@ -46,7 +47,6 @@
     <dimen name="btn_fab_half">28dp</dimen>
     <dimen name="btn_fab_half_negative">-28dp</dimen>
 
-    <dimen name="category_color_circle_size">40dp</dimen>
     <dimen name="account_balance_graph_height">128dp</dimen>
     <dimen name="progress_bar_height">3dp</dimen>
 

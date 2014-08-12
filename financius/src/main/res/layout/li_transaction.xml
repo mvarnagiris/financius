@@ -1,11 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     style="@style/ListItem"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/amount_TV"
+    <FrameLayout
+        android:layout_width="@dimen/keyline_between"
+        android:layout_height="@dimen/keyline_between"
+        android:layout_marginRight="@dimen/keyline"
+        tools:ignore="RtlHardcoded">
+
+        <ImageView
+            android:id="@+id/color_IV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/circle"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/day_TV"
+            style="@style/Text.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/text_primary_inverse"
+            tools:text="16"
+            tools:textColor="@color/text_primary" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/category_TV"
+            style="@style/Text.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Leisure" />
+
+        <TextView
+            android:id="@+id/note_TV"
+            style="@style/Text.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Linkin Park concert" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/amount_TV"
+            style="@style/Text.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            tools:ignore="RtlHardcoded"
+            tools:text="58.99 $" />
+
+        <TextView
+            android:id="@+id/account_TV"
+            style="@style/Text.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            tools:ignore="RtlHardcoded"
+            tools:text="Cash" />
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -264,6 +264,19 @@ public final class Tables {
             return makeCreateScript(TABLE_NAME, ID, SERVER_ID, MODEL_STATE, SYNC_STATE, ACCOUNT_FROM_ID,
                     ACCOUNT_TO_ID, CATEGORY_ID, DATE, AMOUNT, EXCHANGE_RATE, NOTE, STATE);
         }
+
+        public static Query getQuery() {
+            return Query.create()
+                    .projectionId(Transactions.ID)
+                    .projection(Transactions.PROJECTION)
+                    .projection(Accounts.PROJECTION_ACCOUNT_FROM)
+                    .projection(Accounts.PROJECTION_ACCOUNT_TO)
+                    .projection(Categories.PROJECTION)
+                    .projection(Currencies.PROJECTION_ACCOUNT_FROM)
+                    .projection(Currencies.PROJECTION_ACCOUNT_TO)
+                    .selection(Transactions.MODEL_STATE + "=?", ModelState.NORMAL.asString())
+                    .sortOrder(Transactions.DATE + " desc");
+        }
     }
 
     public static class TransactionTags {
