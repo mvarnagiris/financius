@@ -1,8 +1,9 @@
 package com.code44.finance.ui;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.NavigationAdapter;
@@ -68,11 +69,13 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
     }
 
     private void loadFragment(BaseFragment fragment) {
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.content_V, fragment, FRAGMENT_CONTENT)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
+        final FragmentManager fm = getFragmentManager();
+        final FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.content_V, fragment, FRAGMENT_CONTENT);
+        if (fm.findFragmentByTag(FRAGMENT_CONTENT) != null) {
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        }
+        ft.commit();
     }
 
     private void onFragmentLoaded(BaseFragment fragment) {
