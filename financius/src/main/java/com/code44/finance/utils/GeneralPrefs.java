@@ -9,23 +9,26 @@ public class GeneralPrefs extends Prefs {
 
     private static GeneralPrefs singleton;
 
+    private final EventBus eventBus;
+
     private boolean isAutoUpdateCurrencies;
     private long autoUpdateCurrenciesTimestamp;
 
-    public GeneralPrefs(Context context) {
+    public GeneralPrefs(Context context, EventBus eventBus) {
         super(context);
+        this.eventBus = eventBus;
         refresh();
     }
 
     public static synchronized GeneralPrefs get() {
         if (singleton == null) {
-            singleton = new GeneralPrefs(App.getContext());
+            singleton = new GeneralPrefs(App.getContext(), EventBus.get());
         }
         return singleton;
     }
 
-    public static void notifyGeneralPrefsChanged() {
-        // TODO EventBus.getDefault().post(new GeneralPrefsChanged());
+    public void notifyChanged() {
+        eventBus.post(this);
     }
 
     public void refresh() {
@@ -56,8 +59,7 @@ public class GeneralPrefs extends Prefs {
         setLong("autoUpdateCurrenciesTimestamp", autoUpdateCurrenciesTimestamp);
     }
 
-    @Override
-    protected String getPrefix() {
+    @Override protected String getPrefix() {
         return PREFIX;
     }
 }

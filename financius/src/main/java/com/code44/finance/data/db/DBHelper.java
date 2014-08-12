@@ -38,6 +38,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(Tables.Categories.createScript());
         db.execSQL(Tables.Tags.createScript());
         db.execSQL(Tables.Transactions.createScript());
+        db.execSQL(Tables.TransactionTags.createScript());
 
         // Create indexes
         createIndex(db, Tables.Currencies.SERVER_ID);

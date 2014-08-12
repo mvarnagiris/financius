@@ -8,6 +8,9 @@ import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.model.SyncState;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public final class Tables {
     public static final String SUFFIX_SERVER_ID = "server_id";
     public static final String SUFFIX_MODEL_STATE = "model_state";
@@ -45,6 +48,30 @@ public final class Tables {
                 sb.append(columns[i].getCreateScript());
             }
         }
+
+        sb.append(");");
+
+        return sb.toString();
+    }
+
+    private static String makeRelationshipCreateScript(String table, Column firstIdColumn, Column secondIdColumn, Column... columns) {
+        final StringBuilder sb = new StringBuilder("create table ");
+        sb.append(table);
+        sb.append(" (");
+
+        List<Column> allColumns = new ArrayList<>();
+        allColumns.add(firstIdColumn);
+        allColumns.add(secondIdColumn);
+        java.util.Collections.addAll(allColumns, columns);
+
+        for (int i = 0, size = allColumns.size(); i < size; i++) {
+            if (i > 0) {
+                sb.append(", ");
+            }
+            sb.append(allColumns.get(i).getCreateScript());
+        }
+
+        sb.append(",").append(" primary key (").append(firstIdColumn.getName()).append(", ").append(secondIdColumn.getName()).append(")");
 
         sb.append(");");
 
@@ -236,6 +263,20 @@ public final class Tables {
         public static String createScript() {
             return makeCreateScript(TABLE_NAME, ID, SERVER_ID, MODEL_STATE, SYNC_STATE, ACCOUNT_FROM_ID,
                     ACCOUNT_TO_ID, CATEGORY_ID, DATE, AMOUNT, EXCHANGE_RATE, NOTE, STATE);
+        }
+    }
+
+    public static class TransactionTags {
+        public static final String TABLE_NAME = "transaction_tags";
+
+        public static final Column TRANSACTION_ID = new Column(TABLE_NAME, "transaction_id", Column.DataType.INTEGER);
+        public static final Column TAG_ID = new Column(TABLE_NAME, "tag_id", Column.DataType.INTEGER);
+
+        private TransactionTags() {
+        }
+
+        public static String createScript() {
+            return makeRelationshipCreateScript(TABLE_NAME, TRANSACTION_ID, TAG_ID);
         }
     }
 }
