@@ -7,11 +7,11 @@
 
     <TextView
         android:id="@+id/title_TV"
+        style="@style/Text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textAppearance="@style/Text.Body2"
-        tools:text="Cash, EUR" />
+        tools:text="Cash, EUR"/>
 
     <Button
         android:id="@+id/currency_B"
@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_normal"
-        tools:text="Change to GBP" />
+        tools:ignore="RtlHardcoded"
+        tools:text="Change to GBP"/>
 
 </LinearLayout>

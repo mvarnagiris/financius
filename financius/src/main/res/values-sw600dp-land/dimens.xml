@@ -1,6 +1,0 @@
-<resources>
-
-    <dimen name="margin_edit_container">180dp</dimen>
-    <dimen name="margin_edit_content">32dp</dimen>
-
-</resources>

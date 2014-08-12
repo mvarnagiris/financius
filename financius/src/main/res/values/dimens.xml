@@ -46,7 +46,7 @@
     <dimen name="btn_fab_half">28dp</dimen>
     <dimen name="btn_fab_half_negative">-28dp</dimen>
 
-    <dimen name="category_color_circle_size">32dp</dimen>
+    <dimen name="category_color_circle_size">40dp</dimen>
     <dimen name="account_balance_graph_height">128dp</dimen>
     <dimen name="progress_bar_height">3dp</dimen>
 

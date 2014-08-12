@@ -172,11 +172,11 @@ public final class Tables {
             final Query query = Query.create()
                     .projectionId(Tables.Categories.ID)
                     .projection(Tables.Categories.PROJECTION)
-                    .selection(" and " + Tables.Categories.MODEL_STATE + "=?", ModelState.NORMAL.asString())
+                    .selection(Tables.Categories.MODEL_STATE + "=?", ModelState.NORMAL.asString())
                     .sortOrder(Categories.SORT_ORDER.getName());
 
             if (type != null) {
-                query.selection(Tables.Categories.TYPE + "=?", String.valueOf(type.asInt()));
+                query.selection(" and " + Tables.Categories.TYPE + "=?", String.valueOf(type.asInt()));
             }
 
             return query;

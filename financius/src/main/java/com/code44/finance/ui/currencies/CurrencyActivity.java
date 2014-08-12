@@ -3,6 +3,7 @@ package com.code44.finance.ui.currencies;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 
 import com.code44.finance.R;
 import com.code44.finance.ui.ModelActivity;
@@ -18,6 +19,13 @@ public class CurrencyActivity extends ModelActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         toolbarHelper.setElevation(0);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        menu.findItem(R.id.action_settings).setVisible(false);
+        return true;
     }
 
     @Override
