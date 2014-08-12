@@ -2,6 +2,7 @@ package com.code44.finance.ui.accounts;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
 import com.code44.finance.R;
 import com.code44.finance.ui.ModelActivity;
@@ -13,13 +14,16 @@ public class AccountActivity extends ModelActivity {
         start(context, intent);
     }
 
-    @Override
-    protected int getActionBarTitleResId() {
+    @Override protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        toolbarHelper.setElevation(0);
+    }
+
+    @Override protected int getActionBarTitleResId() {
         return R.string.account;
     }
 
-    @Override
-    protected ModelFragment createModelFragment(String modelServerId) {
+    @Override protected ModelFragment createModelFragment(String modelServerId) {
         return AccountFragment.newInstance(modelServerId);
     }
 }

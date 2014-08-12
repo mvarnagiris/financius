@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    style="@style/ScrollView"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ScrollView">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,9 +17,9 @@
 
             <TextView
                 android:id="@+id/title_TV"
+                style="@style/Text.Display2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/Text.Display2"
                 android:textColor="@color/text_primary_inverse"
                 tools:text="Lloyds TSB" />
 
@@ -50,17 +49,12 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-
-        </LinearLayout>
-
         <TextView
             android:id="@+id/note_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/keyline"
+            android:layout_marginRight="@dimen/keyline"
             android:layout_marginTop="@dimen/space_normal"
             android:fontFamily="@string/font_light"
             tools:ignore="UnusedAttribute"
@@ -70,7 +64,8 @@
             android:id="@+id/graph_LGV"
             android:layout_width="match_parent"
             android:layout_height="@dimen/account_balance_graph_height"
-            android:layout_marginTop="@dimen/space_large" />
+            android:layout_marginTop="@dimen/space_large"
+            android:visibility="gone" />
 
     </LinearLayout>
 </ScrollView>
