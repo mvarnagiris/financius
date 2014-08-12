@@ -17,13 +17,16 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.adapters.CurrencyAccountsAdapter;
 import com.code44.finance.api.currencies.CurrenciesApi;
+import com.code44.finance.api.currencies.ExchangeRateRequest;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelFragment;
+import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.views.FabImageButton;
+import com.squareup.otto.Subscribe;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
@@ -31,6 +34,7 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
     private static final int LOADER_ACCOUNTS = 1;
 
     private final CurrenciesApi currenciesApi = CurrenciesApi.get();
+    private final EventBus eventBus = EventBus.get();
 
     private TextView code_TV;
     private TextView format_TV;
@@ -47,13 +51,11 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
         return fragment;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_currency, container, false);
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
@@ -70,22 +72,29 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
         refreshRate_IB.setOnClickListener(this);
     }
 
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
+    @Override public void onResume() {
+        super.onResume();
+        eventBus.register(this);
+    }
+
+    @Override public void onPause() {
+        super.onPause();
+        eventBus.unregister(this);
+    }
+
+    @Override public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.action_delete).setVisible(model != null && !model.isDefault());
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_ACCOUNTS) {
             return Tables.Accounts.getQuery().asCursorLoader(getActivity(), AccountsProvider.uriAccounts());
         }
         return super.onCreateLoader(id, args);
     }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == LOADER_ACCOUNTS) {
             adapter.swapCursor(data);
             return;
@@ -93,8 +102,7 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
         super.onLoadFinished(loader, data);
     }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    @Override public void onLoaderReset(Loader<Cursor> loader) {
         if (loader.getId() == LOADER_ACCOUNTS) {
             adapter.swapCursor(null);
             return;
@@ -102,18 +110,15 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
         super.onLoaderReset(loader);
     }
 
-    @Override
-    protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
+    @Override protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
         return Tables.Currencies.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrency(modelServerId));
     }
 
-    @Override
-    protected Currency getModelFrom(Cursor cursor) {
+    @Override protected Currency getModelFrom(Cursor cursor) {
         return Currency.from(cursor);
     }
 
-    @Override
-    protected void onModelLoaded(Currency currency) {
+    @Override protected void onModelLoaded(Currency currency) {
         adapter.setCurrency(currency);
         code_TV.setText(currency.getCode());
         if (currency.isDefault()) {
@@ -130,35 +135,42 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
         getLoaderManager().restartLoader(LOADER_ACCOUNTS, null, this);
     }
 
-    @Override
-    protected Uri getDeleteUri() {
+    @Override protected Uri getDeleteUri() {
         return CurrenciesProvider.uriCurrencies();
     }
 
-    @Override
-    protected Pair<String, String[]> getDeleteSelection() {
+    @Override protected Pair<String, String[]> getDeleteSelection() {
         return Pair.create(Tables.Currencies.SERVER_ID + "=?", new String[]{String.valueOf(modelServerId)});
     }
 
-    @Override
-    protected void startModelEdit(Context context, String modelServerId) {
+    @Override protected void startModelEdit(Context context, String modelServerId) {
         CurrencyEditActivity.start(context, modelServerId);
     }
 
-    private void updateRefreshView() {
-        // TODO loading_SPB.setVisibility(EventBus.getDefault().getStickyEvent(CurrencyRequest.CurrencyRequestEvent.class) != null ? View.VISIBLE : View.INVISIBLE);
-    }
-
-    private void refreshRate() {
-        currenciesApi.updateExchangeRate(model.getCode());
-    }
-
-    @Override
-    public void onClick(View v) {
+    @Override public void onClick(View v) {
         switch (v.getId()) {
             case R.id.refreshRate_IB:
                 refreshRate();
                 break;
         }
+    }
+
+    @Subscribe public void onRefreshFinished(ExchangeRateRequest request) {
+        if (model.getCode().equals(request.getFromCode())) {
+            loading_SPB.post(new Runnable() {
+                @Override public void run() {
+                    setRefreshing(false);
+                }
+            });
+        }
+    }
+
+    private void refreshRate() {
+        currenciesApi.updateExchangeRate(model.getCode());
+        setRefreshing(true);
+    }
+
+    private void setRefreshing(boolean refreshing) {
+        loading_SPB.setVisibility(refreshing ? View.VISIBLE : View.GONE);
     }
 }

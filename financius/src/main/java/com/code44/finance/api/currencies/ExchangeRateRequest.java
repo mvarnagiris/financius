@@ -42,8 +42,7 @@ public class ExchangeRateRequest extends Request {
         this.storeData = storeData;
     }
 
-    @Override
-    protected void performRequest() throws Exception {
+    @Override protected void performRequest() throws Exception {
         final Response rawResponse = requestService.getExchangeRate(fromCode, toCode);
         final JsonObject json = IOUtils.readJsonObject(rawResponse);
         final double exchangeRate = json.get("rate").getAsDouble();
@@ -70,8 +69,7 @@ public class ExchangeRateRequest extends Request {
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ExchangeRateRequest)) return false;
 
@@ -80,11 +78,14 @@ public class ExchangeRateRequest extends Request {
         return fromCode.equals(that.fromCode) && toCode.equals(that.toCode);
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         int result = fromCode.hashCode();
         result = 31 * result + toCode.hashCode();
         return result;
+    }
+
+    public String getFromCode() {
+        return fromCode;
     }
 
     public Currency getCurrency() {
