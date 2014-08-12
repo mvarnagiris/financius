@@ -36,7 +36,7 @@ public class PostAccountsRequest extends PostRequest<AccountsBody> {
     }
 
     @Override protected boolean isPostDataEmpty(AccountsBody body) {
-        return body.getAccounts().size() == 0;
+        return body.getAccounts().isEmpty();
     }
 
     @Override protected void performRequest(AccountsBody body) throws Exception {

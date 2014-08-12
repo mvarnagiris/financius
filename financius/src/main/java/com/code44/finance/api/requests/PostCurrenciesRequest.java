@@ -36,7 +36,7 @@ public class PostCurrenciesRequest extends PostRequest<CurrenciesBody> {
     }
 
     @Override protected boolean isPostDataEmpty(CurrenciesBody body) {
-        return body.getCurrencies().size() == 0;
+        return body.getCurrencies().isEmpty();
     }
 
     @Override protected void performRequest(CurrenciesBody body) throws Exception {

@@ -12,6 +12,7 @@ import com.code44.finance.api.User;
 import com.code44.finance.backend.endpoint.accounts.Accounts;
 import com.code44.finance.backend.endpoint.categories.Categories;
 import com.code44.finance.backend.endpoint.currencies.Currencies;
+import com.code44.finance.backend.endpoint.tags.Tags;
 import com.code44.finance.backend.endpoint.transactions.Transactions;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.DataStore;
@@ -23,10 +24,12 @@ import com.code44.finance.data.db.model.Account;
 import com.code44.finance.data.db.model.Category;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.db.model.SyncState;
+import com.code44.finance.data.db.model.Tag;
 import com.code44.finance.data.db.model.Transaction;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
+import com.code44.finance.data.providers.TagsProvider;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.IOUtils;
@@ -41,10 +44,11 @@ public class SyncRequest extends Request {
     private final GcmRegistration gcmRegistration;
     private final Currencies currenciesService;
     private final Categories categoriesService;
+    private final Tags tagsService;
     private final Accounts accountsService;
     private final Transactions transactionsService;
 
-    public SyncRequest(EventBus eventBus, Context context, DBHelper dbHelper, User user, GcmRegistration gcmRegistration, Currencies currenciesService, Categories categoriesService, Accounts accountsService, Transactions transactionsService) {
+    public SyncRequest(EventBus eventBus, Context context, DBHelper dbHelper, User user, GcmRegistration gcmRegistration, Currencies currenciesService, Categories categoriesService, Tags tagsService, Accounts accountsService, Transactions transactionsService) {
         super(eventBus);
         Preconditions.checkNotNull(eventBus, "EventBus cannot be null.");
         Preconditions.checkNotNull(context, "Context cannot be null.");
@@ -53,6 +57,7 @@ public class SyncRequest extends Request {
         Preconditions.checkNotNull(gcmRegistration, "Gcm registration cannot be null.");
         Preconditions.checkNotNull(currenciesService, "Currencies service cannot be null.");
         Preconditions.checkNotNull(categoriesService, "Categories service cannot be null.");
+        Preconditions.checkNotNull(tagsService, "Tags service cannot be null.");
         Preconditions.checkNotNull(accountsService, "Accounts service cannot be null.");
         Preconditions.checkNotNull(transactionsService, "Transactions service cannot be null.");
 
@@ -62,6 +67,7 @@ public class SyncRequest extends Request {
         this.gcmRegistration = gcmRegistration;
         this.currenciesService = currenciesService;
         this.categoriesService = categoriesService;
+        this.tagsService = tagsService;
         this.accountsService = accountsService;
         this.transactionsService = transactionsService;
     }
@@ -75,6 +81,9 @@ public class SyncRequest extends Request {
 
         pushCategories(database);
         getCategories();
+
+        pushTags(database);
+        getTags();
 
         pushAccounts(database);
         getAccounts();
@@ -125,6 +134,28 @@ public class SyncRequest extends Request {
 
     private void getCategories() throws Exception {
         new GetCategoriesRequest(context, user, categoriesService).run();
+    }
+
+    private void pushTags(SQLiteDatabase database) throws Exception {
+        markInProgress(database, Tables.Tags.SYNC_STATE);
+
+        final Cursor cursor = Query.create()
+                .projectionId(Tables.Tags.ID)
+                .projection(Tables.Tags.PROJECTION)
+                .selection(Tables.Tags.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
+                .from(App.getContext(), TagsProvider.uriTags())
+                .execute();
+        final List<Tag> tags = new ArrayList<>();
+        do {
+            tags.add(Tag.from(cursor));
+        } while (cursor.moveToNext());
+        IOUtils.closeQuietly(cursor);
+
+        new PostTagsRequest(gcmRegistration, tagsService, tags).run();
+    }
+
+    private void getTags() throws Exception {
+        new GetTagsRequest(context, user, tagsService).run();
     }
 
     private void pushAccounts(SQLiteDatabase database) throws Exception {

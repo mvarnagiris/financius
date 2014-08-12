@@ -10,6 +10,7 @@ import com.code44.finance.api.requests.SyncRequest;
 import com.code44.finance.backend.endpoint.accounts.Accounts;
 import com.code44.finance.backend.endpoint.categories.Categories;
 import com.code44.finance.backend.endpoint.currencies.Currencies;
+import com.code44.finance.backend.endpoint.tags.Tags;
 import com.code44.finance.backend.endpoint.transactions.Transactions;
 import com.code44.finance.backend.endpoint.users.Users;
 import com.code44.finance.common.Constants;
@@ -86,7 +87,7 @@ public final class Api {
     }
 
     public void sync() {
-        final SyncRequest request = new SyncRequest(eventBus, context, dbHelper, user, gcmRegistration, getCurrenciesService(), getCategoriesService(), getAccountsService(), getTransactionsService());
+        final SyncRequest request = new SyncRequest(eventBus, context, dbHelper, user, gcmRegistration, getCurrenciesService(), getCategoriesService(), getTagsService(), getAccountsService(), getTransactionsService());
         execute(request);
     }
 
@@ -118,6 +119,12 @@ public final class Api {
         return builder.build();
     }
 
+    private Tags getTagsService() {
+        final Tags.Builder builder = new Tags.Builder(httpTransport, jsonFactory, getHttpRequestInitializer());
+        prepareRootUrl(builder);
+        return builder.build();
+    }
+
     private Transactions getTransactionsService() {
         final Transactions.Builder builder = new Transactions.Builder(httpTransport, jsonFactory, getHttpRequestInitializer());
         prepareRootUrl(builder);
@@ -125,9 +132,7 @@ public final class Api {
     }
 
     private HttpRequestInitializer getHttpRequestInitializer() {
-        final GoogleAccountCredential credential = GoogleAccountCredential.usingAudience(context, "server:client_id:" + Constants.ANDROID_AUDIENCE);
-        credential.setSelectedAccountName(user.getEmail());
-        return credential;
+        return httpRequestInitializerFactory.newHttpRequestInitializer(context, user);
     }
 
     private void prepareRootUrl(AbstractGoogleJsonClient.Builder builder) {

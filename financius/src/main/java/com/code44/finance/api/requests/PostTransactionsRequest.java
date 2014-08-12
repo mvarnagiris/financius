@@ -36,7 +36,7 @@ public class PostTransactionsRequest extends PostRequest<TransactionsBody> {
     }
 
     @Override protected boolean isPostDataEmpty(TransactionsBody body) {
-        return body.getTransactions().size() == 0;
+        return body.getTransactions().isEmpty();
     }
 
     @Override protected void performRequest(TransactionsBody body) throws Exception {

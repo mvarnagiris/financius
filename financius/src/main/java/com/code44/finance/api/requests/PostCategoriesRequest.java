@@ -36,7 +36,7 @@ public class PostCategoriesRequest extends PostRequest<CategoriesBody> {
     }
 
     @Override protected boolean isPostDataEmpty(CategoriesBody body) {
-        return body.getCategories().size() == 0;
+        return body.getCategories().isEmpty();
     }
 
     @Override protected void performRequest(CategoriesBody body) throws Exception {

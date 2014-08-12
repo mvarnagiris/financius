@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.text.TextUtils;
 
+import com.code44.finance.backend.endpoint.tags.model.TagEntity;
+import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 
@@ -38,18 +40,14 @@ public class Tag extends BaseModel {
         return tag;
     }
 
-// TODO   public static Tag from(CategoryEntity entity) {
-//        final Tag category = new Tag();
-//        category.setServerId(entity.getId());
-//        category.setModelState(ModelState.valueOf(entity.getModelState()));
-//        category.setSyncState(SyncState.SYNCED);
-//        category.setTitle(entity.getTitle());
-//        category.setColor(entity.getColor());
-//        category.setCategoryType(CategoryType.valueOf(entity.getCategoryType()));
-//        category.setCategoryOwner(CategoryOwner.valueOf(entity.getCategoryOwner()));
-//        category.setSortOrder(entity.getSortOrder());
-//        return category;
-//    }
+    public static Tag from(TagEntity entity) {
+        final Tag tag = new Tag();
+        tag.setServerId(entity.getId());
+        tag.setModelState(ModelState.valueOf(entity.getModelState()));
+        tag.setSyncState(SyncState.SYNCED);
+        tag.setTitle(entity.getTitle());
+        return tag;
+    }
 
     @Override protected Column getIdColumn() {
         return Tables.Tags.ID;
@@ -97,17 +95,13 @@ public class Tag extends BaseModel {
         }
     }
 
-// TODO   public CategoryEntity toEntity() {
-//        final CategoryEntity entity = new CategoryEntity();
-//        entity.setId(getServerId());
-//        entity.setModelState(getModelState().toString());
-//        entity.setTitle(getTitle());
-//        entity.setColor(getColor());
-//        entity.setCategoryType(getCategoryType().toString());
-//        entity.setCategoryOwner(getCategoryOwner().toString());
-//        entity.setSortOrder(getSortOrder());
-//        return entity;
-//    }
+    public TagEntity toEntity() {
+        final TagEntity entity = new TagEntity();
+        entity.setId(getServerId());
+        entity.setModelState(getModelState().toString());
+        entity.setTitle(getTitle());
+        return entity;
+    }
 
     public String getTitle() {
         return title;
