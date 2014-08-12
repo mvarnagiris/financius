@@ -18,18 +18,15 @@ import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.IOUtils;
 
-import javax.inject.Inject;
-
 public class StartupService extends IntentService {
-    @Inject User user;
-    @Inject GcmRegistration gcmRegistration;
-    @Inject Api api;
-    @Inject CurrenciesApi currenciesApi;
-    @Inject GeneralPrefs generalPrefs;
+    private final User user = User.get();
+    private final GcmRegistration gcmRegistration = GcmRegistration.get();
+    private final Api api = Api.get();
+    private final CurrenciesApi currenciesApi = CurrenciesApi.get();
+    private final GeneralPrefs generalPrefs = GeneralPrefs.get();
 
     public StartupService() {
         super(StartupService.class.getSimpleName());
-        App.getInjector().inject(this);
     }
 
     public static void start(Context context) {

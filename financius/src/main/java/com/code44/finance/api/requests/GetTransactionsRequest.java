@@ -1,5 +1,6 @@
 package com.code44.finance.api.requests;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
@@ -28,8 +29,8 @@ public class GetTransactionsRequest extends GetRequest<TransactionEntity> {
     private final Map<String, Account> accounts;
     private final Map<String, Category> categories;
 
-    public GetTransactionsRequest(User user, Transactions transactions) {
-        super(null, user);
+    public GetTransactionsRequest(Context context, User user, Transactions transactions) {
+        super(null, context, user);
         Preconditions.checkNotNull(transactions, "Transactions cannot be null.");
 
         this.transactionsService = transactions;

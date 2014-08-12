@@ -91,7 +91,7 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
         }
 
         if (canSave) {
-            DataStore.insert().values(model.asContentValues()).into(AccountsProvider.uriAccounts());
+            DataStore.insert().values(model.asContentValues()).into(context, AccountsProvider.uriAccounts());
         }
 
         return canSave;

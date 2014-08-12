@@ -1,15 +1,13 @@
 package com.code44.finance.utils;
 
-import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 
+import com.code44.finance.App;
 import com.code44.finance.R;
 
 import java.text.NumberFormat;
 import java.util.LinkedList;
-
-import javax.inject.Inject;
 
 import bsh.Interpreter;
 
@@ -23,8 +21,6 @@ public class Calculator {
     private final Interpreter interpreter;
     private final LinkedList<Part> parts;
 
-    @Inject Context context;
-
     private Part currentPart;
 
     public Calculator() {
@@ -34,19 +30,19 @@ public class Calculator {
     }
 
     public void plus() {
-        addOperator(PLUS, context.getString(R.string.plus));
+        addOperator(PLUS, App.getContext().getString(R.string.plus));
     }
 
     public void minus() {
-        addOperator(MINUS, context.getString(R.string.minus));
+        addOperator(MINUS, App.getContext().getString(R.string.minus));
     }
 
     public void multiply() {
-        addOperator(MULTIPLY, context.getString(R.string.multiply));
+        addOperator(MULTIPLY, App.getContext().getString(R.string.multiply));
     }
 
     public void divide() {
-        addOperator(DIVIDE, context.getString(R.string.divide));
+        addOperator(DIVIDE, App.getContext().getString(R.string.divide));
     }
 
     public void decimal() {

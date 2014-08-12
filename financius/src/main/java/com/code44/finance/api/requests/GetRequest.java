@@ -1,6 +1,7 @@
 package com.code44.finance.api.requests;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.net.Uri;
 
 import com.code44.finance.api.Request;
@@ -15,13 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GetRequest<T extends GenericJson> extends Request {
+    private final Context context;
     private final User user;
 
-    public GetRequest(EventBus eventBus, User user) {
+    public GetRequest(EventBus eventBus, Context context, User user) {
         super(eventBus);
-
+        Preconditions.checkNotNull(context, "Context cannot be null.");
         Preconditions.checkNotNull(user, "User cannot be null.");
 
+        this.context = context;
         this.user = user;
     }
 
@@ -40,7 +43,7 @@ public abstract class GetRequest<T extends GenericJson> extends Request {
             }
         }
 
-        DataStore.bulkInsert().values(valuesList).into(getSaveUri());
+        DataStore.bulkInsert().values(valuesList).into(context, getSaveUri());
         saveNewTimestamp(user, timestamp);
     }
 

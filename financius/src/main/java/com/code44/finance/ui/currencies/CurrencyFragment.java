@@ -25,13 +25,13 @@ import com.code44.finance.ui.ModelFragment;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.views.FabImageButton;
 
-import javax.inject.Inject;
-
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 public class CurrencyFragment extends ModelFragment<Currency> implements View.OnClickListener {
     private static final int LOADER_ACCOUNTS = 1;
-    @Inject CurrenciesApi currenciesApi;
+
+    private final CurrenciesApi currenciesApi = CurrenciesApi.get();
+
     private TextView code_TV;
     private TextView format_TV;
     private TextView exchangeRate_TV;

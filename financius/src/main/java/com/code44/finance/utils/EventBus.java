@@ -7,7 +7,7 @@ public class EventBus extends Bus {
     private static EventBus singleton;
 
     public EventBus() {
-        super(ThreadEnforcer.MAIN);
+        super(ThreadEnforcer.ANY);
     }
 
     public static synchronized EventBus get() {

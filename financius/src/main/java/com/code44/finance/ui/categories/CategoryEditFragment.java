@@ -77,7 +77,7 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
         }
 
         if (canSave) {
-            DataStore.insert().model(model).into(CategoriesProvider.uriCategories());
+            DataStore.insert().model(model).into(context, CategoriesProvider.uriCategories());
         }
 
         return canSave;

@@ -1,6 +1,7 @@
 package com.code44.finance.api.requests;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SyncRequest extends Request {
+    private final Context context;
     private final DBHelper dbHelper;
     private final User user;
     private final GcmRegistration gcmRegistration;
@@ -42,9 +44,10 @@ public class SyncRequest extends Request {
     private final Accounts accountsService;
     private final Transactions transactionsService;
 
-    public SyncRequest(EventBus eventBus, DBHelper dbHelper, User user, GcmRegistration gcmRegistration, Currencies currenciesService, Categories categoriesService, Accounts accountsService, Transactions transactionsService) {
+    public SyncRequest(EventBus eventBus, Context context, DBHelper dbHelper, User user, GcmRegistration gcmRegistration, Currencies currenciesService, Categories categoriesService, Accounts accountsService, Transactions transactionsService) {
         super(eventBus);
         Preconditions.checkNotNull(eventBus, "EventBus cannot be null.");
+        Preconditions.checkNotNull(context, "Context cannot be null.");
         Preconditions.checkNotNull(dbHelper, "DBHelper cannot be null.");
         Preconditions.checkNotNull(user, "User cannot be null.");
         Preconditions.checkNotNull(gcmRegistration, "Gcm registration cannot be null.");
@@ -53,6 +56,7 @@ public class SyncRequest extends Request {
         Preconditions.checkNotNull(accountsService, "Accounts service cannot be null.");
         Preconditions.checkNotNull(transactionsService, "Transactions service cannot be null.");
 
+        this.context = context;
         this.dbHelper = dbHelper;
         this.user = user;
         this.gcmRegistration = gcmRegistration;
@@ -98,7 +102,7 @@ public class SyncRequest extends Request {
     }
 
     private void getCurrencies() throws Exception {
-        new GetCurrenciesRequest(user, currenciesService).run();
+        new GetCurrenciesRequest(context, user, currenciesService).run();
     }
 
     private void pushCategories(SQLiteDatabase database) throws Exception {
@@ -120,7 +124,7 @@ public class SyncRequest extends Request {
     }
 
     private void getCategories() throws Exception {
-        new GetCategoriesRequest(user, categoriesService).run();
+        new GetCategoriesRequest(context, user, categoriesService).run();
     }
 
     private void pushAccounts(SQLiteDatabase database) throws Exception {
@@ -143,7 +147,7 @@ public class SyncRequest extends Request {
     }
 
     private void getAccounts() throws Exception {
-        new GetAccountsRequest(user, accountsService).run();
+        new GetAccountsRequest(context, user, accountsService).run();
     }
 
     private void pushTransactions(SQLiteDatabase database) throws Exception {
@@ -170,7 +174,7 @@ public class SyncRequest extends Request {
     }
 
     private void getTransactions() throws Exception {
-        new GetTransactionsRequest(user, transactionsService).run();
+        new GetTransactionsRequest(context, user, transactionsService).run();
     }
 
     private void markInProgress(SQLiteDatabase database, Column syncStateColumn) {

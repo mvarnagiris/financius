@@ -1,6 +1,7 @@
 package com.code44.finance.api.requests;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.net.Uri;
 
 import com.code44.finance.api.User;
@@ -17,8 +18,8 @@ import java.util.List;
 public class GetCurrenciesRequest extends GetRequest<CurrencyEntity> {
     private final Currencies currenciesService;
 
-    public GetCurrenciesRequest(User user, Currencies currenciesService) {
-        super(null, user);
+    public GetCurrenciesRequest(Context context, User user, Currencies currenciesService) {
+        super(null, context, user);
         Preconditions.checkNotNull(currenciesService, "Currencies cannot be null.");
 
         this.currenciesService = currenciesService;

@@ -14,12 +14,7 @@ import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.LayoutType;
 
-import javax.inject.Inject;
-
 public class CategoriesActivity extends ModelListActivity {
-
-    @Inject LayoutType layoutType;
-
     public static void start(Context context) {
         final Intent intent = makeIntentView(context, CategoriesActivity.class);
         start(context, intent);
@@ -38,7 +33,7 @@ public class CategoriesActivity extends ModelListActivity {
         pager_VP.setAdapter(adapter);
         pager_VP.setPageMargin(getResources().getDimensionPixelSize(R.dimen.divider));
         pager_VP.setPageMarginDrawable(new ColorDrawable(getResources().getColor(R.color.divider)));
-        tabs_PSTS.setShouldExpand(layoutType.isDefault() && layoutType.isPortrait());
+        tabs_PSTS.setShouldExpand(LayoutType.isDefault() && LayoutType.isPortrait());
         tabs_PSTS.setViewPager(pager_VP);
     }
 

@@ -2,8 +2,12 @@ package com.code44.finance.utils;
 
 import android.content.Context;
 
+import com.code44.finance.App;
+
 public class GeneralPrefs extends Prefs {
     private static final String PREFIX = "general_";
+
+    private static GeneralPrefs singleton;
 
     private boolean isAutoUpdateCurrencies;
     private long autoUpdateCurrenciesTimestamp;
@@ -11,6 +15,13 @@ public class GeneralPrefs extends Prefs {
     public GeneralPrefs(Context context) {
         super(context);
         refresh();
+    }
+
+    public static synchronized GeneralPrefs get() {
+        if (singleton == null) {
+            singleton = new GeneralPrefs(App.getContext());
+        }
+        return singleton;
     }
 
     public static void notifyGeneralPrefsChanged() {

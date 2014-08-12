@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.code44.finance.App;
 import com.code44.finance.R;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.model.Account;
@@ -27,7 +28,7 @@ public class CurrencyAccountsAdapter extends BaseModelsAdapter {
         public void onClick(View v) {
             final Account account = (Account) v.getTag();
             account.setCurrency(currency);
-            DataStore.insert().model(account).into(AccountsProvider.uriAccounts());
+            DataStore.insert().model(account).into(App.getContext(), AccountsProvider.uriAccounts());
         }
     };
 

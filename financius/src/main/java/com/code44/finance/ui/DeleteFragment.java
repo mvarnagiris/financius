@@ -73,7 +73,7 @@ public class DeleteFragment extends DialogFragment implements LoaderManager.Load
 
         // Delete
         if (savedInstanceState == null) {
-            DataStore.delete().selection(deleteSelection, deleteSelectionArgs).from(deleteUri);
+            DataStore.delete().selection(deleteSelection, deleteSelectionArgs).from(getActivity(), deleteUri);
         }
     }
 
@@ -207,13 +207,13 @@ public class DeleteFragment extends DialogFragment implements LoaderManager.Load
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        DataStore.undoDelete().selection(deleteSelection, deleteSelectionArgs).from(deleteUri);
+        DataStore.undoDelete().selection(deleteSelection, deleteSelectionArgs).from(getActivity(), deleteUri);
     }
 
     @Override
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
-        DataStore.undoDelete().selection(deleteSelection, deleteSelectionArgs).from(deleteUri);
+        DataStore.undoDelete().selection(deleteSelection, deleteSelectionArgs).from(getActivity(), deleteUri);
     }
 
     private void cancel() {
@@ -221,7 +221,7 @@ public class DeleteFragment extends DialogFragment implements LoaderManager.Load
     }
 
     private void delete() {
-        DataStore.commitDelete().selection(deleteSelection, deleteSelectionArgs).from(deleteUri);
+        DataStore.commitDelete().selection(deleteSelection, deleteSelectionArgs).from(getActivity(), deleteUri);
         dismiss();
         // TODO EventBus.getDefault().post(new DeleteEvent(deleteUri, deleteSelection, deleteSelectionArgs));
     }

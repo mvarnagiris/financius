@@ -91,7 +91,7 @@ public class CurrenciesProvider extends BaseModelProvider {
             final Uri accountsUri = uriForDeleteFromItemState(AccountsProvider.uriAccounts(), modelState);
             DataStore.delete()
                     .selection(query.getSelection(), query.getSelectionArgs())
-                    .from(accountsUri);
+                    .from(getContext(), accountsUri);
         }
     }
 

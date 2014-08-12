@@ -65,7 +65,7 @@ public class AccountsProvider extends BaseModelProvider {
         long balanceDelta = (long) extras.get(EXTRA_BALANCE_DELTA);
         final Transaction transaction = createBalanceTransaction(account, balanceDelta);
         if (transaction != null) {
-            DataStore.insert().model(transaction).into(TransactionsProvider.uriTransactions());
+            DataStore.insert().model(transaction).into(getContext(), TransactionsProvider.uriTransactions());
         }
     }
 

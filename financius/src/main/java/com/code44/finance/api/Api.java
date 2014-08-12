@@ -86,7 +86,7 @@ public final class Api {
     }
 
     public void sync() {
-        final SyncRequest request = new SyncRequest(eventBus, dbHelper, user, gcmRegistration, getCurrenciesService(), getCategoriesService(), getAccountsService(), getTransactionsService());
+        final SyncRequest request = new SyncRequest(eventBus, context, dbHelper, user, gcmRegistration, getCurrenciesService(), getCategoriesService(), getAccountsService(), getTransactionsService());
         execute(request);
     }
 

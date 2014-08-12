@@ -28,15 +28,13 @@ import com.code44.finance.utils.GeneralPrefs;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 public class CurrenciesFragment extends ModelListFragment implements CompoundButton.OnCheckedChangeListener {
     private final List<Currency> currencies = new ArrayList<>();
+    private final GeneralPrefs generalPrefs = GeneralPrefs.get();
+    private final CurrenciesApi currenciesApi = CurrenciesApi.get();
 
-    @Inject CurrenciesApi currenciesApi;
-    @Inject GeneralPrefs generalPrefs;
 
     private SmoothProgressBar loading_SPB;
 

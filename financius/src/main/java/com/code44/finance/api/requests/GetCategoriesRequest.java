@@ -1,5 +1,6 @@
 package com.code44.finance.api.requests;
 
+import android.content.Context;
 import android.net.Uri;
 
 import com.code44.finance.api.User;
@@ -15,8 +16,8 @@ import java.util.List;
 public class GetCategoriesRequest extends GetRequest<CategoryEntity> {
     private final Categories categoriesService;
 
-    public GetCategoriesRequest(User user, Categories categoriesService) {
-        super(null, user);
+    public GetCategoriesRequest(Context context, User user, Categories categoriesService) {
+        super(null, context, user);
         Preconditions.checkNotNull(categoriesService, "Categories cannot be null.");
 
         this.categoriesService = categoriesService;

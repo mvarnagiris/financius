@@ -7,12 +7,17 @@ import com.code44.finance.App;
 public class PeriodHelper extends Prefs {
     private static final String PREFIX = "period_helper_";
 
+    private static PeriodHelper singleton;
+
     public PeriodHelper(Context context) {
         super(context);
     }
 
     public static PeriodHelper get() {
-        return App.getPeriodHelper();
+        if (singleton == null) {
+            singleton = new PeriodHelper(App.getContext());
+        }
+        return singleton;
     }
 
     @Override

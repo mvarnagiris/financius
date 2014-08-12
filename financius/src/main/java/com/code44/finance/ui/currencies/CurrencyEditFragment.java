@@ -39,13 +39,13 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.inject.Inject;
-
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 public class CurrencyEditFragment extends ModelEditFragment<Currency> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int LOADER_CURRENCIES = 1;
-    @Inject CurrenciesApi currenciesApi;
+
+    private final CurrenciesApi currenciesApi = CurrenciesApi.get();
+
     private SmoothProgressBar loading_SPB;
     private AutoCompleteTextView code_ET;
     private Button thousandsSeparator_B;
@@ -167,7 +167,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         }
 
         if (canSave) {
-            DataStore.insert().values(model.asContentValues()).into(CurrenciesProvider.uriCurrencies());
+            DataStore.insert().values(model.asContentValues()).into(context, CurrenciesProvider.uriCurrencies());
         }
 
         return canSave;

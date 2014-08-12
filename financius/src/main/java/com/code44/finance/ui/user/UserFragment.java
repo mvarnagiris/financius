@@ -16,10 +16,9 @@ import com.code44.finance.R;
 import com.code44.finance.api.User;
 import com.code44.finance.ui.BaseFragment;
 
-import javax.inject.Inject;
-
 public class UserFragment extends BaseFragment implements View.OnClickListener {
-    @Inject User user;
+    private final User user = User.get();
+
     private ImageView cover_IV;
     private ImageView photo_IV;
     private TextView name_TV;

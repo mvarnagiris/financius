@@ -12,8 +12,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
-import javax.inject.Inject;
-
 
 public class LoginActivity extends BaseActivity {
     private static final String FRAGMENT_GOOGLE_PLUS = "FRAGMENT_GOOGLE_PLUS";
@@ -21,7 +19,9 @@ public class LoginActivity extends BaseActivity {
     private static final String STATE_CLEAR_DEFAULT_ACCOUNT = "STATE_CLEAR_DEFAULT_ACCOUNT";
 
     private static final String UNIQUE_GOOGLE_CLIENT_ID = LoginActivity.class.getName();
-    @Inject Api api;
+
+    private final Api api = Api.get();
+
     private GoogleApiFragment googleApi_F;
     private boolean clearDefaultAccount;
 
