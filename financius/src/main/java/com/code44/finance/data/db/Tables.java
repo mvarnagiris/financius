@@ -183,6 +183,33 @@ public final class Tables {
         }
     }
 
+    public static final class Tags {
+        public static final String TABLE_NAME = "tags";
+
+        public static final Column ID = getIdColumn(TABLE_NAME);
+        public static final Column SERVER_ID = getServerIdColumn(TABLE_NAME);
+        public static final Column MODEL_STATE = getModelStateColumn(TABLE_NAME);
+        public static final Column SYNC_STATE = getSyncStateColumn(TABLE_NAME);
+        public static final Column TITLE = new Column(TABLE_NAME, "title", Column.DataType.TEXT);
+
+        public static final String[] PROJECTION = {SERVER_ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
+                TITLE.getName()};
+
+        private Tags() {
+        }
+
+        public static String createScript() {
+            return makeCreateScript(TABLE_NAME, ID, SERVER_ID, MODEL_STATE, SYNC_STATE, TITLE);
+        }
+
+        public static Query getQuery() {
+            return Query.create()
+                    .projectionId(Tags.ID)
+                    .projection(Tags.PROJECTION)
+                    .selection(Tags.MODEL_STATE + "=?", ModelState.NORMAL.asString());
+        }
+    }
+
     public static final class Transactions {
         public static final String TABLE_NAME = "transactions";
 

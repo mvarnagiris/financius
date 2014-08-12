@@ -59,6 +59,10 @@
             android:authorities="${applicationId}.data.providers.CategoriesProvider"
             android:exported="false" />
         <provider
+            android:name=".data.providers.TagsProvider"
+            android:authorities="${applicationId}.data.providers.TagsProvider"
+            android:exported="false" />
+        <provider
             android:name=".data.providers.TransactionsProvider"
             android:authorities="${applicationId}.data.providers.TransactionsProvider"
             android:exported="false" />
