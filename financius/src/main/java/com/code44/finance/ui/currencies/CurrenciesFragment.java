@@ -37,6 +37,7 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
     private final List<Currency> currencies = new ArrayList<>();
     private final GeneralPrefs generalPrefs = GeneralPrefs.get();
     private final CurrenciesApi currenciesApi = CurrenciesApi.get();
+    private final EventBus eventBus = EventBus.get();
 
     private SmoothProgressBar loading_SPB;
 
@@ -70,12 +71,12 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
 
     @Override public void onResume() {
         super.onResume();
-        EventBus.get().register(this);
+        eventBus.register(this);
     }
 
     @Override public void onPause() {
         super.onPause();
-        EventBus.get().unregister(this);
+        eventBus.unregister(this);
     }
 
     @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
