@@ -15,22 +15,36 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/keyline">
 
-            <Button
-                android:id="@+id/color_B"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/space_normal"
-                android:gravity="center|bottom"
-                android:hint="@string/color" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/title_ET"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/title"
-                android:inputType="textCapWords" />
+                <ImageButton
+                    android:id="@+id/color_IB"
+                    style="@style/Button.Borderless.Select"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/space_small"
+                    android:contentDescription="@string/color"
+                    android:src="@drawable/circle"
+                    tools:ignore="RtlHardcoded"
+                    tools:stateListAnimator="@android:animator/fade_in" />
+
+                <EditText
+                    android:id="@+id/title_ET"
+                    style="@style/EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:hint="@string/title"
+                    android:inputType="textCapWords"
+                    tools:ignore="RtlHardcoded" />
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

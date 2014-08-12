@@ -3,20 +3,16 @@ package com.code44.finance.ui.categories;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.database.Cursor;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.code44.finance.R;
+import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Category;
@@ -28,7 +24,7 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
     private static final String FRAGMENT_SELECT_COLOR = CategoryEditFragment.class.getName() + ".FRAGMENT_SELECT_COLOR";
 
     private EditText title_ET;
-    private Button color_B;
+    private ImageButton color_IB;
 
     public static CategoryEditFragment newInstance(String categoryServerId) {
         final Bundle args = makeArgs(categoryServerId);
@@ -49,10 +45,10 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
 
         // Get views
         title_ET = (EditText) view.findViewById(R.id.title_ET);
-        color_B = (Button) view.findViewById(R.id.color_B);
+        color_IB = (ImageButton) view.findViewById(R.id.color_IB);
 
         // Setup
-        color_B.setOnClickListener(this);
+        color_IB.setOnClickListener(this);
     }
 
     @Override
@@ -95,26 +91,23 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
 
     @Override
     protected Category getModelFrom(Cursor cursor) {
-        return Category.from(cursor);
+        final Category category = Category.from(cursor);
+        if (StringUtils.isEmpty(category.getServerId())) {
+            category.setColor(0xff607d8b);
+        }
+        return category;
     }
 
     @Override
     protected void onModelLoaded(Category model) {
         title_ET.setText(model.getTitle());
-
-        final Drawable circleDrawable = getResources().getDrawable(R.drawable.circle);
-        circleDrawable.setColorFilter(model.getColor(), PorterDuff.Mode.SRC_ATOP);
-        circleDrawable.setBounds(0, 0, getResources().getDimensionPixelSize(R.dimen.text_subhead), getResources().getDimensionPixelSize(R.dimen.text_subhead));
-
-        final SpannableStringBuilder ssb = new SpannableStringBuilder(" ");
-        ssb.setSpan(new ImageSpan(circleDrawable), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        color_B.setText(ssb);
+        color_IB.setColorFilter(model.getColor());
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.color_B:
+            case R.id.color_IB:
                 SelectColorFragment.show(getChildFragmentManager(), FRAGMENT_SELECT_COLOR, model.getColor(), this);
                 break;
         }
@@ -123,6 +116,6 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
     @Override
     public void onColorSelected(int color) {
         model.setColor(color);
-        onModelLoaded(model);
+        color_IB.setColorFilter(color);
     }
 }

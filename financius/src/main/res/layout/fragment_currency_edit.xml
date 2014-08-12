@@ -10,7 +10,6 @@
     tools:ignore="RtlSymmetry">
 
     <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/ScrollView"
         android:layout_height="0px"
         android:layout_weight="1">

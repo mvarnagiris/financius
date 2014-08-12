@@ -3,6 +3,6 @@
     android:shape="oval">
     <solid android:color="#fff" />
     <size
-        android:width="2dp"
-        android:height="2dp" />
+        android:width="@dimen/category_color_circle_size"
+        android:height="@dimen/category_color_circle_size" />
 </shape>

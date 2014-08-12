@@ -8,9 +8,8 @@
     android:orientation="vertical"
     tools:context=".ui.currencies.CurrencyEditActivity">
 
-    <ScrollView
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/ScrollView"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="0px"
         android:layout_weight="1">
 
@@ -70,7 +69,7 @@
 
             <EditText
                 android:id="@+id/note_ET"
-                style="@style/Text.Title"
+                style="@style/EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/keyline"
