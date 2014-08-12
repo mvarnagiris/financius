@@ -9,6 +9,7 @@
                 com.code44.finance.backend.endpoint.UsersEndpoint,
                 com.code44.finance.backend.endpoint.CurrenciesEndpoint,
                 com.code44.finance.backend.endpoint.CategoriesEndpoint,
+                com.code44.finance.backend.endpoint.TagsEndpoint,
                 com.code44.finance.backend.endpoint.AccountsEndpoint,
                 com.code44.finance.backend.endpoint.TransactionsEndpoint
             </param-value>
