@@ -11,6 +11,7 @@ import com.code44.finance.R;
 import com.code44.finance.adapters.SettingsAdapter;
 import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.ui.currencies.CurrenciesActivity;
+import com.code44.finance.ui.tags.TagsActivity;
 
 public class SettingsActivity extends BaseActivity implements AdapterView.OnItemClickListener {
     public static void start(Context context) {
@@ -43,6 +44,8 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
             CurrenciesActivity.start(this);
         } else if (id == SettingsAdapter.ID_CATEGORIES) {
             CategoriesActivity.start(this);
+        } else if (id == SettingsAdapter.ID_TAGS) {
+            TagsActivity.start(this);
         }
     }
 }

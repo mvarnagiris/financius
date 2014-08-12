@@ -52,6 +52,8 @@
     <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="user">User</string>
+    <string name="tags">Tags</string>
+    <string name="tag">Tag</string>
 
     <string name="f_change_to_x">Change to %s</string>
     <string name="f_current_main_currency_is_x">Current main currency is %s</string>
@@ -96,6 +98,15 @@
         <item quantity="few">@string/categories</item>
         <item quantity="many">@string/categories</item>
         <item quantity="other">@string/categories</item>
+    </plurals>
+
+    <plurals name="tag">
+        <item quantity="zero">@string/tags</item>
+        <item quantity="one">@string/tag</item>
+        <item quantity="two">@string/tags</item>
+        <item quantity="few">@string/tags</item>
+        <item quantity="many">@string/tags</item>
+        <item quantity="other">@string/tags</item>
     </plurals>
 
     <plurals name="transaction">

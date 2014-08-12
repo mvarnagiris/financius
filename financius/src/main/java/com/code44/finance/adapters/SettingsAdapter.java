@@ -15,6 +15,7 @@ import java.util.List;
 public class SettingsAdapter extends BaseAdapter {
     public static final long ID_CURRENCIES = 1;
     public static final long ID_CATEGORIES = 2;
+    public static final long ID_TAGS = 3;
 
     private final Context context;
     private final List<SettingsItem> settingsItems;
@@ -24,6 +25,7 @@ public class SettingsAdapter extends BaseAdapter {
         settingsItems = new ArrayList<>();
         settingsItems.add(new SettingsItem(ID_CURRENCIES, ViewType.SettingsItem, context.getString(R.string.currencies)));
         settingsItems.add(new SettingsItem(ID_CATEGORIES, ViewType.SettingsItem, context.getString(R.string.categories)));
+        settingsItems.add(new SettingsItem(ID_TAGS, ViewType.SettingsItem, context.getString(R.string.tags)));
     }
 
     @Override
