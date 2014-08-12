@@ -139,25 +139,25 @@ public class DeleteFragment extends DialogFragment implements LoaderManager.Load
                 return Query.create()
                         .projectionId(Tables.Currencies.ID)
                         .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
-                        .asCursorLoader(CurrenciesProvider.uriCurrencies());
+                        .asCursorLoader(getActivity(), CurrenciesProvider.uriCurrencies());
 
             case LOADER_ACCOUNTS:
                 return Query.create()
                         .projectionId(Tables.Accounts.ID)
                         .selection(Tables.Accounts.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
-                        .asCursorLoader(AccountsProvider.uriAccounts());
+                        .asCursorLoader(getActivity(), AccountsProvider.uriAccounts());
 
             case LOADER_CATEGORIES:
                 return Query.create()
                         .projectionId(Tables.Categories.ID)
                         .selection(Tables.Categories.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
-                        .asCursorLoader(CategoriesProvider.uriCategories());
+                        .asCursorLoader(getActivity(), CategoriesProvider.uriCategories());
 
             case LOADER_TRANSACTIONS:
                 return Query.create()
                         .projectionId(Tables.Transactions.ID)
                         .selection(Tables.Transactions.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
-                        .asCursorLoader(TransactionsProvider.uriTransactions());
+                        .asCursorLoader(getActivity(), TransactionsProvider.uriTransactions());
         }
         return null;
     }

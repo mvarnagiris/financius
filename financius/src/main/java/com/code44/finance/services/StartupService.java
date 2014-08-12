@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.text.format.DateUtils;
 
+import com.code44.finance.App;
 import com.code44.finance.api.Api;
 import com.code44.finance.api.GcmRegistration;
 import com.code44.finance.api.User;
@@ -28,6 +29,7 @@ public class StartupService extends IntentService {
 
     public StartupService() {
         super(StartupService.class.getSimpleName());
+        App.getInjector().inject(this);
     }
 
     public static void start(Context context) {
@@ -62,7 +64,7 @@ public class StartupService extends IntentService {
         final Cursor cursor = Query.create()
                 .projection(Tables.Currencies.CODE.getName())
                 .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
-                .from(CurrenciesProvider.uriCurrencies())
+                .from(App.getContext(), CurrenciesProvider.uriCurrencies())
                 .execute();
 
         if (cursor.moveToFirst()) {

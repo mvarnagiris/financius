@@ -213,7 +213,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_CURRENCIES) {
-            return Tables.Currencies.getQuery().asCursorLoader(CurrenciesProvider.uriCurrencies());
+            return Tables.Currencies.getQuery().asCursorLoader(getActivity(), CurrenciesProvider.uriCurrencies());
         }
         return super.onCreateLoader(id, args);
     }
@@ -233,8 +233,8 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     }
 
     @Override
-    protected CursorLoader getModelCursorLoader(String modelServerId) {
-        return Tables.Currencies.getQuery().asCursorLoader(CurrenciesProvider.uriCurrency(modelServerId));
+    protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
+        return Tables.Currencies.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrency(modelServerId));
     }
 
     @Override

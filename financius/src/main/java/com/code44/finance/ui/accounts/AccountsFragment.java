@@ -59,8 +59,8 @@ public class AccountsFragment extends ModelListFragment {
     }
 
     @Override
-    protected CursorLoader getModelsCursorLoader() {
-        return Tables.Accounts.getQuery().asCursorLoader(AccountsProvider.uriAccounts());
+    protected CursorLoader getModelsCursorLoader(Context context) {
+        return Tables.Accounts.getQuery().asCursorLoader(context, AccountsProvider.uriAccounts());
     }
 
     @Override

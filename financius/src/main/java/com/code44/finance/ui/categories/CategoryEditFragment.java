@@ -89,8 +89,8 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
     }
 
     @Override
-    protected CursorLoader getModelCursorLoader(String modelServerId) {
-        return Tables.Categories.getQuery(null).asCursorLoader(CategoriesProvider.uriCategory(modelServerId));
+    protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
+        return Tables.Categories.getQuery(null).asCursorLoader(context, CategoriesProvider.uriCategory(modelServerId));
     }
 
     @Override

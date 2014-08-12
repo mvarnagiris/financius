@@ -2,6 +2,7 @@ package com.code44.finance.api.currencies;
 
 import android.database.Cursor;
 
+import com.code44.finance.App;
 import com.code44.finance.api.Request;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
@@ -36,7 +37,7 @@ public class CurrencyRequest extends Request {
                 .projection(Tables.Currencies.ID.getName())
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.CODE + "=?", fromCode)
-                .from(CurrenciesProvider.uriCurrencies())
+                .from(App.getContext(), CurrenciesProvider.uriCurrencies())
                 .execute();
         final Currency currency = Currency.from(cursor);
         IOUtils.closeQuietly(cursor);

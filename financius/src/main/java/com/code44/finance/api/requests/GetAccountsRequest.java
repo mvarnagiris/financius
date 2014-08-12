@@ -3,6 +3,7 @@ package com.code44.finance.api.requests;
 import android.database.Cursor;
 import android.net.Uri;
 
+import com.code44.finance.App;
 import com.code44.finance.api.User;
 import com.code44.finance.backend.endpoint.accounts.Accounts;
 import com.code44.finance.backend.endpoint.accounts.model.AccountEntity;
@@ -57,7 +58,7 @@ public class GetAccountsRequest extends GetRequest<AccountEntity> {
                     .projectionId(Tables.Currencies.ID)
                     .projection(Tables.Currencies.PROJECTION)
                     .selection(Tables.Currencies.SERVER_ID + "=?", entity.getCurrencyId())
-                    .from(CurrenciesProvider.uriCurrencies())
+                    .from(App.getContext(), CurrenciesProvider.uriCurrencies())
                     .execute();
             currency = Currency.from(cursor);
             IOUtils.closeQuietly(cursor);

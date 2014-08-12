@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.code44.finance.App;
 import com.code44.finance.api.Request;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
@@ -53,7 +54,7 @@ public class SyncRequest extends Request {
                 .projectionId(Tables.Currencies.ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
-                .from(CurrenciesProvider.uriCurrencies())
+                .from(App.getContext(), CurrenciesProvider.uriCurrencies())
                 .execute();
         final List<Currency> currencies = new ArrayList<>();
         do {
@@ -75,7 +76,7 @@ public class SyncRequest extends Request {
                 .projectionId(Tables.Categories.ID)
                 .projection(Tables.Categories.PROJECTION)
                 .selection(Tables.Categories.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
-                .from(CategoriesProvider.uriCategories())
+                .from(App.getContext(), CategoriesProvider.uriCategories())
                 .execute();
         final List<Category> categories = new ArrayList<>();
         do {
@@ -98,7 +99,7 @@ public class SyncRequest extends Request {
                 .projection(Tables.Accounts.PROJECTION)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Accounts.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
-                .from(AccountsProvider.uriAccounts())
+                .from(App.getContext(), AccountsProvider.uriAccounts())
                 .execute();
         final List<Account> accounts = new ArrayList<>();
         do {
@@ -125,7 +126,7 @@ public class SyncRequest extends Request {
                 .projection(Tables.Currencies.PROJECTION_ACCOUNT_TO)
                 .projection(Tables.Categories.PROJECTION)
                 .selection(Tables.Transactions.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
-                .from(TransactionsProvider.uriTransactions())
+                .from(App.getContext(), TransactionsProvider.uriTransactions())
                 .execute();
         final List<Transaction> transactions = new ArrayList<>();
         do {

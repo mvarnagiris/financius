@@ -69,7 +69,7 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_MODEL) {
-            return getModelCursorLoader(modelServerId);
+            return getModelCursorLoader(getActivity(), modelServerId);
         }
 
         return null;
@@ -87,7 +87,7 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
     public void onLoaderReset(Loader<Cursor> loader) {
     }
 
-    protected abstract CursorLoader getModelCursorLoader(String modelServerId);
+    protected abstract CursorLoader getModelCursorLoader(Context context, String modelServerId);
 
     protected abstract T getModelFrom(Cursor cursor);
 

@@ -98,8 +98,8 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
     }
 
     @Override
-    protected CursorLoader getModelsCursorLoader() {
-        return Tables.Currencies.getQuery().asCursorLoader(CurrenciesProvider.uriCurrencies());
+    protected CursorLoader getModelsCursorLoader(Context context) {
+        return Tables.Currencies.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrencies());
     }
 
     @Override

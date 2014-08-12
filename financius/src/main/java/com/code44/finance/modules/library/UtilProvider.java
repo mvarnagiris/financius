@@ -3,7 +3,6 @@ package com.code44.finance.modules.library;
 import android.content.Context;
 
 import com.code44.finance.qualifiers.ForNetwork;
-import com.code44.finance.utils.LayoutType;
 import com.code44.finance.utils.PeriodHelper;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
@@ -25,10 +24,6 @@ import dagger.Provides;
 public class UtilProvider {
     @Provides @Singleton public Bus provideBus() {
         return new Bus(ThreadEnforcer.MAIN);
-    }
-
-    @Provides @Singleton public LayoutType provideLayoutType(Context context) {
-        return new LayoutType(context);
     }
 
     @Provides @Singleton public PeriodHelper providePeriodHelper(Context context) {

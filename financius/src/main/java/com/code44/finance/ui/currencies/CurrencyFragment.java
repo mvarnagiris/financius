@@ -79,7 +79,7 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_ACCOUNTS) {
-            return Tables.Accounts.getQuery().asCursorLoader(AccountsProvider.uriAccounts());
+            return Tables.Accounts.getQuery().asCursorLoader(getActivity(), AccountsProvider.uriAccounts());
         }
         return super.onCreateLoader(id, args);
     }
@@ -103,8 +103,8 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
     }
 
     @Override
-    protected CursorLoader getModelCursorLoader(String modelServerId) {
-        return Tables.Currencies.getQuery().asCursorLoader(CurrenciesProvider.uriCurrency(modelServerId));
+    protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
+        return Tables.Currencies.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrency(modelServerId));
     }
 
     @Override

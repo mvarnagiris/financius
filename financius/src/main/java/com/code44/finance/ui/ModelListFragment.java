@@ -92,7 +92,7 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_MODELS) {
-            return getModelsCursorLoader();
+            return getModelsCursorLoader(getActivity());
         }
         return null;
     }
@@ -123,7 +123,7 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
 
     protected abstract BaseModelsAdapter createAdapter(Context context);
 
-    protected abstract CursorLoader getModelsCursorLoader();
+    protected abstract CursorLoader getModelsCursorLoader(Context context);
 
     protected abstract BaseModel modelFrom(Cursor cursor);
 
