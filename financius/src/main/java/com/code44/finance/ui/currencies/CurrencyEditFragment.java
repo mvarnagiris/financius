@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
+import com.code44.finance.api.currencies.ExchangeRateRequest;
 import com.code44.finance.common.model.DecimalSeparator;
 import com.code44.finance.common.model.GroupSeparator;
 import com.code44.finance.common.model.SymbolPosition;
@@ -33,7 +34,9 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelEditFragment;
+import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.MoneyFormatter;
+import com.squareup.otto.Subscribe;
 
 import java.util.HashSet;
 import java.util.Locale;
@@ -45,6 +48,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     private static final int LOADER_CURRENCIES = 1;
 
     private final CurrenciesApi currenciesApi = CurrenciesApi.get();
+    private final EventBus eventBus = EventBus.get();
 
     private SmoothProgressBar loading_SPB;
     private AutoCompleteTextView code_ET;
@@ -73,13 +77,11 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         return fragment;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_currency_edit, container, false);
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Get view
@@ -143,22 +145,24 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         });
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    @Override public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         // Loader
         getLoaderManager().initLoader(LOADER_CURRENCIES, null, this);
     }
 
-    @Override
-    public void onResume() {
+    @Override public void onResume() {
         super.onResume();
-        updateProgressBar();
+        eventBus.register(this);
     }
 
-    @Override
-    public boolean onSave(Context context, Currency model) {
+    @Override public void onPause() {
+        super.onPause();
+        eventBus.unregister(this);
+    }
+
+    @Override public boolean onSave(Context context, Currency model) {
         boolean canSave = true;
 
         if (TextUtils.isEmpty(model.getCode()) || model.getCode().length() != 3 || model.getCode().equals(Currency.getDefault().getCode())) {
@@ -173,8 +177,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         return canSave;
     }
 
-    @Override
-    protected void ensureModelUpdated(Currency model) {
+    @Override protected void ensureModelUpdated(Currency model) {
         model.setCode(code_ET.getText().toString());
         model.setSymbol(symbol_ET.getText().toString());
         double exchangeRate;
@@ -186,13 +189,11 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         model.setExchangeRate(exchangeRate);
     }
 
-    @Override
-    protected Currency getModelFrom(Cursor cursor) {
+    @Override protected Currency getModelFrom(Cursor cursor) {
         return Currency.from(cursor);
     }
 
-    @Override
-    protected void onModelLoaded(Currency model) {
+    @Override protected void onModelLoaded(Currency model) {
         symbol_ET.setText(model.getSymbol());
         code_ET.setText(model.getCode());
         thousandsSeparator_B.setText(getGroupSeparatorExplanation(model.getGroupSeparator()));
@@ -210,16 +211,14 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         updateProgressBar();
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_CURRENCIES) {
             return Tables.Currencies.getQuery().asCursorLoader(getActivity(), CurrenciesProvider.uriCurrencies());
         }
         return super.onCreateLoader(id, args);
     }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == LOADER_CURRENCIES) {
             existingCurrencyCodes.clear();
             if (data.moveToFirst()) {
@@ -232,19 +231,18 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         super.onLoadFinished(loader, data);
     }
 
-    @Override
-    protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
+    @Override protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
         return Tables.Currencies.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrency(modelServerId));
     }
 
-    @Override
-    public void onClick(View view) {
+    @Override public void onClick(View view) {
         switch (view.getId()) {
             case R.id.refreshRate_B: {
                 ensureModelUpdated(model);
                 final String code = model.getCode();
                 if (!TextUtils.isEmpty(code) && code.length() == 3) {
                     currenciesApi.updateExchangeRate(code);
+                    setRefreshing(true);
                 }
                 break;
             }
@@ -329,19 +327,22 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         }
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton checkBox, boolean isChecked) {
+    @Override public void onCheckedChanged(CompoundButton checkBox, boolean isChecked) {
         model.setDefault(isChecked);
         onModelLoaded(model);
     }
 
-// TODO    public void onEventMainThread(CurrencyRequest.CurrencyRequestEvent event) {
-//        updateProgressBar();
-//        if (model != null && CurrencyRequest.getUniqueId(model.getCode(), Currency.getDefault().getCode()).equals(event.getRequest().getUniqueId())) {
-//            model.setExchangeRate(event.getResult().getExchangeRate());
-//            onModelLoaded(model);
-//        }
-//    }
+    @Subscribe public void onRefreshFinished(final ExchangeRateRequest request) {
+        if (model.getCode().equals(request.getFromCode())) {
+            loading_SPB.post(new Runnable() {
+                @Override public void run() {
+                    setRefreshing(false);
+                    model.setExchangeRate(request.getCurrency().getExchangeRate());
+                    onModelLoaded(model);
+                }
+            });
+        }
+    }
 
     private void prepareCurrenciesAutoComplete() {
         // Build currencies set
@@ -476,5 +477,9 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
                 return getString(R.string.far_left);
         }
         return null;
+    }
+
+    private void setRefreshing(boolean refreshing) {
+        loading_SPB.setVisibility(refreshing ? View.VISIBLE : View.GONE);
     }
 }
