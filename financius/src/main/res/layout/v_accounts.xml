@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+       xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         style="@style/Text.Title"
@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/space_large"
         android:text="@string/accounts"
-        android:textColor="?android:colorPrimary" />
+        android:textColor="?android:colorPrimary"/>
 
     <LinearLayout
         android:id="@+id/balanceContainer_V"
@@ -17,20 +17,20 @@
         android:layout_marginTop="@dimen/keyline">
 
         <TextView
-            style="@style/Text.Subhead"
+            style="@style/Text.Body2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/balance"
-            android:textColor="@color/text_secondary" />
+            android:textColor="@color/text_secondary"/>
 
         <TextView
             android:id="@+id/totalBalance_TV"
-            style="@style/Text.Subhead"
+            style="@style/Text.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_secondary"
-            tools:text="5892.58 $" />
+            tools:text="5892.58 $"/>
 
     </LinearLayout>
 

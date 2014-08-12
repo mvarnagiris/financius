@@ -78,6 +78,10 @@ public class AccountsFragment extends ModelListFragment {
         AccountEditActivity.start(context, modelServerId);
     }
 
+    @Override public String getTitle() {
+        return getString(R.string.accounts);
+    }
+
     private void updateBalance(Cursor cursor) {
         long balance = 0;
         if (cursor.moveToFirst()) {
