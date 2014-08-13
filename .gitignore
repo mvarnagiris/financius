@@ -1,6 +1,6 @@
 *.iml
 .gradle
-/local.properties
+local.properties
 /build/*
 /.idea/*
 !/.idea/codeStyleSettings.xml
