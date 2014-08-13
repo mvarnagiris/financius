@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    style="@style/ListItem"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ListItem"
     android:orientation="horizontal">
 
     <FrameLayout
@@ -19,61 +18,109 @@
             android:src="@drawable/circle"
             tools:ignore="ContentDescription" />
 
-        <TextView
-            android:id="@+id/day_TV"
-            style="@style/Text.Body2"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textColor="@color/text_primary_inverse"
-            tools:text="16"
-            tools:textColor="@color/text_primary" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/weekday_TV"
+                style="@style/Text.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="-3dp"
+                android:textColor="@color/text_primary_inverse"
+                tools:text="wed"
+                tools:textColor="@color/text_primary" />
+
+            <TextView
+                android:id="@+id/day_TV"
+                style="@style/Text.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="-3dp"
+
+                android:textColor="@color/text_primary_inverse"
+                tools:text="16"
+                tools:textColor="@color/text_primary" />
+
+        </LinearLayout>
+
     </FrameLayout>
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/category_TV"
-            style="@style/Text.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Leisure" />
-
-        <TextView
-            android:id="@+id/note_TV"
-            style="@style/Text.Caption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Linkin Park concert" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/amount_TV"
-            style="@style/Text.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            tools:ignore="RtlHardcoded"
-            tools:text="58.99 $" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/account_TV"
-            style="@style/Text.Caption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            tools:ignore="RtlHardcoded"
-            tools:text="Cash" />
+            <TextView
+                android:id="@+id/category_TV"
+                style="@style/Text.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="Leisure" />
+
+            <TextView
+                android:id="@+id/amount_TV"
+                style="@style/Text.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                tools:ignore="RtlHardcoded"
+                tools:text="58.99 $" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/note_TV"
+                style="@style/Text.Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="Linkin Park concert" />
+
+            <TextView
+                android:id="@+id/account_TV"
+                style="@style/Text.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                tools:ignore="RtlHardcoded"
+                tools:text="Cash" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/amountDefault_TV"
+                style="@style/Text.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                tools:ignore="RtlHardcoded"
+                tools:text="45.75 £" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
