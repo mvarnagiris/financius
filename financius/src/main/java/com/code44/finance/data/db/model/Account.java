@@ -34,6 +34,7 @@ public class Account extends BaseModel {
     private String note;
     private long balance;
     private AccountOwner accountOwner;
+    private boolean includeInTotals;
 
     public Account() {
         super();
@@ -42,6 +43,7 @@ public class Account extends BaseModel {
         setNote(null);
         setBalance(0);
         setAccountOwner(AccountOwner.USER);
+        setIncludeInTotals(true);
     }
 
     public Account(Parcel in) {
@@ -96,6 +98,7 @@ public class Account extends BaseModel {
         account.setTitle(entity.getTitle());
         account.setNote(entity.getNote());
         account.setAccountOwner(AccountOwner.valueOf(entity.getAccountOwner()));
+        account.setIncludeInTotals(entity.getIncludeInTotals());
         return account;
     }
 
@@ -126,6 +129,7 @@ public class Account extends BaseModel {
         setNote(parcel.readString());
         setBalance(parcel.readLong());
         setAccountOwner(AccountOwner.fromInt(parcel.readInt()));
+        setIncludeInTotals(parcel.readInt() != 0);
     }
 
     @Override
@@ -135,6 +139,7 @@ public class Account extends BaseModel {
         parcel.writeString(getNote());
         parcel.writeLong(getBalance());
         parcel.writeInt(getAccountOwner().asInt());
+        parcel.writeInt(includeInTotals ? 1 : 0);
     }
 
     @Override
@@ -144,6 +149,7 @@ public class Account extends BaseModel {
         values.put(Tables.Accounts.NOTE.getName(), note);
         values.put(Tables.Accounts.BALANCE.getName(), balance);
         values.put(Tables.Accounts.OWNER.getName(), accountOwner.asInt());
+        values.put(Tables.Accounts.INCLUDE_IN_TOTALS.getName(), includeInTotals);
     }
 
     @Override
@@ -187,6 +193,12 @@ public class Account extends BaseModel {
         if (index >= 0) {
             setAccountOwner(AccountOwner.fromInt(cursor.getInt(index)));
         }
+
+        // Owner
+        index = cursor.getColumnIndex(Tables.Accounts.INCLUDE_IN_TOTALS.getName(columnPrefixTable));
+        if (index >= 0) {
+            setIncludeInTotals(cursor.getInt(index) != 0);
+        }
     }
 
     @Override
@@ -210,6 +222,7 @@ public class Account extends BaseModel {
         entity.setTitle(getTitle());
         entity.setNote(getNote());
         entity.setAccountOwner(getAccountOwner().toString());
+        entity.setIncludeInTotals(includeInTotals());
         return entity;
     }
 
@@ -251,5 +264,13 @@ public class Account extends BaseModel {
 
     public void setAccountOwner(AccountOwner accountOwner) {
         this.accountOwner = accountOwner;
+    }
+
+    public boolean includeInTotals() {
+        return includeInTotals;
+    }
+
+    public void setIncludeInTotals(boolean includeInTotals) {
+        this.includeInTotals = includeInTotals;
     }
 }

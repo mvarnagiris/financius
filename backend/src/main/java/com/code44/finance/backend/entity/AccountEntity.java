@@ -32,6 +32,9 @@ public class AccountEntity extends BaseEntity {
     @ApiResourceProperty(name = "account_owner")
     private AccountOwner accountOwner;
 
+    @ApiResourceProperty(name = "include_in_totals")
+    private boolean includeInTotals;
+
     public static AccountEntity find(String id) {
         return ofy().load().type(AccountEntity.class).id(id).now();
     }
@@ -82,5 +85,13 @@ public class AccountEntity extends BaseEntity {
 
     public void setAccountOwner(AccountOwner accountOwner) {
         this.accountOwner = accountOwner;
+    }
+
+    public boolean includeInTotals() {
+        return includeInTotals;
+    }
+
+    public void setIncludeInTotals(boolean includeInTotals) {
+        this.includeInTotals = includeInTotals;
     }
 }
