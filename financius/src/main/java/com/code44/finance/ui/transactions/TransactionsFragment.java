@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
@@ -28,6 +29,13 @@ public class TransactionsFragment extends ModelListFragment {
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_transactions, container, false);
+    }
+
+    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // TODO This is temp
+        ((ImageView) view.findViewById(R.id.arrow_IV)).setColorFilter(getResources().getColor(R.color.text_secondary));
     }
 
     @Override protected BaseModelsAdapter createAdapter(Context context) {
