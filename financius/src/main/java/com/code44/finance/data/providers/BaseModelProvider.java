@@ -67,7 +67,7 @@ public abstract class BaseModelProvider extends BaseProvider {
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
-                cursor = queryItems(projection, selection, selectionArgs, sortOrder);
+                cursor = queryItems(uri, projection, selection, selectionArgs, sortOrder);
                 break;
 
             case URI_ITEMS_ID:
@@ -240,13 +240,13 @@ public abstract class BaseModelProvider extends BaseProvider {
 
     protected abstract String getModelTable();
 
-    protected abstract String getQueryTables();
+    protected abstract String getQueryTables(Uri uri);
 
     protected abstract Column getServerIdColumn();
 
-    protected Cursor queryItems(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    protected Cursor queryItems(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         final SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(getQueryTables());
+        qb.setTables(getQueryTables(uri));
 
         final SQLiteDatabase database = getDatabase();
         return qb.query(database, projection, selection, selectionArgs, null, null, sortOrder);
@@ -254,7 +254,7 @@ public abstract class BaseModelProvider extends BaseProvider {
 
     protected Cursor queryItem(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         final SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(getQueryTables());
+        qb.setTables(getQueryTables(uri));
         qb.appendWhere(getServerIdColumn() + "='" + uri.getPathSegments().get(1) + "'");
 
         final SQLiteDatabase database = getDatabase();

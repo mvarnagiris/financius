@@ -25,7 +25,7 @@ public class TagsProvider extends BaseModelProvider {
     }
 
     @Override
-    protected String getQueryTables() {
+    protected String getQueryTables(Uri uri) {
         return getModelTable();
     }
 

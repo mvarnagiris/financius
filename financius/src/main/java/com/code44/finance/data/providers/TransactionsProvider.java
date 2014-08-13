@@ -14,9 +14,18 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.db.model.Account;
 import com.code44.finance.utils.IOUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class TransactionsProvider extends BaseModelProvider {
+    public static final String URI_PARAM_JOIN_TABLE = "join_table";
+    public static final String URI_VALUE_JOIN_TABLE_ACCOUNTS_FROM = "accounts_from";
+    public static final String URI_VALUE_JOIN_TABLE_ACCOUNTS_TO = "accounts_to";
+    public static final String URI_VALUE_JOIN_TABLE_CATEGORIES = "categories";
+    public static final String URI_VALUE_JOIN_TABLE_CURRENCIES_FROM = "currencies_from";
+    public static final String URI_VALUE_JOIN_TABLE_CURRENCIES_TO = "currencies_to";
+
     public static Uri uriTransactions() {
         return uriModels(TransactionsProvider.class, Tables.Transactions.TABLE_NAME);
     }
@@ -31,17 +40,49 @@ public class TransactionsProvider extends BaseModelProvider {
     }
 
     @Override
-    protected String getQueryTables() {
-        return getModelTable()
-                + " inner join " + Tables.Accounts.TABLE_NAME + " as " + Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT
-                + " on " + Tables.Accounts.SERVER_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT) + "=" + Tables.Transactions.ACCOUNT_FROM_ID
-                + " inner join " + Tables.Accounts.TABLE_NAME + " as " + Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT
-                + " on " + Tables.Accounts.SERVER_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT) + "=" + Tables.Transactions.ACCOUNT_TO_ID
-                + " inner join " + Tables.Categories.TABLE_NAME + " on " + Tables.Categories.SERVER_ID.getNameWithTable() + "=" + Tables.Transactions.CATEGORY_ID
-                + " left join " + Tables.Currencies.TABLE_NAME + " as " + Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY
-                + " on " + Tables.Currencies.SERVER_ID.getNameWithTable(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY) + "=" + Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT)
-                + " left join " + Tables.Currencies.TABLE_NAME + " as " + Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY
-                + " on " + Tables.Currencies.SERVER_ID.getNameWithTable(Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY) + "=" + Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT);
+    protected String getQueryTables(Uri uri) {
+        final List<String> joinTables = new ArrayList<>();
+        if (uri.getQueryParameterNames().contains(URI_PARAM_JOIN_TABLE)) {
+            // Join specific tables
+            joinTables.addAll(uri.getQueryParameters(URI_PARAM_JOIN_TABLE));
+        } else {
+            // Join all the things!
+            joinTables.add(URI_VALUE_JOIN_TABLE_ACCOUNTS_FROM);
+            joinTables.add(URI_VALUE_JOIN_TABLE_ACCOUNTS_TO);
+            joinTables.add(URI_VALUE_JOIN_TABLE_CATEGORIES);
+            joinTables.add(URI_VALUE_JOIN_TABLE_CURRENCIES_FROM);
+            joinTables.add(URI_VALUE_JOIN_TABLE_CURRENCIES_TO);
+        }
+
+        final StringBuilder sb = new StringBuilder();
+        sb.append(getModelTable());
+
+        if (joinTables.contains(URI_VALUE_JOIN_TABLE_ACCOUNTS_FROM)) {
+            sb.append(" inner join ").append(Tables.Accounts.TABLE_NAME).append(" as ").append(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT)
+                    .append(" on ").append(Tables.Accounts.SERVER_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT)).append("=").append(Tables.Transactions.ACCOUNT_FROM_ID);
+        }
+
+        if (joinTables.contains(URI_VALUE_JOIN_TABLE_ACCOUNTS_TO)) {
+            sb.append(" inner join ").append(Tables.Accounts.TABLE_NAME).append(" as ").append(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT)
+                    .append(" on ").append(Tables.Accounts.SERVER_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT)).append("=").append(Tables.Transactions.ACCOUNT_TO_ID);
+        }
+
+        if (joinTables.contains(URI_VALUE_JOIN_TABLE_CATEGORIES)) {
+            sb.append(" inner join ").append(Tables.Categories.TABLE_NAME)
+                    .append(" on ").append(Tables.Categories.SERVER_ID.getNameWithTable()).append("=").append(Tables.Transactions.CATEGORY_ID);
+        }
+
+        if (joinTables.contains(URI_VALUE_JOIN_TABLE_CURRENCIES_FROM)) {
+            sb.append(" left join ").append(Tables.Currencies.TABLE_NAME).append(" as ").append(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY)
+                    .append(" on ").append(Tables.Currencies.SERVER_ID.getNameWithTable(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY)).append("=").append(Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT));
+        }
+
+        if (joinTables.contains(URI_VALUE_JOIN_TABLE_CURRENCIES_TO)) {
+            sb.append(" left join ").append(Tables.Currencies.TABLE_NAME).append(" as ").append(Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY)
+                    .append(" on ").append(Tables.Currencies.SERVER_ID.getNameWithTable(Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY)).append("=").append(Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT));
+        }
+
+        return sb.toString();
     }
 
     @Override
