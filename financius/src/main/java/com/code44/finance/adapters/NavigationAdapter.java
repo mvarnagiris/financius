@@ -20,6 +20,8 @@ public class NavigationAdapter extends BaseAdapter {
 
     private final Context context;
     private final List<NavigationItem> items;
+    private final int selectedTextColor;
+    private final int normalTextColor;
 
     private long selectedId;
 
@@ -31,6 +33,9 @@ public class NavigationAdapter extends BaseAdapter {
         items.add(new NavigationItem(NAV_ID_OVERVIEW, context.getString(R.string.overview)));
         items.add(new NavigationItem(NAV_ID_ACCOUNTS, context.getString(R.string.accounts)));
         items.add(new NavigationItem(NAV_ID_TRANSACTIONS, context.getString(R.string.transactions)));
+
+        selectedTextColor = context.getResources().getColor(R.color.text_brand);
+        normalTextColor = context.getResources().getColor(R.color.text_primary);
     }
 
     @Override
@@ -58,13 +63,16 @@ public class NavigationAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        holder.title_TV.setText(items.get(position).getTitle());
+        final NavigationItem item = items.get(position);
+        holder.title_TV.setText(item.getTitle());
+        holder.title_TV.setTextColor(item.getId() == selectedId ? selectedTextColor : normalTextColor);
 
         return view;
     }
 
     public void setSelectedId(long selectedId) {
         this.selectedId = selectedId;
+        notifyDataSetChanged();
     }
 
     public NavigationItem getSelectedItem() {
