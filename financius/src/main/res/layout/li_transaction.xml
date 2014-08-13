@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
     style="@style/ListItem"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal">
 
     <FrameLayout
         android:layout_width="@dimen/keyline_between"
         android:layout_height="@dimen/keyline_between"
+        android:layout_gravity="center_vertical"
         android:layout_marginRight="@dimen/keyline"
         tools:ignore="RtlHardcoded">
 
@@ -66,6 +68,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:ellipsize="end"
+                android:singleLine="true"
                 tools:text="Leisure" />
 
             <TextView
@@ -89,6 +93,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:ellipsize="end"
+                android:singleLine="true"
                 tools:text="Linkin Park concert" />
 
             <TextView
@@ -97,28 +103,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
+                android:ellipsize="end"
+                android:singleLine="true"
                 tools:ignore="RtlHardcoded"
                 tools:text="Cash" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/amountDefault_TV"
-                style="@style/Text.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                tools:ignore="RtlHardcoded"
-                tools:text="45.75 £" />
 
         </LinearLayout>
 

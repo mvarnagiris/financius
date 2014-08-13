@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.data.db.model.Category;
-import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.data.db.model.Transaction;
 import com.code44.finance.utils.MoneyFormatter;
 
@@ -49,26 +48,15 @@ public class TransactionsAdapter extends BaseModelsAdapter {
         holder.note_TV.setText(transaction.getNote());
         holder.amount_TV.setText(MoneyFormatter.format(transaction));
 
-        final Currency currency;
         if (category.getCategoryType() == CategoryType.EXPENSE) {
             holder.account_TV.setText(transaction.getAccountFrom().getTitle());
             holder.amount_TV.setTextColor(expenseColor);
-            currency = transaction.getAccountFrom().getCurrency();
         } else if (category.getCategoryType() == CategoryType.INCOME) {
             holder.account_TV.setText(transaction.getAccountTo().getTitle());
             holder.amount_TV.setTextColor(incomeColor);
-            currency = transaction.getAccountTo().getCurrency();
         } else {
             holder.account_TV.setText(transaction.getAccountFrom().getTitle() + " > " + transaction.getAccountTo().getTitle());
             holder.amount_TV.setTextColor(transferColor);
-            currency = transaction.getAccountFrom().getCurrency();
-        }
-
-        if (currency.isDefault()) {
-            holder.amountDefault_TV.setVisibility(View.GONE);
-        } else {
-            holder.amountDefault_TV.setVisibility(View.VISIBLE);
-            holder.amountDefault_TV.setText(MoneyFormatter.format(Currency.getDefault(), (long) (transaction.getAmount() * currency.getExchangeRate())));
         }
     }
 
@@ -80,7 +68,6 @@ public class TransactionsAdapter extends BaseModelsAdapter {
         public TextView note_TV;
         public TextView amount_TV;
         public TextView account_TV;
-        public TextView amountDefault_TV;
 
         public static ViewHolder setAsTag(View view) {
             final ViewHolder holder = new ViewHolder();
@@ -91,7 +78,6 @@ public class TransactionsAdapter extends BaseModelsAdapter {
             holder.note_TV = (TextView) view.findViewById(R.id.note_TV);
             holder.amount_TV = (TextView) view.findViewById(R.id.amount_TV);
             holder.account_TV = (TextView) view.findViewById(R.id.account_TV);
-            holder.amountDefault_TV = (TextView) view.findViewById(R.id.amountDefault_TV);
             view.setTag(holder);
 
             return holder;
