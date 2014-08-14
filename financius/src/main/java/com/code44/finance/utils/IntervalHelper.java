@@ -9,7 +9,6 @@ import com.squareup.otto.Produce;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Period;
-import org.joda.time.ReadablePeriod;
 
 public class IntervalHelper extends Prefs {
     private static final String PREFIX = "interval_helper_";
@@ -111,7 +110,7 @@ public class IntervalHelper extends Prefs {
         currentInterval = new Interval(currentTime.dayOfMonth().withMinimumValue(), getPeriod());
     }
 
-    private ReadablePeriod getPeriod() {
+    private Period getPeriod() {
         switch (type) {
             case DAY:
                 return Period.days(intervalLength);
