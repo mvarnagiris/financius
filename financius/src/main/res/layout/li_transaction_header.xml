@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
     style="@style/ListItem"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/bg_secondary"
     android:gravity="center_vertical"
     tools:ignore="UseCompoundDrawables">
@@ -17,7 +18,7 @@
 
     <TextView
         android:id="@+id/title_TV"
-        style="@style/Text"
+        style="@style/Text.Body2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -26,10 +27,10 @@
 
     <TextView
         android:id="@+id/amount_TV"
-        style="@style/Text"
+        style="@style/Text.Body2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1587.28 $"
+        android:text="1,587.28 $"
         android:textColor="@color/text_secondary" />
 
 </LinearLayout>
