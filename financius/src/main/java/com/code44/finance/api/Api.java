@@ -87,6 +87,10 @@ public final class Api {
     }
 
     public void sync() {
+        if (!user.isPremium()) {
+            return;
+        }
+
         final SyncRequest request = new SyncRequest(eventBus, context, dbHelper, user, gcmRegistration, getCurrenciesService(), getCategoriesService(), getTagsService(), getAccountsService(), getTransactionsService());
         execute(request);
     }

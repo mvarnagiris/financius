@@ -128,10 +128,11 @@
     </style>
 
     <style name="Button.Borderless.Dialog">
-        <item name="android:layout_width">@dimen/btn_width</item>
-        <item name="android:layout_height">@dimen/btn_touch_size</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">@dimen/text_body</item>
+        <item name="android:minWidth">@dimen/btn_dialog_min_width</item>
+        <item name="android:minHeight">@dimen/recommended_touch_size</item>
+        <item name="android:paddingLeft">@dimen/space_large</item>
+        <item name="android:paddingRight">@dimen/space_large</item>
+        <item name="android:textAppearance">@style/Text.Body2</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textAlignment">center</item>
     </style>

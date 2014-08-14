@@ -14,10 +14,17 @@ import android.view.MenuItem;
 
 import com.code44.finance.R;
 import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.ui.dialogs.DeleteDialogFragment;
 
 public abstract class ModelFragment<T extends BaseModel> extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    public static final int REQUEST_DELETE = 6666;
+
+    protected static final String ARG_MODEL_SERVER_ID = "ARG_MODEL_SERVER_ID";
+
+    protected static final String FRAGMENT_DELETE = "FRAGMENT_DELETE";
+
     protected static final int LOADER_MODEL = 1000;
-    private static final String ARG_MODEL_SERVER_ID = "ARG_MODEL_SERVER_ID";
+
     protected String modelServerId;
     protected T model;
 
@@ -60,7 +67,7 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
             case R.id.action_delete:
                 final Uri deleteUri = getDeleteUri();
                 final Pair<String, String[]> deleteSelection = getDeleteSelection();
-                DeleteFragment.show(getFragmentManager(), deleteUri, deleteSelection.first, deleteSelection.second);
+                DeleteDialogFragment.newInstance(getActivity(), REQUEST_DELETE, deleteUri, deleteSelection.first, deleteSelection.second).show(getFragmentManager(), FRAGMENT_DELETE);
                 return true;
         }
         return super.onOptionsItemSelected(item);

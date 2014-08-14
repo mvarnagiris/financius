@@ -161,6 +161,7 @@ public abstract class BaseModelProvider extends BaseProvider {
         int count;
         final SQLiteDatabase database = getDatabase();
         final int uriId = uriMatcher.match(uri);
+        final ModelState modelState;
         switch (uriId) {
             case URI_ITEMS:
                 final String deleteMode = uri.getQueryParameter(ProviderUtils.QueryParameterKey.DELETE_MODE.getKeyName());
@@ -168,7 +169,6 @@ public abstract class BaseModelProvider extends BaseProvider {
                     throw new IllegalArgumentException("Uri " + uri + " must have query parameter " + ProviderUtils.QueryParameterKey.DELETE_MODE.getKeyName());
                 }
 
-                final ModelState modelState;
                 switch (deleteMode) {
                     case "delete":
                         modelState = ModelState.DELETED_UNDO;
@@ -202,7 +202,9 @@ public abstract class BaseModelProvider extends BaseProvider {
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
-        Api.get().sync();
+        if (modelState != ModelState.DELETED_UNDO) {
+            Api.get().sync();
+        }
 
         return count;
     }
