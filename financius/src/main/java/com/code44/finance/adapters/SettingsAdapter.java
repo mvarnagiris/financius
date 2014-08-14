@@ -8,14 +8,16 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.code44.finance.R;
+import com.code44.finance.utils.IntervalHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SettingsAdapter extends BaseAdapter {
-    public static final long ID_CURRENCIES = 1;
-    public static final long ID_CATEGORIES = 2;
-    public static final long ID_TAGS = 3;
+    public static final int ID_CURRENCIES = 1;
+    public static final int ID_CATEGORIES = 2;
+    public static final int ID_TAGS = 3;
+    public static final int ID_PERIOD = 4;
 
     private final Context context;
     private final List<SettingsItem> settingsItems;
@@ -26,6 +28,7 @@ public class SettingsAdapter extends BaseAdapter {
         settingsItems.add(new SettingsItem(ID_CURRENCIES, ViewType.SettingsItem, context.getString(R.string.currencies)));
         settingsItems.add(new SettingsItem(ID_CATEGORIES, ViewType.SettingsItem, context.getString(R.string.categories)));
         settingsItems.add(new SettingsItem(ID_TAGS, ViewType.SettingsItem, context.getString(R.string.tags)));
+        settingsItems.add(new SettingsSubtitleItem(ID_PERIOD, ViewType.SettingsSubtitleItem, context.getString(R.string.period), ""));
     }
 
     @Override
@@ -70,11 +73,22 @@ public class SettingsAdapter extends BaseAdapter {
         return convertView;
     }
 
+    public void onIntervalChanged(IntervalHelper intervalHelper) {
+        ((SettingsSubtitleItem) settingsItems.get(ID_PERIOD - 1)).setSubtitle(intervalHelper.getIntervalTypeTitle());
+        notifyDataSetChanged();
+    }
+
     private static enum ViewType {
         SettingsItem(R.layout.li_settings) {
             @Override
             public SettingsItemViewHolder createViewHolder(View itemView) {
                 return new SettingsItemViewHolder(itemView);
+            }
+        },
+        SettingsSubtitleItem(R.layout.li_settings_subtitle) {
+            @Override
+            public SettingsItemViewHolder createViewHolder(View itemView) {
+                return new SettingsSubtitleItemViewHolder(itemView);
             }
         };
 
@@ -115,6 +129,23 @@ public class SettingsAdapter extends BaseAdapter {
         }
     }
 
+    private static class SettingsSubtitleItem extends SettingsItem {
+        private String subtitle;
+
+        protected SettingsSubtitleItem(long id, ViewType viewType, String title, String subtitle) {
+            super(id, viewType, title);
+            this.subtitle = subtitle;
+        }
+
+        public String getSubtitle() {
+            return subtitle;
+        }
+
+        public void setSubtitle(String subtitle) {
+            this.subtitle = subtitle;
+        }
+    }
+
     private static class SettingsItemViewHolder {
         private final TextView title_TV;
 
@@ -122,8 +153,22 @@ public class SettingsAdapter extends BaseAdapter {
             title_TV = (TextView) itemView.findViewById(R.id.title_TV);
         }
 
-        private void bind(SettingsItem settingsItem) {
+        protected void bind(SettingsItem settingsItem) {
             title_TV.setText(settingsItem.getTitle());
+        }
+    }
+
+    private static class SettingsSubtitleItemViewHolder extends SettingsItemViewHolder {
+        private final TextView subtitle_TV;
+
+        private SettingsSubtitleItemViewHolder(View itemView) {
+            super(itemView);
+            subtitle_TV = (TextView) itemView.findViewById(R.id.subtitle_TV);
+        }
+
+        @Override protected void bind(SettingsItem settingsItem) {
+            super.bind(settingsItem);
+            subtitle_TV.setText(((SettingsSubtitleItem) settingsItem).getSubtitle());
         }
     }
 }

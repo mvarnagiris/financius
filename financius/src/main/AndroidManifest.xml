@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.code44.finance"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.code44.finance">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -32,7 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.SettingsActivity" />
+        <activity android:name=".ui.settings.SettingsActivity" />
         <activity android:name=".ui.CalculatorActivity" />
         <activity android:name=".ui.currencies.CurrenciesActivity" />
         <activity android:name=".ui.currencies.CurrencyActivity" />

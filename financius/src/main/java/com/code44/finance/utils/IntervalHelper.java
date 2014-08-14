@@ -3,6 +3,7 @@ package com.code44.finance.utils;
 import android.content.Context;
 
 import com.code44.finance.App;
+import com.code44.finance.R;
 import com.squareup.otto.Produce;
 
 import org.joda.time.DateTime;
@@ -18,7 +19,7 @@ public class IntervalHelper extends Prefs {
     private final EventBus eventBus;
 
     private Type type;
-    private int periodLength;
+    private int intervalLength;
 
     private Interval currentInterval;
 
@@ -48,7 +49,7 @@ public class IntervalHelper extends Prefs {
 
     public void refresh() {
         type = Type.valueOf(getString("type", Type.MONTH.toString()));
-        periodLength = getInteger("periodLength", 1);
+        intervalLength = getInteger("intervalLength", 1);
 
         invalidateCurrentIntervalIfNecessary();
         notifyChanged();
@@ -69,19 +70,34 @@ public class IntervalHelper extends Prefs {
         }
     }
 
+    public String getIntervalTypeTitle() {
+        switch (type) {
+            case DAY:
+                return getContext().getString(R.string.day);
+            case WEEK:
+                return getContext().getString(R.string.week);
+            case MONTH:
+                return getContext().getString(R.string.month);
+            case YEAR:
+                return getContext().getString(R.string.year);
+            default:
+                throw new IllegalArgumentException("Type " + type + " is not supported.");
+        }
+    }
+
     public Type getType() {
         return type;
     }
 
-    public int getPeriodLength() {
-        return periodLength;
+    public int getIntervalLength() {
+        return intervalLength;
     }
 
-    public void setTypeAndLength(Type type, int periodLength) {
+    public void setTypeAndLength(Type type, int intervalLength) {
         this.type = type;
-        this.periodLength = periodLength;
+        this.intervalLength = intervalLength;
         setString("type", type.toString());
-        setInteger("periodLength", periodLength);
+        setInteger("intervalLength", intervalLength);
         currentInterval = null;
         refresh();
     }
@@ -98,13 +114,13 @@ public class IntervalHelper extends Prefs {
     private ReadablePeriod getPeriod() {
         switch (type) {
             case DAY:
-                return Period.days(periodLength);
+                return Period.days(intervalLength);
             case WEEK:
-                return Period.weeks(periodLength);
+                return Period.weeks(intervalLength);
             case MONTH:
-                return Period.months(periodLength);
+                return Period.months(intervalLength);
             case YEAR:
-                return Period.years(periodLength);
+                return Period.years(intervalLength);
             default:
                 throw new IllegalArgumentException("Type " + type + " is not supported.");
         }
