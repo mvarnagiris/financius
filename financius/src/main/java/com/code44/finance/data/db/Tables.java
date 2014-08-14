@@ -169,7 +169,9 @@ public final class Tables {
                     .projection(Tables.Accounts.PROJECTION)
                     .projection(Tables.Currencies.PROJECTION)
                     .selection(Accounts.MODEL_STATE + "=?", ModelState.NORMAL.asString())
-                    .selection(" and " + Tables.Accounts.OWNER + "=?", AccountOwner.USER.asString());
+                    .selection(" and " + Tables.Accounts.OWNER + "=?", AccountOwner.USER.asString())
+                    .sortOrder(Accounts.INCLUDE_IN_TOTALS.getName() + " desc")
+                    .sortOrder(Accounts.TITLE.getName());
         }
     }
 

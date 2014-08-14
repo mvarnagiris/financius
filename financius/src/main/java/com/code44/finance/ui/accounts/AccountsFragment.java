@@ -32,49 +32,41 @@ public class AccountsFragment extends ModelListFragment {
         return fragment;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_accounts, container, false);
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
         balance_TV = (TextView) view.findViewById(R.id.balance_TV);
     }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == LOADER_MODELS) {
             updateBalance(data);
         }
         super.onLoadFinished(loader, data);
     }
 
-    @Override
-    protected BaseModelsAdapter createAdapter(Context context) {
+    @Override protected BaseModelsAdapter createAdapter(Context context) {
         return new AccountsAdapter(context);
     }
 
-    @Override
-    protected CursorLoader getModelsCursorLoader(Context context) {
+    @Override protected CursorLoader getModelsCursorLoader(Context context) {
         return Tables.Accounts.getQuery().asCursorLoader(context, AccountsProvider.uriAccounts());
     }
 
-    @Override
-    protected BaseModel modelFrom(Cursor cursor) {
+    @Override protected BaseModel modelFrom(Cursor cursor) {
         return Account.from(cursor);
     }
 
-    @Override
-    protected void onModelClick(Context context, View view, int position, String modelServerId, BaseModel model) {
+    @Override protected void onModelClick(Context context, View view, int position, String modelServerId, BaseModel model) {
         AccountActivity.start(context, modelServerId);
     }
 
-    @Override
-    protected void startModelEdit(Context context, String modelServerId) {
+    @Override protected void startModelEdit(Context context, String modelServerId) {
         AccountEditActivity.start(context, modelServerId);
     }
 
@@ -87,7 +79,9 @@ public class AccountsFragment extends ModelListFragment {
         if (cursor.moveToFirst()) {
             do {
                 final Account account = Account.from(cursor);
-                balance += account.getBalance() * account.getCurrency().getExchangeRate();
+                if (account.includeInTotals()) {
+                    balance += account.getBalance() * account.getCurrency().getExchangeRate();
+                }
             } while (cursor.moveToNext());
         }
         balance_TV.setText(MoneyFormatter.format(Currency.getDefault(), balance));

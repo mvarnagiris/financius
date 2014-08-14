@@ -67,12 +67,22 @@
 
     <!-- EditText -->
     <!-- =========================================================================================================== -->
+
     <style name="EditText">
         <item name="android:textAppearance">@style/Text.Subhead</item>
     </style>
 
     <style name="EditText.Large">
         <item name="android:textAppearance">@style/Text.Display1</item>
+    </style>
+
+    <!-- CheckBox -->
+    <!-- =========================================================================================================== -->
+
+    <style name="CheckBox" />
+
+    <style name="CheckBox.Field">
+        <item name="android:textAppearance">@style/Text.Subhead</item>
     </style>
 
     <!-- Button -->

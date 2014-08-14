@@ -194,7 +194,7 @@ public class Account extends BaseModel {
             setAccountOwner(AccountOwner.fromInt(cursor.getInt(index)));
         }
 
-        // Owner
+        // Include in totals
         index = cursor.getColumnIndex(Tables.Accounts.INCLUDE_IN_TOTALS.getName(columnPrefixTable));
         if (index >= 0) {
             setIncludeInTotals(cursor.getInt(index) != 0);

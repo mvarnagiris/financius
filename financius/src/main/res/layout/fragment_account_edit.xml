@@ -8,8 +8,9 @@
     android:orientation="vertical"
     tools:context=".ui.currencies.CurrencyEditActivity">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         style="@style/ScrollView"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="0px"
         android:layout_weight="1">
 
@@ -77,6 +78,23 @@
                 android:layout_marginTop="@dimen/space_normal"
                 android:hint="@string/note"
                 android:inputType="textCapSentences" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                tools:ignore="RtlHardcoded,RtlSymmetry">
+
+                <CheckBox
+                    android:id="@+id/includeInTotals_CB"
+                    style="@style/CheckBox.Field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/keyline"
+                    android:layout_marginRight="@dimen/keyline"
+                    android:layout_marginTop="@dimen/space_xxlarge"
+                    android:text="@string/include_in_totals" />
+            </FrameLayout>
 
         </LinearLayout>
     </ScrollView>

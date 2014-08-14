@@ -21,6 +21,7 @@
     <string name="exchange_rate">Exchange rate</string>
     <string name="accounts">Accounts</string>
     <string name="account">Account</string>
+    <string name="include_in_totals">Include in totals</string>
     <string name="balance">Balance</string>
     <string name="title">Title</string>
     <string name="note">Note</string>

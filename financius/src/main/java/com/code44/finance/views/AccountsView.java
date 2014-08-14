@@ -75,6 +75,11 @@ public class AccountsView extends LinearLayout {
             totalBalance += account.getBalance() * account.getCurrency().getExchangeRate();
         }
 
-        totalBalance_TV.setText(MoneyFormatter.format(Currency.getDefault(), totalBalance));
+        if (accounts.size() > 1) {
+            balanceContainer_V.setVisibility(VISIBLE);
+            totalBalance_TV.setText(MoneyFormatter.format(Currency.getDefault(), totalBalance));
+        } else {
+            balanceContainer_V.setVisibility(GONE);
+        }
     }
 }

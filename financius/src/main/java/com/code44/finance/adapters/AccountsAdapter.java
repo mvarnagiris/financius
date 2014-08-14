@@ -13,8 +13,13 @@ import com.code44.finance.data.db.model.Currency;
 import com.code44.finance.utils.MoneyFormatter;
 
 public class AccountsAdapter extends BaseModelsAdapter {
+    private final int includeInTotalsTextColor;
+    private final int doNotIncludeInTotalsTextColor;
+
     public AccountsAdapter(Context context) {
         super(context);
+        includeInTotalsTextColor = context.getResources().getColor(R.color.text_primary);
+        doNotIncludeInTotalsTextColor = context.getResources().getColor(R.color.text_secondary);
     }
 
     @Override
@@ -30,6 +35,7 @@ public class AccountsAdapter extends BaseModelsAdapter {
         final Account account = Account.from(cursor);
         holder.title_TV.setText(account.getTitle());
         holder.balance_TV.setText(MoneyFormatter.format(account.getCurrency(), account.getBalance()));
+        holder.balance_TV.setTextColor(account.includeInTotals() ? includeInTotalsTextColor : doNotIncludeInTotalsTextColor);
         if (account.getCurrency().getServerId().equals(Currency.getDefault().getServerId())) {
             holder.mainCurrencyBalance_TV.setVisibility(View.GONE);
         } else {
