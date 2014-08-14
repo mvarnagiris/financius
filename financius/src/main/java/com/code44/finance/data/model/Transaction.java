@@ -30,6 +30,7 @@ public class Transaction extends BaseModel {
     private double exchangeRate;
     private String note;
     private TransactionState transactionState;
+    private boolean includeInReports;
 
     public Transaction() {
         super();
@@ -41,6 +42,7 @@ public class Transaction extends BaseModel {
         setExchangeRate(1.0);
         setNote(null);
         setTransactionState(TransactionState.CONFIRMED);
+        setIncludeInReports(true);
     }
 
     public Transaction(Parcel in) {
@@ -68,6 +70,7 @@ public class Transaction extends BaseModel {
         transaction.setExchangeRate(entity.getExchangeRate());
         transaction.setNote(entity.getNote());
         transaction.setTransactionState(TransactionState.valueOf(entity.getTransactionState()));
+        transaction.setIncludeInReports(entity.getIncludeInReports());
         return transaction;
     }
 
@@ -101,6 +104,7 @@ public class Transaction extends BaseModel {
         setExchangeRate(parcel.readDouble());
         setNote(parcel.readString());
         setTransactionState(TransactionState.fromInt(parcel.readInt()));
+        setIncludeInReports(parcel.readInt() != 0);
     }
 
     @Override
@@ -113,6 +117,7 @@ public class Transaction extends BaseModel {
         parcel.writeDouble(getExchangeRate());
         parcel.writeString(getNote());
         parcel.writeInt(getTransactionState().asInt());
+        parcel.writeInt(includeInReports() ? 1 : 0);
     }
 
     @Override
@@ -125,6 +130,7 @@ public class Transaction extends BaseModel {
         values.put(Tables.Transactions.EXCHANGE_RATE.getName(), exchangeRate);
         values.put(Tables.Transactions.NOTE.getName(), note);
         values.put(Tables.Transactions.STATE.getName(), transactionState.asInt());
+        values.put(Tables.Transactions.INCLUDE_IN_REPORTS.getName(), includeInReports);
     }
 
     @Override
@@ -175,6 +181,12 @@ public class Transaction extends BaseModel {
         if (index >= 0) {
             setTransactionState(TransactionState.fromInt(cursor.getInt(index)));
         }
+
+        // Include in reports
+        index = cursor.getColumnIndex(Tables.Transactions.INCLUDE_IN_REPORTS.getName(columnPrefixTable));
+        if (index >= 0) {
+            setIncludeInReports(cursor.getInt(index) != 0);
+        }
     }
 
     @Override
@@ -218,6 +230,7 @@ public class Transaction extends BaseModel {
         entity.setExchangeRate(getExchangeRate());
         entity.setNote(getNote());
         entity.setTransactionState(getTransactionState().toString());
+        entity.setIncludeInReports(includeInReports());
         return entity;
     }
 
@@ -283,5 +296,13 @@ public class Transaction extends BaseModel {
 
     public void setTransactionState(TransactionState transactionState) {
         this.transactionState = transactionState;
+    }
+
+    public boolean includeInReports() {
+        return includeInReports;
+    }
+
+    public void setIncludeInReports(boolean includeInReports) {
+        this.includeInReports = includeInReports;
     }
 }

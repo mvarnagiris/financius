@@ -255,17 +255,19 @@ public final class Tables {
         public static final Column EXCHANGE_RATE = new Column(TABLE_NAME, "exchange_rate", Column.DataType.REAL);
         public static final Column NOTE = new Column(TABLE_NAME, "note", Column.DataType.TEXT);
         public static final Column STATE = new Column(TABLE_NAME, "state", Column.DataType.INTEGER);
+        public static final Column INCLUDE_IN_REPORTS = new Column(TABLE_NAME, "include_in_reports", Column.DataType.BOOLEAN, "1");
 
         public static final String[] PROJECTION = {SERVER_ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
                 ACCOUNT_FROM_ID.getName(), ACCOUNT_TO_ID.getName(), CATEGORY_ID.getName(),
-                DATE.getName(), AMOUNT.getName(), EXCHANGE_RATE.getName(), NOTE.getName(), STATE.getName()};
+                DATE.getName(), AMOUNT.getName(), EXCHANGE_RATE.getName(), NOTE.getName(), STATE.getName(),
+                INCLUDE_IN_REPORTS.getName()};
 
         private Transactions() {
         }
 
         public static String createScript() {
             return makeCreateScript(TABLE_NAME, ID, SERVER_ID, MODEL_STATE, SYNC_STATE, ACCOUNT_FROM_ID,
-                    ACCOUNT_TO_ID, CATEGORY_ID, DATE, AMOUNT, EXCHANGE_RATE, NOTE, STATE);
+                    ACCOUNT_TO_ID, CATEGORY_ID, DATE, AMOUNT, EXCHANGE_RATE, NOTE, STATE, INCLUDE_IN_REPORTS);
         }
 
         public static Query getQuery() {
