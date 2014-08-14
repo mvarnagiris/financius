@@ -15,9 +15,10 @@ import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartValue;
 import com.code44.finance.ui.BaseFragment;
-import com.code44.finance.utils.PeriodHelper;
+import com.code44.finance.utils.IntervalHelper;
 import com.code44.finance.views.AccountsView;
 import com.code44.finance.views.OverviewGraphView;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.List;
 public class OverviewFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
     private static final int LOADER_ACCOUNTS = 1;
 
-    private final PeriodHelper periodHelper = PeriodHelper.get();
+    private final IntervalHelper intervalHelper = IntervalHelper.get();
 
     private OverviewGraphView overviewGraph_V;
     private AccountsView accounts_V;
@@ -34,13 +35,11 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
         return new OverviewFragment();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_overview, container, false);
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
@@ -52,16 +51,24 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
         setOverviewGraph(null);
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    @Override public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         // Loader
         getLoaderManager().initLoader(LOADER_ACCOUNTS, null, this);
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    @Override public void onResume() {
+        super.onResume();
+        getEventBus().register(this);
+    }
+
+    @Override public void onPause() {
+        super.onPause();
+        getEventBus().unregister(this);
+    }
+
+    @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case LOADER_ACCOUNTS:
                 return Tables.Accounts.getQuery().selection(" and " + Tables.Accounts.INCLUDE_IN_TOTALS + "=?", "1").asCursorLoader(getActivity(), AccountsProvider.uriAccounts());
@@ -69,8 +76,7 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
         return null;
     }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    @Override public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         switch (loader.getId()) {
             case LOADER_ACCOUNTS:
                 onAccountsLoaded(cursor);
@@ -78,22 +84,23 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
         }
     }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    @Override public void onLoaderReset(Loader<Cursor> loader) {
 
     }
 
-    @Override
-    public void onClick(View view) {
+    @Override public void onClick(View view) {
         switch (view.getId()) {
             case R.id.overviewGraph_V:
                 break;
         }
     }
 
-    @Override
-    public String getTitle() {
-        return periodHelper.getTitle();
+    @Override public String getTitle() {
+        return intervalHelper.getCurrentIntervalTitle();
+    }
+
+    @Subscribe public void onCurrentIntervalChanged(IntervalHelper intervalHelper) {
+        requestTitleUpdate();
     }
 
     private void onAccountsLoaded(Cursor cursor) {

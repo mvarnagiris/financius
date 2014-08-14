@@ -29,7 +29,7 @@ public class NavigationAdapter extends BaseAdapter {
         this.context = context;
 
         items = new ArrayList<>();
-        items.add(new NavigationItem(NAV_ID_USER, context.getString(R.string.user)));
+        // TODO items.add(new NavigationItem(NAV_ID_USER, context.getString(R.string.user)));
         items.add(new NavigationItem(NAV_ID_OVERVIEW, context.getString(R.string.overview)));
         items.add(new NavigationItem(NAV_ID_ACCOUNTS, context.getString(R.string.accounts)));
         items.add(new NavigationItem(NAV_ID_TRANSACTIONS, context.getString(R.string.transactions)));
