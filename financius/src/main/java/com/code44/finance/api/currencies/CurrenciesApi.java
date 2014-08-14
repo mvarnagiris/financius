@@ -8,7 +8,7 @@ import com.code44.finance.api.DefaultNetworkExecutor;
 import com.code44.finance.api.NetworkExecutor;
 import com.code44.finance.api.Request;
 import com.code44.finance.common.utils.Preconditions;
-import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.data.model.Currency;
 import com.code44.finance.utils.EventBus;
 
 import java.util.List;

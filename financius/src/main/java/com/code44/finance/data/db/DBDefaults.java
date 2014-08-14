@@ -9,9 +9,9 @@ import com.code44.finance.R;
 import com.code44.finance.common.model.AccountOwner;
 import com.code44.finance.common.model.CategoryOwner;
 import com.code44.finance.common.model.CategoryType;
-import com.code44.finance.data.db.model.Account;
-import com.code44.finance.data.db.model.Category;
-import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.data.model.Account;
+import com.code44.finance.data.model.Category;
+import com.code44.finance.data.model.Currency;
 
 import java.util.HashSet;
 import java.util.Locale;

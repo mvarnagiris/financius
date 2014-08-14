@@ -13,7 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.code44.finance.R;
-import com.code44.finance.data.db.model.BaseModel;
+import com.code44.finance.data.model.BaseModel;
 
 public abstract class ModelFragment<T extends BaseModel> extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     protected static final int LOADER_MODEL = 1000;

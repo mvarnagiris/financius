@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.Category;
+import com.code44.finance.data.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.ui.ModelFragment;
 

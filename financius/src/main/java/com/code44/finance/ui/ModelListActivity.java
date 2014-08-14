@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.code44.finance.R;
-import com.code44.finance.data.db.model.BaseModel;
+import com.code44.finance.data.model.BaseModel;
 
 public abstract class ModelListActivity extends BaseActivity implements ModelListFragment.ModelListCallback {
     public static final String RESULT_EXTRA_MODEL_ID = "RESULT_EXTRA_MODEL_ID";

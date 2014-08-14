@@ -5,7 +5,7 @@ import com.code44.finance.backend.endpoint.tags.Tags;
 import com.code44.finance.backend.endpoint.tags.model.TagEntity;
 import com.code44.finance.backend.endpoint.tags.model.TagsBody;
 import com.code44.finance.common.utils.Preconditions;
-import com.code44.finance.data.db.model.Tag;
+import com.code44.finance.data.model.Tag;
 
 import java.util.ArrayList;
 import java.util.List;

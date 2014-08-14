@@ -55,6 +55,9 @@ public class TransactionEntity extends BaseEntity {
     @ApiResourceProperty(name = "transaction_state")
     private TransactionState transactionState;
 
+    @ApiResourceProperty(name = "include_in_reports")
+    private boolean includeInReports;
+
     public static TransactionEntity find(String id) {
         return ofy().load().type(TransactionEntity.class).id(id).now();
     }
@@ -161,5 +164,13 @@ public class TransactionEntity extends BaseEntity {
 
     public void setTransactionState(TransactionState transactionState) {
         this.transactionState = transactionState;
+    }
+
+    public boolean isIncludeInReports() {
+        return includeInReports;
+    }
+
+    public void setIncludeInReports(boolean includeInReports) {
+        this.includeInReports = includeInReports;
     }
 }

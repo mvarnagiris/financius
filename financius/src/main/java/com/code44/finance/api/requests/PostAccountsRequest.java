@@ -5,7 +5,7 @@ import com.code44.finance.backend.endpoint.accounts.Accounts;
 import com.code44.finance.backend.endpoint.accounts.model.AccountEntity;
 import com.code44.finance.backend.endpoint.accounts.model.AccountsBody;
 import com.code44.finance.common.utils.Preconditions;
-import com.code44.finance.data.db.model.Account;
+import com.code44.finance.data.model.Account;
 
 import java.util.ArrayList;
 import java.util.List;

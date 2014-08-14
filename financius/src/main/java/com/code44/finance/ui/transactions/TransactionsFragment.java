@@ -13,8 +13,8 @@ import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.adapters.TransactionsAdapter;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.BaseModel;
-import com.code44.finance.data.db.model.Transaction;
+import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.ui.ModelListFragment;
 

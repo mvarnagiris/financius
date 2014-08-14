@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.Account;
-import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.data.model.Account;
+import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.ui.ModelFragment;
 import com.code44.finance.utils.MoneyFormatter;

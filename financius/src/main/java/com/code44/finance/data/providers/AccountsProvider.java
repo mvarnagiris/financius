@@ -10,9 +10,9 @@ import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.Account;
-import com.code44.finance.data.db.model.Category;
-import com.code44.finance.data.db.model.Transaction;
+import com.code44.finance.data.model.Account;
+import com.code44.finance.data.model.Category;
+import com.code44.finance.data.model.Transaction;
 import com.code44.finance.utils.IOUtils;
 
 import java.util.List;

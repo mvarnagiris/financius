@@ -11,7 +11,7 @@ import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.Account;
+import com.code44.finance.data.model.Account;
 import com.code44.finance.utils.IOUtils;
 
 import java.util.ArrayList;

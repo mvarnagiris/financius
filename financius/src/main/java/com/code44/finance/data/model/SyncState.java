@@ -1,4 +1,4 @@
-package com.code44.finance.data.db.model;
+package com.code44.finance.data.model;
 
 public enum SyncState {
     NONE(SyncState.VALUE_NONE),

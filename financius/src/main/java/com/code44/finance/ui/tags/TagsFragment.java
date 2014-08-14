@@ -12,8 +12,8 @@ import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.adapters.TagsAdapter;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.BaseModel;
-import com.code44.finance.data.db.model.Tag;
+import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.providers.TagsProvider;
 import com.code44.finance.ui.ModelListFragment;
 

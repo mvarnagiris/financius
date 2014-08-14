@@ -10,7 +10,7 @@ import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.IOUtils;

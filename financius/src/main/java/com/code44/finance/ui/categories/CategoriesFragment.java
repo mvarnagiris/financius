@@ -15,8 +15,8 @@ import com.code44.finance.common.model.CategoryOwner;
 import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.BaseModel;
-import com.code44.finance.data.db.model.Category;
+import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.ui.ModelListFragment;
 

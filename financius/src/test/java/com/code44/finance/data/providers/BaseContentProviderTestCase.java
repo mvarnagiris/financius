@@ -10,14 +10,14 @@ import android.net.Uri;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.DBHelper;
-import com.code44.finance.data.db.model.BaseModelV2;
+import com.code44.finance.data.model.BaseModelV2;
 import com.code44.finance.utils.IOUtils;
 
 import org.junit.Before;
 import org.robolectric.Robolectric;
 import org.robolectric.shadows.ShadowContentResolver;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class BaseContentProviderTestCase {
     protected Context context;

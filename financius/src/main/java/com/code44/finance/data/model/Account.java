@@ -1,4 +1,4 @@
-package com.code44.finance.data.db.model;
+package com.code44.finance.data.model;
 
 import android.content.ContentValues;
 import android.database.Cursor;

@@ -6,7 +6,7 @@ import android.content.Context;
 import com.code44.finance.api.Request;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.DataStore;
-import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.EventBus;
 

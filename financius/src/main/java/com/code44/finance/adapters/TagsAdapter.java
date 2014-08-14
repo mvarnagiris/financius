@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.data.db.model.Tag;
+import com.code44.finance.data.model.Tag;
 
 public class TagsAdapter extends BaseModelsAdapter {
     public TagsAdapter(Context context) {

@@ -3,8 +3,8 @@ package com.code44.finance.utils;
 import android.support.v4.util.LongSparseArray;
 
 import com.code44.finance.common.model.CategoryType;
-import com.code44.finance.data.db.model.Currency;
-import com.code44.finance.data.db.model.Transaction;
+import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.Transaction;
 
 public class MoneyFormatter {
     private static final LongSparseArray<CurrencyFormat> currencyFormats = new LongSparseArray<>();

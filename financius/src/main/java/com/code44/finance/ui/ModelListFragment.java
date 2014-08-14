@@ -16,7 +16,7 @@ import android.widget.ListView;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
-import com.code44.finance.data.db.model.BaseModel;
+import com.code44.finance.data.model.BaseModel;
 
 public abstract class ModelListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
     public static final String ARG_MODE = ModelListFragment.class.getName() + ".ARG_MODE";

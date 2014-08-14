@@ -6,7 +6,7 @@ import com.code44.finance.common.model.AccountOwner;
 import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
-import com.code44.finance.data.db.model.SyncState;
+import com.code44.finance.data.model.SyncState;
 
 import java.util.ArrayList;
 import java.util.List;

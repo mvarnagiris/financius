@@ -7,8 +7,8 @@ import com.code44.finance.api.User;
 import com.code44.finance.backend.endpoint.tags.Tags;
 import com.code44.finance.backend.endpoint.tags.model.TagEntity;
 import com.code44.finance.common.utils.Preconditions;
-import com.code44.finance.data.db.model.BaseModel;
-import com.code44.finance.data.db.model.Tag;
+import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.providers.TagsProvider;
 
 import java.util.List;

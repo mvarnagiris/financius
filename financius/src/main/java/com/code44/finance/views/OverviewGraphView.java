@@ -6,7 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.data.model.Currency;
 import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartView;
 import com.code44.finance.utils.MoneyFormatter;

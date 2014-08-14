@@ -31,7 +31,7 @@ import com.code44.finance.common.model.GroupSeparator;
 import com.code44.finance.common.model.SymbolPosition;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelEditFragment;
 import com.code44.finance.utils.EventBus;

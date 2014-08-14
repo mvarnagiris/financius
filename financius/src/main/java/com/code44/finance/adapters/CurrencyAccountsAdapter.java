@@ -14,8 +14,8 @@ import android.widget.TextView;
 import com.code44.finance.App;
 import com.code44.finance.R;
 import com.code44.finance.data.DataStore;
-import com.code44.finance.data.db.model.Account;
-import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.data.model.Account;
+import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
 
 public class CurrencyAccountsAdapter extends BaseModelsAdapter {

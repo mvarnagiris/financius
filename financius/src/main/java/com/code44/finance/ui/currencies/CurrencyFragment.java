@@ -19,7 +19,7 @@ import com.code44.finance.adapters.CurrencyAccountsAdapter;
 import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.api.currencies.ExchangeRateRequest;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelFragment;

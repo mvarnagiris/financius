@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.common.model.CategoryType;
-import com.code44.finance.data.db.model.Category;
-import com.code44.finance.data.db.model.Transaction;
+import com.code44.finance.data.model.Category;
+import com.code44.finance.data.model.Transaction;
 import com.code44.finance.utils.MoneyFormatter;
 
 import org.joda.time.DateTime;

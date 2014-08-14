@@ -5,7 +5,7 @@ import com.code44.finance.backend.endpoint.currencies.Currencies;
 import com.code44.finance.backend.endpoint.currencies.model.CurrenciesBody;
 import com.code44.finance.backend.endpoint.currencies.model.CurrencyEntity;
 import com.code44.finance.common.utils.Preconditions;
-import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.data.model.Currency;
 
 import java.util.ArrayList;
 import java.util.List;

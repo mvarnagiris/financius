@@ -7,8 +7,8 @@ import com.code44.finance.api.User;
 import com.code44.finance.backend.endpoint.categories.Categories;
 import com.code44.finance.backend.endpoint.categories.model.CategoryEntity;
 import com.code44.finance.common.utils.Preconditions;
-import com.code44.finance.data.db.model.BaseModel;
-import com.code44.finance.data.db.model.Category;
+import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
 
 import java.util.List;

@@ -5,7 +5,7 @@ import com.code44.finance.backend.endpoint.transactions.Transactions;
 import com.code44.finance.backend.endpoint.transactions.model.TransactionEntity;
 import com.code44.finance.backend.endpoint.transactions.model.TransactionsBody;
 import com.code44.finance.common.utils.Preconditions;
-import com.code44.finance.data.db.model.Transaction;
+import com.code44.finance.data.model.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;

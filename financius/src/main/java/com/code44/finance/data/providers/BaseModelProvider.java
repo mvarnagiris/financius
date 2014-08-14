@@ -15,7 +15,7 @@ import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.SyncState;
+import com.code44.finance.data.model.SyncState;
 import com.code44.finance.utils.IOUtils;
 
 import java.util.ArrayList;

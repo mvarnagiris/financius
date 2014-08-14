@@ -9,8 +9,8 @@ import com.code44.finance.backend.endpoint.currencies.Currencies;
 import com.code44.finance.backend.endpoint.currencies.model.CurrencyEntity;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.BaseModel;
-import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
 
 import java.util.List;

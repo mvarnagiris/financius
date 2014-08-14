@@ -3,7 +3,7 @@ package com.code44.finance.utils;
 import android.text.TextUtils;
 
 import com.code44.finance.common.model.GroupSeparator;
-import com.code44.finance.data.db.model.Currency;
+import com.code44.finance.data.model.Currency;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;

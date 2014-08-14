@@ -5,10 +5,10 @@ import android.database.Cursor;
 
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.db.model.Account;
-import com.code44.finance.data.db.model.BaseModel;
-import com.code44.finance.data.db.model.Category;
-import com.code44.finance.data.db.model.Transaction;
+import com.code44.finance.data.model.Account;
+import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Category;
+import com.code44.finance.data.model.Transaction;
 import com.code44.finance.utils.IOUtils;
 
 import org.junit.Test;
@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricTestRunner.class)
 public class AccountsProviderTest extends BaseContentProviderTestCase {

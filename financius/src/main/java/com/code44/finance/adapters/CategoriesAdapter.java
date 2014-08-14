@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.common.model.CategoryOwner;
-import com.code44.finance.data.db.model.Category;
+import com.code44.finance.data.model.Category;
 
 public class CategoriesAdapter extends BaseModelsAdapter {
     public CategoriesAdapter(Context context) {

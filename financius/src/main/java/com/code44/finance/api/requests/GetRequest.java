@@ -8,7 +8,7 @@ import com.code44.finance.api.Request;
 import com.code44.finance.api.User;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.DataStore;
-import com.code44.finance.data.db.model.BaseModel;
+import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.utils.EventBus;
 import com.google.api.client.json.GenericJson;
 
