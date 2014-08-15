@@ -16,6 +16,8 @@ import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.IOUtils;
 import com.google.gson.JsonObject;
 
+import java.util.UUID;
+
 import retrofit.client.Response;
 
 public class ExchangeRateRequest extends Request {
@@ -58,13 +60,16 @@ public class ExchangeRateRequest extends Request {
         }
         IOUtils.closeQuietly(cursor);
 
+        boolean currencyExists = true;
         if (currency == null || StringUtils.isEmpty(currency.getServerId())) {
-            currency = null;
-            return;
+            currencyExists = false;
+            currency = new Currency();
+            currency.setServerId(UUID.randomUUID().toString());
+            currency.setCode(fromCode);
         }
 
         currency.setExchangeRate(exchangeRate);
-        if (storeData) {
+        if (currencyExists && storeData) {
             DataStore.bulkInsert().values(currency.asContentValues()).into(context, CurrenciesProvider.uriCurrencies());
         }
     }
