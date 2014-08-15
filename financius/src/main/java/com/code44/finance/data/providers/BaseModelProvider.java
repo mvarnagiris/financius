@@ -331,10 +331,10 @@ public abstract class BaseModelProvider extends BaseProvider {
         return null;
     }
 
-    protected List<Long> getIdList(String tableName, String selection, String[] selectionArgs) {
-        final List<Long> affectedIds = new ArrayList<>();
+    protected List<String> getIdList(Column serverIdColumn, String selection, String[] selectionArgs) {
+        final List<String> affectedIds = new ArrayList<>();
 
-        final Query query = Query.create().projection(BaseColumns._ID);
+        final Query query = Query.create().projection(serverIdColumn.getName());
         if (!TextUtils.isEmpty(selection)) {
             query.selection(selection);
         }
@@ -342,12 +342,12 @@ public abstract class BaseModelProvider extends BaseProvider {
             query.args(selectionArgs);
         }
 
-        final Cursor cursor = query.from(getDatabase(), tableName).execute();
+        final Cursor cursor = query.from(getDatabase(), serverIdColumn.getTableName()).execute();
         try {
             if (cursor != null && cursor.moveToFirst()) {
                 do {
-                    int iId = cursor.getColumnIndex(BaseColumns._ID);
-                    affectedIds.add(cursor.getLong(iId));
+                    int iServerId = cursor.getColumnIndex(serverIdColumn.getName());
+                    affectedIds.add(cursor.getString(iServerId));
                 } while (cursor.moveToNext());
             }
         } finally {

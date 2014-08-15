@@ -45,7 +45,7 @@ public class CategoriesProvider extends BaseModelProvider {
     protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> outExtras) {
         super.onBeforeDeleteItems(uri, selection, selectionArgs, modelState, outExtras);
 
-        final List<Long> affectedIds = getIdList(Tables.Categories.TABLE_NAME, selection, selectionArgs);
+        final List<String> affectedIds = getIdList(getServerIdColumn(), selection, selectionArgs);
         outExtras.put("affectedIds", affectedIds);
     }
 
@@ -54,7 +54,7 @@ public class CategoriesProvider extends BaseModelProvider {
         super.onAfterDeleteItems(uri, selection, selectionArgs, modelState, extras);
 
         //noinspection unchecked
-        final List<Long> affectedIds = (List<Long>) extras.get("affectedIds");
+        final List<String> affectedIds = (List<String>) extras.get("affectedIds");
         if (affectedIds.size() > 0) {
             final Uri transactionsUri = uriForDeleteFromItemState(TransactionsProvider.uriTransactions(), modelState);
 

@@ -123,10 +123,10 @@ public class Query {
         return this;
     }
 
-    public Query selectionInClause(String clause, List<Long> ids) {
+    public Query selectionInClause(String clause, List<String> ids) {
         selection(makeInClause(clause, ids.size()));
-        for (Long id : ids) {
-            args(String.valueOf(id));
+        for (String id : ids) {
+            args(id);
         }
         return this;
     }

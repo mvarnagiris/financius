@@ -70,7 +70,7 @@ public class CurrenciesProvider extends BaseModelProvider {
     protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> outExtras) {
         super.onBeforeDeleteItems(uri, selection, selectionArgs, modelState, outExtras);
 
-        final List<Long> affectedIds = getIdList(Tables.Currencies.TABLE_NAME, selection, selectionArgs);
+        final List<String> affectedIds = getIdList(getServerIdColumn(), selection, selectionArgs);
         if (modelState.equals(ModelState.DELETED_UNDO) && affectedIds.contains(Currency.getDefault().getId())) {
             throw new IllegalArgumentException("Cannot delete default currency.");
         }
@@ -83,7 +83,7 @@ public class CurrenciesProvider extends BaseModelProvider {
         MoneyFormatter.invalidateCache();
 
         //noinspection unchecked
-        final List<Long> affectedIds = (List<Long>) extras.get("affectedIds");
+        final List<String> affectedIds = (List<String>) extras.get("affectedIds");
         if (affectedIds.size() > 0) {
             final Query query = Query.create()
                     .selectionInClause(Tables.Accounts.CURRENCY_ID.getName(), affectedIds);
