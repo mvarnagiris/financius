@@ -15,7 +15,7 @@ public abstract class ModelActivity extends BaseActivity {
 
     private final Object eventHandler = new Object() {
         @Subscribe public void onItemDeleted(DeleteDialogFragment.DeleteDialogEvent event) {
-            if (event.isPositiveClicked()) {
+            if (event.getRequestCode() == ModelFragment.REQUEST_DELETE && event.isPositiveClicked()) {
                 finish();
             }
         }

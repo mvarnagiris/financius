@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/space_xlarge">
+
+    <TextView
+        android:id="@+id/title_TV"
+        style="@style/Text.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/space_xlarge"
+        android:layout_marginLeft="@dimen/space_xlarge"
+        android:layout_marginRight="@dimen/space_xlarge"
+        tools:text="Title of the dialog" />
+
+    <ListView
+        android:id="@+id/list_V"
+        style="@style/ListView"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <include layout="@layout/include_dialog_buttons" />
+
+</LinearLayout>

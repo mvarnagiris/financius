@@ -12,12 +12,12 @@ import com.code44.finance.ui.accounts.AccountsFragment;
 import com.code44.finance.ui.overview.OverviewFragment;
 import com.code44.finance.ui.transactions.TransactionsFragment;
 import com.code44.finance.ui.user.UserFragment;
+import com.squareup.otto.Subscribe;
 
 public class MainActivity extends BaseActivity implements NavigationFragment.NavigationListener {
     private static final String FRAGMENT_CONTENT = "FRAGMENT_CONTENT";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
 
@@ -31,18 +31,23 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
         } else {
             onFragmentLoaded(fragment);
         }
+
+        getEventBus().register(this);
     }
 
-    @Override
-    public void onAttachFragment(Fragment fragment) {
+    @Override public void onAttachFragment(Fragment fragment) {
         super.onAttachFragment(fragment);
         if (toolbarHelper != null && !(fragment instanceof NavigationFragment)) {
             onFragmentLoaded((BaseFragment) fragment);
         }
     }
 
-    @Override
-    public void onNavigationItemSelected(NavigationAdapter.NavigationItem item) {
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        getEventBus().unregister(this);
+    }
+
+    @Override public void onNavigationItemSelected(NavigationAdapter.NavigationItem item) {
         BaseFragment baseFragment = null;
         switch (item.getId()) {
             case NavigationAdapter.NAV_ID_USER:
@@ -66,6 +71,10 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
         if (baseFragment != null) {
             loadFragment(baseFragment);
         }
+    }
+
+    @Subscribe public void onTitleRequested(BaseFragment.RequestTitleUpdateEvent event) {
+        toolbarHelper.setTitle(event.getTitle());
     }
 
     private void loadFragment(BaseFragment fragment) {
