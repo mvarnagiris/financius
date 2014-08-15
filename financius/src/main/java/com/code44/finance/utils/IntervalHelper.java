@@ -6,9 +6,12 @@ import com.code44.finance.App;
 import com.code44.finance.R;
 import com.squareup.otto.Produce;
 
+import net.danlew.android.joda.DateUtils;
+
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Period;
+import org.joda.time.format.DateTimeFormat;
 
 public class IntervalHelper extends Prefs {
     private static final String PREFIX = "interval_helper_";
@@ -57,9 +60,9 @@ public class IntervalHelper extends Prefs {
     public String getCurrentIntervalTitle() {
         switch (type) {
             case DAY:
-                return currentInterval.getStart().dayOfMonth().getAsText();
+                return DateTimeFormat.mediumDate().print(currentInterval.getStart());
             case WEEK:
-                return currentInterval.getStart().weekOfWeekyear().getAsText();
+                return DateUtils.formatDateTime(getContext(), currentInterval.getStart(), DateUtils.FORMAT_ABBREV_ALL) + " - " + DateUtils.formatDateTime(getContext(), currentInterval.getEnd().minusMillis(1), DateUtils.FORMAT_ABBREV_ALL);
             case MONTH:
                 return currentInterval.getStart().monthOfYear().getAsText();
             case YEAR:
@@ -107,7 +110,25 @@ public class IntervalHelper extends Prefs {
             return;
         }
 
-        currentInterval = new Interval(currentTime.dayOfMonth().withMinimumValue(), getPeriod());
+        final DateTime intervalStart;
+        switch (type) {
+            case DAY:
+                intervalStart = currentTime.withTimeAtStartOfDay();
+                break;
+            case WEEK:
+                intervalStart = currentTime.weekOfWeekyear().roundFloorCopy();
+                break;
+            case MONTH:
+                intervalStart = currentTime.dayOfMonth().withMinimumValue();
+                break;
+            case YEAR:
+                intervalStart = currentTime.year().getDateTime();
+                break;
+            default:
+                throw new IllegalArgumentException("Type " + type + " is not supported.");
+        }
+
+        currentInterval = new Interval(intervalStart, getPeriod());
     }
 
     private Period getPeriod() {
