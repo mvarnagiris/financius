@@ -8,7 +8,6 @@ import com.code44.finance.api.Request;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
-import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
@@ -49,10 +48,8 @@ public class ExchangeRateRequest extends Request {
         final JsonObject json = IOUtils.readJsonObject(rawResponse);
         final double exchangeRate = json.get("rate").getAsDouble();
 
-        final Cursor cursor = Query.create()
-                .projection(Tables.Currencies.ID.getName())
-                .projection(Tables.Currencies.PROJECTION)
-                .selection(Tables.Currencies.CODE + "=?", fromCode)
+        final Cursor cursor = Tables.Currencies.getQuery()
+                .selection(" and " + Tables.Currencies.CODE + "=?", fromCode)
                 .from(App.getContext(), CurrenciesProvider.uriCurrencies())
                 .execute();
         if (cursor.moveToFirst()) {
