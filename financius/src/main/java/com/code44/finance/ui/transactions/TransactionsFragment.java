@@ -17,8 +17,15 @@ import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.ui.ModelListFragment;
+import com.code44.finance.utils.IntervalHelper;
+import com.squareup.otto.Subscribe;
+
+import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class TransactionsFragment extends ModelListFragment {
+    private ExpandableStickyListHeadersListView headerList_V;
+
     public static TransactionsFragment newInstance() {
         final Bundle args = makeArgs(Mode.VIEW);
 
@@ -31,15 +38,18 @@ public class TransactionsFragment extends ModelListFragment {
         return inflater.inflate(R.layout.fragment_transactions, container, false);
     }
 
-    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    @Override public void onResume() {
+        super.onResume();
+        getEventBus().register(this);
+    }
 
-        // TODO This is temp
-        ((ImageView) view.findViewById(R.id.arrow_IV)).setColorFilter(getResources().getColor(R.color.text_secondary));
+    @Override public void onPause() {
+        super.onPause();
+        getEventBus().unregister(this);
     }
 
     @Override protected BaseModelsAdapter createAdapter(Context context) {
-        return new TransactionsAdapter(context);
+        return new TransactionsAdapter(context, intervalHelper);
     }
 
     @Override protected CursorLoader getModelsCursorLoader(Context context) {
@@ -60,5 +70,30 @@ public class TransactionsFragment extends ModelListFragment {
 
     @Override public String getTitle() {
         return getString(R.string.transactions);
+    }
+
+    @Override protected void prepareView(View view, BaseModelsAdapter adapter) {
+        // Get views
+        headerList_V = (ExpandableStickyListHeadersListView) view.findViewById(R.id.headerList_V);
+
+        // Setup
+        headerList_V.setAdapter((TransactionsAdapter) adapter);
+        headerList_V.setOnItemClickListener(this);
+        headerList_V.setOnHeaderClickListener(new StickyListHeadersListView.OnHeaderClickListener() {
+            @Override
+            public void onHeaderClick(StickyListHeadersListView l, View header, int itemPosition, long headerId, boolean currentlySticky) {
+                if (headerList_V.isHeaderCollapsed(headerId)) {
+                    headerList_V.expand(headerId);
+                    ((ImageView) header.findViewById(R.id.arrow_IV)).setImageResource(R.drawable.ic_action_arrow_down_small);
+                } else {
+                    headerList_V.collapse(headerId);
+                    ((ImageView) header.findViewById(R.id.arrow_IV)).setImageResource(R.drawable.ic_action_arrow_right_small);
+                }
+            }
+        });
+    }
+
+    @Subscribe public void onIntervalChanged(IntervalHelper intervalHelper) {
+        adapter.notifyDataSetChanged();
     }
 }

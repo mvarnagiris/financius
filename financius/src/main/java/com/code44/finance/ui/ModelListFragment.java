@@ -56,13 +56,9 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Get views
-        final ListView list_V = (ListView) view.findViewById(R.id.list_V);
-
         // Setup
         adapter = createAdapter(getActivity());
-        list_V.setAdapter(adapter);
-        list_V.setOnItemClickListener(this);
+        prepareView(view, adapter);
     }
 
     @Override
@@ -130,6 +126,15 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
     protected abstract void onModelClick(Context context, View view, int position, String modelServerId, BaseModel model);
 
     protected abstract void startModelEdit(Context context, String modelServerId);
+
+    protected void prepareView(View view, BaseModelsAdapter adapter) {
+        // Get views
+        final ListView list_V = (ListView) view.findViewById(R.id.list_V);
+
+        // Setup
+        list_V.setAdapter(adapter);
+        list_V.setOnItemClickListener(this);
+    }
 
     protected Mode getMode() {
         return mode;

@@ -4,10 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/li_transaction_header" />
-
-    <ListView
-        android:id="@+id/list_V"
+    <se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView
+        android:id="@+id/headerList_V"
         style="@style/ListView" />
 
 </LinearLayout>

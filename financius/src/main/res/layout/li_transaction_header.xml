@@ -13,7 +13,7 @@
         android:layout_height="@dimen/keyline_between"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="@dimen/keyline"
-        android:src="@drawable/ic_action_arrow_right_small"
+        android:src="@drawable/ic_action_arrow_down_small"
         tools:ignore="ContentDescription,RtlHardcoded" />
 
     <TextView
@@ -22,15 +22,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="August"
-        android:textColor="@color/text_secondary" />
+        android:textColor="@color/text_secondary"
+        tools:text="August" />
 
     <TextView
         android:id="@+id/amount_TV"
         style="@style/Text.Body2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1,587.28 $"
-        android:textColor="@color/text_secondary" />
+        android:textColor="@color/text_secondary"
+        tools:text="1,587.28 $" />
 
 </LinearLayout>

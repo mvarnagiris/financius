@@ -41,6 +41,60 @@ public class IntervalHelper extends Prefs {
         return singleton;
     }
 
+    public static Period getPeriod(int intervalLength, Type type) {
+        switch (type) {
+            case DAY:
+                return Period.days(intervalLength);
+            case WEEK:
+                return Period.weeks(intervalLength);
+            case MONTH:
+                return Period.months(intervalLength);
+            case YEAR:
+                return Period.years(intervalLength);
+            default:
+                throw new IllegalArgumentException("Type " + type + " is not supported.");
+        }
+    }
+
+    public static Interval getInterval(long millis, Period period, Type type) {
+        final DateTime currentTime = new DateTime(millis);
+
+        final DateTime intervalStart;
+        switch (type) {
+            case DAY:
+                intervalStart = currentTime.withTimeAtStartOfDay();
+                break;
+            case WEEK:
+                intervalStart = currentTime.weekOfWeekyear().roundFloorCopy();
+                break;
+            case MONTH:
+                intervalStart = currentTime.dayOfMonth().withMinimumValue().withTimeAtStartOfDay();
+                break;
+            case YEAR:
+                intervalStart = currentTime.withMonthOfYear(1).withDayOfMonth(1).withTimeAtStartOfDay();
+                break;
+            default:
+                throw new IllegalArgumentException("Type " + type + " is not supported.");
+        }
+
+        return new Interval(intervalStart, period);
+    }
+
+    public static String getIntervalTitle(Context context, Interval interval, Type type) {
+        switch (type) {
+            case DAY:
+                return DateTimeFormat.mediumDate().print(interval.getStart());
+            case WEEK:
+                return DateUtils.formatDateTime(context, interval.getStart(), DateUtils.FORMAT_ABBREV_ALL) + " - " + DateUtils.formatDateTime(context, interval.getEnd().minusMillis(1), DateUtils.FORMAT_ABBREV_ALL);
+            case MONTH:
+                return interval.getStart().monthOfYear().getAsText();
+            case YEAR:
+                return interval.getStart().year().getAsText();
+            default:
+                throw new IllegalArgumentException("Type " + type + " is not supported.");
+        }
+    }
+
     @Override protected String getPrefix() {
         return PREFIX;
     }
@@ -58,18 +112,7 @@ public class IntervalHelper extends Prefs {
     }
 
     public String getCurrentIntervalTitle() {
-        switch (type) {
-            case DAY:
-                return DateTimeFormat.mediumDate().print(currentInterval.getStart());
-            case WEEK:
-                return DateUtils.formatDateTime(getContext(), currentInterval.getStart(), DateUtils.FORMAT_ABBREV_ALL) + " - " + DateUtils.formatDateTime(getContext(), currentInterval.getEnd().minusMillis(1), DateUtils.FORMAT_ABBREV_ALL);
-            case MONTH:
-                return currentInterval.getStart().monthOfYear().getAsText();
-            case YEAR:
-                return currentInterval.getStart().year().getAsText();
-            default:
-                throw new IllegalArgumentException("Type " + type + " is not supported.");
-        }
+        return getIntervalTitle(getContext(), currentInterval, type);
     }
 
     public String getIntervalTypeTitle() {
@@ -105,45 +148,16 @@ public class IntervalHelper extends Prefs {
     }
 
     private void invalidateCurrentIntervalIfNecessary() {
-        final DateTime currentTime = new DateTime();
-        if (currentInterval != null && currentInterval.getEndMillis() > currentTime.getMillis()) {
+        final long currentTime = System.currentTimeMillis();
+        if (currentInterval != null && currentInterval.getEndMillis() > currentTime) {
             return;
         }
 
-        final DateTime intervalStart;
-        switch (type) {
-            case DAY:
-                intervalStart = currentTime.withTimeAtStartOfDay();
-                break;
-            case WEEK:
-                intervalStart = currentTime.weekOfWeekyear().roundFloorCopy();
-                break;
-            case MONTH:
-                intervalStart = currentTime.dayOfMonth().withMinimumValue();
-                break;
-            case YEAR:
-                intervalStart = currentTime.year().getDateTime();
-                break;
-            default:
-                throw new IllegalArgumentException("Type " + type + " is not supported.");
-        }
-
-        currentInterval = new Interval(intervalStart, getPeriod());
+        currentInterval = getInterval(currentTime, getPeriod(), getType());
     }
 
     private Period getPeriod() {
-        switch (type) {
-            case DAY:
-                return Period.days(intervalLength);
-            case WEEK:
-                return Period.weeks(intervalLength);
-            case MONTH:
-                return Period.months(intervalLength);
-            case YEAR:
-                return Period.years(intervalLength);
-            default:
-                throw new IllegalArgumentException("Type " + type + " is not supported.");
-        }
+        return getPeriod(intervalLength, type);
     }
 
     private void notifyChanged() {
