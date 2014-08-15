@@ -174,7 +174,9 @@ public class DeleteDialogFragment extends AlertDialogFragment implements LoaderM
 
     @Override public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        undoDelete();
+        if (isAdded()) {
+            undoDelete();
+        }
     }
 
     @Override public void onCancel(DialogInterface dialog) {
