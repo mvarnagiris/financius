@@ -35,6 +35,10 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
         adapter = new SettingsAdapter(this);
         list_V.setAdapter(adapter);
         list_V.setOnItemClickListener(this);
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
         getEventBus().register(this);
     }
 
@@ -42,8 +46,8 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
         return false;
     }
 
-    @Override protected void onDestroy() {
-        super.onDestroy();
+    @Override protected void onPause() {
+        super.onPause();
         getEventBus().unregister(this);
     }
 

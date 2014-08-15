@@ -121,7 +121,8 @@ public final class Tables {
             return Query.create()
                     .projectionId(Tables.Currencies.ID)
                     .projection(Tables.Currencies.PROJECTION)
-                    .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
+                    .selection("(" + Tables.Currencies.MODEL_STATE + "=?", ModelState.NORMAL.asString())
+                    .selection(" or " + Currencies.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString())
                     .sortOrder(Tables.Currencies.IS_DEFAULT + " desc")
                     .sortOrder(Tables.Currencies.CODE.getName());
         }
@@ -165,11 +166,12 @@ public final class Tables {
 
         public static Query getQuery() {
             return Query.create()
-                    .projectionId(Tables.Accounts.ID)
-                    .projection(Tables.Accounts.PROJECTION)
-                    .projection(Tables.Currencies.PROJECTION)
-                    .selection(Accounts.MODEL_STATE + "=?", ModelState.NORMAL.asString())
-                    .selection(" and " + Tables.Accounts.OWNER + "=?", AccountOwner.USER.asString())
+                    .projectionId(Accounts.ID)
+                    .projection(Accounts.PROJECTION)
+                    .projection(Currencies.PROJECTION)
+                    .selection("(" + Accounts.MODEL_STATE + "=?", ModelState.NORMAL.asString())
+                    .selection(" or " + Accounts.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString())
+                    .selection(" and " + Accounts.OWNER + "=?", AccountOwner.USER.asString())
                     .sortOrder(Accounts.INCLUDE_IN_TOTALS.getName() + " desc")
                     .sortOrder(Accounts.TITLE.getName());
         }
@@ -200,9 +202,10 @@ public final class Tables {
 
         public static Query getQuery(CategoryType type) {
             final Query query = Query.create()
-                    .projectionId(Tables.Categories.ID)
-                    .projection(Tables.Categories.PROJECTION)
-                    .selection(Tables.Categories.MODEL_STATE + "=?", ModelState.NORMAL.asString())
+                    .projectionId(Categories.ID)
+                    .projection(Categories.PROJECTION)
+                    .selection("(" + Categories.MODEL_STATE + "=?", ModelState.NORMAL.asString())
+                    .selection(" or " + Categories.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString())
                     .sortOrder(Categories.SORT_ORDER.getName());
 
             if (type != null) {
@@ -236,7 +239,8 @@ public final class Tables {
             return Query.create()
                     .projectionId(Tags.ID)
                     .projection(Tags.PROJECTION)
-                    .selection(Tags.MODEL_STATE + "=?", ModelState.NORMAL.asString());
+                    .selection("(" + Tags.MODEL_STATE + "=?", ModelState.NORMAL.asString())
+                    .selection(" or " + Tags.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString());
         }
     }
 
@@ -279,7 +283,8 @@ public final class Tables {
                     .projection(Categories.PROJECTION)
                     .projection(Currencies.PROJECTION_ACCOUNT_FROM)
                     .projection(Currencies.PROJECTION_ACCOUNT_TO)
-                    .selection(Transactions.MODEL_STATE + "=?", ModelState.NORMAL.asString())
+                    .selection("(" + Transactions.MODEL_STATE + "=?", ModelState.NORMAL.asString())
+                    .selection(" or " + Transactions.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString())
                     .sortOrder(Transactions.DATE + " desc");
         }
     }

@@ -5,11 +5,21 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.code44.finance.R;
+import com.code44.finance.ui.dialogs.DeleteDialogFragment;
+import com.squareup.otto.Subscribe;
 
 public abstract class ModelActivity extends BaseActivity {
     protected static final String FRAGMENT_MODEL = "FRAGMENT_MODEL";
 
     private static final String EXTRA_MODEL_SERVER_ID = "EXTRA_MODEL_SERVER_ID";
+
+    private final Object eventHandler = new Object() {
+        @Subscribe public void onItemDeleted(DeleteDialogFragment.DeleteDialogEvent event) {
+            if (event.isPositiveClicked()) {
+                finish();
+            }
+        }
+    };
 
     protected String modelServerId;
 
@@ -19,8 +29,7 @@ public abstract class ModelActivity extends BaseActivity {
         return intent;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final int contentId = inflateActivity();
 
@@ -34,6 +43,13 @@ public abstract class ModelActivity extends BaseActivity {
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction().add(contentId, createModelFragment(modelServerId), FRAGMENT_MODEL).commit();
         }
+
+        getEventBus().register(eventHandler);
+    }
+
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        getEventBus().unregister(eventHandler);
     }
 
     protected abstract int getActionBarTitleResId();

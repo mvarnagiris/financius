@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.code44.finance.App;
 import com.code44.finance.R;
+import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
@@ -37,15 +38,17 @@ public class CurrencyAccountsAdapter extends BaseModelsAdapter {
         textBrandColor = context.getResources().getColor(R.color.text_brand);
     }
 
-    @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+    @Override public int getCount() {
+        return currency == null || StringUtils.isEmpty(currency.getServerId()) ? 0 : super.getCount();
+    }
+
+    @Override public View newView(Context context, Cursor cursor, ViewGroup parent) {
         final View view = LayoutInflater.from(context).inflate(R.layout.li_currency_account, parent, false);
         ViewHolder.setAsTag(view).currency_B.setOnClickListener(changeCurrencyClickListener);
         return view;
     }
 
-    @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    @Override public void bindView(View view, Context context, Cursor cursor) {
         final ViewHolder holder = (ViewHolder) view.getTag();
         final Account account = Account.from(cursor);
 
@@ -71,6 +74,7 @@ public class CurrencyAccountsAdapter extends BaseModelsAdapter {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+        notifyDataSetChanged();
     }
 
     private static class ViewHolder {
