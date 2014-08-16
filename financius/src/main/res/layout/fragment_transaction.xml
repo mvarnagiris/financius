@@ -1,12 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ScrollView">
+<ScrollView
+    style="@style/ScrollView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:colorPrimary"
+            android:elevation="@dimen/elevation_header"
+            android:padding="@dimen/keyline">
+
+            <me.grantland.widget.AutofitTextView
+                android:id="@+id/amount_TV"
+                style="@style/Text.Display3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right|center_vertical"
+                android:singleLine="true"
+                android:textColor="@color/text_primary_inverse"
+                tools:ignore="RtlHardcoded"
+                tools:text="158.99 $" />
+        </FrameLayout>
 
         <FrameLayout
             android:layout_width="@dimen/keyline_between"
@@ -74,15 +94,6 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     tools:text="Leisure" />
-
-                <TextView
-                    android:id="@+id/amount_TV"
-                    style="@style/Text.Body2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    tools:ignore="RtlHardcoded"
-                    tools:text="58.99 $" />
 
             </LinearLayout>
 

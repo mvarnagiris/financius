@@ -61,7 +61,7 @@ public class TransactionsFragment extends ModelListFragment {
     }
 
     @Override protected void onModelClick(Context context, View view, int position, String modelServerId, BaseModel model) {
-        // TODO Open TransactionActivity
+        TransactionActivity.start(context, modelServerId);
     }
 
     @Override protected void startModelEdit(Context context, String modelServerId) {

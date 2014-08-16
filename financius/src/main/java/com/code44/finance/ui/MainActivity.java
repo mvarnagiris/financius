@@ -47,6 +47,15 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
         getEventBus().unregister(this);
     }
 
+    @Override public void onBackPressed() {
+        // Select OverviewFragment before quitting the app
+        if (!(getFragmentManager().findFragmentByTag(FRAGMENT_CONTENT) instanceof OverviewFragment)) {
+            ((NavigationFragment) getFragmentManager().findFragmentById(R.id.navigation_F)).select(NavigationAdapter.NAV_ID_OVERVIEW);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     @Override public void onNavigationItemSelected(NavigationAdapter.NavigationItem item) {
         BaseFragment baseFragment = null;
         switch (item.getId()) {

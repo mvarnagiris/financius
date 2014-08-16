@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.code44.finance">
+<manifest
+    package="com.code44.finance"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -45,6 +46,7 @@
         <activity android:name=".ui.tags.TagsActivity" />
         <activity android:name=".ui.tags.TagActivity" />
         <activity android:name=".ui.tags.TagEditActivity" />
+        <activity android:name=".ui.transactions.TransactionActivity" />
         <activity android:name=".ui.user.LoginActivity" />
 
         <!-- Providers -->
