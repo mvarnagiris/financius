@@ -29,6 +29,11 @@ public class Calculator {
         clear();
     }
 
+    public void setValue(double value) {
+        clear();
+        currentPart = createPart(Type.NUMBER, String.valueOf(value), null);
+    }
+
     public void plus() {
         addOperator(PLUS, App.getContext().getString(R.string.plus));
     }

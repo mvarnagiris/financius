@@ -6,6 +6,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.code44.finance.backend.endpoint.transactions.model.TransactionEntity;
+import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.data.db.Column;
@@ -207,6 +208,14 @@ public class Transaction extends BaseModel {
 
         if (category == null) {
             throw new IllegalStateException("Category cannot be null.");
+        }
+
+        if (category.getCategoryType() == CategoryType.EXPENSE && accountFrom == Account.getSystem()) {
+            throw new IllegalStateException("Account from cannot be system account.");
+        }
+
+        if (category.getCategoryType() == CategoryType.INCOME && accountTo == Account.getSystem()) {
+            throw new IllegalStateException("Account to cannot be system account.");
         }
 
         if (Double.compare(exchangeRate, 0) < 0) {

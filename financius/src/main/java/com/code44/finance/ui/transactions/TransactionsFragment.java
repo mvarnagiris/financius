@@ -65,7 +65,7 @@ public class TransactionsFragment extends ModelListFragment {
     }
 
     @Override protected void startModelEdit(Context context, String modelServerId) {
-        // TODO Open TransactionEditActivity
+        TransactionEditActivity.start(context, modelServerId);
     }
 
     @Override public String getTitle() {

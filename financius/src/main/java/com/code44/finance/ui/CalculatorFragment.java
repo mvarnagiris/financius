@@ -49,11 +49,6 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_calculator, container, false);
     }
@@ -103,6 +98,14 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
         number7_B.setOnClickListener(this);
         number8_B.setOnClickListener(this);
         number9_B.setOnClickListener(this);
+
+        if (savedInstanceState == null) {
+            final long value = getArguments().getLong(ARG_VALUE, 0);
+            if (value != 0) {
+                calculator.setValue(value / 100.0);
+            }
+        }
+
         updateResult();
 
         //noinspection ConstantConditions
