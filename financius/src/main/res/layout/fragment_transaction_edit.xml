@@ -71,16 +71,29 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/category_B"
-                style="@style/Button.Borderless.Select"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/keyline"
-                android:drawableStart="@drawable/circle"
-                android:hint="@string/from"
-                tools:stateListAnimator="@android:animator/fade_in"
-                tools:text="Bank" />
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/color_IV"
+                    android:layout_width="@dimen/keyline_between"
+                    android:layout_height="@dimen/keyline_between"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/circle" />
+
+                <Button
+                    android:id="@+id/category_B"
+                    style="@style/Button.Borderless.Select"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/keyline"
+                    android:hint="@string/from"
+                    tools:stateListAnimator="@android:animator/fade_in"
+                    tools:text="Leisure" />
+
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/note_ET"

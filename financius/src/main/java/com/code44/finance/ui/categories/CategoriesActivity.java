@@ -1,5 +1,6 @@
 package com.code44.finance.ui.categories;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -18,6 +19,10 @@ public class CategoriesActivity extends ModelListActivity {
     public static void start(Context context) {
         final Intent intent = makeIntentView(context, CategoriesActivity.class);
         start(context, intent);
+    }
+
+    public static void startSelect(Fragment fragment, int requestCode) {
+        startForResult(fragment, makeIntentSelect(fragment.getActivity(), CategoriesActivity.class), requestCode);
     }
 
     @Override

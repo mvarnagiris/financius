@@ -11,22 +11,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.code44.finance.R;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.model.Account;
+import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.ui.CalculatorActivity;
 import com.code44.finance.ui.ModelEditFragment;
+import com.code44.finance.ui.ModelListActivity;
+import com.code44.finance.ui.accounts.AccountsActivity;
+import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.utils.MoneyFormatter;
 
 public class TransactionEditFragment extends ModelEditFragment<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int REQUEST_AMOUNT = 1;
+    private static final int REQUEST_ACCOUNT_FROM = 2;
+    private static final int REQUEST_ACCOUNT_TO = 3;
+    private static final int REQUEST_CATEGORY = 4;
 
     private Button amount_B;
+    private Button accountFrom_B;
+    private Button accountTo_B;
+    private ImageView color_IV;
+    private Button category_B;
+    private EditText note_ET;
 
     public static TransactionEditFragment newInstance(String transactionServerId) {
         final Bundle args = makeArgs(transactionServerId);
@@ -45,9 +60,17 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
         // Get views
         amount_B = (Button) view.findViewById(R.id.amount_B);
+        accountFrom_B = (Button) view.findViewById(R.id.accountFrom_B);
+        accountTo_B = (Button) view.findViewById(R.id.accountTo_B);
+        color_IV = (ImageView) view.findViewById(R.id.color_IV);
+        category_B = (Button) view.findViewById(R.id.category_B);
+        note_ET = (EditText) view.findViewById(R.id.note_ET);
 
         // Setup
         amount_B.setOnClickListener(this);
+        accountFrom_B.setOnClickListener(this);
+        accountTo_B.setOnClickListener(this);
+        category_B.setOnClickListener(this);
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -55,6 +78,18 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
             switch (requestCode) {
                 case REQUEST_AMOUNT:
                     model.setAmount(data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0));
+                    onModelLoaded(model);
+                    return;
+                case REQUEST_ACCOUNT_FROM:
+                    model.setAccountFrom(data.<Account>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
+                    onModelLoaded(model);
+                    return;
+                case REQUEST_ACCOUNT_TO:
+                    model.setAccountTo(data.<Account>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
+                    onModelLoaded(model);
+                    return;
+                case REQUEST_CATEGORY:
+                    model.setCategory(data.<Category>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
                     onModelLoaded(model);
                     return;
             }
@@ -79,7 +114,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
     @Override protected void ensureModelUpdated(Transaction model) {
 //        model.setTitle(title_ET.getText().toString());
-//        model.setNote(note_ET.getText().toString());
+        model.setNote(note_ET.getText().toString());
     }
 
     @Override protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {
@@ -96,12 +131,25 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
     @Override protected void onModelLoaded(Transaction model) {
         amount_B.setText(MoneyFormatter.format(getAmountCurrency(model), model.getAmount()));
+        accountFrom_B.setText(model.getAccountFrom().getTitle());
+        accountTo_B.setText(model.getAccountTo().getTitle());
+        color_IV.setColorFilter(model.getCategory().getColor());
+        category_B.setText(model.getCategory().getTitle());
     }
 
     @Override public void onClick(View v) {
         switch (v.getId()) {
             case R.id.amount_B:
                 CalculatorActivity.start(this, REQUEST_AMOUNT, model.getAmount());
+                break;
+            case R.id.accountFrom_B:
+                AccountsActivity.startSelect(this, REQUEST_ACCOUNT_FROM);
+                break;
+            case R.id.accountTo_B:
+                AccountsActivity.startSelect(this, REQUEST_ACCOUNT_TO);
+                break;
+            case R.id.category_B:
+                CategoriesActivity.startSelect(this, REQUEST_CATEGORY);
                 break;
         }
     }
