@@ -208,6 +208,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         accountTo_B.setText(model.getAccountTo().getTitle());
         color_IV.setColorFilter(model.getCategory().getColor());
         category_B.setText(model.getCategory().getTitle());
+        note_ET.setText(model.getNote());
         includeInReports_CB.setChecked(model.includeInReports());
     }
 

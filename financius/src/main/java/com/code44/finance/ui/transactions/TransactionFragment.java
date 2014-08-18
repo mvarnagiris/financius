@@ -86,6 +86,6 @@ public class TransactionFragment extends ModelFragment<Transaction> {
     }
 
     @Override protected void startModelEdit(Context context, String modelServerId) {
-        // TODO AccountEditActivity.start(context, modelServerId);
+        TransactionEditActivity.start(context, modelServerId);
     }
 }
