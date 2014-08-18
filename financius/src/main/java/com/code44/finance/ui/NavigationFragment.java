@@ -13,11 +13,12 @@ import com.code44.finance.R;
 import com.code44.finance.adapters.NavigationAdapter;
 
 public class NavigationFragment extends BaseFragment implements AdapterView.OnItemClickListener {
+    private static final String STATE_SELECTED_ID = "STATE_SELECTED_ID";
+
     private NavigationAdapter adapter;
     private NavigationListener navigationListener;
 
-    @Override
-    public void onAttach(Activity activity) {
+    @Override public void onAttach(Activity activity) {
         super.onAttach(activity);
         if (activity instanceof NavigationListener) {
             navigationListener = (NavigationListener) activity;
@@ -26,13 +27,11 @@ public class NavigationFragment extends BaseFragment implements AdapterView.OnIt
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_navigation, container, false);
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
@@ -42,10 +41,17 @@ public class NavigationFragment extends BaseFragment implements AdapterView.OnIt
         adapter = new NavigationAdapter(getActivity());
         list_V.setAdapter(adapter);
         list_V.setOnItemClickListener(this);
+        if (savedInstanceState != null) {
+            adapter.setSelectedId(savedInstanceState.getInt(STATE_SELECTED_ID, NavigationAdapter.NAV_ID_OVERVIEW));
+        }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+    @Override public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_SELECTED_ID, adapter.getSelectedItem().getId());
+    }
+
+    @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         select(id);
     }
 
