@@ -42,6 +42,7 @@
     <string name="calculator">Calculator</string>
     <string name="categories">Categories</string>
     <string name="category">Category</string>
+    <string name="transaction_type">Transaction type</string>
     <string name="no_category">No category</string>
     <string name="account_balance_update">Account balance update</string>
     <string name="color">Color</string>

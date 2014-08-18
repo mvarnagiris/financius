@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.code44.finance.R;
@@ -36,6 +37,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     private static final int REQUEST_ACCOUNT_TO = 3;
     private static final int REQUEST_CATEGORY = 4;
 
+    private ImageButton categoryType_IB;
     private Button amount_B;
     private Button accountFrom_B;
     private Button accountTo_B;
@@ -59,6 +61,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
+        categoryType_IB = (ImageButton) view.findViewById(R.id.categoryType_IB);
         amount_B = (Button) view.findViewById(R.id.amount_B);
         accountFrom_B = (Button) view.findViewById(R.id.accountFrom_B);
         accountTo_B = (Button) view.findViewById(R.id.accountTo_B);
@@ -67,6 +70,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         note_ET = (EditText) view.findViewById(R.id.note_ET);
 
         // Setup
+        categoryType_IB.setOnClickListener(this);
         amount_B.setOnClickListener(this);
         accountFrom_B.setOnClickListener(this);
         accountTo_B.setOnClickListener(this);
@@ -113,7 +117,6 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     }
 
     @Override protected void ensureModelUpdated(Transaction model) {
-//        model.setTitle(title_ET.getText().toString());
         model.setNote(note_ET.getText().toString());
     }
 
@@ -130,6 +133,30 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     }
 
     @Override protected void onModelLoaded(Transaction model) {
+        switch (model.getCategory().getCategoryType()) {
+            case EXPENSE:
+                accountFrom_B.setVisibility(View.VISIBLE);
+                accountTo_B.setVisibility(View.GONE);
+                color_IV.setVisibility(View.VISIBLE);
+                category_B.setVisibility(View.VISIBLE);
+                categoryType_IB.setImageResource(R.drawable.ic_category_type_expense);
+                break;
+            case INCOME:
+                accountFrom_B.setVisibility(View.GONE);
+                accountTo_B.setVisibility(View.VISIBLE);
+                color_IV.setVisibility(View.VISIBLE);
+                category_B.setVisibility(View.VISIBLE);
+                categoryType_IB.setImageResource(R.drawable.ic_category_type_income);
+                break;
+            case TRANSFER:
+                accountFrom_B.setVisibility(View.VISIBLE);
+                accountTo_B.setVisibility(View.VISIBLE);
+                color_IV.setVisibility(View.GONE);
+                category_B.setVisibility(View.GONE);
+                categoryType_IB.setImageResource(R.drawable.ic_category_type_transfer);
+                break;
+        }
+
         amount_B.setText(MoneyFormatter.format(getAmountCurrency(model), model.getAmount()));
         accountFrom_B.setText(model.getAccountFrom().getTitle());
         accountTo_B.setText(model.getAccountTo().getTitle());
@@ -139,6 +166,9 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
     @Override public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.categoryType_IB:
+                toggleCategoryType();
+                break;
             case R.id.amount_B:
                 CalculatorActivity.start(this, REQUEST_AMOUNT, model.getAmount());
                 break;
@@ -156,6 +186,21 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
     @Override public void onCheckedChanged(CompoundButton view, boolean checked) {
         //model.setIncludeInTotals(checked);
+    }
+
+    private void toggleCategoryType() {
+        switch (model.getCategory().getCategoryType()) {
+            case EXPENSE:
+                model.setCategory(Category.getIncome());
+                break;
+            case INCOME:
+                model.setCategory(Category.getTransfer());
+                break;
+            case TRANSFER:
+                model.setCategory(Category.getExpense());
+                break;
+        }
+        onModelLoaded(model);
     }
 
     private Currency getAmountCurrency(Transaction transaction) {

@@ -55,7 +55,7 @@
                 <match>
                   <AND>
                     <NAME>xmlns:android</NAME>
-                    <XML_NAMESPACE>Namespace:</XML_NAMESPACE>
+                    <XML_NAMESPACE />
                   </AND>
                 </match>
               </rule>
@@ -63,7 +63,7 @@
                 <match>
                   <AND>
                     <NAME>xmlns:.*</NAME>
-                    <XML_NAMESPACE>Namespace:</XML_NAMESPACE>
+                    <XML_NAMESPACE />
                   </AND>
                 </match>
                 <order>BY_NAME</order>
@@ -176,7 +176,6 @@
       </value>
     </option>
     <option name="USE_PER_PROJECT_SETTINGS" value="true" />
-    <option name="PREFERRED_PROJECT_CODE_STYLE" value="Financius" />
   </component>
 </project>
 
