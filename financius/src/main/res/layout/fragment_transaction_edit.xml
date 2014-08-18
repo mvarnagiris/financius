@@ -69,6 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="@string/to"
+                    android:visibility="gone"
                     tools:stateListAnimator="@android:animator/fade_in"
                     tools:text="Cash" />
 
@@ -87,6 +88,7 @@
                     android:layout_height="@dimen/min_touch_size"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/space_normal"
+                    android:layout_marginRight="@dimen/space_normal"
                     android:src="@drawable/circle"
                     tools:ignore="ContentDescription" />
 

@@ -32,11 +32,7 @@ public abstract class ModelListActivity extends BaseActivity implements ModelLis
         super.onCreate(savedInstanceState);
         final int containerId = inflateActivity();
 
-        // Get extras
-        mode = (ModelListFragment.Mode) getIntent().getSerializableExtra(EXTRA_MODE);
-        if (mode == null) {
-            throw new IllegalStateException("Activity " + this.getClass().getName() + " must be created with Intent containing " + EXTRA_MODE + " with values from " + ModelListFragment.Mode.class.getName());
-        }
+        readExtras();
 
         // Setup ActionBar
         if (mode == ModelListFragment.Mode.SELECT) {
@@ -66,6 +62,13 @@ public abstract class ModelListActivity extends BaseActivity implements ModelLis
     protected int inflateActivity() {
         setContentView(R.layout.activity_simple);
         return R.id.content_V;
+    }
+
+    protected void readExtras() {
+        mode = (ModelListFragment.Mode) getIntent().getSerializableExtra(EXTRA_MODE);
+        if (mode == null) {
+            throw new IllegalStateException("Activity " + this.getClass().getName() + " must be created with Intent containing " + EXTRA_MODE + " with values from " + ModelListFragment.Mode.class.getName());
+        }
     }
 
     protected abstract int getActionBarTitleResId();

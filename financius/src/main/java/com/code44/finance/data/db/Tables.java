@@ -209,7 +209,7 @@ public final class Tables {
                     .sortOrder(Categories.SORT_ORDER.getName());
 
             if (type != null) {
-                query.selection(" and " + Tables.Categories.TYPE + "=?", String.valueOf(type.asInt()));
+                query.selection(" and " + Tables.Categories.TYPE + "=?", type.asString());
             }
 
             return query;

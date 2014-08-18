@@ -38,7 +38,7 @@ public class Transaction extends BaseModel {
         setAccountFrom(Account.getSystem());
         setAccountTo(Account.getSystem());
         setCategory(Category.getExpense());
-        setDate(0);
+        setDate(System.currentTimeMillis());
         setAmount(0);
         setExchangeRate(1.0);
         setNote(null);

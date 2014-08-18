@@ -179,7 +179,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 AccountsActivity.startSelect(this, REQUEST_ACCOUNT_TO);
                 break;
             case R.id.category_B:
-                CategoriesActivity.startSelect(this, REQUEST_CATEGORY);
+                CategoriesActivity.startSelect(this, REQUEST_CATEGORY, model.getCategory().getCategoryType());
                 break;
         }
     }
