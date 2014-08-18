@@ -10,11 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.android.datetimepicker.date.DatePickerDialog;
+import com.android.datetimepicker.time.RadialPickerLayout;
+import com.android.datetimepicker.time.TimePickerDialog;
 import com.code44.finance.R;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
@@ -35,21 +39,24 @@ import net.danlew.android.joda.DateUtils;
 
 import org.joda.time.DateTime;
 
-public class TransactionEditFragment extends ModelEditFragment<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class TransactionEditFragment extends ModelEditFragment<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private static final int REQUEST_AMOUNT = 1;
     private static final int REQUEST_ACCOUNT_FROM = 2;
     private static final int REQUEST_ACCOUNT_TO = 3;
     private static final int REQUEST_CATEGORY = 4;
-    private static final int REQUEST_DATE = 5;
 
+    private static final String FRAGMENT_DATE_DIALOG = "FRAGMENT_DATE_DIALOG";
+    private static final String FRAGMENT_TIME_DIALOG = "FRAGMENT_TIME_DIALOG";
+
+    private Button date_B;
     private ImageButton categoryType_IB;
     private Button amount_B;
     private Button accountFrom_B;
     private Button accountTo_B;
     private ImageView color_IV;
     private Button category_B;
-    private Button date_B;
     private EditText note_ET;
+    private CheckBox includeInReports_CB;
 
     public static TransactionEditFragment newInstance(String transactionServerId) {
         final Bundle args = makeArgs(transactionServerId);
@@ -75,6 +82,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         category_B = (Button) view.findViewById(R.id.category_B);
         date_B = (Button) view.findViewById(R.id.date_B);
         note_ET = (EditText) view.findViewById(R.id.note_ET);
+        includeInReports_CB = (CheckBox) view.findViewById(R.id.includeInReports_CB);
 
         // Setup
         categoryType_IB.setOnClickListener(this);
@@ -83,6 +91,35 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         accountTo_B.setOnClickListener(this);
         category_B.setOnClickListener(this);
         date_B.setOnClickListener(this);
+        includeInReports_CB.setOnCheckedChangeListener(this);
+    }
+
+    @Override public void onResume() {
+        super.onResume();
+
+        final DatePickerDialog dateDialog_F = (DatePickerDialog) getFragmentManager().findFragmentByTag(FRAGMENT_DATE_DIALOG);
+        if (dateDialog_F != null) {
+            dateDialog_F.setOnDateSetListener(this);
+        }
+
+        final TimePickerDialog timeDialog_F = (TimePickerDialog) getFragmentManager().findFragmentByTag(FRAGMENT_TIME_DIALOG);
+        if (timeDialog_F != null) {
+            timeDialog_F.setOnTimeSetListener(this);
+        }
+    }
+
+    @Override public void onPause() {
+        super.onPause();
+
+        final DatePickerDialog dateDialog_F = (DatePickerDialog) getFragmentManager().findFragmentByTag(FRAGMENT_DATE_DIALOG);
+        if (dateDialog_F != null) {
+            dateDialog_F.setOnDateSetListener(null);
+        }
+
+        final TimePickerDialog timeDialog_F = (TimePickerDialog) getFragmentManager().findFragmentByTag(FRAGMENT_TIME_DIALOG);
+        if (timeDialog_F != null) {
+            timeDialog_F.setOnTimeSetListener(null);
+        }
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -165,12 +202,13 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 break;
         }
 
+        date_B.setText(DateUtils.formatDateTime(getActivity(), new DateTime(model.getDate()), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
         amount_B.setText(MoneyFormatter.format(getAmountCurrency(model), model.getAmount()));
         accountFrom_B.setText(model.getAccountFrom().getTitle());
         accountTo_B.setText(model.getAccountTo().getTitle());
         color_IV.setColorFilter(model.getCategory().getColor());
         category_B.setText(model.getCategory().getTitle());
-        date_B.setText(DateUtils.formatDateTime(getActivity(), new DateTime(model.getDate()), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
+        includeInReports_CB.setChecked(model.includeInReports());
     }
 
     @Override public void onClick(View v) {
@@ -190,11 +228,27 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
             case R.id.category_B:
                 CategoriesActivity.startSelect(this, REQUEST_CATEGORY, model.getCategory().getCategoryType());
                 break;
+            case R.id.date_B:
+                final DateTime date = new DateTime(model.getDate());
+                DatePickerDialog.newInstance(this, date.getYear(), date.getMonthOfYear() - 1, date.getDayOfMonth()).show(getFragmentManager(), FRAGMENT_DATE_DIALOG);
+                break;
         }
     }
 
+    @Override public void onDateSet(DatePickerDialog dialog, int year, int month, int dayOfMonth) {
+        final DateTime date = new DateTime(model.getDate()).withYear(year).withMonthOfYear(month + 1).withDayOfMonth(dayOfMonth);
+        model.setDate(date.getMillis());
+        TimePickerDialog.newInstance(this, date.getHourOfDay(), date.getMinuteOfHour(), true).show(getFragmentManager(), FRAGMENT_TIME_DIALOG);
+    }
+
+    @Override public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+        final DateTime date = new DateTime(model.getDate()).withHourOfDay(hourOfDay).withMinuteOfHour(minute);
+        model.setDate(date.getMillis());
+        onModelLoaded(model);
+    }
+
     @Override public void onCheckedChanged(CompoundButton view, boolean checked) {
-        //model.setIncludeInTotals(checked);
+        model.setIncludeInReports(checked);
     }
 
     private void toggleCategoryType() {
