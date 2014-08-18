@@ -111,6 +111,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         if (totalExpense != -1) {
             return totalExpense;
         }
+        totalExpense = 0;
 
         final Cursor cursor = getCursor();
         final int iCategoryType = cursor.getColumnIndex(Tables.Categories.TYPE.getName());
