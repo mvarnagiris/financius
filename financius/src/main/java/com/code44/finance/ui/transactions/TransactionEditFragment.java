@@ -31,11 +31,16 @@ import com.code44.finance.ui.accounts.AccountsActivity;
 import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.utils.MoneyFormatter;
 
+import net.danlew.android.joda.DateUtils;
+
+import org.joda.time.Instant;
+
 public class TransactionEditFragment extends ModelEditFragment<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int REQUEST_AMOUNT = 1;
     private static final int REQUEST_ACCOUNT_FROM = 2;
     private static final int REQUEST_ACCOUNT_TO = 3;
     private static final int REQUEST_CATEGORY = 4;
+    private static final int REQUEST_DATE = 5;
 
     private ImageButton categoryType_IB;
     private Button amount_B;
@@ -43,6 +48,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     private Button accountTo_B;
     private ImageView color_IV;
     private Button category_B;
+    private Button date_B;
     private EditText note_ET;
 
     public static TransactionEditFragment newInstance(String transactionServerId) {
@@ -67,6 +73,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         accountTo_B = (Button) view.findViewById(R.id.accountTo_B);
         color_IV = (ImageView) view.findViewById(R.id.color_IV);
         category_B = (Button) view.findViewById(R.id.category_B);
+        date_B = (Button) view.findViewById(R.id.date_B);
         note_ET = (EditText) view.findViewById(R.id.note_ET);
 
         // Setup
@@ -75,6 +82,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         accountFrom_B.setOnClickListener(this);
         accountTo_B.setOnClickListener(this);
         category_B.setOnClickListener(this);
+        date_B.setOnClickListener(this);
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -162,6 +170,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         accountTo_B.setText(model.getAccountTo().getTitle());
         color_IV.setColorFilter(model.getCategory().getColor());
         category_B.setText(model.getCategory().getTitle());
+        date_B.setText(DateUtils.formatDateTime(getActivity(), new Instant(model.getDate()), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
     }
 
     @Override public void onClick(View v) {

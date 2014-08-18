@@ -97,13 +97,20 @@
                     style="@style/Button.Borderless.Select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/keyline"
                     android:hint="@string/from"
                     tools:stateListAnimator="@android:animator/fade_in"
                     tools:text="Leisure" />
 
-
             </LinearLayout>
+
+            <Button
+                android:id="@+id/date_B"
+                style="@style/Button.Borderless.Select"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/date"
+                tools:stateListAnimator="@android:animator/fade_in"
+                tools:text="August 17, 16:27" />
 
             <EditText
                 android:id="@+id/note_ET"

@@ -63,6 +63,7 @@
     <string name="year">Year</string>
     <string name="from">From</string>
     <string name="to">To</string>
+    <string name="date">Date</string>
 
     <string name="f_change_to_x">Change to %s</string>
     <string name="f_current_main_currency_is_x">Current main currency is %s</string>
