@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.common.model.CategoryType;
+import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Currency;
@@ -30,6 +31,8 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
     private final int expenseColor;
     private final int incomeColor;
     private final int transferColor;
+    private final int primaryColor;
+    private final int secondaryColor;
 
     public TransactionsAdapter(Context context, IntervalHelper intervalHelper) {
         super(context);
@@ -39,6 +42,8 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         expenseColor = context.getResources().getColor(R.color.text_primary);
         incomeColor = context.getResources().getColor(R.color.text_positive);
         transferColor = context.getResources().getColor(R.color.text_neutral);
+        primaryColor = context.getResources().getColor(R.color.text_primary);
+        secondaryColor = context.getResources().getColor(R.color.text_secondary);
     }
 
     @Override public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -52,22 +57,30 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         final Transaction transaction = Transaction.from(cursor);
         final Category category = transaction.getCategory();
         final DateTime date = new DateTime(transaction.getDate());
-        holder.color_IV.setColorFilter(category.getColor());
         holder.weekday_TV.setText(date.dayOfWeek().getAsShortText());
         holder.day_TV.setText(date.dayOfMonth().getAsShortText());
         holder.category_TV.setText(category.getTitle());
         holder.note_TV.setText(transaction.getNote());
         holder.amount_TV.setText(MoneyFormatter.format(transaction));
 
-        if (category.getCategoryType() == CategoryType.EXPENSE) {
-            holder.account_TV.setText(transaction.getAccountFrom().getTitle());
-            holder.amount_TV.setTextColor(expenseColor);
-        } else if (category.getCategoryType() == CategoryType.INCOME) {
-            holder.account_TV.setText(transaction.getAccountTo().getTitle());
-            holder.amount_TV.setTextColor(incomeColor);
+        if (transaction.getTransactionState() == TransactionState.CONFIRMED) {
+            holder.category_TV.setTextColor(primaryColor);
+            holder.amount_TV.setTextColor(primaryColor);
+            holder.color_IV.setColorFilter(category.getColor());
+            if (category.getCategoryType() == CategoryType.EXPENSE) {
+                holder.account_TV.setText(transaction.getAccountFrom().getTitle());
+                holder.amount_TV.setTextColor(expenseColor);
+            } else if (category.getCategoryType() == CategoryType.INCOME) {
+                holder.account_TV.setText(transaction.getAccountTo().getTitle());
+                holder.amount_TV.setTextColor(incomeColor);
+            } else {
+                holder.account_TV.setText(transaction.getAccountFrom().getTitle() + " > " + transaction.getAccountTo().getTitle());
+                holder.amount_TV.setTextColor(transferColor);
+            }
         } else {
-            holder.account_TV.setText(transaction.getAccountFrom().getTitle() + " > " + transaction.getAccountTo().getTitle());
-            holder.amount_TV.setTextColor(transferColor);
+            holder.category_TV.setTextColor(secondaryColor);
+            holder.amount_TV.setTextColor(secondaryColor);
+            holder.color_IV.setColorFilter(secondaryColor);
         }
     }
 
@@ -82,10 +95,16 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
             holder = (HeaderViewHolder) convertView.getTag();
         }
 
-        final long date = getCursor().getLong(getCursor().getColumnIndex(Tables.Transactions.DATE.getName()));
-        final Period period = IntervalHelper.getPeriod(intervalHelper.getIntervalLength(), intervalHelper.getType());
-        final Interval interval = IntervalHelper.getInterval(date, period, intervalHelper.getType());
-        final String title = IntervalHelper.getIntervalTitle(mContext, interval, intervalHelper.getType());
+        final String title;
+        final TransactionState transactionState = TransactionState.fromInt(getCursor().getInt(getCursor().getColumnIndex(Tables.Transactions.STATE.getName())));
+        if (transactionState == TransactionState.CONFIRMED) {
+            final long date = getCursor().getLong(getCursor().getColumnIndex(Tables.Transactions.DATE.getName()));
+            final Period period = IntervalHelper.getPeriod(intervalHelper.getIntervalLength(), intervalHelper.getType());
+            final Interval interval = IntervalHelper.getInterval(date, period, intervalHelper.getType());
+            title = IntervalHelper.getIntervalTitle(mContext, interval, intervalHelper.getType());
+        } else {
+            title = mContext.getString(R.string.pending);
+        }
         holder.title_TV.setText(title);
         holder.amount_TV.setText(MoneyFormatter.format(Currency.getDefault(), getTotalExpenseForPosition(position)));
 
@@ -94,6 +113,11 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
 
     @Override public long getHeaderId(int position) {
         getCursor().moveToPosition(position);
+        final TransactionState transactionState = TransactionState.fromInt(getCursor().getInt(getCursor().getColumnIndex(Tables.Transactions.STATE.getName())));
+        if (transactionState == TransactionState.PENDING) {
+            return 0;
+        }
+
         final long date = getCursor().getLong(getCursor().getColumnIndex(Tables.Transactions.DATE.getName()));
         final Period period = IntervalHelper.getPeriod(intervalHelper.getIntervalLength(), intervalHelper.getType());
         final Interval interval = IntervalHelper.getInterval(date, period, intervalHelper.getType());

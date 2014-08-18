@@ -20,6 +20,7 @@ import com.android.datetimepicker.date.DatePickerDialog;
 import com.android.datetimepicker.time.RadialPickerLayout;
 import com.android.datetimepicker.time.TimePickerDialog;
 import com.code44.finance.R;
+import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.Tables;
@@ -56,6 +57,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     private ImageView color_IV;
     private Button category_B;
     private EditText note_ET;
+    private CheckBox confirmed_CB;
     private CheckBox includeInReports_CB;
 
     public static TransactionEditFragment newInstance(String transactionServerId) {
@@ -82,6 +84,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         category_B = (Button) view.findViewById(R.id.category_B);
         date_B = (Button) view.findViewById(R.id.date_B);
         note_ET = (EditText) view.findViewById(R.id.note_ET);
+        confirmed_CB = (CheckBox) view.findViewById(R.id.confirmed_CB);
         includeInReports_CB = (CheckBox) view.findViewById(R.id.includeInReports_CB);
 
         // Setup
@@ -91,6 +94,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         accountTo_B.setOnClickListener(this);
         category_B.setOnClickListener(this);
         date_B.setOnClickListener(this);
+        confirmed_CB.setOnCheckedChangeListener(this);
         includeInReports_CB.setOnCheckedChangeListener(this);
     }
 
@@ -209,6 +213,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         color_IV.setColorFilter(model.getCategory().getColor());
         category_B.setText(model.getCategory().getTitle());
         note_ET.setText(model.getNote());
+        confirmed_CB.setChecked(model.getTransactionState() == TransactionState.CONFIRMED);
         includeInReports_CB.setChecked(model.includeInReports());
     }
 
@@ -249,7 +254,14 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     }
 
     @Override public void onCheckedChanged(CompoundButton view, boolean checked) {
-        model.setIncludeInReports(checked);
+        switch (view.getId()) {
+            case R.id.confirmed_CB:
+                model.setTransactionState(checked ? TransactionState.CONFIRMED : TransactionState.PENDING);
+                break;
+            case R.id.includeInReports_CB:
+                model.setIncludeInReports(checked);
+                break;
+        }
     }
 
     private void toggleCategoryType() {

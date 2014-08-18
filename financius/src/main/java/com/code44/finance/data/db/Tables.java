@@ -285,6 +285,7 @@ public final class Tables {
                     .projection(Currencies.PROJECTION_ACCOUNT_TO)
                     .selection("(" + Transactions.MODEL_STATE + "=?", ModelState.NORMAL.asString())
                     .selection(" or " + Transactions.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString())
+                    .sortOrder(Transactions.STATE + " desc")
                     .sortOrder(Transactions.DATE + " desc");
         }
     }

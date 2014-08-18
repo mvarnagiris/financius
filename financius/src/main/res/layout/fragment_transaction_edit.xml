@@ -120,20 +120,29 @@
                 android:hint="@string/note"
                 android:inputType="textCapSentences|textMultiLine" />
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xlarge"
+                android:orientation="vertical"
                 android:paddingLeft="4dp"
                 tools:ignore="RtlHardcoded,RtlSymmetry">
+
+                <CheckBox
+                    android:id="@+id/confirmed_CB"
+                    style="@style/CheckBox.Field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/confirmed" />
 
                 <CheckBox
                     android:id="@+id/includeInReports_CB"
                     style="@style/CheckBox.Field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_xxlarge"
+                    android:layout_marginTop="@dimen/space_large"
                     android:text="@string/include_in_reports" />
-            </FrameLayout>
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
