@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.code44.finance.R;
 import com.code44.finance.common.model.CategoryType;
+import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
@@ -128,7 +129,7 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
             do {
                 final Transaction transaction = Transaction.from(cursor);
                 final Category category = transaction.getCategory();
-                if (transaction.includeInReports() && category.getCategoryType() == CategoryType.EXPENSE) {
+                if (transaction.includeInReports() && category.getCategoryType() == CategoryType.EXPENSE && transaction.getTransactionState() == TransactionState.CONFIRMED) {
                     final Long amount;
                     if (transaction.getAccountFrom().getCurrency().getServerId().equals(Currency.getDefault().getServerId())) {
                         amount = transaction.getAmount();
