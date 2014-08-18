@@ -133,6 +133,7 @@ public class AccountsProvider extends BaseModelProvider {
             transaction.setAmount(Math.abs(balanceDelta));
             transaction.setDate(System.currentTimeMillis());
             transaction.setNote(getContext().getString(R.string.account_balance_update));
+            transaction.setIncludeInReports(false);
         }
 
         return transaction;

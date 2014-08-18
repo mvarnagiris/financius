@@ -9,9 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.code44.finance.R;
+import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
+import com.code44.finance.data.model.Category;
+import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.AccountsProvider;
+import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartValue;
 import com.code44.finance.ui.BaseFragment;
@@ -21,10 +26,15 @@ import com.code44.finance.views.OverviewGraphView;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class OverviewFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
-    private static final int LOADER_ACCOUNTS = 1;
+    private static final int LOADER_TRANSACTIONS = 1;
+    private static final int LOADER_ACCOUNTS = 2;
 
     private final IntervalHelper intervalHelper = IntervalHelper.get();
 
@@ -48,13 +58,13 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
 
         // Setup
         overviewGraph_V.setOnClickListener(this);
-        setOverviewGraph(null);
     }
 
     @Override public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         // Loader
+        getLoaderManager().initLoader(LOADER_TRANSACTIONS, null, this);
         getLoaderManager().initLoader(LOADER_ACCOUNTS, null, this);
     }
 
@@ -70,6 +80,11 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
+            case LOADER_TRANSACTIONS:
+                return Tables.Transactions
+                        .getQuery()
+                        .selection(" and " + Tables.Transactions.DATE + " between ? and ?", String.valueOf(intervalHelper.getCurrentInterval().getStartMillis()), String.valueOf(intervalHelper.getCurrentInterval().getEndMillis() - 1))
+                        .asCursorLoader(getActivity(), TransactionsProvider.uriTransactions());
             case LOADER_ACCOUNTS:
                 return Tables.Accounts.getQuery().selection(" and " + Tables.Accounts.INCLUDE_IN_TOTALS + "=?", "1").asCursorLoader(getActivity(), AccountsProvider.uriAccounts());
         }
@@ -78,6 +93,9 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
 
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         switch (loader.getId()) {
+            case LOADER_TRANSACTIONS:
+                onTransactionsLoaded(cursor);
+                break;
             case LOADER_ACCOUNTS:
                 onAccountsLoaded(cursor);
                 break;
@@ -101,6 +119,43 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
 
     @Subscribe public void onCurrentIntervalChanged(IntervalHelper intervalHelper) {
         requestTitleUpdate();
+        getLoaderManager().restartLoader(LOADER_TRANSACTIONS, null, this);
+    }
+
+    private void onTransactionsLoaded(Cursor cursor) {
+        final Map<Category, Long> expenses = new HashMap<>();
+        if (cursor.moveToFirst()) {
+            do {
+                final Transaction transaction = Transaction.from(cursor);
+                final Category category = transaction.getCategory();
+                if (transaction.includeInReports() && category.getCategoryType() == CategoryType.EXPENSE) {
+                    final Long amount;
+                    if (transaction.getAccountFrom().getCurrency().getServerId().equals(Currency.getDefault().getServerId())) {
+                        amount = transaction.getAmount();
+                    } else {
+                        amount = Math.round(transaction.getAmount() * transaction.getAccountFrom().getCurrency().getExchangeRate());
+                    }
+
+                    Long totalExpenseForCategory = expenses.get(category);
+                    if (totalExpenseForCategory == null) {
+                        totalExpenseForCategory = amount;
+                    } else {
+                        totalExpenseForCategory += amount;
+                    }
+                    expenses.put(category, totalExpenseForCategory);
+                }
+            } while (cursor.moveToNext());
+        }
+
+        final TreeMap<Category, Long> sortedExpenses = new TreeMap<>(new CategoriesExpensesComparator(expenses));
+        sortedExpenses.putAll(expenses);
+        final PieChartData.Builder builder = PieChartData.builder();
+        for (Category category : sortedExpenses.keySet()) {
+            builder.addValues(new PieChartValue(sortedExpenses.get(category), category.getColor()));
+        }
+        final PieChartData pieChartData = builder.build();
+        overviewGraph_V.setPieChartData(pieChartData);
+        overviewGraph_V.setTotalExpense(pieChartData.getTotalValue());
     }
 
     private void onAccountsLoaded(Cursor cursor) {
@@ -113,14 +168,23 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
         accounts_V.setAccounts(accounts);
     }
 
-    private void setOverviewGraph(Cursor cursor) {
-        final PieChartData pieChartData = PieChartData.builder()
-                .addValues(new PieChartValue(152151, 0xff8bc34a))
-                .addValues(new PieChartValue(107458, 0xff03a9f4))
-                .addValues(new PieChartValue(57590, 0xffffc107))
-                .addValues(new PieChartValue(40302, 0xff673ab7))
-                .build();
-        overviewGraph_V.setPieChartData(pieChartData);
-        overviewGraph_V.setTotalExpense(pieChartData.getTotalValue());
+    private static class CategoriesExpensesComparator implements Comparator<Category> {
+        final Map<Category, Long> base;
+
+        private CategoriesExpensesComparator(Map<Category, Long> base) {
+            this.base = base;
+        }
+
+        @Override public int compare(Category category1, Category category2) {
+            final Long category1Total = base.get(category1);
+            final Long category2Total = base.get(category2);
+            if (category1Total > category2Total) {
+                return -1;
+            } else if (base.get(category1) < base.get(category2)) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
     }
 }

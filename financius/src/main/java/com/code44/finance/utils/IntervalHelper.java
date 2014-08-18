@@ -111,6 +111,10 @@ public class IntervalHelper extends Prefs {
         notifyChanged();
     }
 
+    public Interval getCurrentInterval() {
+        return currentInterval;
+    }
+
     public String getCurrentIntervalTitle() {
         return getIntervalTitle(getContext(), currentInterval, type);
     }
