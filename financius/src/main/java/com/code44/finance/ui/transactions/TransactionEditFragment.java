@@ -33,7 +33,7 @@ import com.code44.finance.utils.MoneyFormatter;
 
 import net.danlew.android.joda.DateUtils;
 
-import org.joda.time.Instant;
+import org.joda.time.DateTime;
 
 public class TransactionEditFragment extends ModelEditFragment<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int REQUEST_AMOUNT = 1;
@@ -170,7 +170,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         accountTo_B.setText(model.getAccountTo().getTitle());
         color_IV.setColorFilter(model.getCategory().getColor());
         category_B.setText(model.getCategory().getTitle());
-        date_B.setText(DateUtils.formatDateTime(getActivity(), new Instant(model.getDate()), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
+        date_B.setText(DateUtils.formatDateTime(getActivity(), new DateTime(model.getDate()), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
     }
 
     @Override public void onClick(View v) {
