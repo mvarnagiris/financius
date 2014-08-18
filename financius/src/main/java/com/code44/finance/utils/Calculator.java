@@ -82,7 +82,7 @@ public class Calculator {
         long result = 0;
         try {
             final Double number = Double.parseDouble(currentPart.toString());
-            result = (long) (number * 100);
+            result = Math.round(number * 100);
         } catch (Exception ignore) {
         }
 
