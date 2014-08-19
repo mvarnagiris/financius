@@ -202,7 +202,7 @@ public class Transaction extends BaseModel {
             throw new IllegalStateException("AccountTo cannot be null.");
         }
 
-        if (accountFrom == accountTo) {
+        if (accountFrom == accountTo && transactionState == TransactionState.CONFIRMED) {
             throw new IllegalStateException("AccountFrom cannot be equal to AccountTo.");
         }
 
@@ -210,11 +210,11 @@ public class Transaction extends BaseModel {
             throw new IllegalStateException("Category cannot be null.");
         }
 
-        if (category.getCategoryType() == CategoryType.EXPENSE && accountFrom == Account.getSystem()) {
+        if (category.getCategoryType() == CategoryType.EXPENSE && accountFrom == Account.getSystem() && transactionState == TransactionState.CONFIRMED) {
             throw new IllegalStateException("Account from cannot be system account.");
         }
 
-        if (category.getCategoryType() == CategoryType.INCOME && accountTo == Account.getSystem()) {
+        if (category.getCategoryType() == CategoryType.INCOME && accountTo == Account.getSystem() && transactionState == TransactionState.CONFIRMED) {
             throw new IllegalStateException("Account to cannot be system account.");
         }
 
