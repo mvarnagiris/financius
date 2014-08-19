@@ -20,6 +20,7 @@ import com.android.datetimepicker.date.DatePickerDialog;
 import com.android.datetimepicker.time.RadialPickerLayout;
 import com.android.datetimepicker.time.TimePickerDialog;
 import com.code44.finance.R;
+import com.code44.finance.common.model.AccountOwner;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
@@ -59,6 +60,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     private EditText note_ET;
     private CheckBox confirmed_CB;
     private CheckBox includeInReports_CB;
+    private Button save_B;
 
     public static TransactionEditFragment newInstance(String transactionServerId) {
         final Bundle args = makeArgs(transactionServerId);
@@ -86,6 +88,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         note_ET = (EditText) view.findViewById(R.id.note_ET);
         confirmed_CB = (CheckBox) view.findViewById(R.id.confirmed_CB);
         includeInReports_CB = (CheckBox) view.findViewById(R.id.includeInReports_CB);
+        save_B = (Button) view.findViewById(R.id.save_B);
 
         // Setup
         categoryType_IB.setOnClickListener(this);
@@ -153,6 +156,8 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     @Override public boolean onSave(Context context, Transaction model) {
         boolean canSave = true;
 
+        model.setTransactionState(model.getTransactionState() == TransactionState.CONFIRMED && canBeConfirmed(model) ? TransactionState.CONFIRMED : TransactionState.PENDING);
+
 //        if (TextUtils.isEmpty(model.getTitle())) {
 //            canSave = false;
 //            // TODO Show error
@@ -213,8 +218,9 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         color_IV.setColorFilter(model.getCategory().getColor());
         category_B.setText(model.getCategory().getTitle());
         note_ET.setText(model.getNote());
-        confirmed_CB.setChecked(model.getTransactionState() == TransactionState.CONFIRMED);
+        confirmed_CB.setChecked(model.getTransactionState() == TransactionState.CONFIRMED && canBeConfirmed(model));
         includeInReports_CB.setChecked(model.includeInReports());
+        save_B.setText(confirmed_CB.isChecked() ? R.string.save : R.string.pending);
     }
 
     @Override public void onClick(View v) {
@@ -256,7 +262,10 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     @Override public void onCheckedChanged(CompoundButton view, boolean checked) {
         switch (view.getId()) {
             case R.id.confirmed_CB:
-                model.setTransactionState(checked ? TransactionState.CONFIRMED : TransactionState.PENDING);
+                if (canBeConfirmed(model)) {
+                    model.setTransactionState(checked ? TransactionState.CONFIRMED : TransactionState.PENDING);
+                }
+                onModelLoaded(model);
                 break;
             case R.id.includeInReports_CB:
                 model.setIncludeInReports(checked);
@@ -300,5 +309,35 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         }
 
         return transactionCurrency;
+    }
+
+    private boolean canBeConfirmed(Transaction model) {
+        if (model.getAmount() == 0) {
+            return false;
+        }
+
+        switch (model.getCategory().getCategoryType()) {
+            case EXPENSE:
+                if (model.getAccountFrom() == null || model.getAccountFrom().getAccountOwner() == AccountOwner.SYSTEM) {
+                    return false;
+                }
+                break;
+            case INCOME:
+                if (model.getAccountTo() == null || model.getAccountTo().getAccountOwner() == AccountOwner.SYSTEM) {
+                    return false;
+                }
+                break;
+            case TRANSFER:
+                if (model.getAccountFrom() == null || model.getAccountFrom().getAccountOwner() == AccountOwner.SYSTEM) {
+                    return false;
+                }
+
+                if (model.getAccountTo() == null || model.getAccountTo().getAccountOwner() == AccountOwner.SYSTEM) {
+                    return false;
+                }
+                break;
+        }
+
+        return true;
     }
 }
