@@ -35,6 +35,7 @@ import com.code44.finance.ui.ModelEditFragment;
 import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.accounts.AccountsActivity;
 import com.code44.finance.ui.categories.CategoriesActivity;
+import com.code44.finance.utils.FieldValidationUtils;
 import com.code44.finance.utils.MoneyFormatter;
 
 import net.danlew.android.joda.DateUtils;
@@ -156,7 +157,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     @Override public boolean onSave(Context context, Transaction model) {
         boolean canSave = true;
 
-        model.setTransactionState(model.getTransactionState() == TransactionState.CONFIRMED && canBeConfirmed(model) ? TransactionState.CONFIRMED : TransactionState.PENDING);
+        model.setTransactionState(model.getTransactionState() == TransactionState.CONFIRMED && canBeConfirmed(model, false) ? TransactionState.CONFIRMED : TransactionState.PENDING);
 
 //        if (TextUtils.isEmpty(model.getTitle())) {
 //            canSave = false;
@@ -218,7 +219,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         color_IV.setColorFilter(model.getCategory().getColor());
         category_B.setText(model.getCategory().getTitle());
         note_ET.setText(model.getNote());
-        confirmed_CB.setChecked(model.getTransactionState() == TransactionState.CONFIRMED && canBeConfirmed(model));
+        confirmed_CB.setChecked(model.getTransactionState() == TransactionState.CONFIRMED && canBeConfirmed(model, false));
         includeInReports_CB.setChecked(model.includeInReports());
         save_B.setText(confirmed_CB.isChecked() ? R.string.save : R.string.pending);
     }
@@ -262,7 +263,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     @Override public void onCheckedChanged(CompoundButton view, boolean checked) {
         switch (view.getId()) {
             case R.id.confirmed_CB:
-                if (canBeConfirmed(model)) {
+                if (canBeConfirmed(model, true)) {
                     model.setTransactionState(checked ? TransactionState.CONFIRMED : TransactionState.PENDING);
                 }
                 onModelLoaded(model);
@@ -311,33 +312,39 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         return transactionCurrency;
     }
 
-    private boolean canBeConfirmed(Transaction model) {
+    private boolean canBeConfirmed(Transaction model, boolean showErrors) {
+        boolean canBeConfirmed = true;
         if (model.getAmount() == 0) {
-            return false;
+            canBeConfirmed = false;
+            FieldValidationUtils.onError(amount_B);
         }
 
         switch (model.getCategory().getCategoryType()) {
             case EXPENSE:
                 if (model.getAccountFrom() == null || model.getAccountFrom().getAccountOwner() == AccountOwner.SYSTEM) {
-                    return false;
+                    canBeConfirmed = false;
+                    FieldValidationUtils.onError(accountFrom_B);
                 }
                 break;
             case INCOME:
                 if (model.getAccountTo() == null || model.getAccountTo().getAccountOwner() == AccountOwner.SYSTEM) {
-                    return false;
+                    canBeConfirmed = false;
+                    FieldValidationUtils.onError(accountTo_B);
                 }
                 break;
             case TRANSFER:
                 if (model.getAccountFrom() == null || model.getAccountFrom().getAccountOwner() == AccountOwner.SYSTEM) {
-                    return false;
+                    canBeConfirmed = false;
+                    FieldValidationUtils.onError(accountFrom_B);
                 }
 
                 if (model.getAccountTo() == null || model.getAccountTo().getAccountOwner() == AccountOwner.SYSTEM) {
-                    return false;
+                    canBeConfirmed = false;
+                    FieldValidationUtils.onError(accountTo_B);
                 }
                 break;
         }
 
-        return true;
+        return canBeConfirmed;
     }
 }
