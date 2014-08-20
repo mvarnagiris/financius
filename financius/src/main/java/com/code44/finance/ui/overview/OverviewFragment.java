@@ -158,7 +158,7 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
         final TreeMap<Category, Long> sortedExpenses = new TreeMap<>(new CategoriesExpensesComparator(expenses));
         sortedExpenses.putAll(expenses);
         final PieChartData.Builder builder = PieChartData.builder();
-        for (Category category : sortedExpenses.keySet()) {
+        for (Category category : sortedExpenses.descendingKeySet()) {
             builder.addValues(new PieChartValue(sortedExpenses.get(category), category.getColor()));
         }
         final PieChartData pieChartData = builder.build();
@@ -187,9 +187,9 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
             final Long category1Total = base.get(category1);
             final Long category2Total = base.get(category2);
             if (category1Total > category2Total) {
-                return -1;
-            } else if (base.get(category1) < base.get(category2)) {
                 return 1;
+            } else if (base.get(category1) < base.get(category2)) {
+                return -1;
             } else {
                 return 0;
             }

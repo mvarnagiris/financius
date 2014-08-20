@@ -62,6 +62,32 @@ public abstract class BaseModel implements Parcelable {
         toParcel(parcel);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BaseModel)) return false;
+
+        BaseModel baseModel = (BaseModel) o;
+
+        if (id != baseModel.id) return false;
+        if (modelState != baseModel.modelState) return false;
+        if (serverId != null ? !serverId.equals(baseModel.serverId) : baseModel.serverId != null)
+            return false;
+        //noinspection RedundantIfStatement
+        if (syncState != baseModel.syncState) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (serverId != null ? serverId.hashCode() : 0);
+        result = 31 * result + (modelState != null ? modelState.hashCode() : 0);
+        result = 31 * result + (syncState != null ? syncState.hashCode() : 0);
+        return result;
+    }
+
     public ContentValues asContentValues() {
         if (StringUtils.isEmpty(getServerId())) {
             setServerId(UUID.randomUUID().toString());

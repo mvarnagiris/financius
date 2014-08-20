@@ -228,11 +228,11 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
         if (StringUtils.isEmpty(model.getServerId()) && !isAutoAmountRequested) {
             isAutoAmountRequested = true;
-            amount_B.postDelayed(new Runnable() {
+            amount_B.post(new Runnable() {
                 @Override public void run() {
                     amount_B.performClick();
                 }
-            }, 500);
+            });
         }
     }
 
@@ -328,31 +328,41 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         boolean canBeConfirmed = true;
         if (model.getAmount() == 0) {
             canBeConfirmed = false;
-            FieldValidationUtils.onError(amount_B);
+            if (showErrors) {
+                FieldValidationUtils.onError(amount_B);
+            }
         }
 
         switch (model.getCategory().getCategoryType()) {
             case EXPENSE:
                 if (model.getAccountFrom() == null || model.getAccountFrom().getAccountOwner() == AccountOwner.SYSTEM) {
                     canBeConfirmed = false;
-                    FieldValidationUtils.onError(accountFrom_B);
+                    if (showErrors) {
+                        FieldValidationUtils.onError(accountFrom_B);
+                    }
                 }
                 break;
             case INCOME:
                 if (model.getAccountTo() == null || model.getAccountTo().getAccountOwner() == AccountOwner.SYSTEM) {
                     canBeConfirmed = false;
-                    FieldValidationUtils.onError(accountTo_B);
+                    if (showErrors) {
+                        FieldValidationUtils.onError(accountTo_B);
+                    }
                 }
                 break;
             case TRANSFER:
                 if (model.getAccountFrom() == null || model.getAccountFrom().getAccountOwner() == AccountOwner.SYSTEM) {
                     canBeConfirmed = false;
-                    FieldValidationUtils.onError(accountFrom_B);
+                    if (showErrors) {
+                        FieldValidationUtils.onError(accountFrom_B);
+                    }
                 }
 
                 if (model.getAccountTo() == null || model.getAccountTo().getAccountOwner() == AccountOwner.SYSTEM) {
                     canBeConfirmed = false;
-                    FieldValidationUtils.onError(accountTo_B);
+                    if (showErrors) {
+                        FieldValidationUtils.onError(accountTo_B);
+                    }
                 }
                 break;
         }
