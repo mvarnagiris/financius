@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code44.finance.R;
+import com.code44.finance.common.model.AccountOwner;
+import com.code44.finance.common.model.CategoryOwner;
 import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.data.db.Tables;
@@ -26,13 +28,16 @@ import org.joda.time.Period;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 public class TransactionsAdapter extends BaseModelsAdapter implements StickyListHeadersAdapter {
+    private static final String UNKNOWN_VALUE = "?";
+    private static final String TRANSFER_SYMBOL = " > ";
+
     private final IntervalHelper intervalHelper;
     private final LongSparseArray<Long> totalExpenses;
     private final int expenseColor;
     private final int incomeColor;
     private final int transferColor;
     private final int primaryColor;
-    private final int secondaryColor;
+    private final int weakColor;
 
     public TransactionsAdapter(Context context, IntervalHelper intervalHelper) {
         super(context);
@@ -43,7 +48,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         incomeColor = context.getResources().getColor(R.color.text_positive);
         transferColor = context.getResources().getColor(R.color.text_neutral);
         primaryColor = context.getResources().getColor(R.color.text_primary);
-        secondaryColor = context.getResources().getColor(R.color.text_secondary);
+        weakColor = context.getResources().getColor(R.color.text_weak);
     }
 
     @Override public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -57,30 +62,59 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         final Transaction transaction = Transaction.from(cursor);
         final Category category = transaction.getCategory();
         final DateTime date = new DateTime(transaction.getDate());
+
         holder.weekday_TV.setText(date.dayOfWeek().getAsShortText());
         holder.day_TV.setText(date.dayOfMonth().getAsShortText());
         holder.category_TV.setText(category.getTitle());
+        holder.category_TV.setTextColor(primaryColor);
+        holder.color_IV.setColorFilter(category.getColor());
         holder.note_TV.setText(transaction.getNote());
         holder.amount_TV.setText(MoneyFormatter.format(transaction));
-
-        if (transaction.getTransactionState() == TransactionState.CONFIRMED) {
-            holder.category_TV.setTextColor(primaryColor);
-            holder.amount_TV.setTextColor(primaryColor);
-            holder.color_IV.setColorFilter(category.getColor());
-            if (category.getCategoryType() == CategoryType.EXPENSE) {
-                holder.account_TV.setText(transaction.getAccountFrom().getTitle());
-                holder.amount_TV.setTextColor(expenseColor);
-            } else if (category.getCategoryType() == CategoryType.INCOME) {
-                holder.account_TV.setText(transaction.getAccountTo().getTitle());
-                holder.amount_TV.setTextColor(incomeColor);
-            } else {
-                holder.account_TV.setText(transaction.getAccountFrom().getTitle() + " > " + transaction.getAccountTo().getTitle());
-                holder.amount_TV.setTextColor(transferColor);
-            }
+        if (category.getCategoryType() == CategoryType.EXPENSE) {
+            holder.account_TV.setText(transaction.getAccountFrom().getTitle());
+            holder.amount_TV.setTextColor(expenseColor);
+        } else if (category.getCategoryType() == CategoryType.INCOME) {
+            holder.account_TV.setText(transaction.getAccountTo().getTitle());
+            holder.amount_TV.setTextColor(incomeColor);
         } else {
-            holder.category_TV.setTextColor(secondaryColor);
-            holder.amount_TV.setTextColor(secondaryColor);
-            holder.color_IV.setColorFilter(secondaryColor);
+            holder.account_TV.setText(transaction.getAccountFrom().getTitle() + TRANSFER_SYMBOL + transaction.getAccountTo().getTitle());
+            holder.amount_TV.setTextColor(transferColor);
+        }
+
+        if (transaction.getTransactionState() == TransactionState.PENDING) {
+            if (category.getCategoryOwner() == CategoryOwner.SYSTEM) {
+                holder.category_TV.setTextColor(weakColor);
+                holder.color_IV.setColorFilter(weakColor);
+            }
+
+            if (transaction.getAmount() == 0) {
+                holder.amount_TV.setTextColor(weakColor);
+            }
+
+            if (category.getCategoryType() == CategoryType.EXPENSE) {
+                if (transaction.getAccountFrom().getAccountOwner() == AccountOwner.SYSTEM) {
+                    holder.account_TV.setText(UNKNOWN_VALUE);
+                }
+
+                if (transaction.getAmount() > 0) {
+                    holder.amount_TV.setTextColor(expenseColor);
+                }
+            } else if (category.getCategoryType() == CategoryType.INCOME) {
+                if (transaction.getAccountTo().getAccountOwner() == AccountOwner.SYSTEM) {
+                    holder.account_TV.setText(UNKNOWN_VALUE);
+                }
+
+                if (transaction.getAmount() > 0) {
+                    holder.amount_TV.setTextColor(incomeColor);
+                }
+            } else {
+                final String accountFrom = transaction.getAccountFrom().getAccountOwner() == AccountOwner.SYSTEM ? UNKNOWN_VALUE : transaction.getAccountFrom().getTitle();
+                final String accountTo = transaction.getAccountTo().getAccountOwner() == AccountOwner.SYSTEM ? UNKNOWN_VALUE : transaction.getAccountTo().getTitle();
+                holder.account_TV.setText(accountFrom + TRANSFER_SYMBOL + accountTo);
+                if (transaction.getAmount() > 0) {
+                    holder.amount_TV.setTextColor(transferColor);
+                }
+            }
         }
     }
 

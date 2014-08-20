@@ -103,6 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
+                android:layout_marginLeft="@dimen/space_normal"
                 android:ellipsize="end"
                 android:singleLine="true"
                 tools:ignore="RtlHardcoded"
