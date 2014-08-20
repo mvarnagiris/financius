@@ -31,13 +31,11 @@ public abstract class ModelActivity extends BaseActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        readExtras();
         final int contentId = inflateActivity();
 
         // Setup ActionBar
         toolbarHelper.setTitle(getActionBarTitleResId());
-
-        // Get extras
-        modelServerId = getIntent().getStringExtra(EXTRA_MODEL_SERVER_ID);
 
         // Fragment
         if (savedInstanceState == null) {
@@ -55,6 +53,10 @@ public abstract class ModelActivity extends BaseActivity {
     protected abstract int getActionBarTitleResId();
 
     protected abstract ModelFragment createModelFragment(String modelServerId);
+
+    protected void readExtras() {
+        modelServerId = getIntent().getStringExtra(EXTRA_MODEL_SERVER_ID);
+    }
 
     protected int inflateActivity() {
         setContentView(R.layout.activity_simple);

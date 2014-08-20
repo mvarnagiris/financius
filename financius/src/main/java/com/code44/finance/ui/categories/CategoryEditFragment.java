@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.code44.finance.R;
+import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.Tables;
@@ -21,17 +22,30 @@ import com.code44.finance.ui.ModelEditFragment;
 import com.code44.finance.ui.SelectColorFragment;
 
 public class CategoryEditFragment extends ModelEditFragment<Category> implements View.OnClickListener, SelectColorFragment.OnColorSelectedListener {
+    private static final String ARG_CATEGORY_TYPE = "ARG_CATEGORY_TYPE";
+
     private static final String FRAGMENT_SELECT_COLOR = CategoryEditFragment.class.getName() + ".FRAGMENT_SELECT_COLOR";
 
     private EditText title_ET;
     private ImageButton color_IB;
 
-    public static CategoryEditFragment newInstance(String categoryServerId) {
+    private CategoryType categoryType;
+
+    public static CategoryEditFragment newInstance(String categoryServerId, CategoryType categoryType) {
         final Bundle args = makeArgs(categoryServerId);
+        args.putSerializable(ARG_CATEGORY_TYPE, categoryType);
 
         final CategoryEditFragment fragment = new CategoryEditFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        categoryType = (CategoryType) getArguments().getSerializable(ARG_CATEGORY_TYPE);
+        if (categoryType == null) {
+            categoryType = CategoryType.EXPENSE;
+        }
     }
 
     @Override
@@ -73,6 +87,9 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
         }
 
         if (canSave) {
+            if (StringUtils.isEmpty(model.getServerId())) {
+                model.setCategoryType(categoryType);
+            }
             DataStore.insert().model(model).into(context, CategoriesProvider.uriCategories());
         }
 

@@ -72,6 +72,6 @@ public class CategoryFragment extends ModelFragment<Category> {
 
     @Override
     protected void startModelEdit(Context context, String modelServerId) {
-        CategoryEditActivity.start(context, modelServerId);
+        CategoryEditActivity.start(context, modelServerId, model.getCategoryType());
     }
 }

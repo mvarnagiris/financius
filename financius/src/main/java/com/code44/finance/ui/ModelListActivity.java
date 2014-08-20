@@ -30,9 +30,8 @@ public abstract class ModelListActivity extends BaseActivity implements ModelLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final int containerId = inflateActivity();
-
         readExtras();
+        final int containerId = inflateActivity();
 
         // Setup ActionBar
         if (mode == ModelListFragment.Mode.SELECT) {
