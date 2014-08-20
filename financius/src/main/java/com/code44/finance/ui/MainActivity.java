@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
     }
 
     @Override public void onNavigationItemSelected(NavigationAdapter.NavigationItem item) {
-        BaseFragment baseFragment = null;
+        final BaseFragment baseFragment;
         switch (item.getId()) {
             case NavigationAdapter.NAV_ID_USER:
                 baseFragment = UserFragment.newInstance();
@@ -74,9 +74,14 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
             case NavigationAdapter.NAV_ID_TRANSACTIONS:
                 baseFragment = TransactionsFragment.newInstance();
                 break;
+
+            default:
+                baseFragment = null;
+                break;
         }
 
         toolbarHelper.closeDrawer();
+
         if (baseFragment != null) {
             loadFragment(baseFragment);
         }
