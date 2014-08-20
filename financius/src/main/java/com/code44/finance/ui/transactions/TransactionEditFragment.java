@@ -63,6 +63,8 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     private CheckBox includeInReports_CB;
     private Button save_B;
 
+    private boolean isAutoAmountRequested = false;
+
     public static TransactionEditFragment newInstance(String transactionServerId) {
         final Bundle args = makeArgs(transactionServerId);
 
@@ -100,6 +102,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         date_B.setOnClickListener(this);
         confirmed_CB.setOnCheckedChangeListener(this);
         includeInReports_CB.setOnCheckedChangeListener(this);
+        isAutoAmountRequested = savedInstanceState != null;
     }
 
     @Override public void onResume() {
@@ -222,6 +225,15 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         confirmed_CB.setChecked(model.getTransactionState() == TransactionState.CONFIRMED && canBeConfirmed(model, false));
         includeInReports_CB.setChecked(model.includeInReports());
         save_B.setText(confirmed_CB.isChecked() ? R.string.save : R.string.pending);
+
+        if (StringUtils.isEmpty(model.getServerId()) && !isAutoAmountRequested) {
+            isAutoAmountRequested = true;
+            amount_B.postDelayed(new Runnable() {
+                @Override public void run() {
+                    amount_B.performClick();
+                }
+            }, 500);
+        }
     }
 
     @Override public void onClick(View v) {

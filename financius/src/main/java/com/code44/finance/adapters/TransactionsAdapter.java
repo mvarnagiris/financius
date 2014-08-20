@@ -82,7 +82,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         }
 
         if (transaction.getTransactionState() == TransactionState.PENDING) {
-            if (category.getCategoryOwner() == CategoryOwner.SYSTEM) {
+            if (category.getCategoryOwner() == CategoryOwner.SYSTEM && !category.getServerId().equals(Category.getTransfer().getServerId())) {
                 holder.category_TV.setTextColor(weakColor);
                 holder.color_IV.setColorFilter(weakColor);
             }

@@ -21,8 +21,10 @@ import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartValue;
 import com.code44.finance.ui.BaseFragment;
+import com.code44.finance.ui.transactions.TransactionEditActivity;
 import com.code44.finance.utils.IntervalHelper;
 import com.code44.finance.views.AccountsView;
+import com.code44.finance.views.FabImageButton;
 import com.code44.finance.views.OverviewGraphView;
 import com.squareup.otto.Subscribe;
 
@@ -56,9 +58,11 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
         // Get views
         overviewGraph_V = (OverviewGraphView) view.findViewById(R.id.overviewGraph_V);
         accounts_V = (AccountsView) view.findViewById(R.id.accounts_V);
+        final FabImageButton newTransaction_FAB = (FabImageButton) view.findViewById(R.id.newTransaction_FAB);
 
         // Setup
         overviewGraph_V.setOnClickListener(this);
+        newTransaction_FAB.setOnClickListener(this);
     }
 
     @Override public void onActivityCreated(Bundle savedInstanceState) {
@@ -109,6 +113,9 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
 
     @Override public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.newTransaction_FAB:
+                TransactionEditActivity.start(getActivity(), null);
+                break;
             case R.id.overviewGraph_V:
                 break;
         }
