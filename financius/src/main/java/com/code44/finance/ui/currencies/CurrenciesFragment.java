@@ -42,7 +42,7 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
     private SmoothProgressBar loading_SPB;
 
     public static CurrenciesFragment newInstance(Mode mode) {
-        final Bundle args = makeArgs(mode);
+        final Bundle args = makeArgs(mode, null);
 
         final CurrenciesFragment fragment = new CurrenciesFragment();
         fragment.setArguments(args);

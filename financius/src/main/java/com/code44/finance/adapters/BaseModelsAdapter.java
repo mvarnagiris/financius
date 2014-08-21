@@ -21,7 +21,9 @@ public abstract class BaseModelsAdapter extends CursorAdapter {
 
     public void setSelectedModels(Set<? extends BaseModel> selectedModels) {
         this.selectedModels.clear();
-        this.selectedModels.addAll(selectedModels);
+        if (selectedModels != null) {
+            this.selectedModels.addAll(selectedModels);
+        }
         notifyDataSetChanged();
     }
 

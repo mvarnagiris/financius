@@ -28,13 +28,15 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.ui.CalculatorActivity;
 import com.code44.finance.ui.ModelEditFragment;
-import com.code44.finance.ui.OnModelListActivity;
+import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.accounts.AccountsActivity;
 import com.code44.finance.ui.categories.CategoriesActivity;
+import com.code44.finance.ui.tags.TagsActivity;
 import com.code44.finance.utils.FieldValidationUtils;
 import com.code44.finance.utils.MoneyFormatter;
 
@@ -42,11 +44,14 @@ import net.danlew.android.joda.DateUtils;
 
 import org.joda.time.DateTime;
 
+import java.util.Collections;
+
 public class TransactionEditFragment extends ModelEditFragment<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private static final int REQUEST_AMOUNT = 1;
     private static final int REQUEST_ACCOUNT_FROM = 2;
     private static final int REQUEST_ACCOUNT_TO = 3;
     private static final int REQUEST_CATEGORY = 4;
+    private static final int REQUEST_TAGS = 5;
 
     private static final String FRAGMENT_DATE_DIALOG = "FRAGMENT_DATE_DIALOG";
     private static final String FRAGMENT_TIME_DIALOG = "FRAGMENT_TIME_DIALOG";
@@ -58,6 +63,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     private Button accountTo_B;
     private ImageView color_IV;
     private Button category_B;
+    private Button tags_B;
     private EditText note_ET;
     private CheckBox confirmed_CB;
     private CheckBox includeInReports_CB;
@@ -87,6 +93,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         accountTo_B = (Button) view.findViewById(R.id.accountTo_B);
         color_IV = (ImageView) view.findViewById(R.id.color_IV);
         category_B = (Button) view.findViewById(R.id.category_B);
+        tags_B = (Button) view.findViewById(R.id.tags_B);
         date_B = (Button) view.findViewById(R.id.date_B);
         note_ET = (EditText) view.findViewById(R.id.note_ET);
         confirmed_CB = (CheckBox) view.findViewById(R.id.confirmed_CB);
@@ -99,6 +106,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         accountFrom_B.setOnClickListener(this);
         accountTo_B.setOnClickListener(this);
         category_B.setOnClickListener(this);
+        tags_B.setOnClickListener(this);
         date_B.setOnClickListener(this);
         confirmed_CB.setOnCheckedChangeListener(this);
         includeInReports_CB.setOnCheckedChangeListener(this);
@@ -141,15 +149,15 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                     onModelLoaded(model);
                     return;
                 case REQUEST_ACCOUNT_FROM:
-                    model.setAccountFrom(data.<Account>getParcelableExtra(OnModelListActivity.RESULT_EXTRA_MODEL));
+                    model.setAccountFrom(data.<Account>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
                     onModelLoaded(model);
                     return;
                 case REQUEST_ACCOUNT_TO:
-                    model.setAccountTo(data.<Account>getParcelableExtra(OnModelListActivity.RESULT_EXTRA_MODEL));
+                    model.setAccountTo(data.<Account>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
                     onModelLoaded(model);
                     return;
                 case REQUEST_CATEGORY:
-                    model.setCategory(data.<Category>getParcelableExtra(OnModelListActivity.RESULT_EXTRA_MODEL));
+                    model.setCategory(data.<Category>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
                     onModelLoaded(model);
                     return;
             }
@@ -252,6 +260,9 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 break;
             case R.id.category_B:
                 CategoriesActivity.startSelect(this, REQUEST_CATEGORY, model.getCategory().getCategoryType());
+                break;
+            case R.id.tags_B:
+                TagsActivity.startMultiSelect(this, REQUEST_TAGS, Collections.<Tag>emptySet());
                 break;
             case R.id.date_B:
                 final DateTime date = new DateTime(model.getDate());

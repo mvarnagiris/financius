@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <Button
+                <Button
                     android:id="@+id/accountFrom_B"
                     style="@style/Button.Borderless.Select"
                     android:layout_width="0dp"
@@ -108,6 +108,14 @@
                     tools:text="Leisure" />
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/tags_B"
+                style="@style/Button.Borderless.Select"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/tags"
+                tools:stateListAnimator="@android:animator/fade_in" />
 
             <EditText
                 android:id="@+id/note_ET"

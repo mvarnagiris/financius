@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Parcelable;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 
@@ -11,11 +12,11 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.code44.finance.R;
 import com.code44.finance.adapters.CategoriesPagerAdapter;
 import com.code44.finance.common.model.CategoryType;
+import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.ModelListFragment;
-import com.code44.finance.ui.OnModelListActivity;
 import com.code44.finance.utils.LayoutType;
 
-public class CategoriesActivity extends OnModelListActivity {
+public class CategoriesActivity extends ModelListActivity {
     private static final String EXTRA_CATEGORY_TYPE = "EXTRA_CATEGORY_TYPE";
 
     private CategoryType categoryType;
@@ -44,7 +45,7 @@ public class CategoriesActivity extends OnModelListActivity {
     }
 
     @Override
-    protected ModelListFragment createModelsFragment(ModelListFragment.Mode mode) {
+    protected ModelListFragment createModelsFragment(ModelListFragment.Mode mode, Parcelable[] selectedModels) {
         return mode == ModelListFragment.Mode.VIEW ? null : CategoriesFragment.newInstance(mode, categoryType);
     }
 

@@ -27,7 +27,7 @@ public class TransactionsFragment extends ModelListFragment {
     private ExpandableStickyListHeadersListView headerList_V;
 
     public static TransactionsFragment newInstance() {
-        final Bundle args = makeArgs(Mode.VIEW);
+        final Bundle args = makeArgs(Mode.VIEW, null);
 
         final TransactionsFragment fragment = new TransactionsFragment();
         fragment.setArguments(args);

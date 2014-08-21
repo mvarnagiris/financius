@@ -7,6 +7,7 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,10 +20,12 @@ import com.code44.finance.R;
 import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.data.model.BaseModel;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public abstract class ModelListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener, View.OnClickListener {
     public static final String ARG_MODE = ModelListFragment.class.getName() + ".ARG_MODE";
+    public static final String ARG_SELECTED_MODELS = ModelListFragment.class.getName() + ".ARG_SELECTED_MODELS";
 
     protected static final int LOADER_MODELS = 1000;
 
@@ -32,9 +35,10 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
     private OnModelSelectedListener onModelSelectedListener;
     private OnModelsSelectedListener onModelsSelectedListener;
 
-    public static Bundle makeArgs(Mode mode) {
+    public static Bundle makeArgs(Mode mode, Parcelable[] selectedModels) {
         final Bundle args = new Bundle();
         args.putSerializable(ARG_MODE, mode);
+        args.putParcelableArray(ARG_SELECTED_MODELS, selectedModels);
         return args;
     }
 
@@ -63,6 +67,14 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
 
         // Setup
         adapter = createAdapter(getActivity());
+        if (mode == Mode.MULTI_SELECT) {
+            final Set<BaseModel> selectedModels = new HashSet<>();
+            final Parcelable[] selectedModelsArray = getArguments().getParcelableArray(ARG_SELECTED_MODELS);
+            for (Parcelable parcelable : selectedModelsArray) {
+                selectedModels.add((BaseModel) parcelable);
+            }
+            adapter.setSelectedModels(selectedModels);
+        }
         prepareView(view, adapter);
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,8 @@ import com.code44.finance.data.providers.TagsProvider;
 import com.code44.finance.ui.ModelListFragment;
 
 public class TagsFragment extends ModelListFragment {
-    public static TagsFragment newInstance(Mode mode) {
-        final Bundle args = makeArgs(mode);
+    public static TagsFragment newInstance(Mode mode, Parcelable[] selectedTags) {
+        final Bundle args = makeArgs(mode, selectedTags);
 
         final TagsFragment fragment = new TagsFragment();
         fragment.setArguments(args);
@@ -31,7 +32,7 @@ public class TagsFragment extends ModelListFragment {
     }
 
     @Override protected BaseModelsAdapter createAdapter(Context context) {
-        return new TagsAdapter(context, isMultiChoice);
+        return new TagsAdapter(context, getMode() == Mode.MULTI_SELECT);
     }
 
     @Override protected CursorLoader getModelsCursorLoader(Context context) {

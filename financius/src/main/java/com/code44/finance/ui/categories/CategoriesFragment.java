@@ -26,7 +26,7 @@ public class CategoriesFragment extends ModelListFragment {
     private CategoryType type;
 
     public static CategoriesFragment newInstance(Mode mode, CategoryType type) {
-        final Bundle args = makeArgs(mode);
+        final Bundle args = makeArgs(mode, null);
         args.putSerializable(ARG_TYPE, type);
 
         final CategoriesFragment fragment = new CategoriesFragment();

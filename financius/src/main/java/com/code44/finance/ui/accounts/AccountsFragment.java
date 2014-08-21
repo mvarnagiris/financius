@@ -25,7 +25,7 @@ public class AccountsFragment extends ModelListFragment {
     private TextView balance_TV;
 
     public static AccountsFragment newInstance(Mode mode) {
-        final Bundle args = makeArgs(mode);
+        final Bundle args = makeArgs(mode, null);
 
         final AccountsFragment fragment = new AccountsFragment();
         fragment.setArguments(args);

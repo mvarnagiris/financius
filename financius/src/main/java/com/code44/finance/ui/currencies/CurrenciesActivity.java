@@ -2,13 +2,14 @@ package com.code44.finance.ui.currencies;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.os.Parcelable;
 import android.view.Menu;
 
 import com.code44.finance.R;
+import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.ModelListFragment;
-import com.code44.finance.ui.OnModelListActivity;
 
-public class CurrenciesActivity extends OnModelListActivity {
+public class CurrenciesActivity extends ModelListActivity {
     public static void start(Context context) {
         start(context, makeIntentView(context, CurrenciesActivity.class));
     }
@@ -30,7 +31,7 @@ public class CurrenciesActivity extends OnModelListActivity {
     }
 
     @Override
-    protected ModelListFragment createModelsFragment(ModelListFragment.Mode mode) {
+    protected ModelListFragment createModelsFragment(ModelListFragment.Mode mode, Parcelable[] selectedModels) {
         return CurrenciesFragment.newInstance(mode);
     }
 }

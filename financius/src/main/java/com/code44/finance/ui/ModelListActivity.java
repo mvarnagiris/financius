@@ -10,23 +10,37 @@ import com.code44.finance.data.model.BaseModel;
 
 import java.util.Set;
 
-public abstract class OnModelListActivity extends BaseActivity implements ModelListFragment.OnModelSelectedListener, ModelListFragment.OnModelsSelectedListener {
+public abstract class ModelListActivity extends BaseActivity implements ModelListFragment.OnModelSelectedListener, ModelListFragment.OnModelsSelectedListener {
     public static final String RESULT_EXTRA_MODEL = "RESULT_EXTRA_MODEL";
     public static final String RESULT_EXTRA_MODELS = "RESULT_EXTRA_MODELS";
 
-    private static final String EXTRA_MODE = OnModelListActivity.class.getName() + ".EXTRA_MODE";
+    private static final String EXTRA_MODE = ModelListActivity.class.getName() + ".EXTRA_MODE";
+    private static final String EXTRA_SELECTED_MODELS = ModelListActivity.class.getName() + ".EXTRA_SELECTED_MODELS";
 
     protected ModelListFragment.Mode mode;
+    protected Parcelable[] selectedModels;
 
-    public static Intent makeIntentView(Context context, Class<? extends OnModelListActivity> activityClass) {
+    public static Intent makeIntentView(Context context, Class<? extends ModelListActivity> activityClass) {
         final Intent intent = makeIntent(context, activityClass);
         intent.putExtra(EXTRA_MODE, ModelListFragment.Mode.VIEW);
         return intent;
     }
 
-    public static Intent makeIntentSelect(Context context, Class<? extends OnModelListActivity> activityClass) {
+    public static Intent makeIntentSelect(Context context, Class<? extends ModelListActivity> activityClass) {
         final Intent intent = makeIntent(context, activityClass);
         intent.putExtra(EXTRA_MODE, ModelListFragment.Mode.SELECT);
+        return intent;
+    }
+
+    public static Intent makeIntentMultiSelect(Context context, Class<? extends ModelListActivity> activityClass, Set<? extends BaseModel> selectedModels) {
+        final Intent intent = makeIntent(context, activityClass);
+        intent.putExtra(EXTRA_MODE, ModelListFragment.Mode.MULTI_SELECT);
+        final Parcelable[] parcelables = new Parcelable[selectedModels.size()];
+        int index = 0;
+        for (BaseModel model : selectedModels) {
+            parcelables[index++] = model;
+        }
+        intent.putExtra(EXTRA_SELECTED_MODELS, parcelables);
         return intent;
     }
 
@@ -44,7 +58,7 @@ public abstract class OnModelListActivity extends BaseActivity implements ModelL
 
         final boolean addFragmentHere = containerId != 0;
         if (addFragmentHere && savedInstanceState == null) {
-            ModelListFragment fragment = createModelsFragment(mode);
+            ModelListFragment fragment = createModelsFragment(mode, selectedModels);
             if (fragment != null) {
                 getFragmentManager().beginTransaction().add(containerId, fragment).commit();
             }
@@ -81,6 +95,7 @@ public abstract class OnModelListActivity extends BaseActivity implements ModelL
 
     protected void readExtras() {
         mode = (ModelListFragment.Mode) getIntent().getSerializableExtra(EXTRA_MODE);
+        selectedModels = getIntent().getParcelableArrayExtra(EXTRA_SELECTED_MODELS);
         if (mode == null) {
             throw new IllegalStateException("Activity " + this.getClass().getName() + " must be created with Intent containing " + EXTRA_MODE + " with values from " + ModelListFragment.Mode.class.getName());
         }
@@ -88,5 +103,5 @@ public abstract class OnModelListActivity extends BaseActivity implements ModelL
 
     protected abstract int getActionBarTitleResId();
 
-    protected abstract ModelListFragment createModelsFragment(ModelListFragment.Mode mode);
+    protected abstract ModelListFragment createModelsFragment(ModelListFragment.Mode mode, Parcelable[] selectedModels);
 }
