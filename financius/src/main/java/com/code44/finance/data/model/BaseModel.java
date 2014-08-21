@@ -48,13 +48,11 @@ public abstract class BaseModel implements Parcelable {
 
     protected abstract void fromCursor(Cursor cursor, String columnPrefixTable);
 
-    @Override
-    public int describeContents() {
+    @Override public int describeContents() {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int flags) {
+    @Override public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeLong(getId());
         parcel.writeString(getServerId());
         parcel.writeInt(getModelState().asInt());
@@ -62,20 +60,21 @@ public abstract class BaseModel implements Parcelable {
         toParcel(parcel);
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof BaseModel)) return false;
 
         BaseModel baseModel = (BaseModel) o;
 
+        // We are only checking serverId, because otherwise some parts of the app might misbehave
+        // For example BaseModelAdapter contains Set<BaseModel> selectedItems
+        // noinspection RedundantIfStatement
         if (!serverId.equals(baseModel.serverId)) return false;
 
         return true;
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         return serverId.hashCode();
     }
 
