@@ -31,7 +31,7 @@ public class TagsFragment extends ModelListFragment {
     }
 
     @Override protected BaseModelsAdapter createAdapter(Context context) {
-        return new TagsAdapter(context);
+        return new TagsAdapter(context, isMultiChoice);
     }
 
     @Override protected CursorLoader getModelsCursorLoader(Context context) {

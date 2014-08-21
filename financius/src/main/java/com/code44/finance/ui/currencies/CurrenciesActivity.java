@@ -5,10 +5,10 @@ import android.content.Context;
 import android.view.Menu;
 
 import com.code44.finance.R;
-import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.ModelListFragment;
+import com.code44.finance.ui.OnModelListActivity;
 
-public class CurrenciesActivity extends ModelListActivity {
+public class CurrenciesActivity extends OnModelListActivity {
     public static void start(Context context) {
         start(context, makeIntentView(context, CurrenciesActivity.class));
     }

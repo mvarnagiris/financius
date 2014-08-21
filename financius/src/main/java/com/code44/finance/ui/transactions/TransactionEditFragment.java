@@ -32,7 +32,7 @@ import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.ui.CalculatorActivity;
 import com.code44.finance.ui.ModelEditFragment;
-import com.code44.finance.ui.ModelListActivity;
+import com.code44.finance.ui.OnModelListActivity;
 import com.code44.finance.ui.accounts.AccountsActivity;
 import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.utils.FieldValidationUtils;
@@ -141,15 +141,15 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                     onModelLoaded(model);
                     return;
                 case REQUEST_ACCOUNT_FROM:
-                    model.setAccountFrom(data.<Account>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
+                    model.setAccountFrom(data.<Account>getParcelableExtra(OnModelListActivity.RESULT_EXTRA_MODEL));
                     onModelLoaded(model);
                     return;
                 case REQUEST_ACCOUNT_TO:
-                    model.setAccountTo(data.<Account>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
+                    model.setAccountTo(data.<Account>getParcelableExtra(OnModelListActivity.RESULT_EXTRA_MODEL));
                     onModelLoaded(model);
                     return;
                 case REQUEST_CATEGORY:
-                    model.setCategory(data.<Category>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
+                    model.setCategory(data.<Category>getParcelableExtra(OnModelListActivity.RESULT_EXTRA_MODEL));
                     onModelLoaded(model);
                     return;
             }
