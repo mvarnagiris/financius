@@ -87,7 +87,7 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
         }
 
         if (canSave) {
-            if (StringUtils.isEmpty(model.getServerId())) {
+            if (StringUtils.isEmpty(model.getId())) {
                 model.setCategoryType(categoryType);
             }
             DataStore.insert().model(model).into(context, CategoriesProvider.uriCategories());
@@ -109,7 +109,7 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
     @Override
     protected Category getModelFrom(Cursor cursor) {
         final Category category = Category.from(cursor);
-        if (StringUtils.isEmpty(category.getServerId())) {
+        if (StringUtils.isEmpty(category.getId())) {
             category.setColor(0xff607d8b);
         }
         return category;

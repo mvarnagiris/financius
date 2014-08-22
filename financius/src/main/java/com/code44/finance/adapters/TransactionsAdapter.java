@@ -82,7 +82,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         }
 
         if (transaction.getTransactionState() == TransactionState.PENDING) {
-            if (category.getCategoryOwner() == CategoryOwner.SYSTEM && !category.getServerId().equals(Category.getTransfer().getServerId())) {
+            if (category.getCategoryOwner() == CategoryOwner.SYSTEM && !category.getId().equals(Category.getTransfer().getId())) {
                 holder.category_TV.setTextColor(weakColor);
                 holder.color_IV.setColorFilter(weakColor);
             }
@@ -180,7 +180,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         do {
             if (CategoryType.fromInt(cursor.getInt(iCategoryType)) == CategoryType.EXPENSE && cursor.getInt(iIncludeInReports) != 0) {
                 final long amount = cursor.getLong(iAmount);
-                if (Currency.getDefault().getServerId().equals(cursor.getString(iAccountFromCurrencyServerId))) {
+                if (Currency.getDefault().getId().equals(cursor.getString(iAccountFromCurrencyServerId))) {
                     totalExpense += amount;
                 } else {
                     totalExpense += amount * cursor.getDouble(iAccountFromCurrencyExchangeRate);

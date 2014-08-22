@@ -42,10 +42,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // Create indexes
         createIndex(db, Tables.Currencies.ID);
-        createIndex(db, Tables.Accounts.SERVER_ID);
-        createIndex(db, Tables.Categories.SERVER_ID);
-        createIndex(db, Tables.Tags.SERVER_ID);
-        createIndex(db, Tables.Transactions.SERVER_ID);
+        createIndex(db, Tables.Accounts.ID);
+        createIndex(db, Tables.Categories.ID);
+        createIndex(db, Tables.Tags.ID);
+        createIndex(db, Tables.Transactions.ID);
 
         // Add defaults
         addDefaults(db);

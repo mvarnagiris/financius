@@ -36,7 +36,7 @@ public class AccountsAdapter extends BaseModelsAdapter {
         holder.title_TV.setText(account.getTitle());
         holder.balance_TV.setText(MoneyFormatter.format(account.getCurrency(), account.getBalance()));
         holder.balance_TV.setTextColor(account.includeInTotals() ? includeInTotalsTextColor : doNotIncludeInTotalsTextColor);
-        if (account.getCurrency().getServerId().equals(Currency.getDefault().getServerId())) {
+        if (account.getCurrency().getId().equals(Currency.getDefault().getId())) {
             holder.mainCurrencyBalance_TV.setVisibility(View.GONE);
         } else {
             holder.mainCurrencyBalance_TV.setVisibility(View.VISIBLE);

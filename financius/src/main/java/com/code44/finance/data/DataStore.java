@@ -45,7 +45,7 @@ public final class DataStore {
         private ContentValues values;
 
         public DataStoreInsert model(BaseModel model) {
-            return values(model.asContentValues());
+            return values(model.asValues());
         }
 
         public DataStoreInsert values(ContentValues values) {

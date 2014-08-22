@@ -60,7 +60,7 @@ public class Transaction extends BaseModel {
 
     public static Transaction from(TransactionEntity entity, Account accountFrom, Account accountTo, Category category) {
         final Transaction transaction = new Transaction();
-        transaction.setServerId(entity.getId());
+        transaction.setId(entity.getId());
         transaction.setModelState(ModelState.valueOf(entity.getModelState()));
         transaction.setSyncState(SyncState.SYNCED);
         transaction.setAccountFrom(accountFrom);
@@ -76,13 +76,13 @@ public class Transaction extends BaseModel {
     }
 
     @Override
-    protected Column getIdColumn() {
-        return Tables.Transactions.ID;
+    protected Column getLocalIdColumn() {
+        return Tables.Transactions.LOCAL_ID;
     }
 
     @Override
-    protected Column getServerIdColumn() {
-        return Tables.Transactions.SERVER_ID;
+    protected Column getIdColumn() {
+        return Tables.Transactions.ID;
     }
 
     @Override
@@ -123,9 +123,9 @@ public class Transaction extends BaseModel {
 
     @Override
     protected void toValues(ContentValues values) {
-        values.put(Tables.Transactions.ACCOUNT_FROM_ID.getName(), accountFrom.getServerId());
-        values.put(Tables.Transactions.ACCOUNT_TO_ID.getName(), accountTo.getServerId());
-        values.put(Tables.Transactions.CATEGORY_ID.getName(), category.getServerId());
+        values.put(Tables.Transactions.ACCOUNT_FROM_ID.getName(), accountFrom.getId());
+        values.put(Tables.Transactions.ACCOUNT_TO_ID.getName(), accountTo.getId());
+        values.put(Tables.Transactions.CATEGORY_ID.getName(), category.getId());
         values.put(Tables.Transactions.DATE.getName(), date);
         values.put(Tables.Transactions.AMOUNT.getName(), amount);
         values.put(Tables.Transactions.EXCHANGE_RATE.getName(), exchangeRate);
@@ -229,11 +229,11 @@ public class Transaction extends BaseModel {
 
     public TransactionEntity toEntity() {
         final TransactionEntity entity = new TransactionEntity();
-        entity.setId(getServerId());
+        entity.setId(getId());
         entity.setModelState(getModelState().toString());
-        entity.setAccountFromId(getAccountFrom().getServerId());
-        entity.setAccountToId(getAccountTo().getServerId());
-        entity.setCategoryId(getCategory().getServerId());
+        entity.setAccountFromId(getAccountFrom().getId());
+        entity.setAccountToId(getAccountTo().getId());
+        entity.setCategoryId(getCategory().getId());
         entity.setDate(getDate());
         entity.setAmount(getAmount());
         entity.setExchangeRate(getExchangeRate());

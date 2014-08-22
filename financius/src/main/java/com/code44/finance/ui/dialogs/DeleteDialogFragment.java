@@ -96,31 +96,31 @@ public class DeleteDialogFragment extends AlertDialogFragment implements LoaderM
         switch (id) {
             case LOADER_CURRENCIES:
                 return Query.create()
-                        .projectionId(Tables.Currencies.LOCAL_ID)
+                        .projectionLocalId(Tables.Currencies.LOCAL_ID)
                         .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
                         .asCursorLoader(getActivity(), CurrenciesProvider.uriCurrencies());
 
             case LOADER_ACCOUNTS:
                 return Query.create()
-                        .projectionId(Tables.Accounts.ID)
+                        .projectionLocalId(Tables.Accounts.LOCAL_ID)
                         .selection(Tables.Accounts.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
                         .asCursorLoader(getActivity(), AccountsProvider.uriAccounts());
 
             case LOADER_CATEGORIES:
                 return Query.create()
-                        .projectionId(Tables.Categories.ID)
+                        .projectionLocalId(Tables.Categories.LOCAL_ID)
                         .selection(Tables.Categories.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
                         .asCursorLoader(getActivity(), CategoriesProvider.uriCategories());
 
             case LOADER_TAGS:
                 return Query.create()
-                        .projectionId(Tables.Tags.ID)
+                        .projectionLocalId(Tables.Tags.LOCAL_ID)
                         .selection(Tables.Tags.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
                         .asCursorLoader(getActivity(), TagsProvider.uriTags());
 
             case LOADER_TRANSACTIONS:
                 return Query.create()
-                        .projectionId(Tables.Transactions.ID)
+                        .projectionLocalId(Tables.Transactions.LOCAL_ID)
                         .selection(Tables.Transactions.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
                         .asCursorLoader(getActivity(), TransactionsProvider.uriTransactions());
         }

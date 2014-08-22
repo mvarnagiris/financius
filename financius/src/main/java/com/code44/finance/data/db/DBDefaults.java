@@ -47,12 +47,12 @@ public final class DBDefaults {
             java.util.Currency javaCurrency = getCurrencyFromCode(code);
             if (javaCurrency != null) {
                 Currency currency = new Currency();
-                currency.setServerId(UUID.randomUUID().toString());
+                currency.setId(UUID.randomUUID().toString());
                 currency.setCode(code);
                 currency.setSymbol(javaCurrency.getSymbol());
                 currency.setDecimalCount(javaCurrency.getDefaultFractionDigits());
                 currency.setDefault(code.equals(mainCurrencyCode));
-                db.insert(Tables.Currencies.TABLE_NAME, null, currency.asContentValues());
+                db.insert(Tables.Currencies.TABLE_NAME, null, currency.asValues());
             }
         }
 
@@ -61,16 +61,16 @@ public final class DBDefaults {
 
     private static void addAccounts(SQLiteDatabase db) {
         final Account systemAccount = new Account();
-        systemAccount.setServerId(UUID.randomUUID().toString());
+        systemAccount.setId(UUID.randomUUID().toString());
         systemAccount.setAccountOwner(AccountOwner.SYSTEM);
 
-        db.insert(Tables.Accounts.TABLE_NAME, null, systemAccount.asContentValues());
+        db.insert(Tables.Accounts.TABLE_NAME, null, systemAccount.asValues());
     }
 
     private static void addCategories(Context context, SQLiteDatabase db) {
         final Category expenseCategory = new Category();
         expenseCategory.setId(Category.EXPENSE_ID);
-        expenseCategory.setServerId(UUID.randomUUID().toString());
+        expenseCategory.setId(UUID.randomUUID().toString());
         expenseCategory.setTitle(context.getString(R.string.expense));
         expenseCategory.setColor(context.getResources().getColor(R.color.text_negative));
         expenseCategory.setCategoryType(CategoryType.EXPENSE);
@@ -79,7 +79,7 @@ public final class DBDefaults {
 
         final Category incomeCategory = new Category();
         incomeCategory.setId(Category.INCOME_ID);
-        incomeCategory.setServerId(UUID.randomUUID().toString());
+        incomeCategory.setId(UUID.randomUUID().toString());
         incomeCategory.setTitle(context.getString(R.string.income));
         incomeCategory.setColor(context.getResources().getColor(R.color.text_positive));
         incomeCategory.setCategoryType(CategoryType.INCOME);
@@ -88,16 +88,16 @@ public final class DBDefaults {
 
         final Category transferCategory = new Category();
         transferCategory.setId(Category.TRANSFER_ID);
-        transferCategory.setServerId(UUID.randomUUID().toString());
+        transferCategory.setId(UUID.randomUUID().toString());
         transferCategory.setTitle(context.getString(R.string.transfer));
         transferCategory.setColor(context.getResources().getColor(R.color.text_neutral));
         transferCategory.setCategoryType(CategoryType.TRANSFER);
         transferCategory.setCategoryOwner(CategoryOwner.SYSTEM);
         transferCategory.setSortOrder(0);
 
-        db.insert(Tables.Categories.TABLE_NAME, null, expenseCategory.asContentValues());
-        db.insert(Tables.Categories.TABLE_NAME, null, incomeCategory.asContentValues());
-        db.insert(Tables.Categories.TABLE_NAME, null, transferCategory.asContentValues());
+        db.insert(Tables.Categories.TABLE_NAME, null, expenseCategory.asValues());
+        db.insert(Tables.Categories.TABLE_NAME, null, incomeCategory.asValues());
+        db.insert(Tables.Categories.TABLE_NAME, null, transferCategory.asValues());
 
         insertCategories(db, context.getResources().getStringArray(R.array.expense_categories), context.getResources().getStringArray(R.array.expense_categories_colors), CategoryType.EXPENSE);
         insertCategories(db, context.getResources().getStringArray(R.array.income_categories), context.getResources().getStringArray(R.array.income_categories_colors), CategoryType.INCOME);
@@ -129,13 +129,13 @@ public final class DBDefaults {
         int order = 0;
         for (String title : titles) {
             final Category category = new Category();
-            category.setServerId(UUID.randomUUID().toString());
+            category.setId(UUID.randomUUID().toString());
             category.setTitle(title);
             category.setColor(Color.parseColor(colors[order % colors.length]));
             category.setCategoryType(type);
             category.setCategoryOwner(CategoryOwner.USER);
             category.setSortOrder(order++);
-            db.insert(Tables.Categories.TABLE_NAME, null, category.asContentValues());
+            db.insert(Tables.Categories.TABLE_NAME, null, category.asValues());
         }
     }
 }

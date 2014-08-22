@@ -56,7 +56,7 @@ public class TagFragment extends ModelFragment<Tag> {
     }
 
     @Override protected Pair<String, String[]> getDeleteSelection() {
-        return Pair.create(Tables.Tags.SERVER_ID + "=?", new String[]{String.valueOf(modelServerId)});
+        return Pair.create(Tables.Tags.ID + "=?", new String[]{String.valueOf(modelId)});
     }
 
     @Override protected void startModelEdit(Context context, String modelServerId) {

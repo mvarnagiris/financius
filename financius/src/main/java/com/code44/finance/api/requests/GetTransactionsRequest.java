@@ -58,20 +58,20 @@ public class GetTransactionsRequest extends GetRequest<TransactionEntity> {
         return TransactionsProvider.uriTransactions();
     }
 
-    private Account getAccountFor(String serverId) {
-        Account account = accounts.get(serverId);
+    private Account getAccountFor(String id) {
+        Account account = accounts.get(id);
 
         if (account == null) {
             final Cursor cursor = Query.create()
-                    .projectionId(Tables.Accounts.ID)
+                    .projectionLocalId(Tables.Accounts.LOCAL_ID)
                     .projection(Tables.Accounts.PROJECTION)
                     .projection(Tables.Currencies.PROJECTION)
-                    .selection(Tables.Accounts.SERVER_ID + "=?", serverId)
+                    .selection(Tables.Accounts.ID + "=?", id)
                     .from(App.getContext(), AccountsProvider.uriAccounts())
                     .execute();
             account = Account.from(cursor);
             IOUtils.closeQuietly(cursor);
-            accounts.put(serverId, account);
+            accounts.put(id, account);
         }
 
         return account;
@@ -82,9 +82,9 @@ public class GetTransactionsRequest extends GetRequest<TransactionEntity> {
 
         if (category == null) {
             final Cursor cursor = Query.create()
-                    .projectionId(Tables.Categories.ID)
+                    .projectionLocalId(Tables.Categories.LOCAL_ID)
                     .projection(Tables.Categories.PROJECTION)
-                    .selection(Tables.Accounts.SERVER_ID + "=?", entity.getId())
+                    .selection(Tables.Accounts.ID + "=?", entity.getId())
                     .from(App.getContext(), CategoriesProvider.uriCategories())
                     .execute();
             category = Category.from(cursor);

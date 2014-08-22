@@ -10,7 +10,7 @@ import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 
-public class Tag extends BaseModel {
+public class Tag extends BaseModel<TagEntity> {
     public static final Creator<Tag> CREATOR = new Creator<Tag>() {
         public Tag createFromParcel(Parcel in) {
             return new Tag(in);
@@ -42,19 +42,19 @@ public class Tag extends BaseModel {
 
     public static Tag from(TagEntity entity) {
         final Tag tag = new Tag();
-        tag.setServerId(entity.getId());
+        tag.setId(entity.getId());
         tag.setModelState(ModelState.valueOf(entity.getModelState()));
         tag.setSyncState(SyncState.SYNCED);
         tag.setTitle(entity.getTitle());
         return tag;
     }
 
-    @Override protected Column getIdColumn() {
-        return Tables.Tags.ID;
+    @Override protected Column getLocalIdColumn() {
+        return Tables.Tags.LOCAL_ID;
     }
 
-    @Override protected Column getServerIdColumn() {
-        return Tables.Tags.SERVER_ID;
+    @Override protected Column getIdColumn() {
+        return Tables.Tags.ID;
     }
 
     @Override protected Column getModelStateColumn() {
@@ -65,16 +65,20 @@ public class Tag extends BaseModel {
         return Tables.Tags.SYNC_STATE;
     }
 
-    @Override protected void fromParcel(Parcel parcel) {
-        setTitle(parcel.readString());
+    @Override protected void toValues(ContentValues values) {
+        values.put(Tables.Tags.TITLE.getName(), title);
     }
 
     @Override protected void toParcel(Parcel parcel) {
         parcel.writeString(getTitle());
     }
 
-    @Override protected void toValues(ContentValues values) {
-        values.put(Tables.Tags.TITLE.getName(), title);
+    @Override protected void toEntity(TagEntity entity) {
+
+    }
+
+    @Override protected void fromParcel(Parcel parcel) {
+        setTitle(parcel.readString());
     }
 
     @Override protected void fromCursor(Cursor cursor, String columnPrefixTable) {
@@ -87,6 +91,14 @@ public class Tag extends BaseModel {
         }
     }
 
+    @Override protected void fromEntity(TagEntity entity) {
+
+    }
+
+    @Override protected TagEntity createEntity() {
+        return null;
+    }
+
     @Override public void checkValues() throws IllegalStateException {
         super.checkValues();
 
@@ -97,7 +109,7 @@ public class Tag extends BaseModel {
 
     public TagEntity toEntity() {
         final TagEntity entity = new TagEntity();
-        entity.setId(getServerId());
+        entity.setId(getId());
         entity.setModelState(getModelState().toString());
         entity.setTitle(getTitle());
         return entity;

@@ -31,8 +31,8 @@ public class CategoriesProvider extends BaseModelProvider {
     }
 
     @Override
-    protected Column getServerIdColumn() {
-        return Tables.Categories.SERVER_ID;
+    protected Column getIdColumn() {
+        return Tables.Categories.ID;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class CategoriesProvider extends BaseModelProvider {
     protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> outExtras) {
         super.onBeforeDeleteItems(uri, selection, selectionArgs, modelState, outExtras);
 
-        final List<String> affectedIds = getIdList(getServerIdColumn(), selection, selectionArgs);
+        final List<String> affectedIds = getIdList(getIdColumn(), selection, selectionArgs);
         outExtras.put("affectedIds", affectedIds);
     }
 

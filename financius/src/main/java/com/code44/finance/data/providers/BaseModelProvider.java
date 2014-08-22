@@ -90,7 +90,7 @@ public abstract class BaseModelProvider extends BaseProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        final String serverId = values.getAsString(getServerIdColumn().getName());
+        final String serverId = values.getAsString(getIdColumn().getName());
         if (StringUtils.isEmpty(serverId)) {
             throw new IllegalArgumentException("Server Id cannot be empty.");
         }
@@ -244,7 +244,7 @@ public abstract class BaseModelProvider extends BaseProvider {
 
     protected abstract String getQueryTables(Uri uri);
 
-    protected abstract Column getServerIdColumn();
+    protected abstract Column getIdColumn();
 
     protected Cursor queryItems(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         final SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -257,7 +257,7 @@ public abstract class BaseModelProvider extends BaseProvider {
     protected Cursor queryItem(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         final SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(getQueryTables(uri));
-        qb.appendWhere(getServerIdColumn() + "='" + uri.getPathSegments().get(1) + "'");
+        qb.appendWhere(getIdColumn() + "='" + uri.getPathSegments().get(1) + "'");
 
         final SQLiteDatabase database = getDatabase();
         return qb.query(database, projection, selection, selectionArgs, null, null, sortOrder);

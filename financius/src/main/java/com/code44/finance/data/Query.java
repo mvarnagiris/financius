@@ -83,7 +83,7 @@ public class Query {
         return new DatabaseQuery(this, database, table);
     }
 
-    public Query projectionId(Column idColumn) {
+    public Query projectionLocalId(Column idColumn) {
         projection(idColumn.getNameWithTable());
         return this;
     }

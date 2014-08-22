@@ -9,14 +9,14 @@ import android.text.TextUtils;
 import com.code44.finance.App;
 import com.code44.finance.backend.endpoint.accounts.model.AccountEntity;
 import com.code44.finance.common.model.AccountOwner;
-import com.code44.finance.common.model.ModelState;
+import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.utils.IOUtils;
 
-public class Account extends BaseModel {
+public class Account extends BaseModel<AccountEntity> {
     public static final Parcelable.Creator<Account> CREATOR = new Parcelable.Creator<Account>() {
         public Account createFromParcel(Parcel in) {
             return new Account(in);
@@ -53,9 +53,9 @@ public class Account extends BaseModel {
     public static Account getSystem() {
         if (systemAccount == null) {
             final Cursor cursor = Query.create()
-                    .projectionId(Tables.Accounts.ID)
+                    .projectionLocalId(Tables.Accounts.LOCAL_ID)
                     .projection(Tables.Accounts.PROJECTION)
-                    .selection(Tables.Accounts.OWNER.getName() + "=?", String.valueOf(AccountOwner.SYSTEM.asInt()))
+                    .selection(Tables.Accounts.OWNER.getName() + "=?", AccountOwner.SYSTEM.asString())
                     .from(App.getContext(), AccountsProvider.uriAccounts())
                     .execute();
 
@@ -91,39 +91,58 @@ public class Account extends BaseModel {
 
     public static Account from(AccountEntity entity, Currency currency) {
         final Account account = new Account();
-        account.setServerId(entity.getId());
-        account.setModelState(ModelState.valueOf(entity.getModelState()));
-        account.setSyncState(SyncState.SYNCED);
+        account.updateFrom(entity);
         account.setCurrency(currency);
-        account.setTitle(entity.getTitle());
-        account.setNote(entity.getNote());
-        account.setAccountOwner(AccountOwner.valueOf(entity.getAccountOwner()));
-        account.setIncludeInTotals(entity.getIncludeInTotals());
         return account;
     }
 
-    @Override
-    protected Column getIdColumn() {
+    @Override protected Column getLocalIdColumn() {
+        return Tables.Accounts.LOCAL_ID;
+    }
+
+    @Override protected Column getIdColumn() {
         return Tables.Accounts.ID;
     }
 
-    @Override
-    protected Column getServerIdColumn() {
-        return Tables.Accounts.SERVER_ID;
-    }
-
-    @Override
-    protected Column getModelStateColumn() {
+    @Override protected Column getModelStateColumn() {
         return Tables.Accounts.MODEL_STATE;
     }
 
-    @Override
-    protected Column getSyncStateColumn() {
+    @Override protected Column getSyncStateColumn() {
         return Tables.Accounts.SYNC_STATE;
     }
 
-    @Override
-    protected void fromParcel(Parcel parcel) {
+    @Override protected void toValues(ContentValues values) {
+        values.put(Tables.Accounts.CURRENCY_ID.getName(), currency.getId());
+        values.put(Tables.Accounts.TITLE.getName(), title);
+        values.put(Tables.Accounts.NOTE.getName(), note);
+        values.put(Tables.Accounts.BALANCE.getName(), balance);
+        values.put(Tables.Accounts.OWNER.getName(), accountOwner.asInt());
+        values.put(Tables.Accounts.INCLUDE_IN_TOTALS.getName(), includeInTotals);
+    }
+
+    @Override protected void toParcel(Parcel parcel) {
+        parcel.writeParcelable(currency, 0);
+        parcel.writeString(title);
+        parcel.writeString(note);
+        parcel.writeLong(balance);
+        parcel.writeInt(accountOwner.asInt());
+        parcel.writeInt(includeInTotals ? 1 : 0);
+    }
+
+    @Override protected void toEntity(AccountEntity entity) {
+        entity.setCurrencyId(currency.getId());
+        entity.setTitle(title);
+        entity.setNote(note);
+        entity.setAccountOwner(accountOwner.toString());
+        entity.setIncludeInTotals(includeInTotals);
+    }
+
+    @Override protected AccountEntity createEntity() {
+        return new AccountEntity();
+    }
+
+    @Override protected void fromParcel(Parcel parcel) {
         setCurrency((Currency) parcel.readParcelable(Currency.class.getClassLoader()));
         setTitle(parcel.readString());
         setNote(parcel.readString());
@@ -132,28 +151,7 @@ public class Account extends BaseModel {
         setIncludeInTotals(parcel.readInt() != 0);
     }
 
-    @Override
-    protected void toParcel(Parcel parcel) {
-        parcel.writeParcelable(getCurrency(), 0);
-        parcel.writeString(getTitle());
-        parcel.writeString(getNote());
-        parcel.writeLong(getBalance());
-        parcel.writeInt(getAccountOwner().asInt());
-        parcel.writeInt(includeInTotals ? 1 : 0);
-    }
-
-    @Override
-    protected void toValues(ContentValues values) {
-        values.put(Tables.Accounts.CURRENCY_ID.getName(), currency.getServerId());
-        values.put(Tables.Accounts.TITLE.getName(), title);
-        values.put(Tables.Accounts.NOTE.getName(), note);
-        values.put(Tables.Accounts.BALANCE.getName(), balance);
-        values.put(Tables.Accounts.OWNER.getName(), accountOwner.asInt());
-        values.put(Tables.Accounts.INCLUDE_IN_TOTALS.getName(), includeInTotals);
-    }
-
-    @Override
-    protected void fromCursor(Cursor cursor, String columnPrefixTable) {
+    @Override protected void fromCursor(Cursor cursor, String columnPrefixTable) {
         int index;
 
         // Currency
@@ -167,7 +165,7 @@ public class Account extends BaseModel {
         } else {
             throw new IllegalArgumentException("Table prefix " + columnPrefixTable + " is not supported.");
         }
-        currency.setId(0);
+        currency.setLocalId(0);
         setCurrency(currency);
 
         // Title
@@ -201,29 +199,17 @@ public class Account extends BaseModel {
         }
     }
 
-    @Override
-    public void checkValues() throws IllegalStateException {
-        super.checkValues();
-
-        if (currency == null) {
-            throw new IllegalStateException("Currency cannot be null.");
-        }
-
-        if (accountOwner == null) {
-            throw new IllegalStateException("Owner cannot be null.");
-        }
+    @Override protected void fromEntity(AccountEntity entity) {
+        setTitle(entity.getTitle());
+        setNote(entity.getNote());
+        setAccountOwner(AccountOwner.valueOf(entity.getAccountOwner()));
+        setIncludeInTotals(entity.getIncludeInTotals());
     }
 
-    public AccountEntity toEntity() {
-        final AccountEntity entity = new AccountEntity();
-        entity.setId(getServerId());
-        entity.setModelState(getModelState().toString());
-        entity.setCurrencyId(getCurrency().getServerId());
-        entity.setTitle(getTitle());
-        entity.setNote(getNote());
-        entity.setAccountOwner(getAccountOwner().toString());
-        entity.setIncludeInTotals(includeInTotals());
-        return entity;
+    @Override public void checkValues() throws IllegalStateException {
+        super.checkValues();
+        Preconditions.checkNotNull(currency, "Currency cannot be null.");
+        Preconditions.checkNotNull(accountOwner, "Owner cannot be null.");
     }
 
     public Currency getCurrency() {

@@ -17,4 +17,25 @@ public class Preconditions {
         }
         return str;
     }
+
+    public static String checkLength(String str, int length, String message) throws IllegalArgumentException {
+        if (str.length() != length) {
+            throw new IllegalArgumentException(message);
+        }
+        return str;
+    }
+
+    public static int checkBetween(int value, int startInclusive, int endInclusive, String message) throws IllegalArgumentException {
+        if (value < startInclusive || value > endInclusive) {
+            throw new IllegalArgumentException(message);
+        }
+        return value;
+    }
+
+    public static double checkLess(double value, double lessThan, String message) throws IllegalArgumentException {
+        if (Double.compare(value, lessThan) < 0) {
+            throw new IllegalStateException(message);
+        }
+        return value;
+    }
 }

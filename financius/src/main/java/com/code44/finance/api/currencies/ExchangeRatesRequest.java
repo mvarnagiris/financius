@@ -40,7 +40,7 @@ public class ExchangeRatesRequest extends Request {
         for (String fromCode : fromCodes) {
             final Currency currency = getCurrencyWithUpdatedExchangeRate(fromCode);
             if (currency != null) {
-                valuesList.add(currency.asContentValues());
+                valuesList.add(currency.asValues());
             }
         }
 

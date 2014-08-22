@@ -40,8 +40,8 @@ public class AccountsProvider extends BaseModelProvider {
     }
 
     @Override
-    protected Column getServerIdColumn() {
-        return Tables.Accounts.SERVER_ID;
+    protected Column getIdColumn() {
+        return Tables.Accounts.ID;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class AccountsProvider extends BaseModelProvider {
         super.onAfterInsertItem(uri, values, serverId, extras);
 
         final Account account = new Account();
-        account.setServerId(serverId);
+        account.setId(serverId);
 
         long balanceDelta = (long) extras.get(EXTRA_BALANCE_DELTA);
         final Transaction transaction = createBalanceTransaction(account, balanceDelta);
@@ -79,7 +79,7 @@ public class AccountsProvider extends BaseModelProvider {
     protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> outExtras) {
         super.onBeforeDeleteItems(uri, selection, selectionArgs, modelState, outExtras);
 
-        final List<String> affectedIds = getIdList(getServerIdColumn(), selection, selectionArgs);
+        final List<String> affectedIds = getIdList(getIdColumn(), selection, selectionArgs);
         outExtras.put("affectedIds", affectedIds);
     }
 

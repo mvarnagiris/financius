@@ -138,7 +138,7 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
                 final Category category = transaction.getCategory();
                 if (transaction.includeInReports() && category.getCategoryType() == CategoryType.EXPENSE && transaction.getTransactionState() == TransactionState.CONFIRMED) {
                     final Long amount;
-                    if (transaction.getAccountFrom().getCurrency().getServerId().equals(Currency.getDefault().getServerId())) {
+                    if (transaction.getAccountFrom().getCurrency().getId().equals(Currency.getDefault().getId())) {
                         amount = transaction.getAmount();
                     } else {
                         amount = Math.round(transaction.getAmount() * transaction.getAccountFrom().getCurrency().getExchangeRate());

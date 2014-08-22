@@ -64,7 +64,7 @@ public class AccountFragment extends ModelFragment<Account> {
         title_TV.setText(model.getTitle());
         balance_TV.setText(MoneyFormatter.format(model.getCurrency(), model.getBalance()));
         note_TV.setText(model.getNote());
-        if (model.getCurrency().getServerId().equals(Currency.getDefault().getServerId())) {
+        if (model.getCurrency().getId().equals(Currency.getDefault().getId())) {
             mainCurrencyBalance_TV.setVisibility(View.GONE);
         } else {
             mainCurrencyBalance_TV.setVisibility(View.VISIBLE);
@@ -79,7 +79,7 @@ public class AccountFragment extends ModelFragment<Account> {
 
     @Override
     protected Pair<String, String[]> getDeleteSelection() {
-        return Pair.create(Tables.Accounts.SERVER_ID + "=?", new String[]{modelServerId});
+        return Pair.create(Tables.Accounts.ID + "=?", new String[]{modelId});
     }
 
     @Override

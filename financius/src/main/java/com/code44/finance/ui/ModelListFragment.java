@@ -132,7 +132,7 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
     @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         final BaseModel model = modelFrom(adapter.getCursor());
         if (mode == Mode.VIEW) {
-            onModelClick(getActivity(), view, position, model.getServerId(), model);
+            onModelClick(getActivity(), view, position, model.getId(), model);
         } else if (mode == Mode.SELECT) {
             if (onModelSelectedListener != null) {
                 onModelSelectedListener.onModelSelected(model);

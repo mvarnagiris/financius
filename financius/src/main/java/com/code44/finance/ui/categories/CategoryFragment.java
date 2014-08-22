@@ -67,7 +67,7 @@ public class CategoryFragment extends ModelFragment<Category> {
 
     @Override
     protected Pair<String, String[]> getDeleteSelection() {
-        return Pair.create(Tables.Categories.SERVER_ID + "=?", new String[]{String.valueOf(modelServerId)});
+        return Pair.create(Tables.Categories.ID + "=?", new String[]{String.valueOf(modelId)});
     }
 
     @Override

@@ -59,17 +59,17 @@ public class TransactionsProvider extends BaseModelProvider {
 
         if (joinTables.contains(URI_VALUE_JOIN_TABLE_ACCOUNTS_FROM)) {
             sb.append(" inner join ").append(Tables.Accounts.TABLE_NAME).append(" as ").append(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT)
-                    .append(" on ").append(Tables.Accounts.SERVER_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT)).append("=").append(Tables.Transactions.ACCOUNT_FROM_ID);
+                    .append(" on ").append(Tables.Accounts.ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT)).append("=").append(Tables.Transactions.ACCOUNT_FROM_ID);
         }
 
         if (joinTables.contains(URI_VALUE_JOIN_TABLE_ACCOUNTS_TO)) {
             sb.append(" inner join ").append(Tables.Accounts.TABLE_NAME).append(" as ").append(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT)
-                    .append(" on ").append(Tables.Accounts.SERVER_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT)).append("=").append(Tables.Transactions.ACCOUNT_TO_ID);
+                    .append(" on ").append(Tables.Accounts.ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT)).append("=").append(Tables.Transactions.ACCOUNT_TO_ID);
         }
 
         if (joinTables.contains(URI_VALUE_JOIN_TABLE_CATEGORIES)) {
             sb.append(" inner join ").append(Tables.Categories.TABLE_NAME)
-                    .append(" on ").append(Tables.Categories.SERVER_ID.getNameWithTable()).append("=").append(Tables.Transactions.CATEGORY_ID);
+                    .append(" on ").append(Tables.Categories.ID.getNameWithTable()).append("=").append(Tables.Transactions.CATEGORY_ID);
         }
 
         if (joinTables.contains(URI_VALUE_JOIN_TABLE_CURRENCIES_FROM)) {
@@ -86,8 +86,8 @@ public class TransactionsProvider extends BaseModelProvider {
     }
 
     @Override
-    protected Column getServerIdColumn() {
-        return Tables.Transactions.SERVER_ID;
+    protected Column getIdColumn() {
+        return Tables.Transactions.ID;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class TransactionsProvider extends BaseModelProvider {
 
         final String accountFromId = values.getAsString(Tables.Transactions.ACCOUNT_FROM_ID.getName());
         final String accountToId = values.getAsString(Tables.Transactions.ACCOUNT_TO_ID.getName());
-        final String systemAccountId = Account.getSystem().getServerId();
+        final String systemAccountId = Account.getSystem().getId();
         if (!accountFromId.equals(systemAccountId)) {
             updateAccountBalance(accountFromId);
         }
@@ -139,7 +139,7 @@ public class TransactionsProvider extends BaseModelProvider {
                 .selection(" and " + Tables.Transactions.STATE + "=?", TransactionState.CONFIRMED.asString())
                 .selection(" and (" + Tables.Transactions.ACCOUNT_FROM_ID + "=? or " + Tables.Transactions.ACCOUNT_TO_ID + "=?)", accountId, accountId)
                 .from(getDatabase(), Tables.Transactions.TABLE_NAME)
-                .innerJoin(Tables.Categories.TABLE_NAME, Tables.Categories.SERVER_ID.getNameWithTable() + "=" + Tables.Transactions.CATEGORY_ID)
+                .innerJoin(Tables.Categories.TABLE_NAME, Tables.Categories.ID.getNameWithTable() + "=" + Tables.Transactions.CATEGORY_ID)
                 .execute();
 
         long balance = 0;
@@ -152,18 +152,18 @@ public class TransactionsProvider extends BaseModelProvider {
         values.put(Tables.Accounts.BALANCE.getName(), balance);
         DataStore.update()
                 .values(values)
-                .withSelection(Tables.Accounts.SERVER_ID + "=?", accountId)
+                .withSelection(Tables.Accounts.ID + "=?", accountId)
                 .into(getDatabase(), Tables.Accounts.TABLE_NAME);
     }
 
     private void updateAllAccountsBalances() {
         final Cursor cursor = Query.create()
-                .projection(Tables.Accounts.SERVER_ID.getName())
+                .projection(Tables.Accounts.ID.getName())
                 .selection(Tables.Accounts.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
                 .from(getDatabase(), Tables.Accounts.TABLE_NAME)
                 .execute();
         if (cursor.moveToFirst()) {
-            final int iId = cursor.getColumnIndex(Tables.Accounts.SERVER_ID.getName());
+            final int iId = cursor.getColumnIndex(Tables.Accounts.ID.getName());
             do {
                 updateAccountBalance(cursor.getString(iId));
             } while (cursor.moveToNext());

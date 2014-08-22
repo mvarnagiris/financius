@@ -6,55 +6,40 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.code44.finance.common.model.ModelState;
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.Column;
+import com.google.api.client.json.GenericJson;
 
 import java.util.UUID;
 
-public abstract class BaseModel implements Parcelable {
-    private long id;
-    private String serverId;
+public abstract class BaseModel<E extends GenericJson> implements Parcelable {
+    private long localId;
+    private String id;
     private ModelState modelState;
     private SyncState syncState;
 
     protected BaseModel() {
-        setId(0);
-        setServerId(null);
+        setLocalId(0);
+        setId(UUID.randomUUID().toString());
         setModelState(ModelState.NORMAL);
         setSyncState(SyncState.NONE);
     }
 
     protected BaseModel(Parcel parcel) {
-        setId(parcel.readLong());
-        setServerId(parcel.readString());
+        setLocalId(parcel.readLong());
+        setId(parcel.readString());
         setModelState(ModelState.fromInt(parcel.readInt()));
         setSyncState(SyncState.fromInt(parcel.readInt()));
         fromParcel(parcel);
     }
-
-    protected abstract Column getIdColumn();
-
-    protected abstract Column getServerIdColumn();
-
-    protected abstract Column getModelStateColumn();
-
-    protected abstract Column getSyncStateColumn();
-
-    protected abstract void fromParcel(Parcel parcel);
-
-    protected abstract void toParcel(Parcel parcel);
-
-    protected abstract void toValues(ContentValues values);
-
-    protected abstract void fromCursor(Cursor cursor, String columnPrefixTable);
 
     @Override public int describeContents() {
         return 0;
     }
 
     @Override public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeLong(getId());
-        parcel.writeString(getServerId());
+        parcel.writeLong(getLocalId());
+        parcel.writeString(getId());
         parcel.writeInt(getModelState().asInt());
         parcel.writeInt(getSyncState().asInt());
         toParcel(parcel);
@@ -66,39 +51,58 @@ public abstract class BaseModel implements Parcelable {
 
         BaseModel baseModel = (BaseModel) o;
 
-        // We are only checking serverId, because otherwise some parts of the app might misbehave
+        // We are only checking id, because otherwise some parts of the app might misbehave
         // For example BaseModelAdapter contains Set<BaseModel> selectedItems
         // noinspection RedundantIfStatement
-        if (!serverId.equals(baseModel.serverId)) return false;
+        if (!id.equals(baseModel.id)) return false;
 
         return true;
     }
 
     @Override public int hashCode() {
-        return serverId.hashCode();
+        return id.hashCode();
     }
 
-    public ContentValues asContentValues() {
-        if (StringUtils.isEmpty(getServerId())) {
-            setServerId(UUID.randomUUID().toString());
-        }
+    protected abstract Column getLocalIdColumn();
+
+    protected abstract Column getIdColumn();
+
+    protected abstract Column getModelStateColumn();
+
+    protected abstract Column getSyncStateColumn();
+
+    protected abstract void toValues(ContentValues values);
+
+    protected abstract void toParcel(Parcel parcel);
+
+    protected abstract void toEntity(E entity);
+
+    protected abstract E createEntity();
+
+    protected abstract void fromParcel(Parcel parcel);
+
+    protected abstract void fromCursor(Cursor cursor, String columnPrefixTable);
+
+    protected abstract void fromEntity(E entity);
+
+    public ContentValues asValues() {
         checkValues();
 
         final ContentValues values = new ContentValues();
 
         // Local id
-        if (id != 0) {
-            values.put(getIdColumn().getName(), id);
+        if (localId != 0) {
+            values.put(getLocalIdColumn().getName(), localId);
         }
 
         // Server id
-        values.put(getServerIdColumn().getName(), getServerId());
+        values.put(getIdColumn().getName(), id);
 
         // Model state
-        values.put(getModelStateColumn().getName(), getModelState().asInt());
+        values.put(getModelStateColumn().getName(), modelState.asInt());
 
         // Sync state
-        values.put(getSyncStateColumn().getName(), getSyncState().asInt());
+        values.put(getSyncStateColumn().getName(), syncState.asInt());
 
         // Other values
         toValues(values);
@@ -106,34 +110,43 @@ public abstract class BaseModel implements Parcelable {
         return values;
     }
 
-    public void checkValues() throws IllegalStateException {
-        if (StringUtils.isEmpty(serverId)) {
-            throw new IllegalStateException("Server id cannot be empty.");
-        }
+    public E asEntity() {
+        checkValues();
 
-        if (modelState == null) {
-            throw new NullPointerException("ModelState cannot be null.");
-        }
+        final E entity = createEntity();
 
-        if (syncState == null) {
-            throw new NullPointerException("SyncState cannot be null.");
-        }
+        // Id
+        entity.put("id", id);
+
+        // Model state
+        entity.put("model_state", modelState.toString());
+
+        // Other values
+        toEntity(entity);
+
+        return entity;
     }
 
-    public long getId() {
+    public void checkValues() throws IllegalStateException {
+        Preconditions.checkNotEmpty(id, "Id cannot be empty.");
+        Preconditions.checkNotNull(modelState, "ModelState cannot be null.");
+        Preconditions.checkNotNull(syncState, "SyncState cannot be null.");
+    }
+
+    public long getLocalId() {
+        return localId;
+    }
+
+    public void setLocalId(long localId) {
+        this.localId = localId;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public String getServerId() {
-        return serverId;
-    }
-
-    public void setServerId(String serverId) {
-        this.serverId = serverId;
     }
 
     public ModelState getModelState() {
@@ -156,15 +169,15 @@ public abstract class BaseModel implements Parcelable {
         int index;
 
         // Local id
-        index = cursor.getColumnIndex(getIdColumn().getName(columnPrefixTable));
+        index = cursor.getColumnIndex(getLocalIdColumn().getName(columnPrefixTable));
         if (index >= 0) {
-            setId(cursor.getLong(index));
+            setLocalId(cursor.getLong(index));
         }
 
-        // Server id
-        index = cursor.getColumnIndex(getServerIdColumn().getName(columnPrefixTable));
+        // Id
+        index = cursor.getColumnIndex(getIdColumn().getName(columnPrefixTable));
         if (index >= 0) {
-            setServerId(cursor.getString(index));
+            setId(cursor.getString(index));
         }
 
         // Model state
@@ -181,5 +194,12 @@ public abstract class BaseModel implements Parcelable {
 
         // Other values
         fromCursor(cursor, columnPrefixTable);
+    }
+
+    protected void updateFrom(E entity) {
+        setId((String) entity.get("id"));
+        setModelState(ModelState.valueOf((String) entity.get("model_state")));
+        setSyncState(SyncState.SYNCED);
+        fromEntity(entity);
     }
 }

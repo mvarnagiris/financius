@@ -37,7 +37,7 @@ public class CurrenciesProvider extends BaseModelProvider {
     }
 
     @Override
-    protected Column getServerIdColumn() {
+    protected Column getIdColumn() {
         return Tables.Currencies.ID;
     }
 
@@ -70,7 +70,7 @@ public class CurrenciesProvider extends BaseModelProvider {
     protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> outExtras) {
         super.onBeforeDeleteItems(uri, selection, selectionArgs, modelState, outExtras);
 
-        final List<String> affectedIds = getIdList(getServerIdColumn(), selection, selectionArgs);
+        final List<String> affectedIds = getIdList(getIdColumn(), selection, selectionArgs);
         if (modelState.equals(ModelState.DELETED_UNDO) && affectedIds.contains(Currency.getDefault().getId())) {
             throw new IllegalArgumentException("Cannot delete default currency.");
         }

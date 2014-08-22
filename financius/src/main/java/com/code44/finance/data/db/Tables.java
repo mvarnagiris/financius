@@ -8,9 +8,6 @@ import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.model.SyncState;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class Tables {
     public static final String SUFFIX_ID = "id";
     public static final String SUFFIX_MODEL_STATE = "model_state";
@@ -48,30 +45,6 @@ public final class Tables {
                 sb.append(columns[i].getCreateScript());
             }
         }
-
-        sb.append(");");
-
-        return sb.toString();
-    }
-
-    private static String makeRelationshipCreateScript(String table, Column firstIdColumn, Column secondIdColumn, Column... columns) {
-        final StringBuilder sb = new StringBuilder("create table ");
-        sb.append(table);
-        sb.append(" (");
-
-        List<Column> allColumns = new ArrayList<>();
-        allColumns.add(firstIdColumn);
-        allColumns.add(secondIdColumn);
-        java.util.Collections.addAll(allColumns, columns);
-
-        for (int i = 0, size = allColumns.size(); i < size; i++) {
-            if (i > 0) {
-                sb.append(", ");
-            }
-            sb.append(allColumns.get(i).getCreateScript());
-        }
-
-        sb.append(",").append(" primary key (").append(firstIdColumn.getName()).append(", ").append(secondIdColumn.getName()).append(")");
 
         sb.append(");");
 
@@ -119,7 +92,7 @@ public final class Tables {
 
         public static Query getQuery() {
             return Query.create()
-                    .projectionId(Tables.Currencies.LOCAL_ID)
+                    .projectionLocalId(Tables.Currencies.LOCAL_ID)
                     .projection(Tables.Currencies.PROJECTION)
                     .selection("(" + Tables.Currencies.MODEL_STATE + "=?", ModelState.NORMAL.asString())
                     .selection(" or " + Currencies.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString())
@@ -133,8 +106,8 @@ public final class Tables {
         public static final String TEMP_TABLE_NAME_FROM_ACCOUNT = "accounts_from";
         public static final String TEMP_TABLE_NAME_TO_ACCOUNT = "accounts_to";
 
-        public static final Column ID = getLocalIdColumn(TABLE_NAME);
-        public static final Column SERVER_ID = getIdColumn(TABLE_NAME);
+        public static final Column LOCAL_ID = getLocalIdColumn(TABLE_NAME);
+        public static final Column ID = getIdColumn(TABLE_NAME);
         public static final Column MODEL_STATE = getModelStateColumn(TABLE_NAME);
         public static final Column SYNC_STATE = getSyncStateColumn(TABLE_NAME);
         public static final Column CURRENCY_ID = new Column(TABLE_NAME, "currency_id", Column.DataType.TEXT);
@@ -144,15 +117,15 @@ public final class Tables {
         public static final Column OWNER = new Column(TABLE_NAME, "owner", Column.DataType.INTEGER, AccountOwner.USER.asString());
         public static final Column INCLUDE_IN_TOTALS = new Column(TABLE_NAME, "include_in_totals", Column.DataType.BOOLEAN, "1");
 
-        public static final String[] PROJECTION = {SERVER_ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
+        public static final String[] PROJECTION = {ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
                 CURRENCY_ID.getName(), TITLE.getName(), NOTE.getName(), BALANCE.getName(), OWNER.getName(), INCLUDE_IN_TOTALS.getName()};
 
-        public static final String[] PROJECTION_ACCOUNT_FROM = {SERVER_ID.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), MODEL_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT),
+        public static final String[] PROJECTION_ACCOUNT_FROM = {ID.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), MODEL_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT),
                 SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), CURRENCY_ID.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT),
                 TITLE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), NOTE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT),
                 BALANCE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), OWNER.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), INCLUDE_IN_TOTALS.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT)};
 
-        public static final String[] PROJECTION_ACCOUNT_TO = {SERVER_ID.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), MODEL_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT),
+        public static final String[] PROJECTION_ACCOUNT_TO = {ID.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), MODEL_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT),
                 SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), CURRENCY_ID.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT),
                 TITLE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), NOTE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT),
                 BALANCE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), OWNER.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), INCLUDE_IN_TOTALS.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT)};
@@ -161,12 +134,12 @@ public final class Tables {
         }
 
         public static String createScript() {
-            return makeCreateScript(TABLE_NAME, ID, SERVER_ID, MODEL_STATE, SYNC_STATE, CURRENCY_ID, TITLE, NOTE, BALANCE, OWNER, INCLUDE_IN_TOTALS);
+            return makeCreateScript(TABLE_NAME, LOCAL_ID, ID, MODEL_STATE, SYNC_STATE, CURRENCY_ID, TITLE, NOTE, BALANCE, OWNER, INCLUDE_IN_TOTALS);
         }
 
         public static Query getQuery() {
             return Query.create()
-                    .projectionId(Accounts.ID)
+                    .projectionLocalId(Accounts.LOCAL_ID)
                     .projection(Accounts.PROJECTION)
                     .projection(Currencies.PROJECTION)
                     .selection("(" + Accounts.MODEL_STATE + "=?", ModelState.NORMAL.asString())
@@ -180,8 +153,8 @@ public final class Tables {
     public static final class Categories {
         public static final String TABLE_NAME = "categories";
 
-        public static final Column ID = getLocalIdColumn(TABLE_NAME);
-        public static final Column SERVER_ID = getIdColumn(TABLE_NAME);
+        public static final Column LOCAL_ID = getLocalIdColumn(TABLE_NAME);
+        public static final Column ID = getIdColumn(TABLE_NAME);
         public static final Column MODEL_STATE = getModelStateColumn(TABLE_NAME);
         public static final Column SYNC_STATE = getSyncStateColumn(TABLE_NAME);
         public static final Column TITLE = new Column(TABLE_NAME, "title", Column.DataType.TEXT);
@@ -190,19 +163,19 @@ public final class Tables {
         public static final Column OWNER = new Column(TABLE_NAME, "owner", Column.DataType.INTEGER);
         public static final Column SORT_ORDER = new Column(TABLE_NAME, "sort_order", Column.DataType.INTEGER);
 
-        public static final String[] PROJECTION = {SERVER_ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
+        public static final String[] PROJECTION = {ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
                 TITLE.getName(), COLOR.getName(), TYPE.getName(), OWNER.getName(), SORT_ORDER.getName()};
 
         private Categories() {
         }
 
         public static String createScript() {
-            return makeCreateScript(TABLE_NAME, ID, SERVER_ID, MODEL_STATE, SYNC_STATE, TITLE, COLOR, TYPE, OWNER, SORT_ORDER);
+            return makeCreateScript(TABLE_NAME, LOCAL_ID, ID, MODEL_STATE, SYNC_STATE, TITLE, COLOR, TYPE, OWNER, SORT_ORDER);
         }
 
         public static Query getQuery(CategoryType type) {
             final Query query = Query.create()
-                    .projectionId(Categories.ID)
+                    .projectionLocalId(Categories.LOCAL_ID)
                     .projection(Categories.PROJECTION)
                     .selection("(" + Categories.MODEL_STATE + "=?", ModelState.NORMAL.asString())
                     .selection(" or " + Categories.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString())
@@ -219,25 +192,25 @@ public final class Tables {
     public static final class Tags {
         public static final String TABLE_NAME = "tags";
 
-        public static final Column ID = getLocalIdColumn(TABLE_NAME);
-        public static final Column SERVER_ID = getIdColumn(TABLE_NAME);
+        public static final Column LOCAL_ID = getLocalIdColumn(TABLE_NAME);
+        public static final Column ID = getIdColumn(TABLE_NAME);
         public static final Column MODEL_STATE = getModelStateColumn(TABLE_NAME);
         public static final Column SYNC_STATE = getSyncStateColumn(TABLE_NAME);
         public static final Column TITLE = new Column(TABLE_NAME, "title", Column.DataType.TEXT);
 
-        public static final String[] PROJECTION = {SERVER_ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
+        public static final String[] PROJECTION = {ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
                 TITLE.getName()};
 
         private Tags() {
         }
 
         public static String createScript() {
-            return makeCreateScript(TABLE_NAME, ID, SERVER_ID, MODEL_STATE, SYNC_STATE, TITLE);
+            return makeCreateScript(TABLE_NAME, LOCAL_ID, ID, MODEL_STATE, SYNC_STATE, TITLE);
         }
 
         public static Query getQuery() {
             return Query.create()
-                    .projectionId(Tags.ID)
+                    .projectionLocalId(Tags.LOCAL_ID)
                     .projection(Tags.PROJECTION)
                     .selection("(" + Tags.MODEL_STATE + "=?", ModelState.NORMAL.asString())
                     .selection(" or " + Tags.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString());
@@ -247,8 +220,8 @@ public final class Tables {
     public static final class Transactions {
         public static final String TABLE_NAME = "transactions";
 
-        public static final Column ID = getLocalIdColumn(TABLE_NAME);
-        public static final Column SERVER_ID = getIdColumn(TABLE_NAME);
+        public static final Column LOCAL_ID = getLocalIdColumn(TABLE_NAME);
+        public static final Column ID = getIdColumn(TABLE_NAME);
         public static final Column MODEL_STATE = getModelStateColumn(TABLE_NAME);
         public static final Column SYNC_STATE = getSyncStateColumn(TABLE_NAME);
         public static final Column ACCOUNT_FROM_ID = new Column(TABLE_NAME, "account_from_id", Column.DataType.TEXT);
@@ -261,7 +234,7 @@ public final class Tables {
         public static final Column STATE = new Column(TABLE_NAME, "state", Column.DataType.INTEGER);
         public static final Column INCLUDE_IN_REPORTS = new Column(TABLE_NAME, "include_in_reports", Column.DataType.BOOLEAN, "1");
 
-        public static final String[] PROJECTION = {SERVER_ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
+        public static final String[] PROJECTION = {ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
                 ACCOUNT_FROM_ID.getName(), ACCOUNT_TO_ID.getName(), CATEGORY_ID.getName(),
                 DATE.getName(), AMOUNT.getName(), EXCHANGE_RATE.getName(), NOTE.getName(), STATE.getName(),
                 INCLUDE_IN_REPORTS.getName()};
@@ -270,13 +243,13 @@ public final class Tables {
         }
 
         public static String createScript() {
-            return makeCreateScript(TABLE_NAME, ID, SERVER_ID, MODEL_STATE, SYNC_STATE, ACCOUNT_FROM_ID,
+            return makeCreateScript(TABLE_NAME, LOCAL_ID, ID, MODEL_STATE, SYNC_STATE, ACCOUNT_FROM_ID,
                     ACCOUNT_TO_ID, CATEGORY_ID, DATE, AMOUNT, EXCHANGE_RATE, NOTE, STATE, INCLUDE_IN_REPORTS);
         }
 
         public static Query getQuery() {
             return Query.create()
-                    .projectionId(Transactions.ID)
+                    .projectionLocalId(Transactions.LOCAL_ID)
                     .projection(Transactions.PROJECTION)
                     .projection(Accounts.PROJECTION_ACCOUNT_FROM)
                     .projection(Accounts.PROJECTION_ACCOUNT_TO)
@@ -293,6 +266,9 @@ public final class Tables {
     public static final class TransactionTags {
         public static final String TABLE_NAME = "transaction_tags";
 
+        public static final Column LOCAL_ID = getLocalIdColumn(TABLE_NAME);
+        public static final Column ID = getIdColumn(TABLE_NAME);
+        public static final Column SYNC_STATE = getSyncStateColumn(TABLE_NAME);
         public static final Column TRANSACTION_ID = new Column(TABLE_NAME, "transaction_id", Column.DataType.TEXT);
         public static final Column TAG_ID = new Column(TABLE_NAME, "tag_id", Column.DataType.TEXT);
 
@@ -300,7 +276,7 @@ public final class Tables {
         }
 
         public static String createScript() {
-            return makeRelationshipCreateScript(TABLE_NAME, TRANSACTION_ID, TAG_ID);
+            return makeCreateScript(TABLE_NAME, LOCAL_ID, ID, SYNC_STATE, TRANSACTION_ID, TAG_ID);
         }
     }
 }

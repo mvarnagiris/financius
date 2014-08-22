@@ -58,16 +58,16 @@ public class ExchangeRateRequest extends Request {
         IOUtils.closeQuietly(cursor);
 
         boolean currencyExists = true;
-        if (currency == null || StringUtils.isEmpty(currency.getServerId())) {
+        if (currency == null || StringUtils.isEmpty(currency.getId())) {
             currencyExists = false;
             currency = new Currency();
-            currency.setServerId(UUID.randomUUID().toString());
+            currency.setId(UUID.randomUUID().toString());
             currency.setCode(fromCode);
         }
 
         currency.setExchangeRate(exchangeRate);
         if (currencyExists && storeData) {
-            DataStore.bulkInsert().values(currency.asContentValues()).into(context, CurrenciesProvider.uriCurrencies());
+            DataStore.bulkInsert().values(currency.asValues()).into(context, CurrenciesProvider.uriCurrencies());
         }
     }
 

@@ -25,7 +25,7 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
 
     protected static final int LOADER_MODEL = 1000;
 
-    protected String modelServerId;
+    protected String modelId;
     protected T model;
 
     public static Bundle makeArgs(String modelServerId) {
@@ -40,7 +40,7 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
         setHasOptionsMenu(true);
 
         // Get arguments
-        modelServerId = getArguments().getString(ARG_MODEL_SERVER_ID, "0");
+        modelId = getArguments().getString(ARG_MODEL_SERVER_ID, "0");
     }
 
     @Override
@@ -61,7 +61,7 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_edit:
-                startModelEdit(getActivity(), modelServerId);
+                startModelEdit(getActivity(), modelId);
                 return true;
 
             case R.id.action_delete:
@@ -76,7 +76,7 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_MODEL) {
-            return getModelCursorLoader(getActivity(), modelServerId);
+            return getModelCursorLoader(getActivity(), modelId);
         }
 
         return null;

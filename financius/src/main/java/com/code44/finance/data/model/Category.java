@@ -10,14 +10,13 @@ import com.code44.finance.App;
 import com.code44.finance.backend.endpoint.categories.model.CategoryEntity;
 import com.code44.finance.common.model.CategoryOwner;
 import com.code44.finance.common.model.CategoryType;
-import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.utils.IOUtils;
 
-public class Category extends BaseModel {
+public class Category extends BaseModel<CategoryEntity> {
     public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>() {
         public Category createFromParcel(Parcel in) {
             return new Category(in);
@@ -58,9 +57,9 @@ public class Category extends BaseModel {
     public static Category getExpense() {
         if (expenseCategory == null) {
             final Cursor cursor = Query.create()
-                    .projectionId(Tables.Categories.ID)
+                    .projectionLocalId(Tables.Categories.LOCAL_ID)
                     .projection(Tables.Categories.PROJECTION)
-                    .selection(Tables.Categories.ID + "=?", String.valueOf(EXPENSE_ID))
+                    .selection(Tables.Categories.LOCAL_ID + "=?", String.valueOf(EXPENSE_ID))
                     .from(App.getContext(), CategoriesProvider.uriCategories())
                     .execute();
 
@@ -73,9 +72,9 @@ public class Category extends BaseModel {
     public static Category getIncome() {
         if (incomeCategory == null) {
             final Cursor cursor = Query.create()
-                    .projectionId(Tables.Categories.ID)
+                    .projectionLocalId(Tables.Categories.LOCAL_ID)
                     .projection(Tables.Categories.PROJECTION)
-                    .selection(Tables.Categories.ID + "=?", String.valueOf(INCOME_ID))
+                    .selection(Tables.Categories.LOCAL_ID + "=?", String.valueOf(INCOME_ID))
                     .from(App.getContext(), CategoriesProvider.uriCategories())
                     .execute();
 
@@ -88,9 +87,9 @@ public class Category extends BaseModel {
     public static Category getTransfer() {
         if (transferCategory == null) {
             final Cursor cursor = Query.create()
-                    .projectionId(Tables.Categories.ID)
+                    .projectionLocalId(Tables.Categories.LOCAL_ID)
                     .projection(Tables.Categories.PROJECTION)
-                    .selection(Tables.Categories.ID + "=?", String.valueOf(TRANSFER_ID))
+                    .selection(Tables.Categories.LOCAL_ID + "=?", String.valueOf(TRANSFER_ID))
                     .from(App.getContext(), CategoriesProvider.uriCategories())
                     .execute();
 
@@ -110,35 +109,40 @@ public class Category extends BaseModel {
 
     public static Category from(CategoryEntity entity) {
         final Category category = new Category();
-        category.setServerId(entity.getId());
-        category.setModelState(ModelState.valueOf(entity.getModelState()));
-        category.setSyncState(SyncState.SYNCED);
-        category.setTitle(entity.getTitle());
-        category.setColor(entity.getColor());
-        category.setCategoryType(CategoryType.valueOf(entity.getCategoryType()));
-        category.setCategoryOwner(CategoryOwner.valueOf(entity.getCategoryOwner()));
-        category.setSortOrder(entity.getSortOrder());
+        category.updateFrom(entity);
         return category;
     }
 
-    @Override
-    protected Column getIdColumn() {
+    @Override protected Column getLocalIdColumn() {
+        return Tables.Categories.LOCAL_ID;
+    }
+
+    @Override protected Column getIdColumn() {
         return Tables.Categories.ID;
     }
 
-    @Override
-    protected Column getServerIdColumn() {
-        return Tables.Categories.SERVER_ID;
-    }
-
-    @Override
-    protected Column getModelStateColumn() {
+    @Override protected Column getModelStateColumn() {
         return Tables.Categories.MODEL_STATE;
     }
 
-    @Override
-    protected Column getSyncStateColumn() {
+    @Override protected Column getSyncStateColumn() {
         return Tables.Categories.SYNC_STATE;
+    }
+
+    @Override protected void toValues(ContentValues values) {
+        values.put(Tables.Categories.TITLE.getName(), title);
+        values.put(Tables.Categories.COLOR.getName(), color);
+        values.put(Tables.Categories.TYPE.getName(), categoryType.asInt());
+        values.put(Tables.Categories.OWNER.getName(), categoryOwner.asInt());
+        values.put(Tables.Categories.SORT_ORDER.getName(), sortOrder);
+    }
+
+    @Override protected void toParcel(Parcel parcel) {
+        parcel.writeString(title);
+        parcel.writeInt(color);
+        parcel.writeInt(categoryType.asInt());
+        parcel.writeInt(categoryOwner.asInt());
+        parcel.writeInt(sortOrder);
     }
 
     @Override
@@ -150,22 +154,12 @@ public class Category extends BaseModel {
         setSortOrder(parcel.readInt());
     }
 
-    @Override
-    protected void toParcel(Parcel parcel) {
-        parcel.writeString(getTitle());
-        parcel.writeInt(getColor());
-        parcel.writeInt(getCategoryType().asInt());
-        parcel.writeInt(getCategoryOwner().asInt());
-        parcel.writeInt(getSortOrder());
+    @Override protected void toEntity(CategoryEntity entity) {
+
     }
 
-    @Override
-    protected void toValues(ContentValues values) {
-        values.put(Tables.Categories.TITLE.getName(), title);
-        values.put(Tables.Categories.COLOR.getName(), color);
-        values.put(Tables.Categories.TYPE.getName(), categoryType.asInt());
-        values.put(Tables.Categories.OWNER.getName(), categoryOwner.asInt());
-        values.put(Tables.Categories.SORT_ORDER.getName(), sortOrder);
+    @Override protected CategoryEntity createEntity() {
+        return null;
     }
 
     @Override
@@ -203,6 +197,14 @@ public class Category extends BaseModel {
         }
     }
 
+    @Override protected void fromEntity(CategoryEntity entity) {
+        setTitle(entity.getTitle());
+        setColor(entity.getColor());
+        setCategoryType(CategoryType.valueOf(entity.getCategoryType()));
+        setCategoryOwner(CategoryOwner.valueOf(entity.getCategoryOwner()));
+        setSortOrder(entity.getSortOrder());
+    }
+
     @Override
     public void checkValues() throws IllegalStateException {
         super.checkValues();
@@ -222,7 +224,7 @@ public class Category extends BaseModel {
 
     public CategoryEntity toEntity() {
         final CategoryEntity entity = new CategoryEntity();
-        entity.setId(getServerId());
+        entity.setId(getId());
         entity.setModelState(getModelState().toString());
         entity.setTitle(getTitle());
         entity.setColor(getColor());

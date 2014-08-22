@@ -82,7 +82,7 @@ public class TransactionFragment extends ModelFragment<Transaction> {
     }
 
     @Override protected Pair<String, String[]> getDeleteSelection() {
-        return Pair.create(Tables.Transactions.SERVER_ID + "=?", new String[]{modelServerId});
+        return Pair.create(Tables.Transactions.ID + "=?", new String[]{modelId});
     }
 
     @Override protected void startModelEdit(Context context, String modelServerId) {

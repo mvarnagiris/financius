@@ -176,7 +176,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 //        }
 
         if (canSave) {
-            DataStore.insert().values(model.asContentValues()).into(context, TransactionsProvider.uriTransactions());
+            DataStore.insert().values(model.asValues()).into(context, TransactionsProvider.uriTransactions());
         }
 
         return canSave;
@@ -192,7 +192,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
     @Override protected Transaction getModelFrom(Cursor cursor) {
         final Transaction transaction = Transaction.from(cursor);
-        if (StringUtils.isEmpty(transaction.getServerId())) {
+        if (StringUtils.isEmpty(transaction.getId())) {
             // TODO Creating new transaction. Kick off auto-complete.
         }
         return transaction;
@@ -234,7 +234,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         includeInReports_CB.setChecked(model.includeInReports());
         save_B.setText(confirmed_CB.isChecked() ? R.string.save : R.string.pending);
 
-        if (StringUtils.isEmpty(model.getServerId()) && !isAutoAmountRequested) {
+        if (StringUtils.isEmpty(model.getId()) && !isAutoAmountRequested) {
             isAutoAmountRequested = true;
             amount_B.post(new Runnable() {
                 @Override public void run() {
@@ -328,7 +328,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 throw new IllegalStateException("Category type " + transaction.getCategory().getCategoryType() + " is not supported.");
         }
 
-        if (transactionCurrency == null || StringUtils.isEmpty(transactionCurrency.getServerId())) {
+        if (transactionCurrency == null || StringUtils.isEmpty(transactionCurrency.getId())) {
             transactionCurrency = Currency.getDefault();
         }
 

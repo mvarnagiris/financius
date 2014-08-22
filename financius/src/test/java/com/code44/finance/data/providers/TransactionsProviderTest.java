@@ -60,7 +60,7 @@ public class TransactionsProviderTest extends BaseContentProviderTestCase {
         transaction.setCategory(Category.getIncome());
         transaction.setAmount(42);
 
-        bulkInsert(TransactionsProvider.uriTransactions(), transaction.asContentValues());
+        bulkInsert(TransactionsProvider.uriTransactions(), transaction.asValues());
         account = getAccount(account.getId());
 
         assertEquals(42, account.getBalance());

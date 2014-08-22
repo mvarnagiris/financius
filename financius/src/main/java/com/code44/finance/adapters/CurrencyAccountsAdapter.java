@@ -39,7 +39,7 @@ public class CurrencyAccountsAdapter extends BaseModelsAdapter {
     }
 
     @Override public int getCount() {
-        return currency == null || StringUtils.isEmpty(currency.getServerId()) ? 0 : super.getCount();
+        return currency == null || StringUtils.isEmpty(currency.getId()) ? 0 : super.getCount();
     }
 
     @Override public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -53,7 +53,7 @@ public class CurrencyAccountsAdapter extends BaseModelsAdapter {
         final Account account = Account.from(cursor);
 
         final String accountText = account.getTitle() + ", " + account.getCurrency().getCode();
-        if (currency.getServerId().equals(account.getCurrency().getServerId())) {
+        if (currency.getId().equals(account.getCurrency().getId())) {
             holder.currency_B.setVisibility(View.INVISIBLE);
             final SpannableStringBuilder ssb = new SpannableStringBuilder(accountText);
             ssb.setSpan(new ForegroundColorSpan(textBrandColor), ssb.length() - account.getCurrency().getCode().length(), ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

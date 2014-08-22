@@ -96,7 +96,7 @@ public class SyncRequest extends Request {
         markInProgress(database, Tables.Currencies.SYNC_STATE);
 
         final Cursor cursor = Query.create()
-                .projectionId(Tables.Currencies.LOCAL_ID)
+                .projectionLocalId(Tables.Currencies.LOCAL_ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
                 .from(App.getContext(), CurrenciesProvider.uriCurrencies())
@@ -118,7 +118,7 @@ public class SyncRequest extends Request {
         markInProgress(database, Tables.Categories.SYNC_STATE);
 
         final Cursor cursor = Query.create()
-                .projectionId(Tables.Categories.ID)
+                .projectionLocalId(Tables.Categories.LOCAL_ID)
                 .projection(Tables.Categories.PROJECTION)
                 .selection(Tables.Categories.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
                 .from(App.getContext(), CategoriesProvider.uriCategories())
@@ -140,7 +140,7 @@ public class SyncRequest extends Request {
         markInProgress(database, Tables.Tags.SYNC_STATE);
 
         final Cursor cursor = Query.create()
-                .projectionId(Tables.Tags.ID)
+                .projectionLocalId(Tables.Tags.LOCAL_ID)
                 .projection(Tables.Tags.PROJECTION)
                 .selection(Tables.Tags.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
                 .from(App.getContext(), TagsProvider.uriTags())
@@ -162,7 +162,7 @@ public class SyncRequest extends Request {
         markInProgress(database, Tables.Accounts.SYNC_STATE);
 
         final Cursor cursor = Query.create()
-                .projectionId(Tables.Accounts.ID)
+                .projectionLocalId(Tables.Accounts.LOCAL_ID)
                 .projection(Tables.Accounts.PROJECTION)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Accounts.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
@@ -185,7 +185,7 @@ public class SyncRequest extends Request {
         markInProgress(database, Tables.Transactions.SYNC_STATE);
 
         final Cursor cursor = Query.create()
-                .projectionId(Tables.Transactions.ID)
+                .projectionLocalId(Tables.Transactions.LOCAL_ID)
                 .projection(Tables.Transactions.PROJECTION)
                 .projection(Tables.Accounts.PROJECTION_ACCOUNT_FROM)
                 .projection(Tables.Accounts.PROJECTION_ACCOUNT_TO)

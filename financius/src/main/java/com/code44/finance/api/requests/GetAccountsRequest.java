@@ -59,7 +59,7 @@ public class GetAccountsRequest extends GetRequest<AccountEntity> {
 
         if (currency == null) {
             final Cursor cursor = Query.create()
-                    .projectionId(Tables.Currencies.LOCAL_ID)
+                    .projectionLocalId(Tables.Currencies.LOCAL_ID)
                     .projection(Tables.Currencies.PROJECTION)
                     .selection(Tables.Currencies.ID + "=?", entity.getCurrencyId())
                     .from(App.getContext(), CurrenciesProvider.uriCurrencies())
