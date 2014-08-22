@@ -44,7 +44,7 @@ public final class ProviderUtils {
     public static long doUpdateOrInsert(SQLiteDatabase db, String tableName, ContentValues values, boolean returnNewId) {
         // Get id columns
         final String idColumn = BaseColumns._ID;
-        final String serverIdColumn = tableName + "_" + Tables.SUFFIX_SERVER_ID;
+        final String serverIdColumn = tableName + "_" + Tables.SUFFIX_ID;
 
         // Get ids
         final Long id = values.getAsLong(idColumn);
@@ -92,7 +92,7 @@ public final class ProviderUtils {
         long localId = 0;
         Cursor c = null;
         try {
-            c = db.query(tableName, new String[]{BaseColumns._ID}, tableName + "_" + Tables.SUFFIX_SERVER_ID + "=?", new String[]{serverId}, null, null, null);
+            c = db.query(tableName, new String[]{BaseColumns._ID}, tableName + "_" + Tables.SUFFIX_ID + "=?", new String[]{serverId}, null, null, null);
             if (c != null && c.moveToFirst()) {
                 localId = c.getLong(0);
             }

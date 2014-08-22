@@ -36,7 +36,7 @@ public class AccountsProvider extends BaseModelProvider {
 
     @Override
     protected String getQueryTables(Uri uri) {
-        return getModelTable() + " inner join " + Tables.Currencies.TABLE_NAME + " on " + Tables.Currencies.SERVER_ID + "=" + Tables.Accounts.CURRENCY_ID;
+        return getModelTable() + " inner join " + Tables.Currencies.TABLE_NAME + " on " + Tables.Currencies.ID + "=" + Tables.Accounts.CURRENCY_ID;
     }
 
     @Override

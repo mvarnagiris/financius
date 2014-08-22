@@ -70,7 +70,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
 
     private Cursor queryDefaultCurrencyCursor() {
         final Query query = Query.create()
-                .projectionId(Tables.Currencies.ID)
+                .projectionId(Tables.Currencies.LOCAL_ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.IS_DEFAULT + "=?", "1");
 
@@ -79,7 +79,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
 
     private Cursor queryCurrencyCursor(String code) {
         final Query query = Query.create()
-                .projectionId(Tables.Currencies.ID)
+                .projectionId(Tables.Currencies.LOCAL_ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.CODE + "=?", code);
 
@@ -99,7 +99,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
     }
 
     private int deleteCurrency(Currency currency) {
-        return delete("delete", CurrenciesProvider.uriCurrencies(), Tables.Currencies.ID + "=?", String.valueOf(currency.getId()));
+        return delete("delete", CurrenciesProvider.uriCurrencies(), Tables.Currencies.LOCAL_ID + "=?", String.valueOf(currency.getId()));
     }
 
     private Cursor queryAccountsCursor() {

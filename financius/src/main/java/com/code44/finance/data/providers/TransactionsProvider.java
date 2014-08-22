@@ -74,12 +74,12 @@ public class TransactionsProvider extends BaseModelProvider {
 
         if (joinTables.contains(URI_VALUE_JOIN_TABLE_CURRENCIES_FROM)) {
             sb.append(" left join ").append(Tables.Currencies.TABLE_NAME).append(" as ").append(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY)
-                    .append(" on ").append(Tables.Currencies.SERVER_ID.getNameWithTable(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY)).append("=").append(Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT));
+                    .append(" on ").append(Tables.Currencies.ID.getNameWithTable(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY)).append("=").append(Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT));
         }
 
         if (joinTables.contains(URI_VALUE_JOIN_TABLE_CURRENCIES_TO)) {
             sb.append(" left join ").append(Tables.Currencies.TABLE_NAME).append(" as ").append(Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY)
-                    .append(" on ").append(Tables.Currencies.SERVER_ID.getNameWithTable(Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY)).append("=").append(Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT));
+                    .append(" on ").append(Tables.Currencies.ID.getNameWithTable(Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY)).append("=").append(Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT));
         }
 
         return sb.toString();

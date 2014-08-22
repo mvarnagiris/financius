@@ -38,7 +38,7 @@ public class CurrenciesProvider extends BaseModelProvider {
 
     @Override
     protected Column getServerIdColumn() {
-        return Tables.Currencies.SERVER_ID;
+        return Tables.Currencies.ID;
     }
 
     @Override
@@ -111,7 +111,7 @@ public class CurrenciesProvider extends BaseModelProvider {
         //noinspection ConstantConditions
         boolean isDefault = values.getAsBoolean(Tables.Currencies.IS_DEFAULT.getName());
         //noinspection ConstantConditions
-        long currencyId = values.containsKey(Tables.Currencies.ID.getName()) ? values.getAsLong(Tables.Currencies.ID.getName()) : 0;
+        long currencyId = values.containsKey(Tables.Currencies.LOCAL_ID.getName()) ? values.getAsLong(Tables.Currencies.LOCAL_ID.getName()) : 0;
         if (isDefault && currencyId != Currency.getDefault().getId()) {
             ContentValues newValues = new ContentValues();
             newValues.put(Tables.Currencies.EXCHANGE_RATE.getName(), 1.0);

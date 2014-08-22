@@ -96,7 +96,7 @@ public class SyncRequest extends Request {
         markInProgress(database, Tables.Currencies.SYNC_STATE);
 
         final Cursor cursor = Query.create()
-                .projectionId(Tables.Currencies.ID)
+                .projectionId(Tables.Currencies.LOCAL_ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
                 .from(App.getContext(), CurrenciesProvider.uriCurrencies())

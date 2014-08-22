@@ -60,7 +60,7 @@ public class Currency extends BaseModel {
     public static Currency getDefault() {
         if (defaultCurrency == null) {
             final Cursor cursor = Query.create()
-                    .projectionId(Tables.Currencies.ID)
+                    .projectionId(Tables.Currencies.LOCAL_ID)
                     .projection(Tables.Currencies.PROJECTION)
                     .selection(Tables.Currencies.IS_DEFAULT.getName() + "=?", "1")
                     .from(App.getContext(), CurrenciesProvider.uriCurrencies())
@@ -74,7 +74,7 @@ public class Currency extends BaseModel {
 
     public static void updateDefaultCurrency(SQLiteDatabase db) {
         final Cursor cursor = Query.create()
-                .projectionId(Tables.Currencies.ID)
+                .projectionId(Tables.Currencies.LOCAL_ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.IS_DEFAULT + "=?", "1")
                 .from(db, Tables.Currencies.TABLE_NAME)
@@ -125,12 +125,12 @@ public class Currency extends BaseModel {
 
     @Override
     protected Column getIdColumn() {
-        return Tables.Currencies.ID;
+        return Tables.Currencies.LOCAL_ID;
     }
 
     @Override
     protected Column getServerIdColumn() {
-        return Tables.Currencies.SERVER_ID;
+        return Tables.Currencies.ID;
     }
 
     @Override

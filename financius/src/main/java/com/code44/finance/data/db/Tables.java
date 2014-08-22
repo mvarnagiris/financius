@@ -12,19 +12,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Tables {
-    public static final String SUFFIX_SERVER_ID = "server_id";
+    public static final String SUFFIX_ID = "id";
     public static final String SUFFIX_MODEL_STATE = "model_state";
     public static final String SUFFIX_SYNC_STATE = "sync_state";
 
     private Tables() {
     }
 
-    private static Column getIdColumn(String tableName) {
+    private static Column getLocalIdColumn(String tableName) {
         return new Column(tableName, BaseColumns._ID, Column.DataType.INTEGER_PRIMARY_KEY, null, false);
     }
 
-    private static Column getServerIdColumn(String tableName) {
-        return new Column(tableName, SUFFIX_SERVER_ID, Column.DataType.TEXT, null);
+    private static Column getIdColumn(String tableName) {
+        return new Column(tableName, SUFFIX_ID, Column.DataType.TEXT, null);
     }
 
     private static Column getModelStateColumn(String tableName) {
@@ -83,8 +83,8 @@ public final class Tables {
         public static final String TEMP_TABLE_NAME_FROM_CURRENCY = "currencies_from";
         public static final String TEMP_TABLE_NAME_TO_CURRENCY = "currencies_to";
 
+        public static final Column LOCAL_ID = getLocalIdColumn(TABLE_NAME);
         public static final Column ID = getIdColumn(TABLE_NAME);
-        public static final Column SERVER_ID = getServerIdColumn(TABLE_NAME);
         public static final Column MODEL_STATE = getModelStateColumn(TABLE_NAME);
         public static final Column SYNC_STATE = getSyncStateColumn(TABLE_NAME);
         public static final Column CODE = new Column(TABLE_NAME, "code", Column.DataType.TEXT);
@@ -96,15 +96,15 @@ public final class Tables {
         public static final Column IS_DEFAULT = new Column(TABLE_NAME, "is_default", Column.DataType.BOOLEAN);
         public static final Column EXCHANGE_RATE = new Column(TABLE_NAME, "exchange_rate", Column.DataType.REAL);
 
-        public static final String[] PROJECTION = {SERVER_ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
+        public static final String[] PROJECTION = {ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
                 CODE.getName(), SYMBOL.getName(), SYMBOL_POSITION.getName(), DECIMAL_SEPARATOR.getName(),
                 GROUP_SEPARATOR.getName(), DECIMAL_COUNT.getName(), IS_DEFAULT.getName(), EXCHANGE_RATE.getName()};
 
-        public static final String[] PROJECTION_ACCOUNT_FROM = {SERVER_ID.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), MODEL_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY),
+        public static final String[] PROJECTION_ACCOUNT_FROM = {ID.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), MODEL_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY),
                 CODE.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), SYMBOL.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), SYMBOL_POSITION.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), DECIMAL_SEPARATOR.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY),
                 GROUP_SEPARATOR.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), DECIMAL_COUNT.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), IS_DEFAULT.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), EXCHANGE_RATE.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY)};
 
-        public static final String[] PROJECTION_ACCOUNT_TO = {SERVER_ID.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), MODEL_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY),
+        public static final String[] PROJECTION_ACCOUNT_TO = {ID.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), MODEL_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY),
                 CODE.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), SYMBOL.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), SYMBOL_POSITION.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), DECIMAL_SEPARATOR.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY),
                 GROUP_SEPARATOR.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), DECIMAL_COUNT.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), IS_DEFAULT.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), EXCHANGE_RATE.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY)};
 
@@ -112,14 +112,14 @@ public final class Tables {
         }
 
         public static String createScript() {
-            return makeCreateScript(TABLE_NAME, ID, SERVER_ID, MODEL_STATE, SYNC_STATE, CODE, SYMBOL,
+            return makeCreateScript(TABLE_NAME, LOCAL_ID, ID, MODEL_STATE, SYNC_STATE, CODE, SYMBOL,
                     SYMBOL_POSITION, DECIMAL_SEPARATOR, GROUP_SEPARATOR, DECIMAL_COUNT, IS_DEFAULT,
                     EXCHANGE_RATE);
         }
 
         public static Query getQuery() {
             return Query.create()
-                    .projectionId(Tables.Currencies.ID)
+                    .projectionId(Tables.Currencies.LOCAL_ID)
                     .projection(Tables.Currencies.PROJECTION)
                     .selection("(" + Tables.Currencies.MODEL_STATE + "=?", ModelState.NORMAL.asString())
                     .selection(" or " + Currencies.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString())
@@ -133,8 +133,8 @@ public final class Tables {
         public static final String TEMP_TABLE_NAME_FROM_ACCOUNT = "accounts_from";
         public static final String TEMP_TABLE_NAME_TO_ACCOUNT = "accounts_to";
 
-        public static final Column ID = getIdColumn(TABLE_NAME);
-        public static final Column SERVER_ID = getServerIdColumn(TABLE_NAME);
+        public static final Column ID = getLocalIdColumn(TABLE_NAME);
+        public static final Column SERVER_ID = getIdColumn(TABLE_NAME);
         public static final Column MODEL_STATE = getModelStateColumn(TABLE_NAME);
         public static final Column SYNC_STATE = getSyncStateColumn(TABLE_NAME);
         public static final Column CURRENCY_ID = new Column(TABLE_NAME, "currency_id", Column.DataType.TEXT);
@@ -180,8 +180,8 @@ public final class Tables {
     public static final class Categories {
         public static final String TABLE_NAME = "categories";
 
-        public static final Column ID = getIdColumn(TABLE_NAME);
-        public static final Column SERVER_ID = getServerIdColumn(TABLE_NAME);
+        public static final Column ID = getLocalIdColumn(TABLE_NAME);
+        public static final Column SERVER_ID = getIdColumn(TABLE_NAME);
         public static final Column MODEL_STATE = getModelStateColumn(TABLE_NAME);
         public static final Column SYNC_STATE = getSyncStateColumn(TABLE_NAME);
         public static final Column TITLE = new Column(TABLE_NAME, "title", Column.DataType.TEXT);
@@ -219,8 +219,8 @@ public final class Tables {
     public static final class Tags {
         public static final String TABLE_NAME = "tags";
 
-        public static final Column ID = getIdColumn(TABLE_NAME);
-        public static final Column SERVER_ID = getServerIdColumn(TABLE_NAME);
+        public static final Column ID = getLocalIdColumn(TABLE_NAME);
+        public static final Column SERVER_ID = getIdColumn(TABLE_NAME);
         public static final Column MODEL_STATE = getModelStateColumn(TABLE_NAME);
         public static final Column SYNC_STATE = getSyncStateColumn(TABLE_NAME);
         public static final Column TITLE = new Column(TABLE_NAME, "title", Column.DataType.TEXT);
@@ -247,8 +247,8 @@ public final class Tables {
     public static final class Transactions {
         public static final String TABLE_NAME = "transactions";
 
-        public static final Column ID = getIdColumn(TABLE_NAME);
-        public static final Column SERVER_ID = getServerIdColumn(TABLE_NAME);
+        public static final Column ID = getLocalIdColumn(TABLE_NAME);
+        public static final Column SERVER_ID = getIdColumn(TABLE_NAME);
         public static final Column MODEL_STATE = getModelStateColumn(TABLE_NAME);
         public static final Column SYNC_STATE = getSyncStateColumn(TABLE_NAME);
         public static final Column ACCOUNT_FROM_ID = new Column(TABLE_NAME, "account_from_id", Column.DataType.TEXT);
@@ -290,11 +290,11 @@ public final class Tables {
         }
     }
 
-    public static class TransactionTags {
+    public static final class TransactionTags {
         public static final String TABLE_NAME = "transaction_tags";
 
-        public static final Column TRANSACTION_ID = new Column(TABLE_NAME, "transaction_id", Column.DataType.INTEGER);
-        public static final Column TAG_ID = new Column(TABLE_NAME, "tag_id", Column.DataType.INTEGER);
+        public static final Column TRANSACTION_ID = new Column(TABLE_NAME, "transaction_id", Column.DataType.TEXT);
+        public static final Column TAG_ID = new Column(TABLE_NAME, "tag_id", Column.DataType.TEXT);
 
         private TransactionTags() {
         }

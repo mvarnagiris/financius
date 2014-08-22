@@ -140,7 +140,7 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
     }
 
     @Override protected Pair<String, String[]> getDeleteSelection() {
-        return Pair.create(Tables.Currencies.SERVER_ID + "=?", new String[]{String.valueOf(modelServerId)});
+        return Pair.create(Tables.Currencies.ID + "=?", new String[]{String.valueOf(modelServerId)});
     }
 
     @Override protected void startModelEdit(Context context, String modelServerId) {

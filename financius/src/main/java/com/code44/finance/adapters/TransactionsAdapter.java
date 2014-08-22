@@ -174,7 +174,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         final Cursor cursor = getCursor();
         final int iCategoryType = cursor.getColumnIndex(Tables.Categories.TYPE.getName());
         final int iAmount = cursor.getColumnIndex(Tables.Transactions.AMOUNT.getName());
-        final int iAccountFromCurrencyServerId = cursor.getColumnIndex(Tables.Currencies.SERVER_ID.getName(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY));
+        final int iAccountFromCurrencyServerId = cursor.getColumnIndex(Tables.Currencies.ID.getName(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY));
         final int iAccountFromCurrencyExchangeRate = cursor.getColumnIndex(Tables.Currencies.EXCHANGE_RATE.getName(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY));
         final int iIncludeInReports = cursor.getColumnIndex(Tables.Transactions.INCLUDE_IN_REPORTS.getName());
         do {
