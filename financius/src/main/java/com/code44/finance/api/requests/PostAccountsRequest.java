@@ -30,7 +30,7 @@ public class PostAccountsRequest extends PostRequest<AccountsBody> {
     @Override protected void onAddPostData(AccountsBody body) {
         final List<AccountEntity> accountEntities = new ArrayList<>();
         for (Account account : accounts) {
-            accountEntities.add(account.toEntity());
+            accountEntities.add(account.asEntity());
         }
         body.setAccounts(accountEntities);
     }

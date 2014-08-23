@@ -34,14 +34,14 @@ public class MoneyFormatter {
     }
 
     private static CurrencyFormat getCurrencyFormat(Currency currency, boolean useCache) {
-        final long currencyId = currency.getId();
+        final long currencyId = currency.getLocalId();
         if (currencyId == 0 || !useCache) {
             return new CurrencyFormat(currency);
         } else {
-            CurrencyFormat currencyFormat = currencyFormats.get(currency.getId());
+            CurrencyFormat currencyFormat = currencyFormats.get(currency.getLocalId());
             if (currencyFormat == null) {
                 currencyFormat = new CurrencyFormat(currency);
-                currencyFormats.put(currency.getId(), currencyFormat);
+                currencyFormats.put(currency.getLocalId(), currencyFormat);
             }
             return currencyFormat;
         }

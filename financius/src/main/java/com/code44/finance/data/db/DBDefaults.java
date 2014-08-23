@@ -69,7 +69,7 @@ public final class DBDefaults {
 
     private static void addCategories(Context context, SQLiteDatabase db) {
         final Category expenseCategory = new Category();
-        expenseCategory.setId(Category.EXPENSE_ID);
+        expenseCategory.setLocalId(Category.EXPENSE_ID);
         expenseCategory.setId(UUID.randomUUID().toString());
         expenseCategory.setTitle(context.getString(R.string.expense));
         expenseCategory.setColor(context.getResources().getColor(R.color.text_negative));
@@ -78,7 +78,7 @@ public final class DBDefaults {
         expenseCategory.setSortOrder(0);
 
         final Category incomeCategory = new Category();
-        incomeCategory.setId(Category.INCOME_ID);
+        incomeCategory.setLocalId(Category.INCOME_ID);
         incomeCategory.setId(UUID.randomUUID().toString());
         incomeCategory.setTitle(context.getString(R.string.income));
         incomeCategory.setColor(context.getResources().getColor(R.color.text_positive));
@@ -87,7 +87,7 @@ public final class DBDefaults {
         incomeCategory.setSortOrder(0);
 
         final Category transferCategory = new Category();
-        transferCategory.setId(Category.TRANSFER_ID);
+        transferCategory.setLocalId(Category.TRANSFER_ID);
         transferCategory.setId(UUID.randomUUID().toString());
         transferCategory.setTitle(context.getString(R.string.transfer));
         transferCategory.setColor(context.getResources().getColor(R.color.text_neutral));

@@ -205,10 +205,9 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         updateCodeTitlePosition();
         updateSymbolTitlePosition();
 
-        code_ET.setEnabled(model.getId() == 0);
-        mainCurrencyContainer_V.setVisibility(model.getId() == Currency.getDefault().getId() ? View.GONE : View.VISIBLE);
+        code_ET.setEnabled(isNewModel());
+        mainCurrencyContainer_V.setVisibility(Currency.getDefault().getId().equals(model.getId()) ? View.GONE : View.VISIBLE);
         exchangeRateContainer_V.setVisibility(model.isDefault() ? View.GONE : View.VISIBLE);
-        updateProgressBar();
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -385,7 +384,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     }
 
     private void checkForCurrencyDuplicate(String code) {
-        if (isCurrencyExists(code) && model.getId() == 0) {
+        if (isCurrencyExists(code) && isNewModel()) {
             code_ET.setError(getString(R.string.l_currency_exists));
         } else {
             code_ET.setError(null);
@@ -408,19 +407,6 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         listPopupWindow_LPW.setOnItemClickListener(itemClickListener);
         listPopupWindow_LPW.setAnchorView(anchorView);
         listPopupWindow_LPW.show();
-    }
-
-    private void updateProgressBar() {
-// TODO        final boolean isFetchingCurrency = model != null && BaseRequestEvent.isWorking(CurrencyRequest.CurrencyRequestEvent.class, CurrencyRequest.getUniqueId(model.getCode(), Currency.getDefault().getCode()));
-//        if (isFetchingCurrency) {
-//            if (loading_SPB.getVisibility() != View.VISIBLE) {
-//                loading_SPB.setVisibility(View.VISIBLE);
-//            }
-//        } else {
-//            if (loading_SPB.getVisibility() != View.INVISIBLE) {
-//                loading_SPB.setVisibility(View.INVISIBLE);
-//            }
-//        }
     }
 
     private void updateCodeTitlePosition() {

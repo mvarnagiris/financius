@@ -30,7 +30,7 @@ public class PostCurrenciesRequest extends PostRequest<CurrenciesBody> {
     @Override protected void onAddPostData(CurrenciesBody body) {
         final List<CurrencyEntity> serverCurrencies = new ArrayList<>();
         for (Currency currency : currencies) {
-            serverCurrencies.add(currency.toEntity());
+            serverCurrencies.add(currency.asEntity());
         }
         body.setCurrencies(serverCurrencies);
     }

@@ -39,7 +39,7 @@ public class CurrencyAccountsAdapter extends BaseModelsAdapter {
     }
 
     @Override public int getCount() {
-        return currency == null || StringUtils.isEmpty(currency.getId()) ? 0 : super.getCount();
+        return currency == null || StringUtils.isEmpty(currency.getCode()) ? 0 : super.getCount();
     }
 
     @Override public View newView(Context context, Cursor cursor, ViewGroup parent) {

@@ -3,10 +3,9 @@ package com.code44.finance.data.model;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
-import android.text.TextUtils;
 
 import com.code44.finance.backend.endpoint.tags.model.TagEntity;
-import com.code44.finance.common.model.ModelState;
+import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 
@@ -42,10 +41,7 @@ public class Tag extends BaseModel<TagEntity> {
 
     public static Tag from(TagEntity entity) {
         final Tag tag = new Tag();
-        tag.setId(entity.getId());
-        tag.setModelState(ModelState.valueOf(entity.getModelState()));
-        tag.setSyncState(SyncState.SYNCED);
-        tag.setTitle(entity.getTitle());
+        tag.updateFrom(entity);
         return tag;
     }
 
@@ -74,7 +70,7 @@ public class Tag extends BaseModel<TagEntity> {
     }
 
     @Override protected void toEntity(TagEntity entity) {
-
+        entity.setTitle(title);
     }
 
     @Override protected void fromParcel(Parcel parcel) {
@@ -92,27 +88,16 @@ public class Tag extends BaseModel<TagEntity> {
     }
 
     @Override protected void fromEntity(TagEntity entity) {
-
+        setTitle(entity.getTitle());
     }
 
     @Override protected TagEntity createEntity() {
-        return null;
+        return new TagEntity();
     }
 
     @Override public void checkValues() throws IllegalStateException {
         super.checkValues();
-
-        if (TextUtils.isEmpty(title)) {
-            throw new IllegalStateException("Title cannot be empty");
-        }
-    }
-
-    public TagEntity toEntity() {
-        final TagEntity entity = new TagEntity();
-        entity.setId(getId());
-        entity.setModelState(getModelState().toString());
-        entity.setTitle(getTitle());
-        return entity;
+        Preconditions.checkNotEmpty(title, "Title cannot be empty.");
     }
 
     public String getTitle() {

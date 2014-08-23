@@ -30,7 +30,7 @@ public class PostCategoriesRequest extends PostRequest<CategoriesBody> {
     @Override protected void onAddPostData(CategoriesBody body) {
         final List<CategoryEntity> categoryEntities = new ArrayList<>();
         for (Category category : categories) {
-            categoryEntities.add(category.toEntity());
+            categoryEntities.add(category.asEntity());
         }
         body.setCategories(categoryEntities);
     }

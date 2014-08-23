@@ -3,10 +3,11 @@ package com.code44.finance.data.providers;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.code44.finance.common.model.AccountOwner;
+import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
-import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.utils.IOUtils;
 
@@ -36,12 +37,12 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
     @Test
     public void insert_updatesCurrency_whenCurrencyWithSameCodeExists() {
         final Currency currency = insertCurrency(false);
-        currency.getEntity().setExchangeRate(1.2345);
+        currency.setExchangeRate(1.2345);
         insertCurrency(currency);
 
-        final Cursor cursor = queryCurrencyCursor(currency.getEntity().getCode());
+        final Cursor cursor = queryCurrencyCursor(currency.getCode());
         assertEquals(1, cursor.getCount());
-        assertEquals(currency.getEntity().getExchangeRate(), Currency.from(cursor).getEntity().getExchangeRate(), 0.0001);
+        assertEquals(currency.getExchangeRate(), Currency.from(cursor).getExchangeRate(), 0.0001);
         IOUtils.closeQuietly(cursor);
     }
 
@@ -59,7 +60,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
         final Cursor cursor = queryAccountsCursor();
 
         assertEquals(1, cursor.getCount());
-        assertEquals(BaseModel.ItemState.DELETED_UNDO, Account.from(cursor).getItemState());
+        assertEquals(ModelState.DELETED_UNDO, Account.from(cursor).getModelState());
         IOUtils.closeQuietly(cursor);
     }
 
@@ -70,7 +71,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
 
     private Cursor queryDefaultCurrencyCursor() {
         final Query query = Query.create()
-                .projectionId(Tables.Currencies.LOCAL_ID)
+                .projectionLocalId(Tables.Currencies.LOCAL_ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.IS_DEFAULT + "=?", "1");
 
@@ -79,7 +80,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
 
     private Cursor queryCurrencyCursor(String code) {
         final Query query = Query.create()
-                .projectionId(Tables.Currencies.LOCAL_ID)
+                .projectionLocalId(Tables.Currencies.LOCAL_ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.CODE + "=?", code);
 
@@ -88,13 +89,13 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
 
     private Currency insertCurrency(boolean isDefault) {
         final Currency currency = new Currency();
-        currency.getEntity().setCode("AAA");
-        currency.getEntity().setDefault(isDefault);
+        currency.setCode("AAA");
+        currency.setDefault(isDefault);
         return insertCurrency(currency);
     }
 
     private Currency insertCurrency(Currency currency) {
-        currency.setId(insert(CurrenciesProvider.uriCurrencies(), currency));
+        insert(CurrenciesProvider.uriCurrencies(), currency);
         return currency;
     }
 
@@ -104,9 +105,9 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
 
     private Cursor queryAccountsCursor() {
         final Query query = Query.create()
-                .projectionId(Tables.Accounts.ID)
+                .projectionLocalId(Tables.Accounts.ID)
                 .projection(Tables.Accounts.PROJECTION)
-                .selection(Tables.Accounts.OWNER + "=?", String.valueOf(Account.Owner.USER.asInt()));
+                .selection(Tables.Accounts.OWNER + "=?", AccountOwner.USER.asString());
 
         return query(AccountsProvider.uriAccounts(), query);
     }
@@ -115,7 +116,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
         final Account account = new Account();
         account.setTitle("a");
         account.setCurrency(currency);
-        account.setId(insert(AccountsProvider.uriAccounts(), account));
+        insert(AccountsProvider.uriAccounts(), account);
         return account;
     }
 }

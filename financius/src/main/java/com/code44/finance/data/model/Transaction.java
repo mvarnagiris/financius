@@ -7,12 +7,12 @@ import android.os.Parcelable;
 
 import com.code44.finance.backend.endpoint.transactions.model.TransactionEntity;
 import com.code44.finance.common.model.CategoryType;
-import com.code44.finance.common.model.ModelState;
 import com.code44.finance.common.model.TransactionState;
+import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 
-public class Transaction extends BaseModel {
+public class Transaction extends BaseModel<TransactionEntity> {
     public static final Parcelable.Creator<Transaction> CREATOR = new Parcelable.Creator<Transaction>() {
         public Transaction createFromParcel(Parcel in) {
             return new Transaction(in);
@@ -60,69 +60,30 @@ public class Transaction extends BaseModel {
 
     public static Transaction from(TransactionEntity entity, Account accountFrom, Account accountTo, Category category) {
         final Transaction transaction = new Transaction();
-        transaction.setId(entity.getId());
-        transaction.setModelState(ModelState.valueOf(entity.getModelState()));
-        transaction.setSyncState(SyncState.SYNCED);
         transaction.setAccountFrom(accountFrom);
         transaction.setAccountTo(accountTo);
         transaction.setCategory(category);
-        transaction.setDate(entity.getDate());
-        transaction.setAmount(entity.getAmount());
-        transaction.setExchangeRate(entity.getExchangeRate());
-        transaction.setNote(entity.getNote());
-        transaction.setTransactionState(TransactionState.valueOf(entity.getTransactionState()));
-        transaction.setIncludeInReports(entity.getIncludeInReports());
+        transaction.updateFrom(entity);
         return transaction;
     }
 
-    @Override
-    protected Column getLocalIdColumn() {
+    @Override protected Column getLocalIdColumn() {
         return Tables.Transactions.LOCAL_ID;
     }
 
-    @Override
-    protected Column getIdColumn() {
+    @Override protected Column getIdColumn() {
         return Tables.Transactions.ID;
     }
 
-    @Override
-    protected Column getModelStateColumn() {
+    @Override protected Column getModelStateColumn() {
         return Tables.Transactions.MODEL_STATE;
     }
 
-    @Override
-    protected Column getSyncStateColumn() {
+    @Override protected Column getSyncStateColumn() {
         return Tables.Transactions.SYNC_STATE;
     }
 
-    @Override
-    protected void fromParcel(Parcel parcel) {
-        setAccountFrom((Account) parcel.readParcelable(Account.class.getClassLoader()));
-        setAccountTo((Account) parcel.readParcelable(Account.class.getClassLoader()));
-        setCategory((Category) parcel.readParcelable(Category.class.getClassLoader()));
-        setDate(parcel.readLong());
-        setAmount(parcel.readLong());
-        setExchangeRate(parcel.readDouble());
-        setNote(parcel.readString());
-        setTransactionState(TransactionState.fromInt(parcel.readInt()));
-        setIncludeInReports(parcel.readInt() != 0);
-    }
-
-    @Override
-    protected void toParcel(Parcel parcel) {
-        parcel.writeParcelable(getAccountFrom(), 0);
-        parcel.writeParcelable(getAccountTo(), 0);
-        parcel.writeParcelable(getCategory(), 0);
-        parcel.writeLong(getDate());
-        parcel.writeLong(getAmount());
-        parcel.writeDouble(getExchangeRate());
-        parcel.writeString(getNote());
-        parcel.writeInt(getTransactionState().asInt());
-        parcel.writeInt(includeInReports() ? 1 : 0);
-    }
-
-    @Override
-    protected void toValues(ContentValues values) {
+    @Override protected void toValues(ContentValues values) {
         values.put(Tables.Transactions.ACCOUNT_FROM_ID.getName(), accountFrom.getId());
         values.put(Tables.Transactions.ACCOUNT_TO_ID.getName(), accountTo.getId());
         values.put(Tables.Transactions.CATEGORY_ID.getName(), category.getId());
@@ -134,23 +95,62 @@ public class Transaction extends BaseModel {
         values.put(Tables.Transactions.INCLUDE_IN_REPORTS.getName(), includeInReports);
     }
 
-    @Override
-    protected void fromCursor(Cursor cursor, String columnPrefixTable) {
+    @Override protected void toParcel(Parcel parcel) {
+        parcel.writeParcelable(accountFrom, 0);
+        parcel.writeParcelable(accountTo, 0);
+        parcel.writeParcelable(category, 0);
+        parcel.writeLong(date);
+        parcel.writeLong(amount);
+        parcel.writeDouble(exchangeRate);
+        parcel.writeString(note);
+        parcel.writeInt(transactionState.asInt());
+        parcel.writeInt(includeInReports ? 1 : 0);
+    }
+
+    @Override protected void toEntity(TransactionEntity entity) {
+        entity.setAccountFromId(accountFrom.getId());
+        entity.setAccountToId(accountTo.getId());
+        entity.setCategoryId(category.getId());
+        entity.setDate(date);
+        entity.setAmount(amount);
+        entity.setExchangeRate(exchangeRate);
+        entity.setNote(note);
+        entity.setTransactionState(transactionState.toString());
+        entity.setIncludeInReports(includeInReports);
+    }
+
+    @Override protected TransactionEntity createEntity() {
+        return new TransactionEntity();
+    }
+
+    @Override protected void fromParcel(Parcel parcel) {
+        setAccountFrom((Account) parcel.readParcelable(Account.class.getClassLoader()));
+        setAccountTo((Account) parcel.readParcelable(Account.class.getClassLoader()));
+        setCategory((Category) parcel.readParcelable(Category.class.getClassLoader()));
+        setDate(parcel.readLong());
+        setAmount(parcel.readLong());
+        setExchangeRate(parcel.readDouble());
+        setNote(parcel.readString());
+        setTransactionState(TransactionState.fromInt(parcel.readInt()));
+        setIncludeInReports(parcel.readInt() != 0);
+    }
+
+    @Override protected void fromCursor(Cursor cursor, String columnPrefixTable) {
         int index;
 
         // Account from
         final Account accountFrom = Account.fromAccountFrom(cursor);
-        accountFrom.setId(0);
+        accountFrom.setLocalId(0);
         setAccountFrom(accountFrom);
 
         // Account to
         final Account accountTo = Account.fromAccountTo(cursor);
-        accountTo.setId(0);
+        accountTo.setLocalId(0);
         setAccountTo(accountTo);
 
         // Category
         final Category category = Category.from(cursor);
-        category.setId(0);
+        category.setLocalId(0);
         setCategory(category);
 
         // Date
@@ -190,24 +190,24 @@ public class Transaction extends BaseModel {
         }
     }
 
-    @Override
-    public void checkValues() throws IllegalStateException {
+    @Override protected void fromEntity(TransactionEntity entity) {
+        setDate(entity.getDate());
+        setAmount(entity.getAmount());
+        setExchangeRate(entity.getExchangeRate());
+        setNote(entity.getNote());
+        setTransactionState(TransactionState.valueOf(entity.getTransactionState()));
+        setIncludeInReports(entity.getIncludeInReports());
+    }
+
+    @Override public void checkValues() throws IllegalStateException {
         super.checkValues();
-
-        if (accountFrom == null) {
-            throw new IllegalStateException("AccountFrom cannot be null.");
-        }
-
-        if (accountTo == null) {
-            throw new IllegalStateException("AccountTo cannot be null.");
-        }
+        Preconditions.checkNotNull(accountFrom, "AccountFrom cannot be null.");
+        Preconditions.checkNotNull(accountTo, "AccountTo cannot be null.");
+        Preconditions.checkNotNull(category, "Category cannot be null.");
+        Preconditions.checkNotNull(transactionState, "Transaction state cannot be null.");
 
         if (accountFrom == accountTo && transactionState == TransactionState.CONFIRMED) {
             throw new IllegalStateException("AccountFrom cannot be equal to AccountTo.");
-        }
-
-        if (category == null) {
-            throw new IllegalStateException("Category cannot be null.");
         }
 
         if (category.getCategoryType() == CategoryType.EXPENSE && accountFrom == Account.getSystem() && transactionState == TransactionState.CONFIRMED) {
@@ -221,26 +221,6 @@ public class Transaction extends BaseModel {
         if (Double.compare(exchangeRate, 0) < 0) {
             throw new IllegalStateException("Exchange rate must be > 0.");
         }
-
-        if (transactionState == null) {
-            throw new IllegalStateException("State cannot be null.");
-        }
-    }
-
-    public TransactionEntity toEntity() {
-        final TransactionEntity entity = new TransactionEntity();
-        entity.setId(getId());
-        entity.setModelState(getModelState().toString());
-        entity.setAccountFromId(getAccountFrom().getId());
-        entity.setAccountToId(getAccountTo().getId());
-        entity.setCategoryId(getCategory().getId());
-        entity.setDate(getDate());
-        entity.setAmount(getAmount());
-        entity.setExchangeRate(getExchangeRate());
-        entity.setNote(getNote());
-        entity.setTransactionState(getTransactionState().toString());
-        entity.setIncludeInReports(includeInReports());
-        return entity;
     }
 
     public Account getAccountFrom() {

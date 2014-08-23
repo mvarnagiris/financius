@@ -15,7 +15,7 @@ public abstract class BaseProvider extends ContentProvider {
 
     protected final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-    private SQLiteDatabase database;
+    protected SQLiteDatabase database;
 
     protected static String getAuthority(Class<? extends BaseProvider> cls) {
         return BuildConfig.PACKAGE_NAME + ".data.providers." + cls.getSimpleName();

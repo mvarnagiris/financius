@@ -69,13 +69,13 @@ public class TransactionsProviderTest extends BaseContentProviderTestCase {
     private Account insertAccount() {
         final Account account = new Account();
         account.setTitle("a");
-        account.setId(insert(AccountsProvider.uriAccounts(), account));
+        insert(AccountsProvider.uriAccounts(), account);
         return account;
     }
 
-    private Account getAccount(long accountId) {
+    private Account getAccount(String accountId) {
         final Cursor cursor = Query.create()
-                .projectionId(Tables.Accounts.ID)
+                .projectionLocalId(Tables.Accounts.ID)
                 .projection(Tables.Accounts.PROJECTION)
                 .projection(Tables.Currencies.PROJECTION)
                 .from(context, AccountsProvider.uriAccount(accountId))

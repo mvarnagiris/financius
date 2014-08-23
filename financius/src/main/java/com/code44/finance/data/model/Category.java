@@ -4,12 +4,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
 
 import com.code44.finance.App;
 import com.code44.finance.backend.endpoint.categories.model.CategoryEntity;
 import com.code44.finance.common.model.CategoryOwner;
 import com.code44.finance.common.model.CategoryType;
+import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
@@ -145,8 +145,15 @@ public class Category extends BaseModel<CategoryEntity> {
         parcel.writeInt(sortOrder);
     }
 
-    @Override
-    protected void fromParcel(Parcel parcel) {
+    @Override protected void toEntity(CategoryEntity entity) {
+        entity.setTitle(title);
+        entity.setColor(color);
+        entity.setCategoryType(categoryType.toString());
+        entity.setCategoryOwner(categoryOwner.toString());
+        entity.setSortOrder(sortOrder);
+    }
+
+    @Override protected void fromParcel(Parcel parcel) {
         setTitle(parcel.readString());
         setColor(parcel.readInt());
         setCategoryType(CategoryType.fromInt(parcel.readInt()));
@@ -154,16 +161,7 @@ public class Category extends BaseModel<CategoryEntity> {
         setSortOrder(parcel.readInt());
     }
 
-    @Override protected void toEntity(CategoryEntity entity) {
-
-    }
-
-    @Override protected CategoryEntity createEntity() {
-        return null;
-    }
-
-    @Override
-    protected void fromCursor(Cursor cursor, String columnPrefixTable) {
+    @Override protected void fromCursor(Cursor cursor, String columnPrefixTable) {
         int index;
 
         // Title
@@ -205,33 +203,15 @@ public class Category extends BaseModel<CategoryEntity> {
         setSortOrder(entity.getSortOrder());
     }
 
-    @Override
-    public void checkValues() throws IllegalStateException {
-        super.checkValues();
-
-        if (TextUtils.isEmpty(title)) {
-            throw new IllegalStateException("Title cannot be empty");
-        }
-
-        if (categoryType == null) {
-            throw new IllegalStateException("Type cannot be null.");
-        }
-
-        if (categoryOwner == null) {
-            throw new IllegalStateException("Owner cannot be null.");
-        }
+    @Override protected CategoryEntity createEntity() {
+        return new CategoryEntity();
     }
 
-    public CategoryEntity toEntity() {
-        final CategoryEntity entity = new CategoryEntity();
-        entity.setId(getId());
-        entity.setModelState(getModelState().toString());
-        entity.setTitle(getTitle());
-        entity.setColor(getColor());
-        entity.setCategoryType(getCategoryType().toString());
-        entity.setCategoryOwner(getCategoryOwner().toString());
-        entity.setSortOrder(getSortOrder());
-        return entity;
+    @Override public void checkValues() throws IllegalStateException {
+        super.checkValues();
+        Preconditions.checkNotEmpty(title, "Title cannot be empty");
+        Preconditions.checkNotNull(categoryType, "Category type cannot be null.");
+        Preconditions.checkNotNull(categoryOwner, "Category owner cannot be null.");
     }
 
     public String getTitle() {

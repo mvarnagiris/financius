@@ -37,9 +37,6 @@ public class TransactionEntity extends BaseEntity {
     @Ignore
     private String categoryId;
 
-    @ApiResourceProperty(name = "title")
-    private String title;
-
     @ApiResourceProperty(name = "date")
     private long date;
 
@@ -116,14 +113,6 @@ public class TransactionEntity extends BaseEntity {
 
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public long getDate() {

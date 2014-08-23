@@ -1,6 +1,5 @@
 package com.code44.finance.data.providers;
 
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,7 +9,7 @@ import android.net.Uri;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.DBHelper;
-import com.code44.finance.data.model.BaseModelV2;
+import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.utils.IOUtils;
 
 import org.junit.Before;
@@ -50,20 +49,20 @@ public class BaseContentProviderTestCase {
         ShadowContentResolver.registerProvider(BaseProvider.getAuthority(TransactionsProvider.class), transactionsProvider);
     }
 
-    protected long insert(Uri uri, BaseModelV2 model) {
-        return ContentUris.parseId(DataStore.insert().model(model).into(uri));
+    protected void insert(Uri uri, BaseModel model) {
+        DataStore.insert().model(model).into(context, uri);
     }
 
     protected int update(Uri uri, ContentValues values, String selection, String... selectionArgs) {
-        return DataStore.update().withSelection(selection, selectionArgs).values(values).into(uri);
+        return DataStore.update().withSelection(selection, selectionArgs).values(values).into(context, uri);
     }
 
     protected int delete(String mode, Uri uri, String selection, String... selectionArgs) {
-        return DataStore.delete().selection(selection, selectionArgs).from(uriWithDeleteMode(uri, mode));
+        return DataStore.delete().selection(selection, selectionArgs).from(context, uriWithDeleteMode(uri, mode));
     }
 
     protected int bulkInsert(Uri uri, ContentValues... valuesArray) {
-        return DataStore.bulkInsert().values(valuesArray).into(uri);
+        return DataStore.bulkInsert().values(valuesArray).into(context, uri);
     }
 
     protected Cursor query(Uri uri, Query query) {

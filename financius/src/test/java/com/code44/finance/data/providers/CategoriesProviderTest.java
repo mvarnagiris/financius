@@ -3,9 +3,9 @@ package com.code44.finance.data.providers;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.utils.IOUtils;
@@ -32,19 +32,19 @@ public class CategoriesProviderTest extends BaseContentProviderTestCase {
         final Cursor cursor = queryTransactionsCursor();
 
         assertEquals(1, cursor.getCount());
-        assertEquals(BaseModel.ItemState.DELETED_UNDO, Transaction.from(cursor).getItemState());
+        assertEquals(ModelState.DELETED_UNDO, Transaction.from(cursor).getModelState());
         IOUtils.closeQuietly(cursor);
     }
 
     private Category insertCategory() {
         final Category category = new Category();
         category.setTitle("a");
-        category.setId(insert(CategoriesProvider.uriCategories(), category));
+        insert(CategoriesProvider.uriCategories(), category);
         return category;
     }
 
     private int deleteCategory(Category category) {
-        return delete("delete", CategoriesProvider.uriCategories(), Tables.Categories.ID + "=?", String.valueOf(category.getId()));
+        return delete("delete", CategoriesProvider.uriCategories(), Tables.Categories.ID + "=?", category.getId());
     }
 
     private Transaction insertTransaction(Category category) {
@@ -54,13 +54,13 @@ public class CategoriesProviderTest extends BaseContentProviderTestCase {
             transaction.setCategory(category);
         }
 
-        transaction.setId(insert(TransactionsProvider.uriTransactions(), transaction));
+        insert(TransactionsProvider.uriTransactions(), transaction);
         return transaction;
     }
 
     private Cursor queryTransactionsCursor() {
         final Query query = Query.create()
-                .projectionId(Tables.Transactions.ID)
+                .projectionLocalId(Tables.Transactions.ID)
                 .projection(Tables.Transactions.PROJECTION)
                 .projection(Tables.Categories.PROJECTION);
 

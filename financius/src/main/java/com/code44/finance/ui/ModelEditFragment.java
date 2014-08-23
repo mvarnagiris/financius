@@ -109,6 +109,10 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
 
     protected abstract void ensureModelUpdated(T model);
 
+    protected boolean isNewModel() {
+        return modelId.equals("0");
+    }
+
     private void save() {
         ensureModelUpdated(model);
         if (onSave(getActivity(), model)) {

@@ -3,11 +3,11 @@ package com.code44.finance.data.providers;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.code44.finance.common.model.CategoryType;
+import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
-import com.code44.finance.data.model.BaseModel;
-import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.utils.IOUtils;
 
@@ -30,7 +30,7 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
 
         final Transaction transaction = Transaction.from(cursor);
         assertEquals(42, transaction.getAmount());
-        assertEquals(Category.Type.INCOME, transaction.getCategory().getCategoryType());
+        assertEquals(CategoryType.INCOME, transaction.getCategory().getCategoryType());
         IOUtils.closeQuietly(cursor);
     }
 
@@ -44,7 +44,7 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
 
         final Transaction transaction = Transaction.from(cursor);
         assertEquals(42, transaction.getAmount());
-        assertEquals(Category.Type.EXPENSE, transaction.getCategory().getCategoryType());
+        assertEquals(CategoryType.EXPENSE, transaction.getCategory().getCategoryType());
         IOUtils.closeQuietly(cursor);
     }
 
@@ -98,15 +98,15 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
         final Cursor cursor = queryTransactionsCursor();
 
         assertEquals(2, cursor.getCount());
-        assertEquals(BaseModel.ItemState.DELETED_UNDO, Transaction.from(cursor).getItemState());
+        assertEquals(ModelState.DELETED_UNDO, Transaction.from(cursor).getModelState());
         cursor.moveToNext();
-        assertEquals(BaseModel.ItemState.DELETED_UNDO, Transaction.from(cursor).getItemState());
+        assertEquals(ModelState.DELETED_UNDO, Transaction.from(cursor).getModelState());
         IOUtils.closeQuietly(cursor);
     }
 
-    private Account queryAccount(long accountId) {
+    private Account queryAccount(String accountId) {
         final Cursor cursor = Query.create()
-                .projectionId(Tables.Accounts.ID)
+                .projectionLocalId(Tables.Accounts.ID)
                 .projection(Tables.Accounts.PROJECTION)
                 .projection(Tables.Currencies.PROJECTION)
                 .from(Robolectric.getShadowApplication().getApplicationContext(), AccountsProvider.uriAccount(accountId))
@@ -125,7 +125,7 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
     }
 
     private Account insertAccount(Account account) {
-        account.setId(insert(AccountsProvider.uriAccounts(), account));
+        insert(AccountsProvider.uriAccounts(), account);
         return account;
     }
 
@@ -135,7 +135,7 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
 
     private Cursor queryTransactionsCursor() {
         final Query query = Query.create()
-                .projectionId(Tables.Transactions.ID)
+                .projectionLocalId(Tables.Transactions.ID)
                 .projection(Tables.Transactions.PROJECTION)
                 .projection(Tables.Categories.PROJECTION);
 
@@ -153,7 +153,7 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
             transaction.setAccountTo(accountTo);
         }
 
-        transaction.setId(insert(TransactionsProvider.uriTransactions(), transaction));
+        insert(TransactionsProvider.uriTransactions(), transaction);
         return transaction;
     }
 }

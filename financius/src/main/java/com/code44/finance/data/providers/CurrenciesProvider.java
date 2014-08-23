@@ -108,11 +108,9 @@ public class CurrenciesProvider extends BaseModelProvider {
     }
 
     private void makeSureThereIsOnlyOneDefaultCurrency(ContentValues values) {
-        //noinspection ConstantConditions
         boolean isDefault = values.getAsBoolean(Tables.Currencies.IS_DEFAULT.getName());
-        //noinspection ConstantConditions
-        long currencyId = values.containsKey(Tables.Currencies.LOCAL_ID.getName()) ? values.getAsLong(Tables.Currencies.LOCAL_ID.getName()) : 0;
-        if (isDefault && currencyId != Currency.getDefault().getId()) {
+        final String currencyId = values.getAsString(Tables.Currencies.ID.getName());
+        if (isDefault && !currencyId.equals(Currency.getDefault().getId())) {
             ContentValues newValues = new ContentValues();
             newValues.put(Tables.Currencies.EXCHANGE_RATE.getName(), 1.0);
             newValues.put(Tables.Currencies.IS_DEFAULT.getName(), false);
