@@ -25,6 +25,7 @@ public class TransactionsProvider extends BaseModelProvider {
     public static final String URI_VALUE_JOIN_TABLE_CATEGORIES = "categories";
     public static final String URI_VALUE_JOIN_TABLE_CURRENCIES_FROM = "currencies_from";
     public static final String URI_VALUE_JOIN_TABLE_CURRENCIES_TO = "currencies_to";
+    public static final String URI_VALUE_JOIN_TABLE_TAGS = "tags";
 
     public static Uri uriTransactions() {
         return uriModels(TransactionsProvider.class, Tables.Transactions.TABLE_NAME);
@@ -52,6 +53,7 @@ public class TransactionsProvider extends BaseModelProvider {
             joinTables.add(URI_VALUE_JOIN_TABLE_CATEGORIES);
             joinTables.add(URI_VALUE_JOIN_TABLE_CURRENCIES_FROM);
             joinTables.add(URI_VALUE_JOIN_TABLE_CURRENCIES_TO);
+            joinTables.add(URI_VALUE_JOIN_TABLE_TAGS);
         }
 
         final StringBuilder sb = new StringBuilder();
@@ -80,6 +82,13 @@ public class TransactionsProvider extends BaseModelProvider {
         if (joinTables.contains(URI_VALUE_JOIN_TABLE_CURRENCIES_TO)) {
             sb.append(" left join ").append(Tables.Currencies.TABLE_NAME).append(" as ").append(Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY)
                     .append(" on ").append(Tables.Currencies.ID.getNameWithTable(Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY)).append("=").append(Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT));
+        }
+
+        if (joinTables.contains(URI_VALUE_JOIN_TABLE_TAGS)) {
+            sb.append(" left join ").append(Tables.TransactionTags.TABLE_NAME)
+                    .append(" on ").append(Tables.TransactionTags.TRANSACTION_ID).append("=").append(Tables.Transactions.ID.getNameWithTable());
+            sb.append(" left join ").append(Tables.Tags.TABLE_NAME)
+                    .append(" on ").append(Tables.Tags.ID.getNameWithTable()).append("=").append(Tables.TransactionTags.TAG_ID);
         }
 
         return sb.toString();
