@@ -10,7 +10,7 @@ import com.code44.finance.data.model.Tag;
 import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.ModelListFragment;
 
-import java.util.Set;
+import java.util.List;
 
 public class TagsActivity extends ModelListActivity {
     public static void start(Context context) {
@@ -21,7 +21,7 @@ public class TagsActivity extends ModelListActivity {
         startForResult(fragment, makeIntentSelect(fragment.getActivity(), TagsActivity.class), requestCode);
     }
 
-    public static void startMultiSelect(Fragment fragment, int requestCode, Set<Tag> selectedTags) {
+    public static void startMultiSelect(Fragment fragment, int requestCode, List<Tag> selectedTags) {
         startForResult(fragment, makeIntentMultiSelect(fragment.getActivity(), TagsActivity.class, selectedTags), requestCode);
     }
 

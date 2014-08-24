@@ -244,8 +244,8 @@ public final class Tables {
                     .selection(" or " + Tags.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString());
         }
 
-        public static final String[] PROJECTION_TRANSACTION = {"group_concat(" + ID + "," + CONCAT_SEPARATOR + ") as " + ID.getName(),
-                "group_concat(" + TITLE + "," + CONCAT_SEPARATOR + ") as " + TITLE.getName()};
+        public static final String[] PROJECTION_TRANSACTION = {"group_concat(" + ID + ",'" + CONCAT_SEPARATOR + "') as " + ID.getName(),
+                "group_concat(" + TITLE + ",'" + CONCAT_SEPARATOR + "') as " + TITLE.getName()};
     }
 
     public static final class Transactions {

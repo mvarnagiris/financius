@@ -6,6 +6,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,8 @@ import net.danlew.android.joda.DateUtils;
 
 import org.joda.time.DateTime;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TransactionEditFragment extends ModelEditFragment<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private static final int REQUEST_AMOUNT = 1;
@@ -160,6 +162,15 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                     model.setCategory(data.<Category>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
                     onModelLoaded(model);
                     return;
+                case REQUEST_TAGS:
+                    final Parcelable[] parcelables = data.getParcelableArrayExtra(ModelListActivity.RESULT_EXTRA_MODELS);
+                    final List<Tag> tags = new ArrayList<>();
+                    for (Parcelable parcelable : parcelables) {
+                        tags.add((Tag) parcelable);
+                    }
+                    model.setTags(tags);
+                    onModelLoaded(model);
+                    return;
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -234,6 +245,15 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         includeInReports_CB.setChecked(model.includeInReports());
         save_B.setText(confirmed_CB.isChecked() ? R.string.save : R.string.pending);
 
+        final StringBuilder sb = new StringBuilder();
+        for (Tag tag : model.getTags()) {
+            if (sb.length() > 0) {
+                sb.append(" ");
+            }
+            sb.append(tag.getTitle());
+        }
+        tags_B.setText(sb.toString());
+
         if (StringUtils.isEmpty(model.getId()) && !isAutoAmountRequested) {
             isAutoAmountRequested = true;
             amount_B.post(new Runnable() {
@@ -262,7 +282,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 CategoriesActivity.startSelect(this, REQUEST_CATEGORY, model.getCategory().getCategoryType());
                 break;
             case R.id.tags_B:
-                TagsActivity.startMultiSelect(this, REQUEST_TAGS, Collections.<Tag>emptySet());
+                TagsActivity.startMultiSelect(this, REQUEST_TAGS, model.getTags());
                 break;
             case R.id.date_B:
                 final DateTime date = new DateTime(model.getDate());

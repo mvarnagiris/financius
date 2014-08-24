@@ -10,6 +10,7 @@ import com.code44.finance.backend.endpoint.transactions.model.TransactionEntity;
 import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.utils.Preconditions;
+import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 
@@ -94,13 +95,20 @@ public class Transaction extends BaseModel<TransactionEntity> {
         values.put(Tables.Transactions.ACCOUNT_FROM_ID.getName(), accountFrom.getId());
         values.put(Tables.Transactions.ACCOUNT_TO_ID.getName(), accountTo.getId());
         values.put(Tables.Transactions.CATEGORY_ID.getName(), category.getId());
-        values.put(Tables.Tags.ID.getName(), TextUtils.join(Tables.CONCAT_SEPARATOR, tags));
         values.put(Tables.Transactions.DATE.getName(), date);
         values.put(Tables.Transactions.AMOUNT.getName(), amount);
         values.put(Tables.Transactions.EXCHANGE_RATE.getName(), exchangeRate);
         values.put(Tables.Transactions.NOTE.getName(), note);
         values.put(Tables.Transactions.STATE.getName(), transactionState.asInt());
         values.put(Tables.Transactions.INCLUDE_IN_REPORTS.getName(), includeInReports);
+        final StringBuilder sb = new StringBuilder();
+        for (Tag tag : tags) {
+            if (sb.length() > 0) {
+                sb.append(Tables.CONCAT_SEPARATOR);
+            }
+            sb.append(tag.getId());
+        }
+        values.put(Tables.Tags.ID.getName(), sb.toString());
     }
 
     @Override protected void toParcel(Parcel parcel) {
@@ -171,14 +179,24 @@ public class Transaction extends BaseModel<TransactionEntity> {
 
         index = cursor.getColumnIndex(Tables.Tags.ID.getName(columnPrefixTable));
         if (index >= 0) {
-            tagIds = TextUtils.split(cursor.getString(index), Tables.CONCAT_SEPARATOR);
+            final String str = cursor.getString(index);
+            if (!StringUtils.isEmpty(str)) {
+                tagIds = TextUtils.split(str, Tables.CONCAT_SEPARATOR);
+            } else {
+                tagIds = null;
+            }
         } else {
             tagIds = null;
         }
 
         index = cursor.getColumnIndex(Tables.Tags.TITLE.getName(columnPrefixTable));
         if (index >= 0) {
-            tagTitles = TextUtils.split(cursor.getString(index), Tables.CONCAT_SEPARATOR);
+            final String str = cursor.getString(index);
+            if (!StringUtils.isEmpty(str)) {
+                tagTitles = TextUtils.split(str, Tables.CONCAT_SEPARATOR);
+            } else {
+                tagTitles = null;
+            }
         } else {
             tagTitles = null;
         }
@@ -195,6 +213,7 @@ public class Transaction extends BaseModel<TransactionEntity> {
                 if (tagTitles != null) {
                     tag.setTitle(tagTitles[i]);
                 }
+                tags.add(tag);
             }
             setTags(tags);
         }

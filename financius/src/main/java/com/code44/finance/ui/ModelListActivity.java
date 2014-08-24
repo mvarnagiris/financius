@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import com.code44.finance.R;
 import com.code44.finance.data.model.BaseModel;
 
+import java.util.List;
 import java.util.Set;
 
 public abstract class ModelListActivity extends BaseActivity implements ModelListFragment.OnModelSelectedListener, ModelListFragment.OnModelsSelectedListener {
@@ -32,7 +33,7 @@ public abstract class ModelListActivity extends BaseActivity implements ModelLis
         return intent;
     }
 
-    public static Intent makeIntentMultiSelect(Context context, Class<? extends ModelListActivity> activityClass, Set<? extends BaseModel> selectedModels) {
+    public static Intent makeIntentMultiSelect(Context context, Class<? extends ModelListActivity> activityClass, List<? extends BaseModel> selectedModels) {
         final Intent intent = makeIntent(context, activityClass);
         intent.putExtra(EXTRA_MODE, ModelListFragment.Mode.MULTI_SELECT);
         final Parcelable[] parcelables = new Parcelable[selectedModels.size()];
