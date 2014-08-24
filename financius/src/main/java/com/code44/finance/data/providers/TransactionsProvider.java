@@ -35,13 +35,11 @@ public class TransactionsProvider extends BaseModelProvider {
         return uriModel(TransactionsProvider.class, Tables.Transactions.TABLE_NAME, transactionServerId);
     }
 
-    @Override
-    protected String getModelTable() {
+    @Override protected String getModelTable() {
         return Tables.Transactions.TABLE_NAME;
     }
 
-    @Override
-    protected String getQueryTables(Uri uri) {
+    @Override protected String getQueryTables(Uri uri) {
         final List<String> joinTables = new ArrayList<>();
         if (uri.getQueryParameterNames().contains(URI_PARAM_JOIN_TABLE)) {
             // Join specific tables
@@ -94,13 +92,11 @@ public class TransactionsProvider extends BaseModelProvider {
         return sb.toString();
     }
 
-    @Override
-    protected Column getIdColumn() {
+    @Override protected Column getIdColumn() {
         return Tables.Transactions.ID;
     }
 
-    @Override
-    protected void onAfterInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> extras) {
+    @Override protected void onAfterInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> extras) {
         super.onAfterInsertItem(uri, values, serverId, extras);
 
         final String accountFromId = values.getAsString(Tables.Transactions.ACCOUNT_FROM_ID.getName());
@@ -115,25 +111,21 @@ public class TransactionsProvider extends BaseModelProvider {
         }
     }
 
-    @Override
-    protected void onBeforeUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> outExtras) {
+    @Override protected void onBeforeUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> outExtras) {
         throw new IllegalArgumentException("Update is not supported.");
     }
 
-    @Override
-    protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> extras) {
+    @Override protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> extras) {
         super.onAfterDeleteItems(uri, selection, selectionArgs, modelState, extras);
         updateAllAccountsBalances();
     }
 
-    @Override
-    protected void onAfterBulkInsertItems(Uri uri, ContentValues[] valuesArray, Map<String, Object> extras) {
+    @Override protected void onAfterBulkInsertItems(Uri uri, ContentValues[] valuesArray, Map<String, Object> extras) {
         super.onAfterBulkInsertItems(uri, valuesArray, extras);
         updateAllAccountsBalances();
     }
 
-    @Override
-    protected Uri[] getOtherUrisToNotify() {
+    @Override protected Uri[] getOtherUrisToNotify() {
         return new Uri[]{AccountsProvider.uriAccounts()};
     }
 

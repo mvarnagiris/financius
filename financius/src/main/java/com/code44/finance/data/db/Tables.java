@@ -15,6 +15,7 @@ public final class Tables {
     public static final String SUFFIX_ID = "id";
     public static final String SUFFIX_MODEL_STATE = "model_state";
     public static final String SUFFIX_SYNC_STATE = "sync_state";
+    public static final String CONCAT_SEPARATOR = ";";
 
     private Tables() {
     }
@@ -242,6 +243,9 @@ public final class Tables {
                     .selection("(" + Tags.MODEL_STATE + "=?", ModelState.NORMAL.asString())
                     .selection(" or " + Tags.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString());
         }
+
+        public static final String[] PROJECTION_TRANSACTION = {"group_concat(" + ID + "," + CONCAT_SEPARATOR + ") as " + ID.getName(),
+                "group_concat(" + TITLE + "," + CONCAT_SEPARATOR + ") as " + TITLE.getName()};
     }
 
     public static final class Transactions {
@@ -283,8 +287,10 @@ public final class Tables {
                     .projection(Categories.PROJECTION)
                     .projection(Currencies.PROJECTION_ACCOUNT_FROM)
                     .projection(Currencies.PROJECTION_ACCOUNT_TO)
+                    .projection(Tags.PROJECTION_TRANSACTION)
                     .selection("(" + Transactions.MODEL_STATE + "=?", ModelState.NORMAL.asString())
                     .selection(" or " + Transactions.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString())
+                    .groupBy(ID.getName())
                     .sortOrder(Transactions.STATE + " desc")
                     .sortOrder(Transactions.DATE + " desc");
         }

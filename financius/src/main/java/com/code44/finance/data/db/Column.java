@@ -1,6 +1,6 @@
 package com.code44.finance.data.db;
 
-import android.text.TextUtils;
+import com.code44.finance.common.utils.StringUtils;
 
 public final class Column {
     private final String tableName;
@@ -23,41 +23,64 @@ public final class Column {
         this.defaultValue = defaultValue;
     }
 
+    @Override public String toString() {
+        return name;
+    }
+
+    /**
+     * @return Name of the table.
+     */
     public String getTableName() {
         return tableName;
     }
 
+    /**
+     * @return Name of the column. Usually column names are prefixed with table name. That depends
+     * if {@link #Column(String, String, com.code44.finance.data.db.Column.DataType, String, boolean)}
+     * {@code boolean} is {@code true} or any other constructor was used.
+     */
     public String getName() {
         return name;
     }
 
-    public String getName(String tableName) {
-        if (TextUtils.isEmpty(tableName)) {
+    /**
+     * @param prefix Prefix to add to current name. Can be {@code null}.
+     * @return Name prefixed with {@code prefix}. If {@code prefix} is {@code null}, then it's the
+     * same as using {@link #getName()}.
+     */
+    public String getName(String prefix) {
+        if (StringUtils.isEmpty(prefix)) {
             return getName();
         } else {
-            return tableName + "_" + name;
+            return prefix + "_" + name;
         }
     }
 
+    /**
+     * @return [table name].[name]
+     */
     public String getNameWithTable() {
         return getNameWithTable(tableName);
     }
 
+    /**
+     * @param tableName Table to use as qualifier.
+     * @return [table name].[name]
+     */
     public String getNameWithTable(String tableName) {
         return tableName + "." + name;
     }
 
+    /**
+     * @param tableName Table to use as qualifier.
+     * @return [table name].[name] as [table name]_[name]
+     */
     public String getNameWithAs(String tableName) {
         return getNameWithTable(tableName) + " as " + getName(tableName);
     }
 
     public String getCreateScript() {
-        return name + " " + dataType + (TextUtils.isEmpty(defaultValue) ? "" : " default " + defaultValue);
-    }
-
-    @Override
-    public String toString() {
-        return name;
+        return name + " " + dataType + (StringUtils.isEmpty(defaultValue) ? "" : " default " + defaultValue);
     }
 
     public static enum DataType {
