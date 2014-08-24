@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.code44.finance.backend.endpoint.transactions.model.TransactionEntity;
 import com.code44.finance.common.model.CategoryType;
@@ -11,6 +12,10 @@ import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Transaction extends BaseModel<TransactionEntity> {
     public static final Parcelable.Creator<Transaction> CREATOR = new Parcelable.Creator<Transaction>() {
@@ -26,6 +31,7 @@ public class Transaction extends BaseModel<TransactionEntity> {
     private Account accountFrom;
     private Account accountTo;
     private Category category;
+    private List<Tag> tags;
     private long date;
     private long amount;
     private double exchangeRate;
@@ -38,6 +44,7 @@ public class Transaction extends BaseModel<TransactionEntity> {
         setAccountFrom(Account.getSystem());
         setAccountTo(Account.getSystem());
         setCategory(Category.getExpense());
+        setTags(null);
         setDate(System.currentTimeMillis());
         setAmount(0);
         setExchangeRate(1.0);
@@ -87,6 +94,7 @@ public class Transaction extends BaseModel<TransactionEntity> {
         values.put(Tables.Transactions.ACCOUNT_FROM_ID.getName(), accountFrom.getId());
         values.put(Tables.Transactions.ACCOUNT_TO_ID.getName(), accountTo.getId());
         values.put(Tables.Transactions.CATEGORY_ID.getName(), category.getId());
+        values.put(Tables.Tags.ID.getName(), TextUtils.join(Tables.CONCAT_SEPARATOR, tags));
         values.put(Tables.Transactions.DATE.getName(), date);
         values.put(Tables.Transactions.AMOUNT.getName(), amount);
         values.put(Tables.Transactions.EXCHANGE_RATE.getName(), exchangeRate);
@@ -99,6 +107,7 @@ public class Transaction extends BaseModel<TransactionEntity> {
         parcel.writeParcelable(accountFrom, 0);
         parcel.writeParcelable(accountTo, 0);
         parcel.writeParcelable(category, 0);
+        parcel.writeTypedList(tags);
         parcel.writeLong(date);
         parcel.writeLong(amount);
         parcel.writeDouble(exchangeRate);
@@ -111,6 +120,7 @@ public class Transaction extends BaseModel<TransactionEntity> {
         entity.setAccountFromId(accountFrom.getId());
         entity.setAccountToId(accountTo.getId());
         entity.setCategoryId(category.getId());
+        // TODO Tags
         entity.setDate(date);
         entity.setAmount(amount);
         entity.setExchangeRate(exchangeRate);
@@ -127,6 +137,8 @@ public class Transaction extends BaseModel<TransactionEntity> {
         setAccountFrom((Account) parcel.readParcelable(Account.class.getClassLoader()));
         setAccountTo((Account) parcel.readParcelable(Account.class.getClassLoader()));
         setCategory((Category) parcel.readParcelable(Category.class.getClassLoader()));
+        tags = new ArrayList<>();
+        parcel.readTypedList(tags, Tag.CREATOR);
         setDate(parcel.readLong());
         setAmount(parcel.readLong());
         setExchangeRate(parcel.readDouble());
@@ -152,6 +164,40 @@ public class Transaction extends BaseModel<TransactionEntity> {
         final Category category = Category.from(cursor);
         category.setLocalId(0);
         setCategory(category);
+
+        // Tags
+        final String[] tagIds;
+        final String[] tagTitles;
+
+        index = cursor.getColumnIndex(Tables.Tags.ID.getName(columnPrefixTable));
+        if (index >= 0) {
+            tagIds = TextUtils.split(cursor.getString(index), Tables.CONCAT_SEPARATOR);
+        } else {
+            tagIds = null;
+        }
+
+        index = cursor.getColumnIndex(Tables.Tags.TITLE.getName(columnPrefixTable));
+        if (index >= 0) {
+            tagTitles = TextUtils.split(cursor.getString(index), Tables.CONCAT_SEPARATOR);
+        } else {
+            tagTitles = null;
+        }
+
+        if (tagIds != null || tagTitles != null) {
+            final List<Tag> tags = new ArrayList<>();
+            final int count = tagIds != null ? tagIds.length : tagTitles.length;
+            for (int i = 0; i < count; i++) {
+                final Tag tag = new Tag();
+                if (tagIds != null) {
+                    tag.setId(tagIds[i]);
+                }
+
+                if (tagTitles != null) {
+                    tag.setTitle(tagTitles[i]);
+                }
+            }
+            setTags(tags);
+        }
 
         // Date
         index = cursor.getColumnIndex(Tables.Transactions.DATE.getName(columnPrefixTable));
@@ -245,6 +291,14 @@ public class Transaction extends BaseModel<TransactionEntity> {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags == null ? Collections.<Tag>emptyList() : tags;
     }
 
     public long getDate() {
