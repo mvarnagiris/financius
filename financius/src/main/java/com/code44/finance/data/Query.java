@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.db.Column;
 
 import java.util.ArrayList;
@@ -15,17 +16,30 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("UnusedDeclaration")
 public class Query {
     private final Set<String> projection = new HashSet<>();
     private final List<String> selection = new ArrayList<>();
     private final List<String> selectionArgs = new ArrayList<>();
     private final List<String> sortOrder = new ArrayList<>();
+    private final List<String> groupBy = new ArrayList<>();
 
     private Query() {
     }
 
     public static Query create() {
         return new Query();
+    }
+
+    private static String getSelectionWithGroupBy(Query query) {
+        final String groupBy = query.getGroupBy();
+        final String selection;
+        if (StringUtils.isEmpty(groupBy)) {
+            selection = query.getSelection();
+        } else {
+            selection = query.getSelection() + ") group by (" + groupBy;
+        }
+        return selection;
     }
 
     public String[] getProjection() {
@@ -71,8 +85,24 @@ public class Query {
         return sb.toString();
     }
 
+    public String getGroupBy() {
+        if (groupBy.size() == 0) {
+            return null;
+        }
+
+        final StringBuilder sb = new StringBuilder();
+        for (String grouping : groupBy) {
+            if (sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append(grouping);
+        }
+
+        return sb.toString();
+    }
+
     public CursorLoader asCursorLoader(Context context, Uri uri) {
-        return new CursorLoader(context, uri, getProjection(), getSelection(), getSelectionArgs(), getSortOrder());
+        return new CursorLoader(context, uri, getProjection(), getSelectionWithGroupBy(this), getSelectionArgs(), getSortOrder());
     }
 
     public ContentProviderQuery from(Context context, Uri uri) {
@@ -145,6 +175,20 @@ public class Query {
         return this;
     }
 
+    public Query groupBy(String group) {
+        groupBy.add(group);
+        return this;
+    }
+
+    public Query groupBy(String... groups) {
+        return groupBy(Arrays.asList(groups));
+    }
+
+    public Query groupBy(List<String> groups) {
+        groupBy.addAll(groups);
+        return this;
+    }
+
     public Query sortOrder(String order) {
         sortOrder.add(order);
         return this;
@@ -184,7 +228,7 @@ public class Query {
         }
 
         public Cursor execute() {
-            return context.getContentResolver().query(uri, query.getProjection(), query.getSelection(), query.getSelectionArgs(), query.getSortOrder());
+            return context.getContentResolver().query(uri, query.getProjection(), getSelectionWithGroupBy(query), query.getSelectionArgs(), query.getSortOrder());
         }
     }
 
@@ -214,8 +258,9 @@ public class Query {
             String[] projection = query.getProjection();
             String selection = query.getSelection();
             String[] selectionArgs = query.getSelectionArgs();
+            String groupBy = query.getGroupBy();
             String sortOrder = query.getSortOrder();
-            Cursor cursor = database.query(tables, projection, selection, selectionArgs, null, null, sortOrder);
+            Cursor cursor = database.query(tables, projection, selection, selectionArgs, groupBy, null, sortOrder);
             cursor.moveToFirst();
             return cursor;
         }
