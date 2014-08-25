@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import com.code44.finance.R;
 import com.code44.finance.common.model.CategoryType;
@@ -41,7 +42,10 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
 
     private final IntervalHelper intervalHelper = IntervalHelper.get();
 
+    private FabImageButton newTransaction_FAB;
+    private View overviewGraphContainer_V;
     private OverviewGraphView overviewGraph_V;
+    private View container_V;
     private AccountsView accounts_V;
 
     public static OverviewFragment newInstance() {
@@ -52,13 +56,15 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
         return inflater.inflate(R.layout.fragment_overview, container, false);
     }
 
-    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
+        newTransaction_FAB = (FabImageButton) view.findViewById(R.id.newTransaction_FAB);
+        overviewGraphContainer_V = view.findViewById(R.id.overviewGraphContainer_V);
         overviewGraph_V = (OverviewGraphView) view.findViewById(R.id.overviewGraph_V);
+        container_V = view.findViewById(R.id.container_V);
         accounts_V = (AccountsView) view.findViewById(R.id.accounts_V);
-        final FabImageButton newTransaction_FAB = (FabImageButton) view.findViewById(R.id.newTransaction_FAB);
 
         // Setup
         overviewGraph_V.setOnClickListener(this);
@@ -66,16 +72,12 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
 
         // Animate
         if (savedInstanceState == null) {
-            newTransaction_FAB.setScaleX(0.2f);
-            newTransaction_FAB.setScaleY(0.2f);
-            newTransaction_FAB.setAlpha(0.0f);
-            newTransaction_FAB.animate().scaleX(1).scaleY(1).alpha(1).rotation(360).setStartDelay(500).setDuration(300).start();
-
-            overviewGraph_V.animate().translationY(0).withStartAction(new Runnable() {
-                @Override public void run() {
-                    overviewGraph_V.setTranslationY(-overviewGraph_V.getHeight());
+            view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override public void onGlobalLayout() {
+                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    animateIn();
                 }
-            }).setDuration(300).start();
+            });
         }
     }
 
@@ -142,6 +144,23 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
     @Subscribe public void onCurrentIntervalChanged(IntervalHelper intervalHelper) {
         requestTitleUpdate();
         getLoaderManager().restartLoader(LOADER_TRANSACTIONS, null, this);
+    }
+
+    private void animateIn() {
+        // Prepare for animation
+        overviewGraphContainer_V.setTranslationY(-overviewGraph_V.getHeight());
+        newTransaction_FAB.setScaleX(0.0f);
+        newTransaction_FAB.setScaleY(0.0f);
+        container_V.setAlpha(0.0f);
+
+        // Animation constants
+        final long startDelay = 500;
+        final long duration = 250;
+
+        // Animate
+        overviewGraphContainer_V.animate().translationY(0).setDuration(duration).setStartDelay(startDelay).start();
+        newTransaction_FAB.animate().scaleX(1).scaleY(1).rotation(360).setDuration(duration).setStartDelay(startDelay).start();
+        container_V.animate().alpha(1).setDuration(duration).setStartDelay(startDelay).start();
     }
 
     private void onTransactionsLoaded(Cursor cursor) {

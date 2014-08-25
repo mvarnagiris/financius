@@ -54,7 +54,7 @@ public class StartupService extends IntentService {
     }
 
     private void updateCurrenciesIfNecessary() {
-        if (!generalPrefs.isAutoUpdateCurrencies() && DateUtils.isToday(generalPrefs.getAutoUpdateCurrenciesTimestamp())) {
+        if (!generalPrefs.isAutoUpdateCurrencies() || DateUtils.isToday(generalPrefs.getAutoUpdateCurrenciesTimestamp())) {
             return;
         }
 

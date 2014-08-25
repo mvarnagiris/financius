@@ -23,6 +23,7 @@
         android:layout_below="@+id/overviewGraphContainer_V">
 
         <LinearLayout
+            android:id="@+id/container_V"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
