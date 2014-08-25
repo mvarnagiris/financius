@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.code44.finance.R;
+import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.data.db.Tables;
@@ -22,6 +23,7 @@ import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartValue;
 import com.code44.finance.ui.BaseFragment;
+import com.code44.finance.ui.NavigationFragment;
 import com.code44.finance.ui.transactions.TransactionEditActivity;
 import com.code44.finance.utils.IntervalHelper;
 import com.code44.finance.views.AccountsView;
@@ -67,8 +69,9 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
         accounts_V = (AccountsView) view.findViewById(R.id.accounts_V);
 
         // Setup
-        overviewGraph_V.setOnClickListener(this);
         newTransaction_FAB.setOnClickListener(this);
+        overviewGraph_V.setOnClickListener(this);
+        accounts_V.setOnClickListener(this);
 
         // Animate
         if (savedInstanceState == null) {
@@ -133,6 +136,9 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
                 TransactionEditActivity.start(getActivity(), null);
                 break;
             case R.id.overviewGraph_V:
+                break;
+            case R.id.accounts_V:
+                getEventBus().post(new NavigationFragment.RequestNavigation(NavigationAdapter.NAV_ID_ACCOUNTS));
                 break;
         }
     }

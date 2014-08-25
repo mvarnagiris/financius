@@ -40,6 +40,7 @@ public class AccountsView extends LinearLayout {
         final int padding = getResources().getDimensionPixelSize(R.dimen.keyline);
         setPadding(padding, padding, padding, padding);
         inflate(context, R.layout.v_accounts, this);
+        setBackgroundResource(R.drawable.btn_borderless);
 
         // Get views
         balanceContainer_V = findViewById(R.id.balanceContainer_V);
