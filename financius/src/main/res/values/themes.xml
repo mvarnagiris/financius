@@ -6,6 +6,7 @@
         <item name="android:colorPrimaryDark">@color/brand_dark</item>
         <item name="android:colorAccent">@color/accent</item>
         <item name="android:colorControlHighlight">@color/accent_transparent</item>
+        <item name="android:navigationBarColor">?android:colorPrimaryDark</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_up</item>
 
         <item name="android:windowContentOverlay">@null</item>

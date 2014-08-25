@@ -63,6 +63,20 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
         // Setup
         overviewGraph_V.setOnClickListener(this);
         newTransaction_FAB.setOnClickListener(this);
+
+        // Animate
+        if (savedInstanceState == null) {
+            newTransaction_FAB.setScaleX(0.2f);
+            newTransaction_FAB.setScaleY(0.2f);
+            newTransaction_FAB.setAlpha(0.0f);
+            newTransaction_FAB.animate().scaleX(1).scaleY(1).alpha(1).rotation(360).setStartDelay(500).setDuration(300).start();
+
+            overviewGraph_V.animate().translationY(0).withStartAction(new Runnable() {
+                @Override public void run() {
+                    overviewGraph_V.setTranslationY(-overviewGraph_V.getHeight());
+                }
+            }).setDuration(300).start();
+        }
     }
 
     @Override public void onActivityCreated(Bundle savedInstanceState) {
