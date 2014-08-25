@@ -42,11 +42,11 @@ public class FabImageButton extends ImageButton {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                animate().scaleX(1.1f).scaleY(1.1f).setDuration(150).start();
+                animate().scaleX(1.1f).scaleY(1.1f).setDuration(150).setStartDelay(0).start();
                 break;
 
             case MotionEvent.ACTION_UP:
-                animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start();
+                animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).setStartDelay(0).start();
                 break;
         }
         return super.onTouchEvent(event);
