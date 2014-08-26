@@ -49,6 +49,7 @@
         <activity android:name=".ui.transactions.TransactionActivity" />
         <activity android:name=".ui.transactions.TransactionEditActivity" />
         <activity android:name=".ui.user.LoginActivity" />
+        <activity android:name=".ui.settings.DataActivity" />
 
         <!-- Providers -->
         <!-- ======================================================================================================= -->

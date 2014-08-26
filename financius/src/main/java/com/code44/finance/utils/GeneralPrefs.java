@@ -13,6 +13,7 @@ public class GeneralPrefs extends Prefs {
 
     private boolean isAutoUpdateCurrencies;
     private long autoUpdateCurrenciesTimestamp;
+    private boolean googleDriveBackupEnabled;
 
     public GeneralPrefs(Context context, EventBus eventBus) {
         super(context);
@@ -34,10 +35,11 @@ public class GeneralPrefs extends Prefs {
     public void refresh() {
         isAutoUpdateCurrencies = getBoolean("isAutoUpdateCurrencies", true);
         autoUpdateCurrenciesTimestamp = getLong("autoUpdateCurrenciesTimestamp", 0);
+        googleDriveBackupEnabled = getBoolean("googleDriveBackupEnabled", false);
     }
 
     public void clear() {
-        clear("isAutoUpdateCurrencies", "autoUpdateCurrenciesTimestamp");
+        clear("isAutoUpdateCurrencies", "autoUpdateCurrenciesTimestamp", "googleDriveBackupEnabled");
         refresh();
     }
 
@@ -57,6 +59,15 @@ public class GeneralPrefs extends Prefs {
     public void setAutoUpdateCurrenciesTimestamp(long autoUpdateCurrenciesTimestamp) {
         this.autoUpdateCurrenciesTimestamp = autoUpdateCurrenciesTimestamp;
         setLong("autoUpdateCurrenciesTimestamp", autoUpdateCurrenciesTimestamp);
+    }
+
+    public boolean isGoogleDriveBackupEnabled() {
+        return googleDriveBackupEnabled;
+    }
+
+    public void setGoogleDriveBackupEnabled(boolean googleDriveBackupEnabled) {
+        this.googleDriveBackupEnabled = googleDriveBackupEnabled;
+        setBoolean("googleDriveBackupEnabled", googleDriveBackupEnabled);
     }
 
     @Override protected String getPrefix() {

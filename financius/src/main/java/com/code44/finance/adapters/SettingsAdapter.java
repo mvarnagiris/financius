@@ -18,6 +18,7 @@ public class SettingsAdapter extends BaseAdapter {
     public static final int ID_CATEGORIES = 2;
     public static final int ID_TAGS = 3;
     public static final int ID_PERIOD = 4;
+    public static final int ID_DATA = 5;
 
     private final Context context;
     private final List<SettingsItem> settingsItems;
@@ -29,35 +30,30 @@ public class SettingsAdapter extends BaseAdapter {
         settingsItems.add(new SettingsItem(ID_CATEGORIES, ViewType.SettingsItem, context.getString(R.string.categories)));
         settingsItems.add(new SettingsItem(ID_TAGS, ViewType.SettingsItem, context.getString(R.string.tags)));
         settingsItems.add(new SettingsSubtitleItem(ID_PERIOD, ViewType.SettingsSubtitleItem, context.getString(R.string.period), ""));
+        settingsItems.add(new SettingsItem(ID_DATA, ViewType.SettingsItem, context.getString(R.string.your_data)));
     }
 
-    @Override
-    public int getCount() {
+    @Override public int getCount() {
         return settingsItems.size();
     }
 
-    @Override
-    public int getViewTypeCount() {
+    @Override public int getViewTypeCount() {
         return ViewType.values().length;
     }
 
-    @Override
-    public int getItemViewType(int position) {
+    @Override public int getItemViewType(int position) {
         return super.getItemViewType(position);
     }
 
-    @Override
-    public Object getItem(int position) {
+    @Override public Object getItem(int position) {
         return settingsItems.get(position);
     }
 
-    @Override
-    public long getItemId(int position) {
+    @Override public long getItemId(int position) {
         return settingsItems.get(position).getId();
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @Override public View getView(int position, View convertView, ViewGroup parent) {
         final SettingsItem settingsItem = settingsItems.get(position);
         final ViewType viewType = settingsItem.getViewType();
         final SettingsItemViewHolder viewHolder;

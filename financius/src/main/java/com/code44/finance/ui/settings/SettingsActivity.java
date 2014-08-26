@@ -79,6 +79,8 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
                     .setItems(items)
                     .setPositiveButtonText(getString(R.string.cancel))
                     .build().show(getFragmentManager(), FRAGMENT_INTERVAL);
+        } else if (id == SettingsAdapter.ID_DATA) {
+
         }
     }
 

@@ -14,7 +14,7 @@ import com.google.android.gms.plus.model.people.Person;
 
 
 public class LoginActivity extends BaseActivity {
-    private static final String FRAGMENT_GOOGLE_PLUS = "FRAGMENT_GOOGLE_PLUS";
+    private static final String FRAGMENT_GOOGLE_API = "FRAGMENT_GOOGLE_API";
 
     private static final String STATE_CLEAR_DEFAULT_ACCOUNT = "STATE_CLEAR_DEFAULT_ACCOUNT";
 
@@ -42,12 +42,12 @@ public class LoginActivity extends BaseActivity {
         // Restore state
         clearDefaultAccount = savedInstanceState == null || savedInstanceState.getBoolean(STATE_CLEAR_DEFAULT_ACCOUNT);
 
-        googleApi_F = (GoogleApiFragment) getFragmentManager().findFragmentByTag(FRAGMENT_GOOGLE_PLUS);
+        googleApi_F = (GoogleApiFragment) getFragmentManager().findFragmentByTag(FRAGMENT_GOOGLE_API);
         if (googleApi_F == null) {
             googleApi_F = new GoogleApiFragment.Builder(UNIQUE_GOOGLE_CLIENT_ID).setUsePlus(true).build();
             getFragmentManager()
                     .beginTransaction()
-                    .add(googleApi_F, FRAGMENT_GOOGLE_PLUS)
+                    .add(googleApi_F, FRAGMENT_GOOGLE_API)
                     .commit();
             googleApi_F.connect();
         }

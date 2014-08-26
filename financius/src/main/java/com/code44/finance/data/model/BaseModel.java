@@ -10,8 +10,6 @@ import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.Column;
 import com.google.api.client.json.GenericJson;
 
-import java.util.UUID;
-
 public abstract class BaseModel<E extends GenericJson> implements Parcelable {
     private long localId;
     private String id;
@@ -20,7 +18,7 @@ public abstract class BaseModel<E extends GenericJson> implements Parcelable {
 
     protected BaseModel() {
         setLocalId(0);
-        setId(UUID.randomUUID().toString());
+        setId("");
         setModelState(ModelState.NORMAL);
         setSyncState(SyncState.NONE);
     }

@@ -9,28 +9,35 @@ import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.code44.finance.utils.EventBus;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
 import com.google.android.gms.plus.Plus;
+import com.squareup.otto.Produce;
 
 public class GoogleApiFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final String ARG_UNIQUE_CLIENT_ID = "ARG_UNIQUE_CLIENT_ID";
     private static final String ARG_USE_PLUS = "ARG_USE_PLUS";
-    // -----------------------------------------------------------------------------------------------------------------
+    private static final String ARG_USE_DRIVE = "ARG_USE_DRIVE";
+
     private static final String FRAGMENT_ERROR_DIALOG = "FRAGMENT_ERROR_DIALOG";
-    // -----------------------------------------------------------------------------------------------------------------
+
     private static final int REQUEST_RESOLVE_ERROR = 9000;
     private static final int REQUEST_GOOGLE_PLAY_SERVICES = 9001;
-    // -----------------------------------------------------------------------------------------------------------------
+
+    private final EventBus eventBus = EventBus.get();
+
     private GoogleApiClient client;
+    private GoogleApiConnectedEvent googleApiConnectedEvent = null;
     private String uniqueClientId;
     private boolean connectWhenPossible = false;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        eventBus.register(this);
 
         buildGoogleApiClient();
         if (connectWhenPossible) {
@@ -38,25 +45,21 @@ public class GoogleApiFragment extends Fragment implements GoogleApiClient.Conne
         }
     }
 
-    @Override
-    public void onDestroy() {
+    @Override public void onDestroy() {
         super.onDestroy();
-
+        eventBus.unregister(this);
         disconnect();
     }
 
-    @Override
-    public void onConnected(Bundle bundle) {
+    @Override public void onConnected(Bundle bundle) {
         sendEventConnected();
     }
 
-    @Override
-    public void onConnectionSuspended(int cause) {
+    @Override public void onConnectionSuspended(int cause) {
         sendEventSuspended(cause);
     }
 
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    @Override public void onConnectionFailed(ConnectionResult connectionResult) {
         sendEventFailed(connectionResult);
         if (connectionResult.hasResolution()) {
             try {
@@ -69,6 +72,10 @@ public class GoogleApiFragment extends Fragment implements GoogleApiClient.Conne
             // Show dialog using GooglePlayServicesUtil.getErrorDialog()
             showErrorDialog(connectionResult.getErrorCode());
         }
+    }
+
+    @Produce public GoogleApiConnectedEvent produceGoogleApiConnectedEvent() {
+        return googleApiConnectedEvent;
     }
 
     public boolean handleOnActivityResult(int requestCode, int resultCode, Intent data) {
@@ -99,6 +106,7 @@ public class GoogleApiFragment extends Fragment implements GoogleApiClient.Conne
     }
 
     public void disconnect() {
+        googleApiConnectedEvent = null;
         connectWhenPossible = false;
 
         if (client != null && (client.isConnected() || client.isConnecting())) {
@@ -117,28 +125,36 @@ public class GoogleApiFragment extends Fragment implements GoogleApiClient.Conne
     }
 
     protected void sendEventConnected() {
-        // TODO EventBus.getDefault().post(new GoogleApiConnectedEvent(client, uniqueClientId));
+        googleApiConnectedEvent = new GoogleApiConnectedEvent(client, uniqueClientId);
+        eventBus.post(googleApiConnectedEvent);
     }
 
     protected void sendEventSuspended(int cause) {
-        // TODO EventBus.getDefault().post(new GoogleApiSuspendedEvent(client, uniqueClientId, cause));
+        googleApiConnectedEvent = null;
+        eventBus.post(new GoogleApiSuspendedEvent(client, uniqueClientId, cause));
     }
 
     protected void sendEventFailed(ConnectionResult connectionResult) {
-        // TODO EventBus.getDefault().post(new GoogleApiFailedEvent(client, uniqueClientId, connectionResult));
+        googleApiConnectedEvent = null;
+        eventBus.post(new GoogleApiFailedEvent(client, uniqueClientId, connectionResult));
     }
 
     private void buildGoogleApiClient() {
         // Get arguments
-        Bundle args = getArguments();
-        boolean usePlus = args.getBoolean(ARG_USE_PLUS, false);
+        final Bundle args = getArguments();
+        final boolean usePlus = args.getBoolean(ARG_USE_PLUS, false);
+        final boolean useDrive = args.getBoolean(ARG_USE_DRIVE, false);
         uniqueClientId = args.getString(ARG_UNIQUE_CLIENT_ID);
 
         // Init a client
-        GoogleApiClient.Builder builder = new GoogleApiClient.Builder(getActivity(), this, this);
+        final GoogleApiClient.Builder builder = new GoogleApiClient.Builder(getActivity(), this, this);
 
         if (usePlus) {
             builder.addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN);
+        }
+
+        if (useDrive) {
+            builder.addApi(Drive.API).addScope(Drive.SCOPE_FILE);
         }
 
         client = builder.build();
@@ -180,6 +196,7 @@ public class GoogleApiFragment extends Fragment implements GoogleApiClient.Conne
     public static class Builder {
         private final String uniqueClientId;
         boolean usePlus;
+        boolean useDrive;
 
         public Builder(String uniqueClientId) {
             this.uniqueClientId = uniqueClientId;
@@ -190,10 +207,16 @@ public class GoogleApiFragment extends Fragment implements GoogleApiClient.Conne
             return this;
         }
 
+        public Builder setUseDrive(boolean useDrive) {
+            this.useDrive = useDrive;
+            return this;
+        }
+
         public GoogleApiFragment build() {
             Bundle args = new Bundle();
             args.putString(ARG_UNIQUE_CLIENT_ID, uniqueClientId);
             args.putBoolean(ARG_USE_PLUS, usePlus);
+            args.putBoolean(ARG_USE_DRIVE, useDrive);
 
             GoogleApiFragment fragment = new GoogleApiFragment();
             fragment.setArguments(args);
@@ -263,9 +286,7 @@ public class GoogleApiFragment extends Fragment implements GoogleApiClient.Conne
             this.dialog = dialog;
         }
 
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
+        @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
             return dialog;
         }
     }

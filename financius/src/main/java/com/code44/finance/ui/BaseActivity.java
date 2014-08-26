@@ -10,12 +10,14 @@ import android.view.MenuItem;
 import com.code44.finance.R;
 import com.code44.finance.ui.settings.SettingsActivity;
 import com.code44.finance.utils.EventBus;
+import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.IntervalHelper;
 import com.code44.finance.utils.ToolbarHelper;
 
 public class BaseActivity extends Activity {
     protected final EventBus eventBus = EventBus.get();
     protected final IntervalHelper intervalHelper = IntervalHelper.get();
+    protected final GeneralPrefs generalPrefs = GeneralPrefs.get();
 
     protected ToolbarHelper toolbarHelper;
 
@@ -66,5 +68,9 @@ public class BaseActivity extends Activity {
 
     protected IntervalHelper getIntervalHelper() {
         return intervalHelper;
+    }
+
+    protected GeneralPrefs getGeneralPrefs() {
+        return generalPrefs;
     }
 }
