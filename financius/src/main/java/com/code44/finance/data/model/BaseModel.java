@@ -163,7 +163,7 @@ public abstract class BaseModel<E extends GenericJson> implements Parcelable {
         this.syncState = syncState;
     }
 
-    protected void updateFrom(Cursor cursor, String columnPrefixTable) {
+    public void updateFrom(Cursor cursor, String columnPrefixTable) {
         int index;
 
         // Local id

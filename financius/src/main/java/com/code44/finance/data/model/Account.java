@@ -155,7 +155,7 @@ public class Account extends BaseModel<AccountEntity> {
         int index;
 
         // Currency
-        Currency currency;
+        final Currency currency;
         if (TextUtils.isEmpty(columnPrefixTable)) {
             currency = Currency.from(cursor);
         } else if (columnPrefixTable.equals(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT)) {
@@ -165,7 +165,10 @@ public class Account extends BaseModel<AccountEntity> {
         } else {
             throw new IllegalArgumentException("Table prefix " + columnPrefixTable + " is not supported.");
         }
-        currency.setLocalId(0);
+        index = cursor.getColumnIndex(Tables.Accounts.CURRENCY_ID.getName(columnPrefixTable));
+        if (index >= 0) {
+            currency.setId(cursor.getString(index));
+        }
         setCurrency(currency);
 
         // Title

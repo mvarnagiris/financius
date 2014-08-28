@@ -160,17 +160,26 @@ public class Transaction extends BaseModel<TransactionEntity> {
 
         // Account from
         final Account accountFrom = Account.fromAccountFrom(cursor);
-        accountFrom.setLocalId(0);
+        index = cursor.getColumnIndex(Tables.Transactions.ACCOUNT_FROM_ID.getName(columnPrefixTable));
+        if (index >= 0) {
+            accountFrom.setId(cursor.getString(index));
+        }
         setAccountFrom(accountFrom);
 
         // Account to
         final Account accountTo = Account.fromAccountTo(cursor);
-        accountTo.setLocalId(0);
+        index = cursor.getColumnIndex(Tables.Transactions.ACCOUNT_TO_ID.getName(columnPrefixTable));
+        if (index >= 0) {
+            accountTo.setId(cursor.getString(index));
+        }
         setAccountTo(accountTo);
 
         // Category
         final Category category = Category.from(cursor);
-        category.setLocalId(0);
+        index = cursor.getColumnIndex(Tables.Transactions.CATEGORY_ID.getName(columnPrefixTable));
+        if (index >= 0) {
+            category.setId(cursor.getString(index));
+        }
         setCategory(category);
 
         // Tags

@@ -302,6 +302,8 @@ public final class Tables {
         public static final Column TRANSACTION_ID = new Column(TABLE_NAME, "transaction_id", Column.DataType.TEXT);
         public static final Column TAG_ID = new Column(TABLE_NAME, "tag_id", Column.DataType.TEXT);
 
+        public static final String[] PROJECTION = {TRANSACTION_ID.getName(), TAG_ID.getName()};
+
         private TransactionTags() {
         }
 
