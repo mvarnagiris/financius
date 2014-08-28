@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.code44.finance"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.code44.finance">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -50,7 +49,7 @@
         <activity android:name=".ui.transactions.TransactionActivity" />
         <activity android:name=".ui.transactions.TransactionEditActivity" />
         <activity android:name=".ui.user.LoginActivity" />
-        <activity android:name=".ui.settings.DataActivity" />
+        <activity android:name=".ui.settings.data.DataActivity" />
         <activity
             android:name=".ui.FilePickerActivity"
             android:theme="@style/FilePicker.Theme" />

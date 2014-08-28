@@ -68,6 +68,8 @@
     <string name="confirmed">Confirmed</string>
     <string name="pending">Pending</string>
     <string name="your_data">Your data</string>
+    <string name="backup">Backup</string>
+    <string name="file">File</string>
 
     <string name="f_change_to_x">Change to %s</string>
     <string name="f_current_main_currency_is_x">Current main currency is %s</string>

@@ -1,4 +1,4 @@
-package com.code44.finance.ui.settings;
+package com.code44.finance.ui.settings.data;
 
 import android.content.Context;
 import android.os.Bundle;

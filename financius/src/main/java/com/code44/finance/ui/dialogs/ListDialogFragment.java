@@ -36,6 +36,10 @@ public class ListDialogFragment extends BaseDialogFragment implements View.OnCli
 
     protected ListDialogAdapter adapter;
 
+    public static Builder build(int requestCode) {
+        return new Builder(requestCode);
+    }
+
     @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.dialog_fragment_list, container, false);
     }

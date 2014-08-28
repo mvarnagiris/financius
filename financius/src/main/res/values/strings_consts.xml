@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Financius</string>
+    <string name="google_drive">Google Drive</string>
     <string name="divide">÷</string>
     <string name="multiply">×</string>
     <string name="plus">+</string>
