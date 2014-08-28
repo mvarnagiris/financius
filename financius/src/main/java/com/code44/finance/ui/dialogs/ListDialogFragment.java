@@ -109,7 +109,7 @@ public class ListDialogFragment extends BaseDialogFragment implements View.OnCli
     }
 
     protected ListDialogEvent createEvent(int requestCode, boolean isPositiveClicked, int position) {
-        return new ListDialogEvent(this, requestCode, isPositiveClicked, position, adapter.getSelectedPositions());
+        return new ListDialogEvent(this, requestCode, isPositiveClicked, position, adapter.getSelectedPositions(), getArguments().getBundle(ARG_ARGS));
     }
 
     public static class ListDialogEvent {
@@ -118,13 +118,15 @@ public class ListDialogFragment extends BaseDialogFragment implements View.OnCli
         private final boolean isPositiveClicked;
         private final int position;
         private final List<Integer> selectedPositions;
+        private final Bundle args;
 
-        public ListDialogEvent(ListDialogFragment dialogFragment, int requestCode, boolean isPositiveClicked, int position, List<Integer> selectedPositions) {
+        public ListDialogEvent(ListDialogFragment dialogFragment, int requestCode, boolean isPositiveClicked, int position, List<Integer> selectedPositions, Bundle args) {
             this.dialogFragment = dialogFragment;
             this.requestCode = requestCode;
             this.isPositiveClicked = isPositiveClicked;
             this.position = position;
             this.selectedPositions = selectedPositions;
+            this.args = args;
         }
 
         public int getRequestCode() {
@@ -258,6 +260,10 @@ public class ListDialogFragment extends BaseDialogFragment implements View.OnCli
 
         @Override public Builder setTitle(String title) {
             return (Builder) super.setTitle(title);
+        }
+
+        @Override public Builder setArgs(Bundle args) {
+            return (Builder) super.setArgs(args);
         }
 
         public Builder setPositiveButtonText(String positiveButtonText) {

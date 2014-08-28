@@ -15,18 +15,18 @@ import org.joda.time.DateTime;
 
 import java.io.File;
 
-public class LocalExportFragment extends BaseExportFragment {
-    private static final String ARG_TYPE = "ARG_TYPE";
+public class FileExportFragment extends BaseExportFragment {
+    private static final String ARG_EXPORT_TYPE = "ARG_TYPE";
 
     private static final int REQUEST_DIRECTORY = 1;
 
-    private Type type;
+    private ExportActivity.ExportType type;
 
-    public static LocalExportFragment newInstance(Type type) {
+    public static FileExportFragment newInstance(ExportActivity.ExportType exportType) {
         final Bundle args = new Bundle();
-        args.putSerializable(ARG_TYPE, type);
+        args.putSerializable(ARG_EXPORT_TYPE, exportType);
 
-        final LocalExportFragment fragment = new LocalExportFragment();
+        final FileExportFragment fragment = new FileExportFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -35,7 +35,7 @@ public class LocalExportFragment extends BaseExportFragment {
         super.onCreate(savedInstanceState);
 
         // Get arguments
-        type = (Type) getArguments().getSerializable(ARG_TYPE);
+        type = (ExportActivity.ExportType) getArguments().getSerializable(ARG_EXPORT_TYPE);
 
         // Show directory selector if necessary
         if (savedInstanceState == null) {
@@ -72,16 +72,12 @@ public class LocalExportFragment extends BaseExportFragment {
 
     private DataExporter getDataExporter(File file) {
         switch (type) {
-            case BACKUP:
+            case Backup:
                 return new BackupDataExporter(file, getActivity());
 //            case CSV:
 //                break;
             default:
                 throw new IllegalStateException("Type " + type + " is not supported.");
         }
-    }
-
-    public static enum Type {
-        BACKUP, CSV
     }
 }

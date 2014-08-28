@@ -242,6 +242,10 @@ public class DeleteDialogFragment extends AlertDialogFragment implements LoaderM
             throw new UnsupportedOperationException("setTitle(String) is not supported.");
         }
 
+        @Override public Builder setArgs(Bundle args) {
+            return (Builder) super.setArgs(args);
+        }
+
         @Override public AlertDialogFragment.Builder setMessage(String message) {
             throw new UnsupportedOperationException("setMessage(String) is not supported.");
         }

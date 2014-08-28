@@ -20,6 +20,8 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
 
     private static final String FRAGMENT_DESTINATION = "FRAGMENT_DESTINATION";
 
+    private static final String ARG_EXPORT_TYPE = "ARG_EXPORT_TYPE";
+
     @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_data, container, false);
     }
@@ -42,17 +44,20 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    @Subscribe public void onDestinationSelected(ListDialogFragment.ListDialogEvent event) {
-        switch (event.getRequestCode()) {
-            case REQUEST_BACKUP_DESTINATION:
-                if (event.getPosition() == 0) {
-                    backupGoogleDrive();
-                } else if (event.getPosition() == 1) {
-                    backupFile();
-                }
-                break;
+    @Subscribe public void onBackupDestinationSelected(ListDialogFragment.ListDialogEvent event) {
+        if (event.getRequestCode() != REQUEST_BACKUP_DESTINATION || !event.isListItemClicked()) {
+            return;
+        }
+
+        final ExportActivity.Destination destination;
+        if (event.getPosition() == 0) {
+            destination = ExportActivity.Destination.GoogleDrive;
+        } else {
+            destination = ExportActivity.Destination.File;
         }
         event.dismiss();
+
+        ExportActivity.start(getActivity(), ExportActivity.ExportType.Backup, destination);
     }
 
     private void chooseBackup() {
@@ -60,19 +65,15 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
         items.add(new ListDialogFragment.ListDialogItem(getString(R.string.google_drive)));
         items.add(new ListDialogFragment.ListDialogItem(getString(R.string.file)));
 
+        final Bundle args = new Bundle();
+        args.putSerializable(ARG_EXPORT_TYPE, ExportActivity.ExportType.Backup);
+
         ListDialogFragment.build(REQUEST_BACKUP_DESTINATION)
                 .setTitle(getString(R.string.backup))
+                .setArgs(args)
                 .setNegativeButtonText(getString(R.string.cancel))
                 .setItems(items)
                 .build()
                 .show(getChildFragmentManager(), FRAGMENT_DESTINATION);
-    }
-
-    private void backupFile() {
-
-    }
-
-    private void backupGoogleDrive() {
-
     }
 }

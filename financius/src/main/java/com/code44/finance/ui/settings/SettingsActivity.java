@@ -13,6 +13,7 @@ import com.code44.finance.ui.BaseActivity;
 import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.ui.currencies.CurrenciesActivity;
 import com.code44.finance.ui.dialogs.ListDialogFragment;
+import com.code44.finance.ui.settings.data.DataActivity;
 import com.code44.finance.ui.tags.TagsActivity;
 import com.code44.finance.utils.IntervalHelper;
 import com.squareup.otto.Subscribe;
@@ -80,7 +81,7 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
                     .setPositiveButtonText(getString(R.string.cancel))
                     .build().show(getFragmentManager(), FRAGMENT_INTERVAL);
         } else if (id == SettingsAdapter.ID_DATA) {
-
+            DataActivity.start(this);
         }
     }
 

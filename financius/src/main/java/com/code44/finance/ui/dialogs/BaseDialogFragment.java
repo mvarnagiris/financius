@@ -11,6 +11,7 @@ import com.code44.finance.common.utils.StringUtils;
 public abstract class BaseDialogFragment extends DialogFragment {
     protected static final String ARG_REQUEST_CODE = "ARG_REQUEST_CODE";
     protected static final String ARG_TITLE = "ARG_TITLE";
+    protected static final String ARG_ARGS = "ARG_ARGS";
 
     protected TextView title_TV;
 
@@ -47,6 +48,11 @@ public abstract class BaseDialogFragment extends DialogFragment {
 
         public Builder setTitle(String title) {
             args.putString(ARG_TITLE, title);
+            return this;
+        }
+
+        public Builder setArgs(Bundle args) {
+            args.putBundle(ARG_ARGS, args);
             return this;
         }
 

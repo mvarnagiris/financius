@@ -7,8 +7,11 @@ import android.os.Parcelable;
 
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.common.utils.Preconditions;
+import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.db.Column;
 import com.google.api.client.json.GenericJson;
+
+import java.util.UUID;
 
 public abstract class BaseModel<E extends GenericJson> implements Parcelable {
     private long localId;
@@ -84,6 +87,10 @@ public abstract class BaseModel<E extends GenericJson> implements Parcelable {
     protected abstract void fromEntity(E entity);
 
     public ContentValues asValues() {
+        if (StringUtils.isEmpty(id)) {
+            setId(UUID.randomUUID().toString());
+        }
+
         checkValues();
 
         final ContentValues values = new ContentValues();

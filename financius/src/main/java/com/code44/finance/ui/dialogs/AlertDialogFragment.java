@@ -121,6 +121,10 @@ public class AlertDialogFragment extends BaseDialogFragment implements View.OnCl
             return (Builder) super.setTitle(title);
         }
 
+        @Override public Builder setArgs(Bundle args) {
+            return (Builder) super.setArgs(args);
+        }
+
         public Builder setMessage(String message) {
             args.putString(ARG_MESSAGE, message);
             return this;

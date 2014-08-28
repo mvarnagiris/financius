@@ -177,20 +177,9 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     }
 
     @Override public boolean onSave(Context context, Transaction model) {
-        boolean canSave = true;
-
         model.setTransactionState(model.getTransactionState() == TransactionState.CONFIRMED && canBeConfirmed(model, false) ? TransactionState.CONFIRMED : TransactionState.PENDING);
-
-//        if (TextUtils.isEmpty(model.getTitle())) {
-//            canSave = false;
-//            // TODO Show error
-//        }
-
-        if (canSave) {
-            DataStore.insert().values(model.asValues()).into(context, TransactionsProvider.uriTransactions());
-        }
-
-        return canSave;
+        DataStore.insert().values(model.asValues()).into(context, TransactionsProvider.uriTransactions());
+        return true;
     }
 
     @Override protected void ensureModelUpdated(Transaction model) {
