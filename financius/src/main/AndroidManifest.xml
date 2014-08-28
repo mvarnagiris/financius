@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
 
@@ -50,6 +51,9 @@
         <activity android:name=".ui.transactions.TransactionEditActivity" />
         <activity android:name=".ui.user.LoginActivity" />
         <activity android:name=".ui.settings.DataActivity" />
+        <activity
+            android:name=".ui.FilePickerActivity"
+            android:theme="@style/FilePicker.Theme" />
 
         <!-- Providers -->
         <!-- ======================================================================================================= -->

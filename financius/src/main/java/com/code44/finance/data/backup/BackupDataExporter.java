@@ -20,21 +20,23 @@ import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.utils.IOUtils;
 import com.google.gson.stream.JsonWriter;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-public class BackupDataWriter implements DataWriter {
+public class BackupDataExporter extends FileDataExporter {
     private static final int VERSION = 1;
     private static final String CHARSET_NAME = "UTF-8";
 
     private final Context context;
 
-    public BackupDataWriter(Context context) {
+    public BackupDataExporter(File file, Context context) {
+        super(file);
         this.context = context;
     }
 
-    @Override public void writeData(OutputStream outputStream) throws IOException {
+    @Override public void exportData(OutputStream outputStream) throws Exception {
         final JsonWriter writer = new JsonWriter(new OutputStreamWriter(outputStream, CHARSET_NAME));
         writer.setIndent("  ");
 
