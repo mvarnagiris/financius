@@ -65,6 +65,7 @@ public class BackupDataExporter extends FileDataExporter {
         writer.endArray();
 
         writer.endObject();
+        writer.close();
     }
 
     private void writeMetaData(JsonWriter writer) throws IOException {

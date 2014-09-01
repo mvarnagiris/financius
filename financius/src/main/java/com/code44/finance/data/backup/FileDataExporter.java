@@ -12,6 +12,8 @@ public abstract class FileDataExporter implements DataExporter {
     }
 
     @Override public void exportData() throws Exception {
+        //noinspection ResultOfMethodCallIgnored
+        file.createNewFile();
         exportData(new FileOutputStream(file));
     }
 

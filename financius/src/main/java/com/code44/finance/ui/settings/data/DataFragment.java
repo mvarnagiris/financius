@@ -22,6 +22,10 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
 
     private static final String ARG_EXPORT_TYPE = "ARG_EXPORT_TYPE";
 
+    public static DataFragment newInstance() {
+        return new DataFragment();
+    }
+
     @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_data, container, false);
     }
@@ -34,6 +38,16 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
 
         // Setup
         backup_B.setOnClickListener(this);
+    }
+
+    @Override public void onResume() {
+        super.onResume();
+        getEventBus().register(this);
+    }
+
+    @Override public void onPause() {
+        super.onPause();
+        getEventBus().unregister(this);
     }
 
     @Override public void onClick(View view) {

@@ -9,10 +9,6 @@ import com.code44.finance.data.backup.BackupDataExporter;
 import com.code44.finance.data.backup.DataExporter;
 import com.code44.finance.ui.FilePickerActivity;
 
-import net.danlew.android.joda.DateUtils;
-
-import org.joda.time.DateTime;
-
 import java.io.File;
 
 public class FileExportFragment extends BaseExportFragment {
@@ -67,7 +63,7 @@ public class FileExportFragment extends BaseExportFragment {
     }
 
     private String getFileTitle() {
-        return getString(R.string.app_name) + " " + DateUtils.formatDateTime(getActivity(), new DateTime(), DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
+        return getString(R.string.app_name) + "_" + System.currentTimeMillis() + ".json";
     }
 
     private DataExporter getDataExporter(File file) {

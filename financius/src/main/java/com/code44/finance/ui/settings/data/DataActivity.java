@@ -26,6 +26,10 @@ public class DataActivity extends BaseActivity {
             getFragmentManager().beginTransaction().add(googleApi_F, FRAGMENT_GOOGLE_API).commit();
             connectToGoogleApiIfNecessary();
         }
+
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction().replace(android.R.id.content, DataFragment.newInstance()).commit();
+        }
     }
 
     private void connectToGoogleApiIfNecessary() {
