@@ -203,6 +203,16 @@ public class Query {
         return this;
     }
 
+    public Query clearSelection() {
+        selection.clear();
+        return this;
+    }
+
+    public Query clearArgs() {
+        selectionArgs.clear();
+        return this;
+    }
+
     private String makeInClause(String value, int count) {
         final StringBuilder sb = new StringBuilder();
         sb.append(value).append(" in (");

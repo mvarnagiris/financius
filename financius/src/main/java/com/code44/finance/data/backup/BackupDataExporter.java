@@ -166,7 +166,7 @@ public class BackupDataExporter extends FileDataExporter {
     }
 
     private void writeTransactions(JsonWriter writer) throws IOException {
-        final Cursor cursor = getCursor(TransactionsProvider.uriTransactions(), Query.create().projection(Tables.Transactions.PROJECTION).projection(Tables.Tags.PROJECTION_TRANSACTION).getProjection());
+        final Cursor cursor = Tables.Transactions.getQuery().clearSelection().clearArgs().selection("1=1").from(context, TransactionsProvider.uriTransactions()).execute();
         try {
             if (cursor.moveToFirst()) {
                 final Transaction transaction = new Transaction();
