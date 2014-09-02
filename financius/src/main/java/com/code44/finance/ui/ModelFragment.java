@@ -34,8 +34,7 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
         return args;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
@@ -43,22 +42,19 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
         modelId = getArguments().getString(ARG_MODEL_SERVER_ID, "0");
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    @Override public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         // Loader
         getLoaderManager().initLoader(LOADER_MODEL, null, this);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.model, menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_edit:
                 startModelEdit(getActivity(), modelId);
@@ -73,8 +69,7 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_MODEL) {
             return getModelCursorLoader(getActivity(), modelId);
         }
@@ -82,16 +77,14 @@ public abstract class ModelFragment<T extends BaseModel> extends BaseFragment im
         return null;
     }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == LOADER_MODEL) {
             model = getModelFrom(data);
             onModelLoaded(model);
         }
     }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    @Override public void onLoaderReset(Loader<Cursor> loader) {
     }
 
     protected abstract CursorLoader getModelCursorLoader(Context context, String modelServerId);

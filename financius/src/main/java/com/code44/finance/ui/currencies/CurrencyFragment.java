@@ -29,6 +29,7 @@ import com.code44.finance.views.FabImageButton;
 import com.squareup.otto.Subscribe;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
+import fr.castorflex.android.smoothprogressbar.SmoothProgressDrawable;
 
 public class CurrencyFragment extends ModelFragment<Currency> implements View.OnClickListener {
     private static final int LOADER_ACCOUNTS = 1;
@@ -74,6 +75,7 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
 
     @Override public void onResume() {
         super.onResume();
+        setRefreshing(false);
         eventBus.register(this);
     }
 
@@ -127,7 +129,8 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
             exchangeRate_TV.setText(String.valueOf(currency.getExchangeRate()));
         }
         format_TV.setText(MoneyFormatter.format(currency, 100000));
-        refreshRate_IB.setVisibility(model != null && !model.isDefault() ? View.VISIBLE : View.GONE);
+        // TODO This doesn't seem to be working on first load. Check after Android L is released.
+        refreshRate_IB.setVisibility(!currency.isDefault() ? View.VISIBLE : View.GONE);
 
         getActivity().invalidateOptionsMenu();
 
@@ -157,11 +160,7 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
 
     @Subscribe public void onRefreshFinished(ExchangeRateRequest request) {
         if (model.getCode().equals(request.getFromCode())) {
-            loading_SPB.post(new Runnable() {
-                @Override public void run() {
-                    setRefreshing(false);
-                }
-            });
+            setRefreshing(false);
         }
     }
 
@@ -171,6 +170,21 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
     }
 
     private void setRefreshing(boolean refreshing) {
-        loading_SPB.setVisibility(refreshing ? View.VISIBLE : View.GONE);
+        if (refreshing) {
+            loading_SPB.setVisibility(View.VISIBLE);
+            loading_SPB.progressiveStart();
+        } else {
+            loading_SPB.progressiveStop();
+            loading_SPB.setSmoothProgressDrawableCallbacks(new SmoothProgressDrawable.Callbacks() {
+                @Override public void onStop() {
+                    loading_SPB.setSmoothProgressDrawableCallbacks(null);
+                    loading_SPB.setVisibility(View.GONE);
+                }
+
+                @Override public void onStart() {
+
+                }
+            });
+        }
     }
 }

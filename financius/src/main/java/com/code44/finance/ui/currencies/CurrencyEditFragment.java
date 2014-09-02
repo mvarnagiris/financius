@@ -43,6 +43,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
+import fr.castorflex.android.smoothprogressbar.SmoothProgressDrawable;
 
 public class CurrencyEditFragment extends ModelEditFragment<Currency> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int LOADER_CURRENCIES = 1;
@@ -154,6 +155,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
 
     @Override public void onResume() {
         super.onResume();
+        setRefreshing(false);
         eventBus.register(this);
     }
 
@@ -466,6 +468,21 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     }
 
     private void setRefreshing(boolean refreshing) {
-        loading_SPB.setVisibility(refreshing ? View.VISIBLE : View.GONE);
+        if (refreshing) {
+            loading_SPB.setVisibility(View.VISIBLE);
+            loading_SPB.progressiveStart();
+        } else {
+            loading_SPB.progressiveStop();
+            loading_SPB.setSmoothProgressDrawableCallbacks(new SmoothProgressDrawable.Callbacks() {
+                @Override public void onStop() {
+                    loading_SPB.setSmoothProgressDrawableCallbacks(null);
+                    loading_SPB.setVisibility(View.GONE);
+                }
+
+                @Override public void onStart() {
+
+                }
+            });
+        }
     }
 }

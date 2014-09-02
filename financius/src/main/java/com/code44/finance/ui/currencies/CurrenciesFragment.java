@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
+import fr.castorflex.android.smoothprogressbar.SmoothProgressDrawable;
 
 public class CurrenciesFragment extends ModelListFragment implements CompoundButton.OnCheckedChangeListener {
     private final List<Currency> currencies = new ArrayList<>();
@@ -62,17 +63,16 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         final Switch autoUpdateCurrencies_S = (Switch) view.findViewById(R.id.autoUpdateCurrencies_S);
 
         // Setup
-        loading_SPB.setVisibility(View.GONE);
-        setRefreshing(false);
         autoUpdateCurrencies_S.setChecked(generalPrefs.isAutoUpdateCurrencies());
         autoUpdateCurrencies_S.setOnCheckedChangeListener(this);
-        if (getMode() == Mode.SELECT) {
+        if (getMode() != Mode.VIEW) {
             settingsContainer_V.setVisibility(View.GONE);
         }
     }
 
     @Override public void onResume() {
         super.onResume();
+        setRefreshing(false);
         eventBus.register(this);
     }
 
@@ -158,6 +158,16 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
             loading_SPB.progressiveStart();
         } else {
             loading_SPB.progressiveStop();
+            loading_SPB.setSmoothProgressDrawableCallbacks(new SmoothProgressDrawable.Callbacks() {
+                @Override public void onStop() {
+                    loading_SPB.setSmoothProgressDrawableCallbacks(null);
+                    loading_SPB.setVisibility(View.GONE);
+                }
+
+                @Override public void onStart() {
+
+                }
+            });
         }
     }
 }
