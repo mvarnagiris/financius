@@ -8,9 +8,7 @@
     <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
         android:id="@+id/loading_SPB"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/progress_bar_height"
-        android:indeterminate="true"
-        android:visibility="invisible" />
+        android:layout_height="@dimen/progress_bar_height" />
 
     <LinearLayout
         android:id="@+id/settingsContainer_V"
@@ -22,7 +20,7 @@
         android:gravity="center_vertical"
         android:minHeight="?android:actionBarSize"
         android:paddingBottom="@dimen/space_normal"
-        android:paddingLeft="@dimen/keyline_content"
+        android:paddingLeft="@dimen/keyline"
         android:paddingRight="@dimen/keyline"
         android:paddingTop="@dimen/space_normal"
         tools:ignore="RtlHardcoded,UnusedAttribute">

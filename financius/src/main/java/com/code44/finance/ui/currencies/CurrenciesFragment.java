@@ -62,6 +62,8 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         final Switch autoUpdateCurrencies_S = (Switch) view.findViewById(R.id.autoUpdateCurrencies_S);
 
         // Setup
+        loading_SPB.setVisibility(View.GONE);
+        setRefreshing(false);
         autoUpdateCurrencies_S.setChecked(generalPrefs.isAutoUpdateCurrencies());
         autoUpdateCurrencies_S.setOnCheckedChangeListener(this);
         if (getMode() == Mode.SELECT) {
@@ -133,11 +135,7 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
     }
 
     @Subscribe public void onRefreshFinished(ExchangeRatesRequest request) {
-        loading_SPB.post(new Runnable() {
-            @Override public void run() {
-                setRefreshing(false);
-            }
-        });
+        setRefreshing(false);
     }
 
     private void refreshRates() {
@@ -155,6 +153,11 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
     }
 
     private void setRefreshing(boolean refreshing) {
-        loading_SPB.setVisibility(refreshing ? View.VISIBLE : View.GONE);
+        if (refreshing) {
+            loading_SPB.setVisibility(View.VISIBLE);
+            loading_SPB.progressiveStart();
+        } else {
+            loading_SPB.progressiveStop();
+        }
     }
 }
