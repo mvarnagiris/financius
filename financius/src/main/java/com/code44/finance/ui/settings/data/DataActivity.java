@@ -33,8 +33,8 @@ public class DataActivity extends BaseActivity {
     }
 
     private void connectToGoogleApiIfNecessary() {
-        if (getGeneralPrefs().isGoogleDriveBackupEnabled()) {
-            googleApi_F.connect();
-        }
+//        if (getGeneralPrefs().isGoogleDriveBackupEnabled()) {
+//            googleApi_F.connect();
+//        }
     }
 }

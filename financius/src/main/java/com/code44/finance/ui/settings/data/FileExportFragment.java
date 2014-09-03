@@ -17,6 +17,7 @@ public class FileExportFragment extends BaseExportFragment {
     private static final int REQUEST_DIRECTORY = 1;
 
     private ExportActivity.ExportType type;
+    private boolean requestDir = false;
 
     public static FileExportFragment newInstance(ExportActivity.ExportType exportType) {
         final Bundle args = new Bundle();
@@ -35,7 +36,15 @@ public class FileExportFragment extends BaseExportFragment {
 
         // Show directory selector if necessary
         if (savedInstanceState == null) {
-            FilePickerActivity.startDir(this, REQUEST_DIRECTORY);
+            requestDir = true;
+        }
+    }
+
+    @Override public void onResume() {
+        super.onResume();
+        if (requestDir) {
+            requestDir = false;
+            FilePickerActivity.startDir(this, REQUEST_DIRECTORY, getGeneralPrefs().getLastFileExportPath());
         }
     }
 
@@ -43,7 +52,9 @@ public class FileExportFragment extends BaseExportFragment {
         switch (requestCode) {
             case REQUEST_DIRECTORY:
                 if (resultCode == Activity.RESULT_OK) {
-                    onDirectorySelected(new File(data.getData().getPath()));
+                    final String path = data.getData().getPath();
+                    getGeneralPrefs().setLastFileExportPath(path);
+                    onDirectorySelected(new File(path));
                 } else {
                     cancel();
                 }
