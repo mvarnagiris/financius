@@ -2,7 +2,6 @@ package com.code44.finance.api;
 
 import android.content.Context;
 
-import com.code44.finance.App;
 import com.code44.finance.BuildConfig;
 import com.code44.finance.api.requests.RegisterDeviceRequest;
 import com.code44.finance.api.requests.RegisterRequest;
@@ -13,22 +12,18 @@ import com.code44.finance.backend.endpoint.currencies.Currencies;
 import com.code44.finance.backend.endpoint.tags.Tags;
 import com.code44.finance.backend.endpoint.transactions.Transactions;
 import com.code44.finance.backend.endpoint.users.Users;
-import com.code44.finance.common.Constants;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.DBHelper;
 import com.code44.finance.utils.EventBus;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.services.json.AbstractGoogleJsonClient;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 
-public final class Api {
-    private static Api singleton;
+import java.util.concurrent.Executor;
 
-    private final NetworkExecutor executor;
+public final class Api {
+    private final Executor executor;
     private final Context context;
     private final EventBus eventBus;
     private final DBHelper dbHelper;
@@ -38,7 +33,7 @@ public final class Api {
     private final JsonFactory jsonFactory;
     private final HttpRequestInitializerFactory httpRequestInitializerFactory;
 
-    public Api(NetworkExecutor executor, Context context, EventBus eventBus, DBHelper dbHelper, User user, GcmRegistration gcmRegistration, HttpTransport httpTransport, JsonFactory jsonFactory, HttpRequestInitializerFactory httpRequestInitializerFactory) {
+    public Api(Executor executor, Context context, EventBus eventBus, DBHelper dbHelper, User user, GcmRegistration gcmRegistration, HttpTransport httpTransport, JsonFactory jsonFactory, HttpRequestInitializerFactory httpRequestInitializerFactory) {
         Preconditions.checkNotNull(executor, "Executor cannot be null.");
         Preconditions.checkNotNull(context, "Context cannot be null.");
         Preconditions.checkNotNull(eventBus, "EventBus cannot be null.");
@@ -58,22 +53,6 @@ public final class Api {
         this.httpTransport = httpTransport;
         this.jsonFactory = jsonFactory;
         this.httpRequestInitializerFactory = httpRequestInitializerFactory;
-    }
-
-    public static synchronized Api get() {
-        if (singleton == null) {
-            final NetworkExecutor executor = DefaultNetworkExecutor.get();
-            final Context context = App.getContext();
-            final EventBus eventBus = EventBus.get();
-            final DBHelper dbHelper = DBHelper.get();
-            final User user = User.get();
-            final GcmRegistration gcmRegistration = GcmRegistration.get();
-            final HttpTransport httpTransport = AndroidHttp.newCompatibleTransport();
-            final JsonFactory jsonFactory = new AndroidJsonFactory();
-            final HttpRequestInitializerFactory httpRequestInitializerFactory = new DefaultHttpRequestInitializerFactory();
-            singleton = new Api(executor, context, eventBus, dbHelper, user, gcmRegistration, httpTransport, jsonFactory, httpRequestInitializerFactory);
-        }
-        return singleton;
     }
 
     public void register(String email, String googleId, String firstName, String lastName, String photoUrl, String coverUrl) {
@@ -147,13 +126,5 @@ public final class Api {
 
     public interface HttpRequestInitializerFactory {
         public HttpRequestInitializer newHttpRequestInitializer(Context context, User user);
-    }
-
-    private static class DefaultHttpRequestInitializerFactory implements HttpRequestInitializerFactory {
-        @Override public HttpRequestInitializer newHttpRequestInitializer(Context context, User user) {
-            final GoogleAccountCredential credential = GoogleAccountCredential.usingAudience(context, "server:client_id:" + Constants.ANDROID_AUDIENCE);
-            credential.setSelectedAccountName(user.getEmail());
-            return credential;
-        }
     }
 }

@@ -31,6 +31,8 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
     private static final String UNKNOWN_VALUE = "?";
     private static final String TRANSFER_SYMBOL = " > ";
 
+    private final Currency defaultCurrency;
+    private final Category transferCategory;
     private final IntervalHelper intervalHelper;
     private final LongSparseArray<Long> totalExpenses;
     private final int expenseColor;
@@ -39,9 +41,10 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
     private final int primaryColor;
     private final int weakColor;
 
-    public TransactionsAdapter(Context context, IntervalHelper intervalHelper) {
+    public TransactionsAdapter(Context context, Currency defaultCurrency, Category transferCategory, IntervalHelper intervalHelper) {
         super(context);
-
+        this.defaultCurrency = defaultCurrency;
+        this.transferCategory = transferCategory;
         this.intervalHelper = intervalHelper;
         totalExpenses = new LongSparseArray<>();
         expenseColor = context.getResources().getColor(R.color.text_primary);
@@ -82,7 +85,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         }
 
         if (transaction.getTransactionState() == TransactionState.PENDING) {
-            if (category.getCategoryOwner() == CategoryOwner.SYSTEM && !category.getId().equals(Category.getTransfer().getId())) {
+            if (category.getCategoryOwner() == CategoryOwner.SYSTEM && !category.getId().equals(transferCategory.getId())) {
                 holder.category_TV.setTextColor(weakColor);
                 holder.color_IV.setColorFilter(weakColor);
             }
@@ -140,7 +143,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
             title = mContext.getString(R.string.pending);
         }
         holder.title_TV.setText(title);
-        holder.amount_TV.setText(MoneyFormatter.format(Currency.getDefault(), getTotalExpenseForPosition(position)));
+        holder.amount_TV.setText(MoneyFormatter.format(defaultCurrency, getTotalExpenseForPosition(position)));
 
         return convertView;
     }
@@ -180,7 +183,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         do {
             if (CategoryType.fromInt(cursor.getInt(iCategoryType)) == CategoryType.EXPENSE && cursor.getInt(iIncludeInReports) != 0) {
                 final long amount = cursor.getLong(iAmount);
-                if (Currency.getDefault().getId().equals(cursor.getString(iAccountFromCurrencyServerId))) {
+                if (defaultCurrency.getId().equals(cursor.getString(iAccountFromCurrencyServerId))) {
                     totalExpense += amount;
                 } else {
                     totalExpense += amount * cursor.getDouble(iAccountFromCurrencyExchangeRate);

@@ -16,8 +16,10 @@ import com.code44.finance.R;
 import com.code44.finance.api.User;
 import com.code44.finance.ui.BaseFragment;
 
+import javax.inject.Inject;
+
 public class UserFragment extends BaseFragment implements View.OnClickListener {
-    private final User user = User.get();
+    @Inject User user;
 
     private ImageView cover_IV;
     private ImageView photo_IV;
@@ -28,19 +30,16 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
         return new UserFragment();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_user, container, false);
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
@@ -53,20 +52,17 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
         login_B.setOnClickListener(this);
     }
 
-    @Override
-    public void onResume() {
+    @Override public void onResume() {
         super.onResume();
         updateViews();
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.user, menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_logout:
                 logout();
@@ -75,8 +71,7 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onClick(View view) {
+    @Override public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_B:
                 LoginActivity.start(getActivity());

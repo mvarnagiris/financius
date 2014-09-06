@@ -4,8 +4,11 @@ import android.content.ContentProvider;
 import android.content.UriMatcher;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.code44.finance.App;
 import com.code44.finance.BuildConfig;
 import com.code44.finance.data.db.DBHelper;
+
+import javax.inject.Inject;
 
 public abstract class BaseProvider extends ContentProvider {
     protected static final String CONTENT_URI_BASE = "content://";
@@ -16,6 +19,8 @@ public abstract class BaseProvider extends ContentProvider {
     protected final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     protected SQLiteDatabase database;
+
+    @Inject DBHelper dbHelper;
 
     protected static String getAuthority(Class<? extends BaseProvider> cls) {
         return BuildConfig.PACKAGE_NAME + ".data.providers." + cls.getSimpleName();
@@ -32,7 +37,8 @@ public abstract class BaseProvider extends ContentProvider {
 
     protected SQLiteDatabase getDatabase() {
         if (database == null) {
-            database = DBHelper.get().getWritableDatabase();
+            App.with(getContext()).inject(this);
+            database = dbHelper.getWritableDatabase();
         }
         return database;
     }

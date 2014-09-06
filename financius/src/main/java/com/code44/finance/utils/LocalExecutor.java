@@ -9,18 +9,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class LocalExecutor extends ThreadPoolExecutor {
-    private static LocalExecutor singleton;
-
     public LocalExecutor(int maxThreads) {
         super(0, maxThreads, 30, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(), new LocalThreadFactory());
-    }
-
-    public static synchronized LocalExecutor get() {
-        if (singleton == null) {
-            final int numberCores = Runtime.getRuntime().availableProcessors();
-            singleton = new LocalExecutor(numberCores * 2 + 1);
-        }
-        return singleton;
     }
 
     private static class LocalThreadFactory implements ThreadFactory {

@@ -50,7 +50,7 @@ public class CurrenciesProvider extends BaseModelProvider {
     @Override
     protected void onAfterInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> extras) {
         super.onAfterInsertItem(uri, values, serverId, extras);
-        Currency.updateDefaultCurrency(getDatabase());
+        Currency.updateDefaultCurrency(getDatabase(), defaultCurrency);
         MoneyFormatter.invalidateCache();
     }
 
@@ -71,7 +71,7 @@ public class CurrenciesProvider extends BaseModelProvider {
         super.onBeforeDeleteItems(uri, selection, selectionArgs, modelState, outExtras);
 
         final List<String> affectedIds = getIdList(getIdColumn(), selection, selectionArgs);
-        if (modelState.equals(ModelState.DELETED_UNDO) && affectedIds.contains(Currency.getDefault().getId())) {
+        if (modelState.equals(ModelState.DELETED_UNDO) && affectedIds.contains(defaultCurrency.getId())) {
             throw new IllegalArgumentException("Cannot delete default currency.");
         }
         outExtras.put("affectedIds", affectedIds);
@@ -98,7 +98,7 @@ public class CurrenciesProvider extends BaseModelProvider {
     @Override
     protected void onAfterBulkInsertItems(Uri uri, ContentValues[] valuesArray, Map<String, Object> extras) {
         super.onAfterBulkInsertItems(uri, valuesArray, extras);
-        Currency.updateDefaultCurrency(getDatabase());
+        Currency.updateDefaultCurrency(getDatabase(), defaultCurrency);
         MoneyFormatter.invalidateCache();
     }
 
@@ -110,7 +110,7 @@ public class CurrenciesProvider extends BaseModelProvider {
     private void makeSureThereIsOnlyOneDefaultCurrency(ContentValues values) {
         boolean isDefault = values.getAsBoolean(Tables.Currencies.IS_DEFAULT.getName());
         final String currencyId = values.getAsString(Tables.Currencies.ID.getName());
-        if (isDefault && !currencyId.equals(Currency.getDefault().getId())) {
+        if (isDefault && !currencyId.equals(defaultCurrency.getId())) {
             ContentValues newValues = new ContentValues();
             newValues.put(Tables.Currencies.EXCHANGE_RATE.getName(), 1.0);
             newValues.put(Tables.Currencies.IS_DEFAULT.getName(), false);

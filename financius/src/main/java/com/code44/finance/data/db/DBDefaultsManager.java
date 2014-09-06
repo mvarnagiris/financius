@@ -9,6 +9,7 @@ import com.code44.finance.R;
 import com.code44.finance.common.model.AccountOwner;
 import com.code44.finance.common.model.CategoryOwner;
 import com.code44.finance.common.model.CategoryType;
+import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Currency;
@@ -18,17 +19,25 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
-public final class DBDefaults {
-    private DBDefaults() {
+public final class DBDefaultsManager {
+    private final Context context;
+    private final SQLiteDatabase database;
+
+    public DBDefaultsManager(Context context, SQLiteDatabase database) {
+        Preconditions.checkNotNull(context, "Context cannot be null.");
+        Preconditions.checkNotNull(database, "Database cannot be null.");
+
+        this.context = context;
+        this.database = database;
     }
 
-    public static void addDefaults(Context context, SQLiteDatabase db) {
-        addCurrencies(db);
-        addAccounts(db);
-        addCategories(context, db);
+    public void addDefaults() {
+        addCurrencies();
+        addAccounts();
+        addCategories();
     }
 
-    private static void addCurrencies(SQLiteDatabase db) {
+    private void addCurrencies() {
         final Set<String> currencyCodes = new HashSet<>();
         final String mainCurrencyCode = getMainCurrencyCode();
         currencyCodes.add(mainCurrencyCode);
@@ -52,22 +61,20 @@ public final class DBDefaults {
                 currency.setSymbol(javaCurrency.getSymbol());
                 currency.setDecimalCount(javaCurrency.getDefaultFractionDigits());
                 currency.setDefault(code.equals(mainCurrencyCode));
-                db.insert(Tables.Currencies.TABLE_NAME, null, currency.asValues());
+                database.insert(Tables.Currencies.TABLE_NAME, null, currency.asValues());
             }
         }
-
-        Currency.updateDefaultCurrency(db);
     }
 
-    private static void addAccounts(SQLiteDatabase db) {
+    private void addAccounts() {
         final Account systemAccount = new Account();
         systemAccount.setId(UUID.randomUUID().toString());
         systemAccount.setAccountOwner(AccountOwner.SYSTEM);
 
-        db.insert(Tables.Accounts.TABLE_NAME, null, systemAccount.asValues());
+        database.insert(Tables.Accounts.TABLE_NAME, null, systemAccount.asValues());
     }
 
-    private static void addCategories(Context context, SQLiteDatabase db) {
+    private void addCategories() {
         final Category expenseCategory = new Category();
         expenseCategory.setLocalId(Category.EXPENSE_ID);
         expenseCategory.setId(UUID.randomUUID().toString());
@@ -95,15 +102,15 @@ public final class DBDefaults {
         transferCategory.setCategoryOwner(CategoryOwner.SYSTEM);
         transferCategory.setSortOrder(0);
 
-        db.insert(Tables.Categories.TABLE_NAME, null, expenseCategory.asValues());
-        db.insert(Tables.Categories.TABLE_NAME, null, incomeCategory.asValues());
-        db.insert(Tables.Categories.TABLE_NAME, null, transferCategory.asValues());
+        database.insert(Tables.Categories.TABLE_NAME, null, expenseCategory.asValues());
+        database.insert(Tables.Categories.TABLE_NAME, null, incomeCategory.asValues());
+        database.insert(Tables.Categories.TABLE_NAME, null, transferCategory.asValues());
 
-        insertCategories(db, context.getResources().getStringArray(R.array.expense_categories), context.getResources().getStringArray(R.array.expense_categories_colors), CategoryType.EXPENSE);
-        insertCategories(db, context.getResources().getStringArray(R.array.income_categories), context.getResources().getStringArray(R.array.income_categories_colors), CategoryType.INCOME);
+        insertCategories(context.getResources().getStringArray(R.array.expense_categories), context.getResources().getStringArray(R.array.expense_categories_colors), CategoryType.EXPENSE);
+        insertCategories(context.getResources().getStringArray(R.array.income_categories), context.getResources().getStringArray(R.array.income_categories_colors), CategoryType.INCOME);
     }
 
-    private static String getMainCurrencyCode() {
+    private String getMainCurrencyCode() {
         String code = null;
         try {
             code = java.util.Currency.getInstance(Locale.getDefault()).getCurrencyCode();
@@ -117,7 +124,7 @@ public final class DBDefaults {
         return code;
     }
 
-    private static java.util.Currency getCurrencyFromCode(String code) {
+    private java.util.Currency getCurrencyFromCode(String code) {
         try {
             return java.util.Currency.getInstance(code);
         } catch (Exception ignored) {
@@ -125,7 +132,7 @@ public final class DBDefaults {
         }
     }
 
-    private static void insertCategories(SQLiteDatabase db, String[] titles, String[] colors, CategoryType type) {
+    private void insertCategories(String[] titles, String[] colors, CategoryType type) {
         int order = 0;
         for (String title : titles) {
             final Category category = new Category();
@@ -135,7 +142,7 @@ public final class DBDefaults {
             category.setCategoryType(type);
             category.setCategoryOwner(CategoryOwner.USER);
             category.setSortOrder(order++);
-            db.insert(Tables.Categories.TABLE_NAME, null, category.asValues());
+            database.insert(Tables.Categories.TABLE_NAME, null, category.asValues());
         }
     }
 }

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.code44.finance.App;
 import com.code44.finance.api.GcmRegistration;
 import com.code44.finance.api.Request;
 import com.code44.finance.api.User;
@@ -99,7 +98,7 @@ public class SyncRequest extends Request {
                 .projectionLocalId(Tables.Currencies.LOCAL_ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
-                .from(App.getContext(), CurrenciesProvider.uriCurrencies())
+                .from(context, CurrenciesProvider.uriCurrencies())
                 .execute();
         final List<Currency> currencies = new ArrayList<>();
         do {
@@ -121,7 +120,7 @@ public class SyncRequest extends Request {
                 .projectionLocalId(Tables.Categories.LOCAL_ID)
                 .projection(Tables.Categories.PROJECTION)
                 .selection(Tables.Categories.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
-                .from(App.getContext(), CategoriesProvider.uriCategories())
+                .from(context, CategoriesProvider.uriCategories())
                 .execute();
         final List<Category> categories = new ArrayList<>();
         do {
@@ -143,7 +142,7 @@ public class SyncRequest extends Request {
                 .projectionLocalId(Tables.Tags.LOCAL_ID)
                 .projection(Tables.Tags.PROJECTION)
                 .selection(Tables.Tags.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
-                .from(App.getContext(), TagsProvider.uriTags())
+                .from(context, TagsProvider.uriTags())
                 .execute();
         final List<Tag> tags = new ArrayList<>();
         do {
@@ -166,7 +165,7 @@ public class SyncRequest extends Request {
                 .projection(Tables.Accounts.PROJECTION)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Accounts.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
-                .from(App.getContext(), AccountsProvider.uriAccounts())
+                .from(context, AccountsProvider.uriAccounts())
                 .execute();
         final List<Account> accounts = new ArrayList<>();
         do {
@@ -193,7 +192,7 @@ public class SyncRequest extends Request {
                 .projection(Tables.Currencies.PROJECTION_ACCOUNT_TO)
                 .projection(Tables.Categories.PROJECTION)
                 .selection(Tables.Transactions.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
-                .from(App.getContext(), TransactionsProvider.uriTransactions())
+                .from(context, TransactionsProvider.uriTransactions())
                 .execute();
         final List<Transaction> transactions = new ArrayList<>();
         do {

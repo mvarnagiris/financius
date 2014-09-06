@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 public class TransactionsProvider extends BaseModelProvider {
     public static final String URI_PARAM_JOIN_TABLE = "join_table";
     public static final String URI_VALUE_JOIN_TABLE_ACCOUNTS_FROM = "accounts_from";
@@ -27,6 +29,8 @@ public class TransactionsProvider extends BaseModelProvider {
     public static final String URI_VALUE_JOIN_TABLE_CURRENCIES_FROM = "currencies_from";
     public static final String URI_VALUE_JOIN_TABLE_CURRENCIES_TO = "currencies_to";
     public static final String URI_VALUE_JOIN_TABLE_TAGS = "tags";
+
+    @Inject Account systemAccount;
 
     public static Uri uriTransactions() {
         return uriModels(TransactionsProvider.class, Tables.Transactions.TABLE_NAME);
@@ -124,7 +128,7 @@ public class TransactionsProvider extends BaseModelProvider {
 
         final String accountFromId = values.getAsString(Tables.Transactions.ACCOUNT_FROM_ID.getName());
         final String accountToId = values.getAsString(Tables.Transactions.ACCOUNT_TO_ID.getName());
-        final String systemAccountId = Account.getSystem().getId();
+        final String systemAccountId = systemAccount.getId();
         if (!accountFromId.equals(systemAccountId)) {
             updateAccountBalance(accountFromId);
         }

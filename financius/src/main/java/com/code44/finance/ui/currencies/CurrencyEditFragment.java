@@ -34,7 +34,6 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelEditFragment;
-import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.MoneyFormatter;
 import com.squareup.otto.Subscribe;
 
@@ -42,14 +41,16 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressDrawable;
 
 public class CurrencyEditFragment extends ModelEditFragment<Currency> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int LOADER_CURRENCIES = 1;
 
-    private final CurrenciesApi currenciesApi = CurrenciesApi.get();
-    private final EventBus eventBus = EventBus.get();
+    @Inject CurrenciesApi currenciesApi;
+    @Inject Currency defaultCurrency;
 
     private SmoothProgressBar loading_SPB;
     private AutoCompleteTextView code_ET;
@@ -104,7 +105,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
 
         // Setup
         prepareCurrenciesAutoComplete();
-        currentMainCurrency_TV.setText(getString(R.string.f_current_main_currency_is_x, Currency.getDefault().getCode()));
+        currentMainCurrency_TV.setText(getString(R.string.f_current_main_currency_is_x, defaultCurrency.getCode()));
         decimalsCount_B.setOnClickListener(this);
         thousandsSeparator_B.setOnClickListener(this);
         decimalSeparator_B.setOnClickListener(this);
@@ -156,18 +157,18 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     @Override public void onResume() {
         super.onResume();
         setRefreshing(false);
-        eventBus.register(this);
+        getEventBus().register(this);
     }
 
     @Override public void onPause() {
         super.onPause();
-        eventBus.unregister(this);
+        getEventBus().unregister(this);
     }
 
     @Override public boolean onSave(Context context, Currency model) {
         boolean canSave = true;
 
-        if (TextUtils.isEmpty(model.getCode()) || model.getCode().length() != 3 || model.getCode().equals(Currency.getDefault().getCode())) {
+        if (TextUtils.isEmpty(model.getCode()) || model.getCode().length() != 3 || model.getCode().equals(defaultCurrency.getCode())) {
             canSave = false;
             // TODO Show error
         }
@@ -208,7 +209,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         updateSymbolTitlePosition();
 
         code_ET.setEnabled(isNewModel());
-        mainCurrencyContainer_V.setVisibility(Currency.getDefault().getId().equals(model.getId()) ? View.GONE : View.VISIBLE);
+        mainCurrencyContainer_V.setVisibility(defaultCurrency.getId().equals(model.getId()) ? View.GONE : View.VISIBLE);
         exchangeRateContainer_V.setVisibility(model.isDefault() ? View.GONE : View.VISIBLE);
     }
 
@@ -242,7 +243,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
                 ensureModelUpdated(model);
                 final String code = model.getCode();
                 if (!TextUtils.isEmpty(code) && code.length() == 3) {
-                    currenciesApi.updateExchangeRate(code);
+                    currenciesApi.updateExchangeRate(code, defaultCurrency.getCode());
                     setRefreshing(true);
                 }
                 break;

@@ -2,12 +2,8 @@ package com.code44.finance.utils;
 
 import android.content.Context;
 
-import com.code44.finance.App;
-
 public class GeneralPrefs extends Prefs {
     private static final String PREFIX = "general_";
-
-    private static GeneralPrefs singleton;
 
     private final EventBus eventBus;
 
@@ -19,13 +15,6 @@ public class GeneralPrefs extends Prefs {
         super(context);
         this.eventBus = eventBus;
         refresh();
-    }
-
-    public static synchronized GeneralPrefs get() {
-        if (singleton == null) {
-            singleton = new GeneralPrefs(App.getContext(), EventBus.get());
-        }
-        return singleton;
     }
 
     public void notifyChanged() {

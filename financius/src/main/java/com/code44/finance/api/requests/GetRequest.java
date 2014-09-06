@@ -59,4 +59,12 @@ public abstract class GetRequest<T extends GenericJson> extends Request {
 
     protected void onValuesCreated(ContentValues values) {
     }
+
+    protected Context getContext() {
+        return context;
+    }
+
+    protected User getUser() {
+        return user;
+    }
 }

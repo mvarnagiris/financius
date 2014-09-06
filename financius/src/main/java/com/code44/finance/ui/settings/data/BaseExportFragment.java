@@ -7,8 +7,10 @@ import com.code44.finance.data.backup.DataExporterRunnable;
 import com.code44.finance.ui.BaseFragment;
 import com.code44.finance.utils.LocalExecutor;
 
+import javax.inject.Inject;
+
 public abstract class BaseExportFragment extends BaseFragment {
-    protected final LocalExecutor localExecutor = LocalExecutor.get();
+    @Inject LocalExecutor localExecutor;
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,7 +18,7 @@ public abstract class BaseExportFragment extends BaseFragment {
     }
 
     protected void exportData(DataExporter dataExporter) {
-        localExecutor.execute(new DataExporterRunnable(eventBus, dataExporter));
+        localExecutor.execute(new DataExporterRunnable(getEventBus(), dataExporter));
     }
 
     protected void cancel() {

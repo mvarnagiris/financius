@@ -14,16 +14,25 @@ import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.adapters.TransactionsAdapter;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Category;
+import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
+import com.code44.finance.qualifiers.Transfer;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.IntervalHelper;
 import com.squareup.otto.Subscribe;
+
+import javax.inject.Inject;
 
 import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class TransactionsFragment extends ModelListFragment {
+    @Inject Currency defaultCurrency;
+    @Inject @Transfer Category transferCategory;
+    @Inject IntervalHelper intervalHelper;
+
     private ExpandableStickyListHeadersListView headerList_V;
 
     public static TransactionsFragment newInstance() {
@@ -49,7 +58,7 @@ public class TransactionsFragment extends ModelListFragment {
     }
 
     @Override protected BaseModelsAdapter createAdapter(Context context) {
-        return new TransactionsAdapter(context, intervalHelper);
+        return new TransactionsAdapter(context, defaultCurrency, transferCategory, intervalHelper);
     }
 
     @Override protected CursorLoader getModelsCursorLoader(Context context) {

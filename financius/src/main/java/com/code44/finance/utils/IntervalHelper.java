@@ -2,7 +2,6 @@ package com.code44.finance.utils;
 
 import android.content.Context;
 
-import com.code44.finance.App;
 import com.code44.finance.R;
 import com.squareup.otto.Produce;
 
@@ -15,8 +14,6 @@ import org.joda.time.format.DateTimeFormat;
 
 public class IntervalHelper extends Prefs {
     private static final String PREFIX = "interval_helper_";
-
-    private static IntervalHelper singleton;
 
     private final EventBus eventBus;
 
@@ -32,13 +29,6 @@ public class IntervalHelper extends Prefs {
         refresh();
 
         eventBus.register(this);
-    }
-
-    public static IntervalHelper get() {
-        if (singleton == null) {
-            singleton = new IntervalHelper(App.getContext(), EventBus.get());
-        }
-        return singleton;
     }
 
     public static Period getPeriod(int intervalLength, Type type) {

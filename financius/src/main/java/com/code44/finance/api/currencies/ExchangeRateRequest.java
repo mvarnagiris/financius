@@ -3,7 +3,6 @@ package com.code44.finance.api.currencies;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.code44.finance.App;
 import com.code44.finance.api.Request;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.common.utils.StringUtils;
@@ -50,7 +49,7 @@ public class ExchangeRateRequest extends Request {
 
         final Cursor cursor = Tables.Currencies.getQuery()
                 .selection(" and " + Tables.Currencies.CODE + "=?", fromCode)
-                .from(App.getContext(), CurrenciesProvider.uriCurrencies())
+                .from(context, CurrenciesProvider.uriCurrencies())
                 .execute();
         if (cursor.moveToFirst()) {
             currency = Currency.from(cursor);

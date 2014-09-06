@@ -23,10 +23,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 @SuppressWarnings("UnusedParameters")
 public abstract class BaseModelProvider extends BaseProvider {
     private static final int URI_ITEMS = 1;
     private static final int URI_ITEMS_ID = 2;
+
+    @Inject Api api;
 
     public static Uri uriModels(Class<? extends BaseModelProvider> providerClass, String modelTable) {
         return Uri.parse(CONTENT_URI_BASE + getAuthority(providerClass) + "/" + modelTable);
@@ -36,8 +40,7 @@ public abstract class BaseModelProvider extends BaseProvider {
         return Uri.withAppendedPath(uriModels(providerClass, modelTable), modelServerId);
     }
 
-    @Override
-    public boolean onCreate() {
+    @Override public boolean onCreate() {
         super.onCreate();
 
         final String authority = getAuthority();
@@ -48,8 +51,7 @@ public abstract class BaseModelProvider extends BaseProvider {
         return true;
     }
 
-    @Override
-    public String getType(Uri uri) {
+    @Override public String getType(Uri uri) {
         switch (uriMatcher.match(uri)) {
             case URI_ITEMS:
                 return TYPE_LIST_BASE + getModelTable();
@@ -60,8 +62,7 @@ public abstract class BaseModelProvider extends BaseProvider {
         }
     }
 
-    @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    @Override public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         final Cursor cursor;
 
         final int uriId = uriMatcher.match(uri);
@@ -88,8 +89,7 @@ public abstract class BaseModelProvider extends BaseProvider {
         return cursor;
     }
 
-    @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    @Override public Uri insert(Uri uri, ContentValues values) {
         final String serverId = values.getAsString(getIdColumn().getName());
         if (StringUtils.isEmpty(serverId)) {
             throw new IllegalArgumentException("Server Id cannot be empty.");
@@ -119,13 +119,12 @@ public abstract class BaseModelProvider extends BaseProvider {
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
-        Api.get().sync();
+        api.sync();
 
         return Uri.withAppendedPath(uri, serverId);
     }
 
-    @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    @Override public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         int count;
         final SQLiteDatabase database = getDatabase();
         final int uriId = uriMatcher.match(uri);
@@ -151,13 +150,12 @@ public abstract class BaseModelProvider extends BaseProvider {
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
-        Api.get().sync();
+        api.sync();
 
         return count;
     }
 
-    @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    @Override public int delete(Uri uri, String selection, String[] selectionArgs) {
         int count;
         final SQLiteDatabase database = getDatabase();
         final int uriId = uriMatcher.match(uri);
@@ -203,14 +201,13 @@ public abstract class BaseModelProvider extends BaseProvider {
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
         if (modelState != ModelState.DELETED_UNDO) {
-            Api.get().sync();
+            api.sync();
         }
 
         return count;
     }
 
-    @Override
-    public int bulkInsert(Uri uri, @SuppressWarnings("NullableProblems") ContentValues[] valuesArray) {
+    @Override public int bulkInsert(Uri uri, @SuppressWarnings("NullableProblems") ContentValues[] valuesArray) {
         int count;
         final SQLiteDatabase database = getDatabase();
         final int uriId = uriMatcher.match(uri);

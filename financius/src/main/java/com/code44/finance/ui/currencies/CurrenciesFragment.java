@@ -24,21 +24,23 @@ import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelListFragment;
-import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.GeneralPrefs;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressDrawable;
 
 public class CurrenciesFragment extends ModelListFragment implements CompoundButton.OnCheckedChangeListener {
     private final List<Currency> currencies = new ArrayList<>();
-    private final GeneralPrefs generalPrefs = GeneralPrefs.get();
-    private final CurrenciesApi currenciesApi = CurrenciesApi.get();
-    private final EventBus eventBus = EventBus.get();
+
+    @Inject GeneralPrefs generalPrefs;
+    @Inject CurrenciesApi currenciesApi;
+    @Inject Currency defaultCurrency;
 
     private SmoothProgressBar loading_SPB;
 
@@ -73,12 +75,12 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
     @Override public void onResume() {
         super.onResume();
         setRefreshing(false);
-        eventBus.register(this);
+        getEventBus().register(this);
     }
 
     @Override public void onPause() {
         super.onPause();
-        eventBus.unregister(this);
+        getEventBus().unregister(this);
     }
 
     @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -147,7 +149,7 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         }
 
         if (!fromCodes.isEmpty()) {
-            currenciesApi.updateExchangeRates(fromCodes);
+            currenciesApi.updateExchangeRates(fromCodes, defaultCurrency.getCode());
             setRefreshing(true);
         }
     }

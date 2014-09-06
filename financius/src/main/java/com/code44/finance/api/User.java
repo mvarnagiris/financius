@@ -3,7 +3,6 @@ package com.code44.finance.api;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.code44.finance.App;
 import com.code44.finance.data.db.DBHelper;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.Prefs;
@@ -11,8 +10,6 @@ import com.squareup.otto.Produce;
 
 public class User extends Prefs {
     private static final String PREFIX = "user_";
-
-    private static User singleton;
 
     private final DBHelper dbHelper;
     private final GcmRegistration gcmRegistration;
@@ -41,17 +38,6 @@ public class User extends Prefs {
 
         refresh();
         eventBus.register(this);
-    }
-
-    public static synchronized User get() {
-        if (singleton == null) {
-            final Context context = App.getContext();
-            final DBHelper dbHelper = DBHelper.get();
-            final GcmRegistration gcmRegistration = GcmRegistration.get();
-            final EventBus eventBus = EventBus.get();
-            singleton = new User(context, dbHelper, gcmRegistration, eventBus);
-        }
-        return singleton;
     }
 
     @Override

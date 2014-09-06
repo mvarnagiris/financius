@@ -4,23 +4,22 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.code44.finance.App;
 import com.code44.finance.R;
 import com.code44.finance.ui.settings.SettingsActivity;
 import com.code44.finance.utils.AppError;
 import com.code44.finance.utils.EventBus;
-import com.code44.finance.utils.GeneralPrefs;
-import com.code44.finance.utils.IntervalHelper;
 import com.code44.finance.utils.ToolbarHelper;
 import com.squareup.otto.Subscribe;
 
+import javax.inject.Inject;
+
 public class BaseActivity extends Activity {
-    protected final EventBus eventBus = EventBus.get();
-    protected final IntervalHelper intervalHelper = IntervalHelper.get();
-    protected final GeneralPrefs generalPrefs = GeneralPrefs.get();
 
     private final Object eventHandler = new Object() {
         @Subscribe public void onAppError(AppError error) {
@@ -29,6 +28,8 @@ public class BaseActivity extends Activity {
     };
 
     protected ToolbarHelper toolbarHelper;
+
+    @Inject EventBus eventBus;
 
     protected static Intent makeIntent(Context context, Class activityClass) {
         return new Intent(context, activityClass);
@@ -40,6 +41,11 @@ public class BaseActivity extends Activity {
 
     protected static void startForResult(Fragment fragment, Intent intent, int requestCode) {
         fragment.startActivityForResult(intent, requestCode);
+    }
+
+    @Override protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        App.with(this).inject(this);
     }
 
     @Override protected void onResume() {
@@ -84,13 +90,5 @@ public class BaseActivity extends Activity {
 
     protected EventBus getEventBus() {
         return eventBus;
-    }
-
-    protected IntervalHelper getIntervalHelper() {
-        return intervalHelper;
-    }
-
-    protected GeneralPrefs getGeneralPrefs() {
-        return generalPrefs;
     }
 }

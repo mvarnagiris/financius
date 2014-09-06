@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.code44.finance.App;
 import com.code44.finance.R;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
@@ -14,12 +15,16 @@ import com.code44.finance.utils.MoneyFormatter;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class AccountsView extends LinearLayout {
     private static final int TOP_STATIC_VIEWS_COUNT = 1;
     private static final int BOTTOM_STATIC_VIEWS_COUNT = 1;
 
     private final View balanceContainer_V;
     private final TextView totalBalance_TV;
+
+    @Inject Currency defaultCurrency;
 
     @SuppressWarnings("UnusedDeclaration")
     public AccountsView(Context context) {
@@ -36,6 +41,7 @@ public class AccountsView extends LinearLayout {
 
     public AccountsView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        App.with(context).inject(this);
         setOrientation(VERTICAL);
         final int padding = getResources().getDimensionPixelSize(R.dimen.keyline);
         setPadding(padding, padding, padding, padding);
@@ -78,7 +84,7 @@ public class AccountsView extends LinearLayout {
 
         if (accounts.size() > 1) {
             balanceContainer_V.setVisibility(VISIBLE);
-            totalBalance_TV.setText(MoneyFormatter.format(Currency.getDefault(), totalBalance));
+            totalBalance_TV.setText(MoneyFormatter.format(defaultCurrency, totalBalance));
         } else {
             balanceContainer_V.setVisibility(GONE);
         }

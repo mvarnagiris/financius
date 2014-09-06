@@ -1,9 +1,9 @@
 package com.code44.finance.utils;
 
+import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 
-import com.code44.finance.App;
 import com.code44.finance.R;
 
 import java.text.NumberFormat;
@@ -18,12 +18,14 @@ public class Calculator {
     private static final String DIVIDE = "/";
     private static final String MULTIPLY = "*";
 
+    private final Context context;
     private final Interpreter interpreter;
     private final LinkedList<Part> parts;
 
     private Part currentPart;
 
-    public Calculator() {
+    public Calculator(Context context) {
+        this.context = context;
         this.interpreter = new Interpreter();
         this.parts = new LinkedList<>();
         clear();
@@ -35,19 +37,19 @@ public class Calculator {
     }
 
     public void plus() {
-        addOperator(PLUS, App.getContext().getString(R.string.plus));
+        addOperator(PLUS, context.getString(R.string.plus));
     }
 
     public void minus() {
-        addOperator(MINUS, App.getContext().getString(R.string.minus));
+        addOperator(MINUS, context.getString(R.string.minus));
     }
 
     public void multiply() {
-        addOperator(MULTIPLY, App.getContext().getString(R.string.multiply));
+        addOperator(MULTIPLY, context.getString(R.string.multiply));
     }
 
     public void divide() {
-        addOperator(DIVIDE, App.getContext().getString(R.string.divide));
+        addOperator(DIVIDE, context.getString(R.string.divide));
     }
 
     public void decimal() {

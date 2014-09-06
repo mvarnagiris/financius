@@ -13,13 +13,20 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Transaction;
+import com.code44.finance.qualifiers.Expense;
+import com.code44.finance.qualifiers.Income;
 import com.code44.finance.utils.IOUtils;
 
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 public class AccountsProvider extends BaseModelProvider {
     private static final String EXTRA_BALANCE_DELTA = "balance_delta";
+
+    @Inject @Expense Category expenseCategory;
+    @Inject @Income Category incomeCategory;
 
     public static Uri uriAccounts() {
         return uriModels(AccountsProvider.class, Tables.Accounts.TABLE_NAME);
@@ -122,11 +129,11 @@ public class AccountsProvider extends BaseModelProvider {
         if (balanceDelta > 0) {
             transaction = new Transaction();
             transaction.setAccountTo(account);
-            transaction.setCategory(Category.getIncome());
+            transaction.setCategory(incomeCategory);
         } else if (balanceDelta < 0) {
             transaction = new Transaction();
             transaction.setAccountFrom(account);
-            transaction.setCategory(Category.getExpense());
+            transaction.setCategory(expenseCategory);
         }
 
         if (transaction != null) {

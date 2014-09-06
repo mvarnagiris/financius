@@ -5,16 +5,12 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.code44.finance.App;
 import com.code44.finance.backend.endpoint.categories.model.CategoryEntity;
 import com.code44.finance.common.model.CategoryOwner;
 import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.common.utils.Preconditions;
-import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.providers.CategoriesProvider;
-import com.code44.finance.utils.IOUtils;
 
 public class Category extends BaseModel<CategoryEntity> {
     public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>() {
@@ -30,10 +26,6 @@ public class Category extends BaseModel<CategoryEntity> {
     public static final long EXPENSE_ID = 1;
     public static final long INCOME_ID = 2;
     public static final long TRANSFER_ID = 3;
-
-    private static Category expenseCategory;
-    private static Category incomeCategory;
-    private static Category transferCategory;
 
     private String title;
     private int color;
@@ -52,51 +44,6 @@ public class Category extends BaseModel<CategoryEntity> {
 
     public Category(Parcel in) {
         super(in);
-    }
-
-    public static Category getExpense() {
-        if (expenseCategory == null) {
-            final Cursor cursor = Query.create()
-                    .projectionLocalId(Tables.Categories.LOCAL_ID)
-                    .projection(Tables.Categories.PROJECTION)
-                    .selection(Tables.Categories.LOCAL_ID + "=?", String.valueOf(EXPENSE_ID))
-                    .from(App.getContext(), CategoriesProvider.uriCategories())
-                    .execute();
-
-            expenseCategory = Category.from(cursor);
-            IOUtils.closeQuietly(cursor);
-        }
-        return expenseCategory;
-    }
-
-    public static Category getIncome() {
-        if (incomeCategory == null) {
-            final Cursor cursor = Query.create()
-                    .projectionLocalId(Tables.Categories.LOCAL_ID)
-                    .projection(Tables.Categories.PROJECTION)
-                    .selection(Tables.Categories.LOCAL_ID + "=?", String.valueOf(INCOME_ID))
-                    .from(App.getContext(), CategoriesProvider.uriCategories())
-                    .execute();
-
-            incomeCategory = Category.from(cursor);
-            IOUtils.closeQuietly(cursor);
-        }
-        return incomeCategory;
-    }
-
-    public static Category getTransfer() {
-        if (transferCategory == null) {
-            final Cursor cursor = Query.create()
-                    .projectionLocalId(Tables.Categories.LOCAL_ID)
-                    .projection(Tables.Categories.PROJECTION)
-                    .selection(Tables.Categories.LOCAL_ID + "=?", String.valueOf(TRANSFER_ID))
-                    .from(App.getContext(), CategoriesProvider.uriCategories())
-                    .execute();
-
-            transferCategory = Category.from(cursor);
-            IOUtils.closeQuietly(cursor);
-        }
-        return transferCategory;
     }
 
     public static Category from(Cursor cursor) {
