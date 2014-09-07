@@ -21,12 +21,14 @@ import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class SettingsActivity extends BaseActivity implements AdapterView.OnItemClickListener {
     private static final int REQUEST_INTERVAL = 98527;
 
     private static final String FRAGMENT_INTERVAL = "FRAGMENT_INTERVAL";
 
-    private final IntervalHelper intervalHelper = IntervalHelper.get();
+    @Inject IntervalHelper intervalHelper;
 
     private SettingsAdapter adapter;
 

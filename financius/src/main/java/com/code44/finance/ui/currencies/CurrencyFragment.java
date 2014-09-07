@@ -23,10 +23,11 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.ui.ModelFragment;
-import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.views.FabImageButton;
 import com.squareup.otto.Subscribe;
+
+import javax.inject.Inject;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressDrawable;
@@ -34,8 +35,8 @@ import fr.castorflex.android.smoothprogressbar.SmoothProgressDrawable;
 public class CurrencyFragment extends ModelFragment<Currency> implements View.OnClickListener {
     private static final int LOADER_ACCOUNTS = 1;
 
-    private final CurrenciesApi currenciesApi = CurrenciesApi.get();
-    private final EventBus eventBus = EventBus.get();
+    @Inject CurrenciesApi currenciesApi;
+    @Inject Currency defaultCurrency;
 
     private TextView code_TV;
     private TextView format_TV;
@@ -76,12 +77,12 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
     @Override public void onResume() {
         super.onResume();
         setRefreshing(false);
-        eventBus.register(this);
+        getEventBus().register(this);
     }
 
     @Override public void onPause() {
         super.onPause();
-        eventBus.unregister(this);
+        getEventBus().unregister(this);
     }
 
     @Override public void onPrepareOptionsMenu(Menu menu) {
@@ -165,7 +166,7 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
     }
 
     private void refreshRate() {
-        currenciesApi.updateExchangeRate(model.getCode());
+        currenciesApi.updateExchangeRate(model.getCode(), defaultCurrency.getCode());
         setRefreshing(true);
     }
 

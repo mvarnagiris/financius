@@ -4,13 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.code44.finance.App;
-
 public class DBHelper extends SQLiteOpenHelper {
     private static final String NAME = "financius.db";
     private static final int VERSION = 1;
-
-    private static DBHelper singleton;
 
     private final Context context;
 
@@ -23,15 +19,7 @@ public class DBHelper extends SQLiteOpenHelper {
         this.context = context;
     }
 
-    public static synchronized DBHelper get() {
-        if (singleton == null) {
-            singleton = new DBHelper(App.getContext());
-        }
-        return singleton;
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
+    @Override public void onCreate(SQLiteDatabase db) {
         // Create tables
         db.execSQL(Tables.Currencies.createScript());
         db.execSQL(Tables.Accounts.createScript());
@@ -51,8 +39,7 @@ public class DBHelper extends SQLiteOpenHelper {
         addDefaults(db);
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
     public void clear() {
@@ -61,12 +48,8 @@ public class DBHelper extends SQLiteOpenHelper {
         // TODO Clear database for the user
     }
 
-    public void addDefaults() {
-        addDefaults(getWritableDatabase());
-    }
-
-    private void addDefaults(SQLiteDatabase db) {
-        DBDefaults.addDefaults(context, db);
+    private void addDefaults(SQLiteDatabase database) {
+        new DBDefaultsManager(context, database).addDefaults();
     }
 
     private void createIndex(SQLiteDatabase db, Column serverIdColumn) {

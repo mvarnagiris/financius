@@ -38,11 +38,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.inject.Inject;
+
 public class OverviewFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
     private static final int LOADER_TRANSACTIONS = 1;
     private static final int LOADER_ACCOUNTS = 2;
 
-    private final IntervalHelper intervalHelper = IntervalHelper.get();
+    @Inject IntervalHelper intervalHelper;
+    @Inject Currency defaultCurrency;
 
     private FabImageButton newTransaction_FAB;
     private View overviewGraphContainer_V;
@@ -177,7 +180,7 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
                 final Category category = transaction.getCategory();
                 if (transaction.includeInReports() && category.getCategoryType() == CategoryType.EXPENSE && transaction.getTransactionState() == TransactionState.CONFIRMED) {
                     final Long amount;
-                    if (transaction.getAccountFrom().getCurrency().getId().equals(Currency.getDefault().getId())) {
+                    if (transaction.getAccountFrom().getCurrency().getId().equals(defaultCurrency.getId())) {
                         amount = transaction.getAmount();
                     } else {
                         amount = Math.round(transaction.getAmount() * transaction.getAccountFrom().getCurrency().getExchangeRate());

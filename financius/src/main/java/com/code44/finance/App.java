@@ -5,29 +5,38 @@ import android.content.Context;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-public class App extends Application {
-    private static App app;
+import dagger.ObjectGraph;
+import hugo.weaving.DebugLog;
 
-    public static Context getContext() {
-        return app;
+public class App extends Application {
+    private ObjectGraph objectGraph;
+
+    public static App with(Context context) {
+        return (App) context.getApplicationContext();
     }
 
     @Override public void onCreate() {
         super.onCreate();
-        app = this;
-
-//        if (BuildConfig.DEBUG) {
-//            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-//                    .detectAll()
-//                    .penaltyLog()
-//                    .penaltyDialog()
-//                    .build());
-//            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-//                    .detectAll()
-//                    .penaltyDeath()
-//                    .penaltyLog()
-//                    .build());
-//        }
+//        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+//                .detectAll()
+//                .penaltyLog()
+//                .penaltyDialog()
+//                .build());
+//        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+//                .detectAll()
+//                .penaltyDeath()
+//                .penaltyLog()
+//                .build());
+        buildObjectGraphAndInject();
         JodaTimeAndroid.init(this);
+    }
+
+    @DebugLog public void buildObjectGraphAndInject() {
+        objectGraph = ObjectGraph.create(Modules.list(this));
+        objectGraph.inject(this);
+    }
+
+    public void inject(Object o) {
+        objectGraph.inject(o);
     }
 }

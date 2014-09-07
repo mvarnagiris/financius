@@ -13,11 +13,13 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.utils.MoneyFormatter;
 
 public class AccountsAdapter extends BaseModelsAdapter {
+    private final Currency defaultCurrency;
     private final int includeInTotalsTextColor;
     private final int doNotIncludeInTotalsTextColor;
 
-    public AccountsAdapter(Context context) {
+    public AccountsAdapter(Context context, Currency defaultCurrency) {
         super(context);
+        this.defaultCurrency = defaultCurrency;
         includeInTotalsTextColor = context.getResources().getColor(R.color.text_primary);
         doNotIncludeInTotalsTextColor = context.getResources().getColor(R.color.text_secondary);
     }
@@ -36,11 +38,11 @@ public class AccountsAdapter extends BaseModelsAdapter {
         holder.title_TV.setText(account.getTitle());
         holder.balance_TV.setText(MoneyFormatter.format(account.getCurrency(), account.getBalance()));
         holder.balance_TV.setTextColor(account.includeInTotals() ? includeInTotalsTextColor : doNotIncludeInTotalsTextColor);
-        if (account.getCurrency().getId().equals(Currency.getDefault().getId())) {
+        if (account.getCurrency().getId().equals(defaultCurrency.getId())) {
             holder.mainCurrencyBalance_TV.setVisibility(View.GONE);
         } else {
             holder.mainCurrencyBalance_TV.setVisibility(View.VISIBLE);
-            holder.mainCurrencyBalance_TV.setText(MoneyFormatter.format(Currency.getDefault(), (long) (account.getBalance() * account.getCurrency().getExchangeRate())));
+            holder.mainCurrencyBalance_TV.setText(MoneyFormatter.format(defaultCurrency, (long) (account.getBalance() * account.getCurrency().getExchangeRate())));
         }
     }
 

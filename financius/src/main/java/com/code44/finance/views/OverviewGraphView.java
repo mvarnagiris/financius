@@ -5,15 +5,20 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.code44.finance.App;
 import com.code44.finance.R;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartView;
 import com.code44.finance.utils.MoneyFormatter;
 
+import javax.inject.Inject;
+
 public class OverviewGraphView extends LinearLayout {
     private final PieChartView pieChart_V;
     private final TextView totalExpense_TV;
+
+    @Inject Currency defaultCurrency;
 
     @SuppressWarnings("UnusedDeclaration")
     public OverviewGraphView(Context context) {
@@ -30,6 +35,7 @@ public class OverviewGraphView extends LinearLayout {
 
     public OverviewGraphView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        App.with(context).inject(this);
         inflate(context, R.layout.v_overview_graph, this);
         setBackgroundResource(R.drawable.btn_borderless);
 
@@ -47,8 +53,7 @@ public class OverviewGraphView extends LinearLayout {
         }
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         final LayoutParams params = (LayoutParams) pieChart_V.getLayoutParams();
         params.height = pieChart_V.getMeasuredWidth();
@@ -59,6 +64,6 @@ public class OverviewGraphView extends LinearLayout {
     }
 
     public void setTotalExpense(long totalExpense) {
-        totalExpense_TV.setText(MoneyFormatter.format(Currency.getDefault(), totalExpense));
+        totalExpense_TV.setText(MoneyFormatter.format(defaultCurrency, totalExpense));
     }
 }

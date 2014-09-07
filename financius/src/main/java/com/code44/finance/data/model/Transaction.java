@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.code44.finance.backend.endpoint.transactions.model.TransactionEntity;
+import com.code44.finance.common.model.AccountOwner;
 import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.utils.Preconditions;
@@ -42,9 +43,9 @@ public class Transaction extends BaseModel<TransactionEntity> {
 
     public Transaction() {
         super();
-        setAccountFrom(Account.getSystem());
-        setAccountTo(Account.getSystem());
-        setCategory(Category.getExpense());
+        setAccountFrom(null);
+        setAccountTo(null);
+        setCategory(null);
         setTags(null);
         setDate(System.currentTimeMillis());
         setAmount(0);
@@ -284,11 +285,11 @@ public class Transaction extends BaseModel<TransactionEntity> {
             throw new IllegalStateException("AccountFrom cannot be equal to AccountTo.");
         }
 
-        if (category.getCategoryType() == CategoryType.EXPENSE && accountFrom == Account.getSystem() && transactionState == TransactionState.CONFIRMED) {
+        if (category.getCategoryType() == CategoryType.EXPENSE && accountFrom.getAccountOwner() == AccountOwner.SYSTEM && transactionState == TransactionState.CONFIRMED) {
             throw new IllegalStateException("Account from cannot be system account.");
         }
 
-        if (category.getCategoryType() == CategoryType.INCOME && accountTo == Account.getSystem() && transactionState == TransactionState.CONFIRMED) {
+        if (category.getCategoryType() == CategoryType.INCOME && accountTo.getAccountOwner() == AccountOwner.SYSTEM && transactionState == TransactionState.CONFIRMED) {
             throw new IllegalStateException("Account to cannot be system account.");
         }
 

@@ -21,7 +21,10 @@ import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.MoneyFormatter;
 
+import javax.inject.Inject;
+
 public class AccountsFragment extends ModelListFragment {
+    @Inject Currency defaultCurrency;
     private TextView balance_TV;
 
     public static AccountsFragment newInstance(Mode mode) {
@@ -51,7 +54,7 @@ public class AccountsFragment extends ModelListFragment {
     }
 
     @Override protected BaseModelsAdapter createAdapter(Context context) {
-        return new AccountsAdapter(context);
+        return new AccountsAdapter(context, defaultCurrency);
     }
 
     @Override protected CursorLoader getModelsCursorLoader(Context context) {
@@ -84,6 +87,6 @@ public class AccountsFragment extends ModelListFragment {
                 }
             } while (cursor.moveToNext());
         }
-        balance_TV.setText(MoneyFormatter.format(Currency.getDefault(), balance));
+        balance_TV.setText(MoneyFormatter.format(defaultCurrency, balance));
     }
 }

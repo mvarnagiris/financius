@@ -14,16 +14,20 @@ import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.IOUtils;
 
+import javax.inject.Inject;
+
 public class StartupService extends IntentService {
-    private final User user = User.get();
-    private final GcmRegistration gcmRegistration = GcmRegistration.get();
-    private final Api api = Api.get();
-    private final CurrenciesApi currenciesApi = CurrenciesApi.get();
-    private final GeneralPrefs generalPrefs = GeneralPrefs.get();
+    @Inject User user;
+    @Inject GcmRegistration gcmRegistration;
+    @Inject Api api;
+    @Inject CurrenciesApi currenciesApi;
+    @Inject GeneralPrefs generalPrefs;
+    @Inject Currency defaultCurrency;
 
     public StartupService() {
         super(StartupService.class.getSimpleName());
@@ -33,8 +37,12 @@ public class StartupService extends IntentService {
         context.startService(new Intent(context, StartupService.class));
     }
 
-    @Override
-    protected void onHandleIntent(Intent intent) {
+    @Override public void onCreate() {
+        super.onCreate();
+        App.with(getApplicationContext()).inject(this);
+    }
+
+    @Override protected void onHandleIntent(Intent intent) {
         undoUncommittedDeletes();
         updateCurrenciesIfNecessary();
 
@@ -61,13 +69,13 @@ public class StartupService extends IntentService {
         final Cursor cursor = Query.create()
                 .projection(Tables.Currencies.CODE.getName())
                 .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
-                .from(App.getContext(), CurrenciesProvider.uriCurrencies())
+                .from(getApplicationContext(), CurrenciesProvider.uriCurrencies())
                 .execute();
 
         if (cursor.moveToFirst()) {
             final int iCode = cursor.getColumnIndex(Tables.Currencies.CODE.getName());
             do {
-                currenciesApi.updateExchangeRate(cursor.getString(iCode));
+                currenciesApi.updateExchangeRate(cursor.getString(iCode), defaultCurrency.getCode());
             } while (cursor.moveToNext());
         }
         IOUtils.closeQuietly(cursor);

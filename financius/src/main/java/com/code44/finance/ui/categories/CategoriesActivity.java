@@ -16,8 +16,12 @@ import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.LayoutType;
 
+import javax.inject.Inject;
+
 public class CategoriesActivity extends ModelListActivity {
     private static final String EXTRA_CATEGORY_TYPE = "EXTRA_CATEGORY_TYPE";
+
+    @Inject LayoutType layoutType;
 
     private CategoryType categoryType;
 
@@ -32,25 +36,21 @@ public class CategoriesActivity extends ModelListActivity {
         startForResult(fragment, intent, requestCode);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         menu.findItem(R.id.action_settings).setVisible(false);
         return true;
     }
 
-    @Override
-    protected int getActionBarTitleResId() {
+    @Override protected int getActionBarTitleResId() {
         return R.string.categories;
     }
 
-    @Override
-    protected ModelListFragment createModelsFragment(ModelListFragment.Mode mode, Parcelable[] selectedModels) {
+    @Override protected ModelListFragment createModelsFragment(ModelListFragment.Mode mode, Parcelable[] selectedModels) {
         return mode == ModelListFragment.Mode.VIEW ? null : CategoriesFragment.newInstance(mode, categoryType);
     }
 
-    @Override
-    protected int inflateActivity() {
+    @Override protected int inflateActivity() {
         if (mode == ModelListFragment.Mode.VIEW) {
             setContentView(R.layout.activity_categories);
 
@@ -63,7 +63,7 @@ public class CategoriesActivity extends ModelListActivity {
             pager_VP.setAdapter(adapter);
             pager_VP.setPageMargin(getResources().getDimensionPixelSize(R.dimen.divider));
             pager_VP.setPageMarginDrawable(new ColorDrawable(getResources().getColor(R.color.divider)));
-            tabs_PSTS.setShouldExpand(LayoutType.isDefault() && LayoutType.isPortrait());
+            tabs_PSTS.setShouldExpand(layoutType.isDefault() && layoutType.isPortrait());
             tabs_PSTS.setViewPager(pager_VP);
             return 0;
         } else {

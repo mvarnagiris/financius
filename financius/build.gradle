@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'hugo'
 
 android {
     compileSdkVersion 'android-L'
@@ -52,6 +53,8 @@ dependencies {
     compile 'com.github.castorflex.smoothprogressbar:library:0.5.1'
     compile 'com.squareup.retrofit:retrofit:1.6.0'
     compile 'com.squareup.picasso:picasso:2.3.3'
+    compile 'com.squareup.dagger:dagger:1.2.1'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.1'
     compile 'org.beanshell:bsh-core:2.0b4'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.larswerkman:HoloColorPicker:1.4'

@@ -32,6 +32,9 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
+import com.code44.finance.qualifiers.Expense;
+import com.code44.finance.qualifiers.Income;
+import com.code44.finance.qualifiers.Transfer;
 import com.code44.finance.ui.CalculatorActivity;
 import com.code44.finance.ui.ModelEditFragment;
 import com.code44.finance.ui.ModelListActivity;
@@ -48,6 +51,8 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class TransactionEditFragment extends ModelEditFragment<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private static final int REQUEST_AMOUNT = 1;
     private static final int REQUEST_ACCOUNT_FROM = 2;
@@ -57,6 +62,12 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
     private static final String FRAGMENT_DATE_DIALOG = "FRAGMENT_DATE_DIALOG";
     private static final String FRAGMENT_TIME_DIALOG = "FRAGMENT_TIME_DIALOG";
+
+    @Inject @Expense Category expenseCategory;
+    @Inject @Income Category incomeCategory;
+    @Inject @Transfer Category transferCategory;
+    @Inject Currency defaultCurrency;
+    @Inject Account systemAccount;
 
     private Button date_B;
     private ImageButton categoryType_IB;
@@ -192,9 +203,22 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
     @Override protected Transaction getModelFrom(Cursor cursor) {
         final Transaction transaction = Transaction.from(cursor);
+        if (transaction.getAccountFrom() == null) {
+            transaction.setAccountFrom(systemAccount);
+        }
+
+        if (transaction.getAccountTo() == null) {
+            transaction.setAccountTo(systemAccount);
+        }
+
+        if (transaction.getCategory() == null) {
+            transaction.setCategory(expenseCategory);
+        }
+
         if (StringUtils.isEmpty(transaction.getId())) {
             // TODO Creating new transaction. Kick off auto-complete.
         }
+
         return transaction;
     }
 
@@ -309,13 +333,13 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     private void toggleCategoryType() {
         switch (model.getCategory().getCategoryType()) {
             case EXPENSE:
-                model.setCategory(Category.getIncome());
+                model.setCategory(incomeCategory);
                 break;
             case INCOME:
-                model.setCategory(Category.getTransfer());
+                model.setCategory(transferCategory);
                 break;
             case TRANSFER:
-                model.setCategory(Category.getExpense());
+                model.setCategory(expenseCategory);
                 break;
         }
         onModelLoaded(model);
@@ -338,7 +362,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         }
 
         if (transactionCurrency == null || StringUtils.isEmpty(transactionCurrency.getId())) {
-            transactionCurrency = Currency.getDefault();
+            transactionCurrency = defaultCurrency;
         }
 
         return transactionCurrency;

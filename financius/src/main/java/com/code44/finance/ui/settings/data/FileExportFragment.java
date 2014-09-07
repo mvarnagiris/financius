@@ -8,13 +8,18 @@ import com.code44.finance.R;
 import com.code44.finance.data.backup.BackupDataExporter;
 import com.code44.finance.data.backup.DataExporter;
 import com.code44.finance.ui.FilePickerActivity;
+import com.code44.finance.utils.GeneralPrefs;
 
 import java.io.File;
+
+import javax.inject.Inject;
 
 public class FileExportFragment extends BaseExportFragment {
     private static final String ARG_EXPORT_TYPE = "ARG_TYPE";
 
     private static final int REQUEST_DIRECTORY = 1;
+
+    @Inject GeneralPrefs generalPrefs;
 
     private ExportActivity.ExportType type;
     private boolean requestDir = false;
@@ -44,7 +49,7 @@ public class FileExportFragment extends BaseExportFragment {
         super.onResume();
         if (requestDir) {
             requestDir = false;
-            FilePickerActivity.startDir(this, REQUEST_DIRECTORY, getGeneralPrefs().getLastFileExportPath());
+            FilePickerActivity.startDir(this, REQUEST_DIRECTORY, generalPrefs.getLastFileExportPath());
         }
     }
 
@@ -53,7 +58,7 @@ public class FileExportFragment extends BaseExportFragment {
             case REQUEST_DIRECTORY:
                 if (resultCode == Activity.RESULT_OK) {
                     final String path = data.getData().getPath();
-                    getGeneralPrefs().setLastFileExportPath(path);
+                    generalPrefs.setLastFileExportPath(path);
                     onDirectorySelected(new File(path));
                 } else {
                     cancel();

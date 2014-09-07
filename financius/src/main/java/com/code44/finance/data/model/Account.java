@@ -6,15 +6,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.code44.finance.App;
 import com.code44.finance.backend.endpoint.accounts.model.AccountEntity;
 import com.code44.finance.common.model.AccountOwner;
 import com.code44.finance.common.utils.Preconditions;
-import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.providers.AccountsProvider;
-import com.code44.finance.utils.IOUtils;
 
 public class Account extends BaseModel<AccountEntity> {
     public static final Parcelable.Creator<Account> CREATOR = new Parcelable.Creator<Account>() {
@@ -27,8 +23,6 @@ public class Account extends BaseModel<AccountEntity> {
         }
     };
 
-    private static Account systemAccount;
-
     private Currency currency;
     private String title;
     private String note;
@@ -38,7 +32,7 @@ public class Account extends BaseModel<AccountEntity> {
 
     public Account() {
         super();
-        setCurrency(Currency.getDefault());
+        setCurrency(null);
         setTitle(null);
         setNote(null);
         setBalance(0);
@@ -48,21 +42,6 @@ public class Account extends BaseModel<AccountEntity> {
 
     public Account(Parcel in) {
         super(in);
-    }
-
-    public static Account getSystem() {
-        if (systemAccount == null) {
-            final Cursor cursor = Query.create()
-                    .projectionLocalId(Tables.Accounts.LOCAL_ID)
-                    .projection(Tables.Accounts.PROJECTION)
-                    .selection(Tables.Accounts.OWNER.getName() + "=?", AccountOwner.SYSTEM.asString())
-                    .from(App.getContext(), AccountsProvider.uriAccounts())
-                    .execute();
-
-            systemAccount = Account.from(cursor);
-            IOUtils.closeQuietly(cursor);
-        }
-        return systemAccount;
     }
 
     public static Account from(Cursor cursor) {

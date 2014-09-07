@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.code44.finance.App;
 import com.code44.finance.api.User;
 import com.code44.finance.backend.endpoint.transactions.Transactions;
 import com.code44.finance.backend.endpoint.transactions.model.TransactionEntity;
@@ -67,7 +66,7 @@ public class GetTransactionsRequest extends GetRequest<TransactionEntity> {
                     .projection(Tables.Accounts.PROJECTION)
                     .projection(Tables.Currencies.PROJECTION)
                     .selection(Tables.Accounts.ID + "=?", id)
-                    .from(App.getContext(), AccountsProvider.uriAccounts())
+                    .from(getContext(), AccountsProvider.uriAccounts())
                     .execute();
             account = Account.from(cursor);
             IOUtils.closeQuietly(cursor);
@@ -85,7 +84,7 @@ public class GetTransactionsRequest extends GetRequest<TransactionEntity> {
                     .projectionLocalId(Tables.Categories.LOCAL_ID)
                     .projection(Tables.Categories.PROJECTION)
                     .selection(Tables.Accounts.ID + "=?", entity.getId())
-                    .from(App.getContext(), CategoriesProvider.uriCategories())
+                    .from(getContext(), CategoriesProvider.uriCategories())
                     .execute();
             category = Category.from(cursor);
             IOUtils.closeQuietly(cursor);

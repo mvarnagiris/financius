@@ -17,10 +17,12 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.utils.Calculator;
 
+import javax.inject.Inject;
+
 public class CalculatorFragment extends BaseFragment implements View.OnClickListener, View.OnLongClickListener {
     private static final String ARG_VALUE = "ARG_VALUE";
 
-    private final Calculator calculator = new Calculator();
+    @Inject Calculator calculator;
 
     private ViewGroup resultContainer_V;
     private TextView result_TV;
@@ -37,8 +39,7 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
         return fragment;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
+    @Override public void onAttach(Activity activity) {
         super.onAttach(activity);
 
         if (activity instanceof CalculatorListener) {
@@ -48,13 +49,11 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_calculator, container, false);
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
@@ -124,14 +123,12 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
         });
     }
 
-    @Override
-    public void onDetach() {
+    @Override public void onDetach() {
         super.onDetach();
         listener = null;
     }
 
-    @Override
-    public void onClick(View v) {
+    @Override public void onClick(View v) {
         switch (v.getId()) {
             case R.id.delete_B:
                 calculator.delete();
@@ -224,8 +221,7 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
         }
     }
 
-    @Override
-    public boolean onLongClick(View v) {
+    @Override public boolean onLongClick(View v) {
         switch (v.getId()) {
             case R.id.delete_B:
                 clear();

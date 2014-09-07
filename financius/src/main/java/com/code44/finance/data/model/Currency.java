@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.code44.finance.App;
 import com.code44.finance.backend.endpoint.currencies.model.CurrencyEntity;
 import com.code44.finance.common.model.DecimalSeparator;
 import com.code44.finance.common.model.GroupSeparator;
@@ -15,7 +14,6 @@ import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.IOUtils;
 
 public class Currency extends BaseModel<CurrencyEntity> {
@@ -28,8 +26,6 @@ public class Currency extends BaseModel<CurrencyEntity> {
             return new Currency[size];
         }
     };
-
-    private static Currency defaultCurrency;
 
     private String code;
     private String symbol;
@@ -56,30 +52,15 @@ public class Currency extends BaseModel<CurrencyEntity> {
         super(in);
     }
 
-    public static Currency getDefault() {
-        if (defaultCurrency == null) {
-            final Cursor cursor = Query.create()
-                    .projectionLocalId(Tables.Currencies.LOCAL_ID)
-                    .projection(Tables.Currencies.PROJECTION)
-                    .selection(Tables.Currencies.IS_DEFAULT.getName() + "=?", "1")
-                    .from(App.getContext(), CurrenciesProvider.uriCurrencies())
-                    .execute();
-
-            defaultCurrency = Currency.from(cursor);
-            IOUtils.closeQuietly(cursor);
-        }
-        return defaultCurrency;
-    }
-
-    public static void updateDefaultCurrency(SQLiteDatabase db) {
+    public static void updateDefaultCurrency(SQLiteDatabase database, Currency defaultCurrency) {
         final Cursor cursor = Query.create()
                 .projectionLocalId(Tables.Currencies.LOCAL_ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.IS_DEFAULT + "=?", "1")
-                .from(db, Tables.Currencies.TABLE_NAME)
+                .from(database, Tables.Currencies.TABLE_NAME)
                 .execute();
 
-        defaultCurrency = Currency.from(cursor);
+        defaultCurrency.updateFrom(cursor, null);
         IOUtils.closeQuietly(cursor);
     }
 

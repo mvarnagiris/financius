@@ -5,8 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.code44.finance.App;
 import com.code44.finance.R;
 import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.utils.EventBus;
+
+import javax.inject.Inject;
 
 public abstract class BaseDialogFragment extends DialogFragment {
     protected static final String ARG_REQUEST_CODE = "ARG_REQUEST_CODE";
@@ -17,8 +21,11 @@ public abstract class BaseDialogFragment extends DialogFragment {
 
     protected int requestCode;
 
+    @Inject EventBus eventBus;
+
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.with(getActivity()).inject(this);
         setStyle(STYLE_NO_TITLE, 0);
     }
 
@@ -36,6 +43,10 @@ public abstract class BaseDialogFragment extends DialogFragment {
         } else {
             title_TV.setText(title);
         }
+    }
+
+    protected EventBus getEventBus() {
+        return eventBus;
     }
 
     protected abstract static class Builder {

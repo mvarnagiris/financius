@@ -3,13 +3,11 @@ package com.code44.finance.ui;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.code44.finance.utils.EventBus;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -17,7 +15,7 @@ import com.google.android.gms.drive.Drive;
 import com.google.android.gms.plus.Plus;
 import com.squareup.otto.Produce;
 
-public class GoogleApiFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final String ARG_UNIQUE_CLIENT_ID = "ARG_UNIQUE_CLIENT_ID";
     private static final String ARG_USE_PLUS = "ARG_USE_PLUS";
     private static final String ARG_USE_DRIVE = "ARG_USE_DRIVE";
@@ -27,8 +25,6 @@ public class GoogleApiFragment extends Fragment implements GoogleApiClient.Conne
     private static final int REQUEST_RESOLVE_ERROR = 9000;
     private static final int REQUEST_GOOGLE_PLAY_SERVICES = 9001;
 
-    private final EventBus eventBus = EventBus.get();
-
     private GoogleApiClient client;
     private GoogleApiConnectedEvent googleApiConnectedEvent = null;
     private String uniqueClientId;
@@ -37,7 +33,7 @@ public class GoogleApiFragment extends Fragment implements GoogleApiClient.Conne
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        eventBus.register(this);
+        getEventBus().register(this);
 
         buildGoogleApiClient();
         if (connectWhenPossible) {
@@ -47,7 +43,7 @@ public class GoogleApiFragment extends Fragment implements GoogleApiClient.Conne
 
     @Override public void onDestroy() {
         super.onDestroy();
-        eventBus.unregister(this);
+        getEventBus().unregister(this);
         disconnect();
     }
 
@@ -126,17 +122,17 @@ public class GoogleApiFragment extends Fragment implements GoogleApiClient.Conne
 
     protected void sendEventConnected() {
         googleApiConnectedEvent = new GoogleApiConnectedEvent(client, uniqueClientId);
-        eventBus.post(googleApiConnectedEvent);
+        getEventBus().post(googleApiConnectedEvent);
     }
 
     protected void sendEventSuspended(int cause) {
         googleApiConnectedEvent = null;
-        eventBus.post(new GoogleApiSuspendedEvent(client, uniqueClientId, cause));
+        getEventBus().post(new GoogleApiSuspendedEvent(client, uniqueClientId, cause));
     }
 
     protected void sendEventFailed(ConnectionResult connectionResult) {
         googleApiConnectedEvent = null;
-        eventBus.post(new GoogleApiFailedEvent(client, uniqueClientId, connectionResult));
+        getEventBus().post(new GoogleApiFailedEvent(client, uniqueClientId, connectionResult));
     }
 
     private void buildGoogleApiClient() {

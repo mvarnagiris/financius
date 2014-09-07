@@ -161,10 +161,15 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
         list_V.setAdapter(adapter);
         list_V.setOnItemClickListener(this);
         if (editButtonsContainer_V != null) {
-            final Button save_B = (Button) view.findViewById(R.id.save_B);
-            final Button cancel_B = (Button) view.findViewById(R.id.cancel_B);
-            save_B.setOnClickListener(this);
-            cancel_B.setOnClickListener(this);
+            if (mode == Mode.MULTI_SELECT) {
+                editButtonsContainer_V.setVisibility(View.VISIBLE);
+                final Button save_B = (Button) view.findViewById(R.id.save_B);
+                final Button cancel_B = (Button) view.findViewById(R.id.cancel_B);
+                save_B.setOnClickListener(this);
+                cancel_B.setOnClickListener(this);
+            } else {
+                editButtonsContainer_V.setVisibility(View.GONE);
+            }
         }
     }
 

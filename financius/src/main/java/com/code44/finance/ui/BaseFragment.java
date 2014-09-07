@@ -1,19 +1,22 @@
 package com.code44.finance.ui;
 
 
+import android.app.Activity;
 import android.app.Fragment;
 
+import com.code44.finance.App;
 import com.code44.finance.R;
-import com.code44.finance.api.User;
 import com.code44.finance.utils.EventBus;
-import com.code44.finance.utils.GeneralPrefs;
-import com.code44.finance.utils.IntervalHelper;
+
+import javax.inject.Inject;
 
 public class BaseFragment extends Fragment {
-    protected final EventBus eventBus = EventBus.get();
-    protected final IntervalHelper intervalHelper = IntervalHelper.get();
-    protected final User user = User.get();
-    protected final GeneralPrefs generalPrefs = GeneralPrefs.get();
+    @Inject EventBus eventBus;
+
+    @Override public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        App.with(activity).inject(this);
+    }
 
     public String getTitle() {
         return getString(R.string.app_name);
@@ -25,18 +28,6 @@ public class BaseFragment extends Fragment {
 
     protected EventBus getEventBus() {
         return eventBus;
-    }
-
-    protected IntervalHelper getIntervalHelper() {
-        return intervalHelper;
-    }
-
-    protected User getUser() {
-        return user;
-    }
-
-    protected GeneralPrefs getGeneralPrefs() {
-        return generalPrefs;
     }
 
     public static class RequestTitleUpdateEvent {

@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.common.utils.StringUtils;
-import com.code44.finance.utils.EventBus;
 
 public class AlertDialogFragment extends BaseDialogFragment implements View.OnClickListener {
     protected static final String ARG_MESSAGE = "ARG_MESSAGE";
@@ -18,8 +17,6 @@ public class AlertDialogFragment extends BaseDialogFragment implements View.OnCl
     protected static final String ARG_NEGATIVE_BUTTON_TEXT = "ARG_NEGATIVE_BUTTON_TEXT";
     protected static final String ARG_POSITIVE_BUTTON_COLOR = "ARG_POSITIVE_BUTTON_COLOR";
     protected static final String ARG_NEGATIVE_BUTTON_COLOR = "ARG_NEGATIVE_BUTTON_COLOR";
-
-    protected final EventBus eventBus = EventBus.get();
 
     protected TextView message_TV;
     protected Button positive_B;
@@ -80,12 +77,12 @@ public class AlertDialogFragment extends BaseDialogFragment implements View.OnCl
     }
 
     protected void onClickPositive() {
-        eventBus.post(createEvent(requestCode, true));
+        getEventBus().post(createEvent(requestCode, true));
         dismiss();
     }
 
     protected void onClickNegative() {
-        eventBus.post(createEvent(requestCode, false));
+        getEventBus().post(createEvent(requestCode, false));
         dismiss();
     }
 

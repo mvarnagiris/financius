@@ -15,7 +15,6 @@ import android.widget.ListView;
 import com.code44.finance.R;
 import com.code44.finance.adapters.ListDialogAdapter;
 import com.code44.finance.common.utils.StringUtils;
-import com.code44.finance.utils.EventBus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,8 +26,6 @@ public class ListDialogFragment extends BaseDialogFragment implements View.OnCli
     protected static final String ARG_NEGATIVE_BUTTON_TEXT = "ARG_NEGATIVE_BUTTON_TEXT";
     protected static final String ARG_POSITIVE_BUTTON_COLOR = "ARG_POSITIVE_BUTTON_COLOR";
     protected static final String ARG_NEGATIVE_BUTTON_COLOR = "ARG_NEGATIVE_BUTTON_COLOR";
-
-    protected final EventBus eventBus = EventBus.get();
 
     protected ListView list_V;
     protected Button positive_B;
@@ -95,16 +92,16 @@ public class ListDialogFragment extends BaseDialogFragment implements View.OnCli
 
     @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         adapter.onPositionClicked(position);
-        eventBus.post(createEvent(requestCode, true, position));
+        getEventBus().post(createEvent(requestCode, true, position));
     }
 
     protected void onClickPositive() {
-        eventBus.post(createEvent(requestCode, true, -1));
+        getEventBus().post(createEvent(requestCode, true, -1));
         dismiss();
     }
 
     protected void onClickNegative() {
-        eventBus.post(createEvent(requestCode, false, -1));
+        getEventBus().post(createEvent(requestCode, false, -1));
         dismiss();
     }
 
