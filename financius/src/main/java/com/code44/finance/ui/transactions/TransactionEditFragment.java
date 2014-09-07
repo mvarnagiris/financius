@@ -67,6 +67,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     @Inject @Income Category incomeCategory;
     @Inject @Transfer Category transferCategory;
     @Inject Currency defaultCurrency;
+    @Inject Account systemAccount;
 
     private Button date_B;
     private ImageButton categoryType_IB;
@@ -202,9 +203,22 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
     @Override protected Transaction getModelFrom(Cursor cursor) {
         final Transaction transaction = Transaction.from(cursor);
+        if (transaction.getAccountFrom() == null) {
+            transaction.setAccountFrom(systemAccount);
+        }
+
+        if (transaction.getAccountTo() == null) {
+            transaction.setAccountTo(systemAccount);
+        }
+
+        if (transaction.getCategory() == null) {
+            transaction.setCategory(expenseCategory);
+        }
+
         if (StringUtils.isEmpty(transaction.getId())) {
             // TODO Creating new transaction. Kick off auto-complete.
         }
+
         return transaction;
     }
 

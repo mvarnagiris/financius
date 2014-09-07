@@ -20,7 +20,8 @@ import dagger.Provides;
                 ApiModule.class,
                 CurrenciesApiModule.class,
                 AccountModule.class,
-                PersistenceModule.class
+                PersistenceModule.class,
+                ViewModule.class
         }
 )
 public final class AppModule {

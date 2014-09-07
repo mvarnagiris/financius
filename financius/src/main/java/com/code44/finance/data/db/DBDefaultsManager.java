@@ -32,12 +32,12 @@ public final class DBDefaultsManager {
     }
 
     public void addDefaults() {
-        addCurrencies();
-        addAccounts();
+        final String mainCurrencyId = addCurrencies();
+        addAccounts(mainCurrencyId);
         addCategories();
     }
 
-    private void addCurrencies() {
+    private String addCurrencies() {
         final Set<String> currencyCodes = new HashSet<>();
         final String mainCurrencyCode = getMainCurrencyCode();
         currencyCodes.add(mainCurrencyCode);
@@ -52,6 +52,7 @@ public final class DBDefaultsManager {
         currencyCodes.add("JPY");
 
         // Create currencies
+        String mainCurrencyId = "";
         for (String code : currencyCodes) {
             java.util.Currency javaCurrency = getCurrencyFromCode(code);
             if (javaCurrency != null) {
@@ -62,12 +63,22 @@ public final class DBDefaultsManager {
                 currency.setDecimalCount(javaCurrency.getDefaultFractionDigits());
                 currency.setDefault(code.equals(mainCurrencyCode));
                 database.insert(Tables.Currencies.TABLE_NAME, null, currency.asValues());
+
+                if (currency.isDefault()) {
+                    mainCurrencyId = currency.getId();
+                }
             }
         }
+
+        return mainCurrencyId;
     }
 
-    private void addAccounts() {
+    private void addAccounts(String mainCurrencyId) {
+        final Currency currency = new Currency();
+        currency.setId(mainCurrencyId);
+
         final Account systemAccount = new Account();
+        systemAccount.setCurrency(currency);
         systemAccount.setId(UUID.randomUUID().toString());
         systemAccount.setAccountOwner(AccountOwner.SYSTEM);
 

@@ -27,9 +27,13 @@ import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.currencies.CurrenciesActivity;
 import com.code44.finance.utils.MoneyFormatter;
 
+import javax.inject.Inject;
+
 public class AccountEditFragment extends ModelEditFragment<Account> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int REQUEST_CURRENCY = 1;
     private static final int REQUEST_BALANCE = 2;
+
+    @Inject Currency defaultCurrency;
 
     private EditText title_ET;
     private Button currency_B;
@@ -108,7 +112,11 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
     }
 
     @Override protected Account getModelFrom(Cursor cursor) {
-        return Account.from(cursor);
+        final Account account = Account.from(cursor);
+        if (account.getCurrency() == null) {
+            account.setCurrency(defaultCurrency);
+        }
+        return account;
     }
 
     @Override protected void onModelLoaded(Account model) {

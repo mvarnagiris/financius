@@ -25,6 +25,7 @@ import javax.inject.Inject;
 public class AccountsProvider extends BaseModelProvider {
     private static final String EXTRA_BALANCE_DELTA = "balance_delta";
 
+    @Inject Account systemAccount;
     @Inject @Expense Category expenseCategory;
     @Inject @Income Category incomeCategory;
 
@@ -128,11 +129,13 @@ public class AccountsProvider extends BaseModelProvider {
 
         if (balanceDelta > 0) {
             transaction = new Transaction();
+            transaction.setAccountFrom(systemAccount);
             transaction.setAccountTo(account);
             transaction.setCategory(incomeCategory);
         } else if (balanceDelta < 0) {
             transaction = new Transaction();
             transaction.setAccountFrom(account);
+            transaction.setAccountTo(systemAccount);
             transaction.setCategory(expenseCategory);
         }
 

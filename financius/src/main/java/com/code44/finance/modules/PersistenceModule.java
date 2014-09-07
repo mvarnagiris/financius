@@ -44,12 +44,12 @@ public class PersistenceModule {
         return new DBHelper(context);
     }
 
-    @Provides @Singleton public Currency provideDefaultCurrency(@ApplicationContext Context context) {
+    @Provides @Singleton public Currency provideDefaultCurrency(DBHelper dbHelper) {
         final Cursor cursor = Query.create()
                 .projectionLocalId(Tables.Currencies.LOCAL_ID)
                 .projection(Tables.Currencies.PROJECTION)
                 .selection(Tables.Currencies.IS_DEFAULT.getName() + "=?", "1")
-                .from(context, CurrenciesProvider.uriCurrencies())
+                .from(dbHelper.getWritableDatabase(), Tables.Currencies.TABLE_NAME)
                 .execute();
 
         final Currency currency = Currency.from(cursor);
@@ -57,12 +57,12 @@ public class PersistenceModule {
         return currency;
     }
 
-    @Provides @Singleton public Account provideSystemAccount(@ApplicationContext Context context) {
+    @Provides @Singleton public Account provideSystemAccount(DBHelper dbHelper) {
         final Cursor cursor = Query.create()
                 .projectionLocalId(Tables.Accounts.LOCAL_ID)
                 .projection(Tables.Accounts.PROJECTION)
                 .selection(Tables.Accounts.OWNER.getName() + "=?", AccountOwner.SYSTEM.asString())
-                .from(context, AccountsProvider.uriAccounts())
+                .from(dbHelper.getWritableDatabase(), Tables.Accounts.TABLE_NAME)
                 .execute();
 
         final Account systemAccount = Account.from(cursor);

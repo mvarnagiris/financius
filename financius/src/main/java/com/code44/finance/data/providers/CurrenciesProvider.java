@@ -17,7 +17,11 @@ import com.code44.finance.utils.MoneyFormatter;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 public class CurrenciesProvider extends BaseModelProvider {
+    @Inject Currency defaultCurrency;
+
     public static Uri uriCurrencies() {
         return uriModels(CurrenciesProvider.class, Tables.Currencies.TABLE_NAME);
     }

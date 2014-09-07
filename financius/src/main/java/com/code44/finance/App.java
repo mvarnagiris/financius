@@ -2,7 +2,6 @@ package com.code44.finance;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.StrictMode;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -18,16 +17,16 @@ public class App extends Application {
 
     @Override public void onCreate() {
         super.onCreate();
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                .detectAll()
-                .penaltyLog()
-                .penaltyDialog()
-                .build());
-        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                .detectAll()
-                .penaltyDeath()
-                .penaltyLog()
-                .build());
+//        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+//                .detectAll()
+//                .penaltyLog()
+//                .penaltyDialog()
+//                .build());
+//        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+//                .detectAll()
+//                .penaltyDeath()
+//                .penaltyLog()
+//                .build());
         buildObjectGraphAndInject();
         JodaTimeAndroid.init(this);
     }

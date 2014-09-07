@@ -19,6 +19,6 @@ public class ContextProviderModule {
     }
 
     @Provides @ApplicationContext Context provideApplicationContext() {
-
+        return context;
     }
 }

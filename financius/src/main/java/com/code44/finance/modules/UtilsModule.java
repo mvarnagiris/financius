@@ -9,6 +9,7 @@ import com.code44.finance.qualifiers.Network;
 import com.code44.finance.utils.Calculator;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.IntervalHelper;
+import com.code44.finance.utils.LayoutType;
 import com.code44.finance.utils.LocalExecutor;
 
 import java.util.concurrent.Executor;
@@ -43,5 +44,9 @@ public final class UtilsModule {
 
     @Provides @Singleton public IntervalHelper provideIntervalHelper(@ApplicationContext Context context, EventBus eventBus) {
         return new IntervalHelper(context, eventBus);
+    }
+
+    @Provides public LayoutType provideLayoutType(@ApplicationContext Context context) {
+        return new LayoutType(context);
     }
 }
