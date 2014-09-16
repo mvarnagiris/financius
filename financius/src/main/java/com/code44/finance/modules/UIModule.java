@@ -28,6 +28,7 @@ import com.code44.finance.ui.dialogs.ListDialogFragment;
 import com.code44.finance.ui.overview.OverviewFragment;
 import com.code44.finance.ui.settings.SettingsActivity;
 import com.code44.finance.ui.settings.data.DataActivity;
+import com.code44.finance.ui.settings.data.DataFragment;
 import com.code44.finance.ui.settings.data.ExportActivity;
 import com.code44.finance.ui.settings.data.FileExportFragment;
 import com.code44.finance.ui.tags.TagActivity;
@@ -89,7 +90,8 @@ import dagger.Module;
                 ListDialogFragment.class,
                 CalculatorFragment.class,
                 GoogleApiFragment.class,
-                FileExportFragment.class
+                FileExportFragment.class,
+                DataFragment.class
         }
 )
 public class UIModule {

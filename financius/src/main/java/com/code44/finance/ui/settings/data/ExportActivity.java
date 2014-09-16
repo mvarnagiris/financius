@@ -12,15 +12,13 @@ import com.code44.finance.ui.BaseActivity;
 import com.code44.finance.utils.AppError;
 import com.squareup.otto.Subscribe;
 
-import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
-import fr.castorflex.android.smoothprogressbar.SmoothProgressDrawable;
+import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 
 public class ExportActivity extends BaseActivity {
     private static final String EXTRA_EXPORT_TYPE = "EXTRA_EXPORT_TYPE";
     private static final String EXTRA_DESTINATION = "EXTRA_DESTINATION";
 
-    // TODO Change this to Circular progress bar
-    private SmoothProgressBar loading_SPB;
+    private CircularProgressBar loading_CPB;
 
     public static void start(Context context, ExportType exportType, Destination destination) {
         final Intent intent = makeIntent(context, ExportActivity.class);
@@ -36,7 +34,7 @@ public class ExportActivity extends BaseActivity {
         getEventBus().register(this);
 
         // Get views
-        loading_SPB = (SmoothProgressBar) findViewById(R.id.loading_SPB);
+        loading_CPB = (CircularProgressBar) findViewById(R.id.loading_CPB);
 
         if (savedInstanceState == null) {
             // Get extras
@@ -78,19 +76,9 @@ public class ExportActivity extends BaseActivity {
 
     private void setExporting(boolean exporting) {
         if (exporting) {
-            loading_SPB.setVisibility(View.VISIBLE);
-            loading_SPB.progressiveStart();
+            loading_CPB.setVisibility(View.VISIBLE);
         } else {
-            loading_SPB.progressiveStop();
-            loading_SPB.setSmoothProgressDrawableCallbacks(new SmoothProgressDrawable.Callbacks() {
-                @Override public void onStop() {
-                    loading_SPB.setSmoothProgressDrawableCallbacks(null);
-                    loading_SPB.setVisibility(View.GONE);
-                }
-
-                @Override public void onStart() {
-                }
-            });
+            loading_CPB.setVisibility(View.GONE);
         }
     }
 

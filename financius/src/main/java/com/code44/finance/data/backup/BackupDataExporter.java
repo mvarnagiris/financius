@@ -38,6 +38,7 @@ public class BackupDataExporter extends FileDataExporter {
     }
 
     @Override public void exportData(OutputStream outputStream) throws Exception {
+        Thread.sleep(5000);
         final JsonWriter writer = new JsonWriter(new OutputStreamWriter(outputStream, CHARSET_NAME));
         writer.setIndent("  ");
 
