@@ -26,7 +26,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 public class BackupDataExporter extends FileDataExporter {
-    public static final int VERSION = 1;
+    public static final int VERSION = 6;
 
     private static final String CHARSET_NAME = "UTF-8";
 
