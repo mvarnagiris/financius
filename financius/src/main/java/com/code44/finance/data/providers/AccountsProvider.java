@@ -6,6 +6,7 @@ import android.net.Uri;
 
 import com.code44.finance.R;
 import com.code44.finance.common.model.ModelState;
+import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
@@ -109,8 +110,8 @@ public class AccountsProvider extends BaseModelProvider {
     }
 
     private long getCurrentBalance(ContentValues values) {
-        final Long accountId = values.getAsLong(Tables.Accounts.ID.getName());
-        if (accountId == null || accountId == 0) {
+        final String accountId = values.getAsString(Tables.Accounts.ID.getName());
+        if (StringUtils.isEmpty(accountId)) {
             return 0;
         }
 

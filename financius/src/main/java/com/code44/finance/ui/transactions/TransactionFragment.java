@@ -14,15 +14,22 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
+import com.code44.finance.qualifiers.Expense;
 import com.code44.finance.ui.ModelFragment;
 import com.code44.finance.utils.MoneyFormatter;
 
 import org.joda.time.DateTime;
 
+import javax.inject.Inject;
+
 public class TransactionFragment extends ModelFragment<Transaction> {
+    @Inject @Expense Category expenseCategory;
+    @Inject Account systemAccount;
+
     private TextView amount_TV;
     private TextView date_TV;
     private TextView category_TV;
@@ -52,7 +59,20 @@ public class TransactionFragment extends ModelFragment<Transaction> {
     }
 
     @Override protected Transaction getModelFrom(Cursor cursor) {
-        return Transaction.from(cursor);
+        final Transaction transaction = Transaction.from(cursor);
+        if (transaction.getAccountFrom() == null) {
+            transaction.setAccountFrom(systemAccount);
+        }
+
+        if (transaction.getAccountTo() == null) {
+            transaction.setAccountTo(systemAccount);
+        }
+
+        if (transaction.getCategory() == null) {
+            transaction.setCategory(expenseCategory);
+        }
+
+        return transaction;
     }
 
     @Override protected void onModelLoaded(Transaction transaction) {

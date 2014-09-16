@@ -28,7 +28,7 @@ public final class UtilsModule {
         return new EventBus();
     }
 
-    @Provides @Singleton public Calculator provideCalculator(@ApplicationContext Context context) {
+    @Provides public Calculator provideCalculator(@ApplicationContext Context context) {
         return new Calculator(context);
     }
 
