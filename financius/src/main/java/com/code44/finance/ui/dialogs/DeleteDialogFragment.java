@@ -122,7 +122,7 @@ public class DeleteDialogFragment extends AlertDialogFragment implements LoaderM
                 return Query.create()
                         .projectionLocalId(Tables.Transactions.LOCAL_ID)
                         .selection(Tables.Transactions.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
-                        .asCursorLoader(getActivity(), TransactionsProvider.uriTransactions());
+                        .asCursorLoader(getActivity(), TransactionsProvider.uriTransactions().buildUpon().appendQueryParameter(TransactionsProvider.URI_PARAM_JOIN_TABLE, "").build());
         }
         return null;
     }

@@ -1,12 +1,16 @@
 package com.code44.finance.data.providers;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
 
 import com.code44.finance.common.model.ModelState;
+import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
+import com.code44.finance.utils.IOUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -57,9 +61,23 @@ public class TagsProvider extends BaseModelProvider {
         if (affectedIds.size() > 0) {
             final Uri transactionsUri = uriForDeleteFromItemState(TransactionsProvider.uriTransactions(), modelState);
 
-            // TODO Delete transactions for deleted tags
-//            final Query query = Query.create().selectionInClause(Tables.Transactions.CATEGORY_ID.getName(), affectedIds);
-//            getContext().getContentResolver().delete(transactionsUri, query.getSelection(), query.getSelectionArgs());
+            final Cursor cursor = Query.create()
+                    .projection(Tables.TransactionTags.TRANSACTION_ID.getName())
+                    .selectionInClause(Tables.TransactionTags.TAG_ID.getName(), affectedIds)
+                    .from(getDatabase(), Tables.TransactionTags.TABLE_NAME)
+                    .execute();
+            if (cursor.moveToFirst()) {
+                final List<String> transactionIds = new ArrayList<>();
+                do {
+                    transactionIds.add(cursor.getString(0));
+                } while (cursor.moveToNext());
+
+                final Query query = Query.create()
+                        .selection(Tables.Transactions.MODEL_STATE + "<>? and ", ModelState.DELETED.asString())
+                        .selectionInClause(Tables.Transactions.ID.getName(), transactionIds);
+                getContext().getContentResolver().delete(transactionsUri, query.getSelection(), query.getSelectionArgs());
+            }
+            IOUtils.closeQuietly(cursor);
         }
     }
 }
