@@ -38,7 +38,6 @@ public class BackupDataExporter extends FileDataExporter {
     }
 
     @Override public void exportData(OutputStream outputStream) throws Exception {
-        Thread.sleep(5000);
         final JsonWriter writer = new JsonWriter(new OutputStreamWriter(outputStream, CHARSET_NAME));
         writer.setIndent("  ");
 
@@ -187,7 +186,7 @@ public class BackupDataExporter extends FileDataExporter {
                     writer.endArray();
                     writer.name("date").value(transaction.getDate());
                     writer.name("amount").value(transaction.getAmount());
-                    writer.name("exchangeRate").value(transaction.getExchangeRate());
+                    writer.name("exchange_rate").value(transaction.getExchangeRate());
                     writer.name("note").value(transaction.getNote());
                     writer.name("transaction_state").value(transaction.getTransactionState().asInt());
                     writer.name("include_in_reports").value(transaction.includeInReports());

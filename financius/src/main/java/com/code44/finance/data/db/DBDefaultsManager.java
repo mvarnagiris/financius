@@ -80,6 +80,8 @@ public final class DBDefaultsManager {
         final Account systemAccount = new Account();
         systemAccount.setCurrency(currency);
         systemAccount.setId(UUID.randomUUID().toString());
+        systemAccount.setTitle("");
+        systemAccount.setNote("");
         systemAccount.setAccountOwner(AccountOwner.SYSTEM);
 
         database.insert(Tables.Accounts.TABLE_NAME, null, systemAccount.asValues());

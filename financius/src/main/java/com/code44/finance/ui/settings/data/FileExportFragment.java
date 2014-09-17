@@ -15,7 +15,7 @@ import java.io.File;
 import javax.inject.Inject;
 
 public class FileExportFragment extends BaseExportFragment {
-    private static final String ARG_EXPORT_TYPE = "ARG_TYPE";
+    private static final String ARG_EXPORT_TYPE = "ARG_EXPORT_TYPE";
 
     private static final int REQUEST_DIRECTORY = 1;
 

@@ -103,24 +103,7 @@ public class TransactionsProvider extends BaseModelProvider {
 
     @Override protected void onBeforeInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> outExtras) {
         super.onBeforeInsertItem(uri, values, serverId, outExtras);
-
-        // Remove current tags
-        final String transactionId = values.getAsString(Tables.Transactions.ID.getName());
-        getDatabase().delete(Tables.TransactionTags.TABLE_NAME, Tables.TransactionTags.TRANSACTION_ID + "=?", new String[]{transactionId});
-
-        // Add new tags
-        if (values.containsKey(Tables.Tags.ID.getName())) {
-            final String[] tagIds = TextUtils.split(values.getAsString(Tables.Tags.ID.getName()), Tables.CONCAT_SEPARATOR);
-            values.remove(Tables.Tags.ID.getName());
-            if (tagIds != null) {
-                for (String tagId : tagIds) {
-                    final ContentValues tagValues = new ContentValues();
-                    tagValues.put(Tables.TransactionTags.TRANSACTION_ID.getName(), transactionId);
-                    tagValues.put(Tables.TransactionTags.TAG_ID.getName(), tagId);
-                    getDatabase().insert(Tables.TransactionTags.TABLE_NAME, null, tagValues);
-                }
-            }
-        }
+        updateTransactionTags(values);
     }
 
     @Override protected void onAfterInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> extras) {
@@ -145,6 +128,11 @@ public class TransactionsProvider extends BaseModelProvider {
     @Override protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> extras) {
         super.onAfterDeleteItems(uri, selection, selectionArgs, modelState, extras);
         updateAllAccountsBalances();
+    }
+
+    @Override protected void onBeforeBulkInsertIteration(Uri uri, ContentValues values, Map<String, Object> extras) {
+        super.onBeforeBulkInsertIteration(uri, values, extras);
+        updateTransactionTags(values);
     }
 
     @Override protected void onAfterBulkInsertItems(Uri uri, ContentValues[] valuesArray, Map<String, Object> extras) {
@@ -197,5 +185,25 @@ public class TransactionsProvider extends BaseModelProvider {
             } while (cursor.moveToNext());
         }
         IOUtils.closeQuietly(cursor);
+    }
+
+    private void updateTransactionTags(ContentValues values) {
+        // Remove current tags
+        final String transactionId = values.getAsString(Tables.Transactions.ID.getName());
+        getDatabase().delete(Tables.TransactionTags.TABLE_NAME, Tables.TransactionTags.TRANSACTION_ID + "=?", new String[]{transactionId});
+
+        // Add new tags
+        if (values.containsKey(Tables.Tags.ID.getName())) {
+            final String[] tagIds = TextUtils.split(values.getAsString(Tables.Tags.ID.getName()), Tables.CONCAT_SEPARATOR);
+            values.remove(Tables.Tags.ID.getName());
+            if (tagIds != null) {
+                for (String tagId : tagIds) {
+                    final ContentValues tagValues = new ContentValues();
+                    tagValues.put(Tables.TransactionTags.TRANSACTION_ID.getName(), transactionId);
+                    tagValues.put(Tables.TransactionTags.TAG_ID.getName(), tagId);
+                    getDatabase().insert(Tables.TransactionTags.TABLE_NAME, null, tagValues);
+                }
+            }
+        }
     }
 }

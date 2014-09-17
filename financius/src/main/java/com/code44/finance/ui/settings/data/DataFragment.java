@@ -17,6 +17,7 @@ import java.util.List;
 
 public class DataFragment extends BaseFragment implements View.OnClickListener {
     private static final int REQUEST_BACKUP_DESTINATION = 1;
+    private static final int REQUEST_RESTORE_DESTINATION = 2;
 
     private static final String FRAGMENT_DESTINATION = "FRAGMENT_DESTINATION";
 
@@ -35,9 +36,11 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
 
         // Get views
         final Button backup_B = (Button) view.findViewById(R.id.backup_B);
+        final Button restore_B = (Button) view.findViewById(R.id.restore_B);
 
         // Setup
         backup_B.setOnClickListener(this);
+        restore_B.setOnClickListener(this);
     }
 
     @Override public void onResume() {
@@ -53,28 +56,43 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
     @Override public void onClick(View view) {
         switch (view.getId()) {
             case R.id.backup_B:
-                chooseBackup();
+                chooseBackup(REQUEST_BACKUP_DESTINATION, R.string.backup);
+                break;
+            case R.id.restore_B:
+                chooseBackup(REQUEST_RESTORE_DESTINATION, R.string.restore);
                 break;
         }
     }
 
     @Subscribe public void onBackupDestinationSelected(ListDialogFragment.ListDialogEvent event) {
-        if (event.getRequestCode() != REQUEST_BACKUP_DESTINATION || !event.isListItemClicked()) {
+        if ((event.getRequestCode() != REQUEST_BACKUP_DESTINATION && event.getRequestCode() != REQUEST_RESTORE_DESTINATION) || !event.isListItemClicked()) {
             return;
         }
 
-        final ExportActivity.Destination destination;
-        if (event.getPosition() == 0) {
-            destination = ExportActivity.Destination.GoogleDrive;
-        } else {
-            destination = ExportActivity.Destination.File;
-        }
         event.dismiss();
 
-        ExportActivity.start(getActivity(), ExportActivity.ExportType.Backup, destination);
+        if (event.getRequestCode() == REQUEST_BACKUP_DESTINATION) {
+            final ExportActivity.Destination destination;
+            if (event.getPosition() == 0) {
+                destination = ExportActivity.Destination.GoogleDrive;
+            } else {
+                destination = ExportActivity.Destination.File;
+            }
+
+            ExportActivity.start(getActivity(), ExportActivity.ExportType.Backup, destination);
+        } else {
+            final ImportActivity.Source source;
+            if (event.getPosition() == 0) {
+                source = ImportActivity.Source.GoogleDrive;
+            } else {
+                source = ImportActivity.Source.File;
+            }
+
+            ImportActivity.start(getActivity(), ImportActivity.ImportType.Backup, source);
+        }
     }
 
-    private void chooseBackup() {
+    private void chooseBackup(int requestCode, int titleResId) {
         final List<ListDialogFragment.ListDialogItem> items = new ArrayList<>();
         items.add(new ListDialogFragment.ListDialogItem(getString(R.string.google_drive)));
         items.add(new ListDialogFragment.ListDialogItem(getString(R.string.file)));
@@ -82,8 +100,8 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
         final Bundle args = new Bundle();
         args.putSerializable(ARG_EXPORT_TYPE, ExportActivity.ExportType.Backup);
 
-        ListDialogFragment.build(REQUEST_BACKUP_DESTINATION)
-                .setTitle(getString(R.string.backup))
+        ListDialogFragment.build(requestCode)
+                .setTitle(getString(titleResId))
                 .setArgs(args)
                 .setNegativeButtonText(getString(R.string.cancel))
                 .setItems(items)

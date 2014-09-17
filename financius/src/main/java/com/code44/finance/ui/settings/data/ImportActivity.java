@@ -7,29 +7,29 @@ import android.view.View;
 
 import com.code44.finance.R;
 import com.code44.finance.data.backup.DataExporterRunnable;
-import com.code44.finance.data.backup.FileDataExporter;
+import com.code44.finance.data.backup.FileDataImporter;
 import com.code44.finance.ui.BaseActivity;
 import com.code44.finance.utils.AppError;
 import com.squareup.otto.Subscribe;
 
 import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 
-public class ExportActivity extends BaseActivity implements BaseExportFragment.ExportCallbacks {
-    private static final String EXTRA_EXPORT_TYPE = "EXTRA_EXPORT_TYPE";
-    private static final String EXTRA_DESTINATION = "EXTRA_DESTINATION";
+public class ImportActivity extends BaseActivity implements BaseImportFragment.ImportCallbacks {
+    private static final String EXTRA_IMPORT_TYPE = "EXTRA_IMPORT_TYPE";
+    private static final String EXTRA_SOURCE = "EXTRA_SOURCE";
 
     private CircularProgressBar loading_CPB;
 
-    public static void start(Context context, ExportType exportType, Destination destination) {
-        final Intent intent = makeIntent(context, ExportActivity.class);
-        intent.putExtra(EXTRA_EXPORT_TYPE, exportType);
-        intent.putExtra(EXTRA_DESTINATION, destination);
+    public static void start(Context context, ImportType importType, Source source) {
+        final Intent intent = makeIntent(context, ImportActivity.class);
+        intent.putExtra(EXTRA_IMPORT_TYPE, importType);
+        intent.putExtra(EXTRA_SOURCE, source);
         start(context, intent);
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_export);
+        setContentView(R.layout.activity_import);
 
         getEventBus().register(this);
 
@@ -38,24 +38,24 @@ public class ExportActivity extends BaseActivity implements BaseExportFragment.E
 
         if (savedInstanceState == null) {
             // Get extras
-            final ExportType exportType = (ExportType) getIntent().getSerializableExtra(EXTRA_EXPORT_TYPE);
-            final Destination destination = (Destination) getIntent().getSerializableExtra(EXTRA_DESTINATION);
+            final ImportType importType = (ImportType) getIntent().getSerializableExtra(EXTRA_IMPORT_TYPE);
+            final Source source = (Source) getIntent().getSerializableExtra(EXTRA_SOURCE);
 
-            final BaseExportFragment fragment;
-            switch (destination) {
+            final BaseImportFragment<?> fragment;
+            switch (source) {
                 case File:
-                    fragment = FileExportFragment.newInstance(exportType);
+                    fragment = FileImportFragment.newInstance(importType);
                     break;
 //                case GoogleDrive:
 //                    break;
                 default:
-                    throw new IllegalArgumentException("Destination " + destination + " is not supported.");
+                    throw new IllegalArgumentException("Destination " + source + " is not supported.");
             }
 
             getFragmentManager().beginTransaction().replace(android.R.id.content, fragment).commit();
         }
 
-        setExporting(true);
+        setImporting(true);
     }
 
     @Override protected void onDestroy() {
@@ -70,15 +70,15 @@ public class ExportActivity extends BaseActivity implements BaseExportFragment.E
         }
     }
 
-    @Override public void onExportCanceled() {
+    @Override public void onImportCanceled() {
         finish();
     }
 
-    @Subscribe public void onFileDataExporterFinished(FileDataExporter dataExporter) {
+    @Subscribe public void onFileDataImporterFinished(FileDataImporter dataImporter) {
         finish();
     }
 
-    private void setExporting(boolean exporting) {
+    private void setImporting(boolean exporting) {
         if (exporting) {
             loading_CPB.setVisibility(View.VISIBLE);
         } else {
@@ -86,11 +86,11 @@ public class ExportActivity extends BaseActivity implements BaseExportFragment.E
         }
     }
 
-    public static enum ExportType {
+    public static enum ImportType {
         Backup, CSV
     }
 
-    public static enum Destination {
+    public static enum Source {
         File, GoogleDrive
     }
 }

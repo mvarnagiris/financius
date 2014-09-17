@@ -218,7 +218,7 @@ public abstract class BaseModelProvider extends BaseProvider {
 
                     final Map<String, Object> extras = new HashMap<>();
                     onBeforeBulkInsertItems(uri, valuesArray, extras);
-                    count = bulkInsertItems(uri, valuesArray);
+                    count = bulkInsertItems(uri, valuesArray, extras);
                     onAfterBulkInsertItems(uri, valuesArray, extras);
 
                     database.setTransactionSuccessful();
@@ -317,8 +317,23 @@ public abstract class BaseModelProvider extends BaseProvider {
     protected void onBeforeBulkInsertItems(Uri uri, ContentValues[] valuesArray, Map<String, Object> outExtras) {
     }
 
-    protected int bulkInsertItems(Uri uri, ContentValues[] valuesArray) {
-        return ProviderUtils.doArrayReplace(getDatabase(), getModelTable(), valuesArray);
+    protected int bulkInsertItems(Uri uri, ContentValues[] valuesArray, Map<String, Object> extras) {
+        int count = 0;
+        final SQLiteDatabase database = getDatabase();
+        final String tableName = getModelTable();
+        for (final ContentValues values : valuesArray) {
+            onBeforeBulkInsertIteration(uri, values, extras);
+            ProviderUtils.doUpdateOrInsert(database, tableName, values, false);
+            onAfterBulkInsertIteration(uri, values, extras);
+            count++;
+        }
+        return count;
+    }
+
+    protected void onBeforeBulkInsertIteration(Uri uri, ContentValues values, Map<String, Object> extras) {
+    }
+
+    protected void onAfterBulkInsertIteration(Uri uri, ContentValues values, Map<String, Object> extras) {
     }
 
     protected void onAfterBulkInsertItems(Uri uri, ContentValues[] valuesArray, Map<String, Object> extras) {

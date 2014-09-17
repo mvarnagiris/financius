@@ -52,6 +52,7 @@
         <activity android:name=".ui.user.LoginActivity" />
         <activity android:name=".ui.settings.data.DataActivity" />
         <activity android:name=".ui.settings.data.ExportActivity" />
+        <activity android:name=".ui.settings.data.ImportActivity" />
         <activity
             android:name=".ui.FilePickerActivity"
             android:theme="@style/FilePicker.Theme" />

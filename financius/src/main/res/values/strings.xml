@@ -69,6 +69,7 @@
     <string name="pending">Pending</string>
     <string name="your_data">Your data</string>
     <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
     <string name="file">File</string>
 
     <string name="f_change_to_x">Change to %s</string>
