@@ -226,6 +226,8 @@ public class Transaction extends BaseModel<TransactionEntity> {
                 tags.add(tag);
             }
             setTags(tags);
+        } else {
+            setTags(null);
         }
 
         // Date

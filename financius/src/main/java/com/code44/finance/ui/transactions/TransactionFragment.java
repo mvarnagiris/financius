@@ -81,8 +81,8 @@ public class TransactionFragment extends ModelFragment<Transaction> {
 //        holder.color_IV.setColorFilter(category.getColor());
 //        holder.weekday_TV.setText(date.dayOfWeek().getAsShortText());
 //        holder.day_TV.setText(date.dayOfMonth().getAsShortText());
-//        holder.category_TV.setText(category.getTitle());
-//        holder.note_TV.setText(transaction.getNote());
+//        holder.title_TV.setText(category.getTitle());
+//        holder.subtitle_TV.setText(transaction.getNote());
         amount_TV.setText(MoneyFormatter.format(transaction));
 
         if (category.getCategoryType() == CategoryType.EXPENSE) {

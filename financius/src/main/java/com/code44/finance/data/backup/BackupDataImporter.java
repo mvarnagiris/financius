@@ -196,8 +196,7 @@ public class BackupDataImporter extends FileDataImporter {
             }
             model.setDate(modelJson.get("date").getAsLong());
             model.setAmount(modelJson.get("amount").getAsLong());
-            // TODO Change to exchange_rate
-            model.setExchangeRate(modelJson.get("exchangeRate").getAsDouble());
+            model.setExchangeRate(modelJson.get("exchange_rate").getAsDouble());
             model.setNote(modelJson.get("note").getAsString());
             model.setTransactionState(TransactionState.fromInt(modelJson.get("transaction_state").getAsInt()));
             model.setIncludeInReports(modelJson.get("include_in_reports").getAsBoolean());
