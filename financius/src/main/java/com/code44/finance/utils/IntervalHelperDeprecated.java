@@ -12,17 +12,17 @@ import org.joda.time.Interval;
 import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormat;
 
-public class IntervalHelper extends Prefs {
+public class IntervalHelperDeprecated extends Prefs {
     private static final String PREFIX = "interval_helper_";
 
     private final EventBus eventBus;
 
-    private Type type;
+    private BaseInterval.Type type;
     private int intervalLength;
 
     private Interval currentInterval;
 
-    public IntervalHelper(Context context, EventBus eventBus) {
+    public IntervalHelperDeprecated(Context context, EventBus eventBus) {
         super(context);
         this.eventBus = eventBus;
 
@@ -31,7 +31,7 @@ public class IntervalHelper extends Prefs {
         eventBus.register(this);
     }
 
-    public static Period getPeriod(int intervalLength, Type type) {
+    public static Period getPeriod(int intervalLength, BaseInterval.Type type) {
         switch (type) {
             case DAY:
                 return Period.days(intervalLength);
@@ -46,7 +46,7 @@ public class IntervalHelper extends Prefs {
         }
     }
 
-    public static Interval getInterval(long millis, Period period, Type type) {
+    public static Interval getInterval(long millis, Period period, BaseInterval.Type type) {
         final DateTime currentTime = new DateTime(millis);
 
         final DateTime intervalStart;
@@ -70,7 +70,7 @@ public class IntervalHelper extends Prefs {
         return new Interval(intervalStart, period);
     }
 
-    public static String getIntervalTitle(Context context, Interval interval, Type type) {
+    public static String getIntervalTitle(Context context, Interval interval, BaseInterval.Type type) {
         switch (type) {
             case DAY:
                 return DateTimeFormat.mediumDate().print(interval.getStart());
@@ -89,12 +89,12 @@ public class IntervalHelper extends Prefs {
         return PREFIX;
     }
 
-    @Produce public IntervalHelper produceIntervalHelper() {
+    @Produce public IntervalHelperDeprecated produceIntervalHelper() {
         return this;
     }
 
     public void refresh() {
-        type = Type.valueOf(getString("type", Type.MONTH.toString()));
+        type = BaseInterval.Type.valueOf(getString("type", BaseInterval.Type.MONTH.toString()));
         intervalLength = getInteger("intervalLength", 1);
 
         invalidateCurrentIntervalIfNecessary();
@@ -124,7 +124,7 @@ public class IntervalHelper extends Prefs {
         }
     }
 
-    public Type getType() {
+    public BaseInterval.Type getType() {
         return type;
     }
 
@@ -132,7 +132,7 @@ public class IntervalHelper extends Prefs {
         return intervalLength;
     }
 
-    public void setTypeAndLength(Type type, int intervalLength) {
+    public void setTypeAndLength(BaseInterval.Type type, int intervalLength) {
         this.type = type;
         this.intervalLength = intervalLength;
         setString("type", type.toString());
@@ -156,9 +156,5 @@ public class IntervalHelper extends Prefs {
 
     private void notifyChanged() {
         eventBus.post(this);
-    }
-
-    public static enum Type {
-        DAY, WEEK, MONTH, YEAR
     }
 }

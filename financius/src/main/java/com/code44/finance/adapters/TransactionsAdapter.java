@@ -21,7 +21,9 @@ import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
-import com.code44.finance.utils.IntervalHelper;
+import com.code44.finance.utils.BaseInterval;
+import com.code44.finance.utils.CurrentInterval;
+import com.code44.finance.utils.IntervalHelperDeprecated;
 import com.code44.finance.utils.MoneyFormatter;
 
 import org.joda.time.DateTime;
@@ -36,7 +38,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
 
     private final Currency defaultCurrency;
     private final Category transferCategory;
-    private final IntervalHelper intervalHelper;
+    private final BaseInterval interval;
     private final LongSparseArray<Long> totalExpenses;
     private final int expenseColor;
     private final int incomeColor;
@@ -44,11 +46,11 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
     private final int primaryColor;
     private final int weakColor;
 
-    public TransactionsAdapter(Context context, Currency defaultCurrency, Category transferCategory, IntervalHelper intervalHelper) {
+    public TransactionsAdapter(Context context, Currency defaultCurrency, Category transferCategory, CurrentInterval interval) {
         super(context);
         this.defaultCurrency = defaultCurrency;
         this.transferCategory = transferCategory;
-        this.intervalHelper = intervalHelper;
+        this.interval = interval;
         totalExpenses = new LongSparseArray<>();
         expenseColor = context.getResources().getColor(R.color.text_primary);
         incomeColor = context.getResources().getColor(R.color.text_positive);
@@ -165,9 +167,9 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         final TransactionState transactionState = TransactionState.fromInt(getCursor().getInt(getCursor().getColumnIndex(Tables.Transactions.STATE.getName())));
         if (transactionState == TransactionState.CONFIRMED) {
             final long date = getCursor().getLong(getCursor().getColumnIndex(Tables.Transactions.DATE.getName()));
-            final Period period = IntervalHelper.getPeriod(intervalHelper.getIntervalLength(), intervalHelper.getType());
-            final Interval interval = IntervalHelper.getInterval(date, period, intervalHelper.getType());
-            title = IntervalHelper.getIntervalTitle(mContext, interval, intervalHelper.getType());
+            final Period period = IntervalHelperDeprecated.getPeriod(interval.getLength(), interval.getType());
+            final Interval interval = IntervalHelperDeprecated.getInterval(date, period, this.interval.getType());
+            title = IntervalHelperDeprecated.getIntervalTitle(mContext, interval, this.interval.getType());
         } else {
             title = mContext.getString(R.string.pending);
         }
@@ -185,8 +187,8 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         }
 
         final long date = getCursor().getLong(getCursor().getColumnIndex(Tables.Transactions.DATE.getName()));
-        final Period period = IntervalHelper.getPeriod(intervalHelper.getIntervalLength(), intervalHelper.getType());
-        final Interval interval = IntervalHelper.getInterval(date, period, intervalHelper.getType());
+        final Period period = IntervalHelperDeprecated.getPeriod(interval.getLength(), interval.getType());
+        final Interval interval = IntervalHelperDeprecated.getInterval(date, period, this.interval.getType());
         return interval.getStartMillis();
     }
 

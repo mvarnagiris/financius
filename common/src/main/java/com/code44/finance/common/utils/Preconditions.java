@@ -38,4 +38,11 @@ public class Preconditions {
         }
         return value;
     }
+
+    public static int checkMore(int value, int moreThan, String message) throws IllegalArgumentException {
+        if (value <= moreThan) {
+            throw new IllegalStateException(message);
+        }
+        return value;
+    }
 }

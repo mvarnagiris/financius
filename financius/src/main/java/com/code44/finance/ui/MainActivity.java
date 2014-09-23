@@ -10,6 +10,7 @@ import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.services.StartupService;
 import com.code44.finance.ui.accounts.AccountsFragment;
 import com.code44.finance.ui.overview.OverviewFragment;
+import com.code44.finance.ui.reports.ReportsFragment;
 import com.code44.finance.ui.transactions.TransactionsFragment;
 import com.code44.finance.ui.user.UserFragment;
 import com.squareup.otto.Subscribe;
@@ -73,6 +74,10 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
 
             case NavigationAdapter.NAV_ID_TRANSACTIONS:
                 baseFragment = TransactionsFragment.newInstance();
+                break;
+
+            case NavigationAdapter.NAV_ID_REPORTS:
+                baseFragment = ReportsFragment.newInstance();
                 break;
 
             default:

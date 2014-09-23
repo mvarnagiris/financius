@@ -20,7 +20,8 @@ import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Transfer;
 import com.code44.finance.ui.ModelListFragment;
-import com.code44.finance.utils.IntervalHelper;
+import com.code44.finance.utils.CurrentInterval;
+import com.code44.finance.utils.IntervalHelperDeprecated;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
@@ -31,7 +32,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 public class TransactionsFragment extends ModelListFragment {
     @Inject Currency defaultCurrency;
     @Inject @Transfer Category transferCategory;
-    @Inject IntervalHelper intervalHelper;
+    @Inject CurrentInterval currentInterval;
 
     private ExpandableStickyListHeadersListView headerList_V;
 
@@ -58,7 +59,7 @@ public class TransactionsFragment extends ModelListFragment {
     }
 
     @Override protected BaseModelsAdapter createAdapter(Context context) {
-        return new TransactionsAdapter(context, defaultCurrency, transferCategory, intervalHelper);
+        return new TransactionsAdapter(context, defaultCurrency, transferCategory, currentInterval);
     }
 
     @Override protected CursorLoader getModelsCursorLoader(Context context) {
@@ -102,7 +103,7 @@ public class TransactionsFragment extends ModelListFragment {
         });
     }
 
-    @Subscribe public void onIntervalChanged(IntervalHelper intervalHelper) {
+    @Subscribe public void onIntervalChanged(IntervalHelperDeprecated intervalHelper) {
         adapter.notifyDataSetChanged();
     }
 }

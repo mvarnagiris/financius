@@ -26,6 +26,7 @@ import com.code44.finance.ui.currencies.CurrencyFragment;
 import com.code44.finance.ui.dialogs.DeleteDialogFragment;
 import com.code44.finance.ui.dialogs.ListDialogFragment;
 import com.code44.finance.ui.overview.OverviewFragment;
+import com.code44.finance.ui.reports.ReportsFragment;
 import com.code44.finance.ui.settings.SettingsActivity;
 import com.code44.finance.ui.settings.data.DataActivity;
 import com.code44.finance.ui.settings.data.DataFragment;
@@ -95,7 +96,8 @@ import dagger.Module;
                 GoogleApiFragment.class,
                 FileExportFragment.class,
                 FileImportFragment.class,
-                DataFragment.class
+                DataFragment.class,
+                ReportsFragment.class
         }
 )
 public class UIModule {

@@ -7,8 +7,9 @@ import com.code44.finance.qualifiers.ApplicationContext;
 import com.code44.finance.qualifiers.Local;
 import com.code44.finance.qualifiers.Network;
 import com.code44.finance.utils.Calculator;
+import com.code44.finance.utils.CurrentInterval;
 import com.code44.finance.utils.EventBus;
-import com.code44.finance.utils.IntervalHelper;
+import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.LayoutType;
 import com.code44.finance.utils.LocalExecutor;
 
@@ -42,8 +43,8 @@ public final class UtilsModule {
         return new LocalExecutor(numberCores * 2 + 1);
     }
 
-    @Provides @Singleton public IntervalHelper provideIntervalHelper(@ApplicationContext Context context, EventBus eventBus) {
-        return new IntervalHelper(context, eventBus);
+    @Provides @Singleton public CurrentInterval provideCurrentInterval(@ApplicationContext Context context, EventBus eventBus, GeneralPrefs generalPrefs) {
+        return new CurrentInterval(context, eventBus, generalPrefs.getIntervalType(), generalPrefs.getIntervalLength());
     }
 
     @Provides public LayoutType provideLayoutType(@ApplicationContext Context context) {

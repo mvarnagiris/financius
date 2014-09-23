@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:background="?android:colorPrimary">
+
+    <ImageButton
+        android:id="@+id/prev_IB"
+        style="@style/Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/previous"
+        android:src="@drawable/ic_action_chevron_left" />
+
+    <TextView
+        android:id="@+id/interval_TV"
+        style="@style/Text.Body2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="@color/text_primary_inverse"
+        tools:text="September" />
+
+    <ImageButton
+        android:id="@+id/next_IB"
+        style="@style/Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/next"
+        android:src="@drawable/ic_action_chevron_right" />
+
+</LinearLayout>

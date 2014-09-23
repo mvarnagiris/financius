@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.utils.IntervalHelper;
+import com.code44.finance.utils.BaseInterval;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,8 +69,8 @@ public class SettingsAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void onIntervalChanged(IntervalHelper intervalHelper) {
-        ((SettingsSubtitleItem) settingsItems.get(ID_PERIOD - 1)).setSubtitle(intervalHelper.getIntervalTypeTitle());
+    public void onIntervalChanged(BaseInterval intervalHelper) {
+        ((SettingsSubtitleItem) settingsItems.get(ID_PERIOD - 1)).setSubtitle(intervalHelper.getTypeTitle());
         notifyDataSetChanged();
     }
 

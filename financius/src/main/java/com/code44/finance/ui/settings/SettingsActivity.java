@@ -15,7 +15,9 @@ import com.code44.finance.ui.currencies.CurrenciesActivity;
 import com.code44.finance.ui.dialogs.ListDialogFragment;
 import com.code44.finance.ui.settings.data.DataActivity;
 import com.code44.finance.ui.tags.TagsActivity;
-import com.code44.finance.utils.IntervalHelper;
+import com.code44.finance.utils.BaseInterval;
+import com.code44.finance.utils.CurrentInterval;
+import com.code44.finance.utils.GeneralPrefs;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -28,7 +30,8 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
 
     private static final String FRAGMENT_INTERVAL = "FRAGMENT_INTERVAL";
 
-    @Inject IntervalHelper intervalHelper;
+    @Inject GeneralPrefs generalPrefs;
+    @Inject CurrentInterval currentInterval;
 
     private SettingsAdapter adapter;
 
@@ -73,10 +76,10 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
             TagsActivity.start(this);
         } else if (id == SettingsAdapter.ID_PERIOD) {
             final List<ListDialogFragment.ListDialogItem> items = new ArrayList<>();
-            items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.day), intervalHelper.getType() == IntervalHelper.Type.DAY));
-            items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.week), intervalHelper.getType() == IntervalHelper.Type.WEEK));
-            items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.month), intervalHelper.getType() == IntervalHelper.Type.MONTH));
-            items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.year), intervalHelper.getType() == IntervalHelper.Type.YEAR));
+            items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.day), generalPrefs.getIntervalType() == BaseInterval.Type.DAY));
+            items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.week), generalPrefs.getIntervalType() == BaseInterval.Type.WEEK));
+            items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.month), generalPrefs.getIntervalType() == BaseInterval.Type.MONTH));
+            items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.year), generalPrefs.getIntervalType() == BaseInterval.Type.YEAR));
             new ListDialogFragment.Builder(REQUEST_INTERVAL)
                     .setTitle(getString(R.string.period))
                     .setItems(items)
@@ -87,7 +90,7 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
         }
     }
 
-    @Subscribe public void onIntervalChanged(IntervalHelper intervalHelper) {
+    @Subscribe public void onIntervalChanged(CurrentInterval intervalHelper) {
         adapter.onIntervalChanged(intervalHelper);
     }
 
@@ -97,23 +100,31 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
         }
 
         final int selectedPosition = event.getPosition();
+        final BaseInterval.Type type;
+        final int length;
         switch (selectedPosition) {
             case 0:
-                intervalHelper.setTypeAndLength(IntervalHelper.Type.DAY, 1);
+                type = BaseInterval.Type.DAY;
+                length = 1;
                 break;
-
             case 1:
-                intervalHelper.setTypeAndLength(IntervalHelper.Type.WEEK, 1);
+                type = BaseInterval.Type.WEEK;
+                length = 1;
                 break;
-
             case 2:
-                intervalHelper.setTypeAndLength(IntervalHelper.Type.MONTH, 1);
+                type = BaseInterval.Type.MONTH;
+                length = 1;
                 break;
-
             case 3:
-                intervalHelper.setTypeAndLength(IntervalHelper.Type.YEAR, 1);
+                type = BaseInterval.Type.YEAR;
+                length = 1;
                 break;
+            default:
+                throw new IllegalArgumentException("Selected invalid position for interval.");
         }
+
+        generalPrefs.setIntervalTypeAndLength(type, length);
+        currentInterval.setTypeAndLength(type, length);
         event.dismiss();
     }
 }

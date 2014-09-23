@@ -25,7 +25,7 @@ import com.code44.finance.graphs.pie.PieChartValue;
 import com.code44.finance.ui.BaseFragment;
 import com.code44.finance.ui.NavigationFragment;
 import com.code44.finance.ui.transactions.TransactionEditActivity;
-import com.code44.finance.utils.IntervalHelper;
+import com.code44.finance.utils.CurrentInterval;
 import com.code44.finance.views.AccountsView;
 import com.code44.finance.views.FabImageButton;
 import com.code44.finance.views.OverviewGraphView;
@@ -44,7 +44,7 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
     private static final int LOADER_TRANSACTIONS = 1;
     private static final int LOADER_ACCOUNTS = 2;
 
-    @Inject IntervalHelper intervalHelper;
+    @Inject CurrentInterval currentInterval;
     @Inject Currency defaultCurrency;
 
     private FabImageButton newTransaction_FAB;
@@ -110,7 +110,7 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
             case LOADER_TRANSACTIONS:
                 return Tables.Transactions
                         .getQuery()
-                        .selection(" and " + Tables.Transactions.DATE + " between ? and ?", String.valueOf(intervalHelper.getCurrentInterval().getStartMillis()), String.valueOf(intervalHelper.getCurrentInterval().getEndMillis() - 1))
+                        .selection(" and " + Tables.Transactions.DATE + " between ? and ?", String.valueOf(currentInterval.getInterval().getStartMillis()), String.valueOf(currentInterval.getInterval().getEndMillis() - 1))
                         .asCursorLoader(getActivity(), TransactionsProvider.uriTransactions());
             case LOADER_ACCOUNTS:
                 return Tables.Accounts.getQuery().selection(" and " + Tables.Accounts.INCLUDE_IN_TOTALS + "=?", "1").asCursorLoader(getActivity(), AccountsProvider.uriAccounts());
@@ -147,10 +147,10 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
     }
 
     @Override public String getTitle() {
-        return intervalHelper.getCurrentIntervalTitle();
+        return currentInterval.getTitle();
     }
 
-    @Subscribe public void onCurrentIntervalChanged(IntervalHelper intervalHelper) {
+    @Subscribe public void onCurrentIntervalChanged(CurrentInterval currentInterval) {
         requestTitleUpdate();
         getLoaderManager().restartLoader(LOADER_TRANSACTIONS, null, this);
     }
