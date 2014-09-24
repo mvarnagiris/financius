@@ -6,6 +6,7 @@ import com.code44.finance.api.NetworkExecutor;
 import com.code44.finance.qualifiers.ApplicationContext;
 import com.code44.finance.qualifiers.Local;
 import com.code44.finance.qualifiers.Network;
+import com.code44.finance.utils.ActiveInterval;
 import com.code44.finance.utils.Calculator;
 import com.code44.finance.utils.CurrentInterval;
 import com.code44.finance.utils.EventBus;
@@ -45,6 +46,10 @@ public final class UtilsModule {
 
     @Provides @Singleton public CurrentInterval provideCurrentInterval(@ApplicationContext Context context, EventBus eventBus, GeneralPrefs generalPrefs) {
         return new CurrentInterval(context, eventBus, generalPrefs.getIntervalType(), generalPrefs.getIntervalLength());
+    }
+
+    @Provides @Singleton public ActiveInterval provideActiveInterval(@ApplicationContext Context context, EventBus eventBus, GeneralPrefs generalPrefs) {
+        return new ActiveInterval(context, eventBus, generalPrefs.getIntervalType(), generalPrefs.getIntervalLength());
     }
 
     @Provides public LayoutType provideLayoutType(@ApplicationContext Context context) {

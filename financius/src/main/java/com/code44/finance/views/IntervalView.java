@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.utils.CurrentInterval;
+import com.code44.finance.utils.ActiveInterval;
 
 import javax.inject.Inject;
 
@@ -17,7 +17,7 @@ public class IntervalView extends LinearLayout implements View.OnClickListener {
     private final ImageButton next_IB;
     private final TextView interval_TV;
 
-    @Inject CurrentInterval currentInterval;
+    @Inject ActiveInterval activeInterval;
 
     public IntervalView(Context context) {
         this(context, null);

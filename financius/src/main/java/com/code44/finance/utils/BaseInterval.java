@@ -13,20 +13,19 @@ import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormat;
 
 public abstract class BaseInterval {
-    private final Context context;
-    private final EventBus eventBus;
+    protected final Context context;
+    protected final EventBus eventBus;
 
-    private Type type;
-    private int length;
+    protected Type type;
+    protected int length;
 
-    private Interval interval;
+    protected Interval interval;
 
     protected BaseInterval(Context context, EventBus eventBus, Type type, int length) {
         this.context = Preconditions.checkNotNull(context, "Context cannot be null.");
         this.eventBus = Preconditions.checkNotNull(eventBus, "EventBus cannot be null.");
         this.type = Preconditions.checkNotNull(type, "Type cannot be null.");
         this.length = Preconditions.checkMore(length, 0, "Length must be > 0.");
-        ;
         updateInterval();
     }
 
@@ -113,7 +112,7 @@ public abstract class BaseInterval {
         notifyChanged();
     }
 
-    private void notifyChanged() {
+    protected void notifyChanged() {
         eventBus.post(this);
     }
 
