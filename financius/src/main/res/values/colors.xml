@@ -8,10 +8,10 @@
     <color name="accent_transparent">#8fcddc39</color>
     <color name="accent_dark_transparent">#8fafb42b</color>
 
-    <color name="bg_window">#f5f5f5</color>
+    <color name="bg_window">#f0f0f0</color>
     <color name="bg_primary">#fafafa</color>
     <color name="bg_primary_inverse">#424242</color>
-    <color name="bg_secondary">#eeeeee</color>
+    <color name="bg_secondary">#e0e0e0</color>
     <color name="bg_actionbar">@color/brand</color>
     <color name="bg_brand">@color/brand</color>
 

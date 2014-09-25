@@ -76,7 +76,7 @@ public class ReportsFragment extends BaseReportFragment implements LoaderManager
     }
 
     @Override public String getTitle() {
-        return "";
+        return getString(R.string.reports);
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
