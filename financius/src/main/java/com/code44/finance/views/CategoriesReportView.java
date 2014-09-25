@@ -55,6 +55,7 @@ public class CategoriesReportView extends LinearLayout {
 
     @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
         final LayoutParams params = (LayoutParams) pieChart_V.getLayoutParams();
         params.height = pieChart_V.getMeasuredWidth();
     }

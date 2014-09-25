@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    style="@style/ListItem"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:layout_width="@dimen/keyline_between"
+        android:layout_height="@dimen/keyline_between"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/keyline"
+        tools:ignore="RtlHardcoded">
+
+        <ImageView
+            android:id="@+id/color_IV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/circle"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/percent_TV"
+            style="@style/Text.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/text_primary_inverse"
+            tools:text="100%"
+            tools:textColor="@color/text_primary" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/title_TV"
+            style="@style/Text.Body2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:singleLine="true"
+            tools:text="Leisure" />
+
+        <TextView
+            android:id="@+id/amount_TV"
+            style="@style/Text.Body2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginLeft="@dimen/space_normal"
+            tools:ignore="RtlHardcoded"
+            tools:text="58.99 $" />
+
+    </LinearLayout>
+
+</LinearLayout>

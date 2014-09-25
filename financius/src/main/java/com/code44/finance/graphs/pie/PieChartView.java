@@ -195,7 +195,7 @@ public class PieChartView extends View {
             this.pieChartData = pieChartData;
         }
 
-        invalidate();
+        requestLayout();
     }
 
     public void setEmptyColor(int emptyColor) {

@@ -18,6 +18,7 @@
         android:layout_weight="2"
         android:gravity="right"
         android:singleLine="true"
+        android:textColor="@color/text_primary_inverse"
         tools:ignore="RtlHardcoded" />
 
 </merge>

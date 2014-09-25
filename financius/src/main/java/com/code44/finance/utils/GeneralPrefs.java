@@ -82,7 +82,7 @@ public class GeneralPrefs extends Prefs {
     public void setIntervalTypeAndLength(BaseInterval.Type intervalType, int intervalLength) {
         this.intervalType = intervalType;
         this.intervalLength = intervalLength;
-        setString("type", intervalType.toString());
+        setString("intervalType", intervalType.toString());
         setInteger("intervalLength", intervalLength);
         notifyChanged();
     }

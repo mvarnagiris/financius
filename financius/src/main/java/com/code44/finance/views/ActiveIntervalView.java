@@ -15,25 +15,25 @@ import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
-public class IntervalView extends LinearLayout implements View.OnClickListener {
+public class ActiveIntervalView extends LinearLayout implements View.OnClickListener {
     private final Button interval_B;
 
     @Inject ActiveInterval activeInterval;
     @Inject EventBus eventBus;
 
-    @SuppressWarnings("UnusedDeclaration") public IntervalView(Context context) {
+    @SuppressWarnings("UnusedDeclaration") public ActiveIntervalView(Context context) {
         this(context, null);
     }
 
-    public IntervalView(Context context, AttributeSet attrs) {
+    public ActiveIntervalView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public IntervalView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ActiveIntervalView(Context context, AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, defStyleAttr, 0);
     }
 
-    public IntervalView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public ActiveIntervalView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         inflate(context, R.layout.v_interval, this);
         App.with(context).inject(this);

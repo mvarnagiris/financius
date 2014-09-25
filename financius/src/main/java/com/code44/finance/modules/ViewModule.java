@@ -1,8 +1,8 @@
 package com.code44.finance.modules;
 
 import com.code44.finance.views.AccountsView;
+import com.code44.finance.views.ActiveIntervalView;
 import com.code44.finance.views.CategoriesReportView;
-import com.code44.finance.views.IntervalView;
 import com.code44.finance.views.OverviewGraphView;
 
 import dagger.Module;
@@ -12,7 +12,7 @@ import dagger.Module;
         injects = {
                 OverviewGraphView.class,
                 AccountsView.class,
-                IntervalView.class,
+                ActiveIntervalView.class,
                 CategoriesReportView.class
         }
 )
