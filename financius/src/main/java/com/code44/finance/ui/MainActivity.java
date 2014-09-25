@@ -107,7 +107,7 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
     }
 
     private void onFragmentLoaded(BaseFragment fragment) {
-        if (fragment instanceof OverviewFragment) {
+        if (fragment instanceof OverviewFragment || fragment instanceof ReportsFragment) {
             toolbarHelper.setElevation(0);
         } else {
             toolbarHelper.setElevation(getResources().getDimension(R.dimen.elevation_header));

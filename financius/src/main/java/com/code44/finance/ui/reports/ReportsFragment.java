@@ -15,4 +15,8 @@ public class ReportsFragment extends BaseReportFragment {
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_reports, container, false);
     }
+
+    @Override public String getTitle() {
+        return "";
+    }
 }

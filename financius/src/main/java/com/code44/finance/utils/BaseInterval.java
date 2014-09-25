@@ -26,7 +26,7 @@ public abstract class BaseInterval {
         this.eventBus = Preconditions.checkNotNull(eventBus, "EventBus cannot be null.");
         this.type = Preconditions.checkNotNull(type, "Type cannot be null.");
         this.length = Preconditions.checkMore(length, 0, "Length must be > 0.");
-        updateInterval();
+        reset();
     }
 
     public Type getType() {
@@ -44,7 +44,7 @@ public abstract class BaseInterval {
         this.type = type;
         this.length = length;
         if (changed) {
-            updateInterval();
+            reset();
         }
     }
 
@@ -59,7 +59,7 @@ public abstract class BaseInterval {
             case WEEK:
                 return DateUtils.formatDateTime(context, interval.getStart(), DateUtils.FORMAT_ABBREV_ALL) + " - " + DateUtils.formatDateTime(context, interval.getEnd().minusMillis(1), DateUtils.FORMAT_ABBREV_ALL);
             case MONTH:
-                return interval.getStart().monthOfYear().getAsText();
+                return DateUtils.formatDateTime(context, interval.getStart(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_MONTH_DAY);
             case YEAR:
                 return interval.getStart().year().getAsText();
             default:
@@ -82,34 +82,51 @@ public abstract class BaseInterval {
         }
     }
 
-    protected void updateInterval() {
+    public void reset() {
         final DateTime currentTime = new DateTime(System.currentTimeMillis());
         final DateTime intervalStart;
-        final Period period;
 
         switch (type) {
             case DAY:
                 intervalStart = currentTime.withTimeAtStartOfDay();
-                period = Period.days(length);
                 break;
             case WEEK:
                 intervalStart = currentTime.weekOfWeekyear().roundFloorCopy();
-                period = Period.weeks(length);
                 break;
             case MONTH:
                 intervalStart = currentTime.dayOfMonth().withMinimumValue().withTimeAtStartOfDay();
-                period = Period.months(length);
                 break;
             case YEAR:
                 intervalStart = currentTime.withMonthOfYear(1).withDayOfMonth(1).withTimeAtStartOfDay();
+                break;
+            default:
+                throw new IllegalArgumentException("Type " + type + " is not supported.");
+        }
+
+        interval = new Interval(intervalStart, getPeriodForType());
+        notifyChanged();
+    }
+
+    protected Period getPeriodForType() {
+        final Period period;
+        switch (type) {
+            case DAY:
+                period = Period.days(length);
+                break;
+            case WEEK:
+                period = Period.weeks(length);
+                break;
+            case MONTH:
+                period = Period.months(length);
+                break;
+            case YEAR:
                 period = Period.years(length);
                 break;
             default:
                 throw new IllegalArgumentException("Type " + type + " is not supported.");
         }
 
-        interval = new Interval(intervalStart, period);
-        notifyChanged();
+        return period;
     }
 
     protected void notifyChanged() {

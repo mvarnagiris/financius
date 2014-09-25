@@ -3,23 +3,25 @@ package com.code44.finance.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
+import com.code44.finance.App;
 import com.code44.finance.R;
 import com.code44.finance.utils.ActiveInterval;
+import com.code44.finance.utils.EventBus;
+import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
 public class IntervalView extends LinearLayout implements View.OnClickListener {
-    private final ImageButton prev_IB;
-    private final ImageButton next_IB;
-    private final TextView interval_TV;
+    private final Button interval_B;
 
     @Inject ActiveInterval activeInterval;
+    @Inject EventBus eventBus;
 
-    public IntervalView(Context context) {
+    @SuppressWarnings("UnusedDeclaration") public IntervalView(Context context) {
         this(context, null);
     }
 
@@ -33,33 +35,52 @@ public class IntervalView extends LinearLayout implements View.OnClickListener {
 
     public IntervalView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        inflate(context, R.layout.v_interval, this);
+        App.with(context).inject(this);
 
         // Get views
-        prev_IB = (ImageButton) findViewById(R.id.prev_IB);
-        next_IB = (ImageButton) findViewById(R.id.next_IB);
-        interval_TV = (TextView) findViewById(R.id.interval_TV);
+        final ImageButton prev_IB = (ImageButton) findViewById(R.id.prev_IB);
+        final ImageButton next_IB = (ImageButton) findViewById(R.id.next_IB);
+        interval_B = (Button) findViewById(R.id.interval_B);
 
         // Setup
         prev_IB.setOnClickListener(this);
         next_IB.setOnClickListener(this);
+        interval_B.setOnClickListener(this);
+        eventBus.register(this);
     }
 
     @Override public void onClick(View view) {
         switch (view.getId()) {
             case R.id.prev_IB:
-                prev();
+                previous();
                 break;
             case R.id.next_IB:
                 next();
                 break;
+            case R.id.interval_B:
+                reset();
+                break;
         }
     }
 
-    private void prev() {
-        // TODO Implement
+    @Subscribe public void onActiveIntervalChanged(ActiveInterval activeInterval) {
+        update(activeInterval);
+    }
+
+    private void update(ActiveInterval activeInterval) {
+        interval_B.setText(activeInterval.getTitle());
+    }
+
+    private void previous() {
+        activeInterval.previous();
     }
 
     private void next() {
-        // TODO Implement
+        activeInterval.next();
+    }
+
+    private void reset() {
+        activeInterval.reset();
     }
 }

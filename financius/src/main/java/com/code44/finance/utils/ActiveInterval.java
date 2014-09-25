@@ -4,6 +4,9 @@ import android.content.Context;
 
 import com.squareup.otto.Produce;
 
+import org.joda.time.Interval;
+import org.joda.time.Period;
+
 /**
  * Interval based on user's choice.
  */
@@ -18,17 +21,14 @@ public class ActiveInterval extends BaseInterval {
     }
 
     public void previous() {
-        // TODO Implement
+        final Period period = getPeriodForType();
+        interval = new Interval(period, interval.getStart());
         notifyChanged();
     }
 
     public void next() {
-        // TODO Implement
-        notifyChanged();
-    }
-
-    public void reset() {
-        // TODO Implement
+        final Period period = getPeriodForType();
+        interval = new Interval(interval.getEnd(), period);
         notifyChanged();
     }
 }
