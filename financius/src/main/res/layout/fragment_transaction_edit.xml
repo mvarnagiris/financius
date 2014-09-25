@@ -103,7 +103,7 @@
                     style="@style/Button.Borderless.Select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/from"
+                    android:hint="@string/category"
                     tools:stateListAnimator="@android:animator/fade_in"
                     tools:text="Leisure" />
 

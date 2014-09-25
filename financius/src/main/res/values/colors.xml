@@ -11,7 +11,7 @@
     <color name="bg_window">#f0f0f0</color>
     <color name="bg_primary">#fafafa</color>
     <color name="bg_primary_inverse">#424242</color>
-    <color name="bg_secondary">#e0e0e0</color>
+    <color name="bg_secondary">#e4e4e4</color>
     <color name="bg_actionbar">@color/brand</color>
     <color name="bg_brand">@color/brand</color>
 
