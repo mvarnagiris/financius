@@ -10,4 +10,12 @@
         android:background="?android:colorPrimary"
         android:elevation="@dimen/elevation_header" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_V"
+        style="@style/ListView"
+        android:paddingBottom="@dimen/space_small"
+        android:paddingLeft="@dimen/space_normal"
+        android:paddingRight="@dimen/space_normal"
+        android:paddingTop="@dimen/space_small" />
+
 </LinearLayout>

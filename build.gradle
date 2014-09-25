@@ -5,8 +5,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
-        classpath 'com.github.jcandksolutions.gradle:android-unit-test:1.2.+'
+        classpath 'com.android.tools.build:gradle:0.13.0'
+        classpath 'com.github.jcandksolutions.gradle:android-unit-test:1.2.3'
         classpath 'com.jakewharton.hugo:hugo-plugin:1.1.0'
     }
 }
@@ -14,5 +14,6 @@ buildscript {
 allprojects {
     repositories {
         mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
 }

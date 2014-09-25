@@ -25,6 +25,7 @@ import com.code44.finance.graphs.pie.PieChartValue;
 import com.code44.finance.ui.BaseFragment;
 import com.code44.finance.ui.NavigationFragment;
 import com.code44.finance.ui.transactions.TransactionEditActivity;
+import com.code44.finance.utils.CategoriesExpenseComparator;
 import com.code44.finance.utils.CurrentInterval;
 import com.code44.finance.views.AccountsView;
 import com.code44.finance.views.FabImageButton;
@@ -32,7 +33,6 @@ import com.code44.finance.views.OverviewGraphView;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -197,7 +197,7 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
             } while (cursor.moveToNext());
         }
 
-        final TreeMap<Category, Long> sortedExpenses = new TreeMap<>(new CategoriesExpensesComparator(expenses));
+        final TreeMap<Category, Long> sortedExpenses = new TreeMap<>(new CategoriesExpenseComparator(expenses));
         sortedExpenses.putAll(expenses);
         final PieChartData.Builder builder = PieChartData.builder();
         for (Category category : sortedExpenses.descendingKeySet()) {
@@ -216,25 +216,5 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
             } while (cursor.moveToNext());
         }
         accounts_V.setAccounts(accounts);
-    }
-
-    private static class CategoriesExpensesComparator implements Comparator<Category> {
-        final Map<Category, Long> base;
-
-        private CategoriesExpensesComparator(Map<Category, Long> base) {
-            this.base = base;
-        }
-
-        @Override public int compare(Category category1, Category category2) {
-            final Long category1Total = base.get(category1);
-            final Long category2Total = base.get(category2);
-            if (category1Total > category2Total) {
-                return 1;
-            } else if (base.get(category1) < base.get(category2)) {
-                return -1;
-            } else {
-                return 0;
-            }
-        }
     }
 }
