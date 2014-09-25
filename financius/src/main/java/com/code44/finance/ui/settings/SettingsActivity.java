@@ -15,6 +15,7 @@ import com.code44.finance.ui.currencies.CurrenciesActivity;
 import com.code44.finance.ui.dialogs.ListDialogFragment;
 import com.code44.finance.ui.settings.data.DataActivity;
 import com.code44.finance.ui.tags.TagsActivity;
+import com.code44.finance.utils.ActiveInterval;
 import com.code44.finance.utils.BaseInterval;
 import com.code44.finance.utils.CurrentInterval;
 import com.code44.finance.utils.GeneralPrefs;
@@ -32,6 +33,7 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
 
     @Inject GeneralPrefs generalPrefs;
     @Inject CurrentInterval currentInterval;
+    @Inject ActiveInterval activeInterval;
 
     private SettingsAdapter adapter;
 
@@ -125,6 +127,7 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
 
         generalPrefs.setIntervalTypeAndLength(type, length);
         currentInterval.setTypeAndLength(type, length);
+        activeInterval.setTypeAndLength(type, length);
         event.dismiss();
     }
 }
