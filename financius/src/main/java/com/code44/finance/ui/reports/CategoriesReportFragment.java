@@ -12,8 +12,8 @@ import android.widget.ListView;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.CategoriesReportAdapter;
-import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.common.model.TransactionState;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Currency;
@@ -21,6 +21,7 @@ import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartValue;
+import com.code44.finance.qualifiers.Main;
 import com.code44.finance.utils.ActiveInterval;
 import com.code44.finance.utils.CategoriesExpenseComparator;
 import com.code44.finance.views.CategoriesReportView;
@@ -38,7 +39,7 @@ public class CategoriesReportFragment extends BaseReportFragment implements Load
     private static final int LOADER_TRANSACTIONS = 1;
 
     @Inject ActiveInterval activeInterval;
-    @Inject Currency defaultCurrency;
+    @Inject @Main Currency mainCurrency;
 
     private CategoriesReportView categoriesReport_V;
 
@@ -60,7 +61,7 @@ public class CategoriesReportFragment extends BaseReportFragment implements Load
         final ListView list_V = (ListView) view.findViewById(R.id.list_V);
 
         // Setup
-        adapter = new CategoriesReportAdapter(getActivity(), defaultCurrency);
+        adapter = new CategoriesReportAdapter(getActivity(), mainCurrency);
         list_V.setAdapter(adapter);
     }
 
@@ -110,9 +111,9 @@ public class CategoriesReportFragment extends BaseReportFragment implements Load
             do {
                 final Transaction transaction = Transaction.from(cursor);
                 final Category category = transaction.getCategory();
-                if (transaction.includeInReports() && category.getCategoryType() == CategoryType.EXPENSE && transaction.getTransactionState() == TransactionState.CONFIRMED) {
+                if (transaction.includeInReports() && category.getTransactionType() == TransactionType.EXPENSE && transaction.getTransactionState() == TransactionState.CONFIRMED) {
                     final Long amount;
-                    if (transaction.getAccountFrom().getCurrency().getId().equals(defaultCurrency.getId())) {
+                    if (transaction.getAccountFrom().getCurrency().getId().equals(mainCurrency.getId())) {
                         amount = transaction.getAmount();
                     } else {
                         amount = Math.round(transaction.getAmount() * transaction.getAccountFrom().getCurrency().getExchangeRate());

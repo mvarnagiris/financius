@@ -1,9 +1,9 @@
 package com.code44.finance.common.model;
 
-public enum CategoryType {
-    EXPENSE(CategoryType.VALUE_EXPENSE),
-    INCOME(CategoryType.VALUE_INCOME),
-    TRANSFER(CategoryType.VALUE_TRANSFER);
+public enum TransactionType {
+    EXPENSE(TransactionType.VALUE_EXPENSE),
+    INCOME(TransactionType.VALUE_INCOME),
+    TRANSFER(TransactionType.VALUE_TRANSFER);
 
     private static final int VALUE_EXPENSE = 1;
     private static final int VALUE_INCOME = 2;
@@ -11,11 +11,11 @@ public enum CategoryType {
 
     private final int value;
 
-    private CategoryType(int value) {
+    private TransactionType(int value) {
         this.value = value;
     }
 
-    public static CategoryType fromInt(int value) {
+    public static TransactionType fromInt(int value) {
         switch (value) {
             case VALUE_EXPENSE:
                 return EXPENSE;

@@ -6,7 +6,7 @@ import android.content.Context;
 import android.support.v13.app.FragmentPagerAdapter;
 
 import com.code44.finance.R;
-import com.code44.finance.common.model.CategoryType;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.ui.categories.CategoriesFragment;
 
@@ -21,9 +21,9 @@ public class CategoriesPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return CategoriesFragment.newInstance(ModelListFragment.Mode.VIEW, CategoryType.EXPENSE);
+            return CategoriesFragment.newInstance(ModelListFragment.Mode.VIEW, TransactionType.EXPENSE);
         } else {
-            return CategoriesFragment.newInstance(ModelListFragment.Mode.VIEW, CategoryType.INCOME);
+            return CategoriesFragment.newInstance(ModelListFragment.Mode.VIEW, TransactionType.INCOME);
         }
     }
 

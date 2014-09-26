@@ -21,6 +21,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
+import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.CalculatorActivity;
 import com.code44.finance.ui.ModelEditFragment;
 import com.code44.finance.ui.ModelListActivity;
@@ -33,7 +34,7 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
     private static final int REQUEST_CURRENCY = 1;
     private static final int REQUEST_BALANCE = 2;
 
-    @Inject Currency defaultCurrency;
+    @Inject @Main Currency mainCurrency;
 
     private EditText title_ET;
     private Button currency_B;
@@ -114,7 +115,7 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
     @Override protected Account getModelFrom(Cursor cursor) {
         final Account account = Account.from(cursor);
         if (account.getCurrency() == null) {
-            account.setCurrency(defaultCurrency);
+            account.setCurrency(mainCurrency);
         }
         return account;
     }

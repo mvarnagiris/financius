@@ -23,11 +23,10 @@ public abstract class BaseProvider extends ContentProvider {
     @Inject DBHelper dbHelper;
 
     protected static String getAuthority(Class<? extends BaseProvider> cls) {
-        return BuildConfig.PACKAGE_NAME + ".data.providers." + cls.getSimpleName();
+        return BuildConfig.APPLICATION_ID + ".data.providers." + cls.getSimpleName();
     }
 
-    @Override
-    public boolean onCreate() {
+    @Override public boolean onCreate() {
         return true;
     }
 

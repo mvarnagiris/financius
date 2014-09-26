@@ -16,13 +16,15 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
+import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.ModelFragment;
 import com.code44.finance.utils.MoneyFormatter;
 
 import javax.inject.Inject;
 
 public class AccountFragment extends ModelFragment<Account> {
-    @Inject Currency defaultCurrency;
+    @Inject @Main Currency mainCurrency;
+
     private TextView title_TV;
     private TextView balance_TV;
     private TextView mainCurrencyBalance_TV;
@@ -67,11 +69,11 @@ public class AccountFragment extends ModelFragment<Account> {
         title_TV.setText(model.getTitle());
         balance_TV.setText(MoneyFormatter.format(model.getCurrency(), model.getBalance()));
         note_TV.setText(model.getNote());
-        if (model.getCurrency().getId().equals(defaultCurrency.getId())) {
+        if (model.getCurrency().getId().equals(mainCurrency.getId())) {
             mainCurrencyBalance_TV.setVisibility(View.GONE);
         } else {
             mainCurrencyBalance_TV.setVisibility(View.VISIBLE);
-            mainCurrencyBalance_TV.setText(MoneyFormatter.format(defaultCurrency, (long) (model.getBalance() * model.getCurrency().getExchangeRate())));
+            mainCurrencyBalance_TV.setText(MoneyFormatter.format(mainCurrency, (long) (model.getBalance() * model.getCurrency().getExchangeRate())));
         }
     }
 

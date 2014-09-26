@@ -16,7 +16,7 @@ public final class ProviderUtils {
     private ProviderUtils() {
     }
 
-    public static int doArrayReplaceInTransaction(SQLiteDatabase db, String tableName, ContentValues[] valuesArray) {
+    @SuppressWarnings("UnusedDeclaration") public static int doArrayReplaceInTransaction(SQLiteDatabase db, String tableName, ContentValues[] valuesArray) {
         int count = 0;
         try {
             db.beginTransaction();

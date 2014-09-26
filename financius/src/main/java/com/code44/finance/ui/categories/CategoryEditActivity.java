@@ -4,18 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.code44.finance.R;
-import com.code44.finance.common.model.CategoryType;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.ui.ModelEditActivity;
 import com.code44.finance.ui.ModelFragment;
 
 public class CategoryEditActivity extends ModelEditActivity {
     private static final String EXTRA_CATEGORY_TYPE = "EXTRA_CATEGORY_TYPE";
 
-    private CategoryType categoryType;
+    private TransactionType transactionType;
 
-    public static void start(Context context, String categoryServerId, CategoryType categoryType) {
+    public static void start(Context context, String categoryServerId, TransactionType transactionType) {
         final Intent intent = makeIntent(context, CategoryEditActivity.class, categoryServerId);
-        intent.putExtra(EXTRA_CATEGORY_TYPE, categoryType);
+        intent.putExtra(EXTRA_CATEGORY_TYPE, transactionType);
         start(context, intent);
     }
 
@@ -26,11 +26,11 @@ public class CategoryEditActivity extends ModelEditActivity {
 
     @Override
     protected ModelFragment createModelFragment(String modelServerId) {
-        return CategoryEditFragment.newInstance(modelServerId, categoryType);
+        return CategoryEditFragment.newInstance(modelServerId, transactionType);
     }
 
     @Override protected void readExtras() {
         super.readExtras();
-        categoryType = (CategoryType) getIntent().getSerializableExtra(EXTRA_CATEGORY_TYPE);
+        transactionType = (TransactionType) getIntent().getSerializableExtra(EXTRA_CATEGORY_TYPE);
     }
 }

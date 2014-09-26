@@ -19,8 +19,7 @@ public class TagsAdapter extends BaseModelsAdapter {
         this.isMultiChoice = isMultiChoice;
     }
 
-    @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+    @Override public View newView(Context context, Cursor cursor, ViewGroup parent) {
         final View view = LayoutInflater.from(context).inflate(R.layout.li_tag, parent, false);
         final ViewHolder holder = ViewHolder.setAsTag(view);
         if (isMultiChoice) {
@@ -29,8 +28,7 @@ public class TagsAdapter extends BaseModelsAdapter {
         return view;
     }
 
-    @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    @Override public void bindView(View view, Context context, Cursor cursor) {
         final ViewHolder holder = (ViewHolder) view.getTag();
         final Tag tag = Tag.from(cursor);
         holder.title_TV.setText(tag.getTitle());

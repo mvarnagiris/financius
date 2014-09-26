@@ -5,14 +5,12 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
-import com.code44.finance.common.model.AccountOwner;
-import com.code44.finance.common.model.CategoryOwner;
-import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.common.model.DecimalSeparator;
 import com.code44.finance.common.model.GroupSeparator;
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.common.model.SymbolPosition;
 import com.code44.finance.common.model.TransactionState;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.DBHelper;
 import com.code44.finance.data.db.Tables;
@@ -126,8 +124,7 @@ public class BackupDataImporter extends FileDataImporter {
             updateBaseModel(model, modelJson);
             model.setTitle(modelJson.get("title").getAsString());
             model.setColor(modelJson.get("color").getAsInt());
-            model.setCategoryType(CategoryType.fromInt(modelJson.get("category_type").getAsInt()));
-            model.setCategoryOwner(CategoryOwner.fromInt(modelJson.get("category_owner").getAsInt()));
+            model.setTransactionType(TransactionType.fromInt(modelJson.get("transaction_type").getAsInt()));
             model.setSortOrder(modelJson.get("sort_order").getAsInt());
             valuesList.add(model.asValues());
         }
@@ -160,7 +157,6 @@ public class BackupDataImporter extends FileDataImporter {
             model.setTitle(modelJson.get("title").getAsString());
             model.setNote(modelJson.get("note").getAsString());
             model.setBalance(modelJson.get("balance").getAsLong());
-            model.setAccountOwner(AccountOwner.fromInt(modelJson.get("account_owner").getAsInt()));
             model.setIncludeInTotals(modelJson.get("include_in_totals").getAsBoolean());
             valuesList.add(model.asValues());
         }
@@ -199,6 +195,7 @@ public class BackupDataImporter extends FileDataImporter {
             model.setExchangeRate(modelJson.get("exchange_rate").getAsDouble());
             model.setNote(modelJson.get("note").getAsString());
             model.setTransactionState(TransactionState.fromInt(modelJson.get("transaction_state").getAsInt()));
+            model.setTransactionType(TransactionType.fromInt(modelJson.get("transaction_type").getAsInt()));
             model.setIncludeInReports(modelJson.get("include_in_reports").getAsBoolean());
             valuesList.add(model.asValues());
         }

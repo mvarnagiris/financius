@@ -19,8 +19,7 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
 
     private ModelEditListener listener;
 
-    @Override
-    public void onAttach(Activity activity) {
+    @Override public void onAttach(Activity activity) {
         super.onAttach(activity);
 
         if (activity instanceof ModelEditListener) {
@@ -30,8 +29,7 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
         }
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(false);
 
@@ -41,8 +39,7 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
         }
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
@@ -64,8 +61,7 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
         });
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    @Override public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         if (model != null) {
@@ -73,35 +69,30 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
         }
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
+    @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
         ensureModelUpdated(model);
         outState.putParcelable(STATE_MODEL, model);
     }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == LOADER_MODEL && model == null) {
             super.onLoadFinished(loader, data);
         }
     }
 
-    @Override
-    protected Uri getDeleteUri() {
+    @Override protected Uri getDeleteUri() {
         // Ignore
         return null;
     }
 
-    @Override
-    protected Pair<String, String[]> getDeleteSelection() {
+    @Override protected Pair<String, String[]> getDeleteSelection() {
         // Ignore
         return null;
     }
 
-    @Override
-    protected void startModelEdit(Context context, String modelServerId) {
+    @Override protected void startModelEdit(Context context, String modelServerId) {
         // Ignore
     }
 

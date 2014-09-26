@@ -11,6 +11,7 @@ import com.code44.finance.App;
 import com.code44.finance.R;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
+import com.code44.finance.qualifiers.Main;
 import com.code44.finance.utils.MoneyFormatter;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class AccountsView extends LinearLayout {
     private final View balanceContainer_V;
     private final TextView totalBalance_TV;
 
-    @Inject Currency defaultCurrency;
+    @Inject @Main Currency mainCurrency;
 
     @SuppressWarnings("UnusedDeclaration")
     public AccountsView(Context context) {
@@ -84,7 +85,7 @@ public class AccountsView extends LinearLayout {
 
         if (accounts.size() > 1) {
             balanceContainer_V.setVisibility(VISIBLE);
-            totalBalance_TV.setText(MoneyFormatter.format(defaultCurrency, totalBalance));
+            totalBalance_TV.setText(MoneyFormatter.format(mainCurrency, totalBalance));
         } else {
             balanceContainer_V.setVisibility(GONE);
         }

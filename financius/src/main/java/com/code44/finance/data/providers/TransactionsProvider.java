@@ -5,21 +5,19 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.common.model.TransactionState;
+import com.code44.finance.common.model.TransactionType;
+import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.Account;
 import com.code44.finance.utils.IOUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.inject.Inject;
 
 public class TransactionsProvider extends BaseModelProvider {
     public static final String URI_PARAM_JOIN_TABLE = "join_table";
@@ -29,8 +27,6 @@ public class TransactionsProvider extends BaseModelProvider {
     public static final String URI_VALUE_JOIN_TABLE_CURRENCIES_FROM = "currencies_from";
     public static final String URI_VALUE_JOIN_TABLE_CURRENCIES_TO = "currencies_to";
     public static final String URI_VALUE_JOIN_TABLE_TAGS = "tags";
-
-    @Inject Account systemAccount;
 
     public static Uri uriTransactions() {
         return uriModels(TransactionsProvider.class, Tables.Transactions.TABLE_NAME);
@@ -63,17 +59,17 @@ public class TransactionsProvider extends BaseModelProvider {
         sb.append(getModelTable());
 
         if (joinTables.contains(URI_VALUE_JOIN_TABLE_ACCOUNTS_FROM)) {
-            sb.append(" inner join ").append(Tables.Accounts.TABLE_NAME).append(" as ").append(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT)
+            sb.append(" left join ").append(Tables.Accounts.TABLE_NAME).append(" as ").append(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT)
                     .append(" on ").append(Tables.Accounts.ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT)).append("=").append(Tables.Transactions.ACCOUNT_FROM_ID);
         }
 
         if (joinTables.contains(URI_VALUE_JOIN_TABLE_ACCOUNTS_TO)) {
-            sb.append(" inner join ").append(Tables.Accounts.TABLE_NAME).append(" as ").append(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT)
+            sb.append(" left join ").append(Tables.Accounts.TABLE_NAME).append(" as ").append(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT)
                     .append(" on ").append(Tables.Accounts.ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT)).append("=").append(Tables.Transactions.ACCOUNT_TO_ID);
         }
 
         if (joinTables.contains(URI_VALUE_JOIN_TABLE_CATEGORIES)) {
-            sb.append(" inner join ").append(Tables.Categories.TABLE_NAME)
+            sb.append(" left join ").append(Tables.Categories.TABLE_NAME)
                     .append(" on ").append(Tables.Categories.ID.getNameWithTable()).append("=").append(Tables.Transactions.CATEGORY_ID);
         }
 
@@ -111,12 +107,14 @@ public class TransactionsProvider extends BaseModelProvider {
 
         final String accountFromId = values.getAsString(Tables.Transactions.ACCOUNT_FROM_ID.getName());
         final String accountToId = values.getAsString(Tables.Transactions.ACCOUNT_TO_ID.getName());
-        final String systemAccountId = systemAccount.getId();
-        if (!accountFromId.equals(systemAccountId)) {
+        final boolean isAccountFromInDb = !StringUtils.isEmpty(accountFromId);
+        final boolean isAccountToInDb = !StringUtils.isEmpty(accountToId);
+
+        if (isAccountFromInDb) {
             updateAccountBalance(accountFromId);
         }
 
-        if (!accountToId.equals(systemAccountId)) {
+        if (isAccountToInDb) {
             updateAccountBalance(accountToId);
         }
     }
@@ -148,9 +146,9 @@ public class TransactionsProvider extends BaseModelProvider {
         final Cursor cursor = Query.create()
                 .projection("sum( case" +
                         " when " + Tables.Transactions.ACCOUNT_FROM_ID + "=? then -" + Tables.Transactions.AMOUNT + "" +
-                        " when " + Tables.Categories.TYPE + "=? then " + Tables.Transactions.AMOUNT + "*" + Tables.Transactions.EXCHANGE_RATE +
+                        " when " + Tables.Transactions.TYPE + "=? then " + Tables.Transactions.AMOUNT + "*" + Tables.Transactions.EXCHANGE_RATE +
                         " else " + Tables.Transactions.AMOUNT + " end)")
-                .args(accountId, CategoryType.TRANSFER.asString())
+                .args(accountId, TransactionType.TRANSFER.asString())
                 .selection(Tables.Transactions.MODEL_STATE + "=?", ModelState.NORMAL.asString())
                 .selection(" and " + Tables.Transactions.STATE + "=?", TransactionState.CONFIRMED.asString())
                 .selection(" and (" + Tables.Transactions.ACCOUNT_FROM_ID + "=? or " + Tables.Transactions.ACCOUNT_TO_ID + "=?)", accountId, accountId)

@@ -1,7 +1,6 @@
 package com.code44.finance.backend.entity;
 
-import com.code44.finance.common.model.CategoryOwner;
-import com.code44.finance.common.model.CategoryType;
+import com.code44.finance.common.model.TransactionType;
 import com.google.api.server.spi.config.AnnotationBoolean;
 import com.google.api.server.spi.config.ApiResourceProperty;
 import com.googlecode.objectify.Key;
@@ -23,10 +22,7 @@ public class CategoryEntity extends BaseEntity {
     private int color;
 
     @ApiResourceProperty(name = "category_type")
-    private CategoryType categoryType;
-
-    @ApiResourceProperty(name = "category_owner")
-    private CategoryOwner categoryOwner;
+    private TransactionType transactionType;
 
     @ApiResourceProperty(name = "sort_order")
     private int sortOrder;
@@ -59,20 +55,12 @@ public class CategoryEntity extends BaseEntity {
         this.color = color;
     }
 
-    public CategoryType getCategoryType() {
-        return categoryType;
+    public TransactionType getTransactionType() {
+        return transactionType;
     }
 
-    public void setCategoryType(CategoryType categoryType) {
-        this.categoryType = categoryType;
-    }
-
-    public CategoryOwner getCategoryOwner() {
-        return categoryOwner;
-    }
-
-    public void setCategoryOwner(CategoryOwner categoryOwner) {
-        this.categoryOwner = categoryOwner;
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
     }
 
     public int getSortOrder() {

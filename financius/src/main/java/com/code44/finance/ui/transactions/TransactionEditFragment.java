@@ -21,8 +21,8 @@ import com.android.datetimepicker.date.DatePickerDialog;
 import com.android.datetimepicker.time.RadialPickerLayout;
 import com.android.datetimepicker.time.TimePickerDialog;
 import com.code44.finance.R;
-import com.code44.finance.common.model.AccountOwner;
 import com.code44.finance.common.model.TransactionState;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.Tables;
@@ -32,9 +32,7 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
-import com.code44.finance.qualifiers.Expense;
-import com.code44.finance.qualifiers.Income;
-import com.code44.finance.qualifiers.Transfer;
+import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.CalculatorActivity;
 import com.code44.finance.ui.ModelEditFragment;
 import com.code44.finance.ui.ModelListActivity;
@@ -63,11 +61,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     private static final String FRAGMENT_DATE_DIALOG = "FRAGMENT_DATE_DIALOG";
     private static final String FRAGMENT_TIME_DIALOG = "FRAGMENT_TIME_DIALOG";
 
-    @Inject @Expense Category expenseCategory;
-    @Inject @Income Category incomeCategory;
-    @Inject @Transfer Category transferCategory;
-    @Inject Currency defaultCurrency;
-    @Inject Account systemAccount;
+    @Inject @Main Currency mainCurrency;
 
     private Button date_B;
     private ImageButton categoryType_IB;
@@ -203,19 +197,9 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
     @Override protected Transaction getModelFrom(Cursor cursor) {
         final Transaction transaction = Transaction.from(cursor);
-        if (transaction.getAccountFrom() == null) {
-            transaction.setAccountFrom(systemAccount);
-        }
 
-        if (transaction.getAccountTo() == null) {
-            transaction.setAccountTo(systemAccount);
-        }
-
-        if (transaction.getCategory() == null) {
-            transaction.setCategory(expenseCategory);
-        }
-
-        if (StringUtils.isEmpty(transaction.getId())) {
+        //noinspection StatementWithEmptyBody
+        if (!transaction.hasId()) {
             // TODO Creating new transaction. Kick off auto-complete.
         }
 
@@ -223,7 +207,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     }
 
     @Override protected void onModelLoaded(Transaction model) {
-        switch (model.getCategory().getCategoryType()) {
+        switch (model.getTransactionType()) {
             case EXPENSE:
                 accountFrom_B.setVisibility(View.VISIBLE);
                 accountTo_B.setVisibility(View.GONE);
@@ -280,7 +264,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     @Override public void onClick(View v) {
         switch (v.getId()) {
             case R.id.categoryType_IB:
-                toggleCategoryType();
+                toggleTransactionType();
                 break;
             case R.id.amount_B:
                 CalculatorActivity.start(this, REQUEST_AMOUNT, model.getAmount());
@@ -292,7 +276,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 AccountsActivity.startSelect(this, REQUEST_ACCOUNT_TO);
                 break;
             case R.id.category_B:
-                CategoriesActivity.startSelect(this, REQUEST_CATEGORY, model.getCategory().getCategoryType());
+                CategoriesActivity.startSelect(this, REQUEST_CATEGORY, model.getTransactionType());
                 break;
             case R.id.tags_B:
                 TagsActivity.startMultiSelect(this, REQUEST_TAGS, model.getTags());
@@ -330,16 +314,16 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         }
     }
 
-    private void toggleCategoryType() {
-        switch (model.getCategory().getCategoryType()) {
+    private void toggleTransactionType() {
+        switch (model.getTransactionType()) {
             case EXPENSE:
-                model.setCategory(incomeCategory);
+                model.setTransactionType(TransactionType.INCOME);
                 break;
             case INCOME:
-                model.setCategory(transferCategory);
+                model.setTransactionType(TransactionType.TRANSFER);
                 break;
             case TRANSFER:
-                model.setCategory(expenseCategory);
+                model.setTransactionType(TransactionType.EXPENSE);
                 break;
         }
         onModelLoaded(model);
@@ -347,7 +331,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
     private Currency getAmountCurrency(Transaction transaction) {
         Currency transactionCurrency;
-        switch (transaction.getCategory().getCategoryType()) {
+        switch (transaction.getTransactionType()) {
             case EXPENSE:
                 transactionCurrency = transaction.getAccountFrom().getCurrency();
                 break;
@@ -358,59 +342,63 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 transactionCurrency = transaction.getAccountFrom().getCurrency();
                 break;
             default:
-                throw new IllegalStateException("Category type " + transaction.getCategory().getCategoryType() + " is not supported.");
+                throw new IllegalStateException("Category type " + transaction.getTransactionType() + " is not supported.");
         }
 
-        if (transactionCurrency == null || StringUtils.isEmpty(transactionCurrency.getId())) {
-            transactionCurrency = defaultCurrency;
+        if (transactionCurrency == null || !transactionCurrency.hasId()) {
+            // When account is not selected yet, we use main currency.
+            transactionCurrency = mainCurrency;
         }
 
         return transactionCurrency;
     }
 
     private boolean canBeConfirmed(Transaction model, boolean showErrors) {
-        boolean canBeConfirmed = true;
-        if (model.getAmount() == 0) {
-            canBeConfirmed = false;
-            if (showErrors) {
-                FieldValidationUtils.onError(amount_B);
-            }
-        }
+        boolean canBeConfirmed = validateAmount(showErrors);
 
-        switch (model.getCategory().getCategoryType()) {
+        switch (model.getTransactionType()) {
             case EXPENSE:
-                if (model.getAccountFrom() == null || model.getAccountFrom().getAccountOwner() == AccountOwner.SYSTEM) {
-                    canBeConfirmed = false;
-                    if (showErrors) {
-                        FieldValidationUtils.onError(accountFrom_B);
-                    }
-                }
+                canBeConfirmed = canBeConfirmed && validateAccountFrom(showErrors);
                 break;
             case INCOME:
-                if (model.getAccountTo() == null || model.getAccountTo().getAccountOwner() == AccountOwner.SYSTEM) {
-                    canBeConfirmed = false;
-                    if (showErrors) {
-                        FieldValidationUtils.onError(accountTo_B);
-                    }
-                }
+                canBeConfirmed = canBeConfirmed && validateAccountTo(showErrors);
                 break;
             case TRANSFER:
-                if (model.getAccountFrom() == null || model.getAccountFrom().getAccountOwner() == AccountOwner.SYSTEM) {
-                    canBeConfirmed = false;
-                    if (showErrors) {
-                        FieldValidationUtils.onError(accountFrom_B);
-                    }
-                }
-
-                if (model.getAccountTo() == null || model.getAccountTo().getAccountOwner() == AccountOwner.SYSTEM) {
-                    canBeConfirmed = false;
-                    if (showErrors) {
-                        FieldValidationUtils.onError(accountTo_B);
-                    }
-                }
+                canBeConfirmed = canBeConfirmed && validateAccountFrom(showErrors);
+                canBeConfirmed = canBeConfirmed && validateAccountTo(showErrors);
                 break;
         }
 
         return canBeConfirmed;
+    }
+
+    private boolean validateAmount(boolean showError) {
+        if (model.getAmount() <= 0) {
+            if (showError) {
+                FieldValidationUtils.onError(amount_B);
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateAccountFrom(boolean showError) {
+        if (!model.getAccountFrom().hasId()) {
+            if (showError) {
+                FieldValidationUtils.onError(accountFrom_B);
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateAccountTo(boolean showError) {
+        if (!model.getAccountTo().hasId()) {
+            if (showError) {
+                FieldValidationUtils.onError(accountTo_B);
+            }
+            return false;
+        }
+        return true;
     }
 }

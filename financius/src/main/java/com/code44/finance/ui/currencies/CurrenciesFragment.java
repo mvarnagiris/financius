@@ -23,6 +23,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
+import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.GeneralPrefs;
 import com.squareup.otto.Subscribe;
@@ -40,7 +41,7 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
 
     @Inject GeneralPrefs generalPrefs;
     @Inject CurrenciesApi currenciesApi;
-    @Inject Currency defaultCurrency;
+    @Inject @Main Currency mainCurrency;
 
     private SmoothProgressBar loading_SPB;
 
@@ -149,7 +150,7 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         }
 
         if (!fromCodes.isEmpty()) {
-            currenciesApi.updateExchangeRates(fromCodes, defaultCurrency.getCode());
+            currenciesApi.updateExchangeRates(fromCodes, mainCurrency.getCode());
             setRefreshing(true);
         }
     }

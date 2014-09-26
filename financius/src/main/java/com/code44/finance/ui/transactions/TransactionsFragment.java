@@ -14,11 +14,10 @@ import com.code44.finance.adapters.BaseModelsAdapter;
 import com.code44.finance.adapters.TransactionsAdapter;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.BaseModel;
-import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
-import com.code44.finance.qualifiers.Transfer;
+import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.CurrentInterval;
 import com.code44.finance.utils.IntervalHelperDeprecated;
@@ -30,8 +29,7 @@ import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class TransactionsFragment extends ModelListFragment {
-    @Inject Currency defaultCurrency;
-    @Inject @Transfer Category transferCategory;
+    @Inject @Main Currency mainCurrency;
     @Inject CurrentInterval currentInterval;
 
     private ExpandableStickyListHeadersListView headerList_V;
@@ -59,7 +57,7 @@ public class TransactionsFragment extends ModelListFragment {
     }
 
     @Override protected BaseModelsAdapter createAdapter(Context context) {
-        return new TransactionsAdapter(context, defaultCurrency, transferCategory, currentInterval);
+        return new TransactionsAdapter(context, mainCurrency, currentInterval);
     }
 
     @Override protected CursorLoader getModelsCursorLoader(Context context) {

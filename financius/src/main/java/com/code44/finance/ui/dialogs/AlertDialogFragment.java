@@ -1,7 +1,6 @@
 package com.code44.finance.ui.dialogs;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,7 @@ public class AlertDialogFragment extends BaseDialogFragment implements View.OnCl
     protected Button positive_B;
     protected Button negative_B;
 
-    @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.dialog_fragment_alert, container, false);
     }
 

@@ -10,6 +10,7 @@ import com.code44.finance.R;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartView;
+import com.code44.finance.qualifiers.Main;
 import com.code44.finance.utils.MoneyFormatter;
 
 import javax.inject.Inject;
@@ -18,7 +19,7 @@ public class OverviewGraphView extends LinearLayout {
     private final PieChartView pieChart_V;
     private final TextView totalExpense_TV;
 
-    @Inject Currency defaultCurrency;
+    @Inject @Main Currency mainCurrency;
 
     @SuppressWarnings("UnusedDeclaration")
     public OverviewGraphView(Context context) {
@@ -64,6 +65,6 @@ public class OverviewGraphView extends LinearLayout {
     }
 
     public void setTotalExpense(long totalExpense) {
-        totalExpense_TV.setText(MoneyFormatter.format(defaultCurrency, totalExpense));
+        totalExpense_TV.setText(MoneyFormatter.format(mainCurrency, totalExpense));
     }
 }

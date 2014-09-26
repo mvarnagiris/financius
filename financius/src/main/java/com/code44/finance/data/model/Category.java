@@ -6,8 +6,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.code44.finance.backend.endpoint.categories.model.CategoryEntity;
-import com.code44.finance.common.model.CategoryOwner;
-import com.code44.finance.common.model.CategoryType;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
@@ -23,22 +22,16 @@ public class Category extends BaseModel<CategoryEntity> {
         }
     };
 
-    public static final long EXPENSE_ID = 1;
-    public static final long INCOME_ID = 2;
-    public static final long TRANSFER_ID = 3;
-
     private String title;
     private int color;
-    private CategoryType categoryType;
-    private CategoryOwner categoryOwner;
+    private TransactionType transactionType;
     private int sortOrder;
 
     public Category() {
         super();
         setTitle(null);
         setColor(0);
-        setCategoryType(CategoryType.EXPENSE);
-        setCategoryOwner(CategoryOwner.USER);
+        setTransactionType(TransactionType.EXPENSE);
         setSortOrder(0);
     }
 
@@ -77,34 +70,30 @@ public class Category extends BaseModel<CategoryEntity> {
     }
 
     @Override protected void toValues(ContentValues values) {
+        values.put(Tables.Categories.TRANSACTION_TYPE.getName(), transactionType.asInt());
         values.put(Tables.Categories.TITLE.getName(), title);
         values.put(Tables.Categories.COLOR.getName(), color);
-        values.put(Tables.Categories.TYPE.getName(), categoryType.asInt());
-        values.put(Tables.Categories.OWNER.getName(), categoryOwner.asInt());
         values.put(Tables.Categories.SORT_ORDER.getName(), sortOrder);
     }
 
     @Override protected void toParcel(Parcel parcel) {
         parcel.writeString(title);
         parcel.writeInt(color);
-        parcel.writeInt(categoryType.asInt());
-        parcel.writeInt(categoryOwner.asInt());
+        parcel.writeInt(transactionType.asInt());
         parcel.writeInt(sortOrder);
     }
 
     @Override protected void toEntity(CategoryEntity entity) {
         entity.setTitle(title);
         entity.setColor(color);
-        entity.setCategoryType(categoryType.toString());
-        entity.setCategoryOwner(categoryOwner.toString());
+        entity.setCategoryType(transactionType.toString());
         entity.setSortOrder(sortOrder);
     }
 
     @Override protected void fromParcel(Parcel parcel) {
         setTitle(parcel.readString());
         setColor(parcel.readInt());
-        setCategoryType(CategoryType.fromInt(parcel.readInt()));
-        setCategoryOwner(CategoryOwner.fromInt(parcel.readInt()));
+        setTransactionType(TransactionType.fromInt(parcel.readInt()));
         setSortOrder(parcel.readInt());
     }
 
@@ -123,16 +112,10 @@ public class Category extends BaseModel<CategoryEntity> {
             setColor(cursor.getInt(index));
         }
 
-        // Type
-        index = cursor.getColumnIndex(Tables.Categories.TYPE.getName(columnPrefixTable));
+        // Transaction type
+        index = cursor.getColumnIndex(Tables.Categories.TRANSACTION_TYPE.getName(columnPrefixTable));
         if (index >= 0) {
-            setCategoryType(CategoryType.fromInt(cursor.getInt(index)));
-        }
-
-        // Owner
-        index = cursor.getColumnIndex(Tables.Categories.OWNER.getName(columnPrefixTable));
-        if (index >= 0) {
-            setCategoryOwner(CategoryOwner.fromInt(cursor.getInt(index)));
+            setTransactionType(TransactionType.fromInt(cursor.getInt(index)));
         }
 
         // Sort order
@@ -145,8 +128,7 @@ public class Category extends BaseModel<CategoryEntity> {
     @Override protected void fromEntity(CategoryEntity entity) {
         setTitle(entity.getTitle());
         setColor(entity.getColor());
-        setCategoryType(CategoryType.valueOf(entity.getCategoryType()));
-        setCategoryOwner(CategoryOwner.valueOf(entity.getCategoryOwner()));
+        setTransactionType(TransactionType.valueOf(entity.getCategoryType()));
         setSortOrder(entity.getSortOrder());
     }
 
@@ -157,8 +139,7 @@ public class Category extends BaseModel<CategoryEntity> {
     @Override public void checkValues() throws IllegalStateException {
         super.checkValues();
         Preconditions.checkNotEmpty(title, "Title cannot be empty");
-        Preconditions.checkNotNull(categoryType, "Category type cannot be null.");
-        Preconditions.checkNotNull(categoryOwner, "Category owner cannot be null.");
+        Preconditions.checkNotNull(transactionType, "Category type cannot be null.");
     }
 
     public String getTitle() {
@@ -177,20 +158,12 @@ public class Category extends BaseModel<CategoryEntity> {
         this.color = color;
     }
 
-    public CategoryType getCategoryType() {
-        return categoryType;
+    public TransactionType getTransactionType() {
+        return transactionType;
     }
 
-    public void setCategoryType(CategoryType categoryType) {
-        this.categoryType = categoryType;
-    }
-
-    public CategoryOwner getCategoryOwner() {
-        return categoryOwner;
-    }
-
-    public void setCategoryOwner(CategoryOwner categoryOwner) {
-        this.categoryOwner = categoryOwner;
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
     }
 
     public int getSortOrder() {

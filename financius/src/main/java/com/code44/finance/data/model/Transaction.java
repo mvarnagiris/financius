@@ -7,9 +7,8 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.code44.finance.backend.endpoint.transactions.model.TransactionEntity;
-import com.code44.finance.common.model.AccountOwner;
-import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.common.model.TransactionState;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.db.Column;
@@ -39,6 +38,7 @@ public class Transaction extends BaseModel<TransactionEntity> {
     private double exchangeRate;
     private String note;
     private TransactionState transactionState;
+    private TransactionType transactionType;
     private boolean includeInReports;
 
     public Transaction() {
@@ -51,7 +51,8 @@ public class Transaction extends BaseModel<TransactionEntity> {
         setAmount(0);
         setExchangeRate(1.0);
         setNote(null);
-        setTransactionState(TransactionState.CONFIRMED);
+        setTransactionState(TransactionState.PENDING);
+        setTransactionType(TransactionType.EXPENSE);
         setIncludeInReports(true);
     }
 
@@ -101,6 +102,7 @@ public class Transaction extends BaseModel<TransactionEntity> {
         values.put(Tables.Transactions.EXCHANGE_RATE.getName(), exchangeRate);
         values.put(Tables.Transactions.NOTE.getName(), note);
         values.put(Tables.Transactions.STATE.getName(), transactionState.asInt());
+        values.put(Tables.Transactions.TYPE.getName(), transactionType.asInt());
         values.put(Tables.Transactions.INCLUDE_IN_REPORTS.getName(), includeInReports);
         final StringBuilder sb = new StringBuilder();
         for (Tag tag : tags) {
@@ -122,6 +124,7 @@ public class Transaction extends BaseModel<TransactionEntity> {
         parcel.writeDouble(exchangeRate);
         parcel.writeString(note);
         parcel.writeInt(transactionState.asInt());
+        parcel.writeInt(transactionType.asInt());
         parcel.writeInt(includeInReports ? 1 : 0);
     }
 
@@ -135,6 +138,7 @@ public class Transaction extends BaseModel<TransactionEntity> {
         entity.setExchangeRate(exchangeRate);
         entity.setNote(note);
         entity.setTransactionState(transactionState.toString());
+        // TODO Transaction type
         entity.setIncludeInReports(includeInReports);
     }
 
@@ -153,6 +157,7 @@ public class Transaction extends BaseModel<TransactionEntity> {
         setExchangeRate(parcel.readDouble());
         setNote(parcel.readString());
         setTransactionState(TransactionState.fromInt(parcel.readInt()));
+        setTransactionType(TransactionType.fromInt(parcel.readInt()));
         setIncludeInReports(parcel.readInt() != 0);
     }
 
@@ -260,6 +265,12 @@ public class Transaction extends BaseModel<TransactionEntity> {
             setTransactionState(TransactionState.fromInt(cursor.getInt(index)));
         }
 
+        // Transaction state
+        index = cursor.getColumnIndex(Tables.Transactions.TYPE.getName(columnPrefixTable));
+        if (index >= 0) {
+            setTransactionType(TransactionType.fromInt(cursor.getInt(index)));
+        }
+
         // Include in reports
         index = cursor.getColumnIndex(Tables.Transactions.INCLUDE_IN_REPORTS.getName(columnPrefixTable));
         if (index >= 0) {
@@ -268,11 +279,13 @@ public class Transaction extends BaseModel<TransactionEntity> {
     }
 
     @Override protected void fromEntity(TransactionEntity entity) {
+        // TODO Tags
         setDate(entity.getDate());
         setAmount(entity.getAmount());
         setExchangeRate(entity.getExchangeRate());
         setNote(entity.getNote());
         setTransactionState(TransactionState.valueOf(entity.getTransactionState()));
+        // TODO Transaction type
         setIncludeInReports(entity.getIncludeInReports());
     }
 
@@ -282,21 +295,22 @@ public class Transaction extends BaseModel<TransactionEntity> {
         Preconditions.checkNotNull(accountTo, "AccountTo cannot be null.");
         Preconditions.checkNotNull(category, "Category cannot be null.");
         Preconditions.checkNotNull(transactionState, "Transaction state cannot be null.");
+        Preconditions.checkNotNull(transactionType, "Transaction type cannot be null.");
+
+        if (Double.compare(exchangeRate, 0) < 0) {
+            throw new IllegalStateException("Exchange rate must be > 0.");
+        }
 
         if (accountFrom == accountTo && transactionState == TransactionState.CONFIRMED) {
             throw new IllegalStateException("AccountFrom cannot be equal to AccountTo.");
         }
 
-        if (category.getCategoryType() == CategoryType.EXPENSE && accountFrom.getAccountOwner() == AccountOwner.SYSTEM && transactionState == TransactionState.CONFIRMED) {
+        if (category.getTransactionType() == TransactionType.EXPENSE && accountFrom == null && transactionState == TransactionState.CONFIRMED) {
             throw new IllegalStateException("Account from cannot be system account.");
         }
 
-        if (category.getCategoryType() == CategoryType.INCOME && accountTo.getAccountOwner() == AccountOwner.SYSTEM && transactionState == TransactionState.CONFIRMED) {
+        if (category.getTransactionType() == TransactionType.INCOME && accountTo == null && transactionState == TransactionState.CONFIRMED) {
             throw new IllegalStateException("Account to cannot be system account.");
-        }
-
-        if (Double.compare(exchangeRate, 0) < 0) {
-            throw new IllegalStateException("Exchange rate must be > 0.");
         }
     }
 
@@ -370,6 +384,14 @@ public class Transaction extends BaseModel<TransactionEntity> {
 
     public void setTransactionState(TransactionState transactionState) {
         this.transactionState = transactionState;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
     }
 
     public boolean includeInReports() {

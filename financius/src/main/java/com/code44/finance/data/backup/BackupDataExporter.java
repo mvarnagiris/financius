@@ -112,8 +112,7 @@ public class BackupDataExporter extends FileDataExporter {
                     writeBaseModel(category, writer);
                     writer.name("title").value(category.getTitle());
                     writer.name("color").value(category.getColor());
-                    writer.name("category_type").value(category.getCategoryType().asInt());
-                    writer.name("category_owner").value(category.getCategoryOwner().asInt());
+                    writer.name("transaction_type").value(category.getTransactionType().asInt());
                     writer.name("sort_order").value(category.getSortOrder());
                     writer.endObject();
                 } while (cursor.moveToNext());
@@ -156,7 +155,6 @@ public class BackupDataExporter extends FileDataExporter {
                     writer.name("title").value(account.getTitle());
                     writer.name("note").value(account.getNote());
                     writer.name("balance").value(account.getBalance());
-                    writer.name("account_owner").value(account.getAccountOwner().asInt());
                     writer.name("include_in_totals").value(account.includeInTotals());
                     writer.endObject();
                 } while (cursor.moveToNext());
@@ -189,6 +187,7 @@ public class BackupDataExporter extends FileDataExporter {
                     writer.name("exchange_rate").value(transaction.getExchangeRate());
                     writer.name("note").value(transaction.getNote());
                     writer.name("transaction_state").value(transaction.getTransactionState().asInt());
+                    writer.name("transaction_type").value(transaction.getTransactionType().asInt());
                     writer.name("include_in_reports").value(transaction.includeInReports());
                     writer.endObject();
                 } while (cursor.moveToNext());

@@ -22,6 +22,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
+import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.ModelFragment;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.views.FabImageButton;
@@ -36,7 +37,7 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
     private static final int LOADER_ACCOUNTS = 1;
 
     @Inject CurrenciesApi currenciesApi;
-    @Inject Currency defaultCurrency;
+    @Inject @Main Currency mainCurrency;
 
     private TextView code_TV;
     private TextView format_TV;
@@ -166,7 +167,7 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
     }
 
     private void refreshRate() {
-        currenciesApi.updateExchangeRate(model.getCode(), defaultCurrency.getCode());
+        currenciesApi.updateExchangeRate(model.getCode(), mainCurrency.getCode());
         setRefreshing(true);
     }
 

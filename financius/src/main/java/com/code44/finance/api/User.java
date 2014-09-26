@@ -40,8 +40,7 @@ public class User extends Prefs {
         eventBus.register(this);
     }
 
-    @Override
-    protected String getPrefix() {
+    @Override protected String getPrefix() {
         return PREFIX;
     }
 

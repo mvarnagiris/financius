@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.code44.finance.R;
-import com.code44.finance.common.model.CategoryType;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.Tables;
@@ -29,11 +29,11 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
     private EditText title_ET;
     private ImageButton color_IB;
 
-    private CategoryType categoryType;
+    private TransactionType transactionType;
 
-    public static CategoryEditFragment newInstance(String categoryServerId, CategoryType categoryType) {
+    public static CategoryEditFragment newInstance(String categoryServerId, TransactionType transactionType) {
         final Bundle args = makeArgs(categoryServerId);
-        args.putSerializable(ARG_CATEGORY_TYPE, categoryType);
+        args.putSerializable(ARG_CATEGORY_TYPE, transactionType);
 
         final CategoryEditFragment fragment = new CategoryEditFragment();
         fragment.setArguments(args);
@@ -42,9 +42,9 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        categoryType = (CategoryType) getArguments().getSerializable(ARG_CATEGORY_TYPE);
-        if (categoryType == null) {
-            categoryType = CategoryType.EXPENSE;
+        transactionType = (TransactionType) getArguments().getSerializable(ARG_CATEGORY_TYPE);
+        if (transactionType == null) {
+            transactionType = TransactionType.EXPENSE;
         }
     }
 
@@ -88,7 +88,7 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
 
         if (canSave) {
             if (StringUtils.isEmpty(model.getId())) {
-                model.setCategoryType(categoryType);
+                model.setTransactionType(transactionType);
             }
             DataStore.insert().model(model).into(context, CategoriesProvider.uriCategories());
         }

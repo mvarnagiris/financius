@@ -2,9 +2,8 @@ package com.code44.finance.data.db;
 
 import android.provider.BaseColumns;
 
-import com.code44.finance.common.model.AccountOwner;
-import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.common.model.ModelState;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.model.SyncState;
 
@@ -142,27 +141,26 @@ public final class Tables {
         public static final Column TITLE = new Column(TABLE_NAME, "title", Column.DataType.TEXT);
         public static final Column NOTE = new Column(TABLE_NAME, "note", Column.DataType.TEXT);
         public static final Column BALANCE = new Column(TABLE_NAME, "balance", Column.DataType.INTEGER, "0");
-        public static final Column OWNER = new Column(TABLE_NAME, "owner", Column.DataType.INTEGER, AccountOwner.USER.asString());
         public static final Column INCLUDE_IN_TOTALS = new Column(TABLE_NAME, "include_in_totals", Column.DataType.BOOLEAN, "1");
 
         public static final String[] PROJECTION = {ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
-                CURRENCY_ID.getName(), TITLE.getName(), NOTE.getName(), BALANCE.getName(), OWNER.getName(), INCLUDE_IN_TOTALS.getName()};
+                CURRENCY_ID.getName(), TITLE.getName(), NOTE.getName(), BALANCE.getName(), INCLUDE_IN_TOTALS.getName()};
 
         public static final String[] PROJECTION_ACCOUNT_FROM = {ID.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), MODEL_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT),
                 SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), CURRENCY_ID.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT),
                 TITLE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), NOTE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT),
-                BALANCE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), OWNER.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), INCLUDE_IN_TOTALS.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT)};
+                BALANCE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), INCLUDE_IN_TOTALS.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT)};
 
         public static final String[] PROJECTION_ACCOUNT_TO = {ID.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), MODEL_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT),
                 SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), CURRENCY_ID.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT),
                 TITLE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), NOTE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT),
-                BALANCE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), OWNER.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), INCLUDE_IN_TOTALS.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT)};
+                BALANCE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), INCLUDE_IN_TOTALS.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT)};
 
         private Accounts() {
         }
 
         public static String createScript() {
-            return makeCreateScript(TABLE_NAME, LOCAL_ID, ID, MODEL_STATE, SYNC_STATE, CURRENCY_ID, TITLE, NOTE, BALANCE, OWNER, INCLUDE_IN_TOTALS);
+            return makeCreateScript(TABLE_NAME, LOCAL_ID, ID, MODEL_STATE, SYNC_STATE, CURRENCY_ID, TITLE, NOTE, BALANCE, INCLUDE_IN_TOTALS);
         }
 
         public static Query getQuery() {
@@ -172,7 +170,6 @@ public final class Tables {
                     .projection(Currencies.PROJECTION)
                     .selection("(" + Accounts.MODEL_STATE + "=?", ModelState.NORMAL.asString())
                     .selection(" or " + Accounts.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString())
-                    .selection(" and " + Accounts.OWNER + "=?", AccountOwner.USER.asString())
                     .sortOrder(Accounts.INCLUDE_IN_TOTALS.getName() + " desc")
                     .sortOrder(Accounts.TITLE.getName());
         }
@@ -185,23 +182,22 @@ public final class Tables {
         public static final Column ID = getIdColumn(TABLE_NAME);
         public static final Column MODEL_STATE = getModelStateColumn(TABLE_NAME);
         public static final Column SYNC_STATE = getSyncStateColumn(TABLE_NAME);
+        public static final Column TRANSACTION_TYPE = new Column(TABLE_NAME, "transaction_type", Column.DataType.INTEGER);
         public static final Column TITLE = new Column(TABLE_NAME, "title", Column.DataType.TEXT);
         public static final Column COLOR = new Column(TABLE_NAME, "color", Column.DataType.INTEGER);
-        public static final Column TYPE = new Column(TABLE_NAME, "type", Column.DataType.INTEGER);
-        public static final Column OWNER = new Column(TABLE_NAME, "owner", Column.DataType.INTEGER);
         public static final Column SORT_ORDER = new Column(TABLE_NAME, "sort_order", Column.DataType.INTEGER);
 
         public static final String[] PROJECTION = {ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
-                TITLE.getName(), COLOR.getName(), TYPE.getName(), OWNER.getName(), SORT_ORDER.getName()};
+                TRANSACTION_TYPE.getName(), TITLE.getName(), COLOR.getName(), SORT_ORDER.getName()};
 
         private Categories() {
         }
 
         public static String createScript() {
-            return makeCreateScript(TABLE_NAME, LOCAL_ID, ID, MODEL_STATE, SYNC_STATE, TITLE, COLOR, TYPE, OWNER, SORT_ORDER);
+            return makeCreateScript(TABLE_NAME, LOCAL_ID, ID, MODEL_STATE, SYNC_STATE, TRANSACTION_TYPE, TITLE, COLOR, SORT_ORDER);
         }
 
-        public static Query getQuery(CategoryType type) {
+        public static Query getQuery(TransactionType transactionType) {
             final Query query = Query.create()
                     .projectionLocalId(Categories.LOCAL_ID)
                     .projection(Categories.PROJECTION)
@@ -209,8 +205,8 @@ public final class Tables {
                     .selection(" or " + Categories.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString())
                     .sortOrder(Categories.SORT_ORDER.getName());
 
-            if (type != null) {
-                query.selection(" and " + Tables.Categories.TYPE + "=?", type.asString());
+            if (transactionType != null) {
+                query.selection(" and " + Tables.Categories.TRANSACTION_TYPE + "=?", transactionType.asString());
             }
 
             return query;
@@ -263,19 +259,20 @@ public final class Tables {
         public static final Column EXCHANGE_RATE = new Column(TABLE_NAME, "exchange_rate", Column.DataType.REAL);
         public static final Column NOTE = new Column(TABLE_NAME, "note", Column.DataType.TEXT);
         public static final Column STATE = new Column(TABLE_NAME, "state", Column.DataType.INTEGER);
+        public static final Column TYPE = new Column(TABLE_NAME, "type", Column.DataType.INTEGER);
         public static final Column INCLUDE_IN_REPORTS = new Column(TABLE_NAME, "include_in_reports", Column.DataType.BOOLEAN, "1");
 
         public static final String[] PROJECTION = {ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
                 ACCOUNT_FROM_ID.getName(), ACCOUNT_TO_ID.getName(), CATEGORY_ID.getName(),
                 DATE.getName(), AMOUNT.getName(), EXCHANGE_RATE.getName(), NOTE.getName(), STATE.getName(),
-                INCLUDE_IN_REPORTS.getName()};
+                TYPE.getName(), INCLUDE_IN_REPORTS.getName()};
 
         private Transactions() {
         }
 
         public static String createScript() {
             return makeCreateScript(TABLE_NAME, LOCAL_ID, ID, MODEL_STATE, SYNC_STATE, ACCOUNT_FROM_ID,
-                    ACCOUNT_TO_ID, CATEGORY_ID, DATE, AMOUNT, EXCHANGE_RATE, NOTE, STATE, INCLUDE_IN_REPORTS);
+                    ACCOUNT_TO_ID, CATEGORY_ID, DATE, AMOUNT, EXCHANGE_RATE, NOTE, STATE, TYPE, INCLUDE_IN_REPORTS);
         }
 
         public static Query getQuery() {

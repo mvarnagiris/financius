@@ -23,37 +23,31 @@ public class TagsProvider extends BaseModelProvider {
         return uriModel(TagsProvider.class, Tables.Tags.TABLE_NAME, tagServerId);
     }
 
-    @Override
-    protected String getModelTable() {
+    @Override protected String getModelTable() {
         return Tables.Tags.TABLE_NAME;
     }
 
-    @Override
-    protected String getQueryTables(Uri uri) {
+    @Override protected String getQueryTables(Uri uri) {
         return getModelTable();
     }
 
-    @Override
-    protected Column getIdColumn() {
+    @Override protected Column getIdColumn() {
         return Tables.Tags.ID;
     }
 
-    @Override
-    protected void onBeforeUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> outExtras) {
+    @Override protected void onBeforeUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> outExtras) {
         super.onBeforeUpdateItems(uri, values, selection, selectionArgs, outExtras);
         throw new IllegalArgumentException("Update is not supported.");
     }
 
-    @Override
-    protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> outExtras) {
+    @Override protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> outExtras) {
         super.onBeforeDeleteItems(uri, selection, selectionArgs, modelState, outExtras);
 
         final List<String> affectedIds = getIdList(getIdColumn(), selection, selectionArgs);
         outExtras.put("affectedIds", affectedIds);
     }
 
-    @Override
-    protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> extras) {
+    @Override protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> extras) {
         super.onAfterDeleteItems(uri, selection, selectionArgs, modelState, extras);
 
         //noinspection unchecked

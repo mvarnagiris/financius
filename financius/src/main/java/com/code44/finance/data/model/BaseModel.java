@@ -21,7 +21,7 @@ public abstract class BaseModel<E extends GenericJson> implements Parcelable {
 
     protected BaseModel() {
         setLocalId(0);
-        setId("");
+        setId(null);
         setModelState(ModelState.NORMAL);
         setSyncState(SyncState.NONE);
     }
@@ -50,18 +50,18 @@ public abstract class BaseModel<E extends GenericJson> implements Parcelable {
         if (this == o) return true;
         if (!(o instanceof BaseModel)) return false;
 
-        BaseModel baseModel = (BaseModel) o;
+        final BaseModel baseModel = (BaseModel) o;
 
         // We are only checking id, because otherwise some parts of the app might misbehave
         // For example BaseModelAdapter contains Set<BaseModel> selectedItems
         // noinspection RedundantIfStatement
-        if (!id.equals(baseModel.id)) return false;
+        return !(StringUtils.isEmpty(id) || StringUtils.isEmpty(baseModel.id)) && id.equals(baseModel.id);
 
-        return true;
     }
 
     @Override public int hashCode() {
-        return id.hashCode();
+        // TODO Should create a better hash code for models that doesn't have id.
+        return id != null ? id.hashCode() : 0;
     }
 
     protected abstract Column getLocalIdColumn();
@@ -199,6 +199,10 @@ public abstract class BaseModel<E extends GenericJson> implements Parcelable {
 
         // Other values
         fromCursor(cursor, columnPrefixTable);
+    }
+
+    public boolean hasId() {
+        return !StringUtils.isEmpty(id);
     }
 
     protected void updateFrom(E entity) {

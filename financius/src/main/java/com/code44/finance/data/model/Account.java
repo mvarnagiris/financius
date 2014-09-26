@@ -7,7 +7,6 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.code44.finance.backend.endpoint.accounts.model.AccountEntity;
-import com.code44.finance.common.model.AccountOwner;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
@@ -27,7 +26,6 @@ public class Account extends BaseModel<AccountEntity> {
     private String title;
     private String note;
     private long balance;
-    private AccountOwner accountOwner;
     private boolean includeInTotals;
 
     public Account() {
@@ -36,7 +34,6 @@ public class Account extends BaseModel<AccountEntity> {
         setTitle(null);
         setNote(null);
         setBalance(0);
-        setAccountOwner(AccountOwner.USER);
         setIncludeInTotals(true);
     }
 
@@ -96,7 +93,6 @@ public class Account extends BaseModel<AccountEntity> {
         values.put(Tables.Accounts.TITLE.getName(), title);
         values.put(Tables.Accounts.NOTE.getName(), note);
         values.put(Tables.Accounts.BALANCE.getName(), balance);
-        values.put(Tables.Accounts.OWNER.getName(), accountOwner.asInt());
         values.put(Tables.Accounts.INCLUDE_IN_TOTALS.getName(), includeInTotals);
     }
 
@@ -105,7 +101,6 @@ public class Account extends BaseModel<AccountEntity> {
         parcel.writeString(title);
         parcel.writeString(note);
         parcel.writeLong(balance);
-        parcel.writeInt(accountOwner.asInt());
         parcel.writeInt(includeInTotals ? 1 : 0);
     }
 
@@ -113,7 +108,6 @@ public class Account extends BaseModel<AccountEntity> {
         entity.setCurrencyId(currency.getId());
         entity.setTitle(title);
         entity.setNote(note);
-        entity.setAccountOwner(accountOwner.toString());
         entity.setIncludeInTotals(includeInTotals);
     }
 
@@ -126,7 +120,6 @@ public class Account extends BaseModel<AccountEntity> {
         setTitle(parcel.readString());
         setNote(parcel.readString());
         setBalance(parcel.readLong());
-        setAccountOwner(AccountOwner.fromInt(parcel.readInt()));
         setIncludeInTotals(parcel.readInt() != 0);
     }
 
@@ -168,12 +161,6 @@ public class Account extends BaseModel<AccountEntity> {
             setBalance(cursor.getInt(index));
         }
 
-        // Owner
-        index = cursor.getColumnIndex(Tables.Accounts.OWNER.getName(columnPrefixTable));
-        if (index >= 0) {
-            setAccountOwner(AccountOwner.fromInt(cursor.getInt(index)));
-        }
-
         // Include in totals
         index = cursor.getColumnIndex(Tables.Accounts.INCLUDE_IN_TOTALS.getName(columnPrefixTable));
         if (index >= 0) {
@@ -184,14 +171,12 @@ public class Account extends BaseModel<AccountEntity> {
     @Override protected void fromEntity(AccountEntity entity) {
         setTitle(entity.getTitle());
         setNote(entity.getNote());
-        setAccountOwner(AccountOwner.valueOf(entity.getAccountOwner()));
         setIncludeInTotals(entity.getIncludeInTotals());
     }
 
     @Override public void checkValues() throws IllegalStateException {
         super.checkValues();
         Preconditions.checkNotNull(currency, "Currency cannot be null.");
-        Preconditions.checkNotNull(accountOwner, "Owner cannot be null.");
     }
 
     public Currency getCurrency() {
@@ -224,14 +209,6 @@ public class Account extends BaseModel<AccountEntity> {
 
     public void setBalance(long balance) {
         this.balance = balance;
-    }
-
-    public AccountOwner getAccountOwner() {
-        return accountOwner;
-    }
-
-    public void setAccountOwner(AccountOwner accountOwner) {
-        this.accountOwner = accountOwner;
     }
 
     public boolean includeInTotals() {

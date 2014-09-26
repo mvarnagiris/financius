@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.common.model.CategoryOwner;
 import com.code44.finance.data.model.Category;
 
 public class CategoriesAdapter extends BaseModelsAdapter {
@@ -29,13 +28,7 @@ public class CategoriesAdapter extends BaseModelsAdapter {
         final ViewHolder holder = (ViewHolder) view.getTag();
         final Category category = Category.from(cursor);
         holder.color_IV.setColorFilter(category.getColor());
-        if (category.getCategoryOwner() == CategoryOwner.SYSTEM) {
-            holder.title_TV.setText(context.getString(R.string.no_category));
-            holder.title_TV.setTextColor(context.getResources().getColor(R.color.text_secondary));
-        } else {
-            holder.title_TV.setText(category.getTitle());
-            holder.title_TV.setTextColor(context.getResources().getColor(R.color.text_primary));
-        }
+        holder.title_TV.setText(category.getTitle());
     }
 
     private static class ViewHolder {

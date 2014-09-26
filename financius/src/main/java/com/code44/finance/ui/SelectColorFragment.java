@@ -39,8 +39,7 @@ public class SelectColorFragment extends DialogFragment {
         setListenerIfVisible(fm, tag, null);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         final int style = DialogFragment.STYLE_NO_FRAME;
@@ -48,13 +47,11 @@ public class SelectColorFragment extends DialogFragment {
         setStyle(style, theme);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_select_color, container, false);
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Get arguments

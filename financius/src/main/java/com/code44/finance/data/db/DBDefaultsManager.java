@@ -6,11 +6,8 @@ import android.graphics.Color;
 import android.text.TextUtils;
 
 import com.code44.finance.R;
-import com.code44.finance.common.model.AccountOwner;
-import com.code44.finance.common.model.CategoryOwner;
-import com.code44.finance.common.model.CategoryType;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.Preconditions;
-import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Currency;
 
@@ -32,12 +29,11 @@ public final class DBDefaultsManager {
     }
 
     public void addDefaults() {
-        final String mainCurrencyId = addCurrencies();
-        addAccounts(mainCurrencyId);
+        addCurrencies();
         addCategories();
     }
 
-    private String addCurrencies() {
+    private void addCurrencies() {
         final Set<String> currencyCodes = new HashSet<>();
         final String mainCurrencyCode = getMainCurrencyCode();
         currencyCodes.add(mainCurrencyCode);
@@ -52,7 +48,6 @@ public final class DBDefaultsManager {
         currencyCodes.add("JPY");
 
         // Create currencies
-        String mainCurrencyId = "";
         for (String code : currencyCodes) {
             java.util.Currency javaCurrency = getCurrencyFromCode(code);
             if (javaCurrency != null) {
@@ -63,64 +58,13 @@ public final class DBDefaultsManager {
                 currency.setDecimalCount(javaCurrency.getDefaultFractionDigits());
                 currency.setDefault(code.equals(mainCurrencyCode));
                 database.insert(Tables.Currencies.TABLE_NAME, null, currency.asValues());
-
-                if (currency.isDefault()) {
-                    mainCurrencyId = currency.getId();
-                }
             }
         }
-
-        return mainCurrencyId;
-    }
-
-    private void addAccounts(String mainCurrencyId) {
-        final Currency currency = new Currency();
-        currency.setId(mainCurrencyId);
-
-        final Account systemAccount = new Account();
-        systemAccount.setCurrency(currency);
-        systemAccount.setId(UUID.randomUUID().toString());
-        systemAccount.setTitle("");
-        systemAccount.setNote("");
-        systemAccount.setAccountOwner(AccountOwner.SYSTEM);
-
-        database.insert(Tables.Accounts.TABLE_NAME, null, systemAccount.asValues());
     }
 
     private void addCategories() {
-        final Category expenseCategory = new Category();
-        expenseCategory.setLocalId(Category.EXPENSE_ID);
-        expenseCategory.setId(UUID.randomUUID().toString());
-        expenseCategory.setTitle(context.getString(R.string.expense));
-        expenseCategory.setColor(context.getResources().getColor(R.color.text_negative));
-        expenseCategory.setCategoryType(CategoryType.EXPENSE);
-        expenseCategory.setCategoryOwner(CategoryOwner.SYSTEM);
-        expenseCategory.setSortOrder(0);
-
-        final Category incomeCategory = new Category();
-        incomeCategory.setLocalId(Category.INCOME_ID);
-        incomeCategory.setId(UUID.randomUUID().toString());
-        incomeCategory.setTitle(context.getString(R.string.income));
-        incomeCategory.setColor(context.getResources().getColor(R.color.text_positive));
-        incomeCategory.setCategoryType(CategoryType.INCOME);
-        incomeCategory.setCategoryOwner(CategoryOwner.SYSTEM);
-        incomeCategory.setSortOrder(0);
-
-        final Category transferCategory = new Category();
-        transferCategory.setLocalId(Category.TRANSFER_ID);
-        transferCategory.setId(UUID.randomUUID().toString());
-        transferCategory.setTitle(context.getString(R.string.transfer));
-        transferCategory.setColor(context.getResources().getColor(R.color.text_neutral));
-        transferCategory.setCategoryType(CategoryType.TRANSFER);
-        transferCategory.setCategoryOwner(CategoryOwner.SYSTEM);
-        transferCategory.setSortOrder(0);
-
-        database.insert(Tables.Categories.TABLE_NAME, null, expenseCategory.asValues());
-        database.insert(Tables.Categories.TABLE_NAME, null, incomeCategory.asValues());
-        database.insert(Tables.Categories.TABLE_NAME, null, transferCategory.asValues());
-
-        insertCategories(context.getResources().getStringArray(R.array.expense_categories), context.getResources().getStringArray(R.array.expense_categories_colors), CategoryType.EXPENSE);
-        insertCategories(context.getResources().getStringArray(R.array.income_categories), context.getResources().getStringArray(R.array.income_categories_colors), CategoryType.INCOME);
+        insertCategories(context.getResources().getStringArray(R.array.expense_categories), context.getResources().getStringArray(R.array.expense_categories_colors), TransactionType.EXPENSE);
+        insertCategories(context.getResources().getStringArray(R.array.income_categories), context.getResources().getStringArray(R.array.income_categories_colors), TransactionType.INCOME);
     }
 
     private String getMainCurrencyCode() {
@@ -145,15 +89,14 @@ public final class DBDefaultsManager {
         }
     }
 
-    private void insertCategories(String[] titles, String[] colors, CategoryType type) {
+    private void insertCategories(String[] titles, String[] colors, TransactionType type) {
         int order = 0;
         for (String title : titles) {
             final Category category = new Category();
             category.setId(UUID.randomUUID().toString());
+            category.setTransactionType(type);
             category.setTitle(title);
             category.setColor(Color.parseColor(colors[order % colors.length]));
-            category.setCategoryType(type);
-            category.setCategoryOwner(CategoryOwner.USER);
             category.setSortOrder(order++);
             database.insert(Tables.Categories.TABLE_NAME, null, category.asValues());
         }

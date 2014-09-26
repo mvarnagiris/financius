@@ -16,6 +16,7 @@ import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
+import com.code44.finance.qualifiers.Main;
 import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.IOUtils;
 
@@ -27,7 +28,7 @@ public class StartupService extends IntentService {
     @Inject Api api;
     @Inject CurrenciesApi currenciesApi;
     @Inject GeneralPrefs generalPrefs;
-    @Inject Currency defaultCurrency;
+    @Inject @Main Currency mainCurrency;
 
     public StartupService() {
         super(StartupService.class.getSimpleName());
@@ -75,7 +76,7 @@ public class StartupService extends IntentService {
         if (cursor.moveToFirst()) {
             final int iCode = cursor.getColumnIndex(Tables.Currencies.CODE.getName());
             do {
-                currenciesApi.updateExchangeRate(cursor.getString(iCode), defaultCurrency.getCode());
+                currenciesApi.updateExchangeRate(cursor.getString(iCode), mainCurrency.getCode());
             } while (cursor.moveToNext());
         }
         IOUtils.closeQuietly(cursor);

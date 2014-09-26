@@ -3,8 +3,8 @@ package com.code44.finance.data.providers;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.common.model.ModelState;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
@@ -30,7 +30,7 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
 
         final Transaction transaction = Transaction.from(cursor);
         assertEquals(42, transaction.getAmount());
-        assertEquals(CategoryType.INCOME, transaction.getCategory().getCategoryType());
+        assertEquals(TransactionType.INCOME, transaction.getCategory().getTransactionType());
         IOUtils.closeQuietly(cursor);
     }
 
@@ -44,7 +44,7 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
 
         final Transaction transaction = Transaction.from(cursor);
         assertEquals(42, transaction.getAmount());
-        assertEquals(CategoryType.EXPENSE, transaction.getCategory().getCategoryType());
+        assertEquals(TransactionType.EXPENSE, transaction.getCategory().getTransactionType());
         IOUtils.closeQuietly(cursor);
     }
 

@@ -11,7 +11,7 @@ import android.view.Menu;
 import com.astuetz.PagerSlidingTabStrip;
 import com.code44.finance.R;
 import com.code44.finance.adapters.CategoriesPagerAdapter;
-import com.code44.finance.common.model.CategoryType;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.LayoutType;
@@ -23,16 +23,16 @@ public class CategoriesActivity extends ModelListActivity {
 
     @Inject LayoutType layoutType;
 
-    private CategoryType categoryType;
+    private TransactionType transactionType;
 
     public static void start(Context context) {
         final Intent intent = makeIntentView(context, CategoriesActivity.class);
         start(context, intent);
     }
 
-    public static void startSelect(Fragment fragment, int requestCode, CategoryType categoryType) {
+    public static void startSelect(Fragment fragment, int requestCode, TransactionType transactionType) {
         final Intent intent = makeIntentSelect(fragment.getActivity(), CategoriesActivity.class);
-        intent.putExtra(EXTRA_CATEGORY_TYPE, categoryType);
+        intent.putExtra(EXTRA_CATEGORY_TYPE, transactionType);
         startForResult(fragment, intent, requestCode);
     }
 
@@ -47,7 +47,7 @@ public class CategoriesActivity extends ModelListActivity {
     }
 
     @Override protected ModelListFragment createModelsFragment(ModelListFragment.Mode mode, Parcelable[] selectedModels) {
-        return mode == ModelListFragment.Mode.VIEW ? null : CategoriesFragment.newInstance(mode, categoryType);
+        return mode == ModelListFragment.Mode.VIEW ? null : CategoriesFragment.newInstance(mode, transactionType);
     }
 
     @Override protected int inflateActivity() {
@@ -73,6 +73,6 @@ public class CategoriesActivity extends ModelListActivity {
 
     @Override protected void readExtras() {
         super.readExtras();
-        categoryType = (CategoryType) getIntent().getSerializableExtra(EXTRA_CATEGORY_TYPE);
+        transactionType = (TransactionType) getIntent().getSerializableExtra(EXTRA_CATEGORY_TYPE);
     }
 }

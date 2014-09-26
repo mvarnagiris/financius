@@ -34,8 +34,7 @@ public class ExchangeRatesRequest extends Request {
         this.toCode = toCode;
     }
 
-    @Override
-    protected void performRequest() throws Exception {
+    @Override protected void performRequest() throws Exception {
         final List<ContentValues> valuesList = new ArrayList<>();
         for (String fromCode : fromCodes) {
             final Currency currency = getCurrencyWithUpdatedExchangeRate(fromCode);
@@ -55,8 +54,7 @@ public class ExchangeRatesRequest extends Request {
         return request.getCurrency();
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ExchangeRatesRequest)) return false;
 
@@ -65,8 +63,7 @@ public class ExchangeRatesRequest extends Request {
         return toCode.equals(that.toCode);
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         return toCode.hashCode();
     }
 }

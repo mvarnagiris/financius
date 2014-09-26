@@ -45,8 +45,7 @@ public class RegisterRequest extends Request {
         body.setCoverUrl(coverUrl);
     }
 
-    @Override
-    protected void performRequest() throws Exception {
+    @Override protected void performRequest() throws Exception {
         try {
             final UserAccount userAccount = usersService.register(body).execute();
 

@@ -11,10 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.common.model.AccountOwner;
-import com.code44.finance.common.model.CategoryOwner;
-import com.code44.finance.common.model.CategoryType;
 import com.code44.finance.common.model.TransactionState;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Category;
@@ -22,7 +20,6 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.utils.BaseInterval;
-import com.code44.finance.utils.CurrentInterval;
 import com.code44.finance.utils.IntervalHelperDeprecated;
 import com.code44.finance.utils.MoneyFormatter;
 
@@ -37,24 +34,28 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
     private static final String TRANSFER_SYMBOL = " > ";
 
     private final Currency defaultCurrency;
-    private final Category transferCategory;
     private final BaseInterval interval;
     private final LongSparseArray<Long> totalExpenses;
-    private final int expenseColor;
-    private final int incomeColor;
-    private final int transferColor;
+    private final String unknownExpenseTitle;
+    private final String unknownIncomeTitle;
+    private final String unknownTransferTitle;
+    private final int expenseAmountColor;
+    private final int incomeAmountColor;
+    private final int transferAmountColor;
     private final int primaryColor;
     private final int weakColor;
 
-    public TransactionsAdapter(Context context, Currency defaultCurrency, Category transferCategory, CurrentInterval interval) {
+    public TransactionsAdapter(Context context, Currency defaultCurrency, BaseInterval interval) {
         super(context);
         this.defaultCurrency = defaultCurrency;
-        this.transferCategory = transferCategory;
         this.interval = interval;
         totalExpenses = new LongSparseArray<>();
-        expenseColor = context.getResources().getColor(R.color.text_primary);
-        incomeColor = context.getResources().getColor(R.color.text_positive);
-        transferColor = context.getResources().getColor(R.color.text_neutral);
+        unknownExpenseTitle = context.getString(R.string.expense);
+        unknownIncomeTitle = context.getString(R.string.income);
+        unknownTransferTitle = context.getString(R.string.transfer);
+        expenseAmountColor = context.getResources().getColor(R.color.text_primary);
+        incomeAmountColor = context.getResources().getColor(R.color.text_positive);
+        transferAmountColor = context.getResources().getColor(R.color.text_neutral);
         primaryColor = context.getResources().getColor(R.color.text_primary);
         weakColor = context.getResources().getColor(R.color.text_weak);
     }
@@ -70,30 +71,6 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         final Transaction transaction = Transaction.from(cursor);
         final Category category = transaction.getCategory();
         final DateTime date = new DateTime(transaction.getDate());
-        final String note = transaction.getNote();
-        final String title;
-        final SpannableStringBuilder subtitle;
-
-        // Prepare title
-        if (StringUtils.isEmpty(note)) {
-            title = category.getTitle();
-        } else {
-            title = note;
-        }
-
-        // Prepare subtitle
-        if (transaction.getTags().size() > 0) {
-            subtitle = new SpannableStringBuilder();
-            for (Tag tag : transaction.getTags()) {
-                if (subtitle.length() > 0) {
-                    subtitle.append(" ");
-                }
-                subtitle.append("#").append(tag.getTitle());
-            }
-        } else {
-            subtitle = null;
-        }
-
 
         // Set values
         holder.weekday_TV.setText(date.dayOfWeek().getAsShortText());
@@ -101,54 +78,12 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         holder.color_IV.setColorFilter(category.getColor());
         holder.amount_TV.setText(MoneyFormatter.format(transaction));
         holder.title_TV.setTextColor(primaryColor);
-        holder.title_TV.setText(title);
-        holder.subtitle_TV.setText(subtitle);
-
-        if (category.getCategoryType() == CategoryType.EXPENSE) {
-            holder.account_TV.setText(transaction.getAccountFrom().getTitle());
-            holder.amount_TV.setTextColor(expenseColor);
-        } else if (category.getCategoryType() == CategoryType.INCOME) {
-            holder.account_TV.setText(transaction.getAccountTo().getTitle());
-            holder.amount_TV.setTextColor(incomeColor);
-        } else {
-            holder.account_TV.setText(transaction.getAccountFrom().getTitle() + TRANSFER_SYMBOL + transaction.getAccountTo().getTitle());
-            holder.amount_TV.setTextColor(transferColor);
-        }
+        holder.title_TV.setText(getTitle(transaction));
+        holder.subtitle_TV.setText(getSubtitle(transaction));
+        bindViewForTransactionType(holder, transaction);
 
         if (transaction.getTransactionState() == TransactionState.PENDING) {
-            if (category.getCategoryOwner() == CategoryOwner.SYSTEM && !category.getId().equals(transferCategory.getId())) {
-                holder.title_TV.setTextColor(weakColor);
-                holder.color_IV.setColorFilter(weakColor);
-            }
-
-            if (transaction.getAmount() == 0) {
-                holder.amount_TV.setTextColor(weakColor);
-            }
-
-            if (category.getCategoryType() == CategoryType.EXPENSE) {
-                if (transaction.getAccountFrom().getAccountOwner() == AccountOwner.SYSTEM) {
-                    holder.account_TV.setText(UNKNOWN_VALUE);
-                }
-
-                if (transaction.getAmount() > 0) {
-                    holder.amount_TV.setTextColor(expenseColor);
-                }
-            } else if (category.getCategoryType() == CategoryType.INCOME) {
-                if (transaction.getAccountTo().getAccountOwner() == AccountOwner.SYSTEM) {
-                    holder.account_TV.setText(UNKNOWN_VALUE);
-                }
-
-                if (transaction.getAmount() > 0) {
-                    holder.amount_TV.setTextColor(incomeColor);
-                }
-            } else {
-                final String accountFrom = transaction.getAccountFrom().getAccountOwner() == AccountOwner.SYSTEM ? UNKNOWN_VALUE : transaction.getAccountFrom().getTitle();
-                final String accountTo = transaction.getAccountTo().getAccountOwner() == AccountOwner.SYSTEM ? UNKNOWN_VALUE : transaction.getAccountTo().getTitle();
-                holder.account_TV.setText(accountFrom + TRANSFER_SYMBOL + accountTo);
-                if (transaction.getAmount() > 0) {
-                    holder.amount_TV.setTextColor(transferColor);
-                }
-            }
+            bindViewPending(holder, transaction);
         }
     }
 
@@ -197,6 +132,103 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         return super.swapCursor(newCursor);
     }
 
+    private String getTitle(Transaction transaction) {
+        if (StringUtils.isEmpty(transaction.getNote())) {
+            if (transaction.getCategory().hasId()) {
+                return transaction.getCategory().getTitle();
+            } else {
+                switch (transaction.getTransactionType()) {
+                    case EXPENSE:
+                        return unknownExpenseTitle;
+                    case INCOME:
+                        return unknownIncomeTitle;
+                    case TRANSFER:
+                        return unknownTransferTitle;
+                    default:
+                        throw new IllegalArgumentException("Transaction type " + transaction.getTransactionType() + " is not supported.");
+                }
+            }
+        } else {
+            return transaction.getNote();
+        }
+    }
+
+    private CharSequence getSubtitle(Transaction transaction) {
+        if (transaction.getTags().size() > 0) {
+            SpannableStringBuilder subtitle = new SpannableStringBuilder();
+            for (Tag tag : transaction.getTags()) {
+                if (subtitle.length() > 0) {
+                    subtitle.append(" ");
+                }
+                subtitle.append("#").append(tag.getTitle());
+            }
+            return subtitle;
+        }
+        return null;
+    }
+
+    private void bindViewForTransactionType(ViewHolder holder, Transaction transaction) {
+        switch (transaction.getTransactionType()) {
+            case EXPENSE:
+                holder.account_TV.setText(transaction.getAccountFrom().getTitle());
+                holder.amount_TV.setTextColor(expenseAmountColor);
+                break;
+            case INCOME:
+                holder.account_TV.setText(transaction.getAccountTo().getTitle());
+                holder.amount_TV.setTextColor(incomeAmountColor);
+                break;
+            case TRANSFER:
+                holder.account_TV.setText(transaction.getAccountFrom().getTitle() + TRANSFER_SYMBOL + transaction.getAccountTo().getTitle());
+                holder.amount_TV.setTextColor(transferAmountColor);
+                break;
+            default:
+                throw new IllegalArgumentException("Transaction type " + transaction.getTransactionType() + " is not supported.");
+        }
+    }
+
+    private void bindViewPending(ViewHolder holder, Transaction transaction) {
+        final boolean isCategoryUnknown = !transaction.getCategory().hasId();
+        final boolean isTransfer = transaction.getTransactionType() == TransactionType.TRANSFER;
+
+        if (isCategoryUnknown && !isTransfer) {
+            holder.title_TV.setTextColor(weakColor);
+            holder.color_IV.setColorFilter(weakColor);
+        }
+
+        if (transaction.getAmount() == 0) {
+            holder.amount_TV.setTextColor(weakColor);
+        }
+
+        final boolean isAccountFromUnknown = !transaction.getAccountFrom().hasId();
+        final boolean isAccountToUnknown = !transaction.getAccountTo().hasId();
+        final boolean isExpense = transaction.getTransactionType() == TransactionType.EXPENSE;
+        final boolean isIncome = transaction.getTransactionType() == TransactionType.INCOME;
+        if (isExpense) {
+            if (isAccountFromUnknown) {
+                holder.account_TV.setText(UNKNOWN_VALUE);
+            }
+
+            if (transaction.getAmount() > 0) {
+                holder.amount_TV.setTextColor(expenseAmountColor);
+            }
+        } else if (isIncome) {
+            if (isAccountToUnknown) {
+                holder.account_TV.setText(UNKNOWN_VALUE);
+            }
+
+            if (transaction.getAmount() > 0) {
+                holder.amount_TV.setTextColor(incomeAmountColor);
+            }
+        } else {
+            final String accountFrom = isAccountFromUnknown ? UNKNOWN_VALUE : transaction.getAccountFrom().getTitle();
+            final String accountTo = isAccountToUnknown ? UNKNOWN_VALUE : transaction.getAccountTo().getTitle();
+            holder.account_TV.setText(accountFrom + TRANSFER_SYMBOL + accountTo);
+            if (transaction.getAmount() > 0) {
+                holder.amount_TV.setTextColor(transferAmountColor);
+            }
+        }
+    }
+
     private long getTotalExpenseForPosition(int position) {
         final long headerId = getHeaderId(position);
         long totalExpense = totalExpenses.get(headerId, -1L);
@@ -206,13 +238,13 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         totalExpense = 0;
 
         final Cursor cursor = getCursor();
-        final int iCategoryType = cursor.getColumnIndex(Tables.Categories.TYPE.getName());
+        final int iTransactionType = cursor.getColumnIndex(Tables.Transactions.TYPE.getName());
         final int iAmount = cursor.getColumnIndex(Tables.Transactions.AMOUNT.getName());
         final int iAccountFromCurrencyServerId = cursor.getColumnIndex(Tables.Currencies.ID.getName(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY));
         final int iAccountFromCurrencyExchangeRate = cursor.getColumnIndex(Tables.Currencies.EXCHANGE_RATE.getName(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY));
         final int iIncludeInReports = cursor.getColumnIndex(Tables.Transactions.INCLUDE_IN_REPORTS.getName());
         do {
-            if (CategoryType.fromInt(cursor.getInt(iCategoryType)) == CategoryType.EXPENSE && cursor.getInt(iIncludeInReports) != 0) {
+            if (TransactionType.fromInt(cursor.getInt(iTransactionType)) == TransactionType.EXPENSE && cursor.getInt(iIncludeInReports) != 0) {
                 final long amount = cursor.getLong(iAmount);
                 if (defaultCurrency.getId().equals(cursor.getString(iAccountFromCurrencyServerId))) {
                     totalExpense += amount;
