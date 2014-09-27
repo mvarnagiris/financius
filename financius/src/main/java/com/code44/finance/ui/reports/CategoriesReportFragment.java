@@ -111,7 +111,7 @@ public class CategoriesReportFragment extends BaseReportFragment implements Load
             do {
                 final Transaction transaction = Transaction.from(cursor);
                 final Category category = transaction.getCategory();
-                if (transaction.includeInReports() && category.getTransactionType() == TransactionType.EXPENSE && transaction.getTransactionState() == TransactionState.CONFIRMED) {
+                if (transaction.includeInReports() && transaction.getTransactionType() == TransactionType.EXPENSE && transaction.getTransactionState() == TransactionState.CONFIRMED) {
                     final Long amount;
                     if (transaction.getAccountFrom().getCurrency().getId().equals(mainCurrency.getId())) {
                         amount = transaction.getAmount();

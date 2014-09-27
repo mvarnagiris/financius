@@ -45,4 +45,11 @@ public class Preconditions {
         }
         return value;
     }
+
+    public static boolean checkTrue(boolean value, String message) throws IllegalArgumentException {
+        if (!value) {
+            throw new IllegalArgumentException(message);
+        }
+        return true;
+    }
 }

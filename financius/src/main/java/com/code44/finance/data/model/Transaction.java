@@ -94,9 +94,9 @@ public class Transaction extends BaseModel<TransactionEntity> {
     }
 
     @Override protected void toValues(ContentValues values) {
-        values.put(Tables.Transactions.ACCOUNT_FROM_ID.getName(), accountFrom.getId());
-        values.put(Tables.Transactions.ACCOUNT_TO_ID.getName(), accountTo.getId());
-        values.put(Tables.Transactions.CATEGORY_ID.getName(), category.getId());
+        values.put(Tables.Transactions.ACCOUNT_FROM_ID.getName(), accountFrom == null ? null : accountFrom.getId());
+        values.put(Tables.Transactions.ACCOUNT_TO_ID.getName(), accountTo == null ? null : accountTo.getId());
+        values.put(Tables.Transactions.CATEGORY_ID.getName(), category == null ? null : category.getId());
         values.put(Tables.Transactions.DATE.getName(), date);
         values.put(Tables.Transactions.AMOUNT.getName(), amount);
         values.put(Tables.Transactions.EXCHANGE_RATE.getName(), exchangeRate);
@@ -165,28 +165,28 @@ public class Transaction extends BaseModel<TransactionEntity> {
         int index;
 
         // Account from
-        final Account accountFrom = Account.fromAccountFrom(cursor);
         index = cursor.getColumnIndex(Tables.Transactions.ACCOUNT_FROM_ID.getName(columnPrefixTable));
-        if (index >= 0) {
+        if (index >= 0 && !StringUtils.isEmpty(cursor.getString(index))) {
+            final Account accountFrom = Account.fromAccountFrom(cursor);
             accountFrom.setId(cursor.getString(index));
+            setAccountFrom(accountFrom);
         }
-        setAccountFrom(accountFrom);
 
         // Account to
-        final Account accountTo = Account.fromAccountTo(cursor);
         index = cursor.getColumnIndex(Tables.Transactions.ACCOUNT_TO_ID.getName(columnPrefixTable));
-        if (index >= 0) {
+        if (index >= 0 && !StringUtils.isEmpty(cursor.getString(index))) {
+            final Account accountTo = Account.fromAccountTo(cursor);
             accountTo.setId(cursor.getString(index));
+            setAccountTo(accountTo);
         }
-        setAccountTo(accountTo);
 
         // Category
-        final Category category = Category.from(cursor);
         index = cursor.getColumnIndex(Tables.Transactions.CATEGORY_ID.getName(columnPrefixTable));
-        if (index >= 0) {
+        if (index >= 0 && !StringUtils.isEmpty(cursor.getString(index))) {
+            final Category category = Category.from(cursor);
             category.setId(cursor.getString(index));
+            setCategory(category);
         }
-        setCategory(category);
 
         // Tags
         final String[] tagIds;
@@ -291,26 +291,35 @@ public class Transaction extends BaseModel<TransactionEntity> {
 
     @Override public void checkValues() throws IllegalStateException {
         super.checkValues();
-        Preconditions.checkNotNull(accountFrom, "AccountFrom cannot be null.");
-        Preconditions.checkNotNull(accountTo, "AccountTo cannot be null.");
-        Preconditions.checkNotNull(category, "Category cannot be null.");
         Preconditions.checkNotNull(transactionState, "Transaction state cannot be null.");
         Preconditions.checkNotNull(transactionType, "Transaction type cannot be null.");
 
+        if (transactionState == TransactionState.CONFIRMED) {
+            switch (transactionType) {
+                case EXPENSE:
+                    Preconditions.checkNotNull(accountFrom, "AccountFrom cannot be null.");
+                    Preconditions.checkTrue(accountFrom.hasId(), "AccountFrom must have an Id.");
+                    break;
+                case INCOME:
+                    Preconditions.checkNotNull(accountTo, "AccountTo cannot be null.");
+                    Preconditions.checkTrue(accountTo.hasId(), "AccountTo must have an Id.");
+                    break;
+                case TRANSFER:
+                    Preconditions.checkNotNull(accountFrom, "AccountFrom cannot be null.");
+                    Preconditions.checkTrue(accountFrom.hasId(), "AccountFrom must have an Id.");
+                    Preconditions.checkNotNull(accountTo, "AccountTo cannot be null.");
+                    Preconditions.checkTrue(accountTo.hasId(), "AccountTo must have an Id.");
+                    if (accountFrom.equals(accountTo)) {
+                        throw new IllegalStateException("AccountFrom cannot be equal to AccountTo.");
+                    }
+                    break;
+                default:
+                    throw new IllegalArgumentException("Transaction type " + transactionType + " is not supported.");
+            }
+        }
+
         if (Double.compare(exchangeRate, 0) < 0) {
             throw new IllegalStateException("Exchange rate must be > 0.");
-        }
-
-        if (accountFrom == accountTo && transactionState == TransactionState.CONFIRMED) {
-            throw new IllegalStateException("AccountFrom cannot be equal to AccountTo.");
-        }
-
-        if (category.getTransactionType() == TransactionType.EXPENSE && accountFrom == null && transactionState == TransactionState.CONFIRMED) {
-            throw new IllegalStateException("Account from cannot be system account.");
-        }
-
-        if (category.getTransactionType() == TransactionType.INCOME && accountTo == null && transactionState == TransactionState.CONFIRMED) {
-            throw new IllegalStateException("Account to cannot be system account.");
         }
     }
 

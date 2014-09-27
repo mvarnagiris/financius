@@ -1,17 +1,19 @@
 package com.code44.finance.utils;
 
-import android.support.v4.util.LongSparseArray;
-
 import com.code44.finance.common.model.TransactionType;
+import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Transaction;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MoneyFormatter {
-    private static final LongSparseArray<CurrencyFormat> currencyFormats = new LongSparseArray<>();
+    private static final Map<String, CurrencyFormat> currencyFormats = new HashMap<>();
 
     public static String format(Transaction transaction) {
         final Currency currency;
-        if (transaction.getCategory().getTransactionType() == TransactionType.INCOME) {
+        if (transaction.getTransactionType() == TransactionType.INCOME) {
             currency = transaction.getAccountTo().getCurrency();
         } else {
             currency = transaction.getAccountFrom().getCurrency();
@@ -34,14 +36,14 @@ public class MoneyFormatter {
     }
 
     private static CurrencyFormat getCurrencyFormat(Currency currency, boolean useCache) {
-        final long currencyId = currency.getLocalId();
-        if (currencyId == 0 || !useCache) {
+        final String currencyId = currency.getId();
+        if (StringUtils.isEmpty(currencyId) || !useCache) {
             return new CurrencyFormat(currency);
         } else {
-            CurrencyFormat currencyFormat = currencyFormats.get(currency.getLocalId());
+            CurrencyFormat currencyFormat = currencyFormats.get(currency.getId());
             if (currencyFormat == null) {
                 currencyFormat = new CurrencyFormat(currency);
-                currencyFormats.put(currency.getLocalId(), currencyFormat);
+                currencyFormats.put(currency.getId(), currencyFormat);
             }
             return currencyFormat;
         }

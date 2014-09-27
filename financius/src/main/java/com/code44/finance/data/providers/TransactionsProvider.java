@@ -153,7 +153,6 @@ public class TransactionsProvider extends BaseModelProvider {
                 .selection(" and " + Tables.Transactions.STATE + "=?", TransactionState.CONFIRMED.asString())
                 .selection(" and (" + Tables.Transactions.ACCOUNT_FROM_ID + "=? or " + Tables.Transactions.ACCOUNT_TO_ID + "=?)", accountId, accountId)
                 .from(getDatabase(), Tables.Transactions.TABLE_NAME)
-                .innerJoin(Tables.Categories.TABLE_NAME, Tables.Categories.ID.getNameWithTable() + "=" + Tables.Transactions.CATEGORY_ID)
                 .execute();
 
         long balance = 0;

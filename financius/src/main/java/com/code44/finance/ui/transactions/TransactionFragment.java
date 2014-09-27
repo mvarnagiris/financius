@@ -65,10 +65,10 @@ public class TransactionFragment extends ModelFragment<Transaction> {
 //        holder.subtitle_TV.setText(transaction.getNote());
         amount_TV.setText(MoneyFormatter.format(transaction));
 
-        if (category.getTransactionType() == TransactionType.EXPENSE) {
+        if (transaction.getTransactionType() == TransactionType.EXPENSE) {
 //            holder.account_TV.setText(transaction.getAccountFrom().getTitle());
 //            amount_TV.setTextColor(expenseColor);
-        } else if (category.getTransactionType() == TransactionType.INCOME) {
+        } else if (transaction.getTransactionType() == TransactionType.INCOME) {
 //            holder.account_TV.setText(transaction.getAccountTo().getTitle());
 //            amount_TV.setTextColor(incomeColor);
         } else {

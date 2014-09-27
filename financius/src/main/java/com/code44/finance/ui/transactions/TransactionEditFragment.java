@@ -206,8 +206,8 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         return transaction;
     }
 
-    @Override protected void onModelLoaded(Transaction model) {
-        switch (model.getTransactionType()) {
+    @Override protected void onModelLoaded(Transaction transaction) {
+        switch (transaction.getTransactionType()) {
             case EXPENSE:
                 accountFrom_B.setVisibility(View.VISIBLE);
                 accountTo_B.setVisibility(View.GONE);
@@ -231,19 +231,19 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 break;
         }
 
-        date_B.setText(DateUtils.formatDateTime(getActivity(), new DateTime(model.getDate()), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
-        amount_B.setText(MoneyFormatter.format(getAmountCurrency(model), model.getAmount()));
-        accountFrom_B.setText(model.getAccountFrom().getTitle());
-        accountTo_B.setText(model.getAccountTo().getTitle());
-        color_IV.setColorFilter(model.getCategory().getColor());
-        category_B.setText(model.getCategory().getTitle());
-        note_ET.setText(model.getNote());
-        confirmed_CB.setChecked(model.getTransactionState() == TransactionState.CONFIRMED && canBeConfirmed(model, false));
-        includeInReports_CB.setChecked(model.includeInReports());
+        date_B.setText(DateUtils.formatDateTime(getActivity(), new DateTime(transaction.getDate()), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
+        amount_B.setText(MoneyFormatter.format(getAmountCurrency(transaction), transaction.getAmount()));
+        accountFrom_B.setText(transaction.getAccountFrom() == null ? null : transaction.getAccountFrom().getTitle());
+        accountTo_B.setText(transaction.getAccountTo() == null ? null : transaction.getAccountTo().getTitle());
+        color_IV.setColorFilter(getCategoryColor(transaction));
+        category_B.setText(transaction.getCategory() == null ? null : transaction.getCategory().getTitle());
+        note_ET.setText(transaction.getNote());
+        confirmed_CB.setChecked(transaction.getTransactionState() == TransactionState.CONFIRMED && canBeConfirmed(transaction, false));
+        includeInReports_CB.setChecked(transaction.includeInReports());
         save_B.setText(confirmed_CB.isChecked() ? R.string.save : R.string.pending);
 
         final StringBuilder sb = new StringBuilder();
-        for (Tag tag : model.getTags()) {
+        for (Tag tag : transaction.getTags()) {
             if (sb.length() > 0) {
                 sb.append(" ");
             }
@@ -251,7 +251,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         }
         tags_B.setText(sb.toString());
 
-        if (StringUtils.isEmpty(model.getId()) && !isAutoAmountRequested) {
+        if (StringUtils.isEmpty(transaction.getId()) && !isAutoAmountRequested) {
             isAutoAmountRequested = true;
             amount_B.post(new Runnable() {
                 @Override public void run() {
@@ -333,13 +333,13 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         Currency transactionCurrency;
         switch (transaction.getTransactionType()) {
             case EXPENSE:
-                transactionCurrency = transaction.getAccountFrom().getCurrency();
+                transactionCurrency = transaction.getAccountFrom() == null ? null : transaction.getAccountFrom().getCurrency();
                 break;
             case INCOME:
-                transactionCurrency = transaction.getAccountTo().getCurrency();
+                transactionCurrency = transaction.getAccountTo() == null ? null : transaction.getAccountTo().getCurrency();
                 break;
             case TRANSFER:
-                transactionCurrency = transaction.getAccountFrom().getCurrency();
+                transactionCurrency = transaction.getAccountFrom() == null ? null : transaction.getAccountFrom().getCurrency();
                 break;
             default:
                 throw new IllegalStateException("Category type " + transaction.getTransactionType() + " is not supported.");
@@ -351,6 +351,23 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         }
 
         return transactionCurrency;
+    }
+
+    private int getCategoryColor(Transaction transaction) {
+        if (transaction.getCategory() == null) {
+            switch (transaction.getTransactionType()) {
+                case EXPENSE:
+                    return getResources().getColor(R.color.text_negative);
+                case INCOME:
+                    return getResources().getColor(R.color.text_positive);
+                case TRANSFER:
+                    return getResources().getColor(R.color.text_neutral);
+                default:
+                    throw new IllegalArgumentException("Transaction type " + transaction.getTransactionType() + " is not supported.");
+            }
+        } else {
+            return transaction.getCategory().getColor();
+        }
     }
 
     private boolean canBeConfirmed(Transaction model, boolean showErrors) {

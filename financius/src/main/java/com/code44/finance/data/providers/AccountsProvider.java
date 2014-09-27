@@ -6,6 +6,7 @@ import android.net.Uri;
 
 import com.code44.finance.R;
 import com.code44.finance.common.model.ModelState;
+import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
@@ -104,7 +105,7 @@ public class AccountsProvider extends BaseModelProvider {
                 .selection(Tables.Accounts.ID + "=?", String.valueOf(accountId))
                 .from(getDatabase(), Tables.Accounts.TABLE_NAME)
                 .execute();
-        final long balance = cursor.getLong(cursor.getColumnIndex(Tables.Accounts.BALANCE.getName()));
+        final long balance = cursor.moveToFirst() ? cursor.getLong(cursor.getColumnIndex(Tables.Accounts.BALANCE.getName())) : 0;
         IOUtils.closeQuietly(cursor);
         return balance;
     }
@@ -126,6 +127,7 @@ public class AccountsProvider extends BaseModelProvider {
             transaction.setAmount(Math.abs(balanceDelta));
             transaction.setNote(getContext().getString(R.string.account_balance_update));
             transaction.setIncludeInReports(false);
+            transaction.setTransactionState(TransactionState.CONFIRMED);
         }
 
         return transaction;

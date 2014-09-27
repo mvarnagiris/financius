@@ -263,6 +263,11 @@ public class Query {
             return this;
         }
 
+        public DatabaseQuery leftJoin(String table, String on) {
+            tables.add(" left join " + table + " on (" + on + ")");
+            return this;
+        }
+
         public Cursor execute() {
             String tables = getTables();
             String[] projection = query.getProjection();

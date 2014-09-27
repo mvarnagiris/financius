@@ -15,7 +15,6 @@ import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
@@ -39,6 +38,9 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
     private final String unknownExpenseTitle;
     private final String unknownIncomeTitle;
     private final String unknownTransferTitle;
+    private final int unknownExpenseColor;
+    private final int unknownIncomeColor;
+    private final int unknownTransferColor;
     private final int expenseAmountColor;
     private final int incomeAmountColor;
     private final int transferAmountColor;
@@ -53,9 +55,12 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         unknownExpenseTitle = context.getString(R.string.expense);
         unknownIncomeTitle = context.getString(R.string.income);
         unknownTransferTitle = context.getString(R.string.transfer);
-        expenseAmountColor = context.getResources().getColor(R.color.text_primary);
+        expenseAmountColor = context.getResources().getColor(R.color.text_negative);
         incomeAmountColor = context.getResources().getColor(R.color.text_positive);
         transferAmountColor = context.getResources().getColor(R.color.text_neutral);
+        unknownExpenseColor = context.getResources().getColor(R.color.text_primary);
+        unknownIncomeColor = context.getResources().getColor(R.color.text_positive);
+        unknownTransferColor = context.getResources().getColor(R.color.text_neutral);
         primaryColor = context.getResources().getColor(R.color.text_primary);
         weakColor = context.getResources().getColor(R.color.text_weak);
     }
@@ -69,13 +74,12 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
     @Override public void bindView(View view, Context context, Cursor cursor) {
         final ViewHolder holder = (ViewHolder) view.getTag();
         final Transaction transaction = Transaction.from(cursor);
-        final Category category = transaction.getCategory();
         final DateTime date = new DateTime(transaction.getDate());
 
         // Set values
         holder.weekday_TV.setText(date.dayOfWeek().getAsShortText());
         holder.day_TV.setText(date.dayOfMonth().getAsShortText());
-        holder.color_IV.setColorFilter(category.getColor());
+        holder.color_IV.setColorFilter(getCategoryColor(transaction));
         holder.amount_TV.setText(MoneyFormatter.format(transaction));
         holder.title_TV.setTextColor(primaryColor);
         holder.title_TV.setText(getTitle(transaction));
@@ -167,6 +171,23 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         return null;
     }
 
+    private int getCategoryColor(Transaction transaction) {
+        if (transaction.getCategory() == null) {
+            switch (transaction.getTransactionType()) {
+                case EXPENSE:
+                    return unknownExpenseColor;
+                case INCOME:
+                    return unknownIncomeColor;
+                case TRANSFER:
+                    return unknownTransferColor;
+                default:
+                    throw new IllegalArgumentException("Transaction type " + transaction.getTransactionType() + " is not supported.");
+            }
+        } else {
+            return transaction.getCategory().getColor();
+        }
+    }
+
     private void bindViewForTransactionType(ViewHolder holder, Transaction transaction) {
         switch (transaction.getTransactionType()) {
             case EXPENSE:
@@ -187,7 +208,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
     }
 
     private void bindViewPending(ViewHolder holder, Transaction transaction) {
-        final boolean isCategoryUnknown = !transaction.getCategory().hasId();
+        final boolean isCategoryUnknown = transaction.getCategory() == null || !transaction.getCategory().hasId();
         final boolean isTransfer = transaction.getTransactionType() == TransactionType.TRANSFER;
 
         if (isCategoryUnknown && !isTransfer) {
@@ -199,8 +220,8 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
             holder.amount_TV.setTextColor(weakColor);
         }
 
-        final boolean isAccountFromUnknown = !transaction.getAccountFrom().hasId();
-        final boolean isAccountToUnknown = !transaction.getAccountTo().hasId();
+        final boolean isAccountFromUnknown = transaction.getAccountFrom() == null || !transaction.getAccountFrom().hasId();
+        final boolean isAccountToUnknown = transaction.getAccountTo() == null || !transaction.getAccountTo().hasId();
         final boolean isExpense = transaction.getTransactionType() == TransactionType.EXPENSE;
         final boolean isIncome = transaction.getTransactionType() == TransactionType.INCOME;
         if (isExpense) {
