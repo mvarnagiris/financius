@@ -55,10 +55,10 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         unknownExpenseTitle = context.getString(R.string.expense);
         unknownIncomeTitle = context.getString(R.string.income);
         unknownTransferTitle = context.getString(R.string.transfer);
-        expenseAmountColor = context.getResources().getColor(R.color.text_negative);
+        expenseAmountColor = context.getResources().getColor(R.color.text_primary);
         incomeAmountColor = context.getResources().getColor(R.color.text_positive);
         transferAmountColor = context.getResources().getColor(R.color.text_neutral);
-        unknownExpenseColor = context.getResources().getColor(R.color.text_primary);
+        unknownExpenseColor = context.getResources().getColor(R.color.text_negative);
         unknownIncomeColor = context.getResources().getColor(R.color.text_positive);
         unknownTransferColor = context.getResources().getColor(R.color.text_neutral);
         primaryColor = context.getResources().getColor(R.color.text_primary);
