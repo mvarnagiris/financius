@@ -96,6 +96,7 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:singleLine="true"
+                android:textColor="@color/text_secondary"
                 tools:text="Linkin Park concert" />
 
             <TextView

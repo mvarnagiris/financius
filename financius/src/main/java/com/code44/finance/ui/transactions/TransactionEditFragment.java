@@ -400,7 +400,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     }
 
     private boolean validateAccountFrom(boolean showError) {
-        if (!model.getAccountFrom().hasId()) {
+        if (model.getAccountFrom() == null || !model.getAccountFrom().hasId()) {
             if (showError) {
                 FieldValidationUtils.onError(accountFrom_B);
             }
@@ -410,7 +410,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     }
 
     private boolean validateAccountTo(boolean showError) {
-        if (!model.getAccountTo().hasId()) {
+        if (model.getAccountTo() == null || !model.getAccountTo().hasId()) {
             if (showError) {
                 FieldValidationUtils.onError(accountTo_B);
             }

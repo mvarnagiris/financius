@@ -3,6 +3,7 @@ package com.code44.finance.adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.util.LongSparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.code44.finance.data.model.Transaction;
 import com.code44.finance.utils.BaseInterval;
 import com.code44.finance.utils.IntervalHelperDeprecated;
 import com.code44.finance.utils.MoneyFormatter;
+import com.code44.finance.utils.TextBackgroundSpan;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
@@ -30,7 +32,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 public class TransactionsAdapter extends BaseModelsAdapter implements StickyListHeadersAdapter {
     private static final String UNKNOWN_VALUE = "?";
-    private static final String TRANSFER_SYMBOL = " > ";
+    private static final String TRANSFER_SYMBOL = " → ";
 
     private final Currency defaultCurrency;
     private final BaseInterval interval;
@@ -46,6 +48,8 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
     private final int transferAmountColor;
     private final int primaryColor;
     private final int weakColor;
+    private final int tagBackgroundColor;
+    private final float tagBackgroundRadius;
 
     public TransactionsAdapter(Context context, Currency defaultCurrency, BaseInterval interval) {
         super(context);
@@ -63,6 +67,8 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         unknownTransferColor = context.getResources().getColor(R.color.text_neutral);
         primaryColor = context.getResources().getColor(R.color.text_primary);
         weakColor = context.getResources().getColor(R.color.text_weak);
+        tagBackgroundColor = context.getResources().getColor(R.color.bg_secondary);
+        tagBackgroundRadius = context.getResources().getDimension(R.dimen.tag_radius);
     }
 
     @Override public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -138,7 +144,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
 
     private String getTitle(Transaction transaction) {
         if (StringUtils.isEmpty(transaction.getNote())) {
-            if (transaction.getCategory().hasId()) {
+            if (transaction.getCategory() != null && transaction.getCategory().hasId()) {
                 return transaction.getCategory().getTitle();
             } else {
                 switch (transaction.getTransactionType()) {
@@ -161,10 +167,9 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         if (transaction.getTags().size() > 0) {
             SpannableStringBuilder subtitle = new SpannableStringBuilder();
             for (Tag tag : transaction.getTags()) {
-                if (subtitle.length() > 0) {
-                    subtitle.append(" ");
-                }
-                subtitle.append("#").append(tag.getTitle());
+                subtitle.append(tag.getTitle());
+                subtitle.setSpan(new TextBackgroundSpan(tagBackgroundColor, tagBackgroundRadius), subtitle.length() - tag.getTitle().length(), subtitle.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                subtitle.append(" ");
             }
             return subtitle;
         }

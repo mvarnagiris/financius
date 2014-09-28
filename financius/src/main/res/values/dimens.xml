@@ -49,5 +49,6 @@
     <dimen name="account_balance_graph_height">128dp</dimen>
     <dimen name="progress_bar_height">3dp</dimen>
     <dimen name="card_radius">3dp</dimen>
+    <dimen name="tag_radius">9dp</dimen>
 
 </resources>
