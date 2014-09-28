@@ -140,6 +140,7 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
                 TransactionEditActivity.start(getActivity(), null);
                 break;
             case R.id.overviewGraph_V:
+                getEventBus().post(new NavigationFragment.RequestNavigation(NavigationAdapter.NAV_ID_REPORTS));
                 break;
             case R.id.accounts_V:
                 getEventBus().post(new NavigationFragment.RequestNavigation(NavigationAdapter.NAV_ID_ACCOUNTS));
