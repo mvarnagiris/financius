@@ -13,6 +13,7 @@ import com.code44.finance.ui.BaseActivity;
 import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.ui.currencies.CurrenciesActivity;
 import com.code44.finance.ui.dialogs.ListDialogFragment;
+import com.code44.finance.ui.settings.about.AboutActivity;
 import com.code44.finance.ui.settings.data.DataActivity;
 import com.code44.finance.ui.tags.TagsActivity;
 import com.code44.finance.utils.ActiveInterval;
@@ -89,6 +90,8 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
                     .build().show(getFragmentManager(), FRAGMENT_INTERVAL);
         } else if (id == SettingsAdapter.ID_DATA) {
             DataActivity.start(this);
+        } else if (id == SettingsAdapter.ID_ABOUT) {
+            AboutActivity.start(this);
         }
     }
 

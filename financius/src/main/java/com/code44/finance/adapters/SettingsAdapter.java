@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.code44.finance.BuildConfig;
 import com.code44.finance.R;
 import com.code44.finance.utils.BaseInterval;
 
@@ -19,6 +20,7 @@ public class SettingsAdapter extends BaseAdapter {
     public static final int ID_TAGS = 3;
     public static final int ID_PERIOD = 4;
     public static final int ID_DATA = 5;
+    public static final int ID_ABOUT = 6;
 
     private final Context context;
     private final List<SettingsItem> settingsItems;
@@ -31,6 +33,7 @@ public class SettingsAdapter extends BaseAdapter {
         settingsItems.add(new SettingsItem(ID_TAGS, ViewType.SettingsItem, context.getString(R.string.tags)));
         settingsItems.add(new SettingsSubtitleItem(ID_PERIOD, ViewType.SettingsSubtitleItem, context.getString(R.string.period), ""));
         settingsItems.add(new SettingsItem(ID_DATA, ViewType.SettingsItem, context.getString(R.string.your_data)));
+        settingsItems.add(new SettingsSubtitleItem(ID_ABOUT, ViewType.SettingsSubtitleItem, context.getString(R.string.about), BuildConfig.VERSION_NAME));
     }
 
     @Override public int getCount() {

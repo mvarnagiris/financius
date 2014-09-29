@@ -76,6 +76,9 @@
     <string name="next">Next</string>
     <string name="categories_report">Categories report</string>
     <string name="export_csv">Export CSV</string>
+    <string name="change_log">Change log</string>
+    <string name="faq">FAQ</string>
+    <string name="about">About</string>
 
     <string name="f_change_to_x">Change to %s</string>
     <string name="f_current_main_currency_is_x">Current main currency is %s</string>
