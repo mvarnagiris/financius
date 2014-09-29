@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.code44.finance.R;
 import com.code44.finance.data.backup.BackupDataExporter;
+import com.code44.finance.data.backup.CsvDataExporter;
 import com.code44.finance.data.backup.DataExporter;
 import com.code44.finance.ui.FilePickerActivity;
 import com.code44.finance.utils.GeneralPrefs;
@@ -79,15 +80,19 @@ public class FileExportFragment extends BaseExportFragment {
     }
 
     private String getFileTitle() {
-        return getString(R.string.app_name) + "_" + System.currentTimeMillis() + ".json";
+        if (type == ExportActivity.ExportType.Backup) {
+            return getString(R.string.app_name) + "_" + System.currentTimeMillis() + ".json";
+        } else {
+            return getString(R.string.app_name) + "_" + System.currentTimeMillis() + ".csv";
+        }
     }
 
     private DataExporter getDataExporter(File file) {
         switch (type) {
             case Backup:
                 return new BackupDataExporter(file, getActivity());
-//            case CSV:
-//                break;
+            case CSV:
+                return new CsvDataExporter(file, getActivity());
             default:
                 throw new IllegalStateException("Type " + type + " is not supported.");
         }

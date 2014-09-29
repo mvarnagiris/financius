@@ -27,6 +27,14 @@
             android:text="@string/restore"
             tools:stateListAnimator="@android:animator/fade_in" />
 
+        <Button
+            android:id="@+id/exportCsv_B"
+            style="@style/Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/export_csv"
+            tools:stateListAnimator="@android:animator/fade_in" />
+
     </LinearLayout>
 
 </ScrollView>

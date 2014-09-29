@@ -165,7 +165,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
 
     private CharSequence getSubtitle(Transaction transaction) {
         if (transaction.getTags().size() > 0) {
-            SpannableStringBuilder subtitle = new SpannableStringBuilder();
+            final SpannableStringBuilder subtitle = new SpannableStringBuilder();
             for (Tag tag : transaction.getTags()) {
                 subtitle.append(tag.getTitle());
                 subtitle.setSpan(new TextBackgroundSpan(tagBackgroundColor, tagBackgroundRadius), subtitle.length() - tag.getTitle().length(), subtitle.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
