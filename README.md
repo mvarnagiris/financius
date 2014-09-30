@@ -23,6 +23,8 @@ Checklist for creating issues:
 - For bug reports leave as much information as possible about your device, android version, etc.
 - For bug reports also write steps to reproduce the issue.
 
+[Create new issue][4]
+
 ##Contribute
 I do accept and review Pull Requests on **dev** branch. So if you want to contribute, you are very welcome to do so.
 
