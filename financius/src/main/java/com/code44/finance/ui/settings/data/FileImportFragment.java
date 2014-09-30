@@ -76,7 +76,9 @@ public class FileImportFragment extends BaseImportFragment<File> {
     private DataImporter<File> getDataExporter() {
         switch (type) {
             case Backup:
-                return new BackupDataImporter(getActivity(), dbHelper);
+                return new BackupDataImporter(getActivity(), dbHelper, false);
+            case MergeBackup:
+                return new BackupDataImporter(getActivity(), dbHelper, true);
 //            case CSV:
 //                break;
             default:

@@ -28,6 +28,14 @@
             tools:stateListAnimator="@android:animator/fade_in" />
 
         <Button
+            android:id="@+id/restoreAndMerge_B"
+            style="@style/Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/restore_and_merge"
+            tools:stateListAnimator="@android:animator/fade_in" />
+
+        <Button
             android:id="@+id/exportCsv_B"
             style="@style/Button.Borderless"
             android:layout_width="match_parent"

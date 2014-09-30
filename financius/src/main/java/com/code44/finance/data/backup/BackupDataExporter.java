@@ -174,9 +174,9 @@ public class BackupDataExporter extends FileDataExporter {
 
                     writer.beginObject();
                     writeBaseModel(transaction, writer);
-                    writer.name("account_from_id").value(transaction.getAccountFrom().getId());
-                    writer.name("account_to_id").value(transaction.getAccountTo().getId());
-                    writer.name("category_id").value(transaction.getCategory().getId());
+                    writer.name("account_from_id").value(transaction.getAccountFrom() != null ? transaction.getAccountFrom().getId() : null);
+                    writer.name("account_to_id").value(transaction.getAccountTo() != null ? transaction.getAccountTo().getId() : null);
+                    writer.name("category_id").value(transaction.getCategory() != null ? transaction.getCategory().getId() : null);
                     writer.name("tag_ids").beginArray();
                     for (Tag tag : transaction.getTags()) {
                         writer.value(tag.getId());

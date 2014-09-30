@@ -87,7 +87,7 @@ public class ImportActivity extends BaseActivity implements BaseImportFragment.I
     }
 
     public static enum ImportType {
-        Backup, CSV
+        Backup, MergeBackup, CSV
     }
 
     public static enum Source {

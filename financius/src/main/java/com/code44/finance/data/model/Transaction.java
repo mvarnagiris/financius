@@ -170,6 +170,8 @@ public class Transaction extends BaseModel<TransactionEntity> {
             final Account accountFrom = Account.fromAccountFrom(cursor);
             accountFrom.setId(cursor.getString(index));
             setAccountFrom(accountFrom);
+        } else {
+            setAccountFrom(null);
         }
 
         // Account to
@@ -178,6 +180,8 @@ public class Transaction extends BaseModel<TransactionEntity> {
             final Account accountTo = Account.fromAccountTo(cursor);
             accountTo.setId(cursor.getString(index));
             setAccountTo(accountTo);
+        } else {
+            setAccountTo(null);
         }
 
         // Category
@@ -186,6 +190,8 @@ public class Transaction extends BaseModel<TransactionEntity> {
             final Category category = Category.from(cursor);
             category.setId(cursor.getString(index));
             setCategory(category);
+        } else {
+            setCategory(null);
         }
 
         // Tags

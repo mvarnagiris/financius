@@ -17,7 +17,8 @@ import java.util.List;
 public class DataFragment extends BaseFragment implements View.OnClickListener {
     private static final int REQUEST_BACKUP_DESTINATION = 1;
     private static final int REQUEST_RESTORE_DESTINATION = 2;
-    private static final int REQUEST_EXPORT_CSV_DESTINATION = 3;
+    private static final int REQUEST_RESTORE_AND_MERGE_DESTINATION = 3;
+    private static final int REQUEST_EXPORT_CSV_DESTINATION = 4;
 
     private static final String FRAGMENT_DESTINATION = "FRAGMENT_DESTINATION";
 
@@ -37,11 +38,13 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
         // Get views
         final Button backup_B = (Button) view.findViewById(R.id.backup_B);
         final Button restore_B = (Button) view.findViewById(R.id.restore_B);
+        final Button restoreAndMerge_B = (Button) view.findViewById(R.id.restoreAndMerge_B);
         final Button exportCsv_B = (Button) view.findViewById(R.id.exportCsv_B);
 
         // Setup
         backup_B.setOnClickListener(this);
         restore_B.setOnClickListener(this);
+        restoreAndMerge_B.setOnClickListener(this);
         exportCsv_B.setOnClickListener(this);
     }
 
@@ -63,6 +66,9 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
             case R.id.restore_B:
                 chooseSourceOrDestination(REQUEST_RESTORE_DESTINATION, R.string.restore);
                 break;
+            case R.id.restoreAndMerge_B:
+                chooseSourceOrDestination(REQUEST_RESTORE_AND_MERGE_DESTINATION, R.string.restore_and_merge);
+                break;
             case R.id.exportCsv_B:
                 chooseSourceOrDestination(REQUEST_EXPORT_CSV_DESTINATION, R.string.export_csv);
                 break;
@@ -70,7 +76,10 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
     }
 
     @Subscribe public void onBackupDestinationSelected(ListDialogFragment.ListDialogEvent event) {
-        if ((event.getRequestCode() != REQUEST_BACKUP_DESTINATION && event.getRequestCode() != REQUEST_RESTORE_DESTINATION && event.getRequestCode() != REQUEST_EXPORT_CSV_DESTINATION) || !event.isListItemClicked()) {
+        if ((event.getRequestCode() != REQUEST_BACKUP_DESTINATION
+                && event.getRequestCode() != REQUEST_RESTORE_DESTINATION
+                && event.getRequestCode() != REQUEST_RESTORE_AND_MERGE_DESTINATION
+                && event.getRequestCode() != REQUEST_EXPORT_CSV_DESTINATION) || !event.isListItemClicked()) {
             return;
         }
 
@@ -94,6 +103,15 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
             }
 
             ImportActivity.start(getActivity(), ImportActivity.ImportType.Backup, source);
+        } else if (event.getRequestCode() == REQUEST_RESTORE_AND_MERGE_DESTINATION) {
+            final ImportActivity.Source source;
+            if (event.getPosition() == 0) {
+                source = ImportActivity.Source.GoogleDrive;
+            } else {
+                source = ImportActivity.Source.File;
+            }
+
+            ImportActivity.start(getActivity(), ImportActivity.ImportType.MergeBackup, source);
         } else {
             final ExportActivity.Destination destination;
             if (event.getPosition() == 0) {

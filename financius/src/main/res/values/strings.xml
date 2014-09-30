@@ -70,6 +70,7 @@
     <string name="your_data">Your data</string>
     <string name="backup">Backup</string>
     <string name="restore">Restore</string>
+    <string name="restore_and_merge">Restore and merge</string>
     <string name="file">File</string>
     <string name="reports">Reports</string>
     <string name="previous">Previous</string>

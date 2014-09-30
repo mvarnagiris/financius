@@ -45,10 +45,12 @@ public class BackupDataImporter extends FileDataImporter {
 
     private final Context context;
     private final DBHelper dbHelper;
+    private final boolean merge;
 
-    public BackupDataImporter(Context context, DBHelper dbHelper) {
+    public BackupDataImporter(Context context, DBHelper dbHelper, boolean merge) {
         this.context = context;
         this.dbHelper = dbHelper;
+        this.merge = merge;
     }
 
     @Override public void importData(File file) throws Exception {
@@ -59,7 +61,9 @@ public class BackupDataImporter extends FileDataImporter {
         try {
             database.beginTransaction();
 
-            cleanDatabase(database);
+            if (!merge) {
+                cleanDatabase(database);
+            }
 
             importCurrencies(json);
             importCategories(json);
@@ -156,7 +160,6 @@ public class BackupDataImporter extends FileDataImporter {
             currency.setId(modelJson.get("currency_id").getAsString());
             model.setTitle(modelJson.get("title").getAsString());
             model.setNote(modelJson.get("note").getAsString());
-            model.setBalance(modelJson.get("balance").getAsLong());
             model.setIncludeInTotals(modelJson.get("include_in_totals").getAsBoolean());
             valuesList.add(model.asValues());
         }
@@ -179,9 +182,9 @@ public class BackupDataImporter extends FileDataImporter {
         for (int i = 0, size = modelsJson.size(); i < size; i++) {
             final JsonObject modelJson = modelsJson.get(i).getAsJsonObject();
             updateBaseModel(model, modelJson);
-            accountFrom.setId(modelJson.get("account_from_id").getAsString());
-            accountTo.setId(modelJson.get("account_to_id").getAsString());
-            category.setId(modelJson.get("category_id").getAsString());
+            accountFrom.setId(modelJson.get("account_from_id").isJsonNull() ? null : modelJson.get("account_from_id").getAsString());
+            accountTo.setId(modelJson.get("account_to_id").isJsonNull() ? null : modelJson.get("account_to_id").getAsString());
+            category.setId(modelJson.get("category_id").isJsonNull() ? null : modelJson.get("category_id").getAsString());
             tagCache.addAll(tags);
             tags.clear();
             final JsonArray tagsJson = modelJson.get("tag_ids").getAsJsonArray();
