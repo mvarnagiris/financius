@@ -12,6 +12,7 @@ android {
         versionName '1.0.0'
         buildConfigField "boolean", "USE_LOCAL_SERVER", "true"
         buildConfigField "String", "LOCAL_SERVER_IP", "\"192.168.0.7\""
+        buildConfigField "long", "BUILD_TIME", "" + buildTime() + "L"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -74,4 +75,8 @@ dependencies {
     androidTestCompile 'junit:junit:4.11'
     androidTestCompile 'org.robolectric:robolectric:2.3'
     androidTestCompile 'org.mockito:mockito-all:1.9.5'
+}
+
+def buildTime() {
+    return System.currentTimeMillis();
 }

@@ -30,8 +30,7 @@ import com.code44.finance.ui.reports.CategoriesReportFragment;
 import com.code44.finance.ui.reports.ReportsFragment;
 import com.code44.finance.ui.settings.SettingsActivity;
 import com.code44.finance.ui.settings.about.AboutActivity;
-import com.code44.finance.ui.settings.about.ChangeLogFragment;
-import com.code44.finance.ui.settings.about.FaqFragment;
+import com.code44.finance.ui.settings.about.AboutFragment;
 import com.code44.finance.ui.settings.data.DataActivity;
 import com.code44.finance.ui.settings.data.DataFragment;
 import com.code44.finance.ui.settings.data.ExportActivity;
@@ -104,8 +103,7 @@ import dagger.Module;
                 DataFragment.class,
                 ReportsFragment.class,
                 CategoriesReportFragment.class,
-                ChangeLogFragment.class,
-                FaqFragment.class
+                AboutFragment.class
         }
 )
 public class UIModule {

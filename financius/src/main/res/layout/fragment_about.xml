@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    style="@style/ScrollView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Text.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/keyline"
+            android:drawablePadding="@dimen/space_normal"
+            android:drawableStart="@drawable/ic_launcher"
+            android:gravity="center_vertical"
+            android:text="@string/app_name" />
+
+        <TextView
+            style="@style/Text.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/keyline"
+            android:layout_marginRight="@dimen/keyline"
+            android:text="@string/version" />
+
+        <TextView
+            android:id="@+id/version_TV"
+            style="@style/Text.Body2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/keyline"
+            android:layout_marginRight="@dimen/keyline"
+            tools:text="1.0.0" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/keyline">
+
+            <Button
+                android:id="@+id/changeLog_B"
+                style="@style/Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/space_normal"
+                android:text="@string/change_log" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/changeLog_B"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Text.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/last_updated" />
+
+                <TextView
+                    android:id="@+id/buildTime_TV"
+                    style="@style/Text.Body2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="30/09/2014" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <View style="@style/Divider.Thin" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/keyline">
+
+            <Button
+                android:id="@+id/issues_B"
+                style="@style/Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/space_normal"
+                android:text="@string/readme" />
+
+            <TextView
+                style="@style/Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/issues_B"
+                android:text="@string/l_about_new_issue" />
+
+        </RelativeLayout>
+
+        <View style="@style/Divider.Thin" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/keyline">
+
+            <Button
+                android:id="@+id/rate_B"
+                style="@style/Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/space_normal"
+                android:text="@string/rate" />
+
+            <TextView
+                style="@style/Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/rate_B"
+                android:text="@string/l_about_rate" />
+
+        </RelativeLayout>
+
+        <View style="@style/Divider.Thin" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/keyline">
+
+            <Button
+                android:id="@+id/community_B"
+                style="@style/Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/space_normal"
+                android:text="@string/community" />
+
+            <TextView
+                style="@style/Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/community_B"
+                android:text="@string/l_about_community" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</ScrollView>
