@@ -48,4 +48,19 @@
         <item>#259b24</item>
     </string-array>
 
+    <string name="change_log_items">
+        <![CDATA[
+        <h3>Version: 1.0.0</h3>
+        <ul>
+            <li>Completely new UI.</li>
+            <li>Tags for transactions.</li>
+            <li>No more sub-categories. Use tags instead.</li>
+            <li>Import backup file from device or Google Drive.</li>
+            <li>Export backup file to device or Google Drive.</li>
+            <li>Export CSV to phone to device or Google Drive.</li>
+            <li>Improved CSV format.</li>
+        </ul>
+        ]]>
+    </string>
+
 </resources>

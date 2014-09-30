@@ -1,13 +1,15 @@
 package com.code44.finance.ui.settings.about;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
+import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.ui.BaseFragment;
+import com.code44.finance.utils.ListTagHandler;
 
 public class FaqFragment extends BaseFragment {
     public static FaqFragment newInstance() {
@@ -22,9 +24,9 @@ public class FaqFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        final WebView web_V = (WebView) view.findViewById(R.id.web_V);
+        final TextView faq_TV = (TextView) view.findViewById(R.id.faq_TV);
 
         // Setup
-        web_V.loadUrl("https://github.com/mvarnagiris/Financius/blob/dev/README.md");
+        faq_TV.setText(Html.fromHtml(getString(R.string.change_log_items), null, new ListTagHandler()));
     }
 }

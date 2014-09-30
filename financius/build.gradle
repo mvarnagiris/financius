@@ -9,7 +9,7 @@ android {
         targetSdkVersion 'L'
         minSdkVersion 'L'
         versionCode 46
-        versionName '0.10.0'
+        versionName '1.0.0'
         buildConfigField "boolean", "USE_LOCAL_SERVER", "true"
         buildConfigField "String", "LOCAL_SERVER_IP", "\"192.168.0.7\""
     }

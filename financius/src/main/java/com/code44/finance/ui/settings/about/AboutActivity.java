@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.code44.finance.R;
@@ -35,5 +36,9 @@ public class AboutActivity extends BaseActivity {
         pager_VP.setPageMarginDrawable(new ColorDrawable(getResources().getColor(R.color.divider)));
         tabs_PSTS.setShouldExpand(layoutType.isDefault() && layoutType.isPortrait());
         tabs_PSTS.setViewPager(pager_VP);
+    }
+
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
     }
 }
