@@ -50,7 +50,7 @@ public class FileExportFragment extends BaseExportFragment {
         super.onResume();
         if (requestDir) {
             requestDir = false;
-            FilePickerActivity.startDir(this, REQUEST_DIRECTORY, generalPrefs.getLastFileExportPath());
+            FilePickerActivity.startDir(this.getActivity(), REQUEST_DIRECTORY, generalPrefs.getLastFileExportPath());
         }
     }
 

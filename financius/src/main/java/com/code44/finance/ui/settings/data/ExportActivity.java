@@ -9,6 +9,7 @@ import com.code44.finance.R;
 import com.code44.finance.data.backup.DataExporterRunnable;
 import com.code44.finance.data.backup.FileDataExporter;
 import com.code44.finance.ui.BaseActivity;
+import com.code44.finance.ui.GoogleApiFragment;
 import com.code44.finance.utils.AppError;
 import com.squareup.otto.Subscribe;
 
@@ -17,6 +18,12 @@ import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 public class ExportActivity extends BaseActivity implements BaseExportFragment.ExportCallbacks {
     private static final String EXTRA_EXPORT_TYPE = "EXTRA_EXPORT_TYPE";
     private static final String EXTRA_DESTINATION = "EXTRA_DESTINATION";
+
+    private static final String FRAGMENT_GOOGLE_API = "FRAGMENT_GOOGLE_API";
+
+    private static final String UNIQUE_GOOGLE_CLIENT_ID = ExportActivity.class.getName();
+
+    private GoogleApiFragment googleApi_F;
 
     private CircularProgressBar loading_CPB;
 
@@ -47,6 +54,16 @@ public class ExportActivity extends BaseActivity implements BaseExportFragment.E
                     fragment = FileExportFragment.newInstance(exportType);
                     break;
 //                case GoogleDrive:
+//                    fragment = DriveExportFragment.newInstance(exportType);
+//                    googleApi_F = (GoogleApiFragment) getFragmentManager().findFragmentByTag(FRAGMENT_GOOGLE_API);
+//                    if (googleApi_F == null) {
+//                        googleApi_F = new GoogleApiFragment.Builder(UNIQUE_GOOGLE_CLIENT_ID).setUseDrive(true).build();
+//                        getFragmentManager()
+//                                .beginTransaction()
+//                                .add(googleApi_F, FRAGMENT_GOOGLE_API)
+//                                .commit();
+//                        googleApi_F.connect();
+//                    }
 //                    break;
                 default:
                     throw new IllegalArgumentException("Destination " + destination + " is not supported.");
@@ -54,7 +71,6 @@ public class ExportActivity extends BaseActivity implements BaseExportFragment.E
 
             getFragmentManager().beginTransaction().replace(android.R.id.content, fragment).commit();
         }
-
         setExporting(true);
     }
 

@@ -47,7 +47,8 @@ public class BackupDataImporter extends FileDataImporter {
     private final DBHelper dbHelper;
     private final boolean merge;
 
-    public BackupDataImporter(Context context, DBHelper dbHelper, boolean merge) {
+    public BackupDataImporter(File file, Context context, DBHelper dbHelper, boolean merge) {
+        super(file);
         this.context = context;
         this.dbHelper = dbHelper;
         this.merge = merge;

@@ -3,20 +3,18 @@ package com.code44.finance.data.backup;
 import com.code44.finance.utils.AppError;
 import com.code44.finance.utils.EventBus;
 
-public class DataImporterRunnable<T> implements Runnable {
+public class DataImporterRunnable implements Runnable {
     private final EventBus eventBus;
-    private final DataImporter<T> dataImporter;
-    private final T source;
+    private final DataImporter dataImporter;
 
-    public DataImporterRunnable(EventBus eventBus, DataImporter<T> dataImporter, T source) {
+    public DataImporterRunnable(EventBus eventBus, DataImporter dataImporter) {
         this.eventBus = eventBus;
         this.dataImporter = dataImporter;
-        this.source = source;
     }
 
     @Override public void run() {
         try {
-            dataImporter.importData(source);
+            dataImporter.importData();
             eventBus.post(dataImporter);
         } catch (Exception e) {
             e.printStackTrace();

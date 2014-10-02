@@ -1,6 +1,6 @@
 package com.code44.finance.ui;
 
-import android.app.Fragment;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -9,14 +9,14 @@ import com.code44.finance.common.utils.StringUtils;
 import java.io.File;
 
 public class FilePickerActivity extends com.nononsenseapps.filepicker.FilePickerActivity {
-    public static void startFile(Fragment fragment, int requestCode, String startPath) {
-        final Intent intent = makeIntent(fragment.getActivity(), false, MODE_FILE, startPath);
-        fragment.startActivityForResult(intent, requestCode);
+    public static void startFile(Activity activity, int requestCode, String startPath) {
+        final Intent intent = makeIntent(activity, false, MODE_FILE, startPath);
+        activity.startActivityForResult(intent, requestCode);
     }
 
-    public static void startDir(Fragment fragment, int requestCode, String startPath) {
-        final Intent intent = makeIntent(fragment.getActivity(), true, MODE_DIR, startPath);
-        fragment.startActivityForResult(intent, requestCode);
+    public static void startDir(Activity activity, int requestCode, String startPath) {
+        final Intent intent = makeIntent(activity, true, MODE_DIR, startPath);
+        activity.startActivityForResult(intent, requestCode);
     }
 
     private static Intent makeIntent(Context context, boolean allowCreateDir, int mode, String startPath) {

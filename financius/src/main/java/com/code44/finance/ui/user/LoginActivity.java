@@ -68,7 +68,7 @@ public class LoginActivity extends BaseActivity {
             return;
         }
 
-        googleApi_F.handleOnActivityResult(requestCode, resultCode, data);
+        googleApi_F.handleOnActivityResult(requestCode, resultCode);
         super.onActivityResult(requestCode, resultCode, data);
     }
 

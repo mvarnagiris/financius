@@ -3,10 +3,8 @@ package com.code44.finance.ui;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -52,11 +50,11 @@ public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.C
     }
 
     @Override public void onConnectionSuspended(int cause) {
-        sendEventSuspended(cause);
+        sendEventSuspended();
     }
 
     @Override public void onConnectionFailed(ConnectionResult connectionResult) {
-        sendEventFailed(connectionResult);
+        sendEventFailed();
         if (connectionResult.hasResolution()) {
             try {
                 connectionResult.startResolutionForResult(getActivity(), REQUEST_RESOLVE_ERROR);
@@ -74,7 +72,7 @@ public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.C
         return googleApiConnectedEvent;
     }
 
-    public boolean handleOnActivityResult(int requestCode, int resultCode, Intent data) {
+    public boolean handleOnActivityResult(int requestCode, int resultCode) {
         if (requestCode == REQUEST_RESOLVE_ERROR) {
             if (resultCode == Activity.RESULT_OK) {
                 connect();
@@ -108,7 +106,7 @@ public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.C
         if (client != null && (client.isConnected() || client.isConnecting())) {
             client.disconnect();
         } else {
-            sendEventSuspended(0);
+            sendEventSuspended();
         }
     }
 
@@ -116,23 +114,19 @@ public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.C
         return client;
     }
 
-    public String getUniqueClientId() {
-        return uniqueClientId;
-    }
-
     protected void sendEventConnected() {
         googleApiConnectedEvent = new GoogleApiConnectedEvent(client, uniqueClientId);
         getEventBus().post(googleApiConnectedEvent);
     }
 
-    protected void sendEventSuspended(int cause) {
+    protected void sendEventSuspended() {
         googleApiConnectedEvent = null;
-        getEventBus().post(new GoogleApiSuspendedEvent(client, uniqueClientId, cause));
+        getEventBus().post(new GoogleApiSuspendedEvent(client, uniqueClientId));
     }
 
-    protected void sendEventFailed(ConnectionResult connectionResult) {
+    protected void sendEventFailed() {
         googleApiConnectedEvent = null;
-        getEventBus().post(new GoogleApiFailedEvent(client, uniqueClientId, connectionResult));
+        getEventBus().post(new GoogleApiFailedEvent(client, uniqueClientId));
     }
 
     private void buildGoogleApiClient() {
@@ -245,28 +239,14 @@ public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.C
     }
 
     public static class GoogleApiSuspendedEvent extends GoogleApiEvent {
-        private final int cause;
-
-        public GoogleApiSuspendedEvent(GoogleApiClient client, String uniqueClientId, int cause) {
+        public GoogleApiSuspendedEvent(GoogleApiClient client, String uniqueClientId) {
             super(client, uniqueClientId);
-            this.cause = cause;
-        }
-
-        public int getCause() {
-            return cause;
         }
     }
 
     public static class GoogleApiFailedEvent extends GoogleApiEvent {
-        private final ConnectionResult connectionResult;
-
-        public GoogleApiFailedEvent(GoogleApiClient client, String uniqueClientId, ConnectionResult connectionResult) {
+        public GoogleApiFailedEvent(GoogleApiClient client, String uniqueClientId) {
             super(client, uniqueClientId);
-            this.connectionResult = connectionResult;
-        }
-
-        public ConnectionResult getConnectionResult() {
-            return connectionResult;
         }
     }
 
@@ -282,7 +262,7 @@ public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.C
             this.dialog = dialog;
         }
 
-        @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
+        @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
             return dialog;
         }
     }
