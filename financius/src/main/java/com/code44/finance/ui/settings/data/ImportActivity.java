@@ -53,7 +53,9 @@ public class ImportActivity extends BaseActivity {
 
         // Setup
         getEventBus().register(this);
-        showFileChooser();
+        if (savedInstanceState == null) {
+            showFileChooser();
+        }
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -106,7 +108,7 @@ public class ImportActivity extends BaseActivity {
         }
     }
 
-    protected void importData(DataImporter dataImporter) {
+    private void importData(DataImporter dataImporter) {
         localExecutor.execute(new DataImporterRunnable(getEventBus(), dataImporter));
     }
 

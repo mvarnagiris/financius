@@ -1,31 +1,43 @@
 package com.code44.finance.ui.settings.data;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import com.code44.finance.R;
+import com.code44.finance.data.backup.BackupDataExporter;
+import com.code44.finance.data.backup.CsvDataExporter;
+import com.code44.finance.data.backup.DataExporter;
 import com.code44.finance.data.backup.DataExporterRunnable;
 import com.code44.finance.data.backup.FileDataExporter;
+import com.code44.finance.qualifiers.Local;
 import com.code44.finance.ui.BaseActivity;
-import com.code44.finance.ui.GoogleApiFragment;
+import com.code44.finance.ui.FilePickerActivity;
 import com.code44.finance.utils.AppError;
+import com.code44.finance.utils.GeneralPrefs;
 import com.squareup.otto.Subscribe;
 
-import fr.castorflex.android.circularprogressbar.CircularProgressBar;
+import net.danlew.android.joda.DateUtils;
 
-public class ExportActivity extends BaseActivity implements BaseExportFragment.ExportCallbacks {
+import org.joda.time.DateTime;
+
+import java.io.File;
+import java.util.concurrent.Executor;
+
+import javax.inject.Inject;
+
+public class ExportActivity extends BaseActivity {
     private static final String EXTRA_EXPORT_TYPE = "EXTRA_EXPORT_TYPE";
     private static final String EXTRA_DESTINATION = "EXTRA_DESTINATION";
 
-    private static final String FRAGMENT_GOOGLE_API = "FRAGMENT_GOOGLE_API";
+    private static final int REQUEST_LOCAL_DIRECTORY = 1;
 
-    private static final String UNIQUE_GOOGLE_CLIENT_ID = ExportActivity.class.getName();
+    @Inject GeneralPrefs generalPrefs;
+    @Inject @Local Executor localExecutor;
 
-    private GoogleApiFragment googleApi_F;
-
-    private CircularProgressBar loading_CPB;
+    private ExportType exportType;
+    private Destination destination;
 
     public static void start(Context context, ExportType exportType, Destination destination) {
         final Intent intent = makeIntent(context, ExportActivity.class);
@@ -38,40 +50,30 @@ public class ExportActivity extends BaseActivity implements BaseExportFragment.E
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_export);
 
+        // Get extras
+        exportType = (ExportType) getIntent().getSerializableExtra(EXTRA_EXPORT_TYPE);
+        destination = (Destination) getIntent().getSerializableExtra(EXTRA_DESTINATION);
+
+        // Setup
         getEventBus().register(this);
-
-        // Get views
-        loading_CPB = (CircularProgressBar) findViewById(R.id.loading_CPB);
-
         if (savedInstanceState == null) {
-            // Get extras
-            final ExportType exportType = (ExportType) getIntent().getSerializableExtra(EXTRA_EXPORT_TYPE);
-            final Destination destination = (Destination) getIntent().getSerializableExtra(EXTRA_DESTINATION);
-
-            final BaseExportFragment fragment;
-            switch (destination) {
-                case File:
-                    fragment = FileExportFragment.newInstance(exportType);
-                    break;
-//                case GoogleDrive:
-//                    fragment = DriveExportFragment.newInstance(exportType);
-//                    googleApi_F = (GoogleApiFragment) getFragmentManager().findFragmentByTag(FRAGMENT_GOOGLE_API);
-//                    if (googleApi_F == null) {
-//                        googleApi_F = new GoogleApiFragment.Builder(UNIQUE_GOOGLE_CLIENT_ID).setUseDrive(true).build();
-//                        getFragmentManager()
-//                                .beginTransaction()
-//                                .add(googleApi_F, FRAGMENT_GOOGLE_API)
-//                                .commit();
-//                        googleApi_F.connect();
-//                    }
-//                    break;
-                default:
-                    throw new IllegalArgumentException("Destination " + destination + " is not supported.");
-            }
-
-            getFragmentManager().beginTransaction().replace(android.R.id.content, fragment).commit();
+            showDirectoryChooser();
         }
-        setExporting(true);
+    }
+
+    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_LOCAL_DIRECTORY:
+                if (resultCode == Activity.RESULT_OK) {
+                    final String path = data.getData().getPath();
+                    generalPrefs.setLastFileExportPath(path);
+                    onDirectorySelected(new File(path));
+                } else {
+                    finish();
+                }
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override protected void onDestroy() {
@@ -86,20 +88,49 @@ public class ExportActivity extends BaseActivity implements BaseExportFragment.E
         }
     }
 
-    @Override public void onExportCanceled() {
-        finish();
-    }
-
     @Subscribe public void onFileDataExporterFinished(FileDataExporter dataExporter) {
         finish();
     }
 
-    private void setExporting(boolean exporting) {
-        if (exporting) {
-            loading_CPB.setVisibility(View.VISIBLE);
+    private void onDirectorySelected(File directory) {
+        final File file = getFile(directory);
+        final DataExporter dataExporter = getFileDataExporter(file);
+        exportData(dataExporter);
+    }
+
+    private File getFile(File directory) {
+        return new File(directory, getFileTitle());
+    }
+
+    private String getFileTitle() {
+        final String extention;
+        if (exportType == ExportActivity.ExportType.Backup) {
+            extention = ".json";
         } else {
-            loading_CPB.setVisibility(View.GONE);
+            extention = ".csv";
         }
+
+        final String date = DateUtils.formatDateTime(this, new DateTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_YEAR);
+        return getString(R.string.app_name) + " " + date + extention;
+    }
+
+    private DataExporter getFileDataExporter(File file) {
+        switch (exportType) {
+            case Backup:
+                return new BackupDataExporter(file, this);
+            case CSV:
+                return new CsvDataExporter(file, this);
+            default:
+                throw new IllegalStateException("Type " + exportType + " is not supported.");
+        }
+    }
+
+    private void exportData(DataExporter dataExporter) {
+        localExecutor.execute(new DataExporterRunnable(getEventBus(), dataExporter));
+    }
+
+    private void showDirectoryChooser() {
+        FilePickerActivity.startDir(this, REQUEST_LOCAL_DIRECTORY, generalPrefs.getLastFileExportPath());
     }
 
     public static enum ExportType {
