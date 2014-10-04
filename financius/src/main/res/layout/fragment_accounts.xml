@@ -19,7 +19,7 @@
         android:paddingTop="@dimen/space_normal">
 
         <TextView
-            style="@style/Text.Subhead"
+            style="@style/Text.Body2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -28,7 +28,7 @@
 
         <TextView
             android:id="@+id/balance_TV"
-            style="@style/Text.Subhead"
+            style="@style/Text.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_primary_inverse"
