@@ -31,31 +31,31 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class BackupDataImporter extends FileDataImporter {
+public class BackupDataImporter extends DataImporter {
     private static final int MIN_VALID_VERSION = 6;
 
     private final Context context;
     private final DBHelper dbHelper;
     private final boolean merge;
 
-    public BackupDataImporter(File file, Context context, DBHelper dbHelper, boolean merge) {
-        super(file);
-        this.context = context;
+    public BackupDataImporter(InputStream inputStream, Context context, DBHelper dbHelper, boolean merge) {
+        super(inputStream);
+        this.context = context.getApplicationContext();
         this.dbHelper = dbHelper;
         this.merge = merge;
     }
 
-    @Override public void importData(File file) throws Exception {
-        final JsonObject json = fileToJson(file);
+    @Override protected void importData(InputStream inputStream) throws Exception {
+        final JsonObject json = inputStreamToJson(inputStream);
         validate(json);
 
         final SQLiteDatabase database = dbHelper.getWritableDatabase();
@@ -78,9 +78,9 @@ public class BackupDataImporter extends FileDataImporter {
         }
     }
 
-    private JsonObject fileToJson(File file) throws FileNotFoundException {
+    private JsonObject inputStreamToJson(InputStream inputStream) throws FileNotFoundException {
         final JsonParser parser = new JsonParser();
-        final JsonElement jsonElement = parser.parse(new FileReader(file));
+        final JsonElement jsonElement = parser.parse(new InputStreamReader(inputStream));
         return jsonElement.getAsJsonObject();
     }
 

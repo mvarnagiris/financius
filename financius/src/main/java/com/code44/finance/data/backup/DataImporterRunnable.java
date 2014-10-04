@@ -1,7 +1,8 @@
 package com.code44.finance.data.backup;
 
-import com.code44.finance.utils.AppError;
 import com.code44.finance.utils.EventBus;
+import com.code44.finance.utils.IOUtils;
+import com.code44.finance.utils.errors.ImportError;
 
 public class DataImporterRunnable implements Runnable {
     private final EventBus eventBus;
@@ -18,13 +19,9 @@ public class DataImporterRunnable implements Runnable {
             eventBus.post(dataImporter);
         } catch (Exception e) {
             e.printStackTrace();
-            eventBus.post(new DataImportError(e));
-        }
-    }
-
-    public static class DataImportError extends AppError {
-        public DataImportError(Throwable throwable) {
-            super(throwable);
+            eventBus.post(new ImportError("Data import has failed.", e));
+        } finally {
+            IOUtils.closeQuietly(dataImporter);
         }
     }
 }

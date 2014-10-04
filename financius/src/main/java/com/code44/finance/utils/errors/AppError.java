@@ -1,4 +1,4 @@
-package com.code44.finance.utils;
+package com.code44.finance.utils.errors;
 
 public class AppError extends RuntimeException {
     public AppError() {

@@ -28,6 +28,10 @@ public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.C
     private String uniqueClientId;
     private boolean connectWhenPossible = false;
 
+    public static Builder with(String uniqueClientId) {
+        return new Builder(uniqueClientId);
+    }
+
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);

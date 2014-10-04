@@ -12,9 +12,9 @@ import android.widget.Toast;
 import com.code44.finance.App;
 import com.code44.finance.R;
 import com.code44.finance.ui.settings.SettingsActivity;
-import com.code44.finance.utils.AppError;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.ToolbarHelper;
+import com.code44.finance.utils.errors.AppError;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;

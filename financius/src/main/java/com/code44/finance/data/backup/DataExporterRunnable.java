@@ -1,7 +1,7 @@
 package com.code44.finance.data.backup;
 
-import com.code44.finance.utils.AppError;
 import com.code44.finance.utils.EventBus;
+import com.code44.finance.utils.errors.AppError;
 
 public class DataExporterRunnable implements Runnable {
     private final EventBus eventBus;

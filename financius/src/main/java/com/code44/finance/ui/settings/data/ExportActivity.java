@@ -14,8 +14,8 @@ import com.code44.finance.data.backup.FileDataExporter;
 import com.code44.finance.qualifiers.Local;
 import com.code44.finance.ui.BaseActivity;
 import com.code44.finance.ui.FilePickerActivity;
-import com.code44.finance.utils.AppError;
 import com.code44.finance.utils.GeneralPrefs;
+import com.code44.finance.utils.errors.AppError;
 import com.squareup.otto.Subscribe;
 
 import net.danlew.android.joda.DateUtils;
