@@ -17,19 +17,18 @@ import net.danlew.android.joda.DateUtils;
 import org.joda.time.DateTime;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-public class CsvDataExporter extends FileDataExporter {
+public class CsvDataExporter extends DataExporter {
     private static final String SEPARATOR = ";";
     private static final String TAG_SEPARATOR = ",";
 
     private final Context context;
 
-    public CsvDataExporter(File file, Context context) {
-        super(file);
+    public CsvDataExporter(OutputStream outputStream, Context context) {
+        super(outputStream);
         this.context = context;
     }
 

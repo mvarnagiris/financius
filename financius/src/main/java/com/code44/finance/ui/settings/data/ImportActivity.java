@@ -42,7 +42,6 @@ public class ImportActivity extends BaseActivity {
     private static final int REQUEST_DRIVE_FILE = 2;
 
     private static final String FRAGMENT_GOOGLE_API = "FRAGMENT_GOOGLE_API";
-
     private static final String UNIQUE_GOOGLE_API_ID = ImportActivity.class.getName();
 
     @Inject @Local Executor localExecutor;

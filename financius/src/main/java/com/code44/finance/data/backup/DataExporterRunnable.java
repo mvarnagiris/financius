@@ -1,7 +1,7 @@
 package com.code44.finance.data.backup;
 
 import com.code44.finance.utils.EventBus;
-import com.code44.finance.utils.errors.AppError;
+import com.code44.finance.utils.errors.ExportError;
 
 public class DataExporterRunnable implements Runnable {
     private final EventBus eventBus;
@@ -18,13 +18,7 @@ public class DataExporterRunnable implements Runnable {
             eventBus.post(dataExporter);
         } catch (Exception e) {
             e.printStackTrace();
-            eventBus.post(new DataExportError(e));
-        }
-    }
-
-    public static class DataExportError extends AppError {
-        public DataExportError(Throwable throwable) {
-            super(throwable);
+            eventBus.post(new ExportError("Data export has failed.", e));
         }
     }
 }
