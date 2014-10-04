@@ -91,6 +91,12 @@ public class ImportActivity extends BaseActivity {
                 onDriveFileSelected(driveId);
                 break;
         }
+
+        final GoogleApiFragment googleApi_F = (GoogleApiFragment) getFragmentManager().findFragmentByTag(FRAGMENT_GOOGLE_API);
+        if (googleApi_F != null) {
+            googleApi_F.handleOnActivityResult(requestCode, resultCode);
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -182,7 +188,7 @@ public class ImportActivity extends BaseActivity {
                 GoogleApiFragment googleApi_F = (GoogleApiFragment) activity.getFragmentManager().findFragmentByTag(FRAGMENT_GOOGLE_API);
                 if (googleApi_F == null) {
                     googleApi_F = GoogleApiFragment.with(UNIQUE_GOOGLE_API_ID).setUseDrive(true).build();
-                    activity.getFragmentManager().beginTransaction().add(android.R.id.content, googleApi_F).commit();
+                    activity.getFragmentManager().beginTransaction().add(android.R.id.content, googleApi_F, FRAGMENT_GOOGLE_API).commit();
                 }
                 googleApi_F.connect();
             }
