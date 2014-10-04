@@ -94,9 +94,9 @@
     <string name="l_currency_exists">This currency already exists</string>
     <string name="l_delete_short">DEL</string>
     <string name="l_delete_confirmation">Are you sure you want to delete?</string>
-    <string name="l_about_new_issue">If you spotted a problem or have a feature request, read the README about how to create a new issue.</string>
-    <string name="l_about_rate">If you really like the app, don\'t forget to rate it on Google Play.</string>
-    <string name="l_about_community">If you want to join beta testing or just see what\'s coming up next, join the Google+ community</string>
+    <string name="l_about_new_issue">Issues &amp; feature requests. Read the README first.</string>
+    <string name="l_about_rate">Like the app? Rate it on Google Play.</string>
+    <string name="l_about_community">Want to see what\'s coming next? Join the community.</string>
 
     <string name="c_food">Food</string>
     <string name="c_leisure">Leisure</string>
