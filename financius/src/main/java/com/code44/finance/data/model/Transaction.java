@@ -51,7 +51,7 @@ public class Transaction extends BaseModel<TransactionEntity> {
         setAmount(0);
         setExchangeRate(1.0);
         setNote(null);
-        setTransactionState(TransactionState.PENDING);
+        setTransactionState(TransactionState.CONFIRMED);
         setTransactionType(TransactionType.EXPENSE);
         setIncludeInReports(true);
     }
