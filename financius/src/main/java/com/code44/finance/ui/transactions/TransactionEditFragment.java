@@ -64,6 +64,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     @Inject @Main Currency mainCurrency;
 
     private Button date_B;
+    private Button time_B;
     private ImageButton categoryType_IB;
     private Button amount_B;
     private Button accountFrom_B;
@@ -102,6 +103,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         category_B = (Button) view.findViewById(R.id.category_B);
         tags_B = (Button) view.findViewById(R.id.tags_B);
         date_B = (Button) view.findViewById(R.id.date_B);
+        time_B = (Button) view.findViewById(R.id.time_B);
         note_ET = (EditText) view.findViewById(R.id.note_ET);
         confirmed_CB = (CheckBox) view.findViewById(R.id.confirmed_CB);
         includeInReports_CB = (CheckBox) view.findViewById(R.id.includeInReports_CB);
@@ -115,6 +117,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         category_B.setOnClickListener(this);
         tags_B.setOnClickListener(this);
         date_B.setOnClickListener(this);
+        time_B.setOnClickListener(this);
         confirmed_CB.setOnCheckedChangeListener(this);
         includeInReports_CB.setOnCheckedChangeListener(this);
         isAutoAmountRequested = savedInstanceState != null;
@@ -231,7 +234,9 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 break;
         }
 
-        date_B.setText(DateUtils.formatDateTime(getActivity(), new DateTime(transaction.getDate()), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
+        final DateTime dateTime = new DateTime(transaction.getDate());
+        date_B.setText(DateUtils.formatDateTime(getActivity(), dateTime, DateUtils.FORMAT_SHOW_DATE));
+        time_B.setText(DateUtils.formatDateTime(getActivity(), dateTime, DateUtils.FORMAT_SHOW_TIME));
         amount_B.setText(MoneyFormatter.format(getAmountCurrency(transaction), transaction.getAmount()));
         accountFrom_B.setText(transaction.getAccountFrom() == null ? null : transaction.getAccountFrom().getTitle());
         accountTo_B.setText(transaction.getAccountTo() == null ? null : transaction.getAccountTo().getTitle());
@@ -285,13 +290,17 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 final DateTime date = new DateTime(model.getDate());
                 DatePickerDialog.newInstance(this, date.getYear(), date.getMonthOfYear() - 1, date.getDayOfMonth()).show(getFragmentManager(), FRAGMENT_DATE_DIALOG);
                 break;
+            case R.id.time_B:
+                final DateTime time = new DateTime(model.getDate());
+                TimePickerDialog.newInstance(this, time.getHourOfDay(), time.getMinuteOfHour(), true).show(getFragmentManager(), FRAGMENT_TIME_DIALOG);
+                break;
         }
     }
 
     @Override public void onDateSet(DatePickerDialog dialog, int year, int month, int dayOfMonth) {
         final DateTime date = new DateTime(model.getDate()).withYear(year).withMonthOfYear(month + 1).withDayOfMonth(dayOfMonth);
         model.setDate(date.getMillis());
-        TimePickerDialog.newInstance(this, date.getHourOfDay(), date.getMinuteOfHour(), true).show(getFragmentManager(), FRAGMENT_TIME_DIALOG);
+        onModelLoaded(model);
     }
 
     @Override public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {

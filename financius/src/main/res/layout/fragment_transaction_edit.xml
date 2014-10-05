@@ -19,14 +19,30 @@
             android:orientation="vertical"
             android:padding="@dimen/keyline">
 
-            <Button
-                android:id="@+id/date_B"
-                style="@style/Button.Borderless.Select"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/date"
-                tools:stateListAnimator="@android:animator/fade_in"
-                tools:text="August 17, 16:27" />
+                android:gravity="bottom">
+
+                <Button
+                    android:id="@+id/date_B"
+                    style="@style/Button.Borderless.Select"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="@string/date"
+                    tools:text="August 17" />
+
+                <Button
+                    android:id="@+id/time_B"
+                    style="@style/Button.Borderless.Select"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/date"
+                    tools:text="16:27" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -41,7 +57,6 @@
                     android:contentDescription="@string/transaction_type"
                     android:gravity="end"
                     tools:src="@drawable/ic_category_type_expense"
-                    tools:stateListAnimator="@android:animator/fade_in"
                     tools:text="1,000.00 $" />
 
                 <Button
@@ -50,7 +65,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    tools:stateListAnimator="@android:animator/fade_in"
                     tools:text="1,000.00 $" />
 
             </LinearLayout>
@@ -65,9 +79,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="@string/from"
-                    tools:stateListAnimator="@android:animator/fade_in"
-                    tools:text="Bank" />
+                    android:hint="@string/from" />
 
                 <Button
                     android:id="@+id/accountTo_B"
@@ -76,9 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="@string/to"
-                    android:visibility="gone"
-                    tools:stateListAnimator="@android:animator/fade_in"
-                    tools:text="Cash" />
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -103,9 +113,7 @@
                     style="@style/Button.Borderless.Select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/category"
-                    tools:stateListAnimator="@android:animator/fade_in"
-                    tools:text="Leisure" />
+                    android:hint="@string/category" />
 
             </LinearLayout>
 
@@ -114,8 +122,7 @@
                 style="@style/Button.Borderless.Select"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/tags"
-                tools:stateListAnimator="@android:animator/fade_in" />
+                android:hint="@string/tags" />
 
             <EditText
                 android:id="@+id/note_ET"
