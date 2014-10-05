@@ -61,13 +61,13 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
     @Override public void onClick(View view) {
         switch (view.getId()) {
             case R.id.backup_B:
-                chooseSourceOrDestination(REQUEST_BACKUP_DESTINATION, R.string.backup);
+                chooseSourceOrDestination(REQUEST_BACKUP_DESTINATION, R.string.create_backup);
                 break;
             case R.id.restore_B:
-                chooseSourceOrDestination(REQUEST_RESTORE_DESTINATION, R.string.restore);
+                chooseSourceOrDestination(REQUEST_RESTORE_DESTINATION, R.string.clear_and_restore);
                 break;
             case R.id.restoreAndMerge_B:
-                chooseSourceOrDestination(REQUEST_RESTORE_AND_MERGE_DESTINATION, R.string.restore_and_merge);
+                chooseSourceOrDestination(REQUEST_RESTORE_AND_MERGE_DESTINATION, R.string.import_backup);
                 break;
             case R.id.exportCsv_B:
                 chooseSourceOrDestination(REQUEST_EXPORT_CSV_DESTINATION, R.string.export_csv);

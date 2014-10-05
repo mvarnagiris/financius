@@ -69,8 +69,7 @@
     <string name="pending">Pending</string>
     <string name="your_data">Your data</string>
     <string name="backup">Backup</string>
-    <string name="restore">Restore</string>
-    <string name="restore_and_merge">Restore and merge</string>
+    <string name="clear_and_restore">Clear and restore</string>
     <string name="file">File</string>
     <string name="reports">Reports</string>
     <string name="previous">Previous</string>
@@ -86,7 +85,8 @@
     <string name="rate">Rate</string>
     <string name="community">Community</string>
     <string name="export">Export</string>
-    <string name="import_str">Import</string>
+    <string name="import_backup">Import backup</string>
+    <string name="create_backup">Create backup</string>
 
     <string name="f_change_to_x">Change to %s</string>
     <string name="f_current_main_currency_is_x">Current main currency is %s</string>

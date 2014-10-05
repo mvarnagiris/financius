@@ -2,6 +2,7 @@ package com.code44.finance.ui.settings.data;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Menu;
 
 import com.code44.finance.R;
 import com.code44.finance.ui.BaseActivity;
@@ -19,5 +20,9 @@ public class DataActivity extends BaseActivity {
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction().replace(R.id.content_V, DataFragment.newInstance()).commit();
         }
+    }
+
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
     }
 }

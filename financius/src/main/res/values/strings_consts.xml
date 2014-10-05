@@ -20,6 +20,7 @@
     <string name="number_8">8</string>
     <string name="number_9">9</string>
     <string name="github">Github</string>
+    <string name="csv">CSV</string>
 
     <string-array name="expense_categories">
         <item>@string/c_food</item>
