@@ -85,6 +85,8 @@
     <string name="readme">Readme</string>
     <string name="rate">Rate</string>
     <string name="community">Community</string>
+    <string name="export">Export</string>
+    <string name="import_str">Import</string>
 
     <string name="f_change_to_x">Change to %s</string>
     <string name="f_current_main_currency_is_x">Current main currency is %s</string>

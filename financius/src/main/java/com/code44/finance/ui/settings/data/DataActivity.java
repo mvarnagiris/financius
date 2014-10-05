@@ -3,6 +3,7 @@ package com.code44.finance.ui.settings.data;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.code44.finance.R;
 import com.code44.finance.ui.BaseActivity;
 
 public class DataActivity extends BaseActivity {
@@ -12,9 +13,11 @@ public class DataActivity extends BaseActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_simple);
+        toolbarHelper.setTitle(R.string.your_data);
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction().replace(android.R.id.content, DataFragment.newInstance()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.content_V, DataFragment.newInstance()).commit();
         }
     }
 }
