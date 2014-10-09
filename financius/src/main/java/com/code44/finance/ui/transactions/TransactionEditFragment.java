@@ -41,6 +41,7 @@ import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.ui.tags.TagsActivity;
 import com.code44.finance.utils.FieldValidationUtils;
 import com.code44.finance.utils.MoneyFormatter;
+import com.code44.finance.utils.transaction.TransactionAutoComplete;
 
 import net.danlew.android.joda.DateUtils;
 
@@ -51,7 +52,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class TransactionEditFragment extends ModelEditFragment<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class TransactionEditFragment extends ModelEditFragment<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, TransactionAutoComplete.TransactionAutoCompleteListener {
     private static final int REQUEST_AMOUNT = 1;
     private static final int REQUEST_ACCOUNT_FROM = 2;
     private static final int REQUEST_ACCOUNT_TO = 3;
@@ -62,6 +63,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     private static final String FRAGMENT_TIME_DIALOG = "FRAGMENT_TIME_DIALOG";
 
     @Inject @Main Currency mainCurrency;
+    @Inject TransactionAutoComplete transactionAutoComplete;
 
     private Button date_B;
     private Button time_B;
@@ -135,6 +137,8 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         if (timeDialog_F != null) {
             timeDialog_F.setOnTimeSetListener(this);
         }
+
+        transactionAutoComplete.setListener(this);
     }
 
     @Override public void onPause() {
@@ -149,6 +153,8 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         if (timeDialog_F != null) {
             timeDialog_F.setOnTimeSetListener(null);
         }
+
+        transactionAutoComplete.setListener(null);
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -157,18 +163,22 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 case REQUEST_AMOUNT:
                     model.setAmount(data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0));
                     onModelLoaded(model);
+                    transactionAutoComplete.setAmount(model.getAmount());
                     return;
                 case REQUEST_ACCOUNT_FROM:
                     model.setAccountFrom(data.<Account>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
                     onModelLoaded(model);
+                    transactionAutoComplete.setAccountFrom(model.getAccountFrom());
                     return;
                 case REQUEST_ACCOUNT_TO:
                     model.setAccountTo(data.<Account>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
                     onModelLoaded(model);
+                    transactionAutoComplete.setAccountTo(model.getAccountTo());
                     return;
                 case REQUEST_CATEGORY:
                     model.setCategory(data.<Category>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
                     onModelLoaded(model);
+                    transactionAutoComplete.setCategory(model.getCategory());
                     return;
                 case REQUEST_TAGS:
                     final Parcelable[] parcelables = data.getParcelableArrayExtra(ModelListActivity.RESULT_EXTRA_MODELS);
@@ -178,6 +188,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                     }
                     model.setTags(tags);
                     onModelLoaded(model);
+                    transactionAutoComplete.setTags(tags);
                     return;
             }
         }
@@ -201,9 +212,9 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     @Override protected Transaction getModelFrom(Cursor cursor) {
         final Transaction transaction = Transaction.from(cursor);
 
-        //noinspection StatementWithEmptyBody
         if (!transaction.hasId()) {
-            // TODO Creating new transaction. Kick off auto-complete.
+            transactionAutoComplete.setListener(this);
+            transactionAutoComplete.setTransaction(transaction);
         }
 
         return transaction;
@@ -301,12 +312,14 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         final DateTime date = new DateTime(model.getDate()).withYear(year).withMonthOfYear(month + 1).withDayOfMonth(dayOfMonth);
         model.setDate(date.getMillis());
         onModelLoaded(model);
+        transactionAutoComplete.setDate(model.getDate());
     }
 
     @Override public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
         final DateTime date = new DateTime(model.getDate()).withHourOfDay(hourOfDay).withMinuteOfHour(minute);
         model.setDate(date.getMillis());
         onModelLoaded(model);
+        transactionAutoComplete.setDate(model.getDate());
     }
 
     @Override public void onCheckedChanged(CompoundButton view, boolean checked) {
@@ -323,6 +336,29 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         }
     }
 
+    @Override public void onTransactionAutoCompleteAmounts(List<Long> amounts) {
+
+    }
+
+    @Override public void onTransactionAutoCompleteAccountsFrom(List<Account> accounts) {
+        model.setAccountFrom(accounts.get(0));
+        onModelLoaded(model);
+    }
+
+    @Override public void onTransactionAutoCompleteAccountsTo(List<Account> accounts) {
+        model.setAccountTo(accounts.get(0));
+        onModelLoaded(model);
+    }
+
+    @Override public void onTransactionAutoCompleteCategories(List<Category> categories) {
+        model.setCategory(categories.get(0));
+        onModelLoaded(model);
+    }
+
+    @Override public void onTransactionAutoCompleteTags(List<Tag> tags) {
+
+    }
+
     private void toggleTransactionType() {
         switch (model.getTransactionType()) {
             case EXPENSE:
@@ -335,7 +371,9 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 model.setTransactionType(TransactionType.EXPENSE);
                 break;
         }
+        model.setCategory(null);
         onModelLoaded(model);
+        transactionAutoComplete.setTransactionType(model.getTransactionType());
     }
 
     private Currency getAmountCurrency(Transaction transaction) {

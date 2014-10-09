@@ -13,6 +13,8 @@ import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.LayoutType;
 import com.code44.finance.utils.LocalExecutor;
+import com.code44.finance.utils.transaction.LastTransactionAutoComplete;
+import com.code44.finance.utils.transaction.TransactionAutoComplete;
 
 import java.util.concurrent.Executor;
 
@@ -54,5 +56,9 @@ public final class UtilsModule {
 
     @Provides public LayoutType provideLayoutType(@ApplicationContext Context context) {
         return new LayoutType(context);
+    }
+
+    @Provides public TransactionAutoComplete provideTransactionAutoComplete(@ApplicationContext Context context, @Local Executor executor) {
+        return new LastTransactionAutoComplete(context, executor);
     }
 }

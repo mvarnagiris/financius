@@ -23,6 +23,7 @@ public class Query {
     private final List<String> selectionArgs = new ArrayList<>();
     private final List<String> sortOrder = new ArrayList<>();
     private final List<String> groupBy = new ArrayList<>();
+    private int limit = 0;
 
     private Query() {
     }
@@ -40,6 +41,15 @@ public class Query {
             selection = query.getSelection() + ") group by (" + groupBy;
         }
         return selection;
+    }
+
+    private static String getSortOrderWithLimit(Query query) {
+        final int limit = query.getLimit();
+        String sortOrder = query.getSortOrder();
+        if (limit >= 0) {
+            sortOrder = StringUtils.isEmpty(sortOrder) ? "1" : sortOrder + " limit " + limit;
+        }
+        return sortOrder;
     }
 
     public String[] getProjection() {
@@ -99,6 +109,10 @@ public class Query {
         }
 
         return sb.toString();
+    }
+
+    public int getLimit() {
+        return limit;
     }
 
     public CursorLoader asCursorLoader(Context context, Uri uri) {
@@ -200,6 +214,11 @@ public class Query {
 
     public Query sortOrder(List<String> orders) {
         sortOrder.addAll(orders);
+        return this;
+    }
+
+    public Query limit(int limit) {
+        this.limit = limit;
         return this;
     }
 

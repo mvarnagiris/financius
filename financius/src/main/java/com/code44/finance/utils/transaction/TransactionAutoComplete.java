@@ -1,5 +1,7 @@
 package com.code44.finance.utils.transaction;
 
+import android.content.Context;
+
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
@@ -7,14 +9,19 @@ import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 
 import java.util.List;
+import java.util.concurrent.Executor;
 
 public abstract class TransactionAutoComplete {
+    private final Context context;
+    private final Executor executor;
     private final Transaction transaction;
 
     private TransactionAutoCompleteListener listener;
 
-    protected TransactionAutoComplete() {
-        transaction = new Transaction();
+    protected TransactionAutoComplete(Context context, Executor executor) {
+        this.context = context;
+        this.executor = executor;
+        this.transaction = new Transaction();
     }
 
     public void setListener(TransactionAutoCompleteListener listener) {
@@ -74,33 +81,41 @@ public abstract class TransactionAutoComplete {
     }
 
     protected void autoCompleteAmounts(List<Long> amounts) {
-        if (listener != null) {
+        if (listener != null && amounts != null && amounts.size() > 0) {
             listener.onTransactionAutoCompleteAmounts(amounts);
         }
     }
 
-    protected void autoCompleteAccontsFrom(List<Account> accounts) {
-        if (listener != null) {
+    protected void autoCompleteAccountsFrom(List<Account> accounts) {
+        if (listener != null && accounts != null && accounts.size() > 0) {
             listener.onTransactionAutoCompleteAccountsFrom(accounts);
         }
     }
 
-    protected void autoCompleteAccontsTo(List<Account> accounts) {
-        if (listener != null) {
+    protected void autoCompleteAccountsTo(List<Account> accounts) {
+        if (listener != null && accounts != null && accounts.size() > 0) {
             listener.onTransactionAutoCompleteAccountsTo(accounts);
         }
     }
 
     protected void autoCompleteCategories(List<Category> categories) {
-        if (listener != null) {
+        if (listener != null && categories != null && categories.size() > 0) {
             listener.onTransactionAutoCompleteCategories(categories);
         }
     }
 
     protected void autoCompleteTags(List<Tag> tags) {
-        if (listener != null) {
+        if (listener != null && tags != null && tags.size() > 0) {
             listener.onTransactionAutoCompleteTags(tags);
         }
+    }
+
+    protected Context getContext() {
+        return context;
+    }
+
+    protected Executor getExecutor() {
+        return executor;
     }
 
     protected abstract void onTransactionLoaded(Transaction transaction);
