@@ -20,7 +20,6 @@ import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.CurrentInterval;
-import com.code44.finance.utils.IntervalHelperDeprecated;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
@@ -101,7 +100,7 @@ public class TransactionsFragment extends ModelListFragment {
         });
     }
 
-    @Subscribe public void onIntervalChanged(IntervalHelperDeprecated intervalHelper) {
+    @Subscribe public void onIntervalChanged(CurrentInterval interval) {
         adapter.notifyDataSetChanged();
     }
 }
