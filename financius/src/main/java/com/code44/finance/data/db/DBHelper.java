@@ -5,8 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
-    private static final String NAME = "financius.db";
-    private static final int VERSION = 1;
+    private static final String NAME = "finance.db";
+    private static final int VERSION = 19;
 
     private final Context context;
 
@@ -17,6 +17,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public DBHelper(Context context, String name) {
         super(context, name, null, VERSION);
         this.context = context;
+    }
+
+    public static void createIndex(SQLiteDatabase db, Column serverIdColumn) {
+        db.execSQL("create index " + serverIdColumn.getName() + "_idx ON " + serverIdColumn.getTableName() + "(" + serverIdColumn.getName() + ");");
     }
 
     @Override public void onCreate(SQLiteDatabase db) {
@@ -40,6 +44,10 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        switch (oldVersion) {
+            case 17: // 45 - v0.9.13
+                DBMigration.upgradeV19(db);
+        }
     }
 
     public void clear() {
@@ -49,10 +57,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     private void addDefaults(SQLiteDatabase database) {
-        new DBDefaultsManager(context, database).addDefaults();
-    }
-
-    private void createIndex(SQLiteDatabase db, Column serverIdColumn) {
-        db.execSQL("create index " + serverIdColumn.getName() + "_idx ON " + serverIdColumn.getTableName() + "(" + serverIdColumn.getName() + ");");
+        new DBDefaults(context, database).addDefaults();
     }
 }

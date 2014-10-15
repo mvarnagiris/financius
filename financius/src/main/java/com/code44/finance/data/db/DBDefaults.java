@@ -16,11 +16,11 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
-public final class DBDefaultsManager {
+public final class DBDefaults {
     private final Context context;
     private final SQLiteDatabase database;
 
-    public DBDefaultsManager(Context context, SQLiteDatabase database) {
+    public DBDefaults(Context context, SQLiteDatabase database) {
         Preconditions.checkNotNull(context, "Context cannot be null.");
         Preconditions.checkNotNull(database, "Database cannot be null.");
 
