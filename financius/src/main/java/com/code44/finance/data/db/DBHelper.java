@@ -45,7 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         switch (oldVersion) {
-            case 17: // 45 - v0.9.13
+            case 18: // 45 - v0.9.13
                 DBMigration.upgradeV19(db);
         }
     }
