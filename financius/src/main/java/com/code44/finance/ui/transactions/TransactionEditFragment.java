@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +43,7 @@ import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.ui.tags.TagsActivity;
 import com.code44.finance.utils.FieldValidationUtils;
 import com.code44.finance.utils.MoneyFormatter;
+import com.code44.finance.utils.TextBackgroundSpan;
 import com.code44.finance.utils.transaction.TransactionAutoComplete;
 
 import net.danlew.android.joda.DateUtils;
@@ -258,14 +261,13 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         includeInReports_CB.setChecked(transaction.includeInReports());
         save_B.setText(confirmed_CB.isChecked() ? R.string.save : R.string.pending);
 
-        final StringBuilder sb = new StringBuilder();
+        final SpannableStringBuilder subtitle = new SpannableStringBuilder();
         for (Tag tag : transaction.getTags()) {
-            if (sb.length() > 0) {
-                sb.append(" ");
-            }
-            sb.append(tag.getTitle());
+            subtitle.append(tag.getTitle());
+            subtitle.setSpan(new TextBackgroundSpan(getResources().getColor(R.color.bg_secondary), getResources().getDimension(R.dimen.tag_radius)), subtitle.length() - tag.getTitle().length(), subtitle.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            subtitle.append(" ");
         }
-        tags_B.setText(sb.toString());
+        tags_B.setText(subtitle);
 
         if (StringUtils.isEmpty(transaction.getId()) && !isAutoAmountRequested) {
             isAutoAmountRequested = true;

@@ -12,6 +12,7 @@ public class GeneralPrefs extends Prefs {
     private String lastFileExportPath;
     private BaseInterval.Type intervalType;
     private int intervalLength;
+    private boolean analyticsOptOut;
 
     public GeneralPrefs(Context context, EventBus eventBus) {
         super(context);
@@ -33,10 +34,11 @@ public class GeneralPrefs extends Prefs {
         lastFileExportPath = getString("lastFileExportPath", null);
         intervalType = BaseInterval.Type.valueOf(getString("intervalType", BaseInterval.Type.MONTH.toString()));
         intervalLength = getInteger("intervalLength", 1);
+        analyticsOptOut = getBoolean("analyticsOptOut", false);
     }
 
     public void clear() {
-        clear("isAutoUpdateCurrencies", "autoUpdateCurrenciesTimestamp", "lastFileExportPath", "intervalType", "intervalLength");
+        clear("isAutoUpdateCurrencies", "autoUpdateCurrenciesTimestamp", "lastFileExportPath", "intervalType", "intervalLength", "analyticsOptOut");
         refresh();
         notifyChanged();
     }
@@ -85,5 +87,14 @@ public class GeneralPrefs extends Prefs {
         setString("intervalType", intervalType.toString());
         setInteger("intervalLength", intervalLength);
         notifyChanged();
+    }
+
+    public boolean isAnalyticsOptOut() {
+        return analyticsOptOut;
+    }
+
+    public void setAnalyticsOptOut(boolean analyticsOptOut) {
+        this.analyticsOptOut = analyticsOptOut;
+        setBoolean("analyticsOptOut", analyticsOptOut);
     }
 }

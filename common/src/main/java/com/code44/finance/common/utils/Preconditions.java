@@ -11,6 +11,13 @@ public class Preconditions {
         return object;
     }
 
+    public static <T> T checkNull(T object, String message) throws IllegalStateException {
+        if (object == null) {
+            throw new IllegalStateException(message);
+        }
+        return object;
+    }
+
     public static String checkNotEmpty(String str, String message) throws IllegalArgumentException {
         if (StringUtils.isEmpty(str)) {
             throw new IllegalArgumentException(message);
@@ -48,6 +55,13 @@ public class Preconditions {
 
     public static boolean checkTrue(boolean value, String message) throws IllegalArgumentException {
         if (!value) {
+            throw new IllegalArgumentException(message);
+        }
+        return true;
+    }
+
+    public static boolean checkFalse(boolean value, String message) throws IllegalArgumentException {
+        if (value) {
             throw new IllegalArgumentException(message);
         }
         return true;

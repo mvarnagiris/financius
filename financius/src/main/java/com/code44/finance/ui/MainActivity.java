@@ -13,6 +13,7 @@ import com.code44.finance.ui.overview.OverviewFragment;
 import com.code44.finance.ui.reports.CategoriesReportFragment;
 import com.code44.finance.ui.transactions.TransactionsFragment;
 import com.code44.finance.ui.user.UserFragment;
+import com.code44.finance.utils.analytics.Analytics;
 import com.squareup.otto.Subscribe;
 
 public class MainActivity extends BaseActivity implements NavigationFragment.NavigationListener {
@@ -66,18 +67,22 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
 
             case NavigationAdapter.NAV_ID_OVERVIEW:
                 baseFragment = OverviewFragment.newInstance();
+                getAnalytics().trackScreen(Analytics.Screen.Overview);
                 break;
 
             case NavigationAdapter.NAV_ID_ACCOUNTS:
                 baseFragment = AccountsFragment.newInstance(ModelListFragment.Mode.VIEW);
+                getAnalytics().trackScreen(Analytics.Screen.AccountList);
                 break;
 
             case NavigationAdapter.NAV_ID_TRANSACTIONS:
                 baseFragment = TransactionsFragment.newInstance();
+                getAnalytics().trackScreen(Analytics.Screen.TransactionList);
                 break;
 
             case NavigationAdapter.NAV_ID_REPORTS:
                 baseFragment = CategoriesReportFragment.newInstance();
+                getAnalytics().trackScreen(Analytics.Screen.CategoriesReport);
                 break;
 
             default:

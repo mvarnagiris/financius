@@ -315,6 +315,8 @@ public class Transaction extends BaseModel<TransactionEntity> {
                     Preconditions.checkTrue(accountFrom.hasId(), "AccountFrom must have an Id.");
                     Preconditions.checkNotNull(accountTo, "AccountTo cannot be null.");
                     Preconditions.checkTrue(accountTo.hasId(), "AccountTo must have an Id.");
+                    Preconditions.checkNull(category, "Transfer cannot have a category.");
+                    Preconditions.checkTrue(accountTo.hasId(), "AccountTo must have an Id.");
                     if (accountFrom.equals(accountTo)) {
                         throw new IllegalStateException("AccountFrom cannot be equal to AccountTo.");
                     }

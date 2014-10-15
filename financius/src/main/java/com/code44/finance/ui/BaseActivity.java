@@ -14,6 +14,7 @@ import com.code44.finance.R;
 import com.code44.finance.ui.settings.SettingsActivity;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.ToolbarHelper;
+import com.code44.finance.utils.analytics.Analytics;
 import com.code44.finance.utils.errors.AppError;
 import com.squareup.otto.Subscribe;
 
@@ -30,6 +31,7 @@ public class BaseActivity extends Activity {
     protected ToolbarHelper toolbarHelper;
 
     @Inject EventBus eventBus;
+    @Inject Analytics analytics;
 
     protected static Intent makeIntent(Context context, Class activityClass) {
         return new Intent(context, activityClass);
@@ -51,11 +53,18 @@ public class BaseActivity extends Activity {
     @Override protected void onResume() {
         super.onResume();
         getEventBus().register(eventHandler);
+        final Analytics.Screen screen = getScreen();
+        if (screen == Analytics.Screen.None) {
+            getAnalytics().clearScreen();
+        } else {
+            getAnalytics().trackScreen(screen);
+        }
     }
 
     @Override protected void onPause() {
         super.onPause();
         getEventBus().unregister(eventHandler);
+        getAnalytics().clearScreen();
     }
 
     @Override public void setContentView(int layoutResID) {
@@ -90,5 +99,13 @@ public class BaseActivity extends Activity {
 
     protected EventBus getEventBus() {
         return eventBus;
+    }
+
+    protected Analytics getAnalytics() {
+        return analytics;
+    }
+
+    protected Analytics.Screen getScreen() {
+        return Analytics.Screen.None;
     }
 }

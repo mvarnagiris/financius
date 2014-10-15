@@ -3,6 +3,7 @@ package com.code44.finance.modules;
 import android.content.Context;
 
 import com.code44.finance.App;
+import com.code44.finance.modules.providers.AnalyticsProviderModule;
 import com.code44.finance.qualifiers.ApplicationContext;
 
 import javax.inject.Singleton;
@@ -21,7 +22,8 @@ import dagger.Provides;
                 CurrenciesApiModule.class,
                 AccountModule.class,
                 PersistenceModule.class,
-                ViewModule.class
+                ViewModule.class,
+                AnalyticsProviderModule.class
         }
 )
 public final class AppModule {
