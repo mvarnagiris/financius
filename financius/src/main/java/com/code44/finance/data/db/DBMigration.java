@@ -9,6 +9,7 @@ import com.code44.finance.common.model.DecimalSeparator;
 import com.code44.finance.common.model.GroupSeparator;
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.common.model.SymbolPosition;
+import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.SyncState;
 
@@ -35,7 +36,7 @@ public final class DBMigration {
             v19EnsureIds(db, "transactions");
 
             final String tempCurrenciesTable = v19MigrateCurrencies(db);
-            final String tempAccountsTable = v19MigrateAccounts(db);
+            final String tempAccountsTable = v19MigrateAccounts(db, tempCurrenciesTable);
             final String tempCategoriesTable = v19MigrateCategories(db);
             final String tempTransactionsTable = v19MigrateTransactions(db);
 
@@ -43,6 +44,8 @@ public final class DBMigration {
             db.execSQL("drop table " + tempAccountsTable);
             db.execSQL("drop table " + tempCategoriesTable);
             db.execSQL("drop table " + tempTransactionsTable);
+
+            // TODO Recalculate accounts balance.
 
             db.setTransactionSuccessful();
         } finally {
@@ -79,11 +82,11 @@ public final class DBMigration {
         final String selection = tempTableName + "_delete_state = 0";
         final Cursor cursor = db.query(tempTableName, projection, selection, null, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
+            final Currency currency = new Currency();
+            currency.setId(cursor.getString(0));
+            currency.setModelState(ModelState.NORMAL);
+            currency.setSyncState(SyncState.NONE);
             do {
-                final Currency currency = new Currency();
-                currency.setId(cursor.getString(0));
-                currency.setModelState(ModelState.NORMAL);
-                currency.setSyncState(SyncState.NONE);
                 currency.setCode(cursor.getString(1));
                 currency.setSymbol(cursor.getString(2));
                 final String symbolPositionOld = cursor.getString(6);
@@ -103,14 +106,34 @@ public final class DBMigration {
         return tempTableName;
     }
 
-    private static String v19MigrateAccounts(SQLiteDatabase db) {
+    private static String v19MigrateAccounts(SQLiteDatabase db, String currencyTempTableName) {
         final String oldTableName = "accounts";
         final String tempTableName = "temp_" + oldTableName;
         db.execSQL("alter table " + oldTableName + " rename to " + tempTableName);
         db.execSQL(Tables.Accounts.createScript());
         DBHelper.createIndex(db, Tables.Accounts.ID);
 
-        // TODO Migrate
+        final String[] projection = {tempTableName + "_server_id", currencyTempTableName + "_server_id",
+                tempTableName + "_title", tempTableName + "_note", tempTableName + "_show_in_totals"};
+        final String selection = tempTableName + "_delete_state = 0 and " + tempTableName + "_origin = 1";
+        final String tables = tempTableName + " inner join " + currencyTempTableName + " on " +
+                currencyTempTableName + "._id=" + tempTableName + "_currency_id";
+        final Cursor cursor = db.query(tables, projection, selection, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            final Currency currency = new Currency();
+            final Account account = new Account();
+            account.setId(cursor.getString(0));
+            account.setModelState(ModelState.NORMAL);
+            account.setSyncState(SyncState.NONE);
+            account.setCurrency(currency);
+            do {
+                currency.setId(cursor.getString(1));
+                account.setTitle(cursor.getString(2));
+                account.setNote(cursor.getString(3));
+                account.setIncludeInTotals(cursor.getInt(4) != 0);
+                db.insert(Tables.Accounts.TABLE_NAME, null, account.asValues());
+            } while (cursor.moveToNext());
+        }
 
         return tempTableName;
     }
