@@ -2,7 +2,6 @@ package com.code44.finance.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
@@ -246,7 +245,7 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
         float radius = Math.max(resultClearer_V.getWidth(), resultClearer_V.getHeight()) * 2.0f;
 
         if (resultClearer_V.getVisibility() != View.VISIBLE) {
-            ValueAnimator reveal = ViewAnimationUtils.createCircularReveal(resultClearer_V, cx, cy, 0, radius);
+            Animator reveal = ViewAnimationUtils.createCircularReveal(resultClearer_V, cx, cy, 0, radius);
             reveal.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {

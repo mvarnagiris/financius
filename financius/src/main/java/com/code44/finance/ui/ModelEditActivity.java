@@ -6,9 +6,7 @@ import android.view.Menu;
 public abstract class ModelEditActivity extends ModelActivity implements ModelEditFragment.ModelEditListener {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //noinspection ConstantConditions
-        getActionBar().hide();
+        getSupportActionBar().hide();
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {

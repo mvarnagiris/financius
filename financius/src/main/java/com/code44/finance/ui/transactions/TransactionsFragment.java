@@ -75,10 +75,6 @@ public class TransactionsFragment extends ModelListFragment {
         TransactionEditActivity.start(context, modelServerId);
     }
 
-    @Override public String getTitle() {
-        return getString(R.string.transactions);
-    }
-
     @Override protected void prepareView(View view, BaseModelsAdapter adapter) {
         // Get views
         headerList_V = (ExpandableStickyListHeadersListView) view.findViewById(R.id.headerList_V);

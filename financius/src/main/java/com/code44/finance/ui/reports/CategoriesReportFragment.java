@@ -75,10 +75,6 @@ public class CategoriesReportFragment extends BaseReportFragment implements Load
         getEventBus().unregister(this);
     }
 
-    @Override public String getTitle() {
-        return "";
-    }
-
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case LOADER_TRANSACTIONS:

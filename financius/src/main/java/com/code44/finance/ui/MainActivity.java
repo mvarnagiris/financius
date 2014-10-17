@@ -1,9 +1,12 @@
 package com.code44.finance.ui;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.NavigationAdapter;
@@ -14,14 +17,23 @@ import com.code44.finance.ui.reports.CategoriesReportFragment;
 import com.code44.finance.ui.transactions.TransactionsFragment;
 import com.code44.finance.ui.user.UserFragment;
 import com.code44.finance.utils.analytics.Analytics;
-import com.squareup.otto.Subscribe;
 
 public class MainActivity extends BaseActivity implements NavigationFragment.NavigationListener {
     private static final String FRAGMENT_CONTENT = "FRAGMENT_CONTENT";
 
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
+
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
+
+        // Get views
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+
+        // Setup
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, (Toolbar) findViewById(R.id.toolbar), R.string.open_navigation, R.string.close_navigation);
+        drawerLayout.setDrawerListener(drawerToggle);
 
         if (savedInstanceState == null) {
             StartupService.start(this);
@@ -30,18 +42,21 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
         final BaseFragment fragment = (BaseFragment) getFragmentManager().findFragmentByTag(FRAGMENT_CONTENT);
         if (fragment == null) {
             ((NavigationFragment) getFragmentManager().findFragmentById(R.id.navigation_F)).select(NavigationAdapter.NAV_ID_OVERVIEW);
-        } else {
-            onFragmentLoaded(fragment);
         }
 
         getEventBus().register(this);
     }
 
-    @Override public void onAttachFragment(Fragment fragment) {
-        super.onAttachFragment(fragment);
-        if (toolbarHelper != null && !(fragment instanceof NavigationFragment)) {
-            onFragmentLoaded((BaseFragment) fragment);
-        }
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override protected void onDestroy() {
@@ -63,26 +78,31 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
         switch (item.getId()) {
             case NavigationAdapter.NAV_ID_USER:
                 baseFragment = UserFragment.newInstance();
+                getSupportActionBar().setTitle(R.string.user);
                 break;
 
             case NavigationAdapter.NAV_ID_OVERVIEW:
                 baseFragment = OverviewFragment.newInstance();
                 getAnalytics().trackScreen(Analytics.Screen.Overview);
+                getSupportActionBar().setTitle(R.string.overview);
                 break;
 
             case NavigationAdapter.NAV_ID_ACCOUNTS:
                 baseFragment = AccountsFragment.newInstance(ModelListFragment.Mode.VIEW);
                 getAnalytics().trackScreen(Analytics.Screen.AccountList);
+                getSupportActionBar().setTitle(R.string.accounts);
                 break;
 
             case NavigationAdapter.NAV_ID_TRANSACTIONS:
                 baseFragment = TransactionsFragment.newInstance();
                 getAnalytics().trackScreen(Analytics.Screen.TransactionList);
+                getSupportActionBar().setTitle(R.string.transactions);
                 break;
 
             case NavigationAdapter.NAV_ID_REPORTS:
                 baseFragment = CategoriesReportFragment.newInstance();
                 getAnalytics().trackScreen(Analytics.Screen.CategoriesReport);
+                getSupportActionBar().setTitle(R.string.categories_report);
                 break;
 
             default:
@@ -90,33 +110,20 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
                 break;
         }
 
-        toolbarHelper.closeDrawer();
+        drawerLayout.closeDrawers();
 
         if (baseFragment != null) {
             loadFragment(baseFragment);
         }
     }
 
-    @Subscribe public void onTitleRequested(BaseFragment.RequestTitleUpdateEvent event) {
-        toolbarHelper.setTitle(event.getTitle());
-    }
-
     private void loadFragment(BaseFragment fragment) {
         final FragmentManager fm = getFragmentManager();
         final FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.content_V, fragment, FRAGMENT_CONTENT);
+        ft.replace(R.id.content, fragment, FRAGMENT_CONTENT);
         if (fm.findFragmentByTag(FRAGMENT_CONTENT) != null) {
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         }
         ft.commit();
-    }
-
-    private void onFragmentLoaded(BaseFragment fragment) {
-        if (fragment instanceof OverviewFragment || fragment instanceof CategoriesReportFragment) {
-            toolbarHelper.setElevation(0);
-        } else {
-            toolbarHelper.setElevation(getResources().getDimension(R.dimen.elevation_header));
-        }
-        toolbarHelper.setTitle(fragment.getTitle());
     }
 }

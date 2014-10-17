@@ -26,10 +26,6 @@ import com.code44.finance.utils.ActiveInterval;
 import com.code44.finance.utils.CategoriesExpenseComparator;
 import com.squareup.otto.Subscribe;
 
-import org.lucasr.twowayview.TwoWayLayoutManager;
-import org.lucasr.twowayview.widget.ListLayoutManager;
-import org.lucasr.twowayview.widget.SpacingItemDecoration;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -60,8 +56,8 @@ public class ReportsFragment extends BaseReportFragment implements LoaderManager
 
         // Setup
         adapter = new ReportsAdapter(getActivity());
-        recycler_V.setLayoutManager(new ListLayoutManager(getActivity(), TwoWayLayoutManager.Orientation.VERTICAL));
-        recycler_V.addItemDecoration(new SpacingItemDecoration(getResources().getDimensionPixelSize(R.dimen.space_normal), getResources().getDimensionPixelSize(R.dimen.space_normal)));
+        //recycler_V.setLayoutManager(new ListLayoutManager(getActivity(), TwoWayLayoutManager.Orientation.VERTICAL));
+        //recycler_V.addItemDecoration(new SpacingItemDecoration(getResources().getDimensionPixelSize(R.dimen.space_normal), getResources().getDimensionPixelSize(R.dimen.space_normal)));
         recycler_V.setItemAnimator(new DefaultItemAnimator());
         recycler_V.setAdapter(adapter);
     }
@@ -74,10 +70,6 @@ public class ReportsFragment extends BaseReportFragment implements LoaderManager
     @Override public void onPause() {
         super.onPause();
         getEventBus().unregister(this);
-    }
-
-    @Override public String getTitle() {
-        return getString(R.string.reports);
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {

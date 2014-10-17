@@ -2,6 +2,7 @@ package com.code44.finance.utils;
 
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Transaction;
 
@@ -11,12 +12,21 @@ import java.util.Map;
 public class MoneyFormatter {
     private static final Map<String, CurrencyFormat> currencyFormats = new HashMap<>();
 
-    public static String format(Transaction transaction) {
-        final Currency currency;
+    public static String format(Transaction transaction, Currency mainCurrency) {
+        final Account account;
         if (transaction.getTransactionType() == TransactionType.INCOME) {
-            currency = transaction.getAccountTo().getCurrency();
+            account = transaction.getAccountTo();
         } else {
-            currency = transaction.getAccountFrom().getCurrency();
+            account = transaction.getAccountFrom();
+        }
+
+        Currency currency = null;
+        if (account != null) {
+            currency = account.getCurrency();
+        }
+
+        if (currency == null) {
+            currency = mainCurrency;
         }
         return format(currency, transaction.getAmount());
     }

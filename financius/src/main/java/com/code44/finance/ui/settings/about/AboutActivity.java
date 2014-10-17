@@ -15,7 +15,7 @@ public class AboutActivity extends BaseActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple);
-        toolbarHelper.setTitle(R.string.about);
+        getSupportActionBar().setTitle(R.string.about);
 
         if (savedInstanceState == null) {
             getFragmentManager()

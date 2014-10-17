@@ -30,7 +30,7 @@ public class FabImageButton extends ImageButton {
         super.onSizeChanged(w, h, oldw, oldh);
 
         outline.setRoundRect(0, 0, w, w, w / 2);
-        setOutline(outline);
+//        setOutline(outline);
     }
 
     private void init() {

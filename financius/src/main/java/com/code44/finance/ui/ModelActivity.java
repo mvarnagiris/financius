@@ -35,7 +35,7 @@ public abstract class ModelActivity extends BaseActivity {
         final int contentId = inflateActivity();
 
         // Setup ActionBar
-        toolbarHelper.setTitle(getActionBarTitleResId());
+        getSupportActionBar().setTitle(getActionBarTitleResId());
 
         // Fragment
         if (savedInstanceState == null) {

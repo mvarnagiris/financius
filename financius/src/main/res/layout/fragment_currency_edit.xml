@@ -259,7 +259,7 @@
 
                     <ImageButton
                         android:id="@+id/refreshRate_B"
-                        style="@style/BaseButtonBorderless"
+                        style="@style/Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:contentDescription="@string/refresh_rate"

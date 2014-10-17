@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
-        <item name="android:colorPrimary">@color/brand</item>
-        <item name="android:colorPrimaryDark">@color/brand_dark</item>
-        <item name="android:colorAccent">@color/accent</item>
-        <item name="android:colorControlHighlight">@color/accent_transparent</item>
-        <item name="android:navigationBarColor">?android:colorPrimaryDark</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/brand</item>
+        <item name="colorPrimaryDark">@color/brand_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="colorControlHighlight">@color/accent_transparent</item>
+        <item name="android:navigationBarColor" tools:ignore="NewApi">?android:colorPrimaryDark
+        </item>
         <item name="android:homeAsUpIndicator">@drawable/ic_up</item>
 
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowContentTransitions" tools:ignore="NewApi">true</item>
         <item name="android:windowBackground">@color/bg_window</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
@@ -18,12 +19,6 @@
         <item name="spbStyle">@style/ProgressBar</item>
         <item name="cpbStyle">@style/CircularProgressBar</item>
     </style>
-
-    <style name="BaseButton" parent="android:Widget.Material.Light.Button" />
-
-    <style name="BaseButtonSmall" parent="android:Widget.Material.Light.Button.Small" />
-
-    <style name="BaseButtonBorderless" parent="android:Widget.Material.Light.Button.Borderless" />
 
     <style name="ProgressBar" parent="SmoothProgressBar">
         <item name="android:indeterminate">true</item>
@@ -51,17 +46,16 @@
 
     <style name="ToolbarTheme">
         <item name="android:textColorPrimary">@color/text_primary_inverse</item>
-        <item name="android:textAppearanceLargePopupMenu">@style/ToolbarPopupTextAppearance</item>
-        <item name="android:colorControlNormal">@color/text_primary_inverse</item>
-        <item name="android:colorControlHighlight">@color/accent_transparent</item>
+        <item name="colorControlNormal">@color/text_primary_inverse</item>
+        <item name="colorControlHighlight">@color/accent_transparent</item>
     </style>
 
     <style name="ToolbarStyle">
-        <item name="android:elevation">@dimen/elevation_header</item>
+        <item name="elevation">@dimen/elevation_header</item>
         <item name="android:background">?android:colorPrimary</item>
     </style>
 
-    <style name="ToolbarPopupTextAppearance" parent="@android:style/TextAppearance.Material.Widget.PopupMenu.Large">
+    <style name="ToolbarPopupTextAppearance">
         <item name="android:textColor">@color/text_primary</item>
     </style>
 

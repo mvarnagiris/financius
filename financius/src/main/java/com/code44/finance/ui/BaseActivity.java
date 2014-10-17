@@ -1,10 +1,11 @@
 package com.code44.finance.ui;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -13,22 +14,18 @@ import com.code44.finance.App;
 import com.code44.finance.R;
 import com.code44.finance.ui.settings.SettingsActivity;
 import com.code44.finance.utils.EventBus;
-import com.code44.finance.utils.ToolbarHelper;
 import com.code44.finance.utils.analytics.Analytics;
 import com.code44.finance.utils.errors.AppError;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
-public class BaseActivity extends Activity {
-
+public class BaseActivity extends ActionBarActivity {
     private final Object eventHandler = new Object() {
         @Subscribe public void onAppError(AppError error) {
             onHandleError(error);
         }
     };
-
-    protected ToolbarHelper toolbarHelper;
 
     @Inject EventBus eventBus;
     @Inject Analytics analytics;
@@ -50,6 +47,16 @@ public class BaseActivity extends Activity {
         App.with(this).inject(this);
     }
 
+    @Override public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
+    }
+
     @Override protected void onResume() {
         super.onResume();
         getEventBus().register(eventHandler);
@@ -67,23 +74,12 @@ public class BaseActivity extends Activity {
         getAnalytics().clearScreen();
     }
 
-    @Override public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
-
-        // Init
-        toolbarHelper = new ToolbarHelper(this);
-    }
-
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.common, menu);
         return true;
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
-        if (toolbarHelper.onOptionsItemSelected(item)) {
-            return true;
-        }
-
         switch (item.getItemId()) {
             case R.id.action_settings:
                 SettingsActivity.start(this);

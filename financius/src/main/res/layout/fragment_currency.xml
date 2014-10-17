@@ -24,7 +24,6 @@
             android:fontFamily="@string/font_light"
             android:gravity="center"
             android:textColor="@color/text_primary_inverse"
-            android:viewName="code"
             tools:text="GBP" />
 
     </FrameLayout>
@@ -47,7 +46,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:viewName="format"
             tools:text="1,000.00 £" />
 
         <TextView
@@ -57,7 +55,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
             android:gravity="right"
-            android:viewName="exchangeRate"
             tools:ignore="RtlHardcoded"
             tools:text="1.2489" />
 

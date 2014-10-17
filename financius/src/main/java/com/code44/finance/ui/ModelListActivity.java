@@ -52,9 +52,9 @@ public abstract class ModelListActivity extends BaseActivity implements ModelLis
 
         // Setup ActionBar
         if (mode == ModelListFragment.Mode.SELECT) {
-            toolbarHelper.setTitle(R.string.select);
+            getSupportActionBar().setTitle(R.string.select);
         } else {
-            toolbarHelper.setTitle(getActionBarTitleResId());
+            getSupportActionBar().setTitle(getActionBarTitleResId());
         }
 
         final boolean addFragmentHere = containerId != 0;
@@ -98,7 +98,7 @@ public abstract class ModelListActivity extends BaseActivity implements ModelLis
         mode = (ModelListFragment.Mode) getIntent().getSerializableExtra(EXTRA_MODE);
         selectedModels = getIntent().getParcelableArrayExtra(EXTRA_SELECTED_MODELS);
         if (mode == null) {
-            throw new IllegalStateException("Activity " + this.getClass().getName() + " must be created with Intent containing " + EXTRA_MODE + " with values from " + ModelListFragment.Mode.class.getName());
+            throw new IllegalStateException("Activity " + ((Object) this).getClass().getName() + " must be created with Intent containing " + EXTRA_MODE + " with values from " + ModelListFragment.Mode.class.getName());
         }
     }
 

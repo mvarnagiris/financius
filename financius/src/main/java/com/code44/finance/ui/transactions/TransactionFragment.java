@@ -15,14 +15,20 @@ import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Category;
+import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
+import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.ModelFragment;
 import com.code44.finance.utils.MoneyFormatter;
 
 import org.joda.time.DateTime;
 
+import javax.inject.Inject;
+
 public class TransactionFragment extends ModelFragment<Transaction> {
+    @Inject @Main Currency currency;
+
     private TextView amount_TV;
     private TextView date_TV;
     private TextView category_TV;
@@ -63,7 +69,7 @@ public class TransactionFragment extends ModelFragment<Transaction> {
 //        holder.day_TV.setText(date.dayOfMonth().getAsShortText());
 //        holder.title_TV.setText(category.getTitle());
 //        holder.subtitle_TV.setText(transaction.getNote());
-        amount_TV.setText(MoneyFormatter.format(transaction));
+        amount_TV.setText(MoneyFormatter.format(transaction, currency));
 
         if (transaction.getTransactionType() == TransactionType.EXPENSE) {
 //            holder.account_TV.setText(transaction.getAccountFrom().getTitle());

@@ -3,6 +3,7 @@ package com.code44.finance.ui.overview;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,7 +82,12 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
         if (savedInstanceState == null) {
             view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override public void onGlobalLayout() {
-                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    } else {
+                        //noinspection deprecation
+                        view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    }
                     animateIn();
                 }
             });
@@ -148,12 +154,7 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
         }
     }
 
-    @Override public String getTitle() {
-        return currentInterval.getTitle();
-    }
-
     @Subscribe public void onCurrentIntervalChanged(CurrentInterval currentInterval) {
-        requestTitleUpdate();
         getLoaderManager().restartLoader(LOADER_TRANSACTIONS, null, this);
     }
 

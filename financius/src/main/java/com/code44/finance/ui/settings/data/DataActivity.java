@@ -15,7 +15,7 @@ public class DataActivity extends BaseActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple);
-        toolbarHelper.setTitle(R.string.your_data);
+        getSupportActionBar().setTitle(R.string.your_data);
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction().replace(R.id.content_V, DataFragment.newInstance()).commit();

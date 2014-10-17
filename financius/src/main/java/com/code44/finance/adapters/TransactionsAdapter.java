@@ -2,9 +2,9 @@ package com.code44.finance.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.util.LongSparseArray;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.util.LongSparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +34,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
     private static final String UNKNOWN_VALUE = "?";
     private static final String TRANSFER_SYMBOL = " → ";
 
-    private final Currency defaultCurrency;
+    private final Currency mainCurrency;
     private final BaseInterval interval;
     private final LongSparseArray<Long> totalExpenses;
     private final String unknownExpenseTitle;
@@ -51,9 +51,9 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
     private final int tagBackgroundColor;
     private final float tagBackgroundRadius;
 
-    public TransactionsAdapter(Context context, Currency defaultCurrency, BaseInterval interval) {
+    public TransactionsAdapter(Context context, Currency mainCurrency, BaseInterval interval) {
         super(context);
-        this.defaultCurrency = defaultCurrency;
+        this.mainCurrency = mainCurrency;
         this.interval = interval;
         totalExpenses = new LongSparseArray<>();
         unknownExpenseTitle = context.getString(R.string.expense);
@@ -86,7 +86,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         holder.weekday_TV.setText(date.dayOfWeek().getAsShortText());
         holder.day_TV.setText(date.dayOfMonth().getAsShortText());
         holder.color_IV.setColorFilter(getCategoryColor(transaction));
-        holder.amount_TV.setText(MoneyFormatter.format(transaction));
+        holder.amount_TV.setText(MoneyFormatter.format(transaction, mainCurrency));
         holder.title_TV.setTextColor(primaryColor);
         holder.title_TV.setText(getTitle(transaction));
         holder.subtitle_TV.setText(getSubtitle(transaction));
@@ -119,7 +119,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
             title = mContext.getString(R.string.pending);
         }
         holder.title_TV.setText(title);
-        holder.amount_TV.setText(MoneyFormatter.format(defaultCurrency, getTotalExpenseForPosition(position)));
+        holder.amount_TV.setText(MoneyFormatter.format(mainCurrency, getTotalExpenseForPosition(position)));
 
         return convertView;
     }
@@ -194,22 +194,27 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
     }
 
     private void bindViewForTransactionType(ViewHolder holder, Transaction transaction) {
+        final String account;
+        final int amountColor;
         switch (transaction.getTransactionType()) {
             case EXPENSE:
-                holder.account_TV.setText(transaction.getAccountFrom().getTitle());
-                holder.amount_TV.setTextColor(expenseAmountColor);
+                account = transaction.getAccountFrom() != null ? transaction.getAccountFrom().getTitle() : UNKNOWN_VALUE;
+                amountColor = expenseAmountColor;
                 break;
             case INCOME:
-                holder.account_TV.setText(transaction.getAccountTo().getTitle());
-                holder.amount_TV.setTextColor(incomeAmountColor);
+                account = transaction.getAccountTo() != null ? transaction.getAccountTo().getTitle() : UNKNOWN_VALUE;
+                amountColor = incomeAmountColor;
                 break;
             case TRANSFER:
-                holder.account_TV.setText(transaction.getAccountFrom().getTitle() + TRANSFER_SYMBOL + transaction.getAccountTo().getTitle());
-                holder.amount_TV.setTextColor(transferAmountColor);
+                account = (transaction.getAccountFrom() != null ? transaction.getAccountFrom().getTitle() : UNKNOWN_VALUE) + TRANSFER_SYMBOL + (transaction.getAccountTo() != null ? transaction.getAccountTo().getTitle() : UNKNOWN_VALUE);
+                amountColor = transferAmountColor;
                 break;
             default:
                 throw new IllegalArgumentException("Transaction type " + transaction.getTransactionType() + " is not supported.");
         }
+
+        holder.account_TV.setText(account);
+        holder.amount_TV.setTextColor(amountColor);
     }
 
     private void bindViewPending(ViewHolder holder, Transaction transaction) {
@@ -272,7 +277,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         do {
             if (TransactionType.fromInt(cursor.getInt(iTransactionType)) == TransactionType.EXPENSE && cursor.getInt(iIncludeInReports) != 0) {
                 final long amount = cursor.getLong(iAmount);
-                if (defaultCurrency.getId().equals(cursor.getString(iAccountFromCurrencyServerId))) {
+                if (mainCurrency.getId().equals(cursor.getString(iAccountFromCurrencyServerId))) {
                     totalExpense += amount;
                 } else {
                     totalExpense += amount * cursor.getDouble(iAccountFromCurrencyExchangeRate);
