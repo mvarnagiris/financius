@@ -90,7 +90,7 @@ public class SyncRequest extends Request {
         getTransactions();
     }
 
-    private void pushCurrencies(SQLiteDatabase database) throws Exception {
+    private void pushCurrencies(SQLiteDatabase database) {
         markInProgress(database, Tables.Currencies.SYNC_STATE);
 
         final Cursor cursor = Query.create()
@@ -108,11 +108,11 @@ public class SyncRequest extends Request {
         new PostCurrenciesRequest(gcmRegistration, currenciesService, currencies).run();
     }
 
-    private void getCurrencies() throws Exception {
+    private void getCurrencies() {
         new GetCurrenciesRequest(context, user, currenciesService).run();
     }
 
-    private void pushCategories(SQLiteDatabase database) throws Exception {
+    private void pushCategories(SQLiteDatabase database) {
         markInProgress(database, Tables.Categories.SYNC_STATE);
 
         final Cursor cursor = Query.create()
@@ -130,11 +130,11 @@ public class SyncRequest extends Request {
         new PostCategoriesRequest(gcmRegistration, categoriesService, categories).run();
     }
 
-    private void getCategories() throws Exception {
+    private void getCategories() {
         new GetCategoriesRequest(context, user, categoriesService).run();
     }
 
-    private void pushTags(SQLiteDatabase database) throws Exception {
+    private void pushTags(SQLiteDatabase database) {
         markInProgress(database, Tables.Tags.SYNC_STATE);
 
         final Cursor cursor = Query.create()
@@ -152,11 +152,11 @@ public class SyncRequest extends Request {
         new PostTagsRequest(gcmRegistration, tagsService, tags).run();
     }
 
-    private void getTags() throws Exception {
+    private void getTags() {
         new GetTagsRequest(context, user, tagsService).run();
     }
 
-    private void pushAccounts(SQLiteDatabase database) throws Exception {
+    private void pushAccounts(SQLiteDatabase database) {
         markInProgress(database, Tables.Accounts.SYNC_STATE);
 
         final Cursor cursor = Query.create()
@@ -175,11 +175,11 @@ public class SyncRequest extends Request {
         new PostAccountsRequest(gcmRegistration, accountsService, accounts).run();
     }
 
-    private void getAccounts() throws Exception {
+    private void getAccounts() {
         new GetAccountsRequest(context, user, accountsService).run();
     }
 
-    private void pushTransactions(SQLiteDatabase database) throws Exception {
+    private void pushTransactions(SQLiteDatabase database) {
         markInProgress(database, Tables.Transactions.SYNC_STATE);
 
         final Cursor cursor = Query.create()
@@ -202,7 +202,7 @@ public class SyncRequest extends Request {
         new PostTransactionsRequest(gcmRegistration, transactionsService, transactions).run();
     }
 
-    private void getTransactions() throws Exception {
+    private void getTransactions() {
         new GetTransactionsRequest(context, user, transactionsService).run();
     }
 

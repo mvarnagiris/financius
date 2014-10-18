@@ -64,6 +64,7 @@
                     android:layout_marginLeft="@dimen/space_normal"
                     android:gravity="right|center_vertical"
                     android:hint="@string/balance"
+                    tools:ignore="RtlHardcoded"
                     tools:stateListAnimator="@android:animator/fade_in"
                     tools:text="1,234.56 £" />
 

@@ -30,11 +30,7 @@ public class ActiveIntervalView extends LinearLayout implements View.OnClickList
     }
 
     public ActiveIntervalView(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
-    }
-
-    public ActiveIntervalView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+        super(context, attrs, defStyleAttr);
         inflate(context, R.layout.v_interval, this);
         App.with(context).inject(this);
 

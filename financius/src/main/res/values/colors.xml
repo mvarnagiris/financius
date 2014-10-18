@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="brand">#00bcd4</color>
-    <color name="brand_transparent">#8f00bcd4</color>
-    <color name="brand_dark">#0097a7</color>
+    <color name="primary">#00bcd4</color>
+    <color name="primary_transparent">#8f00bcd4</color>
+    <color name="primary_dark">#0097a7</color>
     <color name="accent">#cddc39</color>
     <color name="accent_transparent">#8fcddc39</color>
+    <color name="accent_dark">#afb42b</color>
     <color name="accent_dark_transparent">#8fafb42b</color>
 
     <color name="bg_window">#f0f0f0</color>
     <color name="bg_primary">#fafafa</color>
     <color name="bg_primary_inverse">#424242</color>
     <color name="bg_secondary">#e4e4e4</color>
-    <color name="bg_actionbar">@color/brand</color>
-    <color name="bg_brand">@color/brand</color>
+    <color name="bg_actionbar">@color/primary</color>
+    <color name="bg_brand">@color/primary</color>
 
     <color name="text_primary">#212121</color>
     <color name="text_primary_inverse">#ffffff</color>
@@ -21,7 +22,7 @@
     <color name="text_secondary_inverse">#8ef0f0f0</color>
     <color name="text_weak">#9a9a9a</color>
     <color name="text_hint">#42000000</color>
-    <color name="text_brand">@color/brand</color>
+    <color name="text_brand">@color/primary</color>
     <color name="text_accent">@color/accent</color>
     <color name="text_positive">#de259b24</color>
     <color name="text_negative">#dee51c23</color>

@@ -11,15 +11,11 @@ import com.code44.finance.R;
 import com.code44.finance.common.utils.StringUtils;
 
 public class AlertDialogFragment extends BaseDialogFragment implements View.OnClickListener {
-    protected static final String ARG_MESSAGE = "ARG_MESSAGE";
-    protected static final String ARG_POSITIVE_BUTTON_TEXT = "ARG_POSITIVE_BUTTON_TEXT";
-    protected static final String ARG_NEGATIVE_BUTTON_TEXT = "ARG_NEGATIVE_BUTTON_TEXT";
-    protected static final String ARG_POSITIVE_BUTTON_COLOR = "ARG_POSITIVE_BUTTON_COLOR";
-    protected static final String ARG_NEGATIVE_BUTTON_COLOR = "ARG_NEGATIVE_BUTTON_COLOR";
-
-    protected TextView message_TV;
-    protected Button positive_B;
-    protected Button negative_B;
+    private static final String ARG_MESSAGE = "ARG_MESSAGE";
+    private static final String ARG_POSITIVE_BUTTON_TEXT = "ARG_POSITIVE_BUTTON_TEXT";
+    private static final String ARG_NEGATIVE_BUTTON_TEXT = "ARG_NEGATIVE_BUTTON_TEXT";
+    private static final String ARG_POSITIVE_BUTTON_COLOR = "ARG_POSITIVE_BUTTON_COLOR";
+    private static final String ARG_NEGATIVE_BUTTON_COLOR = "ARG_NEGATIVE_BUTTON_COLOR";
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.dialog_fragment_alert, container, false);
@@ -29,9 +25,9 @@ public class AlertDialogFragment extends BaseDialogFragment implements View.OnCl
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        message_TV = (TextView) view.findViewById(R.id.message_TV);
-        positive_B = (Button) view.findViewById(R.id.positive_B);
-        negative_B = (Button) view.findViewById(R.id.negative_B);
+        final TextView message_TV = (TextView) view.findViewById(R.id.message_TV);
+        final Button positive_B = (Button) view.findViewById(R.id.positive_B);
+        final Button negative_B = (Button) view.findViewById(R.id.negative_B);
 
         // Setup
         final String message = getArguments().getString(ARG_MESSAGE);

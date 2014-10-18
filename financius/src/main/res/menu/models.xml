@@ -1,7 +1,8 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_new"
-        android:title="@string/create"
         android:icon="@drawable/ic_action_new"
-        android:showAsAction="ifRoom" />
+        android:title="@string/create"
+        app:showAsAction="ifRoom" />
 </menu>

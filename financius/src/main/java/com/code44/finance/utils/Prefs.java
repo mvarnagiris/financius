@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 public abstract class Prefs {
-    private Context context;
+    private final Context context;
 
     protected Prefs(Context context) {
         this.context = context;

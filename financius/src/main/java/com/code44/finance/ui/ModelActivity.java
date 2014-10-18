@@ -39,7 +39,7 @@ public abstract class ModelActivity extends BaseActivity {
 
         // Fragment
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction().add(contentId, createModelFragment(modelServerId), FRAGMENT_MODEL).commit();
+            getSupportFragmentManager().beginTransaction().add(contentId, createModelFragment(modelServerId), FRAGMENT_MODEL).commit();
         }
 
         getEventBus().register(eventHandler);

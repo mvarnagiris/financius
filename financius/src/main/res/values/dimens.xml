@@ -1,5 +1,7 @@
 <resources>
 
+    <dimen name="actionbar_size">56dp</dimen>
+
     <dimen name="keyline">16dp</dimen>
     <dimen name="keyline_content">72dp</dimen>
     <dimen name="keyline_between">40dp</dimen>

@@ -2,7 +2,7 @@ package com.code44.finance.ui;
 
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 
 import com.code44.finance.App;
 import com.code44.finance.utils.EventBus;

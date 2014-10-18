@@ -89,7 +89,7 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
                     .setTitle(getString(R.string.period))
                     .setItems(items)
                     .setPositiveButtonText(getString(R.string.cancel))
-                    .build().show(getFragmentManager(), FRAGMENT_INTERVAL);
+                    .build().show(getSupportFragmentManager(), FRAGMENT_INTERVAL);
         } else if (id == SettingsAdapter.ID_DATA) {
             DataActivity.start(this);
         } else if (id == SettingsAdapter.ID_ABOUT) {
@@ -102,7 +102,7 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
     }
 
     @Subscribe public void onNewIntervalSelected(ListDialogFragment.ListDialogEvent event) {
-        if (event.getRequestCode() != REQUEST_INTERVAL || !event.isListItemClicked()) {
+        if (event.getRequestCode() != REQUEST_INTERVAL || event.isActionButtonClicked()) {
             return;
         }
 

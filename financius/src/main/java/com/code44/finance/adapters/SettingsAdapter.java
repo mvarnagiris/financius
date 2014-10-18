@@ -44,10 +44,6 @@ public class SettingsAdapter extends BaseAdapter {
         return ViewType.values().length;
     }
 
-    @Override public int getItemViewType(int position) {
-        return super.getItemViewType(position);
-    }
-
     @Override public Object getItem(int position) {
         return settingsItems.get(position);
     }
@@ -149,7 +145,7 @@ public class SettingsAdapter extends BaseAdapter {
         private final TextView title_TV;
 
         private SettingsItemViewHolder(View itemView) {
-            title_TV = (TextView) itemView.findViewById(R.id.title_TV);
+            title_TV = (TextView) itemView.findViewById(R.id.title);
         }
 
         protected void bind(SettingsItem settingsItem) {

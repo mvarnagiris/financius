@@ -244,30 +244,35 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
         int cy = resultClearer_V.getBottom();
         float radius = Math.max(resultClearer_V.getWidth(), resultClearer_V.getHeight()) * 2.0f;
 
-        if (resultClearer_V.getVisibility() != View.VISIBLE) {
-            Animator reveal = ViewAnimationUtils.createCircularReveal(resultClearer_V, cx, cy, 0, radius);
-            reveal.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    super.onAnimationStart(animation);
-                    resultClearer_V.setVisibility(View.VISIBLE);
-                }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (resultClearer_V.getVisibility() != View.VISIBLE) {
+                Animator reveal = ViewAnimationUtils.createCircularReveal(resultClearer_V, cx, cy, 0, radius);
+                reveal.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        super.onAnimationStart(animation);
+                        resultClearer_V.setVisibility(View.VISIBLE);
+                    }
 
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    calculator.clear();
-                    updateResult();
-                    resultClearer_V.animate().alpha(0.0f).setDuration(200).withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            resultClearer_V.setVisibility(View.INVISIBLE);
-                            resultClearer_V.setAlpha(1.0f);
-                        }
-                    }).start();
-                }
-            });
-            reveal.setDuration(600);
-            reveal.start();
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        calculator.clear();
+                        updateResult();
+                        resultClearer_V.animate().alpha(0.0f).setDuration(200).withEndAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                resultClearer_V.setVisibility(View.INVISIBLE);
+                                resultClearer_V.setAlpha(1.0f);
+                            }
+                        }).start();
+                    }
+                });
+                reveal.setDuration(600);
+                reveal.start();
+            }
+        } else {
+            calculator.clear();
+            updateResult();
         }
     }
 

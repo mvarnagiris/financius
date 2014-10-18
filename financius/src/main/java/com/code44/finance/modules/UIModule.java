@@ -23,8 +23,10 @@ import com.code44.finance.ui.currencies.CurrencyActivity;
 import com.code44.finance.ui.currencies.CurrencyEditActivity;
 import com.code44.finance.ui.currencies.CurrencyEditFragment;
 import com.code44.finance.ui.currencies.CurrencyFragment;
+import com.code44.finance.ui.dialogs.DatePickerDialog;
 import com.code44.finance.ui.dialogs.DeleteDialogFragment;
 import com.code44.finance.ui.dialogs.ListDialogFragment;
+import com.code44.finance.ui.dialogs.TimePickerDialog;
 import com.code44.finance.ui.overview.OverviewFragment;
 import com.code44.finance.ui.reports.CategoriesReportFragment;
 import com.code44.finance.ui.reports.ReportsFragment;
@@ -99,7 +101,9 @@ import dagger.Module;
                 DataFragment.class,
                 ReportsFragment.class,
                 CategoriesReportFragment.class,
-                AboutFragment.class
+                AboutFragment.class,
+                DatePickerDialog.class,
+                TimePickerDialog.class
         }
 )
 public class UIModule {

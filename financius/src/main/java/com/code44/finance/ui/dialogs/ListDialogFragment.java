@@ -141,8 +141,8 @@ public class ListDialogFragment extends BaseDialogFragment implements View.OnCli
             return selectedPositions;
         }
 
-        public boolean isListItemClicked() {
-            return position >= 0;
+        public boolean isActionButtonClicked() {
+            return position < 0;
         }
 
         public void dismiss() {

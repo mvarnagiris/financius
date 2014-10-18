@@ -1,9 +1,9 @@
 package com.code44.finance.ui;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -20,7 +20,7 @@ import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
-public class BaseActivity extends ActionBarActivity {
+public abstract class BaseActivity extends ActionBarActivity {
     private final Object eventHandler = new Object() {
         @Subscribe public void onAppError(AppError error) {
             onHandleError(error);

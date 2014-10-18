@@ -31,11 +31,7 @@ public class OverviewGraphView extends LinearLayout {
     }
 
     public OverviewGraphView(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
-    }
-
-    public OverviewGraphView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+        super(context, attrs, defStyleAttr);
         App.with(context).inject(this);
         inflate(context, R.layout.v_overview_graph, this);
         setBackgroundResource(R.drawable.btn_borderless);

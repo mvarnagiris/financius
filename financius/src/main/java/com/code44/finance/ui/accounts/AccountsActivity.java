@@ -1,7 +1,7 @@
 package com.code44.finance.ui.accounts;
 
-import android.app.Fragment;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 
 import com.code44.finance.R;
 import com.code44.finance.ui.ModelListActivity;

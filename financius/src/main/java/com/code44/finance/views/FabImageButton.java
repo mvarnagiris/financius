@@ -1,6 +1,7 @@
 package com.code44.finance.views;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.ImageButton;
@@ -8,8 +9,6 @@ import android.widget.ImageButton;
 import com.code44.finance.R;
 
 public class FabImageButton extends ImageButton {
-    private final android.graphics.Outline outline = new android.graphics.Outline();
-
     public FabImageButton(Context context) {
         super(context);
         init();
@@ -25,21 +24,12 @@ public class FabImageButton extends ImageButton {
         init();
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-
-        outline.setRoundRect(0, 0, w, w, w / 2);
-//        setOutline(outline);
-    }
-
     private void init() {
         setBackgroundResource(R.drawable.btn_fab);
-        setClipToOutline(true);
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(@NonNull MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 animate().scaleX(1.1f).scaleY(1.1f).setDuration(150).setStartDelay(0).start();

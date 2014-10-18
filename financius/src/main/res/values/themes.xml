@@ -2,8 +2,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/brand</item>
-        <item name="colorPrimaryDark">@color/brand_dark</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="colorControlHighlight">@color/accent_transparent</item>
         <item name="android:navigationBarColor" tools:ignore="NewApi">?android:colorPrimaryDark
@@ -52,7 +52,7 @@
 
     <style name="ToolbarStyle">
         <item name="elevation">@dimen/elevation_header</item>
-        <item name="android:background">?android:colorPrimary</item>
+        <item name="android:background">@color/primary</item>
     </style>
 
     <style name="ToolbarPopupTextAppearance">

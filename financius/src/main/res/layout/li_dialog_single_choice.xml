@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="@dimen/keyline"
-    tools:ignore="RtlHardcoded">
+    tools:ignore="RtlHardcoded,RtlSymmetry">
 
-<RadioButton
-        android:id="@+id/title_TV"
+    <RadioButton
+        android:id="@+id/title"
         style="@style/ListItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -31,7 +31,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -78,13 +77,13 @@ public class BackupDataImporter extends DataImporter {
         }
     }
 
-    private JsonObject inputStreamToJson(InputStream inputStream) throws FileNotFoundException {
+    private JsonObject inputStreamToJson(InputStream inputStream) {
         final JsonParser parser = new JsonParser();
         final JsonElement jsonElement = parser.parse(new InputStreamReader(inputStream));
         return jsonElement.getAsJsonObject();
     }
 
-    private void validate(JsonObject json) throws Exception {
+    private void validate(JsonObject json) {
         final int version = json.get("version").getAsInt();
         if (version < MIN_VALID_VERSION) {
             throw new IllegalArgumentException("Backup version " + version + " is not supported anymore.");

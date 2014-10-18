@@ -82,7 +82,7 @@ public class CurrencyAccountsAdapter extends BaseModelsAdapter {
 
         public static ViewHolder setAsTag(View view) {
             final ViewHolder holder = new ViewHolder();
-            holder.title_TV = (TextView) view.findViewById(R.id.title_TV);
+            holder.title_TV = (TextView) view.findViewById(R.id.title);
             holder.currency_B = (Button) view.findViewById(R.id.currency_B);
             holder.currency_B.setAllCaps(false);
             view.setTag(holder);

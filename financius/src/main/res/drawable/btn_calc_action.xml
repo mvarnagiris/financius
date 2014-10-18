@@ -1,3 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="?android:colorPrimary"></ripple>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/primary_transparent" android:state_pressed="true" />
+</selector>

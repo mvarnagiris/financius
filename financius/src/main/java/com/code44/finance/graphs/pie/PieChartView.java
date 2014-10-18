@@ -36,12 +36,7 @@ public class PieChartView extends View {
     }
 
     public PieChartView(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
-    }
-
-    public PieChartView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-
+        super(context, attrs, defStyleAttr);
         // Init
         outlinePaint.setStyle(Paint.Style.STROKE);
         inlinePaint.setStyle(Paint.Style.STROKE);

@@ -1,8 +1,8 @@
 package com.code44.finance.ui;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 public class CalculatorActivity extends BaseActivity implements CalculatorFragment.CalculatorListener {
     public static final String RESULT_EXTRA_RESULT = "RESULT_EXTRA_RESULT";
@@ -25,7 +25,7 @@ public class CalculatorActivity extends BaseActivity implements CalculatorFragme
 
         // Fragment
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction().add(android.R.id.content, CalculatorFragment.newInstance(value)).commit();
+            getSupportFragmentManager().beginTransaction().add(android.R.id.content, CalculatorFragment.newInstance(value)).commit();
         }
     }
 

@@ -10,7 +10,6 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.EventBus;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class ExchangeRatesRequest extends Request {
         }
     }
 
-    private Currency getCurrencyWithUpdatedExchangeRate(String fromCode) throws IOException {
+    private Currency getCurrencyWithUpdatedExchangeRate(String fromCode) {
         final ExchangeRateRequest request = new ExchangeRateRequest(eventBus, context, requestService, fromCode, toCode, false);
         request.run();
         return request.getCurrency();

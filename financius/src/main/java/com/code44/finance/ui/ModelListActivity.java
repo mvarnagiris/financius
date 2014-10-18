@@ -61,7 +61,7 @@ public abstract class ModelListActivity extends BaseActivity implements ModelLis
         if (addFragmentHere && savedInstanceState == null) {
             ModelListFragment fragment = createModelsFragment(mode, selectedModels);
             if (fragment != null) {
-                getFragmentManager().beginTransaction().add(containerId, fragment).commit();
+                getSupportFragmentManager().beginTransaction().add(containerId, fragment).commit();
             }
         }
     }

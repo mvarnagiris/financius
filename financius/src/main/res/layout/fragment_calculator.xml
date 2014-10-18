@@ -45,7 +45,7 @@
             android:id="@+id/resultClearer_V"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="?android:colorPrimary"
+            android:background="@color/primary"
             android:visibility="invisible" />
 
     </RelativeLayout>

@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="?android:colorPrimary"
+        android:background="@color/primary"
         android:elevation="@dimen/elevation_sub_header"
         android:gravity="center_vertical"
         android:minHeight="?android:actionBarSize"

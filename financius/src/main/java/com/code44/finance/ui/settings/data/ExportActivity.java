@@ -1,6 +1,5 @@
 package com.code44.finance.ui.settings.data;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -96,7 +95,7 @@ public class ExportActivity extends BaseActivity {
                 break;
         }
 
-        final GoogleApiFragment googleApi_F = (GoogleApiFragment) getFragmentManager().findFragmentByTag(FRAGMENT_GOOGLE_API);
+        final GoogleApiFragment googleApi_F = (GoogleApiFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_GOOGLE_API);
         if (googleApi_F != null) {
             googleApi_F.handleOnActivityResult(requestCode, resultCode);
         }
@@ -207,22 +206,22 @@ public class ExportActivity extends BaseActivity {
 
     public static enum Destination {
         File {
-            @Override public void startExportProcess(Activity activity, GeneralPrefs generalPrefs) {
+            @Override public void startExportProcess(BaseActivity activity, GeneralPrefs generalPrefs) {
                 FilePickerActivity.startDir(activity, REQUEST_LOCAL_DIRECTORY, generalPrefs.getLastFileExportPath());
             }
         },
 
         GoogleDrive {
-            @Override public void startExportProcess(Activity activity, GeneralPrefs generalPrefs) {
-                GoogleApiFragment googleApi_F = (GoogleApiFragment) activity.getFragmentManager().findFragmentByTag(FRAGMENT_GOOGLE_API);
+            @Override public void startExportProcess(BaseActivity activity, GeneralPrefs generalPrefs) {
+                GoogleApiFragment googleApi_F = (GoogleApiFragment) activity.getSupportFragmentManager().findFragmentByTag(FRAGMENT_GOOGLE_API);
                 if (googleApi_F == null) {
                     googleApi_F = GoogleApiFragment.with(UNIQUE_GOOGLE_API_ID).setUseDrive(true).build();
-                    activity.getFragmentManager().beginTransaction().add(android.R.id.content, googleApi_F, FRAGMENT_GOOGLE_API).commit();
+                    activity.getSupportFragmentManager().beginTransaction().add(android.R.id.content, googleApi_F, FRAGMENT_GOOGLE_API).commit();
                 }
                 googleApi_F.connect();
             }
         };
 
-        public abstract void startExportProcess(Activity activity, GeneralPrefs generalPrefs);
+        public abstract void startExportProcess(BaseActivity activity, GeneralPrefs generalPrefs);
     }
 }

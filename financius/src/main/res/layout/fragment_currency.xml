@@ -9,7 +9,7 @@
         android:id="@+id/headerContainer_V"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:colorPrimary"
+        android:background="@color/primary"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:elevation="@dimen/elevation_header"

@@ -18,7 +18,7 @@ public class DataActivity extends BaseActivity {
         getSupportActionBar().setTitle(R.string.your_data);
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction().replace(R.id.content_V, DataFragment.newInstance()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_V, DataFragment.newInstance()).commit();
         }
     }
 

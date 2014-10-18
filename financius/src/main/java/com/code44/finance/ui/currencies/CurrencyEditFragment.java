@@ -1,10 +1,10 @@
 package com.code44.finance.ui.currencies;
 
 import android.content.Context;
-import android.content.CursorLoader;
-import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -50,6 +50,8 @@ import fr.castorflex.android.smoothprogressbar.SmoothProgressDrawable;
 public class CurrencyEditFragment extends ModelEditFragment<Currency> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int LOADER_CURRENCIES = 1;
 
+    private final Set<String> existingCurrencyCodes = new HashSet<>();
+
     @Inject CurrenciesApi currenciesApi;
     @Inject @Main Currency mainCurrency;
 
@@ -67,7 +69,6 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     private View mainCurrencyContainer_V;
     private View exchangeRateContainer_V;
     private CheckBox isDefault_CB;
-    private Set<String> existingCurrencyCodes = new HashSet<>();
 
     public CurrencyEditFragment() {
     }

@@ -1,10 +1,10 @@
 package com.code44.finance.ui.categories;
 
 import android.content.Context;
-import android.content.CursorLoader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.CursorLoader;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +41,7 @@ public class CategoryFragment extends ModelFragment<Category> {
 
         // Get views
         color_IV = (ImageView) view.findViewById(R.id.color_IV);
-        title_TV = (TextView) view.findViewById(R.id.title_TV);
+        title_TV = (TextView) view.findViewById(R.id.title);
     }
 
     @Override

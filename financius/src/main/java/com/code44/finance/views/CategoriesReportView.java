@@ -31,11 +31,7 @@ public class CategoriesReportView extends LinearLayout {
     }
 
     public CategoriesReportView(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
-    }
-
-    public CategoriesReportView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+        super(context, attrs, defStyleAttr);
         App.with(context).inject(this);
         inflate(context, R.layout.v_categories_report, this);
         setBackgroundResource(R.drawable.btn_borderless);

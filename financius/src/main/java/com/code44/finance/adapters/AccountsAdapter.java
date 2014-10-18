@@ -53,7 +53,7 @@ public class AccountsAdapter extends BaseModelsAdapter {
 
         public static ViewHolder setAsTag(View view) {
             final ViewHolder holder = new ViewHolder();
-            holder.title_TV = (TextView) view.findViewById(R.id.title_TV);
+            holder.title_TV = (TextView) view.findViewById(R.id.title);
             holder.balance_TV = (TextView) view.findViewById(R.id.balance_TV);
             holder.mainCurrencyBalance_TV = (TextView) view.findViewById(R.id.mainCurrencyBalance_TV);
             view.setTag(holder);

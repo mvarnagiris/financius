@@ -7,7 +7,7 @@
     android:paddingTop="@dimen/space_xlarge">
 
     <TextView
-        android:id="@+id/title_TV"
+        android:id="@+id/title"
         style="@style/Text.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

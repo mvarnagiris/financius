@@ -1,7 +1,7 @@
 package com.code44.finance.ui.dialogs;
 
-import android.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,7 +17,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
     protected static final String ARG_TITLE = "ARG_TITLE";
     protected static final String ARG_ARGS = "ARG_ARGS";
 
-    protected TextView title_TV;
+    protected TextView titleView;
 
     protected int requestCode;
 
@@ -33,15 +33,17 @@ public abstract class BaseDialogFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        title_TV = (TextView) view.findViewById(R.id.title_TV);
+        titleView = (TextView) view.findViewById(R.id.title);
 
         // Setup
         requestCode = getArguments().getInt(ARG_REQUEST_CODE);
-        final String title = getArguments().getString(ARG_TITLE);
-        if (StringUtils.isEmpty(title)) {
-            title_TV.setVisibility(View.GONE);
-        } else {
-            title_TV.setText(title);
+        if (titleView != null) {
+            final String title = getArguments().getString(ARG_TITLE);
+            if (StringUtils.isEmpty(title)) {
+                titleView.setVisibility(View.GONE);
+            } else {
+                titleView.setText(title);
+            }
         }
     }
 
@@ -50,7 +52,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
     }
 
     protected abstract static class Builder {
-        protected Bundle args;
+        protected final Bundle args;
 
         public Builder(int requestCode) {
             args = new Bundle();

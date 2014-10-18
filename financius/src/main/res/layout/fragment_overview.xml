@@ -9,7 +9,7 @@
         android:id="@+id/overviewGraphContainer_V"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:colorPrimary"
+        android:background="@color/primary"
         android:elevation="@dimen/elevation_header"
         tools:ignore="UnusedAttribute">
 
@@ -53,11 +53,11 @@
         android:id="@+id/newTransaction_FAB"
         android:layout_width="@dimen/btn_fab"
         android:layout_height="@dimen/btn_fab"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/overviewGraphContainer_V"
-        android:layout_marginEnd="@dimen/keyline"
+        android:layout_marginRight="@dimen/keyline"
         android:layout_marginTop="@dimen/btn_fab_half_negative"
         android:elevation="@dimen/elevation_fab"
         android:src="@drawable/ic_action_new"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="RtlHardcoded,UnusedAttribute" />
 </RelativeLayout>

@@ -79,7 +79,7 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
         if ((event.getRequestCode() != REQUEST_BACKUP_DESTINATION
                 && event.getRequestCode() != REQUEST_RESTORE_DESTINATION
                 && event.getRequestCode() != REQUEST_RESTORE_AND_MERGE_DESTINATION
-                && event.getRequestCode() != REQUEST_EXPORT_CSV_DESTINATION) || !event.isListItemClicked()) {
+                && event.getRequestCode() != REQUEST_EXPORT_CSV_DESTINATION) || event.isActionButtonClicked()) {
             return;
         }
 

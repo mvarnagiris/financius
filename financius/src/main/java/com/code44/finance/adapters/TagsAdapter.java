@@ -44,7 +44,7 @@ public class TagsAdapter extends BaseModelsAdapter {
         public static ViewHolder setAsTag(View view) {
             final ViewHolder holder = new ViewHolder();
             holder.select_CB = (CheckBox) view.findViewById(R.id.select_CB);
-            holder.title_TV = (TextView) view.findViewById(R.id.title_TV);
+            holder.title_TV = (TextView) view.findViewById(R.id.title);
             view.setTag(holder);
 
             return holder;

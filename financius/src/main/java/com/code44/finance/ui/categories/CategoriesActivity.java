@@ -1,10 +1,10 @@
 package com.code44.finance.ui.categories;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 
@@ -59,7 +59,7 @@ public class CategoriesActivity extends ModelListActivity {
             final ViewPager pager_VP = (ViewPager) findViewById(R.id.pager_VP);
 
             // Setup
-            final CategoriesPagerAdapter adapter = new CategoriesPagerAdapter(this, getFragmentManager());
+            final CategoriesPagerAdapter adapter = new CategoriesPagerAdapter(this, getSupportFragmentManager());
             pager_VP.setAdapter(adapter);
             pager_VP.setPageMargin(getResources().getDimensionPixelSize(R.dimen.divider));
             pager_VP.setPageMarginDrawable(new ColorDrawable(getResources().getColor(R.color.divider)));

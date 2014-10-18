@@ -1,10 +1,10 @@
 package com.code44.finance.ui.accounts;
 
 import android.content.Context;
-import android.content.CursorLoader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.CursorLoader;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +48,7 @@ public class AccountFragment extends ModelFragment<Account> {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        title_TV = (TextView) view.findViewById(R.id.title_TV);
+        title_TV = (TextView) view.findViewById(R.id.title);
         balance_TV = (TextView) view.findViewById(R.id.balance_TV);
         mainCurrencyBalance_TV = (TextView) view.findViewById(R.id.mainCurrencyBalance_TV);
         note_TV = (TextView) view.findViewById(R.id.note_TV);

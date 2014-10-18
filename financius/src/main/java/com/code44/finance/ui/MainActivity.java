@@ -1,9 +1,9 @@
 package com.code44.finance.ui;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -39,9 +39,9 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
             StartupService.start(this);
         }
 
-        final BaseFragment fragment = (BaseFragment) getFragmentManager().findFragmentByTag(FRAGMENT_CONTENT);
+        final BaseFragment fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_CONTENT);
         if (fragment == null) {
-            ((NavigationFragment) getFragmentManager().findFragmentById(R.id.navigation_F)).select(NavigationAdapter.NAV_ID_OVERVIEW);
+            ((NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_F)).select(NavigationAdapter.NAV_ID_OVERVIEW);
         }
 
         getEventBus().register(this);
@@ -66,8 +66,8 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
 
     @Override public void onBackPressed() {
         // Select OverviewFragment before quitting the app
-        if (!(getFragmentManager().findFragmentByTag(FRAGMENT_CONTENT) instanceof OverviewFragment)) {
-            ((NavigationFragment) getFragmentManager().findFragmentById(R.id.navigation_F)).select(NavigationAdapter.NAV_ID_OVERVIEW);
+        if (!(getSupportFragmentManager().findFragmentByTag(FRAGMENT_CONTENT) instanceof OverviewFragment)) {
+            ((NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_F)).select(NavigationAdapter.NAV_ID_OVERVIEW);
         } else {
             super.onBackPressed();
         }
@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
     }
 
     private void loadFragment(BaseFragment fragment) {
-        final FragmentManager fm = getFragmentManager();
+        final FragmentManager fm = getSupportFragmentManager();
         final FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.content, fragment, FRAGMENT_CONTENT);
         if (fm.findFragmentByTag(FRAGMENT_CONTENT) != null) {

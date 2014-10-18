@@ -22,7 +22,7 @@ import dagger.Provides;
                 StartupService.class
         }
 )
-public class AccountModule {
+class AccountModule {
     @Provides @Singleton public User provideUser(@ApplicationContext Context context, DBHelper dbHelper, GcmRegistration gcmRegistration, EventBus eventBus) {
         return new User(context, dbHelper, gcmRegistration, eventBus);
     }

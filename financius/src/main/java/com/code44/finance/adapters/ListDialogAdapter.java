@@ -118,7 +118,7 @@ public class ListDialogAdapter extends BaseAdapter {
         public final TextView title_TV;
 
         public ViewHolder(View view) {
-            title_TV = (TextView) view.findViewById(R.id.title_TV);
+            title_TV = (TextView) view.findViewById(R.id.title);
         }
     }
 }

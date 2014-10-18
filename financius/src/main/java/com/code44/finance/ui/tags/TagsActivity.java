@@ -1,8 +1,8 @@
 package com.code44.finance.ui.tags;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 import android.view.Menu;
 
 import com.code44.finance.R;

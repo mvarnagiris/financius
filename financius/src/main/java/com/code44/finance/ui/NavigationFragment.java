@@ -78,8 +78,6 @@ public class NavigationFragment extends BaseFragment implements AdapterView.OnIt
     @Subscribe public void onNavigationRequested(RequestNavigation requestNavigation) {
         if (isResumed()) {
             select(requestNavigation.getNavigationId());
-        } else {
-
         }
     }
 

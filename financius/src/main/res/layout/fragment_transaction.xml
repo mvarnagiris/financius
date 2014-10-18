@@ -12,7 +12,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?android:colorPrimary"
+            android:background="@color/primary"
             android:elevation="@dimen/elevation_header"
             android:padding="@dimen/keyline"
             tools:ignore="UnusedAttribute">

@@ -18,7 +18,7 @@ public class AboutActivity extends BaseActivity {
         getSupportActionBar().setTitle(R.string.about);
 
         if (savedInstanceState == null) {
-            getFragmentManager()
+            getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.content_V, AboutFragment.newInstance())
                     .commit();

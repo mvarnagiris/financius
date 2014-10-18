@@ -2,11 +2,11 @@ package com.code44.finance.ui.transactions;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.content.CursorLoader;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.view.LayoutInflater;
@@ -19,9 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.android.datetimepicker.date.DatePickerDialog;
-import com.android.datetimepicker.time.RadialPickerLayout;
-import com.android.datetimepicker.time.TimePickerDialog;
 import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
@@ -40,11 +37,14 @@ import com.code44.finance.ui.ModelEditFragment;
 import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.accounts.AccountsActivity;
 import com.code44.finance.ui.categories.CategoriesActivity;
+import com.code44.finance.ui.dialogs.DatePickerDialog;
+import com.code44.finance.ui.dialogs.TimePickerDialog;
 import com.code44.finance.ui.tags.TagsActivity;
 import com.code44.finance.utils.FieldValidationUtils;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.TextBackgroundSpan;
 import com.code44.finance.utils.transaction.TransactionAutoComplete;
+import com.squareup.otto.Subscribe;
 
 import net.danlew.android.joda.DateUtils;
 
@@ -55,15 +55,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class TransactionEditFragment extends ModelEditFragment<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, TransactionAutoComplete.TransactionAutoCompleteListener {
+public class TransactionEditFragment extends ModelEditFragment<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TransactionAutoComplete.TransactionAutoCompleteListener {
     private static final int REQUEST_AMOUNT = 1;
     private static final int REQUEST_ACCOUNT_FROM = 2;
     private static final int REQUEST_ACCOUNT_TO = 3;
     private static final int REQUEST_CATEGORY = 4;
     private static final int REQUEST_TAGS = 5;
-
-    private static final String FRAGMENT_DATE_DIALOG = "FRAGMENT_DATE_DIALOG";
-    private static final String FRAGMENT_TIME_DIALOG = "FRAGMENT_TIME_DIALOG";
+    private static final int REQUEST_DATE = 6;
+    private static final int REQUEST_TIME = 7;
 
     @Inject @Main Currency mainCurrency;
     @Inject TransactionAutoComplete transactionAutoComplete;
@@ -130,33 +129,13 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
     @Override public void onResume() {
         super.onResume();
-
-        final DatePickerDialog dateDialog_F = (DatePickerDialog) getFragmentManager().findFragmentByTag(FRAGMENT_DATE_DIALOG);
-        if (dateDialog_F != null) {
-            dateDialog_F.setOnDateSetListener(this);
-        }
-
-        final TimePickerDialog timeDialog_F = (TimePickerDialog) getFragmentManager().findFragmentByTag(FRAGMENT_TIME_DIALOG);
-        if (timeDialog_F != null) {
-            timeDialog_F.setOnTimeSetListener(this);
-        }
-
+        getEventBus().register(this);
         transactionAutoComplete.setListener(this);
     }
 
     @Override public void onPause() {
         super.onPause();
-
-        final DatePickerDialog dateDialog_F = (DatePickerDialog) getFragmentManager().findFragmentByTag(FRAGMENT_DATE_DIALOG);
-        if (dateDialog_F != null) {
-            dateDialog_F.setOnDateSetListener(null);
-        }
-
-        final TimePickerDialog timeDialog_F = (TimePickerDialog) getFragmentManager().findFragmentByTag(FRAGMENT_TIME_DIALOG);
-        if (timeDialog_F != null) {
-            timeDialog_F.setOnTimeSetListener(null);
-        }
-
+        getEventBus().unregister(this);
         transactionAutoComplete.setListener(null);
     }
 
@@ -300,28 +279,12 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 TagsActivity.startMultiSelect(this, REQUEST_TAGS, model.getTags());
                 break;
             case R.id.date_B:
-                final DateTime date = new DateTime(model.getDate());
-                DatePickerDialog.newInstance(this, date.getYear(), date.getMonthOfYear() - 1, date.getDayOfMonth()).show(getFragmentManager(), FRAGMENT_DATE_DIALOG);
+                DatePickerDialog.show(getChildFragmentManager(), REQUEST_DATE, model.getDate());
                 break;
             case R.id.time_B:
-                final DateTime time = new DateTime(model.getDate());
-                TimePickerDialog.newInstance(this, time.getHourOfDay(), time.getMinuteOfHour(), true).show(getFragmentManager(), FRAGMENT_TIME_DIALOG);
+                TimePickerDialog.show(getChildFragmentManager(), REQUEST_TIME, model.getDate());
                 break;
         }
-    }
-
-    @Override public void onDateSet(DatePickerDialog dialog, int year, int month, int dayOfMonth) {
-        final DateTime date = new DateTime(model.getDate()).withYear(year).withMonthOfYear(month + 1).withDayOfMonth(dayOfMonth);
-        model.setDate(date.getMillis());
-        onModelLoaded(model);
-        transactionAutoComplete.setDate(model.getDate());
-    }
-
-    @Override public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
-        final DateTime date = new DateTime(model.getDate()).withHourOfDay(hourOfDay).withMinuteOfHour(minute);
-        model.setDate(date.getMillis());
-        onModelLoaded(model);
-        transactionAutoComplete.setDate(model.getDate());
     }
 
     @Override public void onCheckedChanged(CompoundButton view, boolean checked) {
@@ -359,6 +322,25 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
     @Override public void onTransactionAutoCompleteTags(List<Tag> tags) {
 
+    }
+
+    @Subscribe public void onDateSet(DatePickerDialog.DateSelected dateSelected) {
+        final DateTime date = new DateTime(model.getDate())
+                .withYear(dateSelected.getYear())
+                .withMonthOfYear(dateSelected.getMonthOfYear())
+                .withDayOfMonth(dateSelected.getDayOfMonth());
+        model.setDate(date.getMillis());
+        onModelLoaded(model);
+        transactionAutoComplete.setDate(model.getDate());
+    }
+
+    @Subscribe public void onTimeSet(TimePickerDialog.TimeSelected timeSelected) {
+        final DateTime date = new DateTime(model.getDate())
+                .withHourOfDay(timeSelected.getHourOfDay())
+                .withMinuteOfHour(timeSelected.getMinute());
+        model.setDate(date.getMillis());
+        onModelLoaded(model);
+        transactionAutoComplete.setDate(model.getDate());
     }
 
     private void toggleTransactionType() {

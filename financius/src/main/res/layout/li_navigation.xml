@@ -7,7 +7,7 @@
     tools:ignore="RtlHardcoded">
 
     <TextView
-        android:id="@+id/title_TV"
+        android:id="@+id/title"
         style="@style/Text.Body2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

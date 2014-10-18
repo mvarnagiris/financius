@@ -3,7 +3,6 @@ package com.code44.finance.data.providers;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.code44.finance.common.model.AccountOwner;
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;

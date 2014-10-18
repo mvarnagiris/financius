@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    style="@style/ScrollView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -31,7 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/backup"
-                    android:textColor="?android:colorPrimary" />
+                    android:textColor="@color/primary" />
 
                 <Button
                     android:id="@+id/backup_B"
@@ -85,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/csv"
-                    android:textColor="?android:colorPrimary" />
+                    android:textColor="@color/primary" />
 
                 <Button
                     android:id="@+id/exportCsv_B"
