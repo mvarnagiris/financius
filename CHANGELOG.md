@@ -1,4 +1,4 @@
-###Version: 1.0.0
+###Version: 0.10.0
 - ```new``` Completely new UI.
 - ```new``` Tags for transactions.
 - ```change``` No more sub-categories. Use tags instead.
