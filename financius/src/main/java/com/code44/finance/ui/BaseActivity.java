@@ -81,6 +81,9 @@ public class BaseActivity extends ActionBarActivity {
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
             case R.id.action_settings:
                 SettingsActivity.start(this);
                 return true;

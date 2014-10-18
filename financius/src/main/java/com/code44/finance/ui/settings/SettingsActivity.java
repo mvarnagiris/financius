@@ -62,7 +62,9 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
-        return false;
+        super.onCreateOptionsMenu(menu);
+        menu.clear();
+        return true;
     }
 
     @Override protected void onPause() {

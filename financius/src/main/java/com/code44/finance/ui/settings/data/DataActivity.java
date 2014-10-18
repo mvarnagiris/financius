@@ -23,6 +23,8 @@ public class DataActivity extends BaseActivity {
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
-        return false;
+        super.onCreateOptionsMenu(menu);
+        menu.clear();
+        return true;
     }
 }
