@@ -199,7 +199,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     }
 
     @Override public boolean onSave(Context context, Transaction model) {
-        model.setTransactionState(model.getTransactionState() == TransactionState.CONFIRMED && canBeConfirmed(model, false) ? TransactionState.CONFIRMED : TransactionState.PENDING);
+        model.setTransactionState(model.getTransactionState() == TransactionState.Confirmed && canBeConfirmed(model, false) ? TransactionState.Confirmed : TransactionState.Pending);
         DataStore.insert().values(model.asValues()).into(context, TransactionsProvider.uriTransactions());
         return true;
     }
@@ -225,21 +225,21 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
     @Override protected void onModelLoaded(Transaction transaction) {
         switch (transaction.getTransactionType()) {
-            case EXPENSE:
+            case Expense:
                 accountFrom_B.setVisibility(View.VISIBLE);
                 accountTo_B.setVisibility(View.GONE);
                 color_IV.setVisibility(View.VISIBLE);
                 category_B.setVisibility(View.VISIBLE);
                 categoryType_IB.setImageResource(R.drawable.ic_category_type_expense);
                 break;
-            case INCOME:
+            case Income:
                 accountFrom_B.setVisibility(View.GONE);
                 accountTo_B.setVisibility(View.VISIBLE);
                 color_IV.setVisibility(View.VISIBLE);
                 category_B.setVisibility(View.VISIBLE);
                 categoryType_IB.setImageResource(R.drawable.ic_category_type_income);
                 break;
-            case TRANSFER:
+            case Transfer:
                 accountFrom_B.setVisibility(View.VISIBLE);
                 accountTo_B.setVisibility(View.VISIBLE);
                 color_IV.setVisibility(View.GONE);
@@ -257,7 +257,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         color_IV.setColorFilter(getCategoryColor(transaction));
         category_B.setText(transaction.getCategory() == null ? null : transaction.getCategory().getTitle());
         note_ET.setText(transaction.getNote());
-        confirmed_CB.setChecked(transaction.getTransactionState() == TransactionState.CONFIRMED && canBeConfirmed(transaction, false));
+        confirmed_CB.setChecked(transaction.getTransactionState() == TransactionState.Confirmed && canBeConfirmed(transaction, false));
         includeInReports_CB.setChecked(transaction.includeInReports());
         save_B.setText(confirmed_CB.isChecked() ? R.string.save : R.string.pending);
 
@@ -328,7 +328,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         switch (view.getId()) {
             case R.id.confirmed_CB:
                 if (canBeConfirmed(model, true)) {
-                    model.setTransactionState(checked ? TransactionState.CONFIRMED : TransactionState.PENDING);
+                    model.setTransactionState(checked ? TransactionState.Confirmed : TransactionState.Pending);
                 }
                 onModelLoaded(model);
                 break;
@@ -363,14 +363,14 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
     private void toggleTransactionType() {
         switch (model.getTransactionType()) {
-            case EXPENSE:
-                model.setTransactionType(TransactionType.INCOME);
+            case Expense:
+                model.setTransactionType(TransactionType.Income);
                 break;
-            case INCOME:
-                model.setTransactionType(TransactionType.TRANSFER);
+            case Income:
+                model.setTransactionType(TransactionType.Transfer);
                 break;
-            case TRANSFER:
-                model.setTransactionType(TransactionType.EXPENSE);
+            case Transfer:
+                model.setTransactionType(TransactionType.Expense);
                 break;
         }
         model.setCategory(null);
@@ -381,13 +381,13 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     private Currency getAmountCurrency(Transaction transaction) {
         Currency transactionCurrency;
         switch (transaction.getTransactionType()) {
-            case EXPENSE:
+            case Expense:
                 transactionCurrency = transaction.getAccountFrom() == null ? null : transaction.getAccountFrom().getCurrency();
                 break;
-            case INCOME:
+            case Income:
                 transactionCurrency = transaction.getAccountTo() == null ? null : transaction.getAccountTo().getCurrency();
                 break;
-            case TRANSFER:
+            case Transfer:
                 transactionCurrency = transaction.getAccountFrom() == null ? null : transaction.getAccountFrom().getCurrency();
                 break;
             default:
@@ -405,11 +405,11 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     private int getCategoryColor(Transaction transaction) {
         if (transaction.getCategory() == null) {
             switch (transaction.getTransactionType()) {
-                case EXPENSE:
+                case Expense:
                     return getResources().getColor(R.color.text_negative);
-                case INCOME:
+                case Income:
                     return getResources().getColor(R.color.text_positive);
-                case TRANSFER:
+                case Transfer:
                     return getResources().getColor(R.color.text_neutral);
                 default:
                     throw new IllegalArgumentException("Transaction type " + transaction.getTransactionType() + " is not supported.");
@@ -423,13 +423,13 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         boolean canBeConfirmed = validateAmount(showErrors);
 
         switch (model.getTransactionType()) {
-            case EXPENSE:
+            case Expense:
                 canBeConfirmed = canBeConfirmed && validateAccountFrom(showErrors);
                 break;
-            case INCOME:
+            case Income:
                 canBeConfirmed = canBeConfirmed && validateAccountTo(showErrors);
                 break;
-            case TRANSFER:
+            case Transfer:
                 canBeConfirmed = canBeConfirmed && validateAccountFrom(showErrors);
                 canBeConfirmed = canBeConfirmed && validateAccountTo(showErrors);
                 break;

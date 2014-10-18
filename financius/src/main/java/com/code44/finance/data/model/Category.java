@@ -31,7 +31,7 @@ public class Category extends BaseModel<CategoryEntity> {
         super();
         setTitle(null);
         setColor(0);
-        setTransactionType(TransactionType.EXPENSE);
+        setTransactionType(TransactionType.Expense);
         setSortOrder(0);
     }
 

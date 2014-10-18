@@ -14,7 +14,7 @@ public class MoneyFormatter {
 
     public static String format(Transaction transaction, Currency mainCurrency) {
         final Account account;
-        if (transaction.getTransactionType() == TransactionType.INCOME) {
+        if (transaction.getTransactionType() == TransactionType.Income) {
             account = transaction.getAccountTo();
         } else {
             account = transaction.getAccountFrom();

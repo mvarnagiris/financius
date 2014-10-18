@@ -40,9 +40,9 @@ public class Currency extends BaseModel<CurrencyEntity> {
         super();
         setCode(null);
         setSymbol(null);
-        setSymbolPosition(SymbolPosition.FAR_RIGHT);
-        setDecimalSeparator(DecimalSeparator.DOT);
-        setGroupSeparator(GroupSeparator.COMMA);
+        setSymbolPosition(SymbolPosition.FarRight);
+        setDecimalSeparator(DecimalSeparator.Dot);
+        setGroupSeparator(GroupSeparator.Comma);
         setDecimalCount(2);
         setDefault(false);
         setExchangeRate(1.0);

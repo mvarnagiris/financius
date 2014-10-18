@@ -92,7 +92,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         holder.subtitle_TV.setText(getSubtitle(transaction));
         bindViewForTransactionType(holder, transaction);
 
-        if (transaction.getTransactionState() == TransactionState.PENDING) {
+        if (transaction.getTransactionState() == TransactionState.Pending) {
             bindViewPending(holder, transaction);
         }
     }
@@ -110,7 +110,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
 
         final String title;
         final TransactionState transactionState = TransactionState.fromInt(getCursor().getInt(getCursor().getColumnIndex(Tables.Transactions.STATE.getName())));
-        if (transactionState == TransactionState.CONFIRMED) {
+        if (transactionState == TransactionState.Confirmed) {
             final long date = getCursor().getLong(getCursor().getColumnIndex(Tables.Transactions.DATE.getName()));
             final Period period = IntervalHelperDeprecated.getPeriod(interval.getLength(), interval.getType());
             final Interval interval = IntervalHelperDeprecated.getInterval(date, period, this.interval.getType());
@@ -127,7 +127,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
     @Override public long getHeaderId(int position) {
         getCursor().moveToPosition(position);
         final TransactionState transactionState = TransactionState.fromInt(getCursor().getInt(getCursor().getColumnIndex(Tables.Transactions.STATE.getName())));
-        if (transactionState == TransactionState.PENDING) {
+        if (transactionState == TransactionState.Pending) {
             return 0;
         }
 
@@ -148,11 +148,11 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
                 return transaction.getCategory().getTitle();
             } else {
                 switch (transaction.getTransactionType()) {
-                    case EXPENSE:
+                    case Expense:
                         return unknownExpenseTitle;
-                    case INCOME:
+                    case Income:
                         return unknownIncomeTitle;
-                    case TRANSFER:
+                    case Transfer:
                         return unknownTransferTitle;
                     default:
                         throw new IllegalArgumentException("Transaction type " + transaction.getTransactionType() + " is not supported.");
@@ -179,11 +179,11 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
     private int getCategoryColor(Transaction transaction) {
         if (transaction.getCategory() == null) {
             switch (transaction.getTransactionType()) {
-                case EXPENSE:
+                case Expense:
                     return unknownExpenseColor;
-                case INCOME:
+                case Income:
                     return unknownIncomeColor;
-                case TRANSFER:
+                case Transfer:
                     return unknownTransferColor;
                 default:
                     throw new IllegalArgumentException("Transaction type " + transaction.getTransactionType() + " is not supported.");
@@ -197,15 +197,15 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         final String account;
         final int amountColor;
         switch (transaction.getTransactionType()) {
-            case EXPENSE:
+            case Expense:
                 account = transaction.getAccountFrom() != null ? transaction.getAccountFrom().getTitle() : UNKNOWN_VALUE;
                 amountColor = expenseAmountColor;
                 break;
-            case INCOME:
+            case Income:
                 account = transaction.getAccountTo() != null ? transaction.getAccountTo().getTitle() : UNKNOWN_VALUE;
                 amountColor = incomeAmountColor;
                 break;
-            case TRANSFER:
+            case Transfer:
                 account = (transaction.getAccountFrom() != null ? transaction.getAccountFrom().getTitle() : UNKNOWN_VALUE) + TRANSFER_SYMBOL + (transaction.getAccountTo() != null ? transaction.getAccountTo().getTitle() : UNKNOWN_VALUE);
                 amountColor = transferAmountColor;
                 break;
@@ -219,7 +219,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
 
     private void bindViewPending(ViewHolder holder, Transaction transaction) {
         final boolean isCategoryUnknown = transaction.getCategory() == null || !transaction.getCategory().hasId();
-        final boolean isTransfer = transaction.getTransactionType() == TransactionType.TRANSFER;
+        final boolean isTransfer = transaction.getTransactionType() == TransactionType.Transfer;
 
         if (isCategoryUnknown && !isTransfer) {
             holder.title_TV.setTextColor(weakColor);
@@ -232,8 +232,8 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
 
         final boolean isAccountFromUnknown = transaction.getAccountFrom() == null || !transaction.getAccountFrom().hasId();
         final boolean isAccountToUnknown = transaction.getAccountTo() == null || !transaction.getAccountTo().hasId();
-        final boolean isExpense = transaction.getTransactionType() == TransactionType.EXPENSE;
-        final boolean isIncome = transaction.getTransactionType() == TransactionType.INCOME;
+        final boolean isExpense = transaction.getTransactionType() == TransactionType.Expense;
+        final boolean isIncome = transaction.getTransactionType() == TransactionType.Income;
         if (isExpense) {
             if (isAccountFromUnknown) {
                 holder.account_TV.setText(UNKNOWN_VALUE);
@@ -275,7 +275,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         final int iAccountFromCurrencyExchangeRate = cursor.getColumnIndex(Tables.Currencies.EXCHANGE_RATE.getName(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY));
         final int iIncludeInReports = cursor.getColumnIndex(Tables.Transactions.INCLUDE_IN_REPORTS.getName());
         do {
-            if (TransactionType.fromInt(cursor.getInt(iTransactionType)) == TransactionType.EXPENSE && cursor.getInt(iIncludeInReports) != 0) {
+            if (TransactionType.fromInt(cursor.getInt(iTransactionType)) == TransactionType.Expense && cursor.getInt(iIncludeInReports) != 0) {
                 final long amount = cursor.getLong(iAmount);
                 if (mainCurrency.getId().equals(cursor.getString(iAccountFromCurrencyServerId))) {
                     totalExpense += amount;

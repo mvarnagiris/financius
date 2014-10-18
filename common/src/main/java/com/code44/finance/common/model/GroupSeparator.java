@@ -1,10 +1,10 @@
 package com.code44.finance.common.model;
 
 public enum GroupSeparator {
-    NONE(""),
-    DOT("."),
-    COMMA(","),
-    SPACE(" ");
+    None(""),
+    Dot("."),
+    Comma(","),
+    Space(" ");
 
     private final String symbol;
 
@@ -15,16 +15,16 @@ public enum GroupSeparator {
     public static GroupSeparator fromSymbol(String symbol) {
         switch (symbol) {
             case "":
-                return NONE;
+                return None;
 
             case ".":
-                return DOT;
+                return Dot;
 
             case ",":
-                return COMMA;
+                return Comma;
 
             case " ":
-                return SPACE;
+                return Space;
 
             default:
                 throw new IllegalArgumentException("Symbol '" + symbol + "' is not supported.");

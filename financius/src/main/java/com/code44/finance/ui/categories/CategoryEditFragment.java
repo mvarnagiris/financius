@@ -44,7 +44,7 @@ public class CategoryEditFragment extends ModelEditFragment<Category> implements
         super.onCreate(savedInstanceState);
         transactionType = (TransactionType) getArguments().getSerializable(ARG_CATEGORY_TYPE);
         if (transactionType == null) {
-            transactionType = TransactionType.EXPENSE;
+            transactionType = TransactionType.Expense;
         }
     }
 

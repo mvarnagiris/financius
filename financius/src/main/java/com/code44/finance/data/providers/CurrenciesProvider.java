@@ -68,7 +68,7 @@ public class CurrenciesProvider extends BaseModelProvider {
         super.onBeforeDeleteItems(uri, selection, selectionArgs, modelState, outExtras);
 
         final List<String> affectedIds = getIdList(getIdColumn(), selection, selectionArgs);
-        if (modelState.equals(ModelState.DELETED_UNDO) && affectedIds.contains(mainCurrency.getId())) {
+        if (modelState.equals(ModelState.DeletedUndo) && affectedIds.contains(mainCurrency.getId())) {
             throw new IllegalArgumentException("Cannot delete default currency.");
         }
         outExtras.put("affectedIds", affectedIds);
@@ -108,7 +108,7 @@ public class CurrenciesProvider extends BaseModelProvider {
             ContentValues newValues = new ContentValues();
             newValues.put(Tables.Currencies.EXCHANGE_RATE.getName(), 1.0);
             newValues.put(Tables.Currencies.IS_DEFAULT.getName(), false);
-            newValues.put(Tables.Currencies.SYNC_STATE.getName(), SyncState.LOCAL_CHANGES.asInt());
+            newValues.put(Tables.Currencies.SYNC_STATE.getName(), SyncState.LocalChanges.asInt());
 
             getDatabase().update(Tables.Currencies.TABLE_NAME, newValues, null, null);
             getContext().startService(new Intent(getContext(), StartupService.class));

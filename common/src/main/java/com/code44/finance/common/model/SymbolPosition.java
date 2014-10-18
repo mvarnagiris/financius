@@ -1,10 +1,10 @@
 package com.code44.finance.common.model;
 
 public enum SymbolPosition {
-    CLOSE_RIGHT(SymbolPosition.VALUE_CLOSE_RIGHT),
-    FAR_RIGHT(SymbolPosition.VALUE_FAR_RIGHT),
-    CLOSE_LEFT(SymbolPosition.VALUE_CLOSE_LEFT),
-    FAR_LEFT(SymbolPosition.VALUE_FAR_LEFT);
+    CloseRight(SymbolPosition.VALUE_CLOSE_RIGHT),
+    FarRight(SymbolPosition.VALUE_FAR_RIGHT),
+    CloseLeft(SymbolPosition.VALUE_CLOSE_LEFT),
+    FarLeft(SymbolPosition.VALUE_FAR_LEFT);
 
     private static final int VALUE_CLOSE_RIGHT = 1;
     private static final int VALUE_FAR_RIGHT = 2;
@@ -20,16 +20,16 @@ public enum SymbolPosition {
     public static SymbolPosition fromInt(int value) {
         switch (value) {
             case VALUE_CLOSE_RIGHT:
-                return CLOSE_RIGHT;
+                return CloseRight;
 
             case VALUE_FAR_RIGHT:
-                return FAR_RIGHT;
+                return FarRight;
 
             case VALUE_CLOSE_LEFT:
-                return CLOSE_LEFT;
+                return CloseLeft;
 
             case VALUE_FAR_LEFT:
-                return FAR_LEFT;
+                return FarLeft;
 
             default:
                 throw new IllegalArgumentException("Value " + value + " is not supported.");

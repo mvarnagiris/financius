@@ -1,9 +1,9 @@
 package com.code44.finance.common.model;
 
 public enum ModelState {
-    NORMAL(ModelState.VALUE_NORMAL),
-    DELETED(ModelState.VALUE_DELETED),
-    DELETED_UNDO(ModelState.VALUE_DELETED_UNDO);
+    Normal(ModelState.VALUE_NORMAL),
+    Deleted(ModelState.VALUE_DELETED),
+    DeletedUndo(ModelState.VALUE_DELETED_UNDO);
 
     private static final int VALUE_NORMAL = 1;
     private static final int VALUE_DELETED = 2;
@@ -18,13 +18,13 @@ public enum ModelState {
     public static ModelState fromInt(int value) {
         switch (value) {
             case VALUE_NORMAL:
-                return NORMAL;
+                return Normal;
 
             case VALUE_DELETED:
-                return DELETED;
+                return Deleted;
 
             case VALUE_DELETED_UNDO:
-                return DELETED_UNDO;
+                return DeletedUndo;
 
             default:
                 throw new IllegalArgumentException("Value " + value + " is not supported.");

@@ -67,7 +67,7 @@ public class TagsProvider extends BaseModelProvider {
                 } while (cursor.moveToNext());
 
                 final Query query = Query.create()
-                        .selection(Tables.Transactions.MODEL_STATE + "<>? and ", ModelState.DELETED.asString())
+                        .selection(Tables.Transactions.MODEL_STATE + "<>? and ", ModelState.Deleted.asString())
                         .selectionInClause(Tables.Transactions.ID.getName(), transactionIds);
                 getContext().getContentResolver().delete(transactionsUri, query.getSelection(), query.getSelectionArgs());
             }

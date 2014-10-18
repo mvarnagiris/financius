@@ -169,13 +169,13 @@ public abstract class BaseModelProvider extends BaseProvider {
 
                 switch (deleteMode) {
                     case "delete":
-                        modelState = ModelState.DELETED_UNDO;
+                        modelState = ModelState.DeletedUndo;
                         break;
                     case "undo":
-                        modelState = ModelState.NORMAL;
+                        modelState = ModelState.Normal;
                         break;
                     case "commit":
-                        modelState = ModelState.DELETED;
+                        modelState = ModelState.Deleted;
                         break;
                     default:
                         throw new IllegalArgumentException(ProviderUtils.QueryParameterKey.DELETE_MODE.getKeyName() + "=" + deleteMode + " is not supported.");
@@ -200,7 +200,7 @@ public abstract class BaseModelProvider extends BaseProvider {
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
-        if (modelState != ModelState.DELETED_UNDO) {
+        if (modelState != ModelState.DeletedUndo) {
             api.sync();
         }
 
@@ -265,9 +265,9 @@ public abstract class BaseModelProvider extends BaseProvider {
 
     protected long insertItem(Uri uri, ContentValues values, String serverId) {
         if (values.containsKey(BaseColumns._ID)) {
-            values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, SyncState.LOCAL_CHANGES.asInt());
+            values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, SyncState.LocalChanges.asInt());
         } else {
-            values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, SyncState.NONE.asInt());
+            values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, SyncState.None.asInt());
         }
 
         final SQLiteDatabase database = getDatabase();
@@ -281,7 +281,7 @@ public abstract class BaseModelProvider extends BaseProvider {
     }
 
     protected int updateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, SyncState.LOCAL_CHANGES.asInt());
+        values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, SyncState.LocalChanges.asInt());
         return getDatabase().update(getModelTable(), values, selection, selectionArgs);
     }
 
@@ -294,18 +294,18 @@ public abstract class BaseModelProvider extends BaseProvider {
     protected int deleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState) {
         final ContentValues values = new ContentValues();
         values.put(getModelTable() + "_" + Tables.SUFFIX_MODEL_STATE, modelState.asInt());
-        if (modelState == ModelState.DELETED) {
-            values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, SyncState.LOCAL_CHANGES.asInt());
+        if (modelState == ModelState.Deleted) {
+            values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, SyncState.LocalChanges.asInt());
         }
 
         final String whereClause;
         final String[] whereArgs;
-        if (modelState == ModelState.DELETED_UNDO) {
+        if (modelState == ModelState.DeletedUndo) {
             whereClause = selection;
             whereArgs = selectionArgs;
         } else {
             whereClause = getModelTable() + "_" + Tables.SUFFIX_MODEL_STATE + "=?";
-            whereArgs = new String[]{String.valueOf(ModelState.DELETED_UNDO.asInt())};
+            whereArgs = new String[]{String.valueOf(ModelState.DeletedUndo.asInt())};
         }
 
         return getDatabase().update(getModelTable(), values, whereClause, whereArgs);
@@ -372,15 +372,15 @@ public abstract class BaseModelProvider extends BaseProvider {
     protected Uri uriForDeleteFromItemState(Uri uri, ModelState modelState) {
         final String deleteMode;
         switch (modelState) {
-            case NORMAL:
+            case Normal:
                 deleteMode = "undo";
                 break;
 
-            case DELETED_UNDO:
+            case DeletedUndo:
                 deleteMode = "delete";
                 break;
 
-            case DELETED:
+            case Deleted:
                 deleteMode = "commit";
                 break;
 

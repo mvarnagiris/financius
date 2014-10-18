@@ -21,9 +21,9 @@ public class CategoriesPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return CategoriesFragment.newInstance(ModelListFragment.Mode.VIEW, TransactionType.EXPENSE);
+            return CategoriesFragment.newInstance(ModelListFragment.Mode.VIEW, TransactionType.Expense);
         } else {
-            return CategoriesFragment.newInstance(ModelListFragment.Mode.VIEW, TransactionType.INCOME);
+            return CategoriesFragment.newInstance(ModelListFragment.Mode.VIEW, TransactionType.Income);
         }
     }
 

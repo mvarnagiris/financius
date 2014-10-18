@@ -85,7 +85,7 @@ public class LastTransactionAutoComplete extends TransactionAutoComplete {
 
         @Override public void run() {
             final Cursor cursor = Tables.Transactions.getQuery()
-                    .selection(" and " + Tables.Transactions.STATE + "=?", TransactionState.CONFIRMED.asString())
+                    .selection(" and " + Tables.Transactions.STATE + "=?", TransactionState.Confirmed.asString())
                     .selection(" and " + Tables.Transactions.TYPE + "=?", transaction.getTransactionType().asString())
                     .limit(1)
                     .from(context, TransactionsProvider.uriTransactions())

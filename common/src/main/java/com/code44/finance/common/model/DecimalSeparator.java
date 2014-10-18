@@ -1,9 +1,9 @@
 package com.code44.finance.common.model;
 
 public enum DecimalSeparator {
-    DOT("."),
-    COMMA(","),
-    SPACE(" ");
+    Dot("."),
+    Comma(","),
+    Space(" ");
 
     private final String symbol;
 
@@ -14,13 +14,13 @@ public enum DecimalSeparator {
     public static DecimalSeparator fromSymbol(String symbol) {
         switch (symbol) {
             case ".":
-                return DOT;
+                return Dot;
 
             case ",":
-                return COMMA;
+                return Comma;
 
             case " ":
-                return SPACE;
+                return Space;
 
             default:
                 throw new IllegalArgumentException("Symbol '" + symbol + "' is not supported.");

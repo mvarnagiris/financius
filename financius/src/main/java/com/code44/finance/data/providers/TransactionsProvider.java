@@ -148,9 +148,9 @@ public class TransactionsProvider extends BaseModelProvider {
                         " when " + Tables.Transactions.ACCOUNT_FROM_ID + "=? then -" + Tables.Transactions.AMOUNT + "" +
                         " when " + Tables.Transactions.TYPE + "=? then " + Tables.Transactions.AMOUNT + "*" + Tables.Transactions.EXCHANGE_RATE +
                         " else " + Tables.Transactions.AMOUNT + " end)")
-                .args(accountId, TransactionType.TRANSFER.asString())
-                .selection(Tables.Transactions.MODEL_STATE + "=?", ModelState.NORMAL.asString())
-                .selection(" and " + Tables.Transactions.STATE + "=?", TransactionState.CONFIRMED.asString())
+                .args(accountId, TransactionType.Transfer.asString())
+                .selection(Tables.Transactions.MODEL_STATE + "=?", ModelState.Normal.asString())
+                .selection(" and " + Tables.Transactions.STATE + "=?", TransactionState.Confirmed.asString())
                 .selection(" and (" + Tables.Transactions.ACCOUNT_FROM_ID + "=? or " + Tables.Transactions.ACCOUNT_TO_ID + "=?)", accountId, accountId)
                 .from(getDatabase(), Tables.Transactions.TABLE_NAME)
                 .execute();
@@ -172,7 +172,7 @@ public class TransactionsProvider extends BaseModelProvider {
     private void updateAllAccountsBalances() {
         final Cursor cursor = Query.create()
                 .projection(Tables.Accounts.ID.getName())
-                .selection(Tables.Accounts.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
+                .selection(Tables.Accounts.MODEL_STATE + "=?", String.valueOf(ModelState.Normal.asInt()))
                 .from(getDatabase(), Tables.Accounts.TABLE_NAME)
                 .execute();
         if (cursor.moveToFirst()) {

@@ -97,31 +97,31 @@ public class DeleteDialogFragment extends AlertDialogFragment implements LoaderM
             case LOADER_CURRENCIES:
                 return Query.create()
                         .projectionLocalId(Tables.Currencies.LOCAL_ID)
-                        .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
+                        .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.DeletedUndo.asInt()))
                         .asCursorLoader(getActivity(), CurrenciesProvider.uriCurrencies());
 
             case LOADER_ACCOUNTS:
                 return Query.create()
                         .projectionLocalId(Tables.Accounts.LOCAL_ID)
-                        .selection(Tables.Accounts.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
+                        .selection(Tables.Accounts.MODEL_STATE + "=?", String.valueOf(ModelState.DeletedUndo.asInt()))
                         .asCursorLoader(getActivity(), AccountsProvider.uriAccounts());
 
             case LOADER_CATEGORIES:
                 return Query.create()
                         .projectionLocalId(Tables.Categories.LOCAL_ID)
-                        .selection(Tables.Categories.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
+                        .selection(Tables.Categories.MODEL_STATE + "=?", String.valueOf(ModelState.DeletedUndo.asInt()))
                         .asCursorLoader(getActivity(), CategoriesProvider.uriCategories());
 
             case LOADER_TAGS:
                 return Query.create()
                         .projectionLocalId(Tables.Tags.LOCAL_ID)
-                        .selection(Tables.Tags.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
+                        .selection(Tables.Tags.MODEL_STATE + "=?", String.valueOf(ModelState.DeletedUndo.asInt()))
                         .asCursorLoader(getActivity(), TagsProvider.uriTags());
 
             case LOADER_TRANSACTIONS:
                 return Query.create()
                         .projectionLocalId(Tables.Transactions.LOCAL_ID)
-                        .selection(Tables.Transactions.MODEL_STATE + "=?", String.valueOf(ModelState.DELETED_UNDO.asInt()))
+                        .selection(Tables.Transactions.MODEL_STATE + "=?", String.valueOf(ModelState.DeletedUndo.asInt()))
                         .asCursorLoader(getActivity(), TransactionsProvider.uriTransactions().buildUpon().appendQueryParameter(TransactionsProvider.URI_PARAM_JOIN_TABLE, "").build());
         }
         return null;

@@ -24,7 +24,7 @@ public class BaseEntity {
     private long editTimestamp;
 
     protected BaseEntity() {
-        setModelState(ModelState.NORMAL);
+        setModelState(ModelState.Normal);
     }
 
     public void onCreate() {

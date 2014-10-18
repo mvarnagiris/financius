@@ -32,7 +32,7 @@ public class CategoriesProviderTest extends BaseContentProviderTestCase {
         final Cursor cursor = queryTransactionsCursor();
 
         assertEquals(1, cursor.getCount());
-        assertEquals(ModelState.DELETED_UNDO, Transaction.from(cursor).getModelState());
+        assertEquals(ModelState.DeletedUndo, Transaction.from(cursor).getModelState());
         IOUtils.closeQuietly(cursor);
     }
 

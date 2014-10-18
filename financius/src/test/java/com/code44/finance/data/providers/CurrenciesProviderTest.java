@@ -60,7 +60,7 @@ public class CurrenciesProviderTest extends BaseContentProviderTestCase {
         final Cursor cursor = queryAccountsCursor();
 
         assertEquals(1, cursor.getCount());
-        assertEquals(ModelState.DELETED_UNDO, Account.from(cursor).getModelState());
+        assertEquals(ModelState.DeletedUndo, Account.from(cursor).getModelState());
         IOUtils.closeQuietly(cursor);
     }
 

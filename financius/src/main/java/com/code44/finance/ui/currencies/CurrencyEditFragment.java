@@ -431,11 +431,11 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
 
     private String getDecimalSeparatorExplanation(DecimalSeparator decimalSeparator) {
         switch (decimalSeparator) {
-            case DOT:
+            case Dot:
                 return getString(R.string.dot);
-            case COMMA:
+            case Comma:
                 return getString(R.string.comma);
-            case SPACE:
+            case Space:
                 return getString(R.string.space);
         }
         return null;
@@ -443,13 +443,13 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
 
     private String getGroupSeparatorExplanation(GroupSeparator groupSeparator) {
         switch (groupSeparator) {
-            case NONE:
+            case None:
                 return getString(R.string.none);
-            case DOT:
+            case Dot:
                 return getString(R.string.dot);
-            case COMMA:
+            case Comma:
                 return getString(R.string.comma);
-            case SPACE:
+            case Space:
                 return getString(R.string.space);
         }
         return null;
@@ -457,13 +457,13 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
 
     private String getSymbolPositionExplanation(SymbolPosition symbolPosition) {
         switch (symbolPosition) {
-            case CLOSE_RIGHT:
+            case CloseRight:
                 return getString(R.string.close_right);
-            case FAR_RIGHT:
+            case FarRight:
                 return getString(R.string.far_right);
-            case CLOSE_LEFT:
+            case CloseLeft:
                 return getString(R.string.close_left);
-            case FAR_LEFT:
+            case FarLeft:
                 return getString(R.string.far_left);
         }
         return null;

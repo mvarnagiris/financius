@@ -1,9 +1,9 @@
 package com.code44.finance.common.model;
 
 public enum TransactionType {
-    EXPENSE(TransactionType.VALUE_EXPENSE),
-    INCOME(TransactionType.VALUE_INCOME),
-    TRANSFER(TransactionType.VALUE_TRANSFER);
+    Expense(TransactionType.VALUE_EXPENSE),
+    Income(TransactionType.VALUE_INCOME),
+    Transfer(TransactionType.VALUE_TRANSFER);
 
     private static final int VALUE_EXPENSE = 1;
     private static final int VALUE_INCOME = 2;
@@ -18,13 +18,13 @@ public enum TransactionType {
     public static TransactionType fromInt(int value) {
         switch (value) {
             case VALUE_EXPENSE:
-                return EXPENSE;
+                return Expense;
 
             case VALUE_INCOME:
-                return INCOME;
+                return Income;
 
             case VALUE_TRANSFER:
-                return TRANSFER;
+                return Transfer;
 
             default:
                 throw new IllegalArgumentException("Value " + value + " is not supported.");

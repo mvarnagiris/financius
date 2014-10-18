@@ -20,7 +20,7 @@ public final class CurrencyFormat {
 
         // Setup symbols
         final DecimalFormatSymbols symbols = decimalFormat.getDecimalFormatSymbols();
-        final char groupSeparator = currency.getGroupSeparator() != GroupSeparator.NONE ? currency.getGroupSeparator().symbol().charAt(0) : 0;
+        final char groupSeparator = currency.getGroupSeparator() != GroupSeparator.None ? currency.getGroupSeparator().symbol().charAt(0) : 0;
         symbols.setGroupingSeparator(groupSeparator);
         symbols.setDecimalSeparator(currency.getDecimalSeparator().symbol().charAt(0));
 
@@ -31,7 +31,7 @@ public final class CurrencyFormat {
         final String symbol = currency.getSymbol();
         final boolean hasSymbol = !TextUtils.isEmpty(symbol);
         switch (currency.getSymbolPosition()) {
-            case FAR_LEFT:
+            case FarLeft:
                 if (hasSymbol) {
                     decimalFormat.setPositivePrefix(symbol + " ");
                     decimalFormat.setNegativePrefix(symbol + " -");
@@ -41,7 +41,7 @@ public final class CurrencyFormat {
 
                 break;
 
-            case CLOSE_LEFT:
+            case CloseLeft:
                 if (hasSymbol) {
                     decimalFormat.setPositivePrefix(symbol);
                     decimalFormat.setNegativePrefix(symbol + "-");
@@ -51,14 +51,14 @@ public final class CurrencyFormat {
 
                 break;
 
-            case FAR_RIGHT:
+            case FarRight:
                 if (hasSymbol) {
                     decimalFormat.setPositiveSuffix(" " + symbol);
                     decimalFormat.setNegativeSuffix(" " + symbol);
                 }
                 break;
 
-            case CLOSE_RIGHT:
+            case CloseRight:
                 if (hasSymbol) {
                     decimalFormat.setPositiveSuffix(symbol);
                     decimalFormat.setNegativeSuffix(symbol);

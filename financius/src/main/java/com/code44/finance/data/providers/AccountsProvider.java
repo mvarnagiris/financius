@@ -116,18 +116,18 @@ public class AccountsProvider extends BaseModelProvider {
         if (balanceDelta > 0) {
             transaction = new Transaction();
             transaction.setAccountTo(account);
-            transaction.setTransactionType(TransactionType.INCOME);
+            transaction.setTransactionType(TransactionType.Income);
         } else if (balanceDelta < 0) {
             transaction = new Transaction();
             transaction.setAccountFrom(account);
-            transaction.setTransactionType(TransactionType.EXPENSE);
+            transaction.setTransactionType(TransactionType.Expense);
         }
 
         if (transaction != null) {
             transaction.setAmount(Math.abs(balanceDelta));
             transaction.setNote(getContext().getString(R.string.account_balance_update));
             transaction.setIncludeInReports(false);
-            transaction.setTransactionState(TransactionState.CONFIRMED);
+            transaction.setTransactionState(TransactionState.Confirmed);
         }
 
         return transaction;

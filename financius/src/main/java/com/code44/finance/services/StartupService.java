@@ -69,7 +69,7 @@ public class StartupService extends IntentService {
 
         final Cursor cursor = Query.create()
                 .projection(Tables.Currencies.CODE.getName())
-                .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.NORMAL.asInt()))
+                .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.Normal.asInt()))
                 .from(getApplicationContext(), CurrenciesProvider.uriCurrencies())
                 .execute();
 

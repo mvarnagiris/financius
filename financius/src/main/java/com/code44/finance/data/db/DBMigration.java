@@ -9,9 +9,12 @@ import com.code44.finance.common.model.DecimalSeparator;
 import com.code44.finance.common.model.GroupSeparator;
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.common.model.SymbolPosition;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.model.Account;
+import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.SyncState;
+import com.code44.finance.data.model.Tag;
 
 import java.util.UUID;
 
@@ -83,16 +86,16 @@ public final class DBMigration {
         final Cursor cursor = db.query(tempTableName, projection, selection, null, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             final Currency currency = new Currency();
-            currency.setId(cursor.getString(0));
-            currency.setModelState(ModelState.NORMAL);
-            currency.setSyncState(SyncState.NONE);
+            currency.setModelState(ModelState.Normal);
+            currency.setSyncState(SyncState.None);
             do {
+                currency.setId(cursor.getString(0));
                 currency.setCode(cursor.getString(1));
                 currency.setSymbol(cursor.getString(2));
                 final String symbolPositionOld = cursor.getString(6);
-                final SymbolPosition symbolPosition = "LF".equals(symbolPositionOld) ? SymbolPosition.FAR_LEFT :
-                        "LC".equals(symbolPositionOld) ? SymbolPosition.CLOSE_LEFT :
-                                "RC".equals(symbolPositionOld) ? SymbolPosition.CLOSE_RIGHT : SymbolPosition.FAR_RIGHT;
+                final SymbolPosition symbolPosition = "LF".equals(symbolPositionOld) ? SymbolPosition.FarLeft :
+                        "LC".equals(symbolPositionOld) ? SymbolPosition.CloseLeft :
+                                "RC".equals(symbolPositionOld) ? SymbolPosition.CloseRight : SymbolPosition.FarRight;
                 currency.setSymbolPosition(symbolPosition);
                 currency.setDecimalSeparator(DecimalSeparator.fromSymbol(cursor.getString(4)));
                 currency.setGroupSeparator(GroupSeparator.fromSymbol(cursor.getString(5)));
@@ -122,11 +125,11 @@ public final class DBMigration {
         if (cursor != null && cursor.moveToFirst()) {
             final Currency currency = new Currency();
             final Account account = new Account();
-            account.setId(cursor.getString(0));
-            account.setModelState(ModelState.NORMAL);
-            account.setSyncState(SyncState.NONE);
+            account.setModelState(ModelState.Normal);
+            account.setSyncState(SyncState.None);
             account.setCurrency(currency);
             do {
+                account.setId(cursor.getString(0));
                 currency.setId(cursor.getString(1));
                 account.setTitle(cursor.getString(2));
                 account.setNote(cursor.getString(3));
@@ -145,7 +148,35 @@ public final class DBMigration {
         db.execSQL(Tables.Categories.createScript());
         DBHelper.createIndex(db, Tables.Categories.ID);
 
-        // TODO Migrate
+        final String[] projection = {tempTableName + "_server_id", tempTableName + "_title",
+                tempTableName + "_color", tempTableName + "_type", tempTableName + "_order",
+                tempTableName + "_level"};
+        final String selection = tempTableName + "_delete_state = 0 and " + tempTableName + "_origin = 1";
+        final Cursor cursor = db.query(tempTableName, projection, selection, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            final Category category = new Category();
+            category.setModelState(ModelState.Normal);
+            category.setSyncState(SyncState.None);
+            final Tag tag = new Tag();
+            tag.setModelState(ModelState.Normal);
+            tag.setSyncState(SyncState.None);
+            do {
+                final int level = cursor.getInt(5);
+                if (level == 1) {
+                    category.setId(cursor.getString(0));
+                    category.setTitle(cursor.getString(1));
+                    category.setColor(cursor.getInt(2));
+                    category.setSortOrder(cursor.getInt(4));
+                    final int categoryType = cursor.getInt(3);
+                    category.setTransactionType(categoryType == 0 ? TransactionType.Income : categoryType == 1 ? TransactionType.Expense : TransactionType.Transfer);
+                    db.insert(Tables.Categories.TABLE_NAME, null, category.asValues());
+                } else {
+                    tag.setId(cursor.getString(0));
+                    tag.setTitle(cursor.getString(1));
+                    db.insert(Tables.Tags.TABLE_NAME, null, category.asValues());
+                }
+            } while (cursor.moveToNext());
+        }
 
         return tempTableName;
     }

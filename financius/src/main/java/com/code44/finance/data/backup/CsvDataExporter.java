@@ -48,7 +48,7 @@ public class CsvDataExporter extends DataExporter {
     }
 
     private void writeCsv(BufferedWriter writer, Cursor cursor) throws IOException {
-        // 29 September 2014; 09:44; EXPENSE; CONFIRMED; Account from; Account to; Category; Tag1, Tag2;
+        // 29 September 2014; 09:44; Expense; Confirmed; Account from; Account to; Category; Tag1, Tag2;
         final StringBuilder outputLine = new StringBuilder();
         do {
             final Transaction transaction = Transaction.from(cursor);
@@ -102,7 +102,7 @@ public class CsvDataExporter extends DataExporter {
     }
 
     private String getCurrencyCode(Transaction transaction) {
-        if (transaction.getTransactionType() == TransactionType.INCOME) {
+        if (transaction.getTransactionType() == TransactionType.Income) {
             return transaction.getAccountTo().getCurrency().getCode();
         } else {
             return transaction.getAccountFrom().getCurrency().getCode();

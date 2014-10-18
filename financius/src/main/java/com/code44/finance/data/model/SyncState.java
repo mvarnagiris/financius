@@ -1,10 +1,10 @@
 package com.code44.finance.data.model;
 
 public enum SyncState {
-    NONE(SyncState.VALUE_NONE),
-    IN_PROGRESS(SyncState.VALUE_IN_PROGRESS),
-    SYNCED(SyncState.VALUE_SYNCED),
-    LOCAL_CHANGES(SyncState.VALUE_LOCAL_CHANGES);
+    None(SyncState.VALUE_NONE),
+    InProgress(SyncState.VALUE_IN_PROGRESS),
+    Synced(SyncState.VALUE_SYNCED),
+    LocalChanges(SyncState.VALUE_LOCAL_CHANGES);
 
     private static final int VALUE_NONE = 1;
     private static final int VALUE_IN_PROGRESS = 2;
@@ -20,16 +20,16 @@ public enum SyncState {
     public static SyncState fromInt(int value) {
         switch (value) {
             case VALUE_NONE:
-                return NONE;
+                return None;
 
             case VALUE_IN_PROGRESS:
-                return IN_PROGRESS;
+                return InProgress;
 
             case VALUE_SYNCED:
-                return SYNCED;
+                return Synced;
 
             case VALUE_LOCAL_CHANGES:
-                return LOCAL_CHANGES;
+                return LocalChanges;
 
             default:
                 throw new IllegalArgumentException("Value " + value + " is not supported.");

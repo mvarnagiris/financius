@@ -22,8 +22,8 @@ public abstract class BaseModel<E extends GenericJson> implements Parcelable {
     protected BaseModel() {
         setLocalId(0);
         setId(null);
-        setModelState(ModelState.NORMAL);
-        setSyncState(SyncState.NONE);
+        setModelState(ModelState.Normal);
+        setSyncState(SyncState.None);
     }
 
     protected BaseModel(Parcel parcel) {
@@ -208,7 +208,7 @@ public abstract class BaseModel<E extends GenericJson> implements Parcelable {
     protected void updateFrom(E entity) {
         setId((String) entity.get("id"));
         setModelState(ModelState.valueOf((String) entity.get("model_state")));
-        setSyncState(SyncState.SYNCED);
+        setSyncState(SyncState.Synced);
         fromEntity(entity);
     }
 }

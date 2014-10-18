@@ -28,11 +28,11 @@ public final class Tables {
     }
 
     private static Column getModelStateColumn(String tableName) {
-        return new Column(tableName, SUFFIX_MODEL_STATE, Column.DataType.INTEGER, String.valueOf(ModelState.NORMAL.asInt()));
+        return new Column(tableName, SUFFIX_MODEL_STATE, Column.DataType.INTEGER, String.valueOf(ModelState.Normal.asInt()));
     }
 
     private static Column getSyncStateColumn(String tableName) {
-        return new Column(tableName, SUFFIX_SYNC_STATE, Column.DataType.INTEGER, String.valueOf(SyncState.NONE.asInt()));
+        return new Column(tableName, SUFFIX_SYNC_STATE, Column.DataType.INTEGER, String.valueOf(SyncState.None.asInt()));
     }
 
     private static String makeCreateScript(String table, Column... columns) {
@@ -121,8 +121,8 @@ public final class Tables {
             return Query.create()
                     .projectionLocalId(Tables.Currencies.LOCAL_ID)
                     .projection(Tables.Currencies.PROJECTION)
-                    .selection("(" + Tables.Currencies.MODEL_STATE + "=?", ModelState.NORMAL.asString())
-                    .selection(" or " + Currencies.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString())
+                    .selection("(" + Tables.Currencies.MODEL_STATE + "=?", ModelState.Normal.asString())
+                    .selection(" or " + Currencies.MODEL_STATE + "=?)", ModelState.DeletedUndo.asString())
                     .sortOrder(Tables.Currencies.IS_DEFAULT + " desc")
                     .sortOrder(Tables.Currencies.CODE.getName());
         }
@@ -168,8 +168,8 @@ public final class Tables {
                     .projectionLocalId(Accounts.LOCAL_ID)
                     .projection(Accounts.PROJECTION)
                     .projection(Currencies.PROJECTION)
-                    .selection("(" + Accounts.MODEL_STATE + "=?", ModelState.NORMAL.asString())
-                    .selection(" or " + Accounts.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString())
+                    .selection("(" + Accounts.MODEL_STATE + "=?", ModelState.Normal.asString())
+                    .selection(" or " + Accounts.MODEL_STATE + "=?)", ModelState.DeletedUndo.asString())
                     .sortOrder(Accounts.INCLUDE_IN_TOTALS.getName() + " desc")
                     .sortOrder(Accounts.TITLE.getName());
         }
@@ -201,8 +201,8 @@ public final class Tables {
             final Query query = Query.create()
                     .projectionLocalId(Categories.LOCAL_ID)
                     .projection(Categories.PROJECTION)
-                    .selection("(" + Categories.MODEL_STATE + "=?", ModelState.NORMAL.asString())
-                    .selection(" or " + Categories.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString())
+                    .selection("(" + Categories.MODEL_STATE + "=?", ModelState.Normal.asString())
+                    .selection(" or " + Categories.MODEL_STATE + "=?)", ModelState.DeletedUndo.asString())
                     .sortOrder(Categories.SORT_ORDER.getName());
 
             if (transactionType != null) {
@@ -236,8 +236,8 @@ public final class Tables {
             return Query.create()
                     .projectionLocalId(Tags.LOCAL_ID)
                     .projection(Tags.PROJECTION)
-                    .selection("(" + Tags.MODEL_STATE + "=?", ModelState.NORMAL.asString())
-                    .selection(" or " + Tags.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString());
+                    .selection("(" + Tags.MODEL_STATE + "=?", ModelState.Normal.asString())
+                    .selection(" or " + Tags.MODEL_STATE + "=?)", ModelState.DeletedUndo.asString());
         }
 
         public static final String[] PROJECTION_TRANSACTION = {"group_concat(" + ID + ",'" + CONCAT_SEPARATOR + "') as " + ID.getName(),
@@ -285,8 +285,8 @@ public final class Tables {
                     .projection(Currencies.PROJECTION_ACCOUNT_FROM)
                     .projection(Currencies.PROJECTION_ACCOUNT_TO)
                     .projection(Tags.PROJECTION_TRANSACTION)
-                    .selection("(" + Transactions.MODEL_STATE + "=?", ModelState.NORMAL.asString())
-                    .selection(" or " + Transactions.MODEL_STATE + "=?)", ModelState.DELETED_UNDO.asString())
+                    .selection("(" + Transactions.MODEL_STATE + "=?", ModelState.Normal.asString())
+                    .selection(" or " + Transactions.MODEL_STATE + "=?)", ModelState.DeletedUndo.asString())
                     .groupBy(ID.getName())
                     .sortOrder(Transactions.STATE + " desc")
                     .sortOrder(Transactions.DATE + " desc");

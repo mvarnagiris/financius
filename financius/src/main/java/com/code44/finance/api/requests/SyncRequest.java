@@ -96,7 +96,7 @@ public class SyncRequest extends Request {
         final Cursor cursor = Query.create()
                 .projectionLocalId(Tables.Currencies.LOCAL_ID)
                 .projection(Tables.Currencies.PROJECTION)
-                .selection(Tables.Currencies.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
+                .selection(Tables.Currencies.SYNC_STATE + "=?", SyncState.InProgress.asString())
                 .from(context, CurrenciesProvider.uriCurrencies())
                 .execute();
         final List<Currency> currencies = new ArrayList<>();
@@ -118,7 +118,7 @@ public class SyncRequest extends Request {
         final Cursor cursor = Query.create()
                 .projectionLocalId(Tables.Categories.LOCAL_ID)
                 .projection(Tables.Categories.PROJECTION)
-                .selection(Tables.Categories.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
+                .selection(Tables.Categories.SYNC_STATE + "=?", SyncState.InProgress.asString())
                 .from(context, CategoriesProvider.uriCategories())
                 .execute();
         final List<Category> categories = new ArrayList<>();
@@ -140,7 +140,7 @@ public class SyncRequest extends Request {
         final Cursor cursor = Query.create()
                 .projectionLocalId(Tables.Tags.LOCAL_ID)
                 .projection(Tables.Tags.PROJECTION)
-                .selection(Tables.Tags.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
+                .selection(Tables.Tags.SYNC_STATE + "=?", SyncState.InProgress.asString())
                 .from(context, TagsProvider.uriTags())
                 .execute();
         final List<Tag> tags = new ArrayList<>();
@@ -163,7 +163,7 @@ public class SyncRequest extends Request {
                 .projectionLocalId(Tables.Accounts.LOCAL_ID)
                 .projection(Tables.Accounts.PROJECTION)
                 .projection(Tables.Currencies.PROJECTION)
-                .selection(Tables.Accounts.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
+                .selection(Tables.Accounts.SYNC_STATE + "=?", SyncState.InProgress.asString())
                 .from(context, AccountsProvider.uriAccounts())
                 .execute();
         final List<Account> accounts = new ArrayList<>();
@@ -190,7 +190,7 @@ public class SyncRequest extends Request {
                 .projection(Tables.Currencies.PROJECTION_ACCOUNT_FROM)
                 .projection(Tables.Currencies.PROJECTION_ACCOUNT_TO)
                 .projection(Tables.Categories.PROJECTION)
-                .selection(Tables.Transactions.SYNC_STATE + "=?", SyncState.IN_PROGRESS.asString())
+                .selection(Tables.Transactions.SYNC_STATE + "=?", SyncState.InProgress.asString())
                 .from(context, TransactionsProvider.uriTransactions())
                 .execute();
         final List<Transaction> transactions = new ArrayList<>();
@@ -208,10 +208,10 @@ public class SyncRequest extends Request {
 
     private void markInProgress(SQLiteDatabase database, Column syncStateColumn) {
         final ContentValues values = new ContentValues();
-        values.put(syncStateColumn.getName(), SyncState.IN_PROGRESS.asInt());
+        values.put(syncStateColumn.getName(), SyncState.InProgress.asInt());
         DataStore.update()
                 .values(values)
-                .withSelection(syncStateColumn.getName() + "<>?", SyncState.SYNCED.asString())
+                .withSelection(syncStateColumn.getName() + "<>?", SyncState.Synced.asString())
                 .into(database, syncStateColumn.getTableName());
     }
 }

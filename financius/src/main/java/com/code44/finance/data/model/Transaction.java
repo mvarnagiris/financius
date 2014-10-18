@@ -51,8 +51,8 @@ public class Transaction extends BaseModel<TransactionEntity> {
         setAmount(0);
         setExchangeRate(1.0);
         setNote(null);
-        setTransactionState(TransactionState.CONFIRMED);
-        setTransactionType(TransactionType.EXPENSE);
+        setTransactionState(TransactionState.Confirmed);
+        setTransactionType(TransactionType.Expense);
         setIncludeInReports(true);
     }
 
@@ -300,17 +300,17 @@ public class Transaction extends BaseModel<TransactionEntity> {
         Preconditions.checkNotNull(transactionState, "Transaction state cannot be null.");
         Preconditions.checkNotNull(transactionType, "Transaction type cannot be null.");
 
-        if (transactionState == TransactionState.CONFIRMED) {
+        if (transactionState == TransactionState.Confirmed) {
             switch (transactionType) {
-                case EXPENSE:
+                case Expense:
                     Preconditions.checkNotNull(accountFrom, "AccountFrom cannot be null.");
                     Preconditions.checkTrue(accountFrom.hasId(), "AccountFrom must have an Id.");
                     break;
-                case INCOME:
+                case Income:
                     Preconditions.checkNotNull(accountTo, "AccountTo cannot be null.");
                     Preconditions.checkTrue(accountTo.hasId(), "AccountTo must have an Id.");
                     break;
-                case TRANSFER:
+                case Transfer:
                     Preconditions.checkNotNull(accountFrom, "AccountFrom cannot be null.");
                     Preconditions.checkTrue(accountFrom.hasId(), "AccountFrom must have an Id.");
                     Preconditions.checkNotNull(accountTo, "AccountTo cannot be null.");

@@ -63,8 +63,8 @@ public final class DBDefaults {
     }
 
     private void addCategories() {
-        insertCategories(context.getResources().getStringArray(R.array.expense_categories), context.getResources().getStringArray(R.array.expense_categories_colors), TransactionType.EXPENSE);
-        insertCategories(context.getResources().getStringArray(R.array.income_categories), context.getResources().getStringArray(R.array.income_categories_colors), TransactionType.INCOME);
+        insertCategories(context.getResources().getStringArray(R.array.expense_categories), context.getResources().getStringArray(R.array.expense_categories_colors), TransactionType.Expense);
+        insertCategories(context.getResources().getStringArray(R.array.income_categories), context.getResources().getStringArray(R.array.income_categories_colors), TransactionType.Income);
     }
 
     private String getMainCurrencyCode() {
