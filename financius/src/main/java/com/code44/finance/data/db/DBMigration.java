@@ -17,6 +17,7 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.SyncState;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
+import com.code44.finance.data.providers.TransactionsProvider;
 
 import java.util.UUID;
 
@@ -50,16 +51,12 @@ public final class DBMigration {
             db.execSQL("drop table " + tempCategoriesTable);
             db.execSQL("drop table " + tempTransactionsTable);
 
-            // TODO Recalculate accounts balance.
+            TransactionsProvider.updateAllAccountsBalances(db);
 
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
         }
-
-        // Currencies
-        String tableName = "currencies";
-        db.execSQL("alter table " + tableName + " rename to ");
     }
 
     private static void v19EnsureIds(SQLiteDatabase db, String tableName) {
@@ -175,7 +172,7 @@ public final class DBMigration {
                 } else {
                     tag.setId(cursor.getString(0));
                     tag.setTitle(cursor.getString(1));
-                    db.insert(Tables.Tags.TABLE_NAME, null, category.asValues());
+                    db.insert(Tables.Tags.TABLE_NAME, null, tag.asValues());
                 }
             } while (cursor.moveToNext());
         }
@@ -236,7 +233,7 @@ public final class DBMigration {
                     if (level == 1) {
                         category.setId(cursor.getString(10));
                     } else {
-                        category.setTitle(cursor.getString(13));
+                        category.setId(cursor.getString(13));
                         values.clear();
                         values.put(Tables.TransactionTags.TRANSACTION_ID.getName(), transaction.getId());
                         values.put(Tables.TransactionTags.TAG_ID.getName(), cursor.getString(10));
@@ -266,7 +263,9 @@ public final class DBMigration {
                         break;
                 }
 
-                db.insert(Tables.Transactions.TABLE_NAME, null, transaction.asValues());
+                final ContentValues transactionValues = transaction.asValues();
+                transactionValues.remove(Tables.Tags.ID.getName());
+                db.insert(Tables.Transactions.TABLE_NAME, null, transactionValues);
             } while (cursor.moveToNext());
         }
 

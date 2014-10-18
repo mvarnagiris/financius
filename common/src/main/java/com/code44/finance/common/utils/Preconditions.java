@@ -12,7 +12,7 @@ public class Preconditions {
     }
 
     public static <T> T checkNull(T object, String message) throws IllegalStateException {
-        if (object == null) {
+        if (object != null) {
             throw new IllegalStateException(message);
         }
         return object;

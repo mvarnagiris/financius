@@ -2,6 +2,7 @@ package com.code44.finance.data.providers;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
 
@@ -34,6 +35,48 @@ public class TransactionsProvider extends BaseModelProvider {
 
     public static Uri uriTransaction(String transactionServerId) {
         return uriModel(TransactionsProvider.class, Tables.Transactions.TABLE_NAME, transactionServerId);
+    }
+
+    public static void updateAccountBalance(SQLiteDatabase database, String accountId) {
+        final Cursor cursor = Query.create()
+                .projection("sum( case" +
+                        " when " + Tables.Transactions.ACCOUNT_FROM_ID + "=? then -" + Tables.Transactions.AMOUNT + "" +
+                        " when " + Tables.Transactions.TYPE + "=? then " + Tables.Transactions.AMOUNT + "*" + Tables.Transactions.EXCHANGE_RATE +
+                        " else " + Tables.Transactions.AMOUNT + " end)")
+                .args(accountId, TransactionType.Transfer.asString())
+                .selection(Tables.Transactions.MODEL_STATE + "=?", ModelState.Normal.asString())
+                .selection(" and " + Tables.Transactions.STATE + "=?", TransactionState.Confirmed.asString())
+                .selection(" and (" + Tables.Transactions.ACCOUNT_FROM_ID + "=? or " + Tables.Transactions.ACCOUNT_TO_ID + "=?)", accountId, accountId)
+                .from(database, Tables.Transactions.TABLE_NAME)
+                .execute();
+
+        long balance = 0;
+        if (cursor.moveToFirst()) {
+            balance = cursor.getLong(0);
+        }
+        IOUtils.closeQuietly(cursor);
+
+        final ContentValues values = new ContentValues();
+        values.put(Tables.Accounts.BALANCE.getName(), balance);
+        DataStore.update()
+                .values(values)
+                .withSelection(Tables.Accounts.ID + "=?", accountId)
+                .into(database, Tables.Accounts.TABLE_NAME);
+    }
+
+    public static void updateAllAccountsBalances(SQLiteDatabase database) {
+        final Cursor cursor = Query.create()
+                .projection(Tables.Accounts.ID.getName())
+                .selection(Tables.Accounts.MODEL_STATE + "=?", String.valueOf(ModelState.Normal.asInt()))
+                .from(database, Tables.Accounts.TABLE_NAME)
+                .execute();
+        if (cursor.moveToFirst()) {
+            final int iId = cursor.getColumnIndex(Tables.Accounts.ID.getName());
+            do {
+                updateAccountBalance(database, cursor.getString(iId));
+            } while (cursor.moveToNext());
+        }
+        IOUtils.closeQuietly(cursor);
     }
 
     @Override protected String getModelTable() {
@@ -111,11 +154,11 @@ public class TransactionsProvider extends BaseModelProvider {
         final boolean isAccountToInDb = !StringUtils.isEmpty(accountToId);
 
         if (isAccountFromInDb) {
-            updateAccountBalance(accountFromId);
+            updateAccountBalance(getDatabase(), accountFromId);
         }
 
         if (isAccountToInDb) {
-            updateAccountBalance(accountToId);
+            updateAccountBalance(getDatabase(), accountToId);
         }
     }
 
@@ -125,7 +168,7 @@ public class TransactionsProvider extends BaseModelProvider {
 
     @Override protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> extras) {
         super.onAfterDeleteItems(uri, selection, selectionArgs, modelState, extras);
-        updateAllAccountsBalances();
+        updateAllAccountsBalances(getDatabase());
     }
 
     @Override protected void onBeforeBulkInsertIteration(Uri uri, ContentValues values, Map<String, Object> extras) {
@@ -135,53 +178,11 @@ public class TransactionsProvider extends BaseModelProvider {
 
     @Override protected void onAfterBulkInsertItems(Uri uri, ContentValues[] valuesArray, Map<String, Object> extras) {
         super.onAfterBulkInsertItems(uri, valuesArray, extras);
-        updateAllAccountsBalances();
+        updateAllAccountsBalances(getDatabase());
     }
 
     @Override protected Uri[] getOtherUrisToNotify() {
         return new Uri[]{AccountsProvider.uriAccounts()};
-    }
-
-    private void updateAccountBalance(String accountId) {
-        final Cursor cursor = Query.create()
-                .projection("sum( case" +
-                        " when " + Tables.Transactions.ACCOUNT_FROM_ID + "=? then -" + Tables.Transactions.AMOUNT + "" +
-                        " when " + Tables.Transactions.TYPE + "=? then " + Tables.Transactions.AMOUNT + "*" + Tables.Transactions.EXCHANGE_RATE +
-                        " else " + Tables.Transactions.AMOUNT + " end)")
-                .args(accountId, TransactionType.Transfer.asString())
-                .selection(Tables.Transactions.MODEL_STATE + "=?", ModelState.Normal.asString())
-                .selection(" and " + Tables.Transactions.STATE + "=?", TransactionState.Confirmed.asString())
-                .selection(" and (" + Tables.Transactions.ACCOUNT_FROM_ID + "=? or " + Tables.Transactions.ACCOUNT_TO_ID + "=?)", accountId, accountId)
-                .from(getDatabase(), Tables.Transactions.TABLE_NAME)
-                .execute();
-
-        long balance = 0;
-        if (cursor.moveToFirst()) {
-            balance = cursor.getLong(0);
-        }
-        IOUtils.closeQuietly(cursor);
-
-        final ContentValues values = new ContentValues();
-        values.put(Tables.Accounts.BALANCE.getName(), balance);
-        DataStore.update()
-                .values(values)
-                .withSelection(Tables.Accounts.ID + "=?", accountId)
-                .into(getDatabase(), Tables.Accounts.TABLE_NAME);
-    }
-
-    private void updateAllAccountsBalances() {
-        final Cursor cursor = Query.create()
-                .projection(Tables.Accounts.ID.getName())
-                .selection(Tables.Accounts.MODEL_STATE + "=?", String.valueOf(ModelState.Normal.asInt()))
-                .from(getDatabase(), Tables.Accounts.TABLE_NAME)
-                .execute();
-        if (cursor.moveToFirst()) {
-            final int iId = cursor.getColumnIndex(Tables.Accounts.ID.getName());
-            do {
-                updateAccountBalance(cursor.getString(iId));
-            } while (cursor.moveToNext());
-        }
-        IOUtils.closeQuietly(cursor);
     }
 
     private void updateTransactionTags(ContentValues values) {
