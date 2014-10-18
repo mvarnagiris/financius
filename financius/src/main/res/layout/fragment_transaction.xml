@@ -14,7 +14,8 @@
             android:layout_height="wrap_content"
             android:background="?android:colorPrimary"
             android:elevation="@dimen/elevation_header"
-            android:padding="@dimen/keyline">
+            android:padding="@dimen/keyline"
+            tools:ignore="UnusedAttribute">
 
             <me.grantland.widget.AutofitTextView
                 android:id="@+id/amount_TV"

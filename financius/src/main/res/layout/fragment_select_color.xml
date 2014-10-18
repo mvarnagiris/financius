@@ -41,6 +41,7 @@
 
     <LinearLayout
         android:id="@+id/buttonContainer_V"
+        style="?android:buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/bg_primary"
@@ -51,6 +52,7 @@
 
         <Button
             android:id="@+id/cancel_B"
+            style="?android:buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -60,6 +62,7 @@
 
         <Button
             android:id="@+id/select_B"
+            style="?android:buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/bg_primary"
-        android:elevation="@dimen/elevation_header">
+        android:elevation="@dimen/elevation_header"
+        tools:ignore="UnusedAttribute">
 
         <me.grantland.widget.AutofitTextView
             android:id="@+id/result_TV"
@@ -61,7 +62,7 @@
             android:background="@color/bg_primary_inverse"
             android:elevation="@dimen/elevation_sub_header"
             android:orientation="vertical"
-            tools:ignore="NestedWeights">
+            tools:ignore="NestedWeights,UnusedAttribute">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -208,7 +209,8 @@
                 style="@style/Button.Borderless.Calc.Action"
                 android:fontFamily="@string/font_regular"
                 android:text="@string/l_delete_short"
-                android:textSize="@dimen/text_subhead" />
+                android:textSize="@dimen/text_subhead"
+                tools:ignore="UnusedAttribute" />
 
             <Button
                 android:id="@+id/divide_B"

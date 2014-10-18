@@ -25,7 +25,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/brand"
                 android:elevation="@dimen/elevation_header"
-                android:padding="@dimen/keyline">
+                android:padding="@dimen/keyline"
+                tools:ignore="UnusedAttribute">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -218,6 +219,7 @@
                 android:paddingRight="@dimen/keyline"
                 android:paddingTop="@dimen/keyline"
                 android:visibility="gone"
+                tools:ignore="UnusedAttribute"
                 tools:visibility="visible">
 
                 <CheckBox

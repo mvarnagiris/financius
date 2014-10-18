@@ -25,7 +25,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/bg_brand"
                 android:elevation="@dimen/elevation_header"
-                android:padding="@dimen/keyline">
+                android:padding="@dimen/keyline"
+                tools:ignore="UnusedAttribute">
 
                 <EditText
                     android:id="@+id/title_ET"

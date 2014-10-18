@@ -16,7 +16,8 @@
         android:paddingBottom="@dimen/space_normal"
         android:paddingLeft="@dimen/keyline"
         android:paddingRight="@dimen/keyline"
-        android:paddingTop="@dimen/space_normal">
+        android:paddingTop="@dimen/space_normal"
+        tools:ignore="UnusedAttribute">
 
         <TextView
             style="@style/Text.Body2"

@@ -13,7 +13,8 @@
         android:clipChildren="false"
         android:clipToPadding="false"
         android:elevation="@dimen/elevation_header"
-        android:padding="@dimen/keyline">
+        android:padding="@dimen/keyline"
+        tools:ignore="UnusedAttribute">
 
         <TextView
             android:id="@+id/code_TV"
@@ -68,7 +69,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/btn_fab_half_negative"
         android:elevation="@dimen/elevation_fab"
-        android:src="@drawable/ic_action_refresh" />
+        android:src="@drawable/ic_action_refresh"
+        tools:ignore="UnusedAttribute" />
 
     <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
         android:id="@+id/loading_SPB"
@@ -77,7 +79,8 @@
         android:layout_below="@+id/headerContainer_V"
         android:elevation="@dimen/elevation_sub_header"
         android:indeterminate="true"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        tools:ignore="UnusedAttribute" />
 
     <ListView
         android:id="@+id/list_V"

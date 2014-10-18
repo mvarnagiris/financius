@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:colorPrimary"
-        android:elevation="@dimen/elevation_header">
+        android:elevation="@dimen/elevation_header"
+        tools:ignore="UnusedAttribute">
 
         <com.code44.finance.views.OverviewGraphView
             android:id="@+id/overviewGraph_V"
@@ -56,5 +58,6 @@
         android:layout_marginEnd="@dimen/keyline"
         android:layout_marginTop="@dimen/btn_fab_half_negative"
         android:elevation="@dimen/elevation_fab"
-        android:src="@drawable/ic_action_new" />
+        android:src="@drawable/ic_action_new"
+        tools:ignore="UnusedAttribute" />
 </RelativeLayout>
