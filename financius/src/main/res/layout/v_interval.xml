@@ -10,8 +10,10 @@
         android:id="@+id/prev_IB"
         style="@style/Button.Borderless"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:contentDescription="@string/previous"
+        android:minWidth="@dimen/recommended_touch_size"
+        android:scaleType="centerInside"
         android:src="@drawable/ic_action_chevron_left" />
 
     <Button
@@ -31,8 +33,10 @@
         android:id="@+id/next_IB"
         style="@style/Button.Borderless"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:contentDescription="@string/next"
+        android:minWidth="@dimen/recommended_touch_size"
+        android:scaleType="centerInside"
         android:src="@drawable/ic_action_chevron_right" />
 
 </LinearLayout>

@@ -1,13 +1,11 @@
 ###Version: 0.11.1
-- ```new``` Updated toolbar icons.
+- ```new``` Overall UI improvements.
 - ```fix``` Crash when deleting account.
 - ```fix``` Crash when importing from Google Drive. Old backups still won't work.
 - ```fix``` Crash when exporting to file in languages that contain special characters.
 - ```fix``` Crash in category report when there are transactions without a category.
 - ```fix``` Calculator return 0 when decimals where used in certain languages.
 - ```fix``` Various other crashes.
-- ```fix``` Removed separator between toolbar and categories tabs.
-- ```fix``` Fixed layout in "Your data" screen.
 
 ###Version: 0.11.0
 - ```fix``` Up button is working.

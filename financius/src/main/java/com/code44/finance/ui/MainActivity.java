@@ -115,7 +115,7 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
             case NavigationAdapter.NAV_ID_REPORTS:
                 baseFragment = CategoriesReportFragment.newInstance();
                 getAnalytics().trackScreen(Analytics.Screen.CategoriesReport);
-                getSupportActionBar().setTitle(R.string.categories_report);
+                getSupportActionBar().setTitle("");
                 break;
 
             default:
