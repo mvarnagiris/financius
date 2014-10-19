@@ -1,3 +1,6 @@
+###Version: 0.11.1
+- ```fix``` Deleting account will not crash.
+
 ###Version: 0.11.0
 - ```fix``` Up button is working.
 - ```new``` Supporting Jelly Bean and up.
