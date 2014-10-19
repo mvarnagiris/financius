@@ -200,6 +200,9 @@ public class BackupDataImporter extends DataImporter {
             model.setTransactionState(TransactionState.fromInt(modelJson.get("transaction_state").getAsInt()));
             model.setTransactionType(TransactionType.fromInt(modelJson.get("transaction_type").getAsInt()));
             model.setIncludeInReports(modelJson.get("include_in_reports").getAsBoolean());
+            if (model.getTransactionType() == TransactionType.Transfer) {
+                model.setCategory(null);
+            }
             valuesList.add(model.asValues());
         }
         insert(valuesList, TransactionsProvider.uriTransactions());

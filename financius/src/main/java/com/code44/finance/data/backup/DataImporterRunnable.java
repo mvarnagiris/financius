@@ -19,7 +19,7 @@ public class DataImporterRunnable implements Runnable {
             eventBus.post(dataImporter);
         } catch (Exception e) {
             e.printStackTrace();
-            eventBus.post(new ImportError("Data import has failed.", e));
+            eventBus.post(new ImportError("Data import has failed. " + e.getMessage(), e));
         } finally {
             IOUtils.closeQuietly(dataImporter);
         }
