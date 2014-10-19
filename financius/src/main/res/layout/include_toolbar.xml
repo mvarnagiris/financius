@@ -4,7 +4,10 @@
     style="@style/ToolbarStyle"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/actionbar_size"
+    android:elevation="@dimen/elevation_header"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    tools:ignore="UnusedAttribute" />

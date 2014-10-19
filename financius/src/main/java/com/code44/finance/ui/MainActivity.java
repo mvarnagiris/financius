@@ -1,7 +1,9 @@
 package com.code44.finance.ui;
 
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -47,14 +49,25 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
         getEventBus().register(this);
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
+    @Override public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (!(fragment instanceof NavigationFragment)) {
+                if (fragment instanceof OverviewFragment || fragment instanceof CategoriesReportFragment) {
+                    getToolbar().setElevation(0);
+                } else {
+                    getToolbar().setElevation(getResources().getDimension(R.dimen.elevation_header));
+                }
+            }
+        }
+    }
+
+    @Override protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    @Override public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
     }

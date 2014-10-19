@@ -10,7 +10,7 @@
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabs_PSTS"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
+        android:layout_height="@dimen/actionbar_size"
         android:background="@color/primary"
         android:elevation="@dimen/elevation_header"
         android:textColor="@color/text_primary_inverse"

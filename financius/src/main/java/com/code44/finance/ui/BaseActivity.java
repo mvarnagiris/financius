@@ -107,4 +107,8 @@ public abstract class BaseActivity extends ActionBarActivity {
     protected Analytics.Screen getScreen() {
         return Analytics.Screen.None;
     }
+
+    protected Toolbar getToolbar() {
+        return (Toolbar) findViewById(R.id.toolbar);
+    }
 }
