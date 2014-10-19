@@ -86,6 +86,7 @@
     <string name="export">Export</string>
     <string name="import_backup">Import backup</string>
     <string name="create_backup">Create backup</string>
+    <string name="no_category">No category</string>
 
     <string name="f_change_to_x">Change to %s</string>
     <string name="f_current_main_currency_is_x">Current main currency is %s</string>
