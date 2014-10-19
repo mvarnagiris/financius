@@ -41,6 +41,6 @@ public class DriveDataImporterRunnable implements Runnable {
         final Contents contents = result.getContents();
         final DataImporterRunnable dataImporterRunnable = new DataImporterRunnable(eventBus, importType.getDataImporter(contents.getInputStream(), context, dbHelper));
         dataImporterRunnable.run();
-        driveFile.commitAndCloseContents(googleApiClient, contents);
+        driveFile.discardContents(googleApiClient, contents);
     }
 }
