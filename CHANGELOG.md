@@ -3,6 +3,7 @@
 - ```fix``` Crash when importing from Google Drive. Old backups still won't work.
 - ```fix``` Crash when exporting to file in languages that contain special characters.
 - ```fix``` Crash in category report when there are transactions without a category.
+- ```fix``` Calculator return 0 when decimals where used in certain languages.
 - ```fix``` Various other crashes.
 
 ###Version: 0.11.0

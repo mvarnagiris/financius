@@ -87,10 +87,10 @@ public class TransactionsFragment extends ModelListFragment {
             public void onHeaderClick(StickyListHeadersListView l, View header, int itemPosition, long headerId, boolean currentlySticky) {
                 if (headerList_V.isHeaderCollapsed(headerId)) {
                     headerList_V.expand(headerId);
-                    ((ImageView) header.findViewById(R.id.arrow_IV)).setImageResource(R.drawable.ic_action_arrow_down_small);
+                    ((ImageView) header.findViewById(R.id.arrow_IV)).setImageResource(R.drawable.ic_arrow_down_small);
                 } else {
                     headerList_V.collapse(headerId);
-                    ((ImageView) header.findViewById(R.id.arrow_IV)).setImageResource(R.drawable.ic_action_arrow_right_small);
+                    ((ImageView) header.findViewById(R.id.arrow_IV)).setImageResource(R.drawable.ic_arrow_right_small);
                 }
             }
         });

@@ -8,7 +8,6 @@
         <item name="colorControlHighlight">@color/accent_transparent</item>
         <item name="android:navigationBarColor" tools:ignore="NewApi">?android:colorPrimaryDark
         </item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_up</item>
 
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowContentTransitions" tools:ignore="NewApi">true</item>

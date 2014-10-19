@@ -8,6 +8,7 @@ import com.code44.finance.R;
 
 import java.text.NumberFormat;
 import java.util.LinkedList;
+import java.util.Locale;
 
 import bsh.Interpreter;
 
@@ -69,10 +70,11 @@ public class Calculator {
         try {
             result = interpreter.eval(getExpression()).toString();
             final Double number = Double.parseDouble(result);
-            final NumberFormat format = NumberFormat.getInstance();
+            final NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
             format.setGroupingUsed(false);
             result = Double.isInfinite(number) ? null : format.format(number);
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         clear();

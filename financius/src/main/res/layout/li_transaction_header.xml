@@ -13,7 +13,7 @@
         android:layout_height="@dimen/keyline_between"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="@dimen/keyline"
-        android:src="@drawable/ic_action_arrow_down_small"
+        android:src="@drawable/ic_arrow_down_small"
         tools:ignore="ContentDescription,RtlHardcoded" />
 
     <TextView
