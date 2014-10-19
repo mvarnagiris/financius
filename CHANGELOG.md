@@ -1,3 +1,6 @@
+###Version: 0.11.2
+- ```fix``` Fixed backup import.
+
 ###Version: 0.11.1
 - ```new``` Overall UI improvements.
 - ```fix``` Crash when deleting account.
