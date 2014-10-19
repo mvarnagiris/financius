@@ -341,8 +341,11 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
             loading_SPB.post(new Runnable() {
                 @Override public void run() {
                     setRefreshing(false);
-                    model.setExchangeRate(request.getCurrency().getExchangeRate());
-                    onModelLoaded(model);
+                    final Currency currency = request.getCurrency();
+                    if (currency != null) {
+                        model.setExchangeRate(currency.getExchangeRate());
+                        onModelLoaded(model);
+                    }
                 }
             });
         }
