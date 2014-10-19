@@ -42,8 +42,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:labelFor="@+id/code_ET"
-                        android:paddingLeft="12dp"
-                        android:paddingRight="12dp"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
                         android:text="@string/currency_code"
                         android:textAppearance="@style/Text.Caption"
                         android:textColor="@color/text_primary_inverse" />
@@ -53,6 +53,7 @@
                         style="@style/EditText.Large"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="?editTextBackground"
                         android:contentDescription="@string/currency_code"
                         android:inputType="textCapCharacters"
                         android:maxLength="3"
@@ -75,8 +76,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:labelFor="@+id/symbol_ET"
-                        android:paddingLeft="12dp"
-                        android:paddingRight="12dp"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
                         android:text="@string/symbol"
                         android:textAppearance="@style/Text.Caption"
                         android:textColor="@color/text_primary_inverse" />
@@ -257,7 +258,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/currentMainCurrency_TV"
-                    android:layout_marginLeft="-12dp">
+                    android:layout_marginLeft="-4dp"
+                    android:layout_marginTop="@dimen/space_normal">
 
                     <EditText
                         android:id="@+id/exchangeRate_ET"
@@ -268,8 +270,7 @@
                         android:layout_weight="1"
                         android:hint="@string/exchange_rate"
                         android:inputType="numberDecimal"
-                        tools:ignore="NestedWeights"
-                        tools:stateListAnimator="@android:animator/fade_in" />
+                        tools:ignore="NestedWeights" />
 
                     <ImageButton
                         android:id="@+id/refreshRate_B"
@@ -280,8 +281,7 @@
                         android:minHeight="0dp"
                         android:minWidth="0dp"
                         android:scaleType="centerInside"
-                        android:src="@drawable/ic_action_refresh_inverse"
-                        tools:stateListAnimator="@android:animator/fade_in" />
+                        android:src="@drawable/ic_action_refresh" />
 
                 </LinearLayout>
 
