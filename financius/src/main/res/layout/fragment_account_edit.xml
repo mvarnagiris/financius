@@ -53,7 +53,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="@string/currency"
-                    tools:stateListAnimator="@android:animator/fade_in"
                     tools:text="GBP" />
 
                 <Button
@@ -62,10 +61,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/space_normal"
-                    android:gravity="right|center_vertical"
+                    android:gravity="right|bottom"
                     android:hint="@string/balance"
                     tools:ignore="RtlHardcoded"
-                    tools:stateListAnimator="@android:animator/fade_in"
                     tools:text="1,234.56 £" />
 
             </LinearLayout>
@@ -77,14 +75,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/keyline"
                 android:layout_marginRight="@dimen/keyline"
-                android:layout_marginTop="@dimen/space_normal"
+                android:layout_marginTop="@dimen/space_large"
+                android:gravity="bottom"
                 android:hint="@string/note"
-                android:inputType="textCapSentences" />
+                android:inputType="textCapSentences"
+                android:minHeight="@dimen/recommended_touch_size" />
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="4dp"
                 tools:ignore="RtlHardcoded,RtlSymmetry">
 
                 <CheckBox
