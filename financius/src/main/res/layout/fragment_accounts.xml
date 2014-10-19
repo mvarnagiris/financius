@@ -12,7 +12,7 @@
         android:background="@color/bg_brand"
         android:elevation="@dimen/elevation_header"
         android:gravity="center_vertical"
-        android:minHeight="@dimen/actionbar_size"
+        android:minHeight="?android:actionBarSize"
         android:paddingBottom="@dimen/space_normal"
         android:paddingLeft="@dimen/keyline"
         android:paddingRight="@dimen/keyline"

@@ -1,3 +1,6 @@
+###Version: 0.11.3
+- ```fix``` Fixed crash when rotating phone in main screen.
+
 ###Version: 0.11.2
 - ```fix``` Fixed backup import.
 

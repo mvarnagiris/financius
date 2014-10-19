@@ -168,7 +168,7 @@
         <item name="android:paddingRight">@dimen/keyline</item>
         <item name="android:paddingTop">@dimen/space_normal</item>
         <item name="android:paddingBottom">@dimen/space_normal</item>
-        <item name="android:minHeight">@dimen/actionbar_size</item>
+        <item name="android:minHeight">?android:actionBarSize</item>
     </style>
 
     <!-- ScrollView -->
