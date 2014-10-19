@@ -39,6 +39,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:gravity="end|bottom"
                     android:hint="@string/date"
                     tools:text="16:27" />
 
@@ -47,6 +48,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_large"
                 android:gravity="bottom">
 
                 <ImageButton
@@ -55,7 +57,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/transaction_type"
-                    android:gravity="end"
+                    android:gravity="end|bottom"
+                    android:minWidth="@dimen/big_touch_size"
+                    android:scaleType="centerInside"
                     tools:src="@drawable/ic_category_type_expense"
                     tools:text="1,000.00 $" />
 
@@ -64,16 +68,17 @@
                     style="@style/Button.Borderless.Select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
+                    android:gravity="end|bottom"
                     tools:text="1,000.00 $" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_large">
 
-                <Button
+            <Button
                     android:id="@+id/accountFrom_B"
                     style="@style/Button.Borderless.Select"
                     android:layout_width="0dp"
@@ -95,6 +100,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_large"
                 android:paddingLeft="4dp"
                 tools:ignore="RtlHardcoded,RtlSymmetry">
 
@@ -122,6 +128,7 @@
                 style="@style/Button.Borderless.Select"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_large"
                 android:hint="@string/tags" />
 
             <EditText
@@ -129,8 +136,11 @@
                 style="@style/EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_large"
+                android:gravity="bottom"
                 android:hint="@string/note"
-                android:inputType="textCapSentences|textMultiLine" />
+                android:inputType="textCapSentences|textMultiLine"
+                android:minHeight="@dimen/recommended_touch_size" />
 
             <LinearLayout
                 android:layout_width="match_parent"

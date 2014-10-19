@@ -105,11 +105,11 @@
     </style>
 
     <style name="Button.Borderless.Select">
-        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:gravity">left|bottom</item>
         <item name="android:textAppearance">@style/Text.Subhead</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:background">?android:editTextBackground</item>
+        <item name="android:background">?editTextBackground</item>
     </style>
 
     <style name="Button.Borderless.Calc">

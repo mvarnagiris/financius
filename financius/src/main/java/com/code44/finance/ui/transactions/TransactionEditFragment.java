@@ -125,6 +125,11 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         confirmed_CB.setOnCheckedChangeListener(this);
         includeInReports_CB.setOnCheckedChangeListener(this);
         isAutoAmountRequested = savedInstanceState != null;
+
+        if ((StringUtils.isEmpty(modelId) || modelId.equals("0")) && !isAutoAmountRequested) {
+            isAutoAmountRequested = true;
+            CalculatorActivity.start(this, REQUEST_AMOUNT, 0);
+        }
     }
 
     @Override public void onResume() {
@@ -247,15 +252,6 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
             subtitle.append(" ");
         }
         tags_B.setText(subtitle);
-
-        if (StringUtils.isEmpty(transaction.getId()) && !isAutoAmountRequested) {
-            isAutoAmountRequested = true;
-            amount_B.post(new Runnable() {
-                @Override public void run() {
-                    amount_B.performClick();
-                }
-            });
-        }
     }
 
     @Override public void onClick(View v) {
