@@ -25,14 +25,12 @@ import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.OpenFileActivityBuilder;
 import com.squareup.otto.Subscribe;
 
-import net.danlew.android.joda.DateUtils;
-
-import org.joda.time.DateTime;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
@@ -160,8 +158,8 @@ public class ExportActivity extends BaseActivity {
     }
 
     private String getFileTitle() {
-        final String date = DateUtils.formatDateTime(this, new DateTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_YEAR);
-        return getString(R.string.app_name) + " " + date + exportType.getExtension();
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+        return getString(R.string.app_name) + " " + dateFormat.format(new Date()) + exportType.getExtension();
     }
 
     private void exportData(Runnable exportRunnable) {

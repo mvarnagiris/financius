@@ -1,6 +1,7 @@
 ###Version: 0.11.1
 - ```fix``` Crash when deleting account.
 - ```fix``` Crash when importing from Google Drive. Old backups still won't work.
+- ```fix``` Crash when exporting to file in languages that contain special characters.
 - ```fix``` Various other crashes.
 
 ###Version: 0.11.0
