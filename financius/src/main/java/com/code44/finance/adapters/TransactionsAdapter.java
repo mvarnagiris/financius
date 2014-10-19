@@ -86,7 +86,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         holder.weekday_TV.setText(date.dayOfWeek().getAsShortText());
         holder.day_TV.setText(date.dayOfMonth().getAsShortText());
         holder.color_IV.setColorFilter(getCategoryColor(transaction));
-        holder.amount_TV.setText(MoneyFormatter.format(transaction, mainCurrency));
+        holder.amount_TV.setText(MoneyFormatter.format(transaction));
         holder.title_TV.setTextColor(primaryColor);
         holder.title_TV.setText(getTitle(transaction));
         holder.subtitle_TV.setText(getSubtitle(transaction));

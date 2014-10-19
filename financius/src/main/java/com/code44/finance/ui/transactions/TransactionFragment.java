@@ -69,7 +69,7 @@ public class TransactionFragment extends ModelFragment<Transaction> {
 //        holder.day_TV.setText(date.dayOfMonth().getAsShortText());
 //        holder.title_TV.setText(category.getTitle());
 //        holder.subtitle_TV.setText(transaction.getNote());
-        amount_TV.setText(MoneyFormatter.format(transaction, currency));
+        amount_TV.setText(MoneyFormatter.format(transaction));
 
         if (transaction.getTransactionType() == TransactionType.Expense) {
 //            holder.account_TV.setText(transaction.getAccountFrom().getTitle());

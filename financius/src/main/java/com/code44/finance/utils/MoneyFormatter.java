@@ -10,9 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MoneyFormatter {
+    private static final CurrencyFormat NO_FORMAT = new CurrencyFormat();
     private static final Map<String, CurrencyFormat> currencyFormats = new HashMap<>();
 
-    public static String format(Transaction transaction, Currency mainCurrency) {
+    public static String format(Transaction transaction) {
         final Account account;
         if (transaction.getTransactionType() == TransactionType.Income) {
             account = transaction.getAccountTo();
@@ -25,9 +26,6 @@ public class MoneyFormatter {
             currency = account.getCurrency();
         }
 
-        if (currency == null) {
-            currency = mainCurrency;
-        }
         return format(currency, transaction.getAmount());
     }
 
@@ -46,6 +44,10 @@ public class MoneyFormatter {
     }
 
     private static CurrencyFormat getCurrencyFormat(Currency currency, boolean useCache) {
+        if (currency == null) {
+            return NO_FORMAT;
+        }
+
         final String currencyId = currency.getId();
         if (StringUtils.isEmpty(currencyId) || !useCache) {
             return new CurrencyFormat(currency);

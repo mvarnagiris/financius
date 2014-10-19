@@ -69,7 +69,7 @@ public class AccountFragment extends ModelFragment<Account> {
         title_TV.setText(model.getTitle());
         balance_TV.setText(MoneyFormatter.format(model.getCurrency(), model.getBalance()));
         note_TV.setText(model.getNote());
-        if (model.getCurrency().getId().equals(mainCurrency.getId())) {
+        if (model.getCurrency() == null || model.getCurrency().getId().equals(mainCurrency.getId())) {
             mainCurrencyBalance_TV.setVisibility(View.GONE);
         } else {
             mainCurrencyBalance_TV.setVisibility(View.VISIBLE);
