@@ -44,6 +44,8 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
         final BaseFragment fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_CONTENT);
         if (fragment == null) {
             ((NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_F)).select(NavigationAdapter.NAV_ID_OVERVIEW);
+        } else {
+            onFragmentLoaded(fragment);
         }
 
         getEventBus().register(this);
@@ -51,14 +53,8 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
 
     @Override public void onAttachFragment(Fragment fragment) {
         super.onAttachFragment(fragment);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (!(fragment instanceof NavigationFragment)) {
-                if (fragment instanceof OverviewFragment || fragment instanceof CategoriesReportFragment) {
-                    getToolbar().setElevation(0);
-                } else {
-                    getToolbar().setElevation(getResources().getDimension(R.dimen.elevation_header));
-                }
-            }
+        if (getToolbar() != null && !(fragment instanceof NavigationFragment)) {
+            onFragmentLoaded((BaseFragment) fragment);
         }
     }
 
@@ -138,5 +134,15 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         }
         ft.commit();
+    }
+
+    private void onFragmentLoaded(BaseFragment fragment) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (fragment instanceof OverviewFragment || fragment instanceof CategoriesReportFragment) {
+                getToolbar().setElevation(0);
+            } else {
+                getToolbar().setElevation(getResources().getDimension(R.dimen.elevation_header));
+            }
+        }
     }
 }
