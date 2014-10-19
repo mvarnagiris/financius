@@ -7,6 +7,7 @@
 - ```fix``` Calculator return 0 when decimals where used in certain languages.
 - ```fix``` Various other crashes.
 - ```fix``` Removed separator between toolbar and categories tabs.
+- ```fix``` Fixed layout in "Your data" screen.
 
 ###Version: 0.11.0
 - ```fix``` Up button is working.

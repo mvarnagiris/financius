@@ -18,13 +18,13 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/space_small"
             android:layout_weight="1"
-            android:padding="@dimen/keyline"
             app:cardCornerRadius="@dimen/card_radius"
             tools:ignore="RtlHardcoded">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/keyline"
                 android:orientation="vertical">
 
                 <TextView
@@ -72,13 +72,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_small"
             android:layout_weight="1"
-            android:padding="@dimen/keyline"
             app:cardCornerRadius="@dimen/card_radius"
             tools:ignore="RtlHardcoded">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/keyline"
                 android:orientation="vertical">
 
                 <TextView
