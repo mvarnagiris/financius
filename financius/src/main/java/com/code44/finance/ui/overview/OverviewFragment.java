@@ -178,9 +178,13 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
     private void onTransactionsLoaded(Cursor cursor) {
         final Map<Category, Long> expenses = new HashMap<>();
         if (cursor.moveToFirst()) {
+            final Category noCategory = new Category();
+            noCategory.setId("0");
+            noCategory.setTitle(getString(R.string.no_category));
+            noCategory.setColor(getResources().getColor(R.color.text_neutral));
             do {
                 final Transaction transaction = Transaction.from(cursor);
-                final Category category = transaction.getCategory();
+                final Category category = transaction.getCategory() == null ? noCategory : transaction.getCategory();
                 if (transaction.includeInReports() && transaction.getTransactionType() == TransactionType.Expense && transaction.getTransactionState() == TransactionState.Confirmed) {
                     final Long amount;
                     if (transaction.getAccountFrom().getCurrency().getId().equals(mainCurrency.getId())) {
