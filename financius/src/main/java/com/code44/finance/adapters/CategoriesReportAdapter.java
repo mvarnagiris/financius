@@ -52,7 +52,8 @@ public class CategoriesReportAdapter extends BaseAdapter {
 
         final Pair<Category, Long> categoryAmountPair = items.get(position);
         holder.color_IV.setColorFilter(categoryAmountPair.first.getColor());
-        holder.percent_TV.setText(getPercent(categoryAmountPair.second) + "%");
+        final int percent = getPercent(categoryAmountPair.second);
+        holder.percent_TV.setText((percent == 0 ? "<1" : (percent == 100 && getCount() > 1 ? ">99" : percent)) + "%");
         holder.title_TV.setText(categoryAmountPair.first.getTitle());
         holder.amount_TV.setText(MoneyFormatter.format(defaultCurrency, categoryAmountPair.second));
 

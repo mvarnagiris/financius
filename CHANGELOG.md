@@ -1,3 +1,7 @@
+###Version: 0.11.4
+- ```fix``` Fixed account balance calculation.
+- ```fix``` In categories report instead of 0% when rounded down now there is <1%
+
 ###Version: 0.11.3
 - ```fix``` Fixed crash when rotating phone in main screen.
 
