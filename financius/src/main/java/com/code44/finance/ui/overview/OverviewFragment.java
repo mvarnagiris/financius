@@ -1,14 +1,12 @@
 package com.code44.finance.ui.overview;
 
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.NavigationAdapter;
@@ -74,24 +72,10 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
         accounts_V = (AccountsView) view.findViewById(R.id.accounts_V);
 
         // Setup
+        newTransaction_FAB.setColorFilter(getResources().getColor(R.color.dark_transparent));
         newTransaction_FAB.setOnClickListener(this);
         overviewGraph_V.setOnClickListener(this);
         accounts_V.setOnClickListener(this);
-
-        // Animate
-        if (savedInstanceState == null) {
-            view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override public void onGlobalLayout() {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    } else {
-                        //noinspection deprecation
-                        view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    }
-                    animateIn();
-                }
-            });
-        }
     }
 
     @Override public void onActivityCreated(Bundle savedInstanceState) {
@@ -156,23 +140,6 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
 
     @Subscribe public void onCurrentIntervalChanged(CurrentInterval currentInterval) {
         getLoaderManager().restartLoader(LOADER_TRANSACTIONS, null, this);
-    }
-
-    private void animateIn() {
-        // Prepare for animation
-        overviewGraphContainer_V.setTranslationY(-overviewGraph_V.getHeight());
-        newTransaction_FAB.setScaleX(0.0f);
-        newTransaction_FAB.setScaleY(0.0f);
-        container_V.setAlpha(0.0f);
-
-        // Animation constants
-        final long startDelay = 500;
-        final long duration = 250;
-
-        // Animate
-        overviewGraphContainer_V.animate().translationY(0).setDuration(duration).setStartDelay(startDelay).start();
-        newTransaction_FAB.animate().scaleX(1).scaleY(1).rotation(360).setDuration(duration).setStartDelay(startDelay).start();
-        container_V.animate().alpha(1).setDuration(duration).setStartDelay(startDelay).start();
     }
 
     private void onTransactionsLoaded(Cursor cursor) {

@@ -58,6 +58,8 @@
         android:layout_marginRight="@dimen/keyline"
         android:layout_marginTop="@dimen/btn_fab_half_negative"
         android:elevation="@dimen/elevation_fab"
+        android:scaleType="centerInside"
         android:src="@drawable/ic_action_new"
-        tools:ignore="RtlHardcoded,UnusedAttribute" />
+        tools:ignore="RtlHardcoded,UnusedAttribute"
+        tools:tint="@color/dark_transparent" />
 </RelativeLayout>

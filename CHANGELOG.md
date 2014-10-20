@@ -1,4 +1,5 @@
 ###Version: 0.11.4
+- ```new``` Small UI improvements on home screen.
 - ```fix``` Fixed account balance calculation.
 - ```fix``` In categories report instead of 0% when rounded down now there is <1%
 
