@@ -343,12 +343,15 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         switch (model.getTransactionType()) {
             case Expense:
                 model.setTransactionType(TransactionType.Income);
+                model.setAccountFrom(null);
                 break;
             case Income:
                 model.setTransactionType(TransactionType.Transfer);
+                model.setAccountTo(null);
                 break;
             case Transfer:
                 model.setTransactionType(TransactionType.Expense);
+                model.setCategory(null);
                 break;
         }
         model.setCategory(null);
@@ -402,14 +405,15 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
         switch (model.getTransactionType()) {
             case Expense:
-                canBeConfirmed = canBeConfirmed && validateAccountFrom(showErrors);
+                canBeConfirmed = validateAccountFrom(showErrors) && canBeConfirmed;
                 break;
             case Income:
-                canBeConfirmed = canBeConfirmed && validateAccountTo(showErrors);
+                canBeConfirmed = validateAccountTo(showErrors) && canBeConfirmed;
                 break;
             case Transfer:
-                canBeConfirmed = canBeConfirmed && validateAccountFrom(showErrors);
-                canBeConfirmed = canBeConfirmed && validateAccountTo(showErrors);
+                canBeConfirmed = validateAccountFrom(showErrors) && canBeConfirmed;
+                canBeConfirmed = validateAccountTo(showErrors) && canBeConfirmed;
+                canBeConfirmed = validateAccounts(showErrors) && canBeConfirmed;
                 break;
         }
 
@@ -439,6 +443,17 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     private boolean validateAccountTo(boolean showError) {
         if (model.getAccountTo() == null || !model.getAccountTo().hasId()) {
             if (showError) {
+                FieldValidationUtils.onError(accountTo_B);
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateAccounts(boolean showError) {
+        if (model.getAccountTo() != null && model.getAccountFrom() != null && model.getAccountTo().hasId() && model.getAccountTo().getId().equals(model.getAccountFrom().getId())) {
+            if (showError) {
+                FieldValidationUtils.onError(accountFrom_B);
                 FieldValidationUtils.onError(accountTo_B);
             }
             return false;
