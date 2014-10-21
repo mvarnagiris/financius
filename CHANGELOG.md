@@ -1,5 +1,6 @@
 ###Version: 0.11.6
 - ```new``` Tags are ordered alphabetically.
+- ```fix``` Fixed calculator crash.
 
 ###Version: 0.11.5
 - ```fix``` Fixed account balance calculation. Again.

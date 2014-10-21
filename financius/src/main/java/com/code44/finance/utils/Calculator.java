@@ -162,10 +162,10 @@ public class Calculator {
         switch (type) {
             case NUMBER:
                 return new NumberPart(value);
-
             case OPERATOR:
                 return new OperatorPart(value, formattedString);
-
+            case DECIMAL:
+                return new NumberPart("0").append(DECIMAL);
             default:
                 throw new IllegalArgumentException("Cannot create part for type " + type);
         }
@@ -194,10 +194,11 @@ public class Calculator {
 
         public abstract CharSequence toFormattedString();
 
-        public void append(String value) {
+        public Part append(String value) {
             if (!TextUtils.isEmpty(value)) {
                 stringBuilder.append(value);
             }
+            return this;
         }
 
         public boolean delete() {
@@ -336,12 +337,13 @@ public class Calculator {
         }
 
         @Override
-        public void append(String value) {
+        public NumberPart append(String value) {
             final String number = stringBuilder.toString();
             final int decimalPosition = number.indexOf(DECIMAL);
             if (decimalPosition < 0 || number.length() - decimalPosition <= MAX_DECIMALS) {
                 super.append(value);
             }
+            return this;
         }
 
         @Override
