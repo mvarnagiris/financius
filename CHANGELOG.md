@@ -1,3 +1,6 @@
+###Version: 0.11.5
+- ```fix``` Fixed account balance calculation. Again.
+
 ###Version: 0.11.4
 - ```new``` Small UI improvements on home screen.
 - ```fix``` Fixed account balance calculation.

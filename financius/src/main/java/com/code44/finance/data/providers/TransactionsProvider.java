@@ -40,10 +40,10 @@ public class TransactionsProvider extends BaseModelProvider {
     public static void updateAccountBalance(SQLiteDatabase database, String accountId) {
         final Cursor cursor = Query.create()
                 .projection("sum( case " +
-                        " when " + Tables.Transactions.TYPE + "=? and " + Tables.Transactions.ACCOUNT_FROM_ID + "=? then -" + Tables.Transactions.AMOUNT + "" +
+                        " when (" + Tables.Transactions.TYPE + "=? or " + Tables.Transactions.TYPE + "=?) and " + Tables.Transactions.ACCOUNT_FROM_ID + "=? then -" + Tables.Transactions.AMOUNT + "" +
                         " when " + Tables.Transactions.TYPE + "=? then " + Tables.Transactions.AMOUNT + "*" + Tables.Transactions.EXCHANGE_RATE +
                         " else " + Tables.Transactions.AMOUNT + " end)")
-                .args(TransactionType.Expense.asString(), accountId, TransactionType.Transfer.asString())
+                .args(TransactionType.Expense.asString(), TransactionType.Transfer.asString(), accountId, TransactionType.Transfer.asString())
                 .selection(Tables.Transactions.MODEL_STATE + "=?", ModelState.Normal.asString())
                 .selection(" and " + Tables.Transactions.STATE + "=?", TransactionState.Confirmed.asString())
                 .selection(" and (" + Tables.Transactions.ACCOUNT_FROM_ID + "=? or " + Tables.Transactions.ACCOUNT_TO_ID + "=?)", accountId, accountId)
