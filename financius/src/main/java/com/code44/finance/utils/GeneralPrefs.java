@@ -7,6 +7,7 @@ public class GeneralPrefs extends Prefs {
 
     private final EventBus eventBus;
 
+    private int lastVersionCode;
     private boolean isAutoUpdateCurrencies;
     private long autoUpdateCurrenciesTimestamp;
     private String lastFileExportPath;
@@ -29,6 +30,7 @@ public class GeneralPrefs extends Prefs {
     }
 
     public void refresh() {
+        lastVersionCode = getInteger("lastVersionCode", 0);
         isAutoUpdateCurrencies = getBoolean("isAutoUpdateCurrencies", true);
         autoUpdateCurrenciesTimestamp = getLong("autoUpdateCurrenciesTimestamp", 0);
         lastFileExportPath = getString("lastFileExportPath", null);
@@ -38,9 +40,18 @@ public class GeneralPrefs extends Prefs {
     }
 
     public void clear() {
-        clear("isAutoUpdateCurrencies", "autoUpdateCurrenciesTimestamp", "lastFileExportPath", "intervalType", "intervalLength", "analyticsOptOut");
+        clear("lastVersionCode", "isAutoUpdateCurrencies", "autoUpdateCurrenciesTimestamp", "lastFileExportPath", "intervalType", "intervalLength", "analyticsOptOut");
         refresh();
         notifyChanged();
+    }
+
+    public int getLastVersionCode() {
+        return lastVersionCode;
+    }
+
+    public void setLastVersionCode(int lastVersionCode) {
+        this.lastVersionCode = lastVersionCode;
+        setInteger("lastVersionCode", lastVersionCode);
     }
 
     public boolean isAutoUpdateCurrencies() {

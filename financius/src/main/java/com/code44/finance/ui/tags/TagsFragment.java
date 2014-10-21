@@ -36,7 +36,7 @@ public class TagsFragment extends ModelListFragment {
     }
 
     @Override protected CursorLoader getModelsCursorLoader(Context context) {
-        return Tables.Tags.getQuery().asCursorLoader(context, TagsProvider.uriTags());
+        return Tables.Tags.getQuery().sortOrder(Tables.Tags.TITLE.getName()).asCursorLoader(context, TagsProvider.uriTags());
     }
 
     @Override protected BaseModel modelFrom(Cursor cursor) {

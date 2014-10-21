@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 
+import com.code44.finance.BuildConfig;
 import com.code44.finance.R;
 import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.services.StartupService;
@@ -18,10 +19,15 @@ import com.code44.finance.ui.overview.OverviewFragment;
 import com.code44.finance.ui.reports.CategoriesReportFragment;
 import com.code44.finance.ui.transactions.TransactionsFragment;
 import com.code44.finance.ui.user.UserFragment;
+import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.analytics.Analytics;
+
+import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity implements NavigationFragment.NavigationListener {
     private static final String FRAGMENT_CONTENT = "FRAGMENT_CONTENT";
+
+    @Inject GeneralPrefs generalPrefs;
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
@@ -49,6 +55,7 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
         }
 
         getEventBus().register(this);
+        checkVersionUpdate();
     }
 
     @Override public void onAttachFragment(Fragment fragment) {
@@ -143,6 +150,16 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
             } else {
                 getToolbar().setElevation(getResources().getDimension(R.dimen.elevation_header));
             }
+        }
+    }
+
+    private void checkVersionUpdate() {
+        final int lastVersionCode = generalPrefs.getLastVersionCode();
+        final int currentVersionCode = BuildConfig.VERSION_CODE;
+
+        if (lastVersionCode < currentVersionCode) {
+            // TODO Start upgrade service.
+            generalPrefs.setLastVersionCode(currentVersionCode);
         }
     }
 }

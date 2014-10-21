@@ -1,3 +1,6 @@
+###Version: 0.11.6
+- ```new``` Tags are ordered alphabetically.
+
 ###Version: 0.11.5
 - ```fix``` Fixed account balance calculation. Again.
 
