@@ -75,20 +75,10 @@
                     style="@style/Button.Borderless.Calc"
                     android:text="@string/number_7" />
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
                 <com.code44.finance.views.SquareButton
                     android:id="@+id/number8_B"
                     style="@style/Button.Borderless.Calc"
                     android:text="@string/number_8" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
 
                 <com.code44.finance.views.SquareButton
                     android:id="@+id/number9_B"
@@ -107,20 +97,10 @@
                     style="@style/Button.Borderless.Calc"
                     android:text="@string/number_4" />
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
                 <com.code44.finance.views.SquareButton
                     android:id="@+id/number5_B"
                     style="@style/Button.Borderless.Calc"
                     android:text="@string/number_5" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
 
                 <com.code44.finance.views.SquareButton
                     android:id="@+id/number6_B"
@@ -139,20 +119,10 @@
                     style="@style/Button.Borderless.Calc"
                     android:text="@string/number_1" />
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
                 <com.code44.finance.views.SquareButton
                     android:id="@+id/number2_B"
                     style="@style/Button.Borderless.Calc"
                     android:text="@string/number_2" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
 
                 <com.code44.finance.views.SquareButton
                     android:id="@+id/number3_B"
@@ -171,20 +141,10 @@
                     style="@style/Button.Borderless.Calc"
                     android:text="@string/decimal" />
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
                 <com.code44.finance.views.SquareButton
                     android:id="@+id/number0_B"
                     style="@style/Button.Borderless.Calc"
                     android:text="@string/number_0" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
 
                 <com.code44.finance.views.SquareButton
                     android:id="@+id/equals_B"
@@ -235,6 +195,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 </LinearLayout>
