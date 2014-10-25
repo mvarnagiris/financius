@@ -99,6 +99,8 @@
     <string name="l_about_new_issue">Issues &amp; feature requests. Read the README first.</string>
     <string name="l_about_rate">Like the app? Rate it on Google Play.</string>
     <string name="l_about_community">Want to see what\'s coming next? Join the community.</string>
+    <string name="l_empty_accounts">You have not created any accounts yet!</string>
+    <string name="l_create_account">Create Account</string>
 
     <string name="c_food">Food</string>
     <string name="c_leisure">Leisure</string>

@@ -24,10 +24,15 @@ import com.code44.finance.utils.MoneyFormatter;
 
 import javax.inject.Inject;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+
 public class AccountsFragment extends ModelListFragment {
     @Inject @Main Currency mainCurrency;
 
-    private TextView balance_TV;
+    @InjectView(R.id.container_V) protected View container_V;
+    @InjectView(R.id.balance_TV) protected TextView balance_TV;
 
     public static AccountsFragment newInstance(Mode mode) {
         final Bundle args = makeArgs(mode, null);
@@ -43,9 +48,17 @@ public class AccountsFragment extends ModelListFragment {
 
     @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.inject(this, view);
+    }
 
-        // Get views
-        balance_TV = (TextView) view.findViewById(R.id.balance_TV);
+    @Override protected void setListShown(boolean shown) {
+        super.setListShown(shown);
+
+        if (shown) {
+            container_V.setVisibility(View.VISIBLE);
+        } else {
+            container_V.setVisibility(View.GONE);
+        }
     }
 
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
@@ -53,6 +66,10 @@ public class AccountsFragment extends ModelListFragment {
             updateBalance(data);
         }
         super.onLoadFinished(loader, data);
+    }
+
+    @OnClick(R.id.create_B) protected void onCreateButtonClicked() {
+        startModelEdit(getActivity(), null);
     }
 
     @Override protected BaseModelsAdapter createAdapter(Context context) {
