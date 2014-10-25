@@ -1,7 +1,8 @@
 *.iml
 .gradle
 local.properties
-/build/*
+build
 /.idea/*
 !/.idea/codeStyleSettings.xml
 .DS_Store
+Thumbs.db
