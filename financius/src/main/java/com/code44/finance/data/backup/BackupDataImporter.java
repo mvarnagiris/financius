@@ -202,10 +202,8 @@ public class BackupDataImporter extends DataImporter {
             model.setIncludeInReports(modelJson.get("include_in_reports").getAsBoolean());
             if (model.getTransactionType() == TransactionType.Transfer) {
                 model.setCategory(null);
-            } else {
-                if (model.getCategory() == null) {
-                    model.setCategory(category);
-                }
+            } else if (model.getCategory() == null) {
+                model.setCategory(category);
             }
             valuesList.add(model.asValues());
         }
