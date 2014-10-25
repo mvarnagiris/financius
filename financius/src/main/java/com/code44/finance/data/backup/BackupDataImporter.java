@@ -203,7 +203,9 @@ public class BackupDataImporter extends DataImporter {
             if (model.getTransactionType() == TransactionType.Transfer) {
                 model.setCategory(null);
             } else {
-                if (model.getCategory() == null) model.setCategory(category);
+                if (model.getCategory() == null) {
+                    model.setCategory(category);
+                }
             }
             valuesList.add(model.asValues());
         }
