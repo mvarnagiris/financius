@@ -89,6 +89,10 @@ public class ExchangeRateRequest extends Request {
         return fromCode;
     }
 
+    public String getToCode() {
+        return toCode;
+    }
+
     public Currency getCurrency() {
         return currency;
     }

@@ -27,6 +27,11 @@ public class CurrenciesApi {
         this.requestService = requestService;
     }
 
+    public void getExchangeRate(String fromCode, String toCode) {
+        final ExchangeRateRequest request = new ExchangeRateRequest(eventBus, context, requestService, fromCode, toCode, false);
+        executeRequest(request);
+    }
+
     public void updateExchangeRate(String fromCode, String toCode) {
         final ExchangeRateRequest request = new ExchangeRateRequest(eventBus, context, requestService, fromCode, toCode, true);
         executeRequest(request);

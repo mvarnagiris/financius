@@ -35,7 +35,7 @@ public class Calculator {
 
     public void setValue(double value) {
         clear();
-        NumberFormat format = DecimalFormat.getInstance();
+        NumberFormat format = DecimalFormat.getInstance(Locale.ENGLISH);
         format.setGroupingUsed(false);
         currentPart = createPart(Type.NUMBER, format.format(value), null);
     }
@@ -85,11 +85,14 @@ public class Calculator {
     }
 
     public long getResult() {
+        return Math.round(getResultRaw() * 100);
+    }
+
+    public double getResultRaw() {
         calculate();
-        long result = 0;
+        double result = 0;
         try {
-            final Double number = Double.parseDouble(currentPart.toString());
-            result = Math.round(number * 100);
+            result = Double.parseDouble(currentPart.toString());
         } catch (Exception ignore) {
         }
 

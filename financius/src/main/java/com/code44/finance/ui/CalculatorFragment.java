@@ -20,6 +20,7 @@ import javax.inject.Inject;
 
 public class CalculatorFragment extends BaseFragment implements View.OnClickListener, View.OnLongClickListener {
     private static final String ARG_VALUE = "ARG_VALUE";
+    private static final String ARG_RAW_VALUE = "ARG_RAW_VALUE";
 
     @Inject Calculator calculator;
 
@@ -32,6 +33,15 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
     public static CalculatorFragment newInstance(long value) {
         final Bundle args = new Bundle();
         args.putLong(ARG_VALUE, value);
+
+        final CalculatorFragment fragment = new CalculatorFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static CalculatorFragment newInstance(double value) {
+        final Bundle args = new Bundle();
+        args.putDouble(ARG_RAW_VALUE, value);
 
         final CalculatorFragment fragment = new CalculatorFragment();
         fragment.setArguments(args);
@@ -98,9 +108,14 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
         number9_B.setOnClickListener(this);
 
         if (savedInstanceState == null) {
-            final long value = getArguments().getLong(ARG_VALUE, 0);
+            final double value;
+            if (getArguments().containsKey(ARG_VALUE)) {
+                value = getArguments().getLong(ARG_VALUE, 0) / 100.0;
+            } else {
+                value = getArguments().getDouble(ARG_RAW_VALUE, 0);
+            }
             if (value != 0) {
-                calculator.setValue(value / 100.0);
+                calculator.setValue(value);
             }
         }
 
@@ -139,7 +154,7 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
                     calculator.calculate();
                     updateResult();
                 } else {
-                    listener.onCalculatorResult(calculator.getResult());
+                    listener.onCalculatorResult(calculator.getResult(), calculator.getResultRaw());
                 }
                 break;
 
@@ -277,6 +292,6 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
     }
 
     static interface CalculatorListener {
-        public void onCalculatorResult(long result);
+        public void onCalculatorResult(long result, double rawResult);
     }
 }

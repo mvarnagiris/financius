@@ -22,6 +22,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.code44.finance.R;
+import com.code44.finance.api.currencies.CurrenciesApi;
+import com.code44.finance.api.currencies.ExchangeRateRequest;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.StringUtils;
@@ -52,8 +54,11 @@ import net.danlew.android.joda.DateUtils;
 
 import org.joda.time.DateTime;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -65,7 +70,10 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     private static final int REQUEST_TAGS = 5;
     private static final int REQUEST_DATE = 6;
     private static final int REQUEST_TIME = 7;
+    private static final int REQUEST_EXCHANGE_RATE = 8;
+    private static final int REQUEST_AMOUNT_TO = 9;
 
+    @Inject CurrenciesApi currenciesApi;
     @Inject @Main Currency mainCurrency;
     @Inject TransactionAutoComplete transactionAutoComplete;
 
@@ -73,6 +81,8 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     private Button time_B;
     private ImageButton categoryType_IB;
     private Button amount_B;
+    private Button exchangeRate_B;
+    private Button amountTo_B;
     private Button accountFrom_B;
     private Button accountTo_B;
     private ImageView color_IV;
@@ -101,6 +111,8 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         // Get views
         categoryType_IB = (ImageButton) view.findViewById(R.id.categoryType_IB);
         amount_B = (Button) view.findViewById(R.id.amount_B);
+        exchangeRate_B = (Button) view.findViewById(R.id.exchangeRate_B);
+        amountTo_B = (Button) view.findViewById(R.id.amountTo_B);
         accountFrom_B = (Button) view.findViewById(R.id.accountFrom_B);
         accountTo_B = (Button) view.findViewById(R.id.accountTo_B);
         color_IV = (ImageView) view.findViewById(R.id.color_IV);
@@ -116,6 +128,8 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         // Setup
         categoryType_IB.setOnClickListener(this);
         amount_B.setOnClickListener(this);
+        exchangeRate_B.setOnClickListener(this);
+        amountTo_B.setOnClickListener(this);
         accountFrom_B.setOnClickListener(this);
         accountTo_B.setOnClickListener(this);
         category_B.setOnClickListener(this);
@@ -126,7 +140,6 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         includeInReports_CB.setOnCheckedChangeListener(this);
         note_ET.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -134,7 +147,6 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
             }
 
             @Override public void afterTextChanged(Editable s) {
-
             }
         });
 
@@ -168,11 +180,13 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                     model.setAccountFrom(data.<Account>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
                     onModelLoaded(model);
                     transactionAutoComplete.setAccountFrom(model.getAccountFrom());
+                    refreshExchangeRate();
                     return;
                 case REQUEST_ACCOUNT_TO:
                     model.setAccountTo(data.<Account>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
                     onModelLoaded(model);
                     transactionAutoComplete.setAccountTo(model.getAccountTo());
+                    refreshExchangeRate();
                     return;
                 case REQUEST_CATEGORY:
                     model.setCategory(data.<Category>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
@@ -188,6 +202,23 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                     model.setTags(tags);
                     onModelLoaded(model);
                     transactionAutoComplete.setTags(tags);
+                    return;
+                case REQUEST_EXCHANGE_RATE:
+                    model.setExchangeRate(data.getDoubleExtra(CalculatorActivity.RESULT_EXTRA_RAW_RESULT, 1.0));
+                    if (Double.compare(model.getExchangeRate(), 0) <= 0) {
+                        model.setExchangeRate(1.0);
+                    }
+                    onModelLoaded(model);
+                    return;
+                case REQUEST_AMOUNT_TO:
+                    final long amountTo = data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0);
+                    if (Double.compare(model.getExchangeRate(), 0) == 0) {
+                        model.setExchangeRate(1.0);
+                    }
+                    final long amount = Math.round(amountTo / model.getExchangeRate());
+                    model.setAmount(amount);
+                    onModelLoaded(model);
+                    transactionAutoComplete.setAmount(model.getAmount());
                     return;
             }
         }
@@ -227,6 +258,8 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 color_IV.setVisibility(View.VISIBLE);
                 category_B.setVisibility(View.VISIBLE);
                 categoryType_IB.setImageResource(R.drawable.ic_category_type_expense);
+                exchangeRate_B.setVisibility(View.GONE);
+                amountTo_B.setVisibility(View.GONE);
                 break;
             case Income:
                 accountFrom_B.setVisibility(View.GONE);
@@ -234,6 +267,8 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 color_IV.setVisibility(View.VISIBLE);
                 category_B.setVisibility(View.VISIBLE);
                 categoryType_IB.setImageResource(R.drawable.ic_category_type_income);
+                exchangeRate_B.setVisibility(View.GONE);
+                amountTo_B.setVisibility(View.GONE);
                 break;
             case Transfer:
                 accountFrom_B.setVisibility(View.VISIBLE);
@@ -241,6 +276,20 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 color_IV.setVisibility(View.GONE);
                 category_B.setVisibility(View.GONE);
                 categoryType_IB.setImageResource(R.drawable.ic_category_type_transfer);
+                final boolean bothAccountsSet = transaction.getAccountFrom() != null && transaction.getAccountTo() != null;
+                final boolean differentCurrencies = bothAccountsSet && !transaction.getAccountFrom().getCurrency().getId().equals(transaction.getAccountTo().getCurrency().getId());
+                if (bothAccountsSet && differentCurrencies) {
+                    exchangeRate_B.setVisibility(View.VISIBLE);
+                    amountTo_B.setVisibility(View.VISIBLE);
+
+                    NumberFormat format = DecimalFormat.getInstance(Locale.ENGLISH);
+                    format.setGroupingUsed(false);
+                    exchangeRate_B.setText(format.format(model.getExchangeRate()));
+                    amountTo_B.setText(MoneyFormatter.format(transaction.getAccountTo().getCurrency(), Math.round(transaction.getAmount() * transaction.getExchangeRate())));
+                } else {
+                    exchangeRate_B.setVisibility(View.GONE);
+                    amountTo_B.setVisibility(View.GONE);
+                }
                 break;
         }
 
@@ -273,6 +322,12 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 break;
             case R.id.amount_B:
                 CalculatorActivity.start(this, REQUEST_AMOUNT, model.getAmount());
+                break;
+            case R.id.exchangeRate_B:
+                CalculatorActivity.start(this, REQUEST_EXCHANGE_RATE, model.getExchangeRate());
+                break;
+            case R.id.amountTo_B:
+                CalculatorActivity.start(this, REQUEST_AMOUNT_TO, Math.round(model.getAmount() * model.getExchangeRate()));
                 break;
             case R.id.accountFrom_B:
                 AccountsActivity.startSelect(this, REQUEST_ACCOUNT_FROM);
@@ -314,13 +369,21 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     }
 
     @Override public void onTransactionAutoCompleteAccountsFrom(List<Account> accounts) {
-        model.setAccountFrom(accounts.get(0));
-        onModelLoaded(model);
+        final Account newAccount = accounts.get(0);
+        if (!newAccount.equals(model.getAccountFrom())) {
+            model.setAccountFrom(accounts.get(0));
+            onModelLoaded(model);
+            refreshExchangeRate();
+        }
     }
 
     @Override public void onTransactionAutoCompleteAccountsTo(List<Account> accounts) {
-        model.setAccountTo(accounts.get(0));
-        onModelLoaded(model);
+        final Account newAccount = accounts.get(0);
+        if (!newAccount.equals(model.getAccountTo())) {
+            model.setAccountTo(accounts.get(0));
+            onModelLoaded(model);
+            refreshExchangeRate();
+        }
     }
 
     @Override public void onTransactionAutoCompleteCategories(List<Category> categories) {
@@ -349,6 +412,12 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         model.setDate(date.getMillis());
         onModelLoaded(model);
         transactionAutoComplete.setDate(model.getDate());
+    }
+
+    @Subscribe public void onExchangeRateUpdated(ExchangeRateRequest request) {
+        if (!request.isError() && model.getAccountFrom() != null && model.getAccountTo() != null && model.getAccountFrom().getCurrency().getCode().equals(request.getFromCode()) && model.getAccountTo().getCurrency().getCode().equals(request.getToCode())) {
+            setExchangeRate(request.getCurrency().getExchangeRate());
+        }
     }
 
     private void toggleTransactionType() {
@@ -410,6 +479,40 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         } else {
             return transaction.getCategory().getColor();
         }
+    }
+
+    private void refreshExchangeRate() {
+        switch (model.getTransactionType()) {
+            case Expense:
+                model.setExchangeRate(1);
+                break;
+            case Income:
+                model.setExchangeRate(1);
+                break;
+            case Transfer:
+                if (model.getAccountFrom() != null && model.getAccountTo() != null) {
+                    final Currency currencyFrom = model.getAccountFrom().getCurrency();
+                    final Currency currencyTo = model.getAccountTo().getCurrency();
+                    if (currencyFrom.isDefault() || currencyTo.isDefault()) {
+                        if (currencyFrom.isDefault()) {
+                            setExchangeRate(1.0 / currencyTo.getExchangeRate());
+                        } else {
+                            setExchangeRate(currencyFrom.getExchangeRate());
+                        }
+                    } else {
+                        currenciesApi.getExchangeRate(model.getAccountFrom().getCurrency().getCode(), model.getAccountTo().getCurrency().getCode());
+                    }
+                }
+                break;
+        }
+    }
+
+    private void setExchangeRate(double exchangeRate) {
+        model.setExchangeRate(exchangeRate);
+        if (Double.compare(model.getExchangeRate(), 0) <= 0) {
+            model.setExchangeRate(1.0);
+        }
+        onModelLoaded(model);
     }
 
     private boolean canBeConfirmed(Transaction model, boolean showErrors) {

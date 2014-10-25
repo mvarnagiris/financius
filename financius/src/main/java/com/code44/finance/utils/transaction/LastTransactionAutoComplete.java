@@ -65,10 +65,20 @@ public class LastTransactionAutoComplete extends TransactionAutoComplete {
         }
 
         final Transaction transaction = Transaction.from(cursor);
-        autoCompleteAccountsFrom(Arrays.asList(transaction.getAccountFrom()));
-        autoCompleteAccountsTo(Arrays.asList(transaction.getAccountTo()));
+        if (transaction.getAccountFrom() != null) {
+            autoCompleteAccountsFrom(Arrays.asList(transaction.getAccountFrom()));
+        }
+
+        if (transaction.getAccountTo() != null) {
+            autoCompleteAccountsTo(Arrays.asList(transaction.getAccountTo()));
+        }
+
         autoCompleteAmounts(Arrays.asList(transaction.getAmount()));
-        autoCompleteCategories(Arrays.asList(transaction.getCategory()));
+
+        if (transaction.getCategory() != null) {
+            autoCompleteCategories(Arrays.asList(transaction.getCategory()));
+        }
+
         autoCompleteTags(transaction.getTags());
     }
 
