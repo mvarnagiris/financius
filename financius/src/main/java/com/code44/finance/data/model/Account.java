@@ -158,7 +158,7 @@ public class Account extends BaseModel<AccountEntity> {
         // Balance
         index = cursor.getColumnIndex(Tables.Accounts.BALANCE.getName(columnPrefixTable));
         if (index >= 0) {
-            setBalance(cursor.getInt(index));
+            setBalance(cursor.getLong(index));
         }
 
         // Include in totals

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.code44.finance.R;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.Locale;
@@ -34,7 +35,9 @@ public class Calculator {
 
     public void setValue(double value) {
         clear();
-        currentPart = createPart(Type.NUMBER, String.valueOf(value), null);
+        NumberFormat format = DecimalFormat.getInstance();
+        format.setGroupingUsed(false);
+        currentPart = createPart(Type.NUMBER, format.format(value), null);
     }
 
     public void plus() {
