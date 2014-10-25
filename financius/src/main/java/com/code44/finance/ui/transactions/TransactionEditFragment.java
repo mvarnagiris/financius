@@ -62,7 +62,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-public class TransactionEditFragment extends ModelEditFragment<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TransactionAutoComplete.TransactionAutoCompleteListener {
+public class TransactionEditFragment extends ModelEditFragment<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TransactionAutoComplete.TransactionAutoCompleteListener, View.OnLongClickListener {
     private static final int REQUEST_AMOUNT = 1;
     private static final int REQUEST_ACCOUNT_FROM = 2;
     private static final int REQUEST_ACCOUNT_TO = 3;
@@ -79,7 +79,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
     private Button date_B;
     private Button time_B;
-    private ImageButton categoryType_IB;
+    private ImageButton transactionType_IB;
     private Button amount_B;
     private Button exchangeRate_B;
     private Button amountTo_B;
@@ -109,7 +109,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        categoryType_IB = (ImageButton) view.findViewById(R.id.categoryType_IB);
+        transactionType_IB = (ImageButton) view.findViewById(R.id.transactionType_IB);
         amount_B = (Button) view.findViewById(R.id.amount_B);
         exchangeRate_B = (Button) view.findViewById(R.id.exchangeRate_B);
         amountTo_B = (Button) view.findViewById(R.id.amountTo_B);
@@ -126,16 +126,25 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         save_B = (Button) view.findViewById(R.id.save_B);
 
         // Setup
-        categoryType_IB.setOnClickListener(this);
+        transactionType_IB.setOnClickListener(this);
         amount_B.setOnClickListener(this);
+        amount_B.setOnLongClickListener(this);
         exchangeRate_B.setOnClickListener(this);
+        exchangeRate_B.setOnLongClickListener(this);
         amountTo_B.setOnClickListener(this);
+        amount_B.setOnLongClickListener(this);
         accountFrom_B.setOnClickListener(this);
+        accountFrom_B.setOnLongClickListener(this);
         accountTo_B.setOnClickListener(this);
+        accountTo_B.setOnLongClickListener(this);
         category_B.setOnClickListener(this);
+        category_B.setOnLongClickListener(this);
         tags_B.setOnClickListener(this);
+        tags_B.setOnLongClickListener(this);
         date_B.setOnClickListener(this);
+        date_B.setOnLongClickListener(this);
         time_B.setOnClickListener(this);
+        time_B.setOnLongClickListener(this);
         confirmed_CB.setOnCheckedChangeListener(this);
         includeInReports_CB.setOnCheckedChangeListener(this);
         note_ET.addTextChangedListener(new TextWatcher() {
@@ -257,7 +266,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 accountTo_B.setVisibility(View.GONE);
                 color_IV.setVisibility(View.VISIBLE);
                 category_B.setVisibility(View.VISIBLE);
-                categoryType_IB.setImageResource(R.drawable.ic_category_type_expense);
+                transactionType_IB.setImageResource(R.drawable.ic_category_type_expense);
                 exchangeRate_B.setVisibility(View.GONE);
                 amountTo_B.setVisibility(View.GONE);
                 break;
@@ -266,7 +275,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 accountTo_B.setVisibility(View.VISIBLE);
                 color_IV.setVisibility(View.VISIBLE);
                 category_B.setVisibility(View.VISIBLE);
-                categoryType_IB.setImageResource(R.drawable.ic_category_type_income);
+                transactionType_IB.setImageResource(R.drawable.ic_category_type_income);
                 exchangeRate_B.setVisibility(View.GONE);
                 amountTo_B.setVisibility(View.GONE);
                 break;
@@ -275,7 +284,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 accountTo_B.setVisibility(View.VISIBLE);
                 color_IV.setVisibility(View.GONE);
                 category_B.setVisibility(View.GONE);
-                categoryType_IB.setImageResource(R.drawable.ic_category_type_transfer);
+                transactionType_IB.setImageResource(R.drawable.ic_category_type_transfer);
                 final boolean bothAccountsSet = transaction.getAccountFrom() != null && transaction.getAccountTo() != null;
                 final boolean differentCurrencies = bothAccountsSet && !transaction.getAccountFrom().getCurrency().getId().equals(transaction.getAccountTo().getCurrency().getId());
                 if (bothAccountsSet && differentCurrencies) {
@@ -317,7 +326,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
 
     @Override public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.categoryType_IB:
+            case R.id.transactionType_IB:
                 toggleTransactionType();
                 break;
             case R.id.amount_B:
@@ -348,6 +357,45 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                 TimePickerDialog.show(getChildFragmentManager(), REQUEST_TIME, model.getDate());
                 break;
         }
+    }
+
+    @Override public boolean onLongClick(View v) {
+        switch (v.getId()) {
+            case R.id.amount_B:
+                model.setAmount(0);
+                onModelLoaded(model);
+                return true;
+            case R.id.exchangeRate_B:
+                model.setExchangeRate(1.0);
+                onModelLoaded(model);
+                return true;
+            case R.id.amountTo_B:
+                model.setAmount(0);
+                onModelLoaded(model);
+                return true;
+            case R.id.accountFrom_B:
+                model.setAccountFrom(null);
+                onModelLoaded(model);
+                return true;
+            case R.id.accountTo_B:
+                model.setAccountTo(null);
+                onModelLoaded(model);
+                return true;
+            case R.id.category_B:
+                model.setCategory(null);
+                onModelLoaded(model);
+                return true;
+            case R.id.tags_B:
+                model.setTags(null);
+                onModelLoaded(model);
+                return true;
+            case R.id.date_B:
+            case R.id.time_B:
+                model.setDate(System.currentTimeMillis());
+                onModelLoaded(model);
+                return true;
+        }
+        return false;
     }
 
     @Override public void onCheckedChanged(CompoundButton view, boolean checked) {

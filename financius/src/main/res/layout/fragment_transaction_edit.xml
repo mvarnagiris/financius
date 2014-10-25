@@ -52,7 +52,7 @@
                 android:gravity="bottom">
 
                 <ImageButton
-                    android:id="@+id/categoryType_IB"
+                    android:id="@+id/transactionType_IB"
                     style="@style/Button.Borderless.Select"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

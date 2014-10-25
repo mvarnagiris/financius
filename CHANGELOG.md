@@ -1,6 +1,7 @@
 ###Version: 0.11.6
 - ```new``` Tags are ordered alphabetically.
 - ```new``` When transferring money between accounts with different currencies now you can set either exchange rate or receiving amount.
+- ```new``` When in transaction edit screen, long pressing on a field will clear it.
 - ```fix``` Fixed calculator crash.
 - ```fix``` Fixed import when categories went missing. By @i906.
 - ```fix``` Fixed calculator buttons on pre-Lollipop devices. By @i906.
