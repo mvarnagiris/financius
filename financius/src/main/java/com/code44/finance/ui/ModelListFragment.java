@@ -23,6 +23,10 @@ import com.code44.finance.data.model.BaseModel;
 import java.util.HashSet;
 import java.util.Set;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.Optional;
+
 public abstract class ModelListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener, View.OnClickListener {
     public static final String ARG_MODE = ModelListFragment.class.getName() + ".ARG_MODE";
     public static final String ARG_SELECTED_MODELS = ModelListFragment.class.getName() + ".ARG_SELECTED_MODELS";
@@ -34,6 +38,13 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
 
     private OnModelSelectedListener onModelSelectedListener;
     private OnModelsSelectedListener onModelsSelectedListener;
+
+    @Optional @InjectView(R.id.list_V) protected ListView list_V;
+    @Optional @InjectView(R.id.editButtonsContainer_V) protected View editButtonsContainer_V;
+    @Optional @InjectView(R.id.empty_V) protected View empty_V;
+
+    @Optional @InjectView(R.id.save_B) protected Button save_B;
+    @Optional @InjectView(R.id.cancel_B) protected Button cancel_B;
 
     public static Bundle makeArgs(Mode mode, Parcelable[] selectedModels) {
         final Bundle args = new Bundle();
@@ -64,6 +75,7 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
 
     @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.inject(this, view);
 
         // Setup
         adapter = createAdapter(getActivity());
@@ -109,6 +121,7 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == LOADER_MODELS) {
             adapter.swapCursor(data);
+            setListShown(!adapter.isEmpty());
         }
     }
 
@@ -153,23 +166,32 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
     protected abstract void startModelEdit(Context context, String modelServerId);
 
     protected void prepareView(View view, BaseModelsAdapter adapter) {
-        // Get views
-        final ListView list_V = (ListView) view.findViewById(R.id.list_V);
-        final View editButtonsContainer_V = view.findViewById(R.id.editButtonsContainer_V);
-
         // Setup
         list_V.setAdapter(adapter);
         list_V.setOnItemClickListener(this);
         if (editButtonsContainer_V != null) {
             if (mode == Mode.MULTI_SELECT) {
                 editButtonsContainer_V.setVisibility(View.VISIBLE);
-                final Button save_B = (Button) view.findViewById(R.id.save_B);
-                final Button cancel_B = (Button) view.findViewById(R.id.cancel_B);
                 save_B.setOnClickListener(this);
                 cancel_B.setOnClickListener(this);
             } else {
                 editButtonsContainer_V.setVisibility(View.GONE);
             }
+        }
+
+        setListShown(!adapter.isEmpty());
+    }
+
+    protected void setListShown(boolean shown) {
+
+        if (empty_V == null || list_V == null) return;
+
+        if (shown) {
+            empty_V.setVisibility(View.GONE);
+            list_V.setVisibility(View.VISIBLE);
+        } else {
+            empty_V.setVisibility(View.VISIBLE);
+            list_V.setVisibility(View.GONE);
         }
     }
 

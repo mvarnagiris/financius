@@ -40,6 +40,43 @@
     <ListView
         android:id="@+id/list_V"
         style="@style/ListView"
-        android:layout_above="@id/container_V" />
+        android:layout_above="@id/container_V"
+        tools:listitem="@layout/li_account" />
+
+    <LinearLayout
+        android:id="@+id/empty_V"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/container_V"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:padding="48dp"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_account_large" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/space_large"
+            android:text="@string/l_empty_accounts"
+            android:gravity="center"
+            style="@style/Text.Subhead" />
+
+        <Button
+            android:id="@+id/create_B"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_large"
+            android:text="@string/l_create_account"
+            style="@style/Button.Borderless"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
