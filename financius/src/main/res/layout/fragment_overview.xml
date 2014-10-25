@@ -61,5 +61,5 @@
         android:scaleType="centerInside"
         android:src="@drawable/ic_action_new"
         tools:ignore="RtlHardcoded,UnusedAttribute"
-        tools:tint="@color/dark_transparent" />
+        tools:tint="@color/text_primary" />
 </RelativeLayout>

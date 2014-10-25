@@ -72,7 +72,7 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
         accounts_V = (AccountsView) view.findViewById(R.id.accounts_V);
 
         // Setup
-        newTransaction_FAB.setColorFilter(getResources().getColor(R.color.dark_transparent));
+        newTransaction_FAB.setColorFilter(getResources().getColor(R.color.text_primary));
         newTransaction_FAB.setOnClickListener(this);
         overviewGraph_V.setOnClickListener(this);
         accounts_V.setOnClickListener(this);
