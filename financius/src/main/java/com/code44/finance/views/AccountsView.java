@@ -38,7 +38,9 @@ public class AccountsView extends LinearLayout {
 
     public AccountsView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        App.with(context).inject(this);
+        if (!isInEditMode()) {
+            App.with(context).inject(this);
+        }
         setOrientation(VERTICAL);
         final int padding = getResources().getDimensionPixelSize(R.dimen.keyline);
         setPadding(padding, padding, padding, padding);

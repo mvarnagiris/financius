@@ -38,7 +38,7 @@
     <dimen name="recommended_touch_size">48dp</dimen>
     <dimen name="big_touch_size">64dp</dimen>
 
-    <dimen name="navigation_drawer_width">280dp</dimen>
+    <dimen name="navigation_drawer_width">240dp</dimen>
 
     <dimen name="btn_corner">2dp</dimen>
     <dimen name="btn_fab">56dp</dimen>

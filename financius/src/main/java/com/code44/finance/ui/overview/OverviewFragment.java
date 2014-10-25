@@ -47,10 +47,7 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
     @Inject CurrentInterval currentInterval;
     @Inject @Main Currency mainCurrency;
 
-    private FabImageButton newTransaction_FAB;
-    private View overviewGraphContainer_V;
     private OverviewGraphView overviewGraph_V;
-    private View container_V;
     private AccountsView accounts_V;
 
     public static OverviewFragment newInstance() {
@@ -65,10 +62,8 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        newTransaction_FAB = (FabImageButton) view.findViewById(R.id.newTransaction_FAB);
-        overviewGraphContainer_V = view.findViewById(R.id.overviewGraphContainer_V);
+        final FabImageButton newTransaction_FAB = (FabImageButton) view.findViewById(R.id.newTransaction_FAB);
         overviewGraph_V = (OverviewGraphView) view.findViewById(R.id.overviewGraph_V);
-        container_V = view.findViewById(R.id.container_V);
         accounts_V = (AccountsView) view.findViewById(R.id.accounts_V);
 
         // Setup
