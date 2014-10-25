@@ -3,6 +3,7 @@
 - ```fix``` Fixed calculator crash.
 - ```fix``` Fixed import when categories went missing. By @i906.
 - ```fix``` Fixed calculator buttons on pre-Lollipop devices. By @i906.
+- ```fix``` Fixed disappearing note issue.
 
 ###Version: 0.11.5
 - ```fix``` Fixed account balance calculation. Again.

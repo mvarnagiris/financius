@@ -7,8 +7,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.content.CursorLoader;
+import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,8 +83,6 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
     private CheckBox includeInReports_CB;
     private Button save_B;
 
-    private boolean isAutoAmountRequested = false;
-
     public static TransactionEditFragment newInstance(String transactionServerId) {
         final Bundle args = makeArgs(transactionServerId);
 
@@ -124,10 +124,22 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         time_B.setOnClickListener(this);
         confirmed_CB.setOnCheckedChangeListener(this);
         includeInReports_CB.setOnCheckedChangeListener(this);
-        isAutoAmountRequested = savedInstanceState != null;
+        note_ET.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                model.setNote(note_ET.getText().toString());
+            }
+
+            @Override public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        final boolean isAutoAmountRequested = savedInstanceState != null;
         if ((StringUtils.isEmpty(modelId) || modelId.equals("0")) && !isAutoAmountRequested) {
-            isAutoAmountRequested = true;
             CalculatorActivity.start(this, REQUEST_AMOUNT, 0);
         }
     }
