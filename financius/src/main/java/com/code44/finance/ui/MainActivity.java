@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 
 import com.code44.finance.BuildConfig;
 import com.code44.finance.R;
@@ -85,7 +86,11 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
         if (!(getSupportFragmentManager().findFragmentByTag(FRAGMENT_CONTENT) instanceof OverviewFragment)) {
             ((NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_F)).select(NavigationAdapter.NAV_ID_OVERVIEW);
         } else {
-            super.onBackPressed();
+            if (drawerLayout.isDrawerOpen(Gravity.START) || drawerLayout.isDrawerOpen(Gravity.END)) {
+                drawerLayout.closeDrawers();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
