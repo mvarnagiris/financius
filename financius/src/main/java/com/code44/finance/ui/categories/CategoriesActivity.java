@@ -11,6 +11,7 @@ import android.view.Menu;
 import com.astuetz.PagerSlidingTabStrip;
 import com.code44.finance.R;
 import com.code44.finance.adapters.CategoriesPagerAdapter;
+import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.ui.ModelListActivity;
 import com.code44.finance.ui.ModelListFragment;
@@ -27,23 +28,19 @@ public class CategoriesActivity extends ModelListActivity {
 
     public static void start(Context context) {
         final Intent intent = makeIntentView(context, CategoriesActivity.class);
-        start(context, intent);
+        startActivity(context, intent);
     }
 
     public static void startSelect(Fragment fragment, int requestCode, TransactionType transactionType) {
         final Intent intent = makeIntentSelect(fragment.getActivity(), CategoriesActivity.class);
         intent.putExtra(EXTRA_CATEGORY_TYPE, transactionType);
-        startForResult(fragment, intent, requestCode);
+        startActivityForResult(fragment, intent, requestCode);
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         menu.findItem(R.id.action_settings).setVisible(false);
         return true;
-    }
-
-    @Override protected int getActionBarTitleResId() {
-        return R.string.categories;
     }
 
     @Override protected ModelListFragment createModelsFragment(ModelListFragment.Mode mode, Parcelable[] selectedModels) {
@@ -74,5 +71,9 @@ public class CategoriesActivity extends ModelListActivity {
     @Override protected void readExtras() {
         super.readExtras();
         transactionType = (TransactionType) getIntent().getSerializableExtra(EXTRA_CATEGORY_TYPE);
+    }
+
+    @Override protected NavigationAdapter.NavigationScreen getNavigationScreen() {
+        return null;
     }
 }

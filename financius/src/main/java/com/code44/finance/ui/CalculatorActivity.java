@@ -14,13 +14,13 @@ public class CalculatorActivity extends BaseActivity implements CalculatorFragme
     public static void start(Fragment fragment, int requestCode, long value) {
         final Intent intent = makeIntent(fragment.getActivity(), CalculatorActivity.class);
         intent.putExtra(EXTRA_VALUE, value);
-        startForResult(fragment, intent, requestCode);
+        startActivityForResult(fragment, intent, requestCode);
     }
 
     public static void start(Fragment fragment, int requestCode, double value) {
         final Intent intent = makeIntent(fragment.getActivity(), CalculatorActivity.class);
         intent.putExtra(EXTRA_RAW_VALUE, value);
-        startForResult(fragment, intent, requestCode);
+        startActivityForResult(fragment, intent, requestCode);
     }
 
     @Override

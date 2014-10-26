@@ -39,7 +39,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/list_V"
+        android:id="@+id/list"
         style="@style/ListView"
         android:layout_above="@id/container_V" />
 

@@ -13,28 +13,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NavigationAdapter extends BaseAdapter {
-    public static final int NAV_ID_USER = 1;
-    public static final int NAV_ID_OVERVIEW = 2;
-    public static final int NAV_ID_ACCOUNTS = 3;
-    public static final int NAV_ID_TRANSACTIONS = 4;
-    public static final int NAV_ID_REPORTS = 5;
-
     private final Context context;
     private final List<NavigationItem> items;
     private final int selectedTextColor;
     private final int normalTextColor;
 
-    private long selectedId;
+    private NavigationScreen selectedNavigationScreen;
 
     public NavigationAdapter(Context context) {
         this.context = context;
 
         items = new ArrayList<>();
         // TODO items.add(new NavigationItem(NAV_ID_USER, context.getString(R.string.user)));
-        items.add(new NavigationItem(NAV_ID_OVERVIEW, context.getString(R.string.overview)));
-        items.add(new NavigationItem(NAV_ID_ACCOUNTS, context.getString(R.string.accounts)));
-        items.add(new NavigationItem(NAV_ID_TRANSACTIONS, context.getString(R.string.transactions)));
-        items.add(new NavigationItem(NAV_ID_REPORTS, context.getString(R.string.reports)));
+        items.add(new NavigationItem(NavigationScreen.Overview, context.getString(R.string.overview)));
+        items.add(new NavigationItem(NavigationScreen.Accounts, context.getString(R.string.accounts)));
+        items.add(new NavigationItem(NavigationScreen.Transactions, context.getString(R.string.transactions)));
+        items.add(new NavigationItem(NavigationScreen.Reports, context.getString(R.string.reports)));
 
         selectedTextColor = context.getResources().getColor(R.color.text_brand);
         normalTextColor = context.getResources().getColor(R.color.text_primary);
@@ -67,37 +61,44 @@ public class NavigationAdapter extends BaseAdapter {
 
         final NavigationItem item = items.get(position);
         holder.title_TV.setText(item.getTitle());
-        holder.title_TV.setTextColor(item.getId() == selectedId ? selectedTextColor : normalTextColor);
+        holder.title_TV.setTextColor(item.getNavigationScreen() == selectedNavigationScreen ? selectedTextColor : normalTextColor);
 
         return view;
     }
 
-    public void setSelectedId(long selectedId) {
-        this.selectedId = selectedId;
+    public void setSelectedNavigationScreen(NavigationScreen navigationScreen) {
+        this.selectedNavigationScreen = navigationScreen;
         notifyDataSetChanged();
     }
 
-    public NavigationItem getSelectedItem() {
-        for (NavigationItem item : items) {
-            if (item.getId() == selectedId) {
-                return item;
-            }
-        }
-
-        return null;
-    }
-
-    public static class NavigationItem {
+    public static enum NavigationScreen {
+        User(1), Overview(2), Accounts(3), Transactions(4), Reports(5);
         private final int id;
-        private final String title;
 
-        public NavigationItem(int id, String title) {
+        NavigationScreen(int id) {
             this.id = id;
-            this.title = title;
         }
 
         public int getId() {
             return id;
+        }
+    }
+
+    public static class NavigationItem {
+        private final NavigationScreen navigationScreen;
+        private final String title;
+
+        public NavigationItem(NavigationScreen navigationScreen, String title) {
+            this.navigationScreen = navigationScreen;
+            this.title = title;
+        }
+
+        public NavigationScreen getNavigationScreen() {
+            return navigationScreen;
+        }
+
+        public int getId() {
+            return navigationScreen.getId();
         }
 
         public String getTitle() {

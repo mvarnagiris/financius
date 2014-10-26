@@ -5,7 +5,7 @@
     android:layout_marginTop="?android:actionBarSize">
 
     <ListView
-        android:id="@+id/list_V"
+        android:id="@+id/list"
         style="@style/ListView" />
 
 </RelativeLayout>

@@ -44,7 +44,7 @@ public class ListDialogFragment extends BaseDialogFragment implements View.OnCli
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        list_V = (ListView) view.findViewById(R.id.list_V);
+        list_V = (ListView) view.findViewById(R.id.list);
         positive_B = (Button) view.findViewById(R.id.positive_B);
         negative_B = (Button) view.findViewById(R.id.negative_B);
 

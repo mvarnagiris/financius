@@ -34,13 +34,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.overview.OverviewActivity"
+            android:label="@string/overview" />
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
         <activity android:name=".ui.CalculatorActivity" />
         <activity android:name=".ui.currencies.CurrenciesActivity" />
         <activity android:name=".ui.currencies.CurrencyActivity" />
         <activity android:name=".ui.currencies.CurrencyEditActivity" />
-        <activity android:name=".ui.accounts.AccountsActivity" />
+        <activity
+            android:name=".ui.accounts.AccountsActivity"
+            android:label="@string/accounts" />
         <activity android:name=".ui.accounts.AccountActivity" />
         <activity android:name=".ui.accounts.AccountEditActivity" />
         <activity android:name=".ui.categories.CategoriesActivity" />
@@ -49,6 +54,9 @@
         <activity android:name=".ui.tags.TagsActivity" />
         <activity android:name=".ui.tags.TagActivity" />
         <activity android:name=".ui.tags.TagEditActivity" />
+        <activity
+            android:name=".ui.transactions.TransactionsActivity"
+            android:label="@string/transactions" />
         <activity android:name=".ui.transactions.TransactionActivity" />
         <activity android:name=".ui.transactions.TransactionEditActivity" />
         <activity android:name=".ui.user.LoginActivity" />
@@ -56,7 +64,9 @@
         <activity android:name=".ui.settings.data.ExportActivity" />
         <activity android:name=".ui.settings.data.ImportActivity" />
         <activity android:name=".ui.settings.about.AboutActivity" />
-        <activity android:name=".ui.overview.OverviewActivity" />
+        <activity
+            android:name=".ui.reports.CategoriesReportActivity"
+            android:label="" />
         <activity
             android:name=".ui.FilePickerActivity"
             android:theme="@style/FilePicker.Theme" />

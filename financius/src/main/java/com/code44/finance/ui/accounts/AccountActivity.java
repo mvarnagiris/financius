@@ -10,7 +10,7 @@ import com.code44.finance.ui.ModelFragment;
 public class AccountActivity extends ModelActivity {
     public static void start(Context context, String accountServerId) {
         final Intent intent = makeIntent(context, AccountActivity.class, accountServerId);
-        start(context, intent);
+        startActivity(context, intent);
     }
 
     @Override protected int getActionBarTitleResId() {

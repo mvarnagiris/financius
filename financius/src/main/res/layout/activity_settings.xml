@@ -5,10 +5,10 @@
     android:orientation="vertical"
     tools:context=".SettingsActivity">
 
-    <include layout="@layout/include_toolbar" />
+    <include layout="@layout/toolbar" />
 
     <ListView
-        android:id="@+id/list_V"
+        android:id="@+id/list"
         style="@style/ScrollView" />
 
 </LinearLayout>

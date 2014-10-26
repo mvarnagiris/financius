@@ -8,7 +8,7 @@ import com.code44.finance.ui.ModelFragment;
 
 public class TagEditActivity extends ModelEditActivity {
     public static void start(Context context, String tagServerId) {
-        start(context, makeIntent(context, TagEditActivity.class, tagServerId));
+        startActivity(context, makeIntent(context, TagEditActivity.class, tagServerId));
     }
 
     @Override

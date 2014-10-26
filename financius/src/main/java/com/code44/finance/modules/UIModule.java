@@ -30,6 +30,7 @@ import com.code44.finance.ui.dialogs.ListDialogFragment;
 import com.code44.finance.ui.dialogs.TimePickerDialog;
 import com.code44.finance.ui.overview.OverviewActivity;
 import com.code44.finance.ui.overview.OverviewFragment;
+import com.code44.finance.ui.reports.CategoriesReportActivity;
 import com.code44.finance.ui.reports.CategoriesReportFragment;
 import com.code44.finance.ui.reports.ReportsFragment;
 import com.code44.finance.ui.settings.SettingsActivity;
@@ -49,6 +50,7 @@ import com.code44.finance.ui.transactions.TransactionActivity;
 import com.code44.finance.ui.transactions.TransactionEditActivity;
 import com.code44.finance.ui.transactions.TransactionEditFragment;
 import com.code44.finance.ui.transactions.TransactionFragment;
+import com.code44.finance.ui.transactions.TransactionsActivity;
 import com.code44.finance.ui.transactions.TransactionsFragment;
 
 import dagger.Module;
@@ -66,6 +68,7 @@ import dagger.Module;
                 AccountsActivity.class,
                 AccountActivity.class,
                 AccountEditActivity.class,
+                TransactionsActivity.class,
                 TransactionActivity.class,
                 TransactionEditActivity.class,
                 CategoriesActivity.class,
@@ -80,6 +83,7 @@ import dagger.Module;
                 ExportActivity.class,
                 ImportActivity.class,
                 AboutActivity.class,
+                CategoriesReportActivity.class,
 
                 NavigationFragment.class,
                 OverviewFragment.class,

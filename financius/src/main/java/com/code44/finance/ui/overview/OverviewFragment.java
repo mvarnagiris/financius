@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.code44.finance.R;
-import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.db.Tables;
@@ -23,7 +22,6 @@ import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartValue;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.BaseFragment;
-import com.code44.finance.ui.NavigationFragment;
 import com.code44.finance.ui.transactions.TransactionEditActivity;
 import com.code44.finance.utils.CategoriesExpenseComparator;
 import com.code44.finance.utils.CurrentInterval;
@@ -125,10 +123,10 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
                 TransactionEditActivity.start(getActivity(), null);
                 break;
             case R.id.overviewGraph:
-                getEventBus().post(new NavigationFragment.RequestNavigation(NavigationAdapter.NAV_ID_REPORTS));
+//                getEventBus().post(new NavigationFragment.RequestNavigation(NavigationAdapter.NAV_ID_REPORTS));
                 break;
             case R.id.accounts:
-                getEventBus().post(new NavigationFragment.RequestNavigation(NavigationAdapter.NAV_ID_ACCOUNTS));
+//                getEventBus().post(new NavigationFragment.RequestNavigation(NavigationAdapter.NAV_ID_ACCOUNTS));
                 break;
         }
     }

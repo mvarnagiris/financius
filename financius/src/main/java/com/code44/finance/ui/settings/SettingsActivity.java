@@ -39,7 +39,7 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
     private SettingsAdapter adapter;
 
     public static void start(Context context) {
-        start(context, makeIntent(context, SettingsActivity.class));
+        startActivity(context, makeIntent(context, SettingsActivity.class));
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
         getSupportActionBar().setTitle(R.string.settings);
 
         // Get views
-        final ListView list_V = (ListView) findViewById(R.id.list_V);
+        final ListView list_V = (ListView) findViewById(R.id.list);
 
         // Setup
         adapter = new SettingsAdapter(this);

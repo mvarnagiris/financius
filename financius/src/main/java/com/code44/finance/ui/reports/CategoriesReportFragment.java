@@ -58,7 +58,7 @@ public class CategoriesReportFragment extends BaseReportFragment implements Load
 
         // Get views
         categoriesReport_V = (CategoriesReportView) view.findViewById(R.id.categoriesReport_V);
-        final ListView list_V = (ListView) view.findViewById(R.id.list_V);
+        final ListView list_V = (ListView) view.findViewById(R.id.list);
 
         // Setup
         adapter = new CategoriesReportAdapter(getActivity(), mainCurrency);

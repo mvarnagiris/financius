@@ -13,7 +13,7 @@ import com.code44.finance.ui.ModelFragment;
 public class CurrencyActivity extends ModelActivity {
     public static void start(Context context, String currencyServerId) {
         final Intent intent = makeIntent(context, CurrencyActivity.class, currencyServerId);
-        start(context, intent);
+        startActivity(context, intent);
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {

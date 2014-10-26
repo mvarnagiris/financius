@@ -28,7 +28,7 @@ public class LoginActivity extends BaseActivity {
     private boolean clearDefaultAccount;
 
     public static void start(Context context) {
-        start(context, makeIntent(context, LoginActivity.class));
+        startActivity(context, makeIntent(context, LoginActivity.class));
     }
 
     @Override

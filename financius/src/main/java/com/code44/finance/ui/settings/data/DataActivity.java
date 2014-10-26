@@ -9,7 +9,7 @@ import com.code44.finance.ui.BaseActivity;
 
 public class DataActivity extends BaseActivity {
     public static void start(Context context) {
-        start(context, makeIntent(context, DataActivity.class));
+        startActivity(context, makeIntent(context, DataActivity.class));
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +18,7 @@ public class DataActivity extends BaseActivity {
         getSupportActionBar().setTitle(R.string.your_data);
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_V, DataFragment.newInstance()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, DataFragment.newInstance()).commit();
         }
     }
 

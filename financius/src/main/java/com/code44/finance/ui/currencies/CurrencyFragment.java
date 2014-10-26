@@ -67,7 +67,7 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
         exchangeRate_TV = (TextView) view.findViewById(R.id.exchangeRate_TV);
         loading_SPB = (SmoothProgressBar) view.findViewById(R.id.loading_SPB);
         refreshRate_IB = (FabImageButton) view.findViewById(R.id.refreshRate_IB);
-        final ListView list_V = (ListView) view.findViewById(R.id.list_V);
+        final ListView list_V = (ListView) view.findViewById(R.id.list);
 
         // Setup
         adapter = new CurrencyAccountsAdapter(getActivity());

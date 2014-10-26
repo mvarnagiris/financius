@@ -11,7 +11,7 @@ import com.code44.finance.data.model.BaseModel;
 import java.util.List;
 import java.util.Set;
 
-public abstract class ModelListActivity extends BaseActivity implements ModelListFragment.OnModelSelectedListener, ModelListFragment.OnModelsSelectedListener {
+public abstract class ModelListActivity extends DrawerActivity implements ModelListFragment.OnModelSelectedListener, ModelListFragment.OnModelsSelectedListener {
     public static final String RESULT_EXTRA_MODEL = "RESULT_EXTRA_MODEL";
     public static final String RESULT_EXTRA_MODELS = "RESULT_EXTRA_MODELS";
 
@@ -53,8 +53,6 @@ public abstract class ModelListActivity extends BaseActivity implements ModelLis
         // Setup ActionBar
         if (mode == ModelListFragment.Mode.SELECT) {
             getSupportActionBar().setTitle(R.string.select);
-        } else {
-            getSupportActionBar().setTitle(getActionBarTitleResId());
         }
 
         final boolean addFragmentHere = containerId != 0;
@@ -91,7 +89,7 @@ public abstract class ModelListActivity extends BaseActivity implements ModelLis
 
     protected int inflateActivity() {
         setContentView(R.layout.activity_simple);
-        return R.id.content_V;
+        return R.id.content;
     }
 
     protected void readExtras() {
@@ -101,8 +99,6 @@ public abstract class ModelListActivity extends BaseActivity implements ModelLis
             throw new IllegalStateException("Activity " + ((Object) this).getClass().getName() + " must be created with Intent containing " + EXTRA_MODE + " with values from " + ModelListFragment.Mode.class.getName());
         }
     }
-
-    protected abstract int getActionBarTitleResId();
 
     protected abstract ModelListFragment createModelsFragment(ModelListFragment.Mode mode, Parcelable[] selectedModels);
 }

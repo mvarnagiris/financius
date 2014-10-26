@@ -11,7 +11,7 @@ import com.code44.finance.ui.ModelFragment;
 public class TransactionActivity extends ModelActivity {
     public static void start(Context context, String transactionServerId) {
         final Intent intent = makeIntent(context, TransactionActivity.class, transactionServerId);
-        start(context, intent);
+        startActivity(context, intent);
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {

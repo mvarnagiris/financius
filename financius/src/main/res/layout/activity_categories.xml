@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <include layout="@layout/include_toolbar" />
+    <include layout="@layout/toolbar" />
 
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabs_PSTS"

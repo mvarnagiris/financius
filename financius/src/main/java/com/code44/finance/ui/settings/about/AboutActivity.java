@@ -9,7 +9,7 @@ import com.code44.finance.ui.BaseActivity;
 
 public class AboutActivity extends BaseActivity {
     public static void start(Context context) {
-        start(context, makeIntent(context, AboutActivity.class));
+        startActivity(context, makeIntent(context, AboutActivity.class));
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +20,7 @@ public class AboutActivity extends BaseActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.content_V, AboutFragment.newInstance())
+                    .add(R.id.content, AboutFragment.newInstance())
                     .commit();
         }
     }

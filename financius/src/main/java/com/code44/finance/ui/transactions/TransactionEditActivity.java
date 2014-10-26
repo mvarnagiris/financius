@@ -8,7 +8,7 @@ import com.code44.finance.ui.ModelFragment;
 
 public class TransactionEditActivity extends ModelEditActivity {
     public static void start(Context context, String transactionServerId) {
-        start(context, makeIntent(context, TransactionEditActivity.class, transactionServerId));
+        startActivity(context, makeIntent(context, TransactionEditActivity.class, transactionServerId));
     }
 
     @Override

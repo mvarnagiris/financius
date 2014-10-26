@@ -17,7 +17,7 @@
         tools:text="Title of the dialog" />
 
     <ListView
-        android:id="@+id/list_V"
+        android:id="@+id/list"
         style="@style/ListView"
         android:layout_height="0dp"
         android:layout_weight="1" />

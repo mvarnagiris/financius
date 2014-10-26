@@ -16,7 +16,7 @@ public class CategoryEditActivity extends ModelEditActivity {
     public static void start(Context context, String categoryServerId, TransactionType transactionType) {
         final Intent intent = makeIntent(context, CategoryEditActivity.class, categoryServerId);
         intent.putExtra(EXTRA_CATEGORY_TYPE, transactionType);
-        start(context, intent);
+        startActivity(context, intent);
     }
 
     @Override

@@ -60,6 +60,6 @@ public abstract class ModelActivity extends BaseActivity {
 
     protected int inflateActivity() {
         setContentView(R.layout.activity_simple);
-        return R.id.content_V;
+        return R.id.content;
     }
 }

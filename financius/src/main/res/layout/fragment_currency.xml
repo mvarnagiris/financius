@@ -84,7 +84,7 @@
         tools:ignore="UnusedAttribute" />
 
     <ListView
-        android:id="@+id/list_V"
+        android:id="@+id/list"
         style="@style/ListView"
         android:layout_below="@+id/subHeaderContainer_V" />
 

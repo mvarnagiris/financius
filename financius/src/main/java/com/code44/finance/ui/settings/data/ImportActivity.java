@@ -54,7 +54,7 @@ public class ImportActivity extends BaseActivity {
         final Intent intent = makeIntent(context, ImportActivity.class);
         intent.putExtra(EXTRA_IMPORT_TYPE, importType);
         intent.putExtra(EXTRA_SOURCE, source);
-        start(context, intent);
+        startActivity(context, intent);
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {

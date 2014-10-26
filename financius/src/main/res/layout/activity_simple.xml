@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/include_toolbar" />
+    <include layout="@layout/toolbar" />
 
     <FrameLayout
-        android:id="@+id/content_V"
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

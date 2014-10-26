@@ -11,7 +11,7 @@ import com.code44.finance.ui.ModelFragment;
 public class CategoryActivity extends ModelActivity {
     public static void start(Context context, String categoryServerId) {
         final Intent intent = makeIntent(context, CategoryActivity.class, categoryServerId);
-        start(context, intent);
+        startActivity(context, intent);
     }
 
     @Override

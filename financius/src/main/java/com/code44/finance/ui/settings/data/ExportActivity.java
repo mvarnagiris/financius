@@ -55,7 +55,7 @@ public class ExportActivity extends BaseActivity {
         final Intent intent = makeIntent(context, ExportActivity.class);
         intent.putExtra(EXTRA_EXPORT_TYPE, exportType);
         intent.putExtra(EXTRA_DESTINATION, destination);
-        start(context, intent);
+        startActivity(context, intent);
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {

@@ -34,11 +34,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         return new Intent(context, activityClass);
     }
 
-    protected static void start(Context context, Intent intent) {
+    protected static void startActivity(Context context, Intent intent) {
         context.startActivity(intent);
     }
 
-    protected static void startForResult(Fragment fragment, Intent intent, int requestCode) {
+    protected static void startActivityForResult(Fragment fragment, Intent intent, int requestCode) {
         fragment.startActivityForResult(intent, requestCode);
     }
 
@@ -49,12 +49,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     @Override public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        }
+        setupToolbar();
     }
 
     @Override protected void onResume() {
@@ -110,5 +105,14 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     protected Toolbar getToolbar() {
         return (Toolbar) findViewById(R.id.toolbar);
+    }
+
+    protected void setupToolbar() {
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
     }
 }
