@@ -8,8 +8,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.code44.finance.R;
+import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.adapters.SettingsAdapter;
-import com.code44.finance.ui.BaseActivity;
+import com.code44.finance.ui.DrawerActivity;
 import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.ui.currencies.CurrenciesActivity;
 import com.code44.finance.ui.dialogs.ListDialogFragment;
@@ -27,7 +28,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class SettingsActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class SettingsActivity extends DrawerActivity implements AdapterView.OnItemClickListener {
     private static final int REQUEST_INTERVAL = 98527;
 
     private static final String FRAGMENT_INTERVAL = "FRAGMENT_INTERVAL";
@@ -45,7 +46,6 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        getSupportActionBar().setTitle(R.string.settings);
 
         // Get views
         final ListView list_V = (ListView) findViewById(R.id.list);
@@ -59,6 +59,10 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
     @Override protected void onResume() {
         super.onResume();
         getEventBus().register(this);
+    }
+
+    @Override protected NavigationAdapter.NavigationScreen getNavigationScreen() {
+        return null;
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,6 +99,10 @@ public class SettingsActivity extends BaseActivity implements AdapterView.OnItem
         } else if (id == SettingsAdapter.ID_ABOUT) {
             AboutActivity.start(this);
         }
+    }
+
+    @Override protected boolean showDrawerToggle() {
+        return false;
     }
 
     @Subscribe public void onIntervalChanged(CurrentInterval intervalHelper) {

@@ -35,7 +35,9 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
 
     @Override protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
+        if (drawerToggle != null) {
+            drawerToggle.syncState();
+        }
     }
 
     @Override public void onAttachFragment(Fragment fragment) {
@@ -55,7 +57,9 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
 
     @Override public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
+        if (drawerToggle != null) {
+            drawerToggle.onConfigurationChanged(newConfig);
+        }
     }
 
     @Override public void onBackPressed() {
@@ -73,8 +77,10 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
 
         // Setup
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, getToolbar(), R.string.open_navigation, R.string.close_navigation);
-        drawerLayout.setDrawerListener(drawerToggle);
+        if (showDrawerToggle()) {
+            drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, getToolbar(), R.string.open_navigation, R.string.close_navigation);
+            drawerLayout.setDrawerListener(drawerToggle);
+        }
         setupToolbar();
     }
 
@@ -106,20 +112,29 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
                 break;
         }
 
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        }
+
         drawerLayout.closeDrawers();
 
-        final boolean finish = !(this instanceof OverviewActivity);
         handler.postDelayed(new Runnable() {
             @Override public void run() {
                 startActivity(DrawerActivity.this, intent);
-                if (finish) {
-                    finish();
-                }
+                finish();
             }
         }, DRAWER_LAUNCH_DELAY);
     }
 
-    protected abstract NavigationAdapter.NavigationScreen getNavigationScreen();
+    protected NavigationAdapter.NavigationScreen getNavigationScreen() {
+        return null;
+    }
+
+    protected boolean showDrawerToggle() {
+        return true;
+    }
 
     private boolean isSameNavigationScreen(NavigationAdapter.NavigationScreen navigationScreen) {
         switch (navigationScreen) {

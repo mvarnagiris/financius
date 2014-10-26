@@ -52,10 +52,7 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
     private AccountsView accountsView;
 
     public static Intent makeIntent(Context context) {
-        final Intent intent = makeIntent(context, OverviewActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        return intent;
+        return makeIntent(context, OverviewActivity.class);
     }
 
     public static void start(Context context) {
