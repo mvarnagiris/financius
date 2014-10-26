@@ -131,6 +131,11 @@
         <item name="android:background">@drawable/btn_calc_action</item>
     </style>
 
+    <style name="Button.Borderless.Calc.Action.Landscape">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
     <style name="Button.Borderless.Dialog">
         <item name="android:minWidth">@dimen/btn_dialog_min_width</item>
         <item name="android:minHeight">@dimen/recommended_touch_size</item>
