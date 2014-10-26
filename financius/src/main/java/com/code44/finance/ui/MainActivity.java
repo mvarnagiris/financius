@@ -1,11 +1,11 @@
 package com.code44.finance.ui;
 
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -99,31 +99,26 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
         switch (item.getId()) {
             case NavigationAdapter.NAV_ID_USER:
                 baseFragment = UserFragment.newInstance();
-                getSupportActionBar().setTitle(R.string.user);
                 break;
 
             case NavigationAdapter.NAV_ID_OVERVIEW:
                 baseFragment = OverviewFragment.newInstance();
                 getAnalytics().trackScreen(Analytics.Screen.Overview);
-                getSupportActionBar().setTitle(R.string.overview);
                 break;
 
             case NavigationAdapter.NAV_ID_ACCOUNTS:
                 baseFragment = AccountsFragment.newInstance(ModelListFragment.Mode.VIEW);
                 getAnalytics().trackScreen(Analytics.Screen.AccountList);
-                getSupportActionBar().setTitle(R.string.accounts);
                 break;
 
             case NavigationAdapter.NAV_ID_TRANSACTIONS:
                 baseFragment = TransactionsFragment.newInstance();
                 getAnalytics().trackScreen(Analytics.Screen.TransactionList);
-                getSupportActionBar().setTitle(R.string.transactions);
                 break;
 
             case NavigationAdapter.NAV_ID_REPORTS:
                 baseFragment = CategoriesReportFragment.newInstance();
                 getAnalytics().trackScreen(Analytics.Screen.CategoriesReport);
-                getSupportActionBar().setTitle("");
                 break;
 
             default:
@@ -149,12 +144,21 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
     }
 
     private void onFragmentLoaded(BaseFragment fragment) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (fragment instanceof OverviewFragment || fragment instanceof CategoriesReportFragment) {
-                getToolbar().setElevation(0);
-            } else {
-                getToolbar().setElevation(getResources().getDimension(R.dimen.elevation_header));
-            }
+        if (fragment instanceof UserFragment) {
+            getSupportActionBar().setTitle(R.string.user);
+            ViewCompat.setElevation(getToolbar(), getResources().getDimension(R.dimen.elevation_header));
+        } else if (fragment instanceof OverviewFragment) {
+            getSupportActionBar().setTitle(R.string.overview);
+            ViewCompat.setElevation(getToolbar(), 0);
+        } else if (fragment instanceof AccountsFragment) {
+            getSupportActionBar().setTitle(R.string.accounts);
+            ViewCompat.setElevation(getToolbar(), getResources().getDimension(R.dimen.elevation_header));
+        } else if (fragment instanceof TransactionsFragment) {
+            getSupportActionBar().setTitle(R.string.transactions);
+            ViewCompat.setElevation(getToolbar(), getResources().getDimension(R.dimen.elevation_header));
+        } else if (fragment instanceof CategoriesReportFragment) {
+            getSupportActionBar().setTitle("");
+            ViewCompat.setElevation(getToolbar(), 0);
         }
     }
 

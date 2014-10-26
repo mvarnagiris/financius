@@ -5,10 +5,11 @@
 - ```new``` Navigation drawer is below toolbar.
 - ```new``` Overview landscape layout.
 - ```fix``` Fixed calculator crash.
-- ```fix``` Fixed import when categories went missing. By @i906.
-- ```fix``` Fixed calculator buttons on pre-Lollipop devices. By @i906.
+- ```fix``` Fixed import when categories went missing. (**@i906**)
+- ```fix``` Fixed calculator buttons on pre-Lollipop devices. (**@i906**)
 - ```fix``` Better handling of large numbers in calculator.
 - ```fix``` Fixed disappearing note issue.
+- ```fix``` Title not resetting any more when rotating device in home screen.
 
 ###Version: 0.11.5
 - ```fix``` Fixed account balance calculation. Again.
