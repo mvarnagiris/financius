@@ -170,7 +170,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
     @Override public boolean onSave(Context context, Currency model) {
         boolean canSave = true;
 
-        if (TextUtils.isEmpty(model.getCode()) || model.getCode().length() != 3 || model.getCode().equals(mainCurrency.getCode())) {
+        if (TextUtils.isEmpty(model.getCode()) || model.getCode().length() != 3) {
             canSave = false;
             // TODO Show error
         }
