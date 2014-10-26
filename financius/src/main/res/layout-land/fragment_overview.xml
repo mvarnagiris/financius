@@ -3,40 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="?android:actionBarSize">
+    android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/overviewGraphContainer"
+    <View
+        android:id="@+id/color"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary"
-        android:elevation="@dimen/elevation_header"
-        tools:ignore="UnusedAttribute">
-
-        <com.code44.finance.views.OverviewGraphView
-            android:id="@+id/overviewGraph"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/keyline" />
-
-    </FrameLayout>
+        android:layout_height="@dimen/action_bar_size_2x"
+        android:layout_marginTop="?android:actionBarSize"
+        android:background="@color/primary" />
 
     <ScrollView
         style="@style/ScrollView"
-        android:layout_below="@+id/overviewGraphContainer">
+        android:paddingLeft="@dimen/keyline_content"
+        android:paddingRight="@dimen/keyline_content"
+        android:paddingTop="?android:actionBarSize">
 
         <LinearLayout
             android:id="@+id/container_V"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/space_normal"
-            android:paddingBottom="@dimen/keyline">
+            android:paddingBottom="@dimen/keyline"
+            android:paddingLeft="@dimen/space_large"
+            android:paddingRight="@dimen/space_large"
+            android:paddingTop="@dimen/space_normal">
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/card_radius">
+
+                <com.code44.finance.views.OverviewGraphView
+                    android:id="@+id/overviewGraph"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/keyline" />
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_normal"
                 app:cardCornerRadius="@dimen/card_radius">
 
                 <com.code44.finance.views.AccountsView
@@ -55,7 +63,7 @@
         android:layout_width="@dimen/btn_fab"
         android:layout_height="@dimen/btn_fab"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/overviewGraphContainer"
+        android:layout_below="@+id/color"
         android:layout_marginRight="@dimen/keyline"
         android:layout_marginTop="@dimen/btn_fab_half_negative"
         android:elevation="@dimen/elevation_fab"

@@ -62,9 +62,9 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        final FabImageButton newTransaction_FAB = (FabImageButton) view.findViewById(R.id.newTransaction_FAB);
-        overviewGraph_V = (OverviewGraphView) view.findViewById(R.id.overviewGraph_V);
-        accounts_V = (AccountsView) view.findViewById(R.id.accounts_V);
+        final FabImageButton newTransaction_FAB = (FabImageButton) view.findViewById(R.id.newTransaction);
+        overviewGraph_V = (OverviewGraphView) view.findViewById(R.id.overviewGraph);
+        accounts_V = (AccountsView) view.findViewById(R.id.accounts);
 
         // Setup
         newTransaction_FAB.setColorFilter(getResources().getColor(R.color.text_primary));
@@ -121,13 +121,13 @@ public class OverviewFragment extends BaseFragment implements LoaderManager.Load
 
     @Override public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.newTransaction_FAB:
+            case R.id.newTransaction:
                 TransactionEditActivity.start(getActivity(), null);
                 break;
-            case R.id.overviewGraph_V:
+            case R.id.overviewGraph:
                 getEventBus().post(new NavigationFragment.RequestNavigation(NavigationAdapter.NAV_ID_REPORTS));
                 break;
-            case R.id.accounts_V:
+            case R.id.accounts:
                 getEventBus().post(new NavigationFragment.RequestNavigation(NavigationAdapter.NAV_ID_ACCOUNTS));
                 break;
         }

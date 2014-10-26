@@ -51,4 +51,6 @@
     <dimen name="card_radius">3dp</dimen>
     <dimen name="tag_radius">9dp</dimen>
 
+    <dimen name="action_bar_size_2x">112dp</dimen>
+
 </resources>
