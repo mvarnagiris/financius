@@ -26,7 +26,7 @@
         <!-- Activities -->
         <!-- ======================================================================================================= -->
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.SplashActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,6 +34,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
         <activity android:name=".ui.CalculatorActivity" />
         <activity android:name=".ui.currencies.CurrenciesActivity" />
@@ -55,6 +56,7 @@
         <activity android:name=".ui.settings.data.ExportActivity" />
         <activity android:name=".ui.settings.data.ImportActivity" />
         <activity android:name=".ui.settings.about.AboutActivity" />
+        <activity android:name=".ui.overview.OverviewActivity" />
         <activity
             android:name=".ui.FilePickerActivity"
             android:theme="@style/FilePicker.Theme" />
