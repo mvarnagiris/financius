@@ -1,3 +1,6 @@
+###Version: 0.11.7
+- ```new``` Landscape layout for calculator. (**@i906**)
+
 ###Version: 0.11.6
 - ```new``` Tags are ordered alphabetically.
 - ```new``` When transferring money between accounts with different currencies now you can set either exchange rate or receiving amount.
