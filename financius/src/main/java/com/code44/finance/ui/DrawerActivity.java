@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import com.code44.finance.R;
@@ -68,6 +69,22 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (drawerToggle != null) {
+                    if (drawerLayout.isDrawerOpen(Gravity.START)) {
+                        drawerLayout.closeDrawer(Gravity.START);
+                    } else {
+                        drawerLayout.openDrawer(Gravity.START);
+                    }
+                    return true;
+                }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override public void setContentView(int layoutResID) {
