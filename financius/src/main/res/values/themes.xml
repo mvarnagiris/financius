@@ -50,8 +50,13 @@
     </style>
 
     <style name="ToolbarStyle">
-        <item name="elevation">@dimen/elevation_header</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?actionBarSize</item>
+        <item name="android:minHeight">?actionBarSize</item>
         <item name="android:background">@color/primary</item>
+        <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_header</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
     </style>
 
     <style name="ToolbarPopupTextAppearance">
