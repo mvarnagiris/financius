@@ -147,6 +147,7 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
 
     @Subscribe public void onCurrentIntervalChanged(CurrentInterval currentInterval) {
         getSupportLoaderManager().restartLoader(LOADER_TRANSACTIONS, null, this);
+        getSupportActionBar().setTitle(currentInterval.getTitle());
     }
 
     private void onTransactionsLoaded(Cursor cursor) {

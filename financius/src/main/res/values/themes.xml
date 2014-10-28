@@ -59,6 +59,10 @@
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
     </style>
 
+    <style name="ToolbarStyle.Transparent">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
     <style name="ToolbarPopupTextAppearance">
         <item name="android:textColor">@color/text_primary</item>
     </style>

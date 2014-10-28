@@ -15,6 +15,7 @@ import com.google.android.gms.plus.model.people.Person;
 import javax.inject.Inject;
 
 
+// TODO http://android-developers.blogspot.co.uk/2014/10/tips-for-integrating-with-google.html
 public class LoginActivity extends BaseActivity {
     private static final String FRAGMENT_GOOGLE_API = "FRAGMENT_GOOGLE_API";
 

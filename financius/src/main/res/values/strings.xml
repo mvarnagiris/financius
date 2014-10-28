@@ -9,6 +9,7 @@
     <string name="done">Done</string>
     <string name="ok">OK</string>
     <string name="expense">Expense</string>
+    <string name="expenses">Expenses</string>
     <string name="income">Income</string>
     <string name="transfer">Transfer</string>
     <string name="currencies">Currencies</string>

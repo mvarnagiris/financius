@@ -9,19 +9,20 @@
         android:id="@+id/color"
         android:layout_width="match_parent"
         android:layout_height="@dimen/action_bar_size_3x"
-        android:layout_marginTop="?android:actionBarSize"
         android:background="@color/primary" />
 
     <ScrollView
         style="@style/ScrollView"
         android:paddingLeft="@dimen/keyline_content"
         android:paddingRight="@dimen/keyline_content"
-        android:paddingTop="?android:actionBarSize">
+        android:paddingTop="?android:actionBarSize"
+        android:scrollbars="none">
 
         <LinearLayout
             android:id="@+id/container_V"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingBottom="@dimen/keyline"
             android:paddingLeft="@dimen/space_large"
@@ -33,11 +34,25 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="@dimen/card_radius">
 
-                <com.code44.finance.views.OverviewGraphView
-                    android:id="@+id/overviewGraph"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/keyline" />
+                    android:orientation="vertical"
+                    android:padding="@dimen/keyline">
+
+                    <TextView
+                        style="@style/Text.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/space_large"
+                        android:text="@string/expenses"
+                        android:textColor="@color/primary" />
+
+                    <com.code44.finance.views.OverviewGraphView
+                        android:id="@+id/overviewGraph"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
 
             </android.support.v7.widget.CardView>
 
@@ -71,4 +86,6 @@
         android:src="@drawable/ic_action_new"
         tools:ignore="RtlHardcoded,UnusedAttribute"
         tools:tint="@color/text_primary" />
+
+    <include layout="@layout/toolbar_transparent" />
 </RelativeLayout>
