@@ -17,13 +17,12 @@ import com.code44.finance.utils.MoneyFormatter;
 import javax.inject.Inject;
 
 public class OverviewGraphView extends LinearLayout {
-    private final PieChartView pieChart_V;
-    private final TextView totalExpense_TV;
-
     @Inject @Main Currency mainCurrency;
     @Inject LayoutType layoutType;
 
-    @SuppressWarnings("UnusedDeclaration")
+    private PieChartView pieChartView;
+    private TextView totalExpenseView;
+
     public OverviewGraphView(Context context) {
         this(context, null);
     }
@@ -37,38 +36,44 @@ public class OverviewGraphView extends LinearLayout {
         if (!isInEditMode()) {
             App.with(context).inject(this);
         }
-        inflate(context, R.layout.v_overview_graph, this);
-        setBackgroundResource(R.drawable.btn_borderless);
+    }
+
+    @Override protected void onFinishInflate() {
+        super.onFinishInflate();
 
         // Get views
-        pieChart_V = (PieChartView) findViewById(R.id.pieChart_V);
-        totalExpense_TV = (TextView) findViewById(R.id.totalExpense_TV);
+        final TextView titleView = (TextView) findViewById(R.id.title);
+        pieChartView = (PieChartView) findViewById(R.id.pieChart);
+        totalExpenseView = (TextView) findViewById(R.id.totalExpense);
 
         // Setup
-        pieChart_V.setEmptyColor(totalExpense_TV.getCurrentTextColor());
+        pieChartView.setEmptyColor(totalExpenseView.getCurrentTextColor());
         setPieChartData(null);
         if (isInEditMode()) {
-            totalExpense_TV.setText("0.00 $");
+            totalExpenseView.setText("0.00 $");
         } else {
             setTotalExpense(0);
             if (layoutType.isLandscape()) {
-                pieChart_V.setOutlineColor(getResources().getColor(R.color.text_secondary));
-                pieChart_V.setInlineColor(getResources().getColor(R.color.text_secondary));
+                pieChartView.setOutlineColor(getResources().getColor(R.color.text_secondary));
+                pieChartView.setInlineColor(getResources().getColor(R.color.text_secondary));
+                totalExpenseView.setTextColor(getResources().getColor(R.color.text_secondary));
+            } else {
+                titleView.setVisibility(GONE);
             }
         }
     }
 
     @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        final LayoutParams params = (LayoutParams) pieChart_V.getLayoutParams();
-        params.height = pieChart_V.getMeasuredWidth();
+        final LayoutParams params = (LayoutParams) pieChartView.getLayoutParams();
+        params.height = pieChartView.getMeasuredWidth();
     }
 
     public void setPieChartData(PieChartData pieChartData) {
-        pieChart_V.setPieChartData(pieChartData);
+        pieChartView.setPieChartData(pieChartData);
     }
 
     public void setTotalExpense(long totalExpense) {
-        totalExpense_TV.setText(MoneyFormatter.format(mainCurrency, totalExpense));
+        totalExpenseView.setText(MoneyFormatter.format(mainCurrency, totalExpense));
     }
 }

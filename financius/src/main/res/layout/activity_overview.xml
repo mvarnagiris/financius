@@ -1,74 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar" />
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/overviewGraphContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/primary"
+        android:elevation="@dimen/elevation_header"
+        tools:ignore="UnusedAttribute">
 
-        <FrameLayout
-            android:id="@+id/overviewGraphContainer"
+        <include layout="@layout/view_overview_graph" />
+
+    </FrameLayout>
+
+    <ScrollView
+        style="@style/ScrollView"
+        android:layout_below="@+id/overviewGraphContainer">
+
+        <LinearLayout
+            android:id="@+id/container_V"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary"
-            android:elevation="@dimen/elevation_header"
-            tools:ignore="UnusedAttribute">
+            android:orientation="vertical"
+            android:padding="@dimen/space_normal"
+            android:paddingBottom="@dimen/keyline">
 
-            <com.code44.finance.views.OverviewGraphView
-                android:id="@+id/overviewGraph"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/keyline" />
+                app:cardCornerRadius="@dimen/card_radius">
 
-        </FrameLayout>
+                <include layout="@layout/view_accounts" />
 
-        <ScrollView
-            style="@style/ScrollView"
-            android:layout_below="@+id/overviewGraphContainer">
+            </android.support.v7.widget.CardView>
 
-            <LinearLayout
-                android:id="@+id/container_V"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/space_normal"
-                android:paddingBottom="@dimen/keyline">
+        </LinearLayout>
 
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="@dimen/card_radius">
+    </ScrollView>
 
-                    <com.code44.finance.views.AccountsView
-                        android:id="@+id/accounts"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                </android.support.v7.widget.CardView>
-
-            </LinearLayout>
-
-        </ScrollView>
-
-        <com.code44.finance.views.FabImageButton
-            android:id="@+id/newTransaction"
-            android:layout_width="@dimen/btn_fab"
-            android:layout_height="@dimen/btn_fab"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/overviewGraphContainer"
-            android:layout_marginRight="@dimen/keyline"
-            android:layout_marginTop="@dimen/btn_fab_half_negative"
-            android:elevation="@dimen/elevation_fab"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_action_new"
-            tools:ignore="RtlHardcoded,UnusedAttribute"
-            tools:tint="@color/text_primary" />
-    </RelativeLayout>
-
-</LinearLayout>
+    <com.code44.finance.views.FabImageButton
+        android:id="@+id/newTransaction"
+        android:layout_width="@dimen/btn_fab"
+        android:layout_height="@dimen/btn_fab"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/overviewGraphContainer"
+        android:layout_marginRight="@dimen/keyline"
+        android:layout_marginTop="@dimen/btn_fab_half_negative"
+        android:elevation="@dimen/elevation_fab"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_action_new"
+        tools:ignore="RtlHardcoded,UnusedAttribute"
+        tools:tint="@color/text_primary" />
+</RelativeLayout>

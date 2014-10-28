@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.code44.finance.graphs.pie.PieChartView
-        android:id="@+id/pieChart_V"
+        android:id="@+id/pieChart"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <me.grantland.widget.AutofitTextView
-        android:id="@+id/totalExpense_TV"
+        android:id="@+id/totalExpense"
         style="@style/Text.Display3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

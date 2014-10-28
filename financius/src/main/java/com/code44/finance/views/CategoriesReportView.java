@@ -37,8 +37,8 @@ public class CategoriesReportView extends LinearLayout {
         setBackgroundResource(R.drawable.btn_borderless);
 
         // Get views
-        pieChart_V = (PieChartView) findViewById(R.id.pieChart_V);
-        totalExpense_TV = (TextView) findViewById(R.id.totalExpense_TV);
+        pieChart_V = (PieChartView) findViewById(R.id.pieChart);
+        totalExpense_TV = (TextView) findViewById(R.id.totalExpense);
 
         // Setup
         pieChart_V.setEmptyColor(totalExpense_TV.getCurrentTextColor());

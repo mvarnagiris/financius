@@ -34,25 +34,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="@dimen/card_radius">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/keyline">
-
-                    <TextView
-                        style="@style/Text.Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/space_large"
-                        android:text="@string/expenses"
-                        android:textColor="@color/primary" />
-
-                    <com.code44.finance.views.OverviewGraphView
-                        android:id="@+id/overviewGraph"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
+                <include layout="@layout/view_overview_graph" />
 
             </android.support.v7.widget.CardView>
 
@@ -62,10 +44,7 @@
                 android:layout_marginTop="@dimen/space_normal"
                 app:cardCornerRadius="@dimen/card_radius">
 
-                <com.code44.finance.views.AccountsView
-                    android:id="@+id/accounts"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                <include layout="@layout/view_accounts" />
 
             </android.support.v7.widget.CardView>
 

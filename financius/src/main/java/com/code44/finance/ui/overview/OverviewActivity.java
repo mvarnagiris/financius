@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.view.ViewCompat;
 import android.view.View;
 
 import com.code44.finance.R;
@@ -72,7 +71,7 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
         accountsView = (AccountsView) findViewById(R.id.accounts);
 
         // Setup
-        ViewCompat.setElevation(getToolbar(), 0);
+        //ViewCompat.setElevation(getToolbar(), 0);
         newTransactionView.setColorFilter(getResources().getColor(R.color.text_primary));
         newTransactionView.setOnClickListener(this);
         overviewGraphView.setOnClickListener(this);

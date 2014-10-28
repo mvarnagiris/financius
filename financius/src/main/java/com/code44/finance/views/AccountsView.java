@@ -22,12 +22,11 @@ public class AccountsView extends LinearLayout {
     private static final int TOP_STATIC_VIEWS_COUNT = 1;
     private static final int BOTTOM_STATIC_VIEWS_COUNT = 1;
 
-    private final View balanceContainer_V;
-    private final TextView totalBalance_TV;
-
     @Inject @Main Currency mainCurrency;
 
-    @SuppressWarnings("UnusedDeclaration")
+    private View balanceContainerView;
+    private TextView totalBalanceView;
+
     public AccountsView(Context context) {
         this(context, null);
     }
@@ -41,15 +40,14 @@ public class AccountsView extends LinearLayout {
         if (!isInEditMode()) {
             App.with(context).inject(this);
         }
-        setOrientation(VERTICAL);
-        final int padding = getResources().getDimensionPixelSize(R.dimen.keyline);
-        setPadding(padding, padding, padding, padding);
-        inflate(context, R.layout.v_accounts, this);
-        setBackgroundResource(R.drawable.btn_borderless);
+    }
+
+    @Override protected void onFinishInflate() {
+        super.onFinishInflate();
 
         // Get views
-        balanceContainer_V = findViewById(R.id.balanceContainer_V);
-        totalBalance_TV = (TextView) findViewById(R.id.totalBalance_TV);
+        balanceContainerView = findViewById(R.id.balanceContainer);
+        totalBalanceView = (TextView) findViewById(R.id.totalBalance);
     }
 
     public void setAccounts(List<Account> accounts) {
@@ -82,10 +80,10 @@ public class AccountsView extends LinearLayout {
         }
 
         if (accounts.size() > 1) {
-            balanceContainer_V.setVisibility(VISIBLE);
-            totalBalance_TV.setText(MoneyFormatter.format(mainCurrency, totalBalance));
+            balanceContainerView.setVisibility(VISIBLE);
+            totalBalanceView.setText(MoneyFormatter.format(mainCurrency, totalBalance));
         } else {
-            balanceContainer_V.setVisibility(GONE);
+            balanceContainerView.setVisibility(GONE);
         }
     }
 }
