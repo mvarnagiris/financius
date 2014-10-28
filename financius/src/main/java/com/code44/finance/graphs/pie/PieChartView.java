@@ -111,7 +111,7 @@ public class PieChartView extends View {
             for (PieChartValue value : values) {
                 final float sweepAngle = 360.0f * value.getValue() / total;
                 paint.setColor(value.getColor());
-                canvas.drawArc(rect, startAngle, sweepAngle, useCenter, paint);
+                canvas.drawArc(rect, startAngle, sweepAngle + 1, useCenter, paint);
                 startAngle += sweepAngle;
             }
         } else {

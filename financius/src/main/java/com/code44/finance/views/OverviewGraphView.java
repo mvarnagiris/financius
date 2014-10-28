@@ -11,6 +11,7 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartView;
 import com.code44.finance.qualifiers.Main;
+import com.code44.finance.utils.LayoutType;
 import com.code44.finance.utils.MoneyFormatter;
 
 import javax.inject.Inject;
@@ -20,6 +21,7 @@ public class OverviewGraphView extends LinearLayout {
     private final TextView totalExpense_TV;
 
     @Inject @Main Currency mainCurrency;
+    @Inject LayoutType layoutType;
 
     @SuppressWarnings("UnusedDeclaration")
     public OverviewGraphView(Context context) {
@@ -49,6 +51,10 @@ public class OverviewGraphView extends LinearLayout {
             totalExpense_TV.setText("0.00 $");
         } else {
             setTotalExpense(0);
+            if (layoutType.isLandscape()) {
+                pieChart_V.setOutlineColor(getResources().getColor(R.color.text_secondary));
+                pieChart_V.setInlineColor(getResources().getColor(R.color.text_secondary));
+            }
         }
     }
 

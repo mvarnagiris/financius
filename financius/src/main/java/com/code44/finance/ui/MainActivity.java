@@ -9,13 +9,11 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.services.StartupService;
 import com.code44.finance.ui.accounts.AccountsFragment;
-import com.code44.finance.ui.overview.OverviewFragment;
 import com.code44.finance.ui.reports.CategoriesReportFragment;
 import com.code44.finance.ui.transactions.TransactionsFragment;
 import com.code44.finance.ui.user.UserFragment;
@@ -75,15 +73,15 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
 
     @Override public void onBackPressed() {
         // Select OverviewFragment before quitting the app
-        if (!(getSupportFragmentManager().findFragmentByTag(FRAGMENT_CONTENT) instanceof OverviewFragment)) {
-//            ((NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_F)).select(NavigationAdapter.NAV_ID_OVERVIEW);
-        } else {
-            if (drawerLayout.isDrawerOpen(Gravity.START) || drawerLayout.isDrawerOpen(Gravity.END)) {
-                drawerLayout.closeDrawers();
-            } else {
-                super.onBackPressed();
-            }
-        }
+//        if (!(getSupportFragmentManager().findFragmentByTag(FRAGMENT_CONTENT) instanceof OverviewFragment)) {
+////            ((NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_F)).select(NavigationAdapter.NAV_ID_OVERVIEW);
+//        } else {
+//            if (drawerLayout.isDrawerOpen(Gravity.START) || drawerLayout.isDrawerOpen(Gravity.END)) {
+//                drawerLayout.closeDrawers();
+//            } else {
+//                super.onBackPressed();
+//            }
+//        }
     }
 
     public void onNavigationItemSelected(NavigationAdapter.NavigationItem item) {
@@ -139,9 +137,9 @@ public class MainActivity extends BaseActivity implements NavigationFragment.Nav
         if (fragment instanceof UserFragment) {
             getSupportActionBar().setTitle(R.string.user);
             ViewCompat.setElevation(getToolbar(), getResources().getDimension(R.dimen.elevation_header));
-        } else if (fragment instanceof OverviewFragment) {
-            getSupportActionBar().setTitle(R.string.overview);
-            ViewCompat.setElevation(getToolbar(), 0);
+//        } else if (fragment instanceof OverviewFragment) {
+//            getSupportActionBar().setTitle(R.string.overview);
+//            ViewCompat.setElevation(getToolbar(), 0);
         } else if (fragment instanceof AccountsFragment) {
             getSupportActionBar().setTitle(R.string.accounts);
             ViewCompat.setElevation(getToolbar(), getResources().getDimension(R.dimen.elevation_header));

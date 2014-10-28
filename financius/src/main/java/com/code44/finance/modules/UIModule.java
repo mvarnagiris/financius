@@ -29,7 +29,6 @@ import com.code44.finance.ui.dialogs.DeleteDialogFragment;
 import com.code44.finance.ui.dialogs.ListDialogFragment;
 import com.code44.finance.ui.dialogs.TimePickerDialog;
 import com.code44.finance.ui.overview.OverviewActivity;
-import com.code44.finance.ui.overview.OverviewFragment;
 import com.code44.finance.ui.reports.CategoriesReportActivity;
 import com.code44.finance.ui.reports.CategoriesReportFragment;
 import com.code44.finance.ui.reports.ReportsFragment;
@@ -86,7 +85,6 @@ import dagger.Module;
                 CategoriesReportActivity.class,
 
                 NavigationFragment.class,
-                OverviewFragment.class,
                 CurrenciesFragment.class,
                 CurrencyFragment.class,
                 CurrencyEditFragment.class,

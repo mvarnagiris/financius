@@ -156,7 +156,7 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
             final Category noCategory = new Category();
             noCategory.setId("0");
             noCategory.setTitle(getString(R.string.no_category));
-            noCategory.setColor(getResources().getColor(R.color.text_neutral));
+            noCategory.setColor(getResources().getColor(R.color.text_negative));
             do {
                 final Transaction transaction = Transaction.from(cursor);
                 final Category category = transaction.getCategory() == null ? noCategory : transaction.getCategory();
