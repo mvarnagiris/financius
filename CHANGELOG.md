@@ -1,5 +1,6 @@
 ###Version: 0.11.7
 - ```new``` Landscape layout for calculator. (**@i906**)
+- ```new``` Some UI improvements overall.
 - ```fix``` Can edit main currency.
 - ```fix``` Better overview landscape support.
 

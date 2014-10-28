@@ -42,7 +42,9 @@
             android:name=".ui.settings.SettingsActivity"
             android:label="@string/settings" />
         <activity android:name=".ui.CalculatorActivity" />
-        <activity android:name=".ui.currencies.CurrenciesActivity" />
+        <activity
+            android:name=".ui.currencies.CurrenciesActivity"
+            android:label="@string/currencies" />
         <activity android:name=".ui.currencies.CurrencyActivity" />
         <activity android:name=".ui.currencies.CurrencyEditActivity" />
         <activity

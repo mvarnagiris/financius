@@ -55,7 +55,7 @@
         <item name="android:minHeight">?actionBarSize</item>
         <item name="android:background">@color/primary</item>
         <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_header</item>
-        <item name="contentInsetStart">@dimen/keyline</item>
+        <item name="contentInsetStart">@dimen/keyline_content</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
     </style>
