@@ -101,10 +101,6 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
         }
     }
 
-    @Override protected boolean showDrawerToggle() {
-        return false;
-    }
-
     @Subscribe public void onIntervalChanged(CurrentInterval intervalHelper) {
         adapter.onIntervalChanged(intervalHelper);
     }

@@ -16,6 +16,8 @@ public class CategoriesReportActivity extends DrawerActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setShowDrawer(true);
+        setShowDrawerToggle(true);
         setContentView(R.layout.activity_simple);
 
         if (savedInstanceState == null) {

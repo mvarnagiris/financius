@@ -28,6 +28,8 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
     protected ActionBarDrawerToggle drawerToggle;
 
     private NavigationFragment navigationFragment;
+    private boolean showDrawer = false;
+    private boolean showDrawerToggle = false;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +66,7 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
     }
 
     @Override public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(Gravity.START) || drawerLayout.isDrawerOpen(Gravity.END)) {
+        if (drawerLayout != null && (drawerLayout.isDrawerOpen(Gravity.START) || drawerLayout.isDrawerOpen(Gravity.END))) {
             drawerLayout.closeDrawers();
         } else {
             super.onBackPressed();
@@ -74,7 +76,7 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (drawerToggle != null) {
+                if (drawerToggle != null && drawerLayout != null) {
                     if (drawerLayout.isDrawerOpen(Gravity.START)) {
                         drawerLayout.closeDrawer(Gravity.START);
                     } else {
@@ -94,7 +96,12 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
 
         // Setup
-        if (showDrawerToggle()) {
+        if (!showDrawer) {
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            drawerLayout = null;
+        }
+
+        if (drawerLayout != null && showDrawerToggle) {
             drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, getToolbar(), R.string.open_navigation, R.string.close_navigation);
             drawerLayout.setDrawerListener(drawerToggle);
         }
@@ -135,12 +142,16 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         }
 
-        drawerLayout.closeDrawers();
+        if (drawerLayout != null) {
+            drawerLayout.closeDrawers();
+        }
 
         handler.postDelayed(new Runnable() {
             @Override public void run() {
                 startActivity(DrawerActivity.this, intent);
-                finish();
+                if (!(DrawerActivity.this instanceof OverviewActivity)) {
+                    finish();
+                }
             }
         }, DRAWER_LAUNCH_DELAY);
     }
@@ -149,8 +160,12 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
         return null;
     }
 
-    protected boolean showDrawerToggle() {
-        return true;
+    protected void setShowDrawer(boolean showDrawer) {
+        this.showDrawer = showDrawer;
+    }
+
+    protected void setShowDrawerToggle(boolean showDrawerToggle) {
+        this.showDrawerToggle = showDrawerToggle;
     }
 
     private boolean isSameNavigationScreen(NavigationAdapter.NavigationScreen navigationScreen) {

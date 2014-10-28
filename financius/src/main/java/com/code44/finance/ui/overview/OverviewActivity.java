@@ -62,6 +62,8 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setShowDrawer(true);
+        setShowDrawerToggle(true);
         setContentView(R.layout.activity_overview);
 
         // Get views

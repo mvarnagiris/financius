@@ -2,6 +2,7 @@ package com.code44.finance.ui.accounts;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 
@@ -19,8 +20,13 @@ public class AccountsActivity extends ModelListActivity {
         startActivityForResult(fragment, makeIntentSelect(fragment.getActivity(), AccountsActivity.class), requestCode);
     }
 
-    @Override
-    protected ModelListFragment createModelsFragment(ModelListFragment.Mode mode, Parcelable[] selectedModels) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
+        setShowDrawer(true);
+        setShowDrawerToggle(true);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override protected ModelListFragment createModelsFragment(ModelListFragment.Mode mode, Parcelable[] selectedModels) {
         return AccountsFragment.newInstance(mode);
     }
 
