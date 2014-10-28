@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true">
-        <shape android:shape="oval">
-            <solid android:color="@color/accent_dark" />
-        </shape>
-    </item>
-    <item>
-        <shape android:shape="oval">
-            <solid android:color="@color/accent" />
-        </shape>
-    </item>
+    <item android:drawable="@drawable/btn_fab_pressed" android:state_pressed="true" />
+    <item android:drawable="@drawable/btn_fab_normal" />
 </selector>

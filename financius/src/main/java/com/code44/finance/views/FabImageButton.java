@@ -1,14 +1,24 @@
 package com.code44.finance.views;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Outline;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewOutlineProvider;
 import android.widget.ImageButton;
 
 import com.code44.finance.R;
 
 public class FabImageButton extends ImageButton {
+    private static final boolean SUPPORTS_LOLLIPOP = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+
+    private float normalElevation;
+    private float pressedElevation;
+
     public FabImageButton(Context context) {
         super(context);
         init();
@@ -24,19 +34,32 @@ public class FabImageButton extends ImageButton {
         init();
     }
 
-    private void init() {
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP) private void init() {
         setBackgroundResource(R.drawable.btn_fab);
+        normalElevation = getResources().getDimension(R.dimen.elevation_fab);
+        pressedElevation = normalElevation * 2;
+        if (SUPPORTS_LOLLIPOP) {
+            setOutlineProvider(new ViewOutlineProvider() {
+                @Override public void getOutline(View view, Outline outline) {
+                    outline.setOval(0, 0, view.getWidth(), view.getHeight());
+                }
+            });
+        }
     }
 
-    @Override
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP) @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                animate().scaleX(1.1f).scaleY(1.1f).setDuration(150).setStartDelay(0).start();
+                if (SUPPORTS_LOLLIPOP) {
+                    animate().translationZ(pressedElevation).setDuration(150).setStartDelay(0).start();
+                }
                 break;
 
             case MotionEvent.ACTION_UP:
-                animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).setStartDelay(0).start();
+                if (SUPPORTS_LOLLIPOP) {
+                    animate().translationZ(normalElevation).setDuration(150).setStartDelay(0).start();
+                }
                 break;
         }
         return super.onTouchEvent(event);
