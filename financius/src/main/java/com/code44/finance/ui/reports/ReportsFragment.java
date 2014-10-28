@@ -52,7 +52,7 @@ public class ReportsFragment extends BaseReportFragment implements LoaderManager
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        final RecyclerView recycler_V = (RecyclerView) view.findViewById(R.id.recycler_V);
+        final RecyclerView recycler_V = (RecyclerView) view.findViewById(R.id.recycler);
 
         // Setup
         adapter = new ReportsAdapter(getActivity());

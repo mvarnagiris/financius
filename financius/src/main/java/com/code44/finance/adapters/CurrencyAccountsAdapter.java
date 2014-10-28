@@ -18,7 +18,7 @@ import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
 
-public class CurrencyAccountsAdapter extends BaseModelsAdapter {
+public class CurrencyAccountsAdapter extends BaseModelsAdapterOld {
     private final int textBrandColor;
 
     private Currency currency;

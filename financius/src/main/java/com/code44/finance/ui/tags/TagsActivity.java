@@ -8,12 +8,12 @@ import android.view.Menu;
 import com.code44.finance.R;
 import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.data.model.Tag;
-import com.code44.finance.ui.ModelListActivity;
+import com.code44.finance.ui.ModelListActivityOld;
 import com.code44.finance.ui.ModelListFragment;
 
 import java.util.List;
 
-public class TagsActivity extends ModelListActivity {
+public class TagsActivity extends ModelListActivityOld {
     public static void start(Context context) {
         startActivity(context, makeIntentView(context, TagsActivity.class));
     }

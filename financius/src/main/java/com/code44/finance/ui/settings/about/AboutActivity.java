@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.view.Menu;
 
 import com.code44.finance.R;
-import com.code44.finance.ui.BaseActivity;
+import com.code44.finance.ui.common.BaseActivity;
 
 public class AboutActivity extends BaseActivity {
     public static void start(Context context) {
-        startActivity(context, makeIntent(context, AboutActivity.class));
+        startActivity(context, makeIntentForActivity(context, AboutActivity.class));
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {

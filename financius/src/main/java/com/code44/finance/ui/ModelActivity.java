@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.code44.finance.R;
+import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.dialogs.DeleteDialogFragment;
 import com.squareup.otto.Subscribe;
 
@@ -24,7 +25,7 @@ public abstract class ModelActivity extends BaseActivity {
     protected String modelServerId;
 
     public static Intent makeIntent(Context context, Class<? extends ModelActivity> activityClass, String modelServerId) {
-        final Intent intent = makeIntent(context, activityClass);
+        final Intent intent = makeIntentForActivity(context, activityClass);
         intent.putExtra(EXTRA_MODEL_SERVER_ID, modelServerId);
         return intent;
     }

@@ -51,7 +51,7 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
     private AccountsView accountsView;
 
     public static Intent makeIntent(Context context) {
-        return makeIntent(context, OverviewActivity.class);
+        return makeIntentForActivity(context, OverviewActivity.class);
     }
 
     public static void start(Context context) {

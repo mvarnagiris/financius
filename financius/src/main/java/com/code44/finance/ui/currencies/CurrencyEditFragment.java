@@ -94,7 +94,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         thousandsSeparator_B = (Button) view.findViewById(R.id.thousandsSeparator_B);
         decimalSeparator_B = (Button) view.findViewById(R.id.decimalSeparator_B);
         decimalsCount_B = (Button) view.findViewById(R.id.decimalsCount_B);
-        code_TV = (TextView) view.findViewById(R.id.code_TV);
+        code_TV = (TextView) view.findViewById(R.id.code);
         symbol_TV = (TextView) view.findViewById(R.id.symbol_TV);
         symbol_ET = (EditText) view.findViewById(R.id.symbol_ET);
         symbolPosition_B = (Button) view.findViewById(R.id.symbolPosition_B);

@@ -38,7 +38,7 @@ import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.CalculatorActivity;
 import com.code44.finance.ui.ModelEditFragment;
-import com.code44.finance.ui.ModelListActivity;
+import com.code44.finance.ui.ModelListActivityOld;
 import com.code44.finance.ui.accounts.AccountsActivity;
 import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.ui.dialogs.DatePickerDialog;
@@ -186,24 +186,24 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
                     transactionAutoComplete.setAmount(model.getAmount());
                     return;
                 case REQUEST_ACCOUNT_FROM:
-                    model.setAccountFrom(data.<Account>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
+                    model.setAccountFrom(data.<Account>getParcelableExtra(ModelListActivityOld.RESULT_EXTRA_MODEL));
                     onModelLoaded(model);
                     transactionAutoComplete.setAccountFrom(model.getAccountFrom());
                     refreshExchangeRate();
                     return;
                 case REQUEST_ACCOUNT_TO:
-                    model.setAccountTo(data.<Account>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
+                    model.setAccountTo(data.<Account>getParcelableExtra(ModelListActivityOld.RESULT_EXTRA_MODEL));
                     onModelLoaded(model);
                     transactionAutoComplete.setAccountTo(model.getAccountTo());
                     refreshExchangeRate();
                     return;
                 case REQUEST_CATEGORY:
-                    model.setCategory(data.<Category>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
+                    model.setCategory(data.<Category>getParcelableExtra(ModelListActivityOld.RESULT_EXTRA_MODEL));
                     onModelLoaded(model);
                     transactionAutoComplete.setCategory(model.getCategory());
                     return;
                 case REQUEST_TAGS:
-                    final Parcelable[] parcelables = data.getParcelableArrayExtra(ModelListActivity.RESULT_EXTRA_MODELS);
+                    final Parcelable[] parcelables = data.getParcelableArrayExtra(ModelListActivityOld.RESULT_EXTRA_MODELS);
                     final List<Tag> tags = new ArrayList<>();
                     for (Parcelable parcelable : parcelables) {
                         tags.add((Tag) parcelable);

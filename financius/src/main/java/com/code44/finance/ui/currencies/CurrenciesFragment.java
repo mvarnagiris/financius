@@ -15,8 +15,8 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.code44.finance.R;
-import com.code44.finance.adapters.BaseModelsAdapter;
-import com.code44.finance.adapters.CurrenciesAdapter;
+import com.code44.finance.adapters.BaseModelsAdapterOld;
+import com.code44.finance.adapters.CurrenciesAdapterOld;
 import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.api.currencies.ExchangeRatesRequest;
 import com.code44.finance.data.db.Tables;
@@ -98,8 +98,8 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         return super.onOptionsItemSelected(item);
     }
 
-    @Override protected BaseModelsAdapter createAdapter(Context context) {
-        return new CurrenciesAdapter(context);
+    @Override protected BaseModelsAdapterOld createAdapter(Context context) {
+        return new CurrenciesAdapterOld(context);
     }
 
     @Override protected CursorLoader getModelsCursorLoader(Context context) {

@@ -18,7 +18,7 @@
         tools:ignore="UnusedAttribute">
 
         <TextView
-            android:id="@+id/code_TV"
+            android:id="@+id/code"
             style="@style/Text.Display4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
         tools:ignore="UnusedAttribute">
 
         <TextView
-            android:id="@+id/format_TV"
+            android:id="@+id/format"
             style="@style/Text.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
             tools:text="1,000.00 £" />
 
         <TextView
-            android:id="@+id/exchangeRate_TV"
+            android:id="@+id/exchangeRate"
             style="@style/Text.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

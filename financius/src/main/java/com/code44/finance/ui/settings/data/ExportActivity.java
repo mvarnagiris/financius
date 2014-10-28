@@ -13,9 +13,9 @@ import com.code44.finance.data.backup.DataExporter;
 import com.code44.finance.data.backup.DataExporterRunnable;
 import com.code44.finance.data.backup.DriveDataExporterRunnable;
 import com.code44.finance.qualifiers.Local;
-import com.code44.finance.ui.BaseActivity;
 import com.code44.finance.ui.FilePickerActivity;
 import com.code44.finance.ui.GoogleApiFragment;
+import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.errors.AppError;
 import com.code44.finance.utils.errors.ExportError;
@@ -52,7 +52,7 @@ public class ExportActivity extends BaseActivity {
     private GoogleApiClient googleApiClient;
 
     public static void start(Context context, ExportType exportType, Destination destination) {
-        final Intent intent = makeIntent(context, ExportActivity.class);
+        final Intent intent = makeIntentForActivity(context, ExportActivity.class);
         intent.putExtra(EXTRA_EXPORT_TYPE, exportType);
         intent.putExtra(EXTRA_DESTINATION, destination);
         startActivity(context, intent);

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.code44.finance.R;
-import com.code44.finance.adapters.BaseModelsAdapter;
+import com.code44.finance.adapters.BaseModelsAdapterOld;
 import com.code44.finance.adapters.TransactionsAdapter;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.BaseModel;
@@ -55,7 +55,7 @@ public class TransactionsFragment extends ModelListFragment {
         getEventBus().unregister(this);
     }
 
-    @Override protected BaseModelsAdapter createAdapter(Context context) {
+    @Override protected BaseModelsAdapterOld createAdapter(Context context) {
         return new TransactionsAdapter(context, mainCurrency, currentInterval);
     }
 
@@ -75,7 +75,7 @@ public class TransactionsFragment extends ModelListFragment {
         TransactionEditActivity.start(context, modelServerId);
     }
 
-    @Override protected void prepareView(View view, BaseModelsAdapter adapter) {
+    @Override protected void prepareView(View view, BaseModelsAdapterOld adapter) {
         // Get views
         headerList_V = (ExpandableStickyListHeadersListView) view.findViewById(R.id.headerList_V);
 

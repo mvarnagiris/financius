@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.code44.finance.R;
-import com.code44.finance.adapters.BaseModelsAdapter;
+import com.code44.finance.adapters.BaseModelsAdapterOld;
 import com.code44.finance.adapters.TagsAdapter;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.BaseModel;
@@ -31,7 +31,7 @@ public class TagsFragment extends ModelListFragment {
         return inflater.inflate(R.layout.fragment_tags, container, false);
     }
 
-    @Override protected BaseModelsAdapter createAdapter(Context context) {
+    @Override protected BaseModelsAdapterOld createAdapter(Context context) {
         return new TagsAdapter(context, getMode() == Mode.MULTI_SELECT);
     }
 

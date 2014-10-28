@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.code44.finance.R;
-import com.code44.finance.adapters.BaseModelsAdapter;
+import com.code44.finance.adapters.BaseModelsAdapterOld;
 import com.code44.finance.adapters.CategoriesAdapter;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.Query;
@@ -47,7 +47,7 @@ public class CategoriesFragment extends ModelListFragment {
     }
 
     @Override
-    protected BaseModelsAdapter createAdapter(Context context) {
+    protected BaseModelsAdapterOld createAdapter(Context context) {
         return new CategoriesAdapter(context);
     }
 

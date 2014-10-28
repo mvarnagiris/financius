@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.AccountsAdapter;
-import com.code44.finance.adapters.BaseModelsAdapter;
+import com.code44.finance.adapters.BaseModelsAdapterOld;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.BaseModel;
@@ -55,7 +55,7 @@ public class AccountsFragment extends ModelListFragment {
         super.onLoadFinished(loader, data);
     }
 
-    @Override protected BaseModelsAdapter createAdapter(Context context) {
+    @Override protected BaseModelsAdapterOld createAdapter(Context context) {
         return new AccountsAdapter(context, mainCurrency);
     }
 

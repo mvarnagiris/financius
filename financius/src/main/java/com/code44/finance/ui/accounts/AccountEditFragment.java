@@ -24,7 +24,7 @@ import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.CalculatorActivity;
 import com.code44.finance.ui.ModelEditFragment;
-import com.code44.finance.ui.ModelListActivity;
+import com.code44.finance.ui.ModelListActivityOld;
 import com.code44.finance.ui.currencies.CurrenciesActivity;
 import com.code44.finance.utils.MoneyFormatter;
 
@@ -75,7 +75,7 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
             switch (requestCode) {
                 case REQUEST_CURRENCY:
                     ensureModelUpdated(model);
-                    model.setCurrency(data.<Currency>getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL));
+                    model.setCurrency(data.<Currency>getParcelableExtra(ModelListActivityOld.RESULT_EXTRA_MODEL));
                     onModelLoaded(model);
                     return;
 

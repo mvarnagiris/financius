@@ -11,7 +11,7 @@ import com.code44.finance.utils.analytics.Analytics;
 
 public class CategoriesReportActivity extends DrawerActivity {
     public static Intent makeIntent(Context context) {
-        return makeIntent(context, CategoriesReportActivity.class);
+        return makeIntentForActivity(context, CategoriesReportActivity.class);
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {

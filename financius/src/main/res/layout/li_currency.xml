@@ -8,7 +8,7 @@
     tools:ignore="RtlHardcoded,RtlSymmetry">
 
     <TextView
-        android:id="@+id/code_TV"
+        android:id="@+id/code"
         style="@style/Text.Body2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         tools:text="GBP" />
 
     <TextView
-        android:id="@+id/format_TV"
+        android:id="@+id/format"
         style="@style/Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         tools:text="1,000.00 £" />
 
     <TextView
-        android:id="@+id/exchangeRate_TV"
+        android:id="@+id/exchangeRate"
         style="@style/Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

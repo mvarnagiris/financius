@@ -30,7 +30,7 @@ import org.joda.time.Period;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-public class TransactionsAdapter extends BaseModelsAdapter implements StickyListHeadersAdapter {
+public class TransactionsAdapter extends BaseModelsAdapterOld implements StickyListHeadersAdapter {
     private static final String UNKNOWN_VALUE = "?";
     private static final String TRANSFER_SYMBOL = " → ";
 

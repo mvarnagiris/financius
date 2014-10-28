@@ -40,7 +40,7 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
     private SettingsAdapter adapter;
 
     public static void start(Context context) {
-        startActivity(context, makeIntent(context, SettingsActivity.class));
+        startActivity(context, makeIntentForActivity(context, SettingsActivity.class));
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {

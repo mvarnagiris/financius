@@ -62,9 +62,9 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        code_TV = (TextView) view.findViewById(R.id.code_TV);
-        format_TV = (TextView) view.findViewById(R.id.format_TV);
-        exchangeRate_TV = (TextView) view.findViewById(R.id.exchangeRate_TV);
+        code_TV = (TextView) view.findViewById(R.id.code);
+        format_TV = (TextView) view.findViewById(R.id.format);
+        exchangeRate_TV = (TextView) view.findViewById(R.id.exchangeRate);
         loading_SPB = (SmoothProgressBar) view.findViewById(R.id.loading_SPB);
         refreshRate_IB = (FabImageButton) view.findViewById(R.id.refreshRate_IB);
         final ListView list_V = (ListView) view.findViewById(R.id.list);

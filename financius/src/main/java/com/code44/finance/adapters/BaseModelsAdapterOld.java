@@ -8,10 +8,10 @@ import com.code44.finance.data.model.BaseModel;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class BaseModelsAdapter extends CursorAdapter {
+public abstract class BaseModelsAdapterOld extends CursorAdapter {
     private final Set<BaseModel> selectedModels = new HashSet<>();
 
-    public BaseModelsAdapter(Context context) {
+    public BaseModelsAdapterOld(Context context) {
         super(context, null, true);
     }
 

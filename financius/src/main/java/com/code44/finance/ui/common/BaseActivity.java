@@ -1,4 +1,4 @@
-package com.code44.finance.ui;
+package com.code44.finance.ui.common;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +30,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Inject EventBus eventBus;
     @Inject Analytics analytics;
 
-    protected static Intent makeIntent(Context context, Class activityClass) {
+    protected static Intent makeIntentForActivity(Context context, Class activityClass) {
         return new Intent(context, activityClass);
     }
 

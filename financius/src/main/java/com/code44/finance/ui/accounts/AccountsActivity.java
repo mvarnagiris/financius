@@ -7,11 +7,11 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 
 import com.code44.finance.adapters.NavigationAdapter;
-import com.code44.finance.ui.ModelListActivity;
+import com.code44.finance.ui.ModelListActivityOld;
 import com.code44.finance.ui.ModelListFragment;
 import com.code44.finance.utils.analytics.Analytics;
 
-public class AccountsActivity extends ModelListActivity {
+public class AccountsActivity extends ModelListActivityOld {
     public static Intent makeIntentView(Context context) {
         return makeIntentView(context, AccountsActivity.class);
     }

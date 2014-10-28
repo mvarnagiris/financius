@@ -12,7 +12,7 @@ import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.utils.MoneyFormatter;
 
-public class AccountsAdapter extends BaseModelsAdapter {
+public class AccountsAdapter extends BaseModelsAdapterOld {
     private final Currency defaultCurrency;
     private final int includeInTotalsTextColor;
     private final int doNotIncludeInTotalsTextColor;

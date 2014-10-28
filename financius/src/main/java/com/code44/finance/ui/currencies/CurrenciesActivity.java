@@ -7,10 +7,10 @@ import android.view.Menu;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.NavigationAdapter;
-import com.code44.finance.ui.ModelListActivity;
+import com.code44.finance.ui.ModelListActivityOld;
 import com.code44.finance.ui.ModelListFragment;
 
-public class CurrenciesActivity extends ModelListActivity {
+public class CurrenciesActivity extends ModelListActivityOld {
     public static void start(Context context) {
         startActivity(context, makeIntentView(context, CurrenciesActivity.class));
     }

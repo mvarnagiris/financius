@@ -12,7 +12,7 @@
         android:layout_weight="1" />
 
     <include
-        android:id="@+id/editButtonsContainer_V"
+        android:id="@+id/editButtonsContainer"
         layout="@layout/include_edit_buttons" />
 
 </LinearLayout>

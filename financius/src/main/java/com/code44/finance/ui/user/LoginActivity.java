@@ -6,8 +6,8 @@ import android.os.Bundle;
 
 import com.code44.finance.R;
 import com.code44.finance.api.Api;
-import com.code44.finance.ui.BaseActivity;
 import com.code44.finance.ui.GoogleApiFragment;
+import com.code44.finance.ui.common.BaseActivity;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
@@ -29,7 +29,7 @@ public class LoginActivity extends BaseActivity {
     private boolean clearDefaultAccount;
 
     public static void start(Context context) {
-        startActivity(context, makeIntent(context, LoginActivity.class));
+        startActivity(context, makeIntentForActivity(context, LoginActivity.class));
     }
 
     @Override

@@ -38,7 +38,7 @@
                     tools:ignore="RtlHardcoded">
 
                     <TextView
-                        android:id="@+id/code_TV"
+                        android:id="@+id/code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:labelFor="@+id/code_ET"

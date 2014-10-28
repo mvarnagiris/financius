@@ -11,11 +11,11 @@ import com.code44.finance.R;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.utils.MoneyFormatter;
 
-public class CurrenciesAdapter extends BaseModelsAdapter {
+public class CurrenciesAdapterOld extends BaseModelsAdapterOld {
     private final int textPrimaryColor;
     private final int textBrandColor;
 
-    public CurrenciesAdapter(Context context) {
+    public CurrenciesAdapterOld(Context context) {
         super(context);
         textPrimaryColor = context.getResources().getColor(R.color.text_primary);
         textBrandColor = context.getResources().getColor(R.color.text_brand);
@@ -50,9 +50,9 @@ public class CurrenciesAdapter extends BaseModelsAdapter {
 
         public static ViewHolder setAsTag(View view) {
             final ViewHolder holder = new ViewHolder();
-            holder.code_TV = (TextView) view.findViewById(R.id.code_TV);
-            holder.format_TV = (TextView) view.findViewById(R.id.format_TV);
-            holder.exchangeRate_TV = (TextView) view.findViewById(R.id.exchangeRate_TV);
+            holder.code_TV = (TextView) view.findViewById(R.id.code);
+            holder.format_TV = (TextView) view.findViewById(R.id.format);
+            holder.exchangeRate_TV = (TextView) view.findViewById(R.id.exchangeRate);
             view.setTag(holder);
 
             return holder;

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.data.model.Category;
 
-public class CategoriesAdapter extends BaseModelsAdapter {
+public class CategoriesAdapter extends BaseModelsAdapterOld {
     public CategoriesAdapter(Context context) {
         super(context);
     }

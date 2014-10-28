@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.code44.finance.R;
 import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.ui.accounts.AccountsActivity;
+import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.overview.OverviewActivity;
 import com.code44.finance.ui.reports.CategoriesReportActivity;
 import com.code44.finance.ui.transactions.TransactionsActivity;

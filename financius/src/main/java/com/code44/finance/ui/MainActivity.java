@@ -14,6 +14,7 @@ import com.code44.finance.R;
 import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.services.StartupService;
 import com.code44.finance.ui.accounts.AccountsFragment;
+import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.reports.CategoriesReportFragment;
 import com.code44.finance.ui.transactions.TransactionsFragment;
 import com.code44.finance.ui.user.UserFragment;
