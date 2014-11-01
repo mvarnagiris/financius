@@ -57,8 +57,12 @@
         <activity android:name=".ui.categories.CategoriesActivity" />
         <activity android:name=".ui.categories.CategoryActivity" />
         <activity android:name=".ui.categories.CategoryEditActivity" />
-        <activity android:name=".ui.tags.TagsActivity" />
-        <activity android:name=".ui.tags.TagActivity" />
+        <activity
+            android:name=".ui.tags.TagsActivity"
+            android:label="@string/tags" />
+        <activity
+            android:name=".ui.tags.TagActivity"
+            android:label="@string/tag" />
         <activity android:name=".ui.tags.TagEditActivity" />
         <activity
             android:name=".ui.transactions.TransactionsActivity"

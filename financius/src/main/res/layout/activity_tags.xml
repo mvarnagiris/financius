@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="?android:actionBarSize"
     android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
 
     <ListView
         android:id="@+id/list"
@@ -12,7 +13,7 @@
         android:layout_weight="1" />
 
     <include
-        android:id="@+id/editButtonsContainer"
+        android:id="@+id/editButtonsContainerView"
         layout="@layout/include_edit_buttons" />
 
 </LinearLayout>

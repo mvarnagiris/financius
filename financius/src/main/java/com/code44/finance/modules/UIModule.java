@@ -41,7 +41,6 @@ import com.code44.finance.ui.tags.TagEditActivity;
 import com.code44.finance.ui.tags.TagEditFragment;
 import com.code44.finance.ui.tags.TagFragment;
 import com.code44.finance.ui.tags.TagsActivity;
-import com.code44.finance.ui.tags.TagsFragment;
 import com.code44.finance.ui.transactions.TransactionActivity;
 import com.code44.finance.ui.transactions.TransactionEditActivity;
 import com.code44.finance.ui.transactions.TransactionEditFragment;
@@ -91,7 +90,6 @@ import dagger.Module;
                 CategoriesFragment.class,
                 CategoryFragment.class,
                 CategoryEditFragment.class,
-                TagsFragment.class,
                 TagFragment.class,
                 TagEditFragment.class,
                 DeleteDialogFragment.class,

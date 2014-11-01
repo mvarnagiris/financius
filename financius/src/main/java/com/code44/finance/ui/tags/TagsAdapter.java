@@ -1,4 +1,4 @@
-package com.code44.finance.adapters;
+package com.code44.finance.ui.tags;
 
 import android.content.Context;
 import android.database.Cursor;

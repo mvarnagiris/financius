@@ -155,7 +155,7 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
     protected void prepareView(View view, BaseModelsAdapter adapter) {
         // Get views
         final ListView list_V = (ListView) view.findViewById(R.id.list);
-        final View editButtonsContainer_V = view.findViewById(R.id.editButtonsContainer);
+        final View editButtonsContainer_V = view.findViewById(R.id.editButtonsContainerView);
 
         // Setup
         list_V.setAdapter(adapter);

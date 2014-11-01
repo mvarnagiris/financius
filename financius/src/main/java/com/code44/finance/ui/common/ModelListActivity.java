@@ -80,7 +80,7 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
 
         // Get views
         final ListView listView = (ListView) findViewById(R.id.list);
-        final View editButtonsContainerView = findViewById(R.id.editButtonsContainer);
+        final View editButtonsContainerView = findViewById(R.id.editButtonsContainerView);
 
         // Setup
         adapter = createAdapter();
