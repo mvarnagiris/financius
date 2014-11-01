@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.code44.finance.R;
+import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.ui.DrawerActivity;
 import com.code44.finance.ui.ModelFragment;
@@ -48,6 +49,9 @@ public abstract class ModelActivity<M extends BaseModel> extends DrawerActivity 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         modelId = getIntent().getStringExtra(EXTRA_MODEL_ID);
+        if (StringUtils.isEmpty(modelId)) {
+            modelId = "0";
+        }
         getEventBus().register(eventHandler);
 
         // Loader
