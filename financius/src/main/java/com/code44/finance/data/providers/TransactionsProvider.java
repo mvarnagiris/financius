@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
-import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
@@ -147,19 +146,7 @@ public class TransactionsProvider extends BaseModelProvider {
 
     @Override protected void onAfterInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> extras) {
         super.onAfterInsertItem(uri, values, serverId, extras);
-
-        final String accountFromId = values.getAsString(Tables.Transactions.ACCOUNT_FROM_ID.getName());
-        final String accountToId = values.getAsString(Tables.Transactions.ACCOUNT_TO_ID.getName());
-        final boolean isAccountFromInDb = !StringUtils.isEmpty(accountFromId);
-        final boolean isAccountToInDb = !StringUtils.isEmpty(accountToId);
-
-        if (isAccountFromInDb) {
-            updateAccountBalance(getDatabase(), accountFromId);
-        }
-
-        if (isAccountToInDb) {
-            updateAccountBalance(getDatabase(), accountToId);
-        }
+        updateAllAccountsBalances(database);
     }
 
     @Override protected void onBeforeUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> outExtras) {

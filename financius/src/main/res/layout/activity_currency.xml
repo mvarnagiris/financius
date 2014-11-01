@@ -33,7 +33,10 @@
         android:elevation="@dimen/elevation_sub_header"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="@dimen/keyline"
+        android:paddingBottom="@dimen/space_xlarge"
+        android:paddingLeft="@dimen/keyline"
+        android:paddingRight="@dimen/keyline"
+        android:paddingTop="@dimen/space_xlarge"
         tools:ignore="UnusedAttribute">
 
         <TextView
