@@ -36,7 +36,7 @@ public class TagFragment extends ModelFragment<Tag> {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        title_TV = (TextView) view.findViewById(R.id.title);
+        title_TV = (TextView) view.findViewById(R.id.titleTextView);
     }
 
     @Override protected CursorLoader getModelCursorLoader(Context context, String modelServerId) {

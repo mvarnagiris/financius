@@ -82,7 +82,7 @@ public class CategoriesReportAdapter extends BaseAdapter {
         public ViewHolder(View view) {
             color_IV = (ImageView) view.findViewById(R.id.color_IV);
             percent_TV = (TextView) view.findViewById(R.id.percent_TV);
-            title_TV = (TextView) view.findViewById(R.id.title);
+            title_TV = (TextView) view.findViewById(R.id.titleTextView);
             amount_TV = (TextView) view.findViewById(R.id.amount_TV);
             view.setTag(this);
         }

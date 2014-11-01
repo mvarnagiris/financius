@@ -54,15 +54,15 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
     @Inject @Main Currency mainCurrency;
 
     private SmoothProgressBar loadingView;
-    private AutoCompleteTextView codeEditView;
+    private AutoCompleteTextView codeEditTextView;
     private Button thousandsSeparatorButton;
     private Button decimalSeparatorButton;
     private Button decimalsCountButton;
-    private TextView codeLabelView;
-    private TextView symbolLabelView;
-    private EditText symbolView;
+    private TextView codeTextView;
+    private TextView symbolTextView;
+    private EditText symbolEditTextView;
     private Button symbolPositionButton;
-    private EditText exchangeRateEditView;
+    private EditText exchangeRateEditTextView;
     private ListPopupWindow listPopupWindow;
     private View mainCurrencyContainerView;
     private View exchangeRateContainerView;
@@ -77,21 +77,21 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
         setContentView(R.layout.activity_currency_edit);
 
         // Get view
-        loadingView = (SmoothProgressBar) findViewById(R.id.loading);
-        codeEditView = (AutoCompleteTextView) findViewById(R.id.codeEdit);
+        loadingView = (SmoothProgressBar) findViewById(R.id.loadingView);
+        codeEditTextView = (AutoCompleteTextView) findViewById(R.id.codeEditTextView);
         thousandsSeparatorButton = (Button) findViewById(R.id.thousandsSeparatorButton);
         decimalSeparatorButton = (Button) findViewById(R.id.decimalSeparatorButton);
         decimalsCountButton = (Button) findViewById(R.id.decimalsCountButton);
-        codeLabelView = (TextView) findViewById(R.id.code);
-        symbolLabelView = (TextView) findViewById(R.id.symbol);
-        symbolView = (EditText) findViewById(R.id.symbolEdit);
+        codeTextView = (TextView) findViewById(R.id.codeTextView);
+        symbolTextView = (TextView) findViewById(R.id.symbolTextView);
+        symbolEditTextView = (EditText) findViewById(R.id.symbolEditTextView);
         symbolPositionButton = (Button) findViewById(R.id.symbolPositionButton);
-        exchangeRateEditView = (EditText) findViewById(R.id.exchangeRateEdit);
-        mainCurrencyContainerView = findViewById(R.id.mainCurrencyContainer);
-        exchangeRateContainerView = findViewById(R.id.exchangeRateContainer);
+        exchangeRateEditTextView = (EditText) findViewById(R.id.exchangeRateEdit);
+        mainCurrencyContainerView = findViewById(R.id.mainCurrencyContainerView);
+        exchangeRateContainerView = findViewById(R.id.exchangeRateContainerView);
         isDefaultCheckBox = (CheckBox) findViewById(R.id.isDefaultCheckBox);
-        final TextView currentMainCurrency_TV = (TextView) findViewById(R.id.currentMainCurrency_TV);
-        final ImageButton refreshRate_B = (ImageButton) findViewById(R.id.refreshRate_B);
+        final TextView currentMainCurrency_TV = (TextView) findViewById(R.id.currentMainCurrencyTextView);
+        final ImageButton refreshRateButton = (ImageButton) findViewById(R.id.refreshRateButton);
 
         // Setup
         prepareCurrenciesAutoComplete();
@@ -101,8 +101,9 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
         decimalSeparatorButton.setOnClickListener(this);
         symbolPositionButton.setOnClickListener(this);
         isDefaultCheckBox.setOnCheckedChangeListener(this);
-        refreshRate_B.setOnClickListener(this);
-        symbolView.addTextChangedListener(new TextWatcher() {
+        refreshRateButton.setOnClickListener(this);
+        refreshRateButton.setColorFilter(getResources().getColor(R.color.text_primary));
+        symbolEditTextView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
             }
@@ -110,7 +111,7 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
                 //noinspection ConstantConditions
-                model.setSymbol(symbolView.getText().toString());
+                model.setSymbol(symbolEditTextView.getText().toString());
                 updateFormatView();
 
                 updateSymbolTitlePosition();
@@ -120,7 +121,7 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
             public void afterTextChanged(Editable editable) {
             }
         });
-        codeEditView.addTextChangedListener(new TextWatcher() {
+        codeEditTextView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -167,11 +168,11 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
     }
 
     @Override protected void ensureModelUpdated(Currency model) {
-        model.setCode(codeEditView.getText().toString());
-        model.setSymbol(symbolView.getText().toString());
+        model.setCode(codeEditTextView.getText().toString());
+        model.setSymbol(symbolEditTextView.getText().toString());
         double exchangeRate;
         try {
-            exchangeRate = Double.parseDouble(exchangeRateEditView.getText().toString());
+            exchangeRate = Double.parseDouble(exchangeRateEditTextView.getText().toString());
         } catch (Exception e) {
             exchangeRate = 1.0;
         }
@@ -187,18 +188,18 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
     }
 
     @Override protected void onModelLoaded(Currency model) {
-        symbolView.setText(model.getSymbol());
-        codeEditView.setText(model.getCode());
+        symbolEditTextView.setText(model.getSymbol());
+        codeEditTextView.setText(model.getCode());
         thousandsSeparatorButton.setText(getGroupSeparatorExplanation(model.getGroupSeparator()));
         decimalSeparatorButton.setText(getDecimalSeparatorExplanation(model.getDecimalSeparator()));
         decimalsCountButton.setText(String.valueOf(model.getDecimalCount()));
-        exchangeRateEditView.setText(String.valueOf(model.getExchangeRate()));
+        exchangeRateEditTextView.setText(String.valueOf(model.getExchangeRate()));
         isDefaultCheckBox.setChecked(model.isDefault());
         updateFormatView();
         updateCodeTitlePosition();
         updateSymbolTitlePosition();
 
-        codeEditView.setEnabled(isNewModel());
+        codeEditTextView.setEnabled(isNewModel());
         mainCurrencyContainerView.setVisibility(mainCurrency.getId().equals(model.getId()) ? View.GONE : View.VISIBLE);
         exchangeRateContainerView.setVisibility(model.isDefault() ? View.GONE : View.VISIBLE);
     }
@@ -230,7 +231,7 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
 
     @Override public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.refreshRate_B: {
+            case R.id.refreshRateButton: {
                 ensureModelUpdated(model);
                 final String code = model.getCode();
                 if (!TextUtils.isEmpty(code) && code.length() == 3) {
@@ -356,9 +357,9 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
 
         // Prepare auto complete view
         final ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, currencies);
-        codeEditView.setAdapter(autoCompleteAdapter);
-        codeEditView.setThreshold(0);
-        codeEditView.addTextChangedListener(new TextWatcher() {
+        codeEditTextView.setAdapter(autoCompleteAdapter);
+        codeEditTextView.setThreshold(0);
+        codeEditTextView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -366,7 +367,7 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //noinspection ConstantConditions
-                checkForCurrencyDuplicate(codeEditView.getText().toString());
+                checkForCurrencyDuplicate(codeEditTextView.getText().toString());
             }
 
             @Override
@@ -377,9 +378,9 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
 
     private void checkForCurrencyDuplicate(String code) {
         if (isCurrencyExists(code) && isNewModel()) {
-            codeEditView.setError(getString(R.string.l_currency_exists));
+            codeEditTextView.setError(getString(R.string.l_currency_exists));
         } else {
-            codeEditView.setError(null);
+            codeEditTextView.setError(null);
         }
     }
 
@@ -402,18 +403,18 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
     }
 
     private void updateCodeTitlePosition() {
-        if (TextUtils.isEmpty(codeEditView.getText())) {
-            codeLabelView.animate().translationY(codeEditView.getBaseline() + (codeLabelView.getHeight() - codeLabelView.getBaseline())).setDuration(100).start();
+        if (TextUtils.isEmpty(codeEditTextView.getText())) {
+            codeTextView.animate().translationY(codeEditTextView.getBaseline() + (codeTextView.getHeight() - codeTextView.getBaseline())).setDuration(100).start();
         } else {
-            codeLabelView.animate().translationY(0).setDuration(100).start();
+            codeTextView.animate().translationY(0).setDuration(100).start();
         }
     }
 
     private void updateSymbolTitlePosition() {
-        if (TextUtils.isEmpty(symbolView.getText())) {
-            symbolLabelView.animate().translationY(symbolView.getBaseline() + (symbolLabelView.getHeight() - symbolLabelView.getBaseline())).setDuration(100).start();
+        if (TextUtils.isEmpty(symbolEditTextView.getText())) {
+            symbolTextView.animate().translationY(symbolEditTextView.getBaseline() + (symbolTextView.getHeight() - symbolTextView.getBaseline())).setDuration(100).start();
         } else {
-            symbolLabelView.animate().translationY(0).setDuration(100).start();
+            symbolTextView.animate().translationY(0).setDuration(100).start();
         }
     }
 

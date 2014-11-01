@@ -303,7 +303,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
             holder.color_IV = (ImageView) view.findViewById(R.id.color_IV);
             holder.weekday_TV = (TextView) view.findViewById(R.id.weekday_TV);
             holder.day_TV = (TextView) view.findViewById(R.id.day_TV);
-            holder.title_TV = (TextView) view.findViewById(R.id.title);
+            holder.title_TV = (TextView) view.findViewById(R.id.titleTextView);
             holder.subtitle_TV = (TextView) view.findViewById(R.id.subtitle_TV);
             holder.amount_TV = (TextView) view.findViewById(R.id.amount_TV);
             holder.account_TV = (TextView) view.findViewById(R.id.account_TV);
@@ -321,7 +321,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         public static HeaderViewHolder setAsTag(View view) {
             final HeaderViewHolder holder = new HeaderViewHolder();
             holder.arrow_IV = (ImageView) view.findViewById(R.id.arrow_IV);
-            holder.title_TV = (TextView) view.findViewById(R.id.title);
+            holder.title_TV = (TextView) view.findViewById(R.id.titleTextView);
             holder.amount_TV = (TextView) view.findViewById(R.id.amount_TV);
             view.setTag(holder);
 

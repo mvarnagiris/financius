@@ -59,7 +59,7 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
 
         // Get views
         title_ET = (EditText) view.findViewById(R.id.title_ET);
-        currency_B = (Button) view.findViewById(R.id.currency_B);
+        currency_B = (Button) view.findViewById(R.id.currencyButton);
         balance_B = (Button) view.findViewById(R.id.balance_B);
         note_ET = (EditText) view.findViewById(R.id.note_ET);
         includeInTotals_CB = (CheckBox) view.findViewById(R.id.includeInTotals_CB);
@@ -130,7 +130,7 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
 
     @Override public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.currency_B:
+            case R.id.currencyButton:
                 CurrenciesActivity.startSelect(this, REQUEST_CURRENCY);
                 break;
 

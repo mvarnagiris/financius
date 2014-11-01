@@ -33,27 +33,27 @@ public class CurrenciesAdapter extends BaseModelsAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         final ViewHolder holder = (ViewHolder) view.getTag();
         final Currency currency = Currency.from(cursor);
-        holder.code_TV.setText(currency.getCode());
-        holder.format_TV.setText(MoneyFormatter.format(currency, 100000));
+        holder.codeTextView.setText(currency.getCode());
+        holder.formatTextView.setText(MoneyFormatter.format(currency, 100000));
         if (currency.isDefault()) {
-            holder.code_TV.setTextColor(textBrandColor);
-            holder.exchangeRate_TV.setText(null);
+            holder.codeTextView.setTextColor(textBrandColor);
+            holder.exchangeRateTextView.setText(null);
         } else {
-            holder.code_TV.setTextColor(textPrimaryColor);
-            holder.exchangeRate_TV.setText(String.valueOf(currency.getExchangeRate()));
+            holder.codeTextView.setTextColor(textPrimaryColor);
+            holder.exchangeRateTextView.setText(String.valueOf(currency.getExchangeRate()));
         }
     }
 
     private static class ViewHolder {
-        public TextView code_TV;
-        public TextView format_TV;
-        public TextView exchangeRate_TV;
+        public TextView codeTextView;
+        public TextView formatTextView;
+        public TextView exchangeRateTextView;
 
         public static ViewHolder setAsTag(View view) {
             final ViewHolder holder = new ViewHolder();
-            holder.code_TV = (TextView) view.findViewById(R.id.code);
-            holder.format_TV = (TextView) view.findViewById(R.id.format);
-            holder.exchangeRate_TV = (TextView) view.findViewById(R.id.exchangeRate);
+            holder.codeTextView = (TextView) view.findViewById(R.id.codeTextView);
+            holder.formatTextView = (TextView) view.findViewById(R.id.formatTextView);
+            holder.exchangeRateTextView = (TextView) view.findViewById(R.id.exchangeRateTextView);
             view.setTag(holder);
 
             return holder;

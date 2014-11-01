@@ -111,7 +111,7 @@ public class NavigationAdapter extends BaseAdapter {
 
         public static ViewHolder setAsTag(View view) {
             final ViewHolder holder = new ViewHolder();
-            holder.title_TV = (TextView) view.findViewById(R.id.title);
+            holder.title_TV = (TextView) view.findViewById(R.id.titleTextView);
             view.setTag(holder);
 
             return holder;

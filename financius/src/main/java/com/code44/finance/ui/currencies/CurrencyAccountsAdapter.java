@@ -44,7 +44,7 @@ public class CurrencyAccountsAdapter extends BaseModelsAdapter {
 
     @Override public View newView(Context context, Cursor cursor, ViewGroup parent) {
         final View view = LayoutInflater.from(context).inflate(R.layout.li_currency_account, parent, false);
-        ViewHolder.setAsTag(view).currency_B.setOnClickListener(changeCurrencyClickListener);
+        ViewHolder.setAsTag(view).currencyButton.setOnClickListener(changeCurrencyClickListener);
         return view;
     }
 
@@ -54,21 +54,21 @@ public class CurrencyAccountsAdapter extends BaseModelsAdapter {
 
         final String accountText = account.getTitle() + ", " + account.getCurrency().getCode();
         if (currency.getId().equals(account.getCurrency().getId())) {
-            holder.currency_B.setVisibility(View.INVISIBLE);
+            holder.currencyButton.setVisibility(View.INVISIBLE);
             final SpannableStringBuilder ssb = new SpannableStringBuilder(accountText);
             ssb.setSpan(new ForegroundColorSpan(textBrandColor), ssb.length() - account.getCurrency().getCode().length(), ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.title_TV.setText(ssb);
+            holder.titleTextView.setText(ssb);
         } else {
-            holder.title_TV.setText(accountText);
-            holder.currency_B.setTag(account);
-            holder.currency_B.setVisibility(View.VISIBLE);
+            holder.titleTextView.setText(accountText);
+            holder.currencyButton.setTag(account);
+            holder.currencyButton.setVisibility(View.VISIBLE);
 
             final String text = mContext.getString(R.string.f_change_to_x, currency.getCode()).toUpperCase();
             final SpannableStringBuilder ssb = new SpannableStringBuilder(text);
             final int codeIndex = text.indexOf(currency.getCode());
             ssb.setSpan(new ForegroundColorSpan(textBrandColor), codeIndex, codeIndex + currency.getCode().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            holder.currency_B.setText(ssb);
+            holder.currencyButton.setText(ssb);
         }
     }
 
@@ -78,14 +78,14 @@ public class CurrencyAccountsAdapter extends BaseModelsAdapter {
     }
 
     private static class ViewHolder {
-        public TextView title_TV;
-        public Button currency_B;
+        public TextView titleTextView;
+        public Button currencyButton;
 
         public static ViewHolder setAsTag(View view) {
             final ViewHolder holder = new ViewHolder();
-            holder.title_TV = (TextView) view.findViewById(R.id.title);
-            holder.currency_B = (Button) view.findViewById(R.id.currency_B);
-            holder.currency_B.setAllCaps(false);
+            holder.titleTextView = (TextView) view.findViewById(R.id.titleTextView);
+            holder.currencyButton = (Button) view.findViewById(R.id.currencyButton);
+            holder.currencyButton.setAllCaps(false);
             view.setTag(holder);
 
             return holder;

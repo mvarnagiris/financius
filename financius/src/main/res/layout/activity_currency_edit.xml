@@ -38,10 +38,10 @@
                     tools:ignore="RtlHardcoded">
 
                     <TextView
-                        android:id="@+id/code"
+                        android:id="@+id/codeTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:labelFor="@+id/codeEdit"
+                        android:labelFor="@+id/codeEditTextView"
                         android:paddingLeft="4dp"
                         android:paddingRight="4dp"
                         android:text="@string/currency_code"
@@ -49,7 +49,7 @@
                         android:textColor="@color/text_primary_inverse" />
 
                     <AutoCompleteTextView
-                        android:id="@+id/codeEdit"
+                        android:id="@+id/codeEditTextView"
                         style="@style/EditText.Large"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -72,10 +72,10 @@
                     tools:ignore="RtlHardcoded">
 
                     <TextView
-                        android:id="@+id/symbol"
+                        android:id="@+id/symbolTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:labelFor="@+id/symbolEdit"
+                        android:labelFor="@+id/symbolEditTextView"
                         android:paddingLeft="4dp"
                         android:paddingRight="4dp"
                         android:text="@string/symbol"
@@ -83,7 +83,7 @@
                         android:textColor="@color/text_primary_inverse" />
 
                     <EditText
-                        android:id="@+id/symbolEdit"
+                        android:id="@+id/symbolEditTextView"
                         style="@style/EditText.Large"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -218,7 +218,7 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:id="@+id/mainCurrencyContainer"
+                android:id="@+id/mainCurrencyContainerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_large"
@@ -244,7 +244,7 @@
                     tools:ignore="RtlCompat" />
 
                 <TextView
-                    android:id="@+id/currentMainCurrency_TV"
+                    android:id="@+id/currentMainCurrencyTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/isDefaultCheckBox"
@@ -254,10 +254,10 @@
                     tools:text="Current main currency GBP" />
 
                 <LinearLayout
-                    android:id="@+id/exchangeRateContainer"
+                    android:id="@+id/exchangeRateContainerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/currentMainCurrency_TV"
+                    android:layout_below="@+id/currentMainCurrencyTextView"
                     android:layout_marginLeft="-4dp"
                     android:layout_marginTop="@dimen/space_normal">
 
@@ -273,7 +273,7 @@
                         tools:ignore="NestedWeights" />
 
                     <ImageButton
-                        android:id="@+id/refreshRate_B"
+                        android:id="@+id/refreshRateButton"
                         style="@style/Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -286,10 +286,10 @@
                 </LinearLayout>
 
                 <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
-                    android:id="@+id/loading"
+                    android:id="@+id/loadingView"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/progress_bar_height"
-                    android:layout_below="@+id/exchangeRateContainer"
+                    android:layout_below="@+id/exchangeRateContainerView"
                     android:indeterminate="true"
                     android:visibility="invisible" />
 

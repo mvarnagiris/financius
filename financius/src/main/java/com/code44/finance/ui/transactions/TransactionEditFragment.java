@@ -123,7 +123,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         note_ET = (EditText) view.findViewById(R.id.note_ET);
         confirmed_CB = (CheckBox) view.findViewById(R.id.confirmed_CB);
         includeInReports_CB = (CheckBox) view.findViewById(R.id.includeInReports_CB);
-        save_B = (Button) view.findViewById(R.id.save);
+        save_B = (Button) view.findViewById(R.id.saveButton);
 
         // Setup
         transactionType_IB.setOnClickListener(this);

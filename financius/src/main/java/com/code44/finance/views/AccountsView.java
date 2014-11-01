@@ -74,7 +74,7 @@ public class AccountsView extends LinearLayout {
         for (int i = TOP_STATIC_VIEWS_COUNT, size = getChildCount() - BOTTOM_STATIC_VIEWS_COUNT; i < size; i++) {
             final Account account = accounts.get(i - TOP_STATIC_VIEWS_COUNT);
             final View view = getChildAt(i);
-            ((TextView) view.findViewById(R.id.title)).setText(account.getTitle());
+            ((TextView) view.findViewById(R.id.titleTextView)).setText(account.getTitle());
             ((TextView) view.findViewById(R.id.balance_TV)).setText(MoneyFormatter.format(account.getCurrency(), account.getBalance()));
             totalBalance += account.getBalance() * account.getCurrency().getExchangeRate();
         }

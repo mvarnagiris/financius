@@ -28,8 +28,8 @@ public abstract class ModelEditActivity<M extends BaseModel> extends ModelActivi
         super.setContentView(layoutResID);
 
         // Get views
-        final Button cancelView = (Button) findViewById(R.id.cancel);
-        final Button saveView = (Button) findViewById(R.id.save);
+        final Button cancelView = (Button) findViewById(R.id.cancelButton);
+        final Button saveView = (Button) findViewById(R.id.saveButton);
 
         // Setup
         cancelView.setOnClickListener(new View.OnClickListener() {

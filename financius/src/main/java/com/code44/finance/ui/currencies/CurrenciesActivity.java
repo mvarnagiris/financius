@@ -55,13 +55,13 @@ public class CurrenciesActivity extends ModelListActivity implements CompoundBut
         setContentView(R.layout.activity_currencies);
 
         // Get views
-        loadingView = (SmoothProgressBar) findViewById(R.id.loading);
-        final View settingsContainerView = findViewById(R.id.settingsContainer);
-        final Switch autoUpdateCurrenciesView = (Switch) findViewById(R.id.autoUpdateCurrencies);
+        loadingView = (SmoothProgressBar) findViewById(R.id.loadingView);
+        final View settingsContainerView = findViewById(R.id.settingsContainerView);
+        final Switch autoUpdateCurrenciesSwitch = (Switch) findViewById(R.id.autoUpdateCurrenciesSwitch);
 
         // Setup
-        autoUpdateCurrenciesView.setChecked(generalPrefs.isAutoUpdateCurrencies());
-        autoUpdateCurrenciesView.setOnCheckedChangeListener(this);
+        autoUpdateCurrenciesSwitch.setChecked(generalPrefs.isAutoUpdateCurrencies());
+        autoUpdateCurrenciesSwitch.setOnCheckedChangeListener(this);
         if (getMode() != Mode.VIEW) {
             settingsContainerView.setVisibility(View.GONE);
         }

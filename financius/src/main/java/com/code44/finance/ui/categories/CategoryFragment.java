@@ -41,7 +41,7 @@ public class CategoryFragment extends ModelFragment<Category> {
 
         // Get views
         color_IV = (ImageView) view.findViewById(R.id.color_IV);
-        title_TV = (TextView) view.findViewById(R.id.title);
+        title_TV = (TextView) view.findViewById(R.id.titleTextView);
     }
 
     @Override

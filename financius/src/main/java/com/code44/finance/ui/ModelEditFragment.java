@@ -43,8 +43,8 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        final Button cancel_B = (Button) view.findViewById(R.id.cancel);
-        final Button save_B = (Button) view.findViewById(R.id.save);
+        final Button cancel_B = (Button) view.findViewById(R.id.cancelButton);
+        final Button save_B = (Button) view.findViewById(R.id.saveButton);
 
         // Setup
         cancel_B.setOnClickListener(new View.OnClickListener() {

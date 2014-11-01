@@ -42,7 +42,7 @@ public class OverviewGraphView extends LinearLayout {
         super.onFinishInflate();
 
         // Get views
-        final TextView titleView = (TextView) findViewById(R.id.title);
+        final TextView titleView = (TextView) findViewById(R.id.titleTextView);
         pieChartView = (PieChartView) findViewById(R.id.pieChart);
         totalExpenseView = (TextView) findViewById(R.id.totalExpense);
 

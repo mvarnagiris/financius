@@ -37,11 +37,12 @@ public class CurrencyActivity extends ModelActivity<Currency> implements View.On
     @Inject CurrenciesApi currenciesApi;
     @Inject @Main Currency mainCurrency;
 
-    private TextView codeView;
-    private TextView formatView;
-    private TextView exchangeRateView;
+    private TextView codeTextView;
+    private TextView formatTextView;
+    private TextView exchangeRateTextView;
     private SmoothProgressBar loadingView;
-    private FabImageButton refreshRateView;
+    private FabImageButton refreshRateButton;
+
     private CurrencyAccountsAdapter adapter;
 
     public static void start(Context context, String currencyId) {
@@ -54,17 +55,17 @@ public class CurrencyActivity extends ModelActivity<Currency> implements View.On
         setContentView(R.layout.activity_currency);
 
         // Get views
-        codeView = (TextView) findViewById(R.id.code);
-        formatView = (TextView) findViewById(R.id.format);
-        exchangeRateView = (TextView) findViewById(R.id.exchangeRate);
-        loadingView = (SmoothProgressBar) findViewById(R.id.loading);
-        refreshRateView = (FabImageButton) findViewById(R.id.refreshRate);
+        codeTextView = (TextView) findViewById(R.id.codeTextView);
+        formatTextView = (TextView) findViewById(R.id.formatTextView);
+        exchangeRateTextView = (TextView) findViewById(R.id.exchangeRateTextView);
+        loadingView = (SmoothProgressBar) findViewById(R.id.loadingView);
+        refreshRateButton = (FabImageButton) findViewById(R.id.refreshRateButton);
         final ListView listView = (ListView) findViewById(R.id.list);
 
         // Setup
         adapter = new CurrencyAccountsAdapter(this);
         listView.setAdapter(adapter);
-        refreshRateView.setOnClickListener(this);
+        refreshRateButton.setOnClickListener(this);
     }
 
     @Override public void onResume() {
@@ -123,15 +124,15 @@ public class CurrencyActivity extends ModelActivity<Currency> implements View.On
 
     @Override protected void onModelLoaded(Currency currency) {
         adapter.setCurrency(currency);
-        codeView.setText(currency.getCode());
+        codeTextView.setText(currency.getCode());
         if (currency.isDefault()) {
-            exchangeRateView.setText(R.string.main_currency);
+            exchangeRateTextView.setText(R.string.main_currency);
         } else {
-            exchangeRateView.setText(String.valueOf(currency.getExchangeRate()));
+            exchangeRateTextView.setText(String.valueOf(currency.getExchangeRate()));
         }
-        formatView.setText(MoneyFormatter.format(currency, 100000));
+        formatTextView.setText(MoneyFormatter.format(currency, 100000));
         // TODO This doesn't seem to be working on first load. Check after Android L is released.
-        refreshRateView.setVisibility(!currency.isDefault() ? View.VISIBLE : View.GONE);
+        refreshRateButton.setVisibility(!currency.isDefault() ? View.VISIBLE : View.GONE);
 
         supportInvalidateOptionsMenu();
 
@@ -153,7 +154,7 @@ public class CurrencyActivity extends ModelActivity<Currency> implements View.On
 
     @Override public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.refreshRate:
+            case R.id.refreshRateButton:
                 refreshRate();
                 break;
         }

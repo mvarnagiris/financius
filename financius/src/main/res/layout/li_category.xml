@@ -16,7 +16,7 @@
         tools:ignore="ContentDescription,RtlHardcoded" />
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/titleTextView"
         style="@style/Text.Body2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

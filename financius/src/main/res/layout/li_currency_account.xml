@@ -6,7 +6,7 @@
     android:gravity="center_vertical">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/titleTextView"
         style="@style/Text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
         tools:text="Cash, EUR" />
 
     <Button
-        android:id="@+id/currency_B"
+        android:id="@+id/currencyButton"
         style="@style/Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

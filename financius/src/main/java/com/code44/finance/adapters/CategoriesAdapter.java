@@ -39,7 +39,7 @@ public class CategoriesAdapter extends BaseModelsAdapter {
         public static ViewHolder setAsTag(View view) {
             final ViewHolder holder = new ViewHolder();
             holder.color_IV = (ImageView) view.findViewById(R.id.color_IV);
-            holder.title_TV = (TextView) view.findViewById(R.id.title);
+            holder.title_TV = (TextView) view.findViewById(R.id.titleTextView);
             view.setTag(holder);
 
             return holder;

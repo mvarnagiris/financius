@@ -145,7 +145,7 @@ public class SettingsAdapter extends BaseAdapter {
         private final TextView title_TV;
 
         private SettingsItemViewHolder(View itemView) {
-            title_TV = (TextView) itemView.findViewById(R.id.title);
+            title_TV = (TextView) itemView.findViewById(R.id.titleTextView);
         }
 
         protected void bind(SettingsItem settingsItem) {

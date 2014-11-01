@@ -48,7 +48,7 @@
                 android:paddingRight="@dimen/keyline">
 
                 <Button
-                    android:id="@+id/currency_B"
+                    android:id="@+id/currencyButton"
                     style="@style/Button.Borderless.Select"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

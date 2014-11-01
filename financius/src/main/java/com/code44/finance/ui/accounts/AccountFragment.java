@@ -48,7 +48,7 @@ public class AccountFragment extends ModelFragment<Account> {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        title_TV = (TextView) view.findViewById(R.id.title);
+        title_TV = (TextView) view.findViewById(R.id.titleTextView);
         balance_TV = (TextView) view.findViewById(R.id.balance_TV);
         mainCurrencyBalance_TV = (TextView) view.findViewById(R.id.mainCurrencyBalance_TV);
         note_TV = (TextView) view.findViewById(R.id.note_TV);

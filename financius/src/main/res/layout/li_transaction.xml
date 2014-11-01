@@ -63,7 +63,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/titleTextView"
                 style="@style/Text.Body2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

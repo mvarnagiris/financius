@@ -33,7 +33,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        titleView = (TextView) view.findViewById(R.id.title);
+        titleView = (TextView) view.findViewById(R.id.titleTextView);
 
         // Setup
         requestCode = getArguments().getInt(ARG_REQUEST_CODE);

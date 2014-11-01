@@ -12,7 +12,7 @@
     android:padding="@dimen/keyline">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/titleTextView"
         style="@style/Text.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

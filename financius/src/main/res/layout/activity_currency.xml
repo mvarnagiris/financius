@@ -9,7 +9,7 @@
         layout="@layout/toolbar" />
 
     <me.grantland.widget.AutofitTextView
-        android:id="@+id/code"
+        android:id="@+id/codeTextView"
         style="@style/Text.Display4"
         android:layout_width="match_parent"
         android:layout_height="@dimen/action_bar_size_3x"
@@ -25,10 +25,10 @@
         tools:text="GBP" />
 
     <LinearLayout
-        android:id="@+id/subHeaderContainer"
+        android:id="@+id/subHeaderContainerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/code"
+        android:layout_below="@+id/codeTextView"
         android:background="@color/bg_primary"
         android:elevation="@dimen/elevation_sub_header"
         android:gravity="center_vertical"
@@ -40,7 +40,7 @@
         tools:ignore="UnusedAttribute">
 
         <TextView
-            android:id="@+id/format"
+            android:id="@+id/formatTextView"
             style="@style/Text.Headline"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
             tools:text="1,000.00 £" />
 
         <TextView
-            android:id="@+id/exchangeRate"
+            android:id="@+id/exchangeRateTextView"
             style="@style/Text.Headline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,10 +60,10 @@
     </LinearLayout>
 
     <com.code44.finance.views.FabImageButton
-        android:id="@+id/refreshRate"
+        android:id="@+id/refreshRateButton"
         android:layout_width="@dimen/btn_fab"
         android:layout_height="@dimen/btn_fab"
-        android:layout_alignBottom="@+id/code"
+        android:layout_alignBottom="@+id/codeTextView"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/btn_fab_half_negative"
         android:elevation="@dimen/elevation_fab"
@@ -71,10 +71,10 @@
         tools:ignore="UnusedAttribute" />
 
     <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
-        android:id="@+id/loading"
+        android:id="@+id/loadingView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/progress_bar_height"
-        android:layout_below="@+id/code"
+        android:layout_below="@+id/codeTextView"
         android:elevation="@dimen/elevation_sub_header"
         android:indeterminate="true"
         android:visibility="invisible"
@@ -83,6 +83,6 @@
     <ListView
         android:id="@+id/list"
         style="@style/ListView"
-        android:layout_below="@+id/subHeaderContainer" />
+        android:layout_below="@+id/subHeaderContainerView" />
 
 </RelativeLayout>
