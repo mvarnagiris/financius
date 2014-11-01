@@ -45,6 +45,7 @@ public class FabImageButton extends ImageButton {
                 }
             });
         }
+        setColorFilter(getResources().getColor(R.color.text_primary));
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP) @Override

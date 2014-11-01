@@ -65,7 +65,8 @@ dependencies {
     compile 'com.larswerkman:HoloColorPicker:1.4'
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     compile 'net.danlew:android.joda:2.4.0'
-    compile 'me.grantland:autofittextview:0.1.1'
+    //noinspection GradleDynamicVersion
+    compile 'me.grantland:autofittextview:0.2.+'
     compile 'com.squareup:otto:1.3.5'
     compile 'se.emilsjolander:stickylistheaders:2.5.0'
     compile 'com.nononsenseapps:filepicker:1.1.3'

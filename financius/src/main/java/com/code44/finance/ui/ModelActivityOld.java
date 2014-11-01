@@ -9,7 +9,7 @@ import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.dialogs.DeleteDialogFragment;
 import com.squareup.otto.Subscribe;
 
-public abstract class ModelActivity extends BaseActivity {
+public abstract class ModelActivityOld extends BaseActivity {
     protected static final String FRAGMENT_MODEL = "FRAGMENT_MODEL";
 
     private static final String EXTRA_MODEL_SERVER_ID = "EXTRA_MODEL_SERVER_ID";
@@ -24,7 +24,7 @@ public abstract class ModelActivity extends BaseActivity {
 
     protected String modelServerId;
 
-    public static Intent makeIntent(Context context, Class<? extends ModelActivity> activityClass, String modelServerId) {
+    public static Intent makeIntent(Context context, Class<? extends ModelActivityOld> activityClass, String modelServerId) {
         final Intent intent = makeIntentForActivity(context, activityClass);
         intent.putExtra(EXTRA_MODEL_SERVER_ID, modelServerId);
         return intent;

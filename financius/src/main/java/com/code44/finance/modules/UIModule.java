@@ -19,11 +19,9 @@ import com.code44.finance.ui.categories.CategoryEditActivity;
 import com.code44.finance.ui.categories.CategoryEditFragment;
 import com.code44.finance.ui.categories.CategoryFragment;
 import com.code44.finance.ui.currencies.CurrenciesActivity;
-import com.code44.finance.ui.currencies.CurrenciesFragment;
 import com.code44.finance.ui.currencies.CurrencyActivity;
 import com.code44.finance.ui.currencies.CurrencyEditActivity;
 import com.code44.finance.ui.currencies.CurrencyEditFragment;
-import com.code44.finance.ui.currencies.CurrencyFragment;
 import com.code44.finance.ui.dialogs.DatePickerDialog;
 import com.code44.finance.ui.dialogs.DeleteDialogFragment;
 import com.code44.finance.ui.dialogs.ListDialogFragment;
@@ -85,8 +83,6 @@ import dagger.Module;
                 CategoriesReportActivity.class,
 
                 NavigationFragment.class,
-                CurrenciesFragment.class,
-                CurrencyFragment.class,
                 CurrencyEditFragment.class,
                 AccountsFragment.class,
                 AccountFragment.class,

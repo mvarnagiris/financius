@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.code44.finance.R;
-import com.code44.finance.ui.ModelActivity;
+import com.code44.finance.ui.ModelActivityOld;
 import com.code44.finance.ui.ModelFragment;
 
-public class AccountActivity extends ModelActivity {
+public class AccountActivity extends ModelActivityOld {
     public static void start(Context context, String accountServerId) {
         final Intent intent = makeIntent(context, AccountActivity.class, accountServerId);
         startActivity(context, intent);

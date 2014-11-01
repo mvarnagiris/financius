@@ -2,39 +2,33 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="?android:actionBarSize"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/headerContainer_V"
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <me.grantland.widget.AutofitTextView
+        android:id="@+id/code"
+        style="@style/Text.Display4"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/action_bar_size_3x"
+        android:layout_below="@+id/toolbar"
         android:background="@color/primary"
-        android:clipChildren="false"
-        android:clipToPadding="false"
         android:elevation="@dimen/elevation_header"
+        android:fontFamily="@string/font_light"
+        android:gravity="center"
         android:padding="@dimen/keyline"
-        tools:ignore="UnusedAttribute">
-
-        <TextView
-            android:id="@+id/code"
-            style="@style/Text.Display4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@string/font_light"
-            android:gravity="center"
-            android:textColor="@color/text_primary_inverse"
-            tools:text="GBP" />
-
-    </FrameLayout>
+        android:singleLine="true"
+        android:textColor="@color/text_primary_inverse"
+        tools:ignore="UnusedAttribute"
+        tools:text="GBP" />
 
     <LinearLayout
         android:id="@+id/subHeaderContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/headerContainer_V"
+        android:layout_below="@+id/code"
         android:background="@color/bg_primary"
         android:elevation="@dimen/elevation_sub_header"
         android:gravity="center_vertical"
@@ -44,7 +38,7 @@
 
         <TextView
             android:id="@+id/format"
-            style="@style/Text.Title"
+            style="@style/Text.Headline"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -52,7 +46,7 @@
 
         <TextView
             android:id="@+id/exchangeRate"
-            style="@style/Text.Title"
+            style="@style/Text.Headline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
@@ -66,7 +60,7 @@
         android:id="@+id/refreshRate"
         android:layout_width="@dimen/btn_fab"
         android:layout_height="@dimen/btn_fab"
-        android:layout_alignBottom="@+id/headerContainer_V"
+        android:layout_alignBottom="@+id/code"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/btn_fab_half_negative"
         android:elevation="@dimen/elevation_fab"
@@ -77,7 +71,7 @@
         android:id="@+id/loading"
         android:layout_width="match_parent"
         android:layout_height="@dimen/progress_bar_height"
-        android:layout_below="@+id/headerContainer_V"
+        android:layout_below="@+id/code"
         android:elevation="@dimen/elevation_sub_header"
         android:indeterminate="true"
         android:visibility="invisible"

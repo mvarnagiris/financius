@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.code44.finance.R;
-import com.code44.finance.ui.ModelActivity;
+import com.code44.finance.ui.ModelActivityOld;
 import com.code44.finance.ui.ModelFragment;
 
-public class TransactionActivity extends ModelActivity {
+public class TransactionActivity extends ModelActivityOld {
     public static void start(Context context, String transactionServerId) {
         final Intent intent = makeIntent(context, TransactionActivity.class, transactionServerId);
         startActivity(context, intent);

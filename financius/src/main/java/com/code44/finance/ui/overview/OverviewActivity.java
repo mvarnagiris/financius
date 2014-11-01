@@ -71,8 +71,6 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
         accountsView = (AccountsView) findViewById(R.id.accounts);
 
         // Setup
-        //ViewCompat.setElevation(getToolbar(), 0);
-        newTransactionView.setColorFilter(getResources().getColor(R.color.text_primary));
         newTransactionView.setOnClickListener(this);
         overviewGraphView.setOnClickListener(this);
         accountsView.setOnClickListener(this);
