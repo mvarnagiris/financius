@@ -19,8 +19,8 @@ import com.code44.finance.ui.common.ModelActivity;
 public class TagActivity extends ModelActivity<Tag> {
     private TextView titleTextView;
 
-    public static void start(Context context, String tagServerId) {
-        final Intent intent = makeIntent(context, TagActivity.class, tagServerId);
+    public static void start(Context context, String tagId) {
+        final Intent intent = makeIntent(context, TagActivity.class, tagId);
         startActivity(context, intent);
     }
 

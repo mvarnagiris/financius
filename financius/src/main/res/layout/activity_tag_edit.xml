@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        style="@style/ScrollView"
+        android:layout_height="0px"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <me.grantland.widget.AutofitLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/action_bar_size_3x"
+                android:background="@color/primary"
+                android:padding="@dimen/keyline">
+
+                <EditText
+                    android:id="@+id/titleEditText"
+                    style="@style/EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:hint="@string/title"
+                    android:inputType="textCapWords"
+                    android:singleLine="true"
+                    android:textAppearance="@style/Text.Display4"
+                    android:textColor="@color/text_primary_inverse"
+                    android:textColorHint="@color/text_secondary_inverse"
+                    tools:ignore="RtlHardcoded" />
+
+            </me.grantland.widget.AutofitLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <include layout="@layout/include_edit_buttons" />
+</LinearLayout>
