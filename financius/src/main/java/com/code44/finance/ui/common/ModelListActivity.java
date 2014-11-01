@@ -97,8 +97,8 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
         if (editButtonsContainerView != null) {
             if (mode == Mode.MULTI_SELECT) {
                 editButtonsContainerView.setVisibility(View.VISIBLE);
-                final Button save_B = (Button) findViewById(R.id.save_B);
-                final Button cancel_B = (Button) findViewById(R.id.cancel_B);
+                final Button save_B = (Button) findViewById(R.id.save);
+                final Button cancel_B = (Button) findViewById(R.id.cancel);
                 save_B.setOnClickListener(this);
                 cancel_B.setOnClickListener(this);
             } else {
@@ -157,10 +157,10 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
 
     @Override public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.save_B:
+            case R.id.save:
                 onMultipleModelsSelected(adapter.getSelectedModels());
                 break;
-            case R.id.cancel_B:
+            case R.id.cancel:
                 finish();
                 break;
         }

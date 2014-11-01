@@ -14,11 +14,12 @@ import android.view.MenuItem;
 
 import com.code44.finance.R;
 import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.ui.DrawerActivity;
 import com.code44.finance.ui.ModelFragment;
 import com.code44.finance.ui.dialogs.DeleteDialogFragment;
 import com.squareup.otto.Subscribe;
 
-public abstract class ModelActivity<M extends BaseModel> extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public abstract class ModelActivity<M extends BaseModel> extends DrawerActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     protected static final String EXTRA_MODEL_ID = "EXTRA_MODEL_ID";
 
     protected static final int REQUEST_DELETE = 6666;

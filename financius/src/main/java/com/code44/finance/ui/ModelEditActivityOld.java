@@ -3,7 +3,7 @@ package com.code44.finance.ui;
 import android.os.Bundle;
 import android.view.Menu;
 
-public abstract class ModelEditActivity extends ModelActivityOld implements ModelEditFragment.ModelEditListener {
+public abstract class ModelEditActivityOld extends ModelActivityOld implements ModelEditFragment.ModelEditListener {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();

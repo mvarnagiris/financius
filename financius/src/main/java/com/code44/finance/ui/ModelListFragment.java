@@ -120,10 +120,10 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
 
     @Override public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.save_B:
+            case R.id.save:
                 onSaveMultiChoice(adapter.getSelectedModels());
                 break;
-            case R.id.cancel_B:
+            case R.id.cancel:
                 onCancelMultiChoice();
                 break;
         }
@@ -163,8 +163,8 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
         if (editButtonsContainer_V != null) {
             if (mode == Mode.MULTI_SELECT) {
                 editButtonsContainer_V.setVisibility(View.VISIBLE);
-                final Button save_B = (Button) view.findViewById(R.id.save_B);
-                final Button cancel_B = (Button) view.findViewById(R.id.cancel_B);
+                final Button save_B = (Button) view.findViewById(R.id.save);
+                final Button cancel_B = (Button) view.findViewById(R.id.cancel);
                 save_B.setOnClickListener(this);
                 cancel_B.setOnClickListener(this);
             } else {

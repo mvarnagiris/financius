@@ -41,7 +41,7 @@
                         android:id="@+id/code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:labelFor="@+id/code_ET"
+                        android:labelFor="@+id/codeEdit"
                         android:paddingLeft="4dp"
                         android:paddingRight="4dp"
                         android:text="@string/currency_code"
@@ -49,7 +49,7 @@
                         android:textColor="@color/text_primary_inverse" />
 
                     <AutoCompleteTextView
-                        android:id="@+id/code_ET"
+                        android:id="@+id/codeEdit"
                         style="@style/EditText.Large"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -72,10 +72,10 @@
                     tools:ignore="RtlHardcoded">
 
                     <TextView
-                        android:id="@+id/symbol_TV"
+                        android:id="@+id/symbol"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:labelFor="@+id/symbol_ET"
+                        android:labelFor="@+id/symbolEdit"
                         android:paddingLeft="4dp"
                         android:paddingRight="4dp"
                         android:text="@string/symbol"
@@ -83,7 +83,7 @@
                         android:textColor="@color/text_primary_inverse" />
 
                     <EditText
-                        android:id="@+id/symbol_ET"
+                        android:id="@+id/symbolEdit"
                         style="@style/EditText.Large"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
                     tools:ignore="RtlHardcoded" />
 
                 <Button
-                    android:id="@+id/symbolPosition_B"
+                    android:id="@+id/symbolPositionButton"
                     style="@style/Button.Borderless.Select"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -145,7 +145,7 @@
                     tools:ignore="RtlHardcoded" />
 
                 <Button
-                    android:id="@+id/thousandsSeparator_B"
+                    android:id="@+id/thousandsSeparatorButton"
                     style="@style/Button.Borderless.Select"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -175,7 +175,7 @@
                     tools:ignore="RtlHardcoded" />
 
                 <Button
-                    android:id="@+id/decimalSeparator_B"
+                    android:id="@+id/decimalSeparatorButton"
                     style="@style/Button.Borderless.Select"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -205,7 +205,7 @@
                     tools:ignore="RtlHardcoded" />
 
                 <Button
-                    android:id="@+id/decimalsCount_B"
+                    android:id="@+id/decimalsCountButton"
                     style="@style/Button.Borderless.Select"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -218,7 +218,7 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:id="@+id/mainCurrencyContainer_V"
+                android:id="@+id/mainCurrencyContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_large"
@@ -235,7 +235,7 @@
                 tools:visibility="visible">
 
                 <CheckBox
-                    android:id="@+id/isDefault_CB"
+                    android:id="@+id/isDefaultCheckBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="-48dp"
@@ -247,14 +247,14 @@
                     android:id="@+id/currentMainCurrency_TV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/isDefault_CB"
+                    android:layout_below="@id/isDefaultCheckBox"
                     android:layout_marginTop="@dimen/space_normal"
                     android:textAppearance="@style/Text"
                     android:textColor="@color/text_secondary"
                     tools:text="Current main currency GBP" />
 
                 <LinearLayout
-                    android:id="@+id/exchangeRateContainer_V"
+                    android:id="@+id/exchangeRateContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/currentMainCurrency_TV"
@@ -262,7 +262,7 @@
                     android:layout_marginTop="@dimen/space_normal">
 
                     <EditText
-                        android:id="@+id/exchangeRate_ET"
+                        android:id="@+id/exchangeRateEdit"
                         style="@style/EditText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -289,7 +289,7 @@
                     android:id="@+id/loading"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/progress_bar_height"
-                    android:layout_below="@+id/exchangeRateContainer_V"
+                    android:layout_below="@+id/exchangeRateContainer"
                     android:indeterminate="true"
                     android:visibility="invisible" />
 

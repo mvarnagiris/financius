@@ -3,10 +3,10 @@ package com.code44.finance.ui.tags;
 import android.content.Context;
 
 import com.code44.finance.R;
-import com.code44.finance.ui.ModelEditActivity;
+import com.code44.finance.ui.ModelEditActivityOld;
 import com.code44.finance.ui.ModelFragment;
 
-public class TagEditActivity extends ModelEditActivity {
+public class TagEditActivity extends ModelEditActivityOld {
     public static void start(Context context, String tagServerId) {
         startActivity(context, makeIntent(context, TagEditActivity.class, tagServerId));
     }

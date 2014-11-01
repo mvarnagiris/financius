@@ -61,7 +61,7 @@ public class SelectColorFragment extends DialogFragment {
         final ColorPicker picker_CP = (ColorPicker) view.findViewById(R.id.picker_CP);
         final SaturationBar saturation_SB = (SaturationBar) view.findViewById(R.id.saturation_SB);
         final ValueBar value_VB = (ValueBar) view.findViewById(R.id.value_SB);
-        final Button cancel_B = (Button) view.findViewById(R.id.cancel_B);
+        final Button cancel_B = (Button) view.findViewById(R.id.cancel);
         final Button select_B = (Button) view.findViewById(R.id.select_B);
 
         // Setup

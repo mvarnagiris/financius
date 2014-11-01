@@ -5,10 +5,10 @@ import android.content.Intent;
 
 import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
-import com.code44.finance.ui.ModelEditActivity;
+import com.code44.finance.ui.ModelEditActivityOld;
 import com.code44.finance.ui.ModelFragment;
 
-public class CategoryEditActivity extends ModelEditActivity {
+public class CategoryEditActivity extends ModelEditActivityOld {
     private static final String EXTRA_CATEGORY_TYPE = "EXTRA_CATEGORY_TYPE";
 
     private TransactionType transactionType;

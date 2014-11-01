@@ -1,37 +1,22 @@
-package com.code44.finance.ui;
+package com.code44.finance.ui.common;
 
-import android.app.Activity;
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.content.Loader;
 import android.util.Pair;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
 import com.code44.finance.R;
 import com.code44.finance.data.model.BaseModel;
 
-public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragment<T> {
+public abstract class ModelEditActivity<M extends BaseModel> extends ModelActivity<M> {
     private static final String STATE_MODEL = "STATE_MODEL";
 
-    private ModelEditListener listener;
-
-    @Override public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        if (activity instanceof ModelEditListener) {
-            listener = (ModelEditListener) activity;
-        } else {
-            throw new IllegalStateException(activity.getClass().getName() + " must implement " + ModelEditListener.class.getName());
-        }
-    }
-
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(false);
 
         // Restore state
         if (savedInstanceState != null) {
@@ -39,21 +24,21 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
         }
     }
 
-    @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    @Override public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
 
         // Get views
-        final Button cancel_B = (Button) view.findViewById(R.id.cancel);
-        final Button save_B = (Button) view.findViewById(R.id.save);
+        final Button cancelView = (Button) findViewById(R.id.cancel);
+        final Button saveView = (Button) findViewById(R.id.save);
 
         // Setup
-        cancel_B.setOnClickListener(new View.OnClickListener() {
+        cancelView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cancel();
             }
         });
-        save_B.setOnClickListener(new View.OnClickListener() {
+        saveView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 save();
@@ -61,9 +46,8 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
         });
     }
 
-    @Override public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
+    @Override protected void onStart() {
+        super.onStart();
         if (model != null) {
             onModelLoaded(model);
         }
@@ -71,7 +55,6 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
 
     @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         ensureModelUpdated(model);
         outState.putParcelable(STATE_MODEL, model);
     }
@@ -92,13 +75,17 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
         return null;
     }
 
-    @Override protected void startModelEdit(Context context, String modelServerId) {
+    @Override protected void startModelEdit(String modelId) {
         // Ignore
     }
 
-    protected abstract boolean onSave(Context context, T model);
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
+    }
 
-    protected abstract void ensureModelUpdated(T model);
+    protected abstract boolean onSave(M model);
+
+    protected abstract void ensureModelUpdated(M model);
 
     protected boolean isNewModel() {
         return modelId.equals("0");
@@ -106,18 +93,12 @@ public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragme
 
     private void save() {
         ensureModelUpdated(model);
-        if (onSave(getActivity(), model)) {
-            listener.onModelSaved();
+        if (onSave(model)) {
+            finish();
         }
     }
 
     private void cancel() {
-        listener.onModelCanceled();
-    }
-
-    public static interface ModelEditListener {
-        public void onModelSaved();
-
-        public void onModelCanceled();
+        finish();
     }
 }

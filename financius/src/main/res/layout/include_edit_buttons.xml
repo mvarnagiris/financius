@@ -14,7 +14,7 @@
     tools:ignore="UnusedAttribute">
 
     <Button
-        android:id="@+id/cancel_B"
+        android:id="@+id/cancel"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -24,7 +24,7 @@
         tools:stateListAnimator="@android:animator/fade_in" />
 
     <Button
-        android:id="@+id/save_B"
+        android:id="@+id/save"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="0dp"
         android:layout_height="match_parent"
