@@ -2,10 +2,12 @@
 <com.code44.finance.views.OverviewGraphView
     android:id="@+id/overviewGraph"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/btn_borderless"
+    android:gravity="center_vertical"
     android:orientation="vertical"
     android:padding="@dimen/keyline">
 
@@ -16,30 +18,33 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/space_large"
         android:text="@string/expenses"
-        android:textColor="@color/primary" />
+        android:textColor="@color/primary"
+        tools:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
 
         <com.code44.finance.graphs.pie.PieChartView
             android:id="@+id/pieChart"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            app:sizeBasedOn="height"
+            app:type="donut" />
 
         <me.grantland.widget.AutofitTextView
             android:id="@+id/totalExpense"
-            style="@style/Text.Display3"
-            android:layout_width="0dp"
+            style="@style/Text.Display2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/space_large"
-            android:layout_weight="2"
+            android:layout_marginRight="@dimen/space_large"
             android:gravity="right"
             android:singleLine="true"
             android:textColor="@color/text_primary_inverse"
-            tools:ignore="RtlHardcoded" />
+            tools:ignore="RtlHardcoded"
+            tools:text="34" />
 
     </LinearLayout>
 

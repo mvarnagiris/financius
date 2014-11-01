@@ -1,6 +1,7 @@
 package com.code44.finance.graphs.pie;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -22,6 +23,7 @@ public class PieChartView extends View {
     private final Paint inlinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private Type type;
+    private SizeBasedOn sizeBasedOn;
     private float donutWidthRatio;
     private int emptyColor;
     private PieChartData pieChartData;
@@ -40,13 +42,7 @@ public class PieChartView extends View {
         // Init
         outlinePaint.setStyle(Paint.Style.STROKE);
         inlinePaint.setStyle(Paint.Style.STROKE);
-        setType(Type.DONUT);
-        setDonutWidthRatio(0.3f);
-        setOutlineWidth(getResources().getDimension(R.dimen.divider));
-        setOutlineColor(Color.WHITE);
-        setInlineWidth(outlinePaint.getStrokeWidth());
-        setInlineColor(Color.WHITE);
-        setEmptyColor(Color.WHITE);
+        applyStyle(context, attrs);
 
         if (isInEditMode()) {
             setPieChartData(PieChartData.builder().setValues(Arrays.asList(new PieChartValue(15, 0xffe51c23), new PieChartValue(25, 0xff5677fc))).build());
@@ -55,8 +51,29 @@ public class PieChartView extends View {
         }
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        switch (sizeBasedOn) {
+            case Min: {
+                final int size = Math.min(getMeasuredWidth(), getMeasuredHeight());
+                setMeasuredDimension(size, size);
+                break;
+            }
+            case Width: {
+                final int size = getMeasuredWidth();
+                setMeasuredDimension(size, size);
+                break;
+            }
+            case Height: {
+                final int size = getMeasuredHeight();
+                setMeasuredDimension(size, size);
+                break;
+            }
+        }
+    }
+
+    @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
         final int contentWidth = w - getPaddingLeft() - getPaddingRight();
@@ -98,8 +115,7 @@ public class PieChartView extends View {
         }
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
+    @Override protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         final List<PieChartValue> values = pieChartData.getValues();
@@ -143,6 +159,11 @@ public class PieChartView extends View {
                 paint.setStyle(Paint.Style.STROKE);
                 break;
         }
+        requestLayout();
+    }
+
+    public void setSizeBasedOn(SizeBasedOn sizeBasedOn) {
+        this.sizeBasedOn = sizeBasedOn;
         requestLayout();
     }
 
@@ -206,7 +227,48 @@ public class PieChartView extends View {
         return type == Type.DONUT && Float.compare(inlinePaint.getStrokeWidth(), 0) > 0;
     }
 
+    private void applyStyle(Context context, AttributeSet attrs) {
+        final TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.PieChartView, 0, 0);
+        try {
+            setType(Type.from(a.getInteger(R.styleable.PieChartView_type, 0)));
+            setSizeBasedOn(SizeBasedOn.from(a.getInteger(R.styleable.PieChartView_sizeBasedOn, 0)));
+            setDonutWidthRatio(a.getFloat(R.styleable.PieChartView_donutWidthRatio, 0.3f));
+            setOutlineWidth(a.getDimension(R.styleable.PieChartView_outlineWidth, getResources().getDimension(R.dimen.divider)));
+            setOutlineColor(a.getColor(R.styleable.PieChartView_outlineColor, Color.WHITE));
+            setInlineWidth(a.getDimension(R.styleable.PieChartView_inlineWidth, outlinePaint.getStrokeWidth()));
+            setInlineColor(a.getColor(R.styleable.PieChartView_inlineColor, Color.WHITE));
+            setEmptyColor(a.getColor(R.styleable.PieChartView_emptyColor, Color.WHITE));
+        } finally {
+            a.recycle();
+        }
+    }
+
     public static enum Type {
-        PIE, DONUT
+        PIE, DONUT;
+
+        public static Type from(int value) {
+            if (value == 1) {
+                return DONUT;
+            }
+
+            return PIE;
+        }
+    }
+
+    public static enum SizeBasedOn {
+        Default, Min, Width, Height;
+
+        public static SizeBasedOn from(int value) {
+            switch (value) {
+                case 1:
+                    return Min;
+                case 2:
+                    return Width;
+                case 3:
+                    return Height;
+                default:
+                    return Default;
+            }
+        }
     }
 }

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.code44.finance.R;
-import com.code44.finance.adapters.BaseModelsAdapterOld;
 import com.code44.finance.adapters.TransactionsAdapter;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.BaseModel;
@@ -19,6 +18,7 @@ import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.ModelListFragment;
+import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.utils.CurrentInterval;
 import com.squareup.otto.Subscribe;
 
@@ -55,7 +55,7 @@ public class TransactionsFragment extends ModelListFragment {
         getEventBus().unregister(this);
     }
 
-    @Override protected BaseModelsAdapterOld createAdapter(Context context) {
+    @Override protected BaseModelsAdapter createAdapter(Context context) {
         return new TransactionsAdapter(context, mainCurrency, currentInterval);
     }
 
@@ -75,7 +75,7 @@ public class TransactionsFragment extends ModelListFragment {
         TransactionEditActivity.start(context, modelServerId);
     }
 
-    @Override protected void prepareView(View view, BaseModelsAdapterOld adapter) {
+    @Override protected void prepareView(View view, BaseModelsAdapter adapter) {
         // Get views
         headerList_V = (ExpandableStickyListHeadersListView) view.findViewById(R.id.headerList_V);
 

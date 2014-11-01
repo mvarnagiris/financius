@@ -17,8 +17,8 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.code44.finance.R;
-import com.code44.finance.adapters.BaseModelsAdapterOld;
 import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.ui.common.BaseModelsAdapter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,7 +29,7 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
 
     protected static final int LOADER_MODELS = 1000;
 
-    protected BaseModelsAdapterOld adapter;
+    protected BaseModelsAdapter adapter;
     protected Mode mode;
 
     private OnModelSelectedListener onModelSelectedListener;
@@ -142,7 +142,7 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
         }
     }
 
-    protected abstract BaseModelsAdapterOld createAdapter(Context context);
+    protected abstract BaseModelsAdapter createAdapter(Context context);
 
     protected abstract CursorLoader getModelsCursorLoader(Context context);
 
@@ -152,7 +152,7 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
 
     protected abstract void startModelEdit(Context context, String modelServerId);
 
-    protected void prepareView(View view, BaseModelsAdapterOld adapter) {
+    protected void prepareView(View view, BaseModelsAdapter adapter) {
         // Get views
         final ListView list_V = (ListView) view.findViewById(R.id.list);
         final View editButtonsContainer_V = view.findViewById(R.id.editButtonsContainer);

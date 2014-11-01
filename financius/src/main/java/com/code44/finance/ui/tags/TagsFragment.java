@@ -10,13 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.code44.finance.R;
-import com.code44.finance.adapters.BaseModelsAdapterOld;
 import com.code44.finance.adapters.TagsAdapter;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.providers.TagsProvider;
 import com.code44.finance.ui.ModelListFragment;
+import com.code44.finance.ui.common.BaseModelsAdapter;
 
 public class TagsFragment extends ModelListFragment {
     public static TagsFragment newInstance(Mode mode, Parcelable[] selectedTags) {
@@ -31,7 +31,7 @@ public class TagsFragment extends ModelListFragment {
         return inflater.inflate(R.layout.fragment_tags, container, false);
     }
 
-    @Override protected BaseModelsAdapterOld createAdapter(Context context) {
+    @Override protected BaseModelsAdapter createAdapter(Context context) {
         return new TagsAdapter(context, getMode() == Mode.MULTI_SELECT);
     }
 

@@ -10,9 +10,10 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
+import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.utils.MoneyFormatter;
 
-public class AccountsAdapter extends BaseModelsAdapterOld {
+public class AccountsAdapter extends BaseModelsAdapter {
     private final Currency defaultCurrency;
     private final int includeInTotalsTextColor;
     private final int doNotIncludeInTotalsTextColor;

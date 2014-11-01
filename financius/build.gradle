@@ -26,6 +26,8 @@ android {
         release {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            shrinkResources true
         }
     }
     sourceSets {
@@ -73,6 +75,7 @@ dependencies {
     androidTestCompile 'junit:junit:4.11'
     androidTestCompile 'org.robolectric:robolectric:2.3'
     androidTestCompile 'org.mockito:mockito-all:1.9.5'
+    compile project(':common')
 }
 
 def buildTime() {

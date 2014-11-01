@@ -89,7 +89,7 @@ public class CurrencyEditFragment extends ModelEditFragment<Currency> implements
         super.onViewCreated(view, savedInstanceState);
 
         // Get view
-        loading_SPB = (SmoothProgressBar) view.findViewById(R.id.loading_SPB);
+        loading_SPB = (SmoothProgressBar) view.findViewById(R.id.loading);
         code_ET = (AutoCompleteTextView) view.findViewById(R.id.code_ET);
         thousandsSeparator_B = (Button) view.findViewById(R.id.thousandsSeparator_B);
         decimalSeparator_B = (Button) view.findViewById(R.id.decimalSeparator_B);

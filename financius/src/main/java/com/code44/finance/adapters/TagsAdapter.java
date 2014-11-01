@@ -10,8 +10,9 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.data.model.Tag;
+import com.code44.finance.ui.common.BaseModelsAdapter;
 
-public class TagsAdapter extends BaseModelsAdapterOld {
+public class TagsAdapter extends BaseModelsAdapter {
     private final boolean isMultiChoice;
 
     public TagsAdapter(Context context, boolean isMultiChoice) {

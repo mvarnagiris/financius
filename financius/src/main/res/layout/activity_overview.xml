@@ -12,13 +12,17 @@
     <FrameLayout
         android:id="@+id/overviewGraphContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/action_bar_size_2x"
         android:layout_below="@+id/toolbar"
+
         android:background="@color/primary"
         android:elevation="@dimen/elevation_header"
         tools:ignore="UnusedAttribute">
 
-        <include layout="@layout/view_overview_graph" />
+        <include
+            layout="@layout/view_overview_graph"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_size_2x" />
 
     </FrameLayout>
 

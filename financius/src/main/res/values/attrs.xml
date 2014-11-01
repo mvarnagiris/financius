@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PieChartView">
+        <attr name="donutWidthRatio" format="float|reference" />
+        <attr name="outlineWidth" format="dimension" />
+        <attr name="outlineColor" format="color" />
+        <attr name="inlineWidth" format="dimension" />
+        <attr name="inlineColor" format="color" />
+        <attr name="emptyColor" format="color" />
+        <attr name="type" format="enum">
+            <enum name="pie" value="0" />
+            <enum name="donut" value="1" />
+        </attr>
+        <attr name="sizeBasedOn" format="enum">
+            <enum name="none" value="0" />
+            <enum name="min" value="1" />
+            <enum name="width" value="2" />
+            <enum name="height" value="3" />
+        </attr>
+    </declare-styleable>
+</resources>

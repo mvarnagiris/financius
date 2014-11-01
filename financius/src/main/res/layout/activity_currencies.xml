@@ -2,13 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="?android:actionBarSize">
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
 
     <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
         android:id="@+id/loading"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/progress_bar_height" />
+        android:layout_height="@dimen/progress_bar_height"
+        android:layout_below="@+id/toolbar" />
 
     <LinearLayout
         android:id="@+id/settingsContainer"
@@ -43,6 +47,7 @@
     <ListView
         android:id="@+id/list"
         style="@style/ListView"
-        android:layout_above="@+id/settingsContainer" />
+        android:layout_above="@+id/settingsContainer"
+        android:layout_below="@+id/toolbar" />
 
 </RelativeLayout>

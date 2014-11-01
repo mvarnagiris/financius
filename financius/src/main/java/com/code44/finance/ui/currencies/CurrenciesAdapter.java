@@ -2,7 +2,6 @@ package com.code44.finance.ui.currencies;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,51 +12,51 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.utils.MoneyFormatter;
 
-public class CurrenciesAdapter extends BaseModelsAdapter<Currency, CurrenciesAdapter.CurrencyHolder> {
+public class CurrenciesAdapter extends BaseModelsAdapter {
+    private final int textPrimaryColor;
+    private final int textBrandColor;
+
     public CurrenciesAdapter(Context context) {
         super(context);
+        textPrimaryColor = context.getResources().getColor(R.color.text_primary);
+        textBrandColor = context.getResources().getColor(R.color.text_brand);
     }
 
-    @Override protected CurrencyHolder createViewHolder(Context context, ViewGroup parent, int position) {
-        return new CurrencyHolder(context, LayoutInflater.from(context).inflate(R.layout.li_currency, parent, false));
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        final View view = LayoutInflater.from(context).inflate(R.layout.li_currency, parent, false);
+        ViewHolder.setAsTag(view);
+        return view;
     }
 
-    @Override protected void bindViewHolder(Context context, CurrencyHolder holder, int position, Currency model) {
-        holder.bind(model);
-    }
-
-    @Override protected Currency createModel(Cursor cursor) {
-        return Currency.from(cursor);
-    }
-
-    public static class CurrencyHolder extends RecyclerView.ViewHolder {
-        private final TextView codeView;
-        private final TextView formatView;
-        private final TextView exchangeRateView;
-
-        private final int textPrimaryColor;
-        private final int textBrandColor;
-
-        public CurrencyHolder(Context context, View view) {
-            super(view);
-            codeView = (TextView) view.findViewById(R.id.code);
-            formatView = (TextView) view.findViewById(R.id.format);
-            exchangeRateView = (TextView) view.findViewById(R.id.exchangeRate);
-
-            textPrimaryColor = context.getResources().getColor(R.color.text_primary);
-            textBrandColor = context.getResources().getColor(R.color.text_brand);
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+        final ViewHolder holder = (ViewHolder) view.getTag();
+        final Currency currency = Currency.from(cursor);
+        holder.code_TV.setText(currency.getCode());
+        holder.format_TV.setText(MoneyFormatter.format(currency, 100000));
+        if (currency.isDefault()) {
+            holder.code_TV.setTextColor(textBrandColor);
+            holder.exchangeRate_TV.setText(null);
+        } else {
+            holder.code_TV.setTextColor(textPrimaryColor);
+            holder.exchangeRate_TV.setText(String.valueOf(currency.getExchangeRate()));
         }
+    }
 
-        public void bind(Currency currency) {
-            codeView.setText(currency.getCode());
-            formatView.setText(MoneyFormatter.format(currency, 100000));
-            if (currency.isDefault()) {
-                codeView.setTextColor(textBrandColor);
-                exchangeRateView.setText(null);
-            } else {
-                codeView.setTextColor(textPrimaryColor);
-                exchangeRateView.setText(String.valueOf(currency.getExchangeRate()));
-            }
+    private static class ViewHolder {
+        public TextView code_TV;
+        public TextView format_TV;
+        public TextView exchangeRate_TV;
+
+        public static ViewHolder setAsTag(View view) {
+            final ViewHolder holder = new ViewHolder();
+            holder.code_TV = (TextView) view.findViewById(R.id.code);
+            holder.format_TV = (TextView) view.findViewById(R.id.format);
+            holder.exchangeRate_TV = (TextView) view.findViewById(R.id.exchangeRate);
+            view.setTag(holder);
+
+            return holder;
         }
     }
 }

@@ -15,8 +15,6 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.code44.finance.R;
-import com.code44.finance.adapters.BaseModelsAdapterOld;
-import com.code44.finance.adapters.CurrenciesAdapterOld;
 import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.api.currencies.ExchangeRatesRequest;
 import com.code44.finance.data.db.Tables;
@@ -25,6 +23,7 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.ModelListFragment;
+import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.utils.GeneralPrefs;
 import com.squareup.otto.Subscribe;
 
@@ -61,9 +60,9 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        loading_SPB = (SmoothProgressBar) view.findViewById(R.id.loading_SPB);
-        final View settingsContainer_V = view.findViewById(R.id.settingsContainer_V);
-        final Switch autoUpdateCurrencies_S = (Switch) view.findViewById(R.id.autoUpdateCurrencies_S);
+        loading_SPB = (SmoothProgressBar) view.findViewById(R.id.loading);
+        final View settingsContainer_V = view.findViewById(R.id.settingsContainer);
+        final Switch autoUpdateCurrencies_S = (Switch) view.findViewById(R.id.autoUpdateCurrencies);
 
         // Setup
         autoUpdateCurrencies_S.setChecked(generalPrefs.isAutoUpdateCurrencies());
@@ -98,8 +97,8 @@ public class CurrenciesFragment extends ModelListFragment implements CompoundBut
         return super.onOptionsItemSelected(item);
     }
 
-    @Override protected BaseModelsAdapterOld createAdapter(Context context) {
-        return new CurrenciesAdapterOld(context);
+    @Override protected BaseModelsAdapter createAdapter(Context context) {
+        return new CurrenciesAdapter(context);
     }
 
     @Override protected CursorLoader getModelsCursorLoader(Context context) {

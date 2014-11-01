@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.AccountsAdapter;
-import com.code44.finance.adapters.BaseModelsAdapterOld;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.BaseModel;
@@ -20,6 +19,7 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.ModelListFragment;
+import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.utils.MoneyFormatter;
 
 import javax.inject.Inject;
@@ -55,7 +55,7 @@ public class AccountsFragment extends ModelListFragment {
         super.onLoadFinished(loader, data);
     }
 
-    @Override protected BaseModelsAdapterOld createAdapter(Context context) {
+    @Override protected BaseModelsAdapter createAdapter(Context context) {
         return new AccountsAdapter(context, mainCurrency);
     }
 

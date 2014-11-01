@@ -19,6 +19,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
+import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.utils.BaseInterval;
 import com.code44.finance.utils.IntervalHelperDeprecated;
 import com.code44.finance.utils.MoneyFormatter;
@@ -30,7 +31,7 @@ import org.joda.time.Period;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-public class TransactionsAdapter extends BaseModelsAdapterOld implements StickyListHeadersAdapter {
+public class TransactionsAdapter extends BaseModelsAdapter implements StickyListHeadersAdapter {
     private static final String UNKNOWN_VALUE = "?";
     private static final String TRANSFER_SYMBOL = " → ";
 

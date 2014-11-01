@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.code44.finance.R;
-import com.code44.finance.adapters.BaseModelsAdapterOld;
 import com.code44.finance.adapters.CategoriesAdapter;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.Query;
@@ -18,6 +17,7 @@ import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.ui.ModelListFragment;
+import com.code44.finance.ui.common.BaseModelsAdapter;
 
 public class CategoriesFragment extends ModelListFragment {
     private static final String ARG_TYPE = "ARG_TYPE";
@@ -47,7 +47,7 @@ public class CategoriesFragment extends ModelListFragment {
     }
 
     @Override
-    protected BaseModelsAdapterOld createAdapter(Context context) {
+    protected BaseModelsAdapter createAdapter(Context context) {
         return new CategoriesAdapter(context);
     }
 

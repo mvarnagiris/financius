@@ -37,7 +37,7 @@ public class FabImageButton extends ImageButton {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP) private void init() {
         setBackgroundResource(R.drawable.btn_fab);
         normalElevation = getResources().getDimension(R.dimen.elevation_fab);
-        pressedElevation = normalElevation * 2;
+        pressedElevation = normalElevation * 3;
         if (SUPPORTS_LOLLIPOP) {
             setOutlineProvider(new ViewOutlineProvider() {
                 @Override public void getOutline(View view, Outline outline) {

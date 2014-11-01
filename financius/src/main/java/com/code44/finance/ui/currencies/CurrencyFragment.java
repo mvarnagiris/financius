@@ -15,7 +15,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.adapters.CurrencyAccountsAdapter;
 import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.api.currencies.ExchangeRateRequest;
 import com.code44.finance.data.db.Tables;
@@ -65,7 +64,7 @@ public class CurrencyFragment extends ModelFragment<Currency> implements View.On
         code_TV = (TextView) view.findViewById(R.id.code);
         format_TV = (TextView) view.findViewById(R.id.format);
         exchangeRate_TV = (TextView) view.findViewById(R.id.exchangeRate);
-        loading_SPB = (SmoothProgressBar) view.findViewById(R.id.loading_SPB);
+        loading_SPB = (SmoothProgressBar) view.findViewById(R.id.loading);
         refreshRate_IB = (FabImageButton) view.findViewById(R.id.refreshRate_IB);
         final ListView list_V = (ListView) view.findViewById(R.id.list);
 
