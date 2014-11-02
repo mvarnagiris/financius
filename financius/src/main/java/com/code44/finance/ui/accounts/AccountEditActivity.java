@@ -1,23 +1,140 @@
 package com.code44.finance.ui.accounts;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.support.v4.content.CursorLoader;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 
 import com.code44.finance.R;
-import com.code44.finance.ui.ModelEditActivityOld;
-import com.code44.finance.ui.ModelFragment;
+import com.code44.finance.data.DataStore;
+import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.model.Account;
+import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.providers.AccountsProvider;
+import com.code44.finance.qualifiers.Main;
+import com.code44.finance.ui.CalculatorActivity;
+import com.code44.finance.ui.ModelListActivityOld;
+import com.code44.finance.ui.common.ModelEditActivity;
+import com.code44.finance.ui.currencies.CurrenciesActivity;
+import com.code44.finance.utils.MoneyFormatter;
 
-public class AccountEditActivity extends ModelEditActivityOld {
-    public static void start(Context context, String accountServerId) {
-        startActivity(context, makeIntent(context, AccountEditActivity.class, accountServerId));
+import javax.inject.Inject;
+
+public class AccountEditActivity extends ModelEditActivity<Account> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+    private static final int REQUEST_CURRENCY = 1;
+    private static final int REQUEST_BALANCE = 2;
+
+    @Inject @Main Currency mainCurrency;
+
+    private EditText titleEditText;
+    private Button currencyButton;
+    private Button balanceButton;
+    private EditText noteEditText;
+    private CheckBox includeInTotalsCheckBox;
+
+    public static void start(Context context, String accountId) {
+        startActivity(context, makeIntent(context, AccountEditActivity.class, accountId));
     }
 
-    @Override
-    protected int getActionBarTitleResId() {
-        return R.string.account;
+    @Override protected int getLayoutId() {
+        return R.layout.activity_account_edit;
     }
 
-    @Override
-    protected ModelFragment createModelFragment(String modelServerId) {
-        return AccountEditFragment.newInstance(modelServerId);
+    @Override protected void onViewCreated(Bundle savedInstanceState) {
+        super.onViewCreated(savedInstanceState);
+
+        // Get views
+        titleEditText = (EditText) findViewById(R.id.titleEditText);
+        currencyButton = (Button) findViewById(R.id.currencyButton);
+        balanceButton = (Button) findViewById(R.id.balanceButton);
+        noteEditText = (EditText) findViewById(R.id.noteEditText);
+        includeInTotalsCheckBox = (CheckBox) findViewById(R.id.includeInTotalsCheckBox);
+
+        // Setup
+        currencyButton.setOnClickListener(this);
+        balanceButton.setOnClickListener(this);
+        includeInTotalsCheckBox.setOnCheckedChangeListener(this);
+    }
+
+    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CURRENCY:
+                    ensureModelUpdated(model);
+                    model.setCurrency(data.<Currency>getParcelableExtra(ModelListActivityOld.RESULT_EXTRA_MODEL));
+                    onModelLoaded(model);
+                    return;
+
+                case REQUEST_BALANCE:
+                    model.setBalance(data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0));
+                    onModelLoaded(model);
+                    return;
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override protected boolean onSave(Account model) {
+        boolean canSave = true;
+
+        if (TextUtils.isEmpty(model.getTitle())) {
+            canSave = false;
+            // TODO Show error
+        }
+
+        if (canSave) {
+            DataStore.insert().values(model.asValues()).into(this, AccountsProvider.uriAccounts());
+        }
+
+        return canSave;
+    }
+
+    @Override protected void ensureModelUpdated(Account model) {
+        model.setTitle(titleEditText.getText().toString());
+        model.setNote(noteEditText.getText().toString());
+    }
+
+    @Override protected CursorLoader getModelCursorLoader(String modelId) {
+        return Tables.Accounts.getQuery().asCursorLoader(this, AccountsProvider.uriAccount(modelId));
+    }
+
+    @Override protected Account getModelFrom(Cursor cursor) {
+        final Account account = Account.from(cursor);
+        if (account.getCurrency() == null) {
+            account.setCurrency(mainCurrency);
+        }
+        return account;
+    }
+
+    @Override protected void onModelLoaded(Account model) {
+        titleEditText.setText(model.getTitle());
+        currencyButton.setText(model.getCurrency().getCode());
+        balanceButton.setText(MoneyFormatter.format(model.getCurrency(), model.getBalance()));
+        noteEditText.setText(model.getNote());
+        includeInTotalsCheckBox.setChecked(model.includeInTotals());
+    }
+
+    @Override public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.currencyButton:
+                CurrenciesActivity.startSelect(this, REQUEST_CURRENCY);
+                break;
+
+            case R.id.balanceButton:
+                CalculatorActivity.start(this, REQUEST_BALANCE, model.getBalance());
+                break;
+        }
+    }
+
+    @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        model.setIncludeInTotals(isChecked);
     }
 }

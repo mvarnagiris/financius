@@ -120,7 +120,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         tags_B = (Button) view.findViewById(R.id.tags_B);
         date_B = (Button) view.findViewById(R.id.date_B);
         time_B = (Button) view.findViewById(R.id.time_B);
-        note_ET = (EditText) view.findViewById(R.id.note_ET);
+        note_ET = (EditText) view.findViewById(R.id.noteEditText);
         confirmed_CB = (CheckBox) view.findViewById(R.id.confirmed_CB);
         includeInReports_CB = (CheckBox) view.findViewById(R.id.includeInReports_CB);
         save_B = (Button) view.findViewById(R.id.saveButton);

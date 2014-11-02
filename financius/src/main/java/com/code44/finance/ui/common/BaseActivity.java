@@ -1,5 +1,6 @@
 package com.code44.finance.ui.common;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,6 +42,11 @@ public abstract class BaseActivity extends ActionBarActivity {
     protected static void startActivityForResult(Fragment fragment, Intent intent, int requestCode) {
         fragment.startActivityForResult(intent, requestCode);
     }
+
+    protected static void startActivityForResult(Activity activity, Intent intent, int requestCode) {
+        activity.startActivityForResult(intent, requestCode);
+    }
+
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

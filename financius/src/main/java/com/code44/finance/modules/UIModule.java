@@ -7,7 +7,6 @@ import com.code44.finance.ui.NavigationFragment;
 import com.code44.finance.ui.SplashActivity;
 import com.code44.finance.ui.accounts.AccountActivity;
 import com.code44.finance.ui.accounts.AccountEditActivity;
-import com.code44.finance.ui.accounts.AccountEditFragment;
 import com.code44.finance.ui.accounts.AccountsActivity;
 import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.ui.categories.CategoryActivity;
@@ -72,7 +71,6 @@ import dagger.Module;
                 CategoriesReportActivity.class,
 
                 NavigationFragment.class,
-                AccountEditFragment.class,
                 TransactionsFragment.class,
                 TransactionFragment.class,
                 TransactionEditFragment.class,

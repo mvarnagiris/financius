@@ -1,5 +1,6 @@
 package com.code44.finance.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,12 @@ public class CalculatorActivity extends BaseActivity implements CalculatorFragme
         final Intent intent = makeIntentForActivity(fragment.getActivity(), CalculatorActivity.class);
         intent.putExtra(EXTRA_VALUE, value);
         startActivityForResult(fragment, intent, requestCode);
+    }
+
+    public static void start(Activity activity, int requestCode, long value) {
+        final Intent intent = makeIntentForActivity(activity, CalculatorActivity.class);
+        intent.putExtra(EXTRA_VALUE, value);
+        startActivityForResult(activity, intent, requestCode);
     }
 
     public static void start(Fragment fragment, int requestCode, double value) {
