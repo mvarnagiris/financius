@@ -38,7 +38,7 @@
             tools:ignore="UnusedAttribute">
 
             <TextView
-                android:id="@+id/balance_TV"
+                android:id="@+id/balanceTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/Text.Display1"

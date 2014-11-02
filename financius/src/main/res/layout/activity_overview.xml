@@ -31,7 +31,7 @@
         android:layout_below="@+id/overviewGraphContainer">
 
         <LinearLayout
-            android:id="@+id/container_V"
+            android:id="@+id/containerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"

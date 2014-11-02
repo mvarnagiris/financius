@@ -49,7 +49,7 @@ public class AccountFragment extends ModelFragment<Account> {
 
         // Get views
         title_TV = (TextView) view.findViewById(R.id.titleTextView);
-        balance_TV = (TextView) view.findViewById(R.id.balance_TV);
+        balance_TV = (TextView) view.findViewById(R.id.balanceTextView);
         mainCurrencyBalance_TV = (TextView) view.findViewById(R.id.mainCurrencyBalance_TV);
         note_TV = (TextView) view.findViewById(R.id.note_TV);
     }

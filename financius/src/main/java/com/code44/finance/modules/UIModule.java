@@ -3,7 +3,6 @@ package com.code44.finance.modules;
 import com.code44.finance.ui.CalculatorActivity;
 import com.code44.finance.ui.CalculatorFragment;
 import com.code44.finance.ui.GoogleApiFragment;
-import com.code44.finance.ui.MainActivity;
 import com.code44.finance.ui.NavigationFragment;
 import com.code44.finance.ui.SplashActivity;
 import com.code44.finance.ui.accounts.AccountActivity;
@@ -11,7 +10,6 @@ import com.code44.finance.ui.accounts.AccountEditActivity;
 import com.code44.finance.ui.accounts.AccountEditFragment;
 import com.code44.finance.ui.accounts.AccountFragment;
 import com.code44.finance.ui.accounts.AccountsActivity;
-import com.code44.finance.ui.accounts.AccountsFragment;
 import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.ui.categories.CategoryActivity;
 import com.code44.finance.ui.categories.CategoryEditActivity;
@@ -51,7 +49,6 @@ import dagger.Module;
         injects = {
                 SplashActivity.class,
                 OverviewActivity.class,
-                MainActivity.class,
                 CurrenciesActivity.class,
                 CurrencyActivity.class,
                 CurrencyEditActivity.class,
@@ -76,7 +73,6 @@ import dagger.Module;
                 CategoriesReportActivity.class,
 
                 NavigationFragment.class,
-                AccountsFragment.class,
                 AccountFragment.class,
                 AccountEditFragment.class,
                 TransactionsFragment.class,

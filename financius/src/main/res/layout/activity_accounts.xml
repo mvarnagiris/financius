@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="?android:actionBarSize">
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <ListView
+        android:id="@+id/list"
+        style="@style/ListView"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <LinearLayout
-        android:id="@+id/container_V"
+        android:id="@+id/containerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:background="@color/bg_brand"
         android:elevation="@dimen/elevation_header"
         android:gravity="center_vertical"
@@ -29,7 +36,7 @@
             android:textColor="@color/text_primary_inverse" />
 
         <TextView
-            android:id="@+id/balance_TV"
+            android:id="@+id/balanceTextView"
             style="@style/Text.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,9 +45,4 @@
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/list"
-        style="@style/ListView"
-        android:layout_above="@id/container_V" />
-
-</RelativeLayout>
+</LinearLayout>

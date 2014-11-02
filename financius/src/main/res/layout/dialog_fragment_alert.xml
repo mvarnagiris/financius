@@ -25,7 +25,7 @@
                 tools:text="Title of the dialog" />
 
             <FrameLayout
-                android:id="@+id/container_V"
+                android:id="@+id/containerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

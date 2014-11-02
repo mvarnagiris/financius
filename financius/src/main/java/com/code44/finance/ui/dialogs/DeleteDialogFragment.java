@@ -66,7 +66,7 @@ public class DeleteDialogFragment extends AlertDialogFragment implements LoaderM
     @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = super.onCreateView(inflater, container, savedInstanceState);
         //noinspection ConstantConditions
-        inflater.inflate(R.layout.include_delete_dialog, (ViewGroup) view.findViewById(R.id.container_V), true);
+        inflater.inflate(R.layout.include_delete_dialog, (ViewGroup) view.findViewById(R.id.containerView), true);
         return view;
     }
 
