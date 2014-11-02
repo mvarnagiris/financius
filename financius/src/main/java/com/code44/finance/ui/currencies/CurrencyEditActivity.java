@@ -74,70 +74,6 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_currency_edit);
-
-        // Get view
-        loadingView = (SmoothProgressBar) findViewById(R.id.loadingView);
-        codeEditTextView = (AutoCompleteTextView) findViewById(R.id.codeEditTextView);
-        thousandsSeparatorButton = (Button) findViewById(R.id.thousandsSeparatorButton);
-        decimalSeparatorButton = (Button) findViewById(R.id.decimalSeparatorButton);
-        decimalsCountButton = (Button) findViewById(R.id.decimalsCountButton);
-        codeTextView = (TextView) findViewById(R.id.codeTextView);
-        symbolTextView = (TextView) findViewById(R.id.symbolTextView);
-        symbolEditTextView = (EditText) findViewById(R.id.symbolEditTextView);
-        symbolPositionButton = (Button) findViewById(R.id.symbolPositionButton);
-        exchangeRateEditTextView = (EditText) findViewById(R.id.exchangeRateEdit);
-        mainCurrencyContainerView = findViewById(R.id.mainCurrencyContainerView);
-        exchangeRateContainerView = findViewById(R.id.exchangeRateContainerView);
-        isDefaultCheckBox = (CheckBox) findViewById(R.id.isDefaultCheckBox);
-        final TextView currentMainCurrency_TV = (TextView) findViewById(R.id.currentMainCurrencyTextView);
-        final ImageButton refreshRateButton = (ImageButton) findViewById(R.id.refreshRateButton);
-
-        // Setup
-        prepareCurrenciesAutoComplete();
-        currentMainCurrency_TV.setText(getString(R.string.f_current_main_currency_is_x, mainCurrency.getCode()));
-        decimalsCountButton.setOnClickListener(this);
-        thousandsSeparatorButton.setOnClickListener(this);
-        decimalSeparatorButton.setOnClickListener(this);
-        symbolPositionButton.setOnClickListener(this);
-        isDefaultCheckBox.setOnCheckedChangeListener(this);
-        refreshRateButton.setOnClickListener(this);
-        refreshRateButton.setColorFilter(getResources().getColor(R.color.text_primary));
-        symbolEditTextView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                //noinspection ConstantConditions
-                model.setSymbol(symbolEditTextView.getText().toString());
-                updateFormatView();
-
-                updateSymbolTitlePosition();
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-        codeEditTextView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                updateCodeTitlePosition();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        // Loader
         getSupportLoaderManager().initLoader(LOADER_CURRENCIES, null, this);
     }
 
@@ -222,6 +158,75 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
             return;
         }
         super.onLoadFinished(loader, data);
+    }
+
+    @Override protected int getLayoutId() {
+        return R.layout.activity_currency_edit;
+    }
+
+    @Override protected void onViewCreated(Bundle savedInstanceState) {
+        super.onViewCreated(savedInstanceState);
+
+        // Get view
+        loadingView = (SmoothProgressBar) findViewById(R.id.loadingView);
+        codeEditTextView = (AutoCompleteTextView) findViewById(R.id.codeEditTextView);
+        thousandsSeparatorButton = (Button) findViewById(R.id.thousandsSeparatorButton);
+        decimalSeparatorButton = (Button) findViewById(R.id.decimalSeparatorButton);
+        decimalsCountButton = (Button) findViewById(R.id.decimalsCountButton);
+        codeTextView = (TextView) findViewById(R.id.codeTextView);
+        symbolTextView = (TextView) findViewById(R.id.symbolTextView);
+        symbolEditTextView = (EditText) findViewById(R.id.symbolEditTextView);
+        symbolPositionButton = (Button) findViewById(R.id.symbolPositionButton);
+        exchangeRateEditTextView = (EditText) findViewById(R.id.exchangeRateEdit);
+        mainCurrencyContainerView = findViewById(R.id.mainCurrencyContainerView);
+        exchangeRateContainerView = findViewById(R.id.exchangeRateContainerView);
+        isDefaultCheckBox = (CheckBox) findViewById(R.id.isDefaultCheckBox);
+        final TextView currentMainCurrency_TV = (TextView) findViewById(R.id.currentMainCurrencyTextView);
+        final ImageButton refreshRateButton = (ImageButton) findViewById(R.id.refreshRateButton);
+
+        // Setup
+        prepareCurrenciesAutoComplete();
+        currentMainCurrency_TV.setText(getString(R.string.f_current_main_currency_is_x, mainCurrency.getCode()));
+        decimalsCountButton.setOnClickListener(this);
+        thousandsSeparatorButton.setOnClickListener(this);
+        decimalSeparatorButton.setOnClickListener(this);
+        symbolPositionButton.setOnClickListener(this);
+        isDefaultCheckBox.setOnCheckedChangeListener(this);
+        refreshRateButton.setOnClickListener(this);
+        refreshRateButton.setColorFilter(getResources().getColor(R.color.text_primary));
+        symbolEditTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                //noinspection ConstantConditions
+                model.setSymbol(symbolEditTextView.getText().toString());
+                updateFormatView();
+
+                updateSymbolTitlePosition();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+        codeEditTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                updateCodeTitlePosition();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override public void onCheckedChanged(CompoundButton checkBox, boolean isChecked) {

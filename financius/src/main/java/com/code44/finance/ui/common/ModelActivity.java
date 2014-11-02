@@ -48,13 +48,10 @@ public abstract class ModelActivity<M extends BaseModel> extends DrawerActivity 
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        modelId = getIntent().getStringExtra(EXTRA_MODEL_ID);
-        if (StringUtils.isEmpty(modelId)) {
-            modelId = "0";
-        }
+        setContentView(getLayoutId());
+        onExtras(getIntent());
+        onViewCreated(savedInstanceState);
         getEventBus().register(eventHandler);
-
-        // Loader
         getSupportLoaderManager().initLoader(LOADER_MODEL, null, this);
     }
 
@@ -102,6 +99,8 @@ public abstract class ModelActivity<M extends BaseModel> extends DrawerActivity 
     @Override public void onLoaderReset(Loader<Cursor> loader) {
     }
 
+    protected abstract int getLayoutId();
+
     protected abstract CursorLoader getModelCursorLoader(String modelId);
 
     protected abstract M getModelFrom(Cursor cursor);
@@ -113,4 +112,14 @@ public abstract class ModelActivity<M extends BaseModel> extends DrawerActivity 
     protected abstract Pair<String, String[]> getDeleteSelection();
 
     protected abstract void startModelEdit(String modelId);
+
+    protected void onExtras(Intent extras) {
+        modelId = extras.getStringExtra(EXTRA_MODEL_ID);
+        if (StringUtils.isEmpty(modelId)) {
+            modelId = "0";
+        }
+    }
+
+    protected void onViewCreated(Bundle savedInstanceState) {
+    }
 }

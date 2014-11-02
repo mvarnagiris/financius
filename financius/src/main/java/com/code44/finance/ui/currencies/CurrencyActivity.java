@@ -50,24 +50,6 @@ public class CurrencyActivity extends ModelActivity<Currency> implements View.On
         startActivity(context, intent);
     }
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_currency);
-
-        // Get views
-        codeTextView = (TextView) findViewById(R.id.codeTextView);
-        formatTextView = (TextView) findViewById(R.id.formatTextView);
-        exchangeRateTextView = (TextView) findViewById(R.id.exchangeRateTextView);
-        loadingView = (SmoothProgressBar) findViewById(R.id.loadingView);
-        refreshRateButton = (FabImageButton) findViewById(R.id.refreshRateButton);
-        final ListView listView = (ListView) findViewById(R.id.list);
-
-        // Setup
-        adapter = new CurrencyAccountsAdapter(this);
-        listView.setAdapter(adapter);
-        refreshRateButton.setOnClickListener(this);
-    }
-
     @Override public void onResume() {
         super.onResume();
         setRefreshing(false);
@@ -112,6 +94,27 @@ public class CurrencyActivity extends ModelActivity<Currency> implements View.On
             return;
         }
         super.onLoaderReset(loader);
+    }
+
+    @Override protected int getLayoutId() {
+        return R.layout.activity_currency;
+    }
+
+    @Override protected void onViewCreated(Bundle savedInstanceState) {
+        super.onViewCreated(savedInstanceState);
+
+        // Get views
+        codeTextView = (TextView) findViewById(R.id.codeTextView);
+        formatTextView = (TextView) findViewById(R.id.formatTextView);
+        exchangeRateTextView = (TextView) findViewById(R.id.exchangeRateTextView);
+        loadingView = (SmoothProgressBar) findViewById(R.id.loadingView);
+        refreshRateButton = (FabImageButton) findViewById(R.id.refreshRateButton);
+        final ListView listView = (ListView) findViewById(R.id.list);
+
+        // Setup
+        adapter = new CurrencyAccountsAdapter(this);
+        listView.setAdapter(adapter);
+        refreshRateButton.setOnClickListener(this);
     }
 
     @Override protected CursorLoader getModelCursorLoader(String modelId) {

@@ -21,9 +21,12 @@ public class TagEditActivity extends ModelEditActivity<Tag> {
         startActivity(context, makeIntent(context, TagEditActivity.class, tagId));
     }
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tag_edit);
+    @Override protected int getLayoutId() {
+        return R.layout.activity_tag_edit;
+    }
+
+    @Override protected void onViewCreated(Bundle savedInstanceState) {
+        super.onViewCreated(savedInstanceState);
 
         // Get views
         titleEditText = (EditText) findViewById(R.id.titleEditText);

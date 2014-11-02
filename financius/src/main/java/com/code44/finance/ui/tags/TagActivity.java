@@ -24,18 +24,21 @@ public class TagActivity extends ModelActivity<Tag> {
         startActivity(context, intent);
     }
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tag);
-
-        // Get views
-        titleTextView = (TextView) findViewById(R.id.titleTextView);
-    }
-
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         menu.findItem(R.id.action_settings).setVisible(false);
         return true;
+    }
+
+    @Override protected int getLayoutId() {
+        return R.layout.activity_tag;
+    }
+
+    @Override protected void onViewCreated(Bundle savedInstanceState) {
+        super.onViewCreated(savedInstanceState);
+
+        // Get views
+        titleTextView = (TextView) findViewById(R.id.titleTextView);
     }
 
     @Override protected CursorLoader getModelCursorLoader(String modelId) {
