@@ -67,7 +67,7 @@ public class CategoriesActivity extends ModelListActivity {
     }
 
     @Override protected void startModelEdit(String modelId) {
-        CategoryEditActivity.start(this, modelId, transactionType);
+        CategoryEditActivity.start(this, modelId);
     }
 
     @Override protected void onExtras(Intent extras) {

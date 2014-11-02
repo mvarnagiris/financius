@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.util.Pair;
 import android.view.Menu;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code44.finance.R;
@@ -18,7 +18,7 @@ import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.ui.common.ModelActivity;
 
 public class CategoryActivity extends ModelActivity<Category> {
-    private ImageView colorImageView;
+    //    private ImageView colorImageView;
     private TextView titleTextView;
 
     public static void start(Context context, String categoryId) {
@@ -34,7 +34,7 @@ public class CategoryActivity extends ModelActivity<Category> {
         super.onViewCreated(savedInstanceState);
 
         // Get views
-        colorImageView = (ImageView) findViewById(R.id.colorImageView);
+//        colorImageView = (ImageView) findViewById(R.id.colorImageView);
         titleTextView = (TextView) findViewById(R.id.titleTextView);
     }
 
@@ -53,8 +53,14 @@ public class CategoryActivity extends ModelActivity<Category> {
     }
 
     @Override protected void onModelLoaded(Category model) {
-        colorImageView.setColorFilter(model.getColor());
+//        colorImageView.setColorFilter(model.getColor());
         titleTextView.setText(model.getTitle());
+        titleTextView.setBackgroundColor(model.getColor());
+        getToolbar().setBackgroundColor(model.getColor());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(model.getColor());
+            getWindow().setNavigationBarColor(model.getColor());
+        }
     }
 
     @Override protected Uri getDeleteUri() {
@@ -66,6 +72,6 @@ public class CategoryActivity extends ModelActivity<Category> {
     }
 
     @Override protected void startModelEdit(String modelId) {
-        CategoryEditActivity.start(this, modelId, model.getTransactionType());
+        CategoryEditActivity.start(this, modelId);
     }
 }
