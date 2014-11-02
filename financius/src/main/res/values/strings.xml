@@ -28,6 +28,7 @@
     <string name="title">Title</string>
     <string name="note">Note</string>
     <string name="select">Select</string>
+    <string name="select_color">Select color</string>
     <string name="thousands_separator">Thousands separator</string>
     <string name="decimal_separator">Decimal separator</string>
     <string name="decimals_count">Decimals count</string>

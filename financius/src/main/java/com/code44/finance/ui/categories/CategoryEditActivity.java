@@ -3,12 +3,13 @@ package com.code44.finance.ui.categories;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 
 import com.code44.finance.R;
 import com.code44.finance.common.utils.StringUtils;
@@ -23,7 +24,7 @@ public class CategoryEditActivity extends ModelEditActivity<Category> implements
     private static final String FRAGMENT_SELECT_COLOR = CategoryEditActivity.class.getName() + ".FRAGMENT_SELECT_COLOR";
 
     private EditText titleEditText;
-    private ImageButton colorImageButton;
+    private View containerView;
 
     public static void start(Context context, String categoryId) {
         final Intent intent = makeIntent(context, CategoryEditActivity.class, categoryId);
@@ -39,10 +40,11 @@ public class CategoryEditActivity extends ModelEditActivity<Category> implements
 
         // Get views
         titleEditText = (EditText) findViewById(R.id.titleEditText);
-        colorImageButton = (ImageButton) findViewById(R.id.colorImageButton);
+        containerView = findViewById(R.id.containerView);
+        final Button colorButton = (Button) findViewById(R.id.colorButton);
 
         // Setup
-        colorImageButton.setOnClickListener(this);
+        colorButton.setOnClickListener(this);
     }
 
     @Override public void onResume() {
@@ -88,12 +90,16 @@ public class CategoryEditActivity extends ModelEditActivity<Category> implements
 
     @Override protected void onModelLoaded(Category model) {
         titleEditText.setText(model.getTitle());
-        colorImageButton.setColorFilter(model.getColor());
+        containerView.setBackgroundColor(model.getColor());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(model.getColor());
+            getWindow().setNavigationBarColor(model.getColor());
+        }
     }
 
     @Override public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.colorImageButton:
+            case R.id.colorButton:
                 SelectColorFragment.show(getSupportFragmentManager(), FRAGMENT_SELECT_COLOR, model.getColor(), this);
                 break;
         }
@@ -101,6 +107,6 @@ public class CategoryEditActivity extends ModelEditActivity<Category> implements
 
     @Override public void onColorSelected(int color) {
         model.setColor(color);
-        colorImageButton.setColorFilter(color);
+        onModelLoaded(model);
     }
 }

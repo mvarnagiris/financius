@@ -18,7 +18,6 @@ import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.ui.common.ModelActivity;
 
 public class CategoryActivity extends ModelActivity<Category> {
-    //    private ImageView colorImageView;
     private TextView titleTextView;
 
     public static void start(Context context, String categoryId) {
@@ -34,7 +33,6 @@ public class CategoryActivity extends ModelActivity<Category> {
         super.onViewCreated(savedInstanceState);
 
         // Get views
-//        colorImageView = (ImageView) findViewById(R.id.colorImageView);
         titleTextView = (TextView) findViewById(R.id.titleTextView);
     }
 
@@ -53,7 +51,6 @@ public class CategoryActivity extends ModelActivity<Category> {
     }
 
     @Override protected void onModelLoaded(Category model) {
-//        colorImageView.setColorFilter(model.getColor());
         titleTextView.setText(model.getTitle());
         titleTextView.setBackgroundColor(model.getColor());
         getToolbar().setBackgroundColor(model.getColor());

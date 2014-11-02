@@ -2,6 +2,8 @@
 - ```new``` Landscape layout for calculator. (**@i906**)
 - ```new``` Some UI improvements overall.
 - ```new``` Currency detail screen landscape layout.
+- ```new``` Tag detail and edit screen landscape layout.
+- ```new``` Categories detail and edit screen with landscape layout.
 - ```fix``` Account balance calculation.
 - ```fix``` Can edit main currency.
 - ```fix``` Better overview landscape support.
