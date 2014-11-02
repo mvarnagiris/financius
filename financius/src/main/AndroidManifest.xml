@@ -37,47 +37,70 @@
         <activity
             android:name=".ui.overview.OverviewActivity"
             android:label="@string/overview" />
-        <activity android:name=".ui.MainActivity" />
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:label="@string/settings" />
-        <activity android:name=".ui.CalculatorActivity" />
+        <activity
+            android:name=".ui.CalculatorActivity"
+            android:label="@string/calculator" />
         <activity
             android:name=".ui.currencies.CurrenciesActivity"
             android:label="@string/currencies" />
         <activity
             android:name=".ui.currencies.CurrencyActivity"
             android:label="@string/currency" />
-        <activity android:name=".ui.currencies.CurrencyEditActivity" />
+        <activity
+            android:name=".ui.currencies.CurrencyEditActivity"
+            android:label="@string/currency" />
         <activity
             android:name=".ui.accounts.AccountsActivity"
             android:label="@string/accounts" />
-        <activity android:name=".ui.accounts.AccountActivity" />
-        <activity android:name=".ui.accounts.AccountEditActivity" />
+        <activity
+            android:name=".ui.accounts.AccountActivity"
+            android:label="@string/account" />
+        <activity
+            android:name=".ui.accounts.AccountEditActivity"
+            android:label="@string/account" />
         <activity
             android:name=".ui.categories.CategoriesActivity"
             android:label="@string/categories" />
         <activity
             android:name=".ui.categories.CategoryActivity"
             android:label="@string/category" />
-        <activity android:name=".ui.categories.CategoryEditActivity" />
+        <activity
+            android:name=".ui.categories.CategoryEditActivity"
+            android:label="@string/category" />
         <activity
             android:name=".ui.tags.TagsActivity"
             android:label="@string/tags" />
         <activity
             android:name=".ui.tags.TagActivity"
             android:label="@string/tag" />
-        <activity android:name=".ui.tags.TagEditActivity" />
+        <activity
+            android:name=".ui.tags.TagEditActivity"
+            android:label="@string/tag" />
         <activity
             android:name=".ui.transactions.TransactionsActivity"
             android:label="@string/transactions" />
-        <activity android:name=".ui.transactions.TransactionActivity" />
-        <activity android:name=".ui.transactions.TransactionEditActivity" />
+        <activity
+            android:name=".ui.transactions.TransactionActivity"
+            android:label="@string/transaction" />
+        <activity
+            android:name=".ui.transactions.TransactionEditActivity"
+            android:label="@string/transaction" />
         <activity android:name=".ui.user.LoginActivity" />
-        <activity android:name=".ui.settings.data.DataActivity" />
-        <activity android:name=".ui.settings.data.ExportActivity" />
-        <activity android:name=".ui.settings.data.ImportActivity" />
-        <activity android:name=".ui.settings.about.AboutActivity" />
+        <activity
+            android:name=".ui.settings.data.DataActivity"
+            android:label="@string/your_data" />
+        <activity
+            android:name=".ui.settings.data.ExportActivity"
+            android:label="@string/export" />
+        <activity
+            android:name=".ui.settings.data.ImportActivity"
+            android:label="@string/import_backup" />
+        <activity
+            android:name=".ui.settings.about.AboutActivity"
+            android:label="@string/about" />
         <activity
             android:name=".ui.reports.CategoriesReportActivity"
             android:label="" />
