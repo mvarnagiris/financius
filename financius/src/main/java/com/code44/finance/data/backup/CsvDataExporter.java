@@ -22,7 +22,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 public class CsvDataExporter extends DataExporter {
-    private static final String SEPARATOR = ";";
+    private static final String QUOTE = "\"";
+    private static final String SEPARATOR = ",";
     private static final String TAG_SEPARATOR = ",";
 
     private final Context context;
@@ -48,24 +49,24 @@ public class CsvDataExporter extends DataExporter {
     }
 
     private void writeCsv(BufferedWriter writer, Cursor cursor) throws IOException {
-        // 29 September 2014; 09:44; Expense; Confirmed; Account from; Account to; Category; Tag1, Tag2;
+        // "29 September 2014", "09:44", "Expense", "Confirmed", "Account from", "Account to", "Category", "Tag1, Tag2"
         final StringBuilder outputLine = new StringBuilder();
         do {
             final Transaction transaction = Transaction.from(cursor);
             final DateTime dateTime = new DateTime(transaction.getDate());
             outputLine.setLength(0);
-            outputLine.append(DateUtils.formatDateTime(context, dateTime, DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
-            outputLine.append(SEPARATOR).append(DateUtils.formatDateTime(context, dateTime, DateUtils.FORMAT_SHOW_TIME));
-            outputLine.append(SEPARATOR).append(transaction.getTransactionType());
-            outputLine.append(SEPARATOR).append(transaction.getTransactionState());
-            outputLine.append(SEPARATOR).append(transaction.getNote());
-            outputLine.append(SEPARATOR).append(getAccountFrom(transaction));
-            outputLine.append(SEPARATOR).append(getAccountTo(transaction));
-            outputLine.append(SEPARATOR).append(getCategory(transaction));
-            outputLine.append(SEPARATOR).append(getTags(transaction));
-            outputLine.append(SEPARATOR).append(transaction.getAmount());
-            outputLine.append(SEPARATOR).append(getCurrencyCode(transaction));
-            outputLine.append(SEPARATOR).append(transaction.getExchangeRate());
+            outputLine.append(QUOTE).append(DateUtils.formatDateTime(context, dateTime, DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR)).append(QUOTE);
+            outputLine.append(SEPARATOR).append(QUOTE).append(DateUtils.formatDateTime(context, dateTime, DateUtils.FORMAT_SHOW_TIME)).append(QUOTE);
+            outputLine.append(SEPARATOR).append(QUOTE).append(transaction.getTransactionType()).append(QUOTE);
+            outputLine.append(SEPARATOR).append(QUOTE).append(transaction.getTransactionState()).append(QUOTE);
+            outputLine.append(SEPARATOR).append(QUOTE).append(transaction.getNote()).append(QUOTE);
+            outputLine.append(SEPARATOR).append(QUOTE).append(getAccountFrom(transaction)).append(QUOTE);
+            outputLine.append(SEPARATOR).append(QUOTE).append(getAccountTo(transaction)).append(QUOTE);
+            outputLine.append(SEPARATOR).append(QUOTE).append(getCategory(transaction)).append(QUOTE);
+            outputLine.append(SEPARATOR).append(QUOTE).append(getTags(transaction)).append(QUOTE);
+            outputLine.append(SEPARATOR).append(QUOTE).append(transaction.getAmount()).append(QUOTE);
+            outputLine.append(SEPARATOR).append(QUOTE).append(getCurrencyCode(transaction)).append(QUOTE);
+            outputLine.append(SEPARATOR).append(QUOTE).append(transaction.getExchangeRate()).append(QUOTE);
             writer.write(outputLine.toString());
             writer.newLine();
 
@@ -73,16 +74,28 @@ public class CsvDataExporter extends DataExporter {
     }
 
     private String getAccountFrom(Transaction transaction) {
+        if (transaction.getTransactionType() == TransactionType.Income) {
+            return "";
+        }
+
         final Account account = transaction.getAccountFrom();
         return account != null && account.hasId() ? account.getTitle() : "";
     }
 
     private String getAccountTo(Transaction transaction) {
+        if (transaction.getTransactionType() == TransactionType.Expense) {
+            return "";
+        }
+
         final Account account = transaction.getAccountTo();
         return account != null && account.hasId() ? account.getTitle() : "";
     }
 
     private String getCategory(Transaction transaction) {
+        if (transaction.getTransactionType() == TransactionType.Transfer) {
+            return "";
+        }
+
         final Category category = transaction.getCategory();
         return category != null && category.hasId() ? category.getTitle() : "";
     }

@@ -5,6 +5,8 @@
 - ```fix``` Account balance calculation.
 - ```fix``` Can edit main currency.
 - ```fix``` Better overview landscape support.
+- ```fix``` CSV export now uses commas as separators so now it's easier to import it to Google Spreadsheets. (Thanks to **Sunny Jerry**)
+- ```fix``` Rotating screen in calculator will not lose the data anymore. (**@i906**)
 
 ###Version: 0.11.6
 - ```new``` Tags are ordered alphabetically.

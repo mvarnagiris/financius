@@ -17,14 +17,16 @@ public class DriveDataExporterRunnable implements Runnable {
     private final GoogleApiClient googleApiClient;
     private final DriveId driveId;
     private final ExportActivity.ExportType exportType;
+    private final ExportActivity.Destination destination;
     private final Context context;
     private final EventBus eventBus;
     private final String fileTitle;
 
-    public DriveDataExporterRunnable(GoogleApiClient googleApiClient, DriveId driveId, ExportActivity.ExportType exportType, Context context, EventBus eventBus, String fileTitle) {
+    public DriveDataExporterRunnable(GoogleApiClient googleApiClient, DriveId driveId, ExportActivity.ExportType exportType, ExportActivity.Destination destination, Context context, EventBus eventBus, String fileTitle) {
         this.googleApiClient = googleApiClient;
         this.driveId = driveId;
         this.exportType = exportType;
+        this.destination = destination;
         this.context = context;
         this.eventBus = eventBus;
         this.fileTitle = fileTitle;
@@ -42,7 +44,7 @@ public class DriveDataExporterRunnable implements Runnable {
         final DataExporterRunnable dataExporterRunnable = new DataExporterRunnable(eventBus, exportType.getDataExporter(contents.getOutputStream(), context));
         dataExporterRunnable.run();
 
-        final MetadataChangeSet changeSet = new MetadataChangeSet.Builder().setTitle(fileTitle).setMimeType(exportType.getMimeType()).build();
+        final MetadataChangeSet changeSet = new MetadataChangeSet.Builder().setTitle(fileTitle).setMimeType(exportType.getMimeType(destination)).build();
         driveFolder.createFile(googleApiClient, changeSet, contents).await();
     }
 }

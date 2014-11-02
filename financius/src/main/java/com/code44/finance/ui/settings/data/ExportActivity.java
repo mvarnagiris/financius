@@ -49,6 +49,7 @@ public class ExportActivity extends BaseActivity {
     @Inject GeneralPrefs generalPrefs;
 
     private ExportType exportType;
+    private Destination destination;
     private GoogleApiClient googleApiClient;
 
     public static void start(Context context, ExportType exportType, Destination destination) {
@@ -64,7 +65,7 @@ public class ExportActivity extends BaseActivity {
 
         // Get extras
         exportType = (ExportType) getIntent().getSerializableExtra(EXTRA_EXPORT_TYPE);
-        final Destination destination = (Destination) getIntent().getSerializableExtra(EXTRA_DESTINATION);
+        destination = (Destination) getIntent().getSerializableExtra(EXTRA_DESTINATION);
 
         // Setup
         getEventBus().register(this);
@@ -137,7 +138,7 @@ public class ExportActivity extends BaseActivity {
     }
 
     private void onDriveDirectorySelected(DriveId driveId) {
-        exportData(new DriveDataExporterRunnable(googleApiClient, driveId, exportType, this, getEventBus(), getFileTitle()));
+        exportData(new DriveDataExporterRunnable(googleApiClient, driveId, exportType, destination, this, getEventBus(), getFileTitle()));
     }
 
     private void onLocalDirectorySelected(File directory) {
@@ -158,7 +159,7 @@ public class ExportActivity extends BaseActivity {
     }
 
     private String getFileTitle() {
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HHmmss");
         return getString(R.string.app_name) + " " + dateFormat.format(new Date()) + exportType.getExtension();
     }
 
@@ -176,7 +177,7 @@ public class ExportActivity extends BaseActivity {
                 return ".json";
             }
 
-            @Override public String getMimeType() {
+            @Override public String getMimeType(Destination destination) {
                 return "application/json";
             }
         },
@@ -190,7 +191,7 @@ public class ExportActivity extends BaseActivity {
                 return ".csv";
             }
 
-            @Override public String getMimeType() {
+            @Override public String getMimeType(Destination destination) {
                 return "text/csv";
             }
         };
@@ -199,7 +200,7 @@ public class ExportActivity extends BaseActivity {
 
         public abstract String getExtension();
 
-        public abstract String getMimeType();
+        public abstract String getMimeType(Destination destination);
     }
 
     public static enum Destination {
