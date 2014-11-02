@@ -56,7 +56,7 @@ public class AccountsAdapter extends BaseModelsAdapter {
             final ViewHolder holder = new ViewHolder();
             holder.title_TV = (TextView) view.findViewById(R.id.titleTextView);
             holder.balance_TV = (TextView) view.findViewById(R.id.balanceTextView);
-            holder.mainCurrencyBalance_TV = (TextView) view.findViewById(R.id.mainCurrencyBalance_TV);
+            holder.mainCurrencyBalance_TV = (TextView) view.findViewById(R.id.mainCurrencyBalanceTextView);
             view.setTag(holder);
 
             return holder;

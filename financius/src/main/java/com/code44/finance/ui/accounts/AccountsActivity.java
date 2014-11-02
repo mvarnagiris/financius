@@ -29,7 +29,7 @@ import javax.inject.Inject;
 public class AccountsActivity extends ModelListActivity {
     @Inject @Main Currency mainCurrency;
 
-    private TextView balance_TV;
+    private TextView balanceTextView;
 
     public static Intent makeViewIntent(Context context) {
         return makeViewIntent(context, AccountsActivity.class);
@@ -53,7 +53,7 @@ public class AccountsActivity extends ModelListActivity {
         super.onViewCreated();
 
         // Get views
-        balance_TV = (TextView) findViewById(R.id.balanceTextView);
+        balanceTextView = (TextView) findViewById(R.id.balanceTextView);
     }
 
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
@@ -101,6 +101,6 @@ public class AccountsActivity extends ModelListActivity {
                 }
             } while (cursor.moveToNext());
         }
-        balance_TV.setText(MoneyFormatter.format(mainCurrency, balance));
+        balanceTextView.setText(MoneyFormatter.format(mainCurrency, balance));
     }
 }

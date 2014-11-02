@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <me.grantland.widget.AutofitTextView
+        android:id="@+id/titleTextView"
+        style="@style/Text.Display2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_size_2x"
+        android:background="@color/bg_brand"
+        android:elevation="@dimen/elevation_header"
+        android:gravity="center_vertical"
+        android:padding="@dimen/keyline"
+        android:textColor="@color/text_primary_inverse"
+        tools:ignore="UnusedAttribute"
+        tools:text="Lloyds TSB" />
+
+    <ScrollView style="@style/ScrollView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_primary"
+                android:elevation="@dimen/elevation_sub_header"
+                android:orientation="vertical"
+                android:padding="@dimen/keyline"
+                tools:ignore="UnusedAttribute">
+
+                <TextView
+                    android:id="@+id/balanceTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Text.Display1"
+                    tools:text="15,349.78 $" />
+
+                <TextView
+                    android:id="@+id/mainCurrencyBalanceTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Text.Subhead"
+                    tools:text="9,294.24 Lt" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/noteTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline"
+                android:layout_marginRight="@dimen/keyline"
+                android:layout_marginTop="@dimen/space_normal"
+                android:fontFamily="@string/font_light"
+                tools:ignore="UnusedAttribute"
+                tools:text="This is my main spending account and some other long notes written here." />
+
+            <com.code44.finance.graphs.line.LineGraphView
+                android:id="@+id/graphView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/account_balance_graph_height"
+                android:layout_marginTop="@dimen/space_large"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -104,7 +104,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/note_TV"
+                    android:id="@+id/noteTextView"
                     style="@style/Text.Caption"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
