@@ -55,6 +55,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:6.1.11'
     compile 'com.github.castorflex.smoothprogressbar:library:1.0.0'
     compile 'com.github.castorflex.smoothprogressbar:library-circular:1.0.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
     compile 'com.squareup.retrofit:retrofit:1.7.1'
     compile 'com.squareup.picasso:picasso:2.3.4'

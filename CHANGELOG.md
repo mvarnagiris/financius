@@ -1,3 +1,6 @@
+###Version: 0.12.1
+- ```fix``` Fixed crash when refreshing currencies or trying to enter or edit a transaction.
+
 ###Version: 0.12.0
 - ```new``` Landscape layout for calculator. (**@i906**)
 - ```new``` Some UI improvements overall.
