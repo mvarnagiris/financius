@@ -1,4 +1,4 @@
-###Version: 0.11.7 - Not released yet
+###Version: 0.12.0
 - ```new``` Landscape layout for calculator. (**@i906**)
 - ```new``` Some UI improvements overall.
 - ```new``` Currency detail screen landscape layout.
