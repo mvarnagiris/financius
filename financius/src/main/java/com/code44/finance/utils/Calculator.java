@@ -112,6 +112,46 @@ public class Calculator {
         return sb.toString();
     }
 
+    public void setExpression(String expression) {
+        if (expression == null) {
+            throw new IllegalArgumentException("Expression cannot be null");
+        }
+
+        String exps[] = expression.split("");
+
+        for (String part : exps) {
+            boolean isNumber = false;
+
+            try {
+                int num = Integer.valueOf(part);
+                isNumber = true;
+                number(num);
+            } catch (NumberFormatException e) {
+                // Not a number
+            }
+
+            if (!isNumber) {
+                switch (part) {
+                    case DECIMAL:
+                        decimal();
+                        break;
+                    case PLUS:
+                        plus();
+                        break;
+                    case MINUS:
+                        minus();
+                        break;
+                    case MULTIPLY:
+                        multiply();
+                        break;
+                    case DIVIDE:
+                        divide();
+                        break;
+                }
+            }
+        }
+    }
+
     public CharSequence getFormattedExpression() {
         final SpannableStringBuilder ssb = new SpannableStringBuilder();
         for (Part part : parts) {
