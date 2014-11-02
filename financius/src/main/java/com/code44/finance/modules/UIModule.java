@@ -37,7 +37,6 @@ import com.code44.finance.ui.transactions.TransactionEditActivity;
 import com.code44.finance.ui.transactions.TransactionEditFragment;
 import com.code44.finance.ui.transactions.TransactionFragment;
 import com.code44.finance.ui.transactions.TransactionsActivity;
-import com.code44.finance.ui.transactions.TransactionsFragment;
 
 import dagger.Module;
 
@@ -71,7 +70,6 @@ import dagger.Module;
                 CategoriesReportActivity.class,
 
                 NavigationFragment.class,
-                TransactionsFragment.class,
                 TransactionFragment.class,
                 TransactionEditFragment.class,
                 DeleteDialogFragment.class,

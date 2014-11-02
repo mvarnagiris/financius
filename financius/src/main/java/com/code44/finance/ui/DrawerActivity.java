@@ -127,7 +127,7 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
                 intent = AccountsActivity.makeViewIntent(this);
                 break;
             case Transactions:
-                intent = TransactionsActivity.makeIntentView(this);
+                intent = TransactionsActivity.makeViewIntent(this);
                 break;
             case Reports:
                 intent = CategoriesReportActivity.makeIntent(this);
