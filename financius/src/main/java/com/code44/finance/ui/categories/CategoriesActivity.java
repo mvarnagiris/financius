@@ -1,10 +1,10 @@
 package com.code44.finance.ui.categories;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.CursorLoader;
 import android.view.Menu;
 import android.view.View;
@@ -30,10 +30,10 @@ public class CategoriesActivity extends ModelListActivity {
         startActivity(context, intent);
     }
 
-    public static void startSelect(Fragment fragment, int requestCode, TransactionType transactionType) {
-        final Intent intent = makeSelectIntent(fragment.getActivity(), CategoriesActivity.class);
+    public static void startSelect(Activity activity, int requestCode, TransactionType transactionType) {
+        final Intent intent = makeSelectIntent(activity, CategoriesActivity.class);
         intent.putExtra(EXTRA_TRANSACTION_TYPE, transactionType);
-        startActivityForResult(fragment, intent, requestCode);
+        startActivityForResult(activity, intent, requestCode);
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {

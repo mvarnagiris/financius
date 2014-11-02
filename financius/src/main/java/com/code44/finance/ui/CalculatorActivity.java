@@ -3,7 +3,6 @@ package com.code44.finance.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
 import com.code44.finance.ui.common.BaseActivity;
 
@@ -14,26 +13,19 @@ public class CalculatorActivity extends BaseActivity implements CalculatorFragme
     private static final String EXTRA_VALUE = "EXTRA_VALUE";
     private static final String EXTRA_RAW_VALUE = "EXTRA_RAW_VALUE";
 
-    public static void start(Fragment fragment, int requestCode, long value) {
-        final Intent intent = makeIntentForActivity(fragment.getActivity(), CalculatorActivity.class);
-        intent.putExtra(EXTRA_VALUE, value);
-        startActivityForResult(fragment, intent, requestCode);
-    }
-
     public static void start(Activity activity, int requestCode, long value) {
         final Intent intent = makeIntentForActivity(activity, CalculatorActivity.class);
         intent.putExtra(EXTRA_VALUE, value);
         startActivityForResult(activity, intent, requestCode);
     }
 
-    public static void start(Fragment fragment, int requestCode, double value) {
-        final Intent intent = makeIntentForActivity(fragment.getActivity(), CalculatorActivity.class);
+    public static void start(Activity activity, int requestCode, double value) {
+        final Intent intent = makeIntentForActivity(activity, CalculatorActivity.class);
         intent.putExtra(EXTRA_RAW_VALUE, value);
-        startActivityForResult(fragment, intent, requestCode);
+        startActivityForResult(activity, intent, requestCode);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Get extras
@@ -47,8 +39,7 @@ public class CalculatorActivity extends BaseActivity implements CalculatorFragme
         }
     }
 
-    @Override
-    public void onCalculatorResult(long result, double rawResult) {
+    @Override public void onCalculatorResult(long result, double rawResult) {
         final Intent data = new Intent();
         data.putExtra(RESULT_EXTRA_RESULT, result);
         data.putExtra(RESULT_EXTRA_RAW_RESULT, rawResult);

@@ -3,7 +3,6 @@ package com.code44.finance.ui.currencies;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.Menu;
@@ -44,10 +43,6 @@ public class CurrenciesActivity extends ModelListActivity implements CompoundBut
 
     public static void start(Context context) {
         startActivity(context, makeViewIntent(context, CurrenciesActivity.class));
-    }
-
-    public static void startSelect(Fragment fragment, int requestCode) {
-        startActivityForResult(fragment, makeSelectIntent(fragment.getActivity(), CurrenciesActivity.class), requestCode);
     }
 
     public static void startSelect(Activity activity, int requestCode) {

@@ -25,7 +25,7 @@
                 android:gravity="bottom">
 
                 <Button
-                    android:id="@+id/date_B"
+                    android:id="@+id/dateButton"
                     style="@style/Button.Borderless.Select"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
                     tools:text="August 17" />
 
                 <Button
-                    android:id="@+id/time_B"
+                    android:id="@+id/timeButton"
                     style="@style/Button.Borderless.Select"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 android:gravity="bottom">
 
                 <ImageButton
-                    android:id="@+id/transactionType_IB"
+                    android:id="@+id/transactionTypeImageButton"
                     style="@style/Button.Borderless.Select"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                     tools:text="1,000.00 $" />
 
                 <Button
-                    android:id="@+id/amount_B"
+                    android:id="@+id/amountButton"
                     style="@style/Button.Borderless.Select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/exchangeRate_B"
+                android:id="@+id/exchangeRateButton"
                 style="@style/Button.Borderless.Select"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
                 tools:text="0.83548" />
 
             <Button
-                android:id="@+id/amountTo_B"
+                android:id="@+id/amountToButton"
                 style="@style/Button.Borderless.Select"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
                 android:layout_marginTop="@dimen/space_large">
 
                 <Button
-                    android:id="@+id/accountFrom_B"
+                    android:id="@+id/accountFromButton"
                     style="@style/Button.Borderless.Select"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                     android:hint="@string/from" />
 
                 <Button
-                    android:id="@+id/accountTo_B"
+                    android:id="@+id/accountToButton"
                     style="@style/Button.Borderless.Select"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
                     tools:ignore="ContentDescription" />
 
                 <Button
-                    android:id="@+id/category_B"
+                    android:id="@+id/categoryButton"
                     style="@style/Button.Borderless.Select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/tags_B"
+                android:id="@+id/tagsButton"
                 style="@style/Button.Borderless.Select"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -171,14 +171,14 @@
                 tools:ignore="RtlHardcoded,RtlSymmetry">
 
                 <CheckBox
-                    android:id="@+id/confirmed_CB"
+                    android:id="@+id/confirmedCheckBox"
                     style="@style/CheckBox.Field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/confirmed" />
 
                 <CheckBox
-                    android:id="@+id/includeInReports_CB"
+                    android:id="@+id/includeInReportsCheckBox"
                     style="@style/CheckBox.Field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

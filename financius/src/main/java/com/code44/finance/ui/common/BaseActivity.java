@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -39,14 +38,9 @@ public abstract class BaseActivity extends ActionBarActivity {
         context.startActivity(intent);
     }
 
-    protected static void startActivityForResult(Fragment fragment, Intent intent, int requestCode) {
-        fragment.startActivityForResult(intent, requestCode);
-    }
-
     protected static void startActivityForResult(Activity activity, Intent intent, int requestCode) {
         activity.startActivityForResult(intent, requestCode);
     }
-
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

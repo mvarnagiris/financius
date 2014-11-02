@@ -1,8 +1,8 @@
 package com.code44.finance.ui.tags;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.CursorLoader;
 import android.view.Menu;
 import android.view.View;
@@ -22,8 +22,8 @@ public class TagsActivity extends ModelListActivity {
         startActivity(context, makeViewIntent(context, TagsActivity.class));
     }
 
-    public static void startMultiSelect(Fragment fragment, int requestCode, List<Tag> selectedTags) {
-        startActivityForResult(fragment, makeMultiSelectIntent(fragment.getActivity(), TagsActivity.class, selectedTags), requestCode);
+    public static void startMultiSelect(Activity activity, int requestCode, List<Tag> selectedTags) {
+        startActivityForResult(activity, makeMultiSelectIntent(activity, TagsActivity.class, selectedTags), requestCode);
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {

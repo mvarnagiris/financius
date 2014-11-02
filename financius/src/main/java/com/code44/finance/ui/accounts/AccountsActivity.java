@@ -1,10 +1,10 @@
 package com.code44.finance.ui.accounts;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.View;
@@ -34,8 +34,8 @@ public class AccountsActivity extends ModelListActivity {
         return makeViewIntent(context, AccountsActivity.class);
     }
 
-    public static void startSelect(Fragment fragment, int requestCode) {
-        startActivityForResult(fragment, makeSelectIntent(fragment.getActivity(), AccountsActivity.class), requestCode);
+    public static void startSelect(Activity activity, int requestCode) {
+        startActivityForResult(activity, makeSelectIntent(activity, AccountsActivity.class), requestCode);
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
