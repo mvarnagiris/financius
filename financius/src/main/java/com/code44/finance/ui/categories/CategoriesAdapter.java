@@ -34,6 +34,7 @@ public class CategoriesAdapter extends BaseModelsAdapter implements StickyListHe
     }
 
     @Override public View getHeaderView(int position, View convertView, ViewGroup parent) {
+        mCursor.moveToPosition(position);
         final HeaderViewHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.li_category_header, parent, false);
@@ -48,6 +49,7 @@ public class CategoriesAdapter extends BaseModelsAdapter implements StickyListHe
     }
 
     @Override public long getHeaderId(int position) {
+        mCursor.moveToPosition(position);
         return Category.from(mCursor).getTransactionType().ordinal();
     }
 

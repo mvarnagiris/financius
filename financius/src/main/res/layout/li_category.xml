@@ -13,10 +13,8 @@
         android:layout_height="@dimen/keyline_between"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="@dimen/keyline"
-        android:background="@drawable/circle"
-        android:elevation="@dimen/elevation_sub_header"
         android:src="@drawable/circle"
-        tools:ignore="ContentDescription,RtlHardcoded,UnusedAttribute" />
+        tools:ignore="ContentDescription,RtlHardcoded" />
 
     <TextView
         android:id="@+id/titleTextView"

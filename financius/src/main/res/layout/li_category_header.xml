@@ -4,10 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/bg_secondary"
-    android:elevation="1dp"
     android:gravity="center_vertical"
     android:paddingLeft="0dp"
-    tools:ignore="RtlHardcoded,RtlSymmetry,UnusedAttribute">
+    tools:ignore="RtlHardcoded,RtlSymmetry">
 
     <TextView
         android:id="@+id/titleTextView"
