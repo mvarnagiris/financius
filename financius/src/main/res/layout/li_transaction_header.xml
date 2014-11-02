@@ -27,7 +27,7 @@
         tools:text="August" />
 
     <TextView
-        android:id="@+id/amount_TV"
+        android:id="@+id/amountTextView"
         style="@style/Text.Body2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

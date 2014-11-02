@@ -173,6 +173,8 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
                 subtitle.append(" ");
             }
             return subtitle;
+        } else if (transaction.getCategory() != null && !StringUtils.isEmpty(transaction.getNote())) {
+            return transaction.getCategory().getTitle();
         }
         return null;
     }
@@ -305,7 +307,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
             holder.day_TV = (TextView) view.findViewById(R.id.day_TV);
             holder.title_TV = (TextView) view.findViewById(R.id.titleTextView);
             holder.subtitle_TV = (TextView) view.findViewById(R.id.subtitle_TV);
-            holder.amount_TV = (TextView) view.findViewById(R.id.amount_TV);
+            holder.amount_TV = (TextView) view.findViewById(R.id.amountTextView);
             holder.account_TV = (TextView) view.findViewById(R.id.account_TV);
             view.setTag(holder);
 
@@ -322,7 +324,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
             final HeaderViewHolder holder = new HeaderViewHolder();
             holder.arrow_IV = (ImageView) view.findViewById(R.id.arrow_IV);
             holder.title_TV = (TextView) view.findViewById(R.id.titleTextView);
-            holder.amount_TV = (TextView) view.findViewById(R.id.amount_TV);
+            holder.amount_TV = (TextView) view.findViewById(R.id.amountTextView);
             view.setTag(holder);
 
             return holder;

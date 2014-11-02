@@ -6,6 +6,7 @@
 - ```new``` Categories detail and edit screen with landscape layout.
 - ```new``` Categories list now shows bot expense and income categories in one page.
 - ```new``` Improvements for accounts detail and edit page in portrait and landscape mode.
+- ```new``` New UI for transaction details screen. It's still a work in progress and it will change.
 - ```fix``` Account balance calculation.
 - ```fix``` Can edit main currency.
 - ```fix``` Better overview landscape support.
