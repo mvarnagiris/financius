@@ -4,6 +4,7 @@
 - ```new``` Currency detail screen landscape layout.
 - ```new``` Tag detail and edit screen landscape layout.
 - ```new``` Categories detail and edit screen with landscape layout.
+- ```new``` Categories list now shows bot expense and income categories in one page.
 - ```fix``` Account balance calculation.
 - ```fix``` Can edit main currency.
 - ```fix``` Better overview landscape support.
