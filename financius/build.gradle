@@ -24,9 +24,8 @@ android {
             versionNameSuffix '-debug'
         }
         release {
-            runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            minifyEnabled true
+            minifyEnabled false
             shrinkResources true
         }
     }
@@ -56,8 +55,9 @@ dependencies {
     compile 'com.google.android.gms:play-services:6.1.11'
     compile 'com.github.castorflex.smoothprogressbar:library:1.0.0'
     compile 'com.github.castorflex.smoothprogressbar:library-circular:1.0.0'
-    compile 'com.squareup.retrofit:retrofit:1.6.0'
-    compile 'com.squareup.picasso:picasso:2.3.3'
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
+    compile 'com.squareup.retrofit:retrofit:1.7.1'
+    compile 'com.squareup.picasso:picasso:2.3.4'
     compile 'com.squareup.dagger:dagger:1.2.2'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
     compile 'org.beanshell:bsh-core:2.0b4'

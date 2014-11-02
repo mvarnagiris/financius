@@ -1,13 +1,12 @@
 package com.code44.finance.utils.analytics;
 
-import com.code44.finance.qualifiers.AppTracker;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 public class Analytics {
-    private final @AppTracker Tracker tracker;
+    private final Tracker tracker;
 
-    public Analytics(@AppTracker Tracker tracker) {
+    public Analytics(Tracker tracker) {
         this.tracker = tracker;
     }
 
