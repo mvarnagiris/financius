@@ -300,7 +300,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
 
         public static ViewHolder setAsTag(View view) {
             final ViewHolder holder = new ViewHolder();
-            holder.color_IV = (ImageView) view.findViewById(R.id.color_IV);
+            holder.color_IV = (ImageView) view.findViewById(R.id.colorImageView);
             holder.weekday_TV = (TextView) view.findViewById(R.id.weekday_TV);
             holder.day_TV = (TextView) view.findViewById(R.id.day_TV);
             holder.title_TV = (TextView) view.findViewById(R.id.titleTextView);

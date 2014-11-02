@@ -2,7 +2,6 @@ package com.code44.finance.ui.tags;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.CursorLoader;
 import android.view.Menu;
@@ -27,15 +26,14 @@ public class TagsActivity extends ModelListActivity {
         startActivityForResult(fragment, makeMultiSelectIntent(fragment.getActivity(), TagsActivity.class, selectedTags), requestCode);
     }
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tags);
-    }
-
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         menu.findItem(R.id.action_settings).setVisible(false);
         return true;
+    }
+
+    @Override protected int getLayoutId() {
+        return R.layout.activity_tags;
     }
 
     @Override protected BaseModelsAdapter createAdapter() {

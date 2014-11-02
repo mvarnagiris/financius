@@ -54,8 +54,12 @@
             android:label="@string/accounts" />
         <activity android:name=".ui.accounts.AccountActivity" />
         <activity android:name=".ui.accounts.AccountEditActivity" />
-        <activity android:name=".ui.categories.CategoriesActivity" />
-        <activity android:name=".ui.categories.CategoryActivity" />
+        <activity
+            android:name=".ui.categories.CategoriesActivity"
+            android:label="@string/categories" />
+        <activity
+            android:name=".ui.categories.CategoryActivity"
+            android:label="@string/category" />
         <activity android:name=".ui.categories.CategoryEditActivity" />
         <activity
             android:name=".ui.tags.TagsActivity"

@@ -1,39 +1,38 @@
 package com.code44.finance.ui.categories;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Parcelable;
+import android.database.Cursor;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+import android.support.v4.content.CursorLoader;
 import android.view.Menu;
+import android.view.View;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.code44.finance.R;
-import com.code44.finance.adapters.CategoriesPagerAdapter;
-import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.common.model.TransactionType;
-import com.code44.finance.ui.ModelListActivityOld;
-import com.code44.finance.ui.ModelListFragment;
-import com.code44.finance.utils.LayoutType;
+import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Category;
+import com.code44.finance.data.providers.CategoriesProvider;
+import com.code44.finance.ui.common.BaseModelsAdapter;
+import com.code44.finance.ui.common.ModelListActivity;
 
-import javax.inject.Inject;
+import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
 
-public class CategoriesActivity extends ModelListActivityOld {
-    private static final String EXTRA_CATEGORY_TYPE = "EXTRA_CATEGORY_TYPE";
-
-    @Inject LayoutType layoutType;
+public class CategoriesActivity extends ModelListActivity {
+    private static final String EXTRA_TRANSACTION_TYPE = "EXTRA_TRANSACTION_TYPE";
 
     private TransactionType transactionType;
 
     public static void start(Context context) {
-        final Intent intent = makeIntentView(context, CategoriesActivity.class);
+        final Intent intent = makeViewIntent(context, CategoriesActivity.class);
         startActivity(context, intent);
     }
 
     public static void startSelect(Fragment fragment, int requestCode, TransactionType transactionType) {
-        final Intent intent = makeIntentSelect(fragment.getActivity(), CategoriesActivity.class);
-        intent.putExtra(EXTRA_CATEGORY_TYPE, transactionType);
+        final Intent intent = makeSelectIntent(fragment.getActivity(), CategoriesActivity.class);
+        intent.putExtra(EXTRA_TRANSACTION_TYPE, transactionType);
         startActivityForResult(fragment, intent, requestCode);
     }
 
@@ -43,37 +42,42 @@ public class CategoriesActivity extends ModelListActivityOld {
         return true;
     }
 
-    @Override protected ModelListFragment createModelsFragment(ModelListFragment.Mode mode, Parcelable[] selectedModels) {
-        return mode == ModelListFragment.Mode.VIEW ? null : CategoriesFragment.newInstance(mode, transactionType);
+    @Override protected int getLayoutId() {
+        return R.layout.activity_categories;
     }
 
-    @Override protected int inflateActivity() {
-        if (mode == ModelListFragment.Mode.VIEW) {
-            setContentView(R.layout.activity_categories);
-
-            // Get views
-            final PagerSlidingTabStrip tabs_PSTS = (PagerSlidingTabStrip) findViewById(R.id.tabs_PSTS);
-            final ViewPager pager_VP = (ViewPager) findViewById(R.id.pager_VP);
-
-            // Setup
-            final CategoriesPagerAdapter adapter = new CategoriesPagerAdapter(this, getSupportFragmentManager());
-            pager_VP.setAdapter(adapter);
-            pager_VP.setPageMargin(getResources().getDimensionPixelSize(R.dimen.divider));
-            pager_VP.setPageMarginDrawable(new ColorDrawable(getResources().getColor(R.color.divider)));
-            tabs_PSTS.setShouldExpand(layoutType.isDefault() && layoutType.isPortrait());
-            tabs_PSTS.setViewPager(pager_VP);
-            return 0;
-        } else {
-            return super.inflateActivity();
-        }
+    @Override protected BaseModelsAdapter createAdapter() {
+        return new CategoriesAdapter(this);
     }
 
-    @Override protected void readExtras() {
-        super.readExtras();
-        transactionType = (TransactionType) getIntent().getSerializableExtra(EXTRA_CATEGORY_TYPE);
+    @Override protected CursorLoader getModelsCursorLoader() {
+        return Tables.Categories
+                .getQuery(transactionType)
+                .sortOrder(Tables.Categories.TRANSACTION_TYPE.getName())
+                .sortOrder(Tables.Categories.SORT_ORDER.getName())
+                .asCursorLoader(this, CategoriesProvider.uriCategories());
     }
 
-    @Override protected NavigationAdapter.NavigationScreen getNavigationScreen() {
-        return null;
+    @Override protected BaseModel modelFrom(Cursor cursor) {
+        return Category.from(cursor);
+    }
+
+    @Override protected void onModelClick(View view, int position, String modelId, BaseModel model) {
+        CategoryActivity.start(this, modelId);
+    }
+
+    @Override protected void startModelEdit(String modelId) {
+        CategoryEditActivity.start(this, modelId, transactionType);
+    }
+
+    @Override protected void onExtras(Intent extras) {
+        super.onExtras(extras);
+        transactionType = (TransactionType) extras.getSerializableExtra(EXTRA_TRANSACTION_TYPE);
+    }
+
+    @Override protected void onSetupList(BaseModelsAdapter adapter) {
+        @SuppressLint("WrongViewCast") final ExpandableStickyListHeadersListView listView = (ExpandableStickyListHeadersListView) findViewById(R.id.list);
+        listView.setAdapter((CategoriesAdapter) adapter);
+        listView.setOnClickListener(this);
     }
 }

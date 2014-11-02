@@ -2,7 +2,6 @@ package com.code44.finance.ui.currencies;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -50,9 +49,8 @@ public class CurrenciesActivity extends ModelListActivity implements CompoundBut
         startActivityForResult(fragment, makeSelectIntent(fragment.getActivity(), CurrenciesActivity.class), requestCode);
     }
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_currencies);
+    @Override protected void onViewCreated() {
+        super.onViewCreated();
 
         // Get views
         loadingView = (SmoothProgressBar) findViewById(R.id.loadingView);
@@ -131,6 +129,10 @@ public class CurrenciesActivity extends ModelListActivity implements CompoundBut
             }
         }
         super.onLoadFinished(loader, data);
+    }
+
+    @Override protected int getLayoutId() {
+        return R.layout.activity_currencies;
     }
 
     @Subscribe public void onRefreshFinished(ExchangeRatesRequest request) {

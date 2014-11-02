@@ -9,9 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.code44.finance.R;
-import com.code44.finance.adapters.CategoriesAdapter;
 import com.code44.finance.common.model.TransactionType;
-import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Category;
@@ -53,8 +51,7 @@ public class CategoriesFragment extends ModelListFragment {
 
     @Override
     protected CursorLoader getModelsCursorLoader(Context context) {
-        final Query query = Tables.Categories.getQuery(type);
-        return query.asCursorLoader(context, CategoriesProvider.uriCategories());
+        return Tables.Categories.getQuery(type).asCursorLoader(context, CategoriesProvider.uriCategories());
     }
 
     @Override

@@ -202,8 +202,7 @@ public final class Tables {
                     .projectionLocalId(Categories.LOCAL_ID)
                     .projection(Categories.PROJECTION)
                     .selection("(" + Categories.MODEL_STATE + "=?", ModelState.Normal.asString())
-                    .selection(" or " + Categories.MODEL_STATE + "=?)", ModelState.DeletedUndo.asString())
-                    .sortOrder(Categories.SORT_ORDER.getName());
+                    .selection(" or " + Categories.MODEL_STATE + "=?)", ModelState.DeletedUndo.asString());
 
             if (transactionType != null) {
                 query.selection(" and " + Tables.Categories.TRANSACTION_TYPE + "=?", transactionType.asString());

@@ -125,7 +125,7 @@
                 tools:ignore="RtlHardcoded,RtlSymmetry">
 
                 <ImageView
-                    android:id="@+id/color_IV"
+                    android:id="@+id/colorImageView"
                     android:layout_width="@dimen/min_touch_size"
                     android:layout_height="@dimen/min_touch_size"
                     android:layout_gravity="center_vertical"

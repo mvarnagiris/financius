@@ -115,7 +115,7 @@ public class TransactionEditFragment extends ModelEditFragment<Transaction> impl
         amountTo_B = (Button) view.findViewById(R.id.amountTo_B);
         accountFrom_B = (Button) view.findViewById(R.id.accountFrom_B);
         accountTo_B = (Button) view.findViewById(R.id.accountTo_B);
-        color_IV = (ImageView) view.findViewById(R.id.color_IV);
+        color_IV = (ImageView) view.findViewById(R.id.colorImageView);
         category_B = (Button) view.findViewById(R.id.category_B);
         tags_B = (Button) view.findViewById(R.id.tags_B);
         date_B = (Button) view.findViewById(R.id.date_B);

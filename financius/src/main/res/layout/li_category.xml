@@ -3,17 +3,20 @@
     style="@style/ListItem"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:clipToPadding="false"
     android:gravity="center_vertical"
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
-        android:id="@+id/color_IV"
+        android:id="@+id/colorImageView"
         android:layout_width="@dimen/keyline_between"
         android:layout_height="@dimen/keyline_between"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="@dimen/keyline"
+        android:background="@drawable/circle"
+        android:elevation="@dimen/elevation_sub_header"
         android:src="@drawable/circle"
-        tools:ignore="ContentDescription,RtlHardcoded" />
+        tools:ignore="ContentDescription,RtlHardcoded,UnusedAttribute" />
 
     <TextView
         android:id="@+id/titleTextView"

@@ -62,51 +62,9 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mode = (Mode) getIntent().getSerializableExtra(EXTRA_MODE);
-        selectedModels = getIntent().getParcelableArrayExtra(EXTRA_SELECTED_MODELS);
-        if (mode == null) {
-            throw new IllegalStateException("Activity " + ((Object) this).getClass().getName() + " must be created with Intent containing " + EXTRA_MODE + " with values from " + Mode.class.getName());
-        }
-    }
-
-    @Override public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
-
-        // Setup Toolbar
-        if (mode != Mode.VIEW) {
-            getSupportActionBar().setTitle(R.string.select);
-        }
-
-        // Get views
-        final ListView listView = (ListView) findViewById(R.id.list);
-        final View editButtonsContainerView = findViewById(R.id.editButtonsContainerView);
-
-        // Setup
-        adapter = createAdapter();
-        if (mode == Mode.MULTI_SELECT) {
-            final Set<BaseModel> selectedModelsSet = new HashSet<>();
-            for (Parcelable parcelable : selectedModels) {
-                selectedModelsSet.add((BaseModel) parcelable);
-            }
-            adapter.setSelectedModels(selectedModelsSet);
-        }
-
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
-        if (editButtonsContainerView != null) {
-            if (mode == Mode.MULTI_SELECT) {
-                editButtonsContainerView.setVisibility(View.VISIBLE);
-                final Button save_B = (Button) findViewById(R.id.saveButton);
-                final Button cancel_B = (Button) findViewById(R.id.cancelButton);
-                save_B.setOnClickListener(this);
-                cancel_B.setOnClickListener(this);
-            } else {
-                editButtonsContainerView.setVisibility(View.GONE);
-            }
-        }
-
-        // Loader
+        setContentView(getLayoutId());
+        onExtras(getIntent());
+        onViewCreated();
         getSupportLoaderManager().initLoader(LOADER_MODELS, null, this);
     }
 
@@ -166,6 +124,8 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
         }
     }
 
+    protected abstract int getLayoutId();
+
     protected abstract BaseModelsAdapter createAdapter();
 
     protected abstract CursorLoader getModelsCursorLoader();
@@ -175,6 +135,47 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
     protected abstract void onModelClick(View view, int position, String modelId, BaseModel model);
 
     protected abstract void startModelEdit(String modelId);
+
+    protected void onExtras(Intent extras) {
+        mode = (Mode) extras.getSerializableExtra(EXTRA_MODE);
+        selectedModels = extras.getParcelableArrayExtra(EXTRA_SELECTED_MODELS);
+        if (mode == null) {
+            throw new IllegalStateException("Activity " + ((Object) this).getClass().getName() + " must be created with Intent containing " + EXTRA_MODE + " with values from " + Mode.class.getName());
+        }
+    }
+
+    protected void onViewCreated() {
+        // Setup Toolbar
+        if (mode != Mode.VIEW) {
+            getSupportActionBar().setTitle(R.string.select);
+        }
+
+        // Get views
+        final View editButtonsContainerView = findViewById(R.id.editButtonsContainerView);
+
+        // Setup
+        adapter = createAdapter();
+        if (mode == Mode.MULTI_SELECT) {
+            final Set<BaseModel> selectedModelsSet = new HashSet<>();
+            for (Parcelable parcelable : selectedModels) {
+                selectedModelsSet.add((BaseModel) parcelable);
+            }
+            adapter.setSelectedModels(selectedModelsSet);
+        }
+
+        if (editButtonsContainerView != null) {
+            if (mode == Mode.MULTI_SELECT) {
+                editButtonsContainerView.setVisibility(View.VISIBLE);
+                final Button save_B = (Button) findViewById(R.id.saveButton);
+                final Button cancel_B = (Button) findViewById(R.id.cancelButton);
+                save_B.setOnClickListener(this);
+                cancel_B.setOnClickListener(this);
+            } else {
+                editButtonsContainerView.setVisibility(View.GONE);
+            }
+        }
+        onSetupList(adapter);
+    }
 
     protected void onModelSelected(BaseModel model) {
         final Intent data = new Intent();
@@ -197,6 +198,12 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
 
     protected Mode getMode() {
         return mode;
+    }
+
+    protected void onSetupList(BaseModelsAdapter adapter) {
+        final ListView listView = (ListView) findViewById(R.id.list);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(this);
     }
 
     public static enum Mode {

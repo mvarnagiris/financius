@@ -64,7 +64,7 @@ public class TransactionFragment extends ModelFragment<Transaction> {
     @Override protected void onModelLoaded(Transaction transaction) {
         final Category category = transaction.getCategory();
         final DateTime date = new DateTime(transaction.getDate());
-//        holder.color_IV.setColorFilter(category.getColor());
+//        holder.colorImageView.setColorFilter(category.getColor());
 //        holder.weekday_TV.setText(date.dayOfWeek().getAsShortText());
 //        holder.day_TV.setText(date.dayOfMonth().getAsShortText());
 //        holder.titleTextView.setText(category.getTitle());

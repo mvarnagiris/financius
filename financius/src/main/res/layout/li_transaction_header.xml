@@ -4,10 +4,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/bg_secondary"
+    android:elevation="1dp"
     android:gravity="center_vertical"
-    tools:ignore="UseCompoundDrawables">
+    tools:ignore="UnusedAttribute,UseCompoundDrawables">
 
-    <ImageView
+<ImageView
         android:id="@+id/arrow_IV"
         android:layout_width="@dimen/keyline_between"
         android:layout_height="@dimen/keyline_between"

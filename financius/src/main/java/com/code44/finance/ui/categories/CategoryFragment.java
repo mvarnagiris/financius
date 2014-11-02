@@ -40,7 +40,7 @@ public class CategoryFragment extends ModelFragment<Category> {
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        color_IV = (ImageView) view.findViewById(R.id.color_IV);
+        color_IV = (ImageView) view.findViewById(R.id.colorImageView);
         title_TV = (TextView) view.findViewById(R.id.titleTextView);
     }
 
