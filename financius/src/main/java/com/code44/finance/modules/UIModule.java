@@ -15,7 +15,6 @@ import com.code44.finance.ui.accounts.AccountsFragment;
 import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.ui.categories.CategoryActivity;
 import com.code44.finance.ui.categories.CategoryEditActivity;
-import com.code44.finance.ui.categories.CategoryEditFragment;
 import com.code44.finance.ui.currencies.CurrenciesActivity;
 import com.code44.finance.ui.currencies.CurrencyActivity;
 import com.code44.finance.ui.currencies.CurrencyEditActivity;
@@ -83,7 +82,6 @@ import dagger.Module;
                 TransactionsFragment.class,
                 TransactionFragment.class,
                 TransactionEditFragment.class,
-                CategoryEditFragment.class,
                 DeleteDialogFragment.class,
                 ListDialogFragment.class,
                 CalculatorFragment.class,

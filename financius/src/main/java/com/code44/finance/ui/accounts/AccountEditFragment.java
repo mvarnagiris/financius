@@ -58,7 +58,7 @@ public class AccountEditFragment extends ModelEditFragment<Account> implements V
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        title_ET = (EditText) view.findViewById(R.id.title_ET);
+        title_ET = (EditText) view.findViewById(R.id.titleEditText);
         currency_B = (Button) view.findViewById(R.id.currencyButton);
         balance_B = (Button) view.findViewById(R.id.balance_B);
         note_ET = (EditText) view.findViewById(R.id.note_ET);

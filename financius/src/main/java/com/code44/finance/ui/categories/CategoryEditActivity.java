@@ -2,35 +2,105 @@ package com.code44.finance.ui.categories;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.support.v4.content.CursorLoader;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.code44.finance.R;
-import com.code44.finance.common.model.TransactionType;
-import com.code44.finance.ui.ModelEditActivityOld;
-import com.code44.finance.ui.ModelFragment;
+import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.data.DataStore;
+import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.model.Category;
+import com.code44.finance.data.providers.CategoriesProvider;
+import com.code44.finance.ui.SelectColorFragment;
+import com.code44.finance.ui.common.ModelEditActivity;
 
-public class CategoryEditActivity extends ModelEditActivityOld {
-    private static final String EXTRA_CATEGORY_TYPE = "EXTRA_CATEGORY_TYPE";
+public class CategoryEditActivity extends ModelEditActivity<Category> implements View.OnClickListener, SelectColorFragment.OnColorSelectedListener {
+    private static final String FRAGMENT_SELECT_COLOR = CategoryEditActivity.class.getName() + ".FRAGMENT_SELECT_COLOR";
 
-    private TransactionType transactionType;
+    private EditText titleEditText;
+    private ImageButton colorImageButton;
 
-    public static void start(Context context, String categoryServerId, TransactionType transactionType) {
-        final Intent intent = makeIntent(context, CategoryEditActivity.class, categoryServerId);
-        intent.putExtra(EXTRA_CATEGORY_TYPE, transactionType);
+    public static void start(Context context, String categoryId) {
+        final Intent intent = makeIntent(context, CategoryEditActivity.class, categoryId);
         startActivity(context, intent);
     }
 
-    @Override
-    protected int getActionBarTitleResId() {
-        return R.string.category;
+    @Override protected int getLayoutId() {
+        return R.layout.activity_category_edit;
     }
 
-    @Override
-    protected ModelFragment createModelFragment(String modelServerId) {
-        return CategoryEditFragment.newInstance(modelServerId, transactionType);
+    @Override protected void onViewCreated(Bundle savedInstanceState) {
+        super.onViewCreated(savedInstanceState);
+
+        // Get views
+        titleEditText = (EditText) findViewById(R.id.titleEditText);
+        colorImageButton = (ImageButton) findViewById(R.id.colorImageButton);
+
+        // Setup
+        colorImageButton.setOnClickListener(this);
     }
 
-    @Override protected void readExtras() {
-        super.readExtras();
-        transactionType = (TransactionType) getIntent().getSerializableExtra(EXTRA_CATEGORY_TYPE);
+    @Override public void onResume() {
+        super.onResume();
+        SelectColorFragment.setListenerIfVisible(getSupportFragmentManager(), FRAGMENT_SELECT_COLOR, this);
+    }
+
+    @Override public void onPause() {
+        super.onPause();
+        SelectColorFragment.removeListenerIfVisible(getSupportFragmentManager(), FRAGMENT_SELECT_COLOR);
+    }
+
+    @Override protected boolean onSave(Category model) {
+        boolean canSave = true;
+
+        if (TextUtils.isEmpty(model.getTitle())) {
+            canSave = false;
+            // TODO Show error
+        }
+
+        if (canSave) {
+            DataStore.insert().model(model).into(this, CategoriesProvider.uriCategories());
+        }
+
+        return canSave;
+    }
+
+    @Override protected void ensureModelUpdated(Category model) {
+        model.setTitle(titleEditText.getText().toString());
+    }
+
+    @Override protected CursorLoader getModelCursorLoader(String modelId) {
+        return Tables.Categories.getQuery(null).asCursorLoader(this, CategoriesProvider.uriCategory(modelId));
+    }
+
+    @Override protected Category getModelFrom(Cursor cursor) {
+        final Category category = Category.from(cursor);
+        if (StringUtils.isEmpty(category.getId())) {
+            category.setColor(0xff607d8b);
+        }
+        return category;
+    }
+
+    @Override protected void onModelLoaded(Category model) {
+        titleEditText.setText(model.getTitle());
+        colorImageButton.setColorFilter(model.getColor());
+    }
+
+    @Override public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.colorImageButton:
+                SelectColorFragment.show(getSupportFragmentManager(), FRAGMENT_SELECT_COLOR, model.getColor(), this);
+                break;
+        }
+    }
+
+    @Override public void onColorSelected(int color) {
+        model.setColor(color);
+        colorImageButton.setColorFilter(color);
     }
 }

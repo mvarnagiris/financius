@@ -29,7 +29,7 @@
                 tools:ignore="UnusedAttribute">
 
                 <EditText
-                    android:id="@+id/title_ET"
+                    android:id="@+id/titleEditText"
                     style="@style/Text.Display2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

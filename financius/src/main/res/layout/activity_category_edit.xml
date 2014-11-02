@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageButton
-                    android:id="@+id/color_IB"
+                    android:id="@+id/colorImageButton"
                     style="@style/Button.Borderless.Select"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
                     tools:stateListAnimator="@android:animator/fade_in" />
 
                 <EditText
-                    android:id="@+id/title_ET"
+                    android:id="@+id/titleEditText"
                     style="@style/EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
