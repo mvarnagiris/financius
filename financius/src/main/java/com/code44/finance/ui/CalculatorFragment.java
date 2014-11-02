@@ -21,7 +21,7 @@ import javax.inject.Inject;
 public class CalculatorFragment extends BaseFragment implements View.OnClickListener, View.OnLongClickListener {
     private static final String ARG_VALUE = "ARG_VALUE";
     private static final String ARG_RAW_VALUE = "ARG_RAW_VALUE";
-    private static final String ARG_EXPRESSION = "ARG_EXPRESSION";
+    private static final String STATE_EXPRESSION = "STATE_EXPRESSION";
 
     @Inject Calculator calculator;
 
@@ -119,8 +119,8 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
                 calculator.setValue(value);
             }
         } else {
-            if (savedInstanceState.containsKey(ARG_EXPRESSION)) {
-                String exp = savedInstanceState.getString(ARG_EXPRESSION, null);
+            if (savedInstanceState.containsKey(STATE_EXPRESSION)) {
+                String exp = savedInstanceState.getString(STATE_EXPRESSION, null);
                 if (exp != null) {
                     calculator.setExpression(exp);
                 }
@@ -147,7 +147,7 @@ public class CalculatorFragment extends BaseFragment implements View.OnClickList
 
     @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(ARG_EXPRESSION, calculator.getExpression());
+        outState.putString(STATE_EXPRESSION, calculator.getExpression());
     }
 
     @Override public void onDetach() {
