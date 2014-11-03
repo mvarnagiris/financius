@@ -158,7 +158,7 @@ public class SettingsAdapter extends BaseAdapter {
 
         private SettingsSubtitleItemViewHolder(View itemView) {
             super(itemView);
-            subtitle_TV = (TextView) itemView.findViewById(R.id.subtitle_TV);
+            subtitle_TV = (TextView) itemView.findViewById(R.id.subtitleTextView);
         }
 
         @Override protected void bind(SettingsItem settingsItem) {

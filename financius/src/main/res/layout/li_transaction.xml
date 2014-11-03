@@ -27,7 +27,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/weekday_TV"
+                android:id="@+id/weekdayTextView"
                 style="@style/Text.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                 tools:textColor="@color/text_primary" />
 
             <TextView
-                android:id="@+id/day_TV"
+                android:id="@+id/dayTextView"
                 style="@style/Text.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -89,18 +89,16 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/subtitle_TV"
+                android:id="@+id/subtitleTextView"
                 style="@style/Text.Caption"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ellipsize="end"
-                android:singleLine="true"
                 android:textColor="@color/text_secondary"
                 tools:text="Linkin Park concert" />
 
             <TextView
-                android:id="@+id/account_TV"
+                android:id="@+id/accountTextView"
                 style="@style/Text.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
