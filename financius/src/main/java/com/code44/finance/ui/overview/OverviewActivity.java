@@ -29,7 +29,6 @@ import com.code44.finance.utils.CurrentInterval;
 import com.code44.finance.utils.analytics.Analytics;
 import com.code44.finance.views.AccountsView;
 import com.code44.finance.views.FabImageButton;
-import com.code44.finance.views.OverviewGraphView;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -67,7 +66,7 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
 
         // Get views
         final FabImageButton newTransactionView = (FabImageButton) findViewById(R.id.newTransaction);
-        overviewGraphView = (OverviewGraphView) findViewById(R.id.overviewGraph);
+        overviewGraphView = (OverviewGraphView) findViewById(R.id.overviewGraphView);
         accountsView = (AccountsView) findViewById(R.id.accounts);
 
         // Setup
@@ -133,7 +132,7 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
             case R.id.newTransaction:
                 TransactionEditActivity.start(this, null);
                 break;
-            case R.id.overviewGraph:
+            case R.id.overviewGraphView:
                 onNavigationItemSelected(NavigationAdapter.NavigationScreen.Reports);
                 break;
             case R.id.accounts:

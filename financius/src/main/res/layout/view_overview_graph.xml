@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.code44.finance.views.OverviewGraphView
-    android:id="@+id/overviewGraph"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/btn_borderless"
-    android:gravity="center_vertical"
-    android:orientation="vertical"
-    android:padding="@dimen/keyline">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/titleTextView"
@@ -48,4 +40,4 @@
 
     </LinearLayout>
 
-</com.code44.finance.views.OverviewGraphView>
+</merge>

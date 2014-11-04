@@ -30,8 +30,8 @@ public class CategoriesReportView extends LinearLayout {
 
     public CategoriesReportView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        final int padding = getResources().getDimensionPixelSize(R.dimen.keyline);
         setGravity(Gravity.CENTER_VERTICAL);
+        final int padding = getResources().getDimensionPixelSize(R.dimen.keyline);
         setPadding(padding, padding, padding, padding);
         inflate(context, R.layout.view_categories_report, this);
         if (!isInEditMode()) {

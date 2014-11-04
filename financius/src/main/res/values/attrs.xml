@@ -25,6 +25,10 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="OverviewGraphView">
+        <attr name="viewBackgroundTheme" />
+    </declare-styleable>
+
     <declare-styleable name="CategoriesReportView">
         <attr name="viewBackgroundTheme" />
     </declare-styleable>
