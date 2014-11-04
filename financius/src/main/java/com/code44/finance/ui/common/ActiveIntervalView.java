@@ -1,4 +1,4 @@
-package com.code44.finance.views;
+package com.code44.finance.ui.common;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -16,10 +16,10 @@ import com.squareup.otto.Subscribe;
 import javax.inject.Inject;
 
 public class ActiveIntervalView extends LinearLayout implements View.OnClickListener {
+    private final Button intervalButton;
+
     @Inject ActiveInterval activeInterval;
     @Inject EventBus eventBus;
-
-    private Button intervalButton;
 
     public ActiveIntervalView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -27,13 +27,10 @@ public class ActiveIntervalView extends LinearLayout implements View.OnClickList
 
     public ActiveIntervalView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        inflate(context, R.layout.view_active_interval, this);
         if (!isInEditMode()) {
             App.with(context).inject(this);
         }
-    }
-
-    @Override protected void onFinishInflate() {
-        super.onFinishInflate();
 
         // Get views
         final ImageButton previousImageButton = (ImageButton) findViewById(R.id.previousImageButton);

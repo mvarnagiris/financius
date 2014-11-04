@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.code44.finance.views.CategoriesReportView
-    android:id="@+id/categoriesReportView"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/btn_borderless"
-    android:gravity="center_vertical"
-    android:padding="@dimen/keyline">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.code44.finance.graphs.pie.PieChartView
         android:id="@+id/pieChartView"
@@ -26,8 +19,7 @@
         android:layout_marginRight="@dimen/space_large"
         android:gravity="right"
         android:singleLine="true"
-        android:textColor="@color/text_primary_inverse"
         tools:ignore="RtlHardcoded"
-        tools:text="34" />
+        tools:text="34.58 $" />
 
-</com.code44.finance.views.CategoriesReportView>
+</merge>

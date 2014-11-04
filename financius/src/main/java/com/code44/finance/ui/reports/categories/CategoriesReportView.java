@@ -1,7 +1,9 @@
-package com.code44.finance.views;
+package com.code44.finance.ui.reports.categories;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -11,15 +13,16 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartView;
 import com.code44.finance.qualifiers.Main;
+import com.code44.finance.ui.common.ViewBackgroundTheme;
 import com.code44.finance.utils.MoneyFormatter;
 
 import javax.inject.Inject;
 
 public class CategoriesReportView extends LinearLayout {
-    @Inject @Main Currency mainCurrency;
+    private final PieChartView pieChartView;
+    private final TextView totalExpenseTextView;
 
-    private PieChartView pieChartView;
-    private TextView totalExpenseTextView;
+    @Inject @Main Currency mainCurrency;
 
     public CategoriesReportView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -27,20 +30,20 @@ public class CategoriesReportView extends LinearLayout {
 
     public CategoriesReportView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        final int padding = getResources().getDimensionPixelSize(R.dimen.keyline);
+        setGravity(Gravity.CENTER_VERTICAL);
+        setPadding(padding, padding, padding, padding);
+        inflate(context, R.layout.view_categories_report, this);
         if (!isInEditMode()) {
             App.with(context).inject(this);
         }
-    }
-
-    @Override protected void onFinishInflate() {
-        super.onFinishInflate();
 
         // Get views
         pieChartView = (PieChartView) findViewById(R.id.pieChartView);
         totalExpenseTextView = (TextView) findViewById(R.id.totalExpenseTextView);
 
         // Setup
-        pieChartView.setEmptyColor(totalExpenseTextView.getCurrentTextColor());
+        applyStyle(context, attrs);
         setPieChartData(null);
         if (isInEditMode()) {
             totalExpenseTextView.setText("0.00 $");
@@ -62,5 +65,25 @@ public class CategoriesReportView extends LinearLayout {
 
     public void setTotalExpense(long totalExpense) {
         totalExpenseTextView.setText(MoneyFormatter.format(mainCurrency, totalExpense));
+    }
+
+    private void applyStyle(Context context, AttributeSet attrs) {
+        final TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.PieChartView, 0, 0);
+        try {
+            final ViewBackgroundTheme viewBackgroundTheme = ViewBackgroundTheme.from(a.getInteger(R.styleable.CategoriesReportView_viewBackgroundTheme, 0));
+            pieChartView.setViewBackgroundTheme(viewBackgroundTheme);
+            if (getOrientation() == HORIZONTAL) {
+                pieChartView.setSizeBasedOn(PieChartView.SizeBasedOn.Height);
+            } else {
+                MarginLayoutParams params = (MarginLayoutParams) pieChartView.getLayoutParams();
+                params.leftMargin = params.rightMargin = getResources().getDimensionPixelSize(R.dimen.space_xlarge);
+                pieChartView.setSizeBasedOn(PieChartView.SizeBasedOn.Width);
+            }
+
+            final int textColor = getResources().getColor(viewBackgroundTheme == ViewBackgroundTheme.Light ? R.color.text_primary : R.color.text_primary_inverse);
+            totalExpenseTextView.setTextColor(textColor);
+        } finally {
+            a.recycle();
+        }
     }
 }

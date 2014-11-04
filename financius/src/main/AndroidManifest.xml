@@ -102,7 +102,7 @@
             android:name=".ui.settings.about.AboutActivity"
             android:label="@string/about" />
         <activity
-            android:name=".ui.reports.CategoriesReportActivity"
+            android:name=".ui.reports.categories.CategoriesReportActivity"
             android:label="" />
         <activity
             android:name=".ui.FilePickerActivity"

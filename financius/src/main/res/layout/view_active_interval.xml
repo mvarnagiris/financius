@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.code44.finance.views.ActiveIntervalView xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?colorPrimary"
-    android:elevation="@dimen/elevation_header"
-    android:orientation="horizontal"
+    tools:background="?colorPrimary"
     tools:ignore="UnusedAttribute">
 
     <ImageButton
@@ -42,4 +40,4 @@
         android:scaleType="centerInside"
         android:src="@drawable/ic_action_chevron_right" />
 
-</com.code44.finance.views.ActiveIntervalView>
+</merge>

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.code44.finance.R;
 import com.code44.finance.graphs.pie.PieChartData;
-import com.code44.finance.views.CategoriesReportView;
+import com.code44.finance.ui.reports.categories.CategoriesReportView;
 
 public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHolder> {
     private final Context context;

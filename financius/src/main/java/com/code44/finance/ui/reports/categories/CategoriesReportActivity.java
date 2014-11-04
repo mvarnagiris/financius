@@ -1,4 +1,4 @@
-package com.code44.finance.ui.reports;
+package com.code44.finance.ui.reports.categories;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,10 +22,10 @@ import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartValue;
 import com.code44.finance.qualifiers.Main;
+import com.code44.finance.ui.reports.BaseReportActivity;
 import com.code44.finance.utils.ActiveInterval;
 import com.code44.finance.utils.CategoriesExpenseComparator;
 import com.code44.finance.utils.analytics.Analytics;
-import com.code44.finance.views.CategoriesReportView;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;

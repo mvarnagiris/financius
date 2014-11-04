@@ -6,7 +6,7 @@
     android:layout_marginTop="?android:actionBarSize"
     android:orientation="vertical">
 
-    <com.code44.finance.views.ActiveIntervalView
+    <com.code44.finance.ui.common.ActiveIntervalView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/primary"
