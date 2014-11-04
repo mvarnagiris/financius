@@ -20,7 +20,6 @@ import com.code44.finance.ui.dialogs.ListDialogFragment;
 import com.code44.finance.ui.dialogs.TimePickerDialog;
 import com.code44.finance.ui.overview.OverviewActivity;
 import com.code44.finance.ui.reports.CategoriesReportActivity;
-import com.code44.finance.ui.reports.CategoriesReportFragment;
 import com.code44.finance.ui.reports.ReportsFragment;
 import com.code44.finance.ui.settings.SettingsActivity;
 import com.code44.finance.ui.settings.about.AboutActivity;
@@ -74,7 +73,6 @@ import dagger.Module;
                 GoogleApiFragment.class,
                 DataFragment.class,
                 ReportsFragment.class,
-                CategoriesReportFragment.class,
                 AboutFragment.class,
                 DatePickerDialog.class,
                 TimePickerDialog.class

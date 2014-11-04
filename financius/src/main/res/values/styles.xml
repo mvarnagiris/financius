@@ -104,6 +104,10 @@
         <item name="android:background">@drawable/btn_borderless</item>
     </style>
 
+    <style name="Button.Borderless.Bounded">
+        <item name="android:background">@drawable/btn_borderless_bounded</item>
+    </style>
+
     <style name="Button.Borderless.Select">
         <item name="android:gravity">left|bottom</item>
         <item name="android:textAppearance">@style/Text.Subhead</item>

@@ -3,32 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="?android:actionBarSize"
     android:orientation="vertical">
 
-    <com.code44.finance.views.ActiveIntervalView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary"
-        android:elevation="@dimen/elevation_header"
-        tools:ignore="UnusedAttribute" />
+    <include layout="@layout/toolbar" />
+
+    <include layout="@layout/view_active_interval" />
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/action_bar_size_2x"
         android:background="@color/primary"
         android:elevation="@dimen/elevation_header"
-        android:padding="@dimen/keyline"
         tools:ignore="UnusedAttribute">
 
-        <com.code44.finance.views.CategoriesReportView
-            android:id="@+id/categoriesReport_V"
+        <include
+            layout="@layout/view_categories_report"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="@dimen/action_bar_size_2x" />
     </FrameLayout>
 
     <ListView
-        android:id="@id/list"
+        android:id="@id/listView"
         style="@style/ListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

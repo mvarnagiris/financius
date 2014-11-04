@@ -6,7 +6,7 @@
     <include layout="@layout/toolbar" />
 
     <se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView
-        android:id="@+id/list"
+        android:id="@+id/listView"
         style="@style/ListView" />
 
 </LinearLayout>

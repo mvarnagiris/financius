@@ -27,14 +27,14 @@
         android:gravity="center_vertical">
 
         <com.code44.finance.graphs.pie.PieChartView
-            android:id="@+id/pieChart"
+            android:id="@+id/pieChartView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             app:sizeBasedOn="height"
             app:type="donut" />
 
         <me.grantland.widget.AutofitTextView
-            android:id="@+id/totalExpense"
+            android:id="@+id/totalExpenseTextView"
             style="@style/Text.Display2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

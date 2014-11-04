@@ -33,7 +33,7 @@ public class NavigationFragment extends BaseFragment implements AdapterView.OnIt
         super.onViewCreated(view, savedInstanceState);
 
         // Get views
-        final ListView listView = (ListView) view.findViewById(R.id.list);
+        final ListView listView = (ListView) view.findViewById(R.id.listView);
 
         // Setup
         adapter = new NavigationAdapter(getActivity());

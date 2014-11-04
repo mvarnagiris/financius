@@ -43,8 +43,8 @@ public class OverviewGraphView extends LinearLayout {
 
         // Get views
         final TextView titleView = (TextView) findViewById(R.id.titleTextView);
-        pieChartView = (PieChartView) findViewById(R.id.pieChart);
-        totalExpenseView = (TextView) findViewById(R.id.totalExpense);
+        pieChartView = (PieChartView) findViewById(R.id.pieChartView);
+        totalExpenseView = (TextView) findViewById(R.id.totalExpenseTextView);
 
         // Setup
         pieChartView.setEmptyColor(totalExpenseView.getCurrentTextColor());

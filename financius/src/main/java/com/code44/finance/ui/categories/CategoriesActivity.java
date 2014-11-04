@@ -76,7 +76,7 @@ public class CategoriesActivity extends ModelListActivity {
     }
 
     @Override protected void onSetupList(BaseModelsAdapter adapter) {
-        @SuppressLint("WrongViewCast") final ExpandableStickyListHeadersListView listView = (ExpandableStickyListHeadersListView) findViewById(R.id.list);
+        @SuppressLint("WrongViewCast") final ExpandableStickyListHeadersListView listView = (ExpandableStickyListHeadersListView) findViewById(R.id.listView);
         listView.setAdapter((CategoriesAdapter) adapter);
         listView.setOnItemClickListener(this);
     }

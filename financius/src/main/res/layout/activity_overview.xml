@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/action_bar_size_2x"
         android:layout_below="@+id/toolbar"
-
         android:background="@color/primary"
         android:elevation="@dimen/elevation_header"
         tools:ignore="UnusedAttribute">

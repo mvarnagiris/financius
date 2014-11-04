@@ -80,7 +80,7 @@
         tools:ignore="UnusedAttribute" />
 
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/listView"
         style="@style/ListView"
         android:layout_below="@+id/subHeaderContainerView" />
 

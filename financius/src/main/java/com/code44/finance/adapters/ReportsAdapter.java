@@ -27,7 +27,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
         switch (position) {
             case 0:
             case 1:
-                cardView.addView(new CategoriesReportView(context));
+//                cardView.addView(new CategoriesReportView(context));
                 break;
             default:
                 throw new IllegalArgumentException("Position " + position + " is not supported.");

@@ -16,15 +16,10 @@ import com.code44.finance.utils.MoneyFormatter;
 import javax.inject.Inject;
 
 public class CategoriesReportView extends LinearLayout {
-    private final PieChartView pieChart_V;
-    private final TextView totalExpense_TV;
-
     @Inject @Main Currency mainCurrency;
 
-    @SuppressWarnings("UnusedDeclaration")
-    public CategoriesReportView(Context context) {
-        this(context, null);
-    }
+    private PieChartView pieChartView;
+    private TextView totalExpenseTextView;
 
     public CategoriesReportView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -32,19 +27,23 @@ public class CategoriesReportView extends LinearLayout {
 
     public CategoriesReportView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        App.with(context).inject(this);
-        inflate(context, R.layout.v_categories_report, this);
-        setBackgroundResource(R.drawable.btn_borderless);
+        if (!isInEditMode()) {
+            App.with(context).inject(this);
+        }
+    }
+
+    @Override protected void onFinishInflate() {
+        super.onFinishInflate();
 
         // Get views
-        pieChart_V = (PieChartView) findViewById(R.id.pieChart);
-        totalExpense_TV = (TextView) findViewById(R.id.totalExpense);
+        pieChartView = (PieChartView) findViewById(R.id.pieChartView);
+        totalExpenseTextView = (TextView) findViewById(R.id.totalExpenseTextView);
 
         // Setup
-        pieChart_V.setEmptyColor(totalExpense_TV.getCurrentTextColor());
+        pieChartView.setEmptyColor(totalExpenseTextView.getCurrentTextColor());
         setPieChartData(null);
         if (isInEditMode()) {
-            totalExpense_TV.setText("0.00 $");
+            totalExpenseTextView.setText("0.00 $");
         } else {
             setTotalExpense(0);
         }
@@ -53,15 +52,15 @@ public class CategoriesReportView extends LinearLayout {
     @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        final LayoutParams params = (LayoutParams) pieChart_V.getLayoutParams();
-        params.height = pieChart_V.getMeasuredWidth();
+        final LayoutParams params = (LayoutParams) pieChartView.getLayoutParams();
+        params.height = pieChartView.getMeasuredWidth();
     }
 
     public void setPieChartData(PieChartData pieChartData) {
-        pieChart_V.setPieChartData(pieChartData);
+        pieChartView.setPieChartData(pieChartData);
     }
 
     public void setTotalExpense(long totalExpense) {
-        totalExpense_TV.setText(MoneyFormatter.format(mainCurrency, totalExpense));
+        totalExpenseTextView.setText(MoneyFormatter.format(mainCurrency, totalExpense));
     }
 }
