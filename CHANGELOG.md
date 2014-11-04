@@ -1,5 +1,6 @@
 ###Version: 0.12.2 - Not Release Yet
 - ```fix``` Tags are now wrapping in transactions list to avoid strange symbols when they do not fit.
+- ```fix``` Can create income categories again.
 
 ###Version: 0.12.1
 - ```fix``` Fixed crash when refreshing currencies or trying to enter or edit a transaction.

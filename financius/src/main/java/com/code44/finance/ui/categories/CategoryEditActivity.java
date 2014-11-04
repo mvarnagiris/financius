@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.code44.finance.R;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.Tables;
@@ -25,6 +26,7 @@ public class CategoryEditActivity extends ModelEditActivity<Category> implements
 
     private EditText titleEditText;
     private View containerView;
+    private Button transactionTypeButton;
 
     public static void start(Context context, String categoryId) {
         final Intent intent = makeIntent(context, CategoryEditActivity.class, categoryId);
@@ -41,9 +43,11 @@ public class CategoryEditActivity extends ModelEditActivity<Category> implements
         // Get views
         titleEditText = (EditText) findViewById(R.id.titleEditText);
         containerView = findViewById(R.id.containerView);
+        transactionTypeButton = (Button) findViewById(R.id.transactionTypeButton);
         final Button colorButton = (Button) findViewById(R.id.colorButton);
 
         // Setup
+        transactionTypeButton.setOnClickListener(this);
         colorButton.setOnClickListener(this);
     }
 
@@ -95,18 +99,34 @@ public class CategoryEditActivity extends ModelEditActivity<Category> implements
             getWindow().setStatusBarColor(model.getColor());
             getWindow().setNavigationBarColor(model.getColor());
         }
+
+        transactionTypeButton.setText(model.getTransactionType() == TransactionType.Expense ? R.string.expense : R.string.income);
     }
 
     @Override public void onClick(View view) {
         switch (view.getId()) {
             case R.id.colorButton:
+                ensureModelUpdated(model);
                 SelectColorFragment.show(getSupportFragmentManager(), FRAGMENT_SELECT_COLOR, model.getColor(), this);
+                break;
+            case R.id.transactionTypeButton:
+                ensureModelUpdated(model);
+                onTransactionTypeChange();
                 break;
         }
     }
 
     @Override public void onColorSelected(int color) {
         model.setColor(color);
+        onModelLoaded(model);
+    }
+
+    private void onTransactionTypeChange() {
+        if (model.getTransactionType() == TransactionType.Expense) {
+            model.setTransactionType(TransactionType.Income);
+        } else {
+            model.setTransactionType(TransactionType.Expense);
+        }
         onModelLoaded(model);
     }
 }
