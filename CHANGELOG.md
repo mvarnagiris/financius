@@ -1,4 +1,4 @@
-###Version: 0.12.2 - Not Release Yet
+###Version: 0.13.0
 - ```new``` Landscape layout for categories report.
 - ```new``` Categories report breaks down each category into tags.
 - ```fix``` Tags are now wrapping in transactions list to avoid strange symbols when they do not fit.
