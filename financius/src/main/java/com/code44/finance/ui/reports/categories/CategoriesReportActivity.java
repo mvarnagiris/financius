@@ -6,33 +6,20 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.util.Pair;
 import android.widget.ListView;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.CategoriesReportAdapter;
 import com.code44.finance.adapters.NavigationAdapter;
-import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Currency;
-import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
-import com.code44.finance.graphs.pie.PieChartData;
-import com.code44.finance.graphs.pie.PieChartValue;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.reports.BaseReportActivity;
 import com.code44.finance.utils.ActiveInterval;
-import com.code44.finance.utils.CategoriesExpenseComparator;
 import com.code44.finance.utils.analytics.Analytics;
 import com.squareup.otto.Subscribe;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.inject.Inject;
 
@@ -45,6 +32,7 @@ public class CategoriesReportActivity extends BaseReportActivity implements Load
     private CategoriesReportView categoriesReportView;
 
     private CategoriesReportAdapter adapter;
+    private TransactionType transactionType = TransactionType.Expense;
 
     public static Intent makeIntent(Context context) {
         return makeIntentForActivity(context, CategoriesReportActivity.class);
@@ -110,46 +98,9 @@ public class CategoriesReportActivity extends BaseReportActivity implements Load
     }
 
     private void onTransactionsLoaded(Cursor cursor) {
-        final Map<Category, Long> expenses = new HashMap<>();
-        if (cursor.moveToFirst()) {
-            final Category noCategory = new Category();
-            noCategory.setId("0");
-            noCategory.setTitle(getString(R.string.no_category));
-            noCategory.setColor(getResources().getColor(R.color.text_neutral));
-            do {
-                final Transaction transaction = Transaction.from(cursor);
-                final Category category = transaction.getCategory() == null ? noCategory : transaction.getCategory();
-                if (transaction.includeInReports() && transaction.getTransactionType() == TransactionType.Expense && transaction.getTransactionState() == TransactionState.Confirmed) {
-                    final Long amount;
-                    if (transaction.getAccountFrom().getCurrency().getId().equals(mainCurrency.getId())) {
-                        amount = transaction.getAmount();
-                    } else {
-                        amount = Math.round(transaction.getAmount() * transaction.getAccountFrom().getCurrency().getExchangeRate());
-                    }
-
-                    Long totalExpenseForCategory = expenses.get(category);
-                    if (totalExpenseForCategory == null) {
-                        totalExpenseForCategory = amount;
-                    } else {
-                        totalExpenseForCategory += amount;
-                    }
-                    expenses.put(category, totalExpenseForCategory);
-                }
-            } while (cursor.moveToNext());
-        }
-
-        final TreeMap<Category, Long> sortedExpenses = new TreeMap<>(new CategoriesExpenseComparator(expenses));
-        sortedExpenses.putAll(expenses);
-        final List<Pair<Category, Long>> items = new ArrayList<>();
-        final PieChartData.Builder builder = PieChartData.builder();
-        for (Category category : sortedExpenses.descendingKeySet()) {
-            final Long amount = sortedExpenses.get(category);
-            builder.addValues(new PieChartValue(sortedExpenses.get(category), category.getColor()));
-            items.add(Pair.create(category, amount));
-        }
-        final PieChartData pieChartData = builder.build();
-        categoriesReportView.setPieChartData(pieChartData);
-        categoriesReportView.setTotalExpense(pieChartData.getTotalValue());
-        adapter.setItems(items, pieChartData.getTotalValue());
+        final CategoriesReportData categoriesReportData = new CategoriesReportData(this, cursor, mainCurrency, transactionType);
+        categoriesReportView.setPieChartData(categoriesReportData.getPieChartData());
+        categoriesReportView.setTotalExpense(categoriesReportData.getPieChartData().getTotalValue());
+        adapter.setData(categoriesReportData, categoriesReportData.getPieChartData().getTotalValue());
     }
 }

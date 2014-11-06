@@ -1,7 +1,6 @@
 package com.code44.finance.adapters;
 
 import android.content.Context;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,35 +9,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Currency;
+import com.code44.finance.ui.reports.categories.CategoriesReportData;
 import com.code44.finance.utils.MoneyFormatter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CategoriesReportAdapter extends BaseAdapter {
     private final Context context;
     private final Currency defaultCurrency;
-    private final List<Pair<Category, Long>> items;
+    private CategoriesReportData categoriesReportData;
     private long totalAmount = 0;
 
     public CategoriesReportAdapter(Context context, Currency defaultCurrency) {
         this.context = context;
         this.defaultCurrency = defaultCurrency;
-        this.items = new ArrayList<>();
     }
 
     @Override public int getCount() {
-        return items.size();
+        return categoriesReportData != null ? categoriesReportData.size() : 0;
     }
 
     @Override public Object getItem(int position) {
-        return items.get(position);
+        return categoriesReportData.get(position);
     }
 
     @Override public long getItemId(int position) {
-        return position;
+        return categoriesReportData.get(position).getCategory().getLocalId();
     }
 
     @Override public View getView(int position, View convertView, ViewGroup parent) {
@@ -50,21 +45,18 @@ public class CategoriesReportAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        final Pair<Category, Long> categoryAmountPair = items.get(position);
-        holder.color_IV.setColorFilter(categoryAmountPair.first.getColor());
-        final int percent = getPercent(categoryAmountPair.second);
+        final CategoriesReportData.CategoriesReportItem item = categoriesReportData.get(position);
+        holder.color_IV.setColorFilter(item.getCategory().getColor());
+        final int percent = getPercent(item.getAmount());
         holder.percent_TV.setText((percent == 0 ? "<1" : (percent == 100 && getCount() > 1 ? ">99" : percent)) + "%");
-        holder.title_TV.setText(categoryAmountPair.first.getTitle());
-        holder.amount_TV.setText(MoneyFormatter.format(defaultCurrency, categoryAmountPair.second));
+        holder.title_TV.setText(item.getCategory().getTitle());
+        holder.amount_TV.setText(MoneyFormatter.format(defaultCurrency, item.getAmount()));
 
         return convertView;
     }
 
-    public void setItems(List<Pair<Category, Long>> items, long totalAmount) {
-        this.items.clear();
-        if (items != null) {
-            this.items.addAll(items);
-        }
+    public void setData(CategoriesReportData categoriesReportData, long totalAmount) {
+        this.categoriesReportData = categoriesReportData;
         this.totalAmount = totalAmount;
         notifyDataSetChanged();
     }

@@ -1,14 +1,14 @@
-package com.code44.finance.utils;
+package com.code44.finance.ui.reports.categories;
 
 import com.code44.finance.data.model.Category;
 
 import java.util.Comparator;
 import java.util.Map;
 
-public class CategoriesExpenseComparator implements Comparator<Category> {
+class CategoryExpenseComparator implements Comparator<Category> {
     final Map<Category, Long> base;
 
-    public CategoriesExpenseComparator(Map<Category, Long> base) {
+    public CategoryExpenseComparator(Map<Category, Long> base) {
         this.base = base;
     }
 
