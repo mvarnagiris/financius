@@ -1,23 +1,16 @@
 package com.code44.finance.ui.reports.categories;
 
+import android.support.v4.util.Pair;
+
 import com.code44.finance.data.model.Category;
 
 import java.util.Comparator;
-import java.util.Map;
 
-class CategoryExpenseComparator implements Comparator<Category> {
-    final Map<Category, Long> base;
-
-    public CategoryExpenseComparator(Map<Category, Long> base) {
-        this.base = base;
-    }
-
-    @Override public int compare(Category category1, Category category2) {
-        final Long category1Total = base.get(category1);
-        final Long category2Total = base.get(category2);
-        if (category1Total > category2Total) {
+class CategoryExpenseComparator implements Comparator<Pair<Category, Long>> {
+    @Override public int compare(Pair<Category, Long> leftValue, Pair<Category, Long> rightValue) {
+        if (leftValue.second < rightValue.second) {
             return 1;
-        } else if (base.get(category1) < base.get(category2)) {
+        } else if (leftValue.second > rightValue.second) {
             return -1;
         } else {
             return 0;

@@ -2,7 +2,7 @@ package com.code44.finance.ui.reports.categories;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Pair;
+import android.support.v4.util.Pair;
 
 import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionState;
@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class CategoriesReportData {
     private final PieChartData pieChartData;
@@ -42,30 +41,32 @@ public class CategoriesReportData {
             } while (cursor.moveToNext());
         }
 
-        final TreeMap<Category, Long> sortedExpenses = new TreeMap<>(new CategoryExpenseComparator(categoryExpenses));
-        sortedExpenses.putAll(categoryExpenses);
+
+        final List<Pair<Category, Long>> sortedExpenses = new ArrayList<>();
+        for (Category category : categoryExpenses.keySet()) {
+            sortedExpenses.add(Pair.create(category, categoryExpenses.get(category)));
+        }
+        Collections.sort(sortedExpenses, new CategoryExpenseComparator());
 
         categoriesReportItems = new ArrayList<>();
         final PieChartData.Builder builder = PieChartData.builder();
-        for (Category category : sortedExpenses.descendingKeySet()) {
-            final Long amount = sortedExpenses.get(category);
-            builder.addValues(new PieChartValue(amount, category.getColor()));
+        for (Pair<Category, Long> category : sortedExpenses) {
+            final Long amount = category.second;
+            builder.addValues(new PieChartValue(amount, category.first.getColor()));
 
             final List<Pair<Tag, Long>> tags;
-            final Map<Tag, Long> tagExpenses = categoryTagExpenses.get(category);
+            final Map<Tag, Long> tagExpenses = categoryTagExpenses.get(category.first);
             if (tagExpenses != null) {
-                final TreeMap<Tag, Long> sortedTagExpenses = new TreeMap<>(new TagExpenseComparator(tagExpenses));
-                sortedTagExpenses.putAll(tagExpenses);
-
                 tags = new ArrayList<>();
-                for (Tag tag : sortedTagExpenses.descendingKeySet()) {
-                    tags.add(Pair.create(tag, sortedTagExpenses.get(tag)));
+                for (Tag tag : tagExpenses.keySet()) {
+                    tags.add(Pair.create(tag, tagExpenses.get(tag)));
                 }
+                Collections.sort(tags, new TagExpenseComparator());
             } else {
                 tags = Collections.emptyList();
             }
 
-            categoriesReportItems.add(new CategoriesReportItem(category, amount, tags));
+            categoriesReportItems.add(new CategoriesReportItem(category.first, amount, tags));
         }
         pieChartData = builder.build();
     }
@@ -123,7 +124,11 @@ public class CategoriesReportData {
                 tagExpense = new HashMap<>();
                 tagExpenseAmount = amount;
             } else {
-                tagExpenseAmount = tagExpense.get(tag) + amount;
+                tagExpenseAmount = tagExpense.get(tag);
+                if (tagExpenseAmount == null) {
+                    tagExpenseAmount = 0L;
+                }
+                tagExpenseAmount += amount;
             }
             tagExpense.put(tag, tagExpenseAmount);
             categoryTagExpenses.put(category, tagExpense);

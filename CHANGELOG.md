@@ -1,7 +1,9 @@
 ###Version: 0.12.2 - Not Release Yet
+- ```new``` Landscape layout for categories report.
+- ```new``` Categories report breaks down each category into tags.
 - ```fix``` Tags are now wrapping in transactions list to avoid strange symbols when they do not fit.
 - ```fix``` Can create income categories again.
-- ```new``` Landscape layout for categories report.
+- ```fix``` Fixed calculation differences between categories amount and transactions list.
 
 ###Version: 0.12.1
 - ```fix``` Fixed crash when refreshing currencies or trying to enter or edit a transaction.

@@ -9,7 +9,6 @@ import android.support.v4.content.Loader;
 import android.widget.ListView;
 
 import com.code44.finance.R;
-import com.code44.finance.adapters.CategoriesReportAdapter;
 import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.db.Tables;
