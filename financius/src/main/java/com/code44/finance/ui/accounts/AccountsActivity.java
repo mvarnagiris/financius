@@ -14,8 +14,8 @@ import com.code44.finance.R;
 import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
-import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.Model;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.BaseModelsAdapter;
@@ -70,11 +70,11 @@ public class AccountsActivity extends ModelListActivity {
         return Tables.Accounts.getQuery().asCursorLoader(this, AccountsProvider.uriAccounts());
     }
 
-    @Override protected BaseModel modelFrom(Cursor cursor) {
+    @Override protected Model modelFrom(Cursor cursor) {
         return Account.from(cursor);
     }
 
-    @Override protected void onModelClick(View view, int position, String modelId, BaseModel model) {
+    @Override protected void onModelClick(View view, int position, String modelId, Model model) {
         AccountActivity.start(this, modelId);
     }
 

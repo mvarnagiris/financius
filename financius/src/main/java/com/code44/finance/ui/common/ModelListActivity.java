@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.code44.finance.R;
-import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Model;
 import com.code44.finance.ui.DrawerActivity;
 
 import java.util.HashSet;
@@ -48,12 +48,12 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
         return intent;
     }
 
-    public static Intent makeMultiSelectIntent(Context context, Class<? extends ModelListActivity> activityClass, List<? extends BaseModel> selectedModels) {
+    public static Intent makeMultiSelectIntent(Context context, Class<? extends ModelListActivity> activityClass, List<? extends Model> selectedModels) {
         final Intent intent = makeIntentForActivity(context, activityClass);
         intent.putExtra(EXTRA_MODE, Mode.MULTI_SELECT);
         final Parcelable[] parcelables = new Parcelable[selectedModels.size()];
         int index = 0;
-        for (BaseModel model : selectedModels) {
+        for (Model model : selectedModels) {
             parcelables[index++] = model;
         }
         intent.putExtra(EXTRA_SELECTED_MODELS, parcelables);
@@ -103,7 +103,7 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
     }
 
     @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        final BaseModel model = modelFrom(adapter.getCursor());
+        final Model model = modelFrom(adapter.getCursor());
         if (mode == Mode.VIEW) {
             onModelClick(view, position, model.getId(), model);
         } else if (mode == Mode.SELECT) {
@@ -130,9 +130,9 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
 
     protected abstract CursorLoader getModelsCursorLoader();
 
-    protected abstract BaseModel modelFrom(Cursor cursor);
+    protected abstract Model modelFrom(Cursor cursor);
 
-    protected abstract void onModelClick(View view, int position, String modelId, BaseModel model);
+    protected abstract void onModelClick(View view, int position, String modelId, Model model);
 
     protected abstract void startModelEdit(String modelId);
 
@@ -156,9 +156,9 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
         // Setup
         adapter = createAdapter();
         if (mode == Mode.MULTI_SELECT) {
-            final Set<BaseModel> selectedModelsSet = new HashSet<>();
+            final Set<Model> selectedModelsSet = new HashSet<>();
             for (Parcelable parcelable : selectedModels) {
-                selectedModelsSet.add((BaseModel) parcelable);
+                selectedModelsSet.add((Model) parcelable);
             }
             adapter.setSelectedModels(selectedModelsSet);
         }
@@ -177,18 +177,18 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
         onSetupList(adapter);
     }
 
-    protected void onModelSelected(BaseModel model) {
+    protected void onModelSelected(Model model) {
         final Intent data = new Intent();
         data.putExtra(RESULT_EXTRA_MODEL, model);
         setResult(RESULT_OK, data);
         finish();
     }
 
-    protected void onMultipleModelsSelected(Set<BaseModel> selectedModels) {
+    protected void onMultipleModelsSelected(Set<Model> selectedModels) {
         final Intent data = new Intent();
         final Parcelable[] parcelables = new Parcelable[selectedModels.size()];
         int index = 0;
-        for (BaseModel model : selectedModels) {
+        for (Model model : selectedModels) {
             parcelables[index++] = model;
         }
         data.putExtra(RESULT_EXTRA_MODELS, parcelables);

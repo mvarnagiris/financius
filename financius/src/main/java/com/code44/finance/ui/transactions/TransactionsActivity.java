@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import com.code44.finance.R;
 import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.Model;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
@@ -86,11 +86,11 @@ public class TransactionsActivity extends ModelListActivity {
         return Tables.Transactions.getQuery().asCursorLoader(this, TransactionsProvider.uriTransactions());
     }
 
-    @Override protected BaseModel modelFrom(Cursor cursor) {
+    @Override protected Model modelFrom(Cursor cursor) {
         return Transaction.from(cursor);
     }
 
-    @Override protected void onModelClick(View view, int position, String modelId, BaseModel model) {
+    @Override protected void onModelClick(View view, int position, String modelId, Model model) {
         TransactionActivity.start(this, modelId);
     }
 

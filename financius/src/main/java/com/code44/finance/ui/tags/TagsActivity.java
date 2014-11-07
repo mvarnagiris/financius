@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.code44.finance.R;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Model;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.providers.TagsProvider;
 import com.code44.finance.ui.common.BaseModelsAdapter;
@@ -44,11 +44,11 @@ public class TagsActivity extends ModelListActivity {
         return Tables.Tags.getQuery().sortOrder(Tables.Tags.TITLE.getName()).asCursorLoader(this, TagsProvider.uriTags());
     }
 
-    @Override protected BaseModel modelFrom(Cursor cursor) {
+    @Override protected Model modelFrom(Cursor cursor) {
         return Tag.from(cursor);
     }
 
-    @Override protected void onModelClick(View view, int position, String modelId, BaseModel model) {
+    @Override protected void onModelClick(View view, int position, String modelId, Model model) {
         TagActivity.start(this, modelId);
     }
 

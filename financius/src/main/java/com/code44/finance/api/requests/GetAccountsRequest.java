@@ -11,8 +11,8 @@ import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
-import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.Model;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.IOUtils;
@@ -27,7 +27,7 @@ public class GetAccountsRequest extends GetRequest<AccountEntity> {
 
     public GetAccountsRequest(Context context, User user, Accounts accountsService) {
         super(null, context, user);
-        Preconditions.checkNotNull(accountsService, "Accounts cannot be null.");
+        Preconditions.notNull(accountsService, "Accounts cannot be null.");
 
         this.accountsService = accountsService;
         currencies = new HashMap<>();
@@ -41,7 +41,7 @@ public class GetAccountsRequest extends GetRequest<AccountEntity> {
         return accountsService.list(timestamp).execute().getItems();
     }
 
-    @Override protected BaseModel getModelFrom(AccountEntity entity) {
+    @Override protected Model getModelFrom(AccountEntity entity) {
         return Account.from(entity, getCurrencyFor(entity));
     }
 

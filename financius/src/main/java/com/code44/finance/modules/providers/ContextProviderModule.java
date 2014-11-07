@@ -15,7 +15,7 @@ public class ContextProviderModule {
     private final Context context;
 
     public ContextProviderModule(Context context) {
-        this.context = Preconditions.checkNotNull(context, "Context cannot be null.");
+        this.context = Preconditions.notNull(context, "Context cannot be null.");
     }
 
     @Provides @ApplicationContext Context provideApplicationContext() {

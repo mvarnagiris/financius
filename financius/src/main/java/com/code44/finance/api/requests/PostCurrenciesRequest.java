@@ -16,8 +16,8 @@ public class PostCurrenciesRequest extends PostRequest<CurrenciesBody> {
 
     public PostCurrenciesRequest(GcmRegistration gcmRegistration, Currencies currenciesService, List<Currency> currencies) {
         super(null, gcmRegistration);
-        Preconditions.checkNotNull(currenciesService, "Currencies service cannot be null.");
-        Preconditions.checkNotNull(currencies, "Currencies list cannot be null.");
+        Preconditions.notNull(currenciesService, "Currencies service cannot be null.");
+        Preconditions.notNull(currencies, "Currencies list cannot be null.");
 
         this.currenciesService = currenciesService;
         this.currencies = currencies;

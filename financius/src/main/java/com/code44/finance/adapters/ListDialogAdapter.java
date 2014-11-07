@@ -20,8 +20,8 @@ public class ListDialogAdapter extends BaseAdapter {
     private final List<ListDialogFragment.ListDialogItem> items;
 
     public ListDialogAdapter(Context context, List<ListDialogFragment.ListDialogItem> items) {
-        Preconditions.checkNotNull(context, "Context cannot be null.");
-        Preconditions.checkNotNull(items, "Items cannot be null.");
+        Preconditions.notNull(context, "Context cannot be null.");
+        Preconditions.notNull(items, "Items cannot be null.");
 
         this.context = context;
         this.items = items;

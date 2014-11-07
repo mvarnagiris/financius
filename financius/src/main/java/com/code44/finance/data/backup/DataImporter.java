@@ -10,7 +10,7 @@ public abstract class DataImporter implements Closeable {
     private final InputStream inputStream;
 
     public DataImporter(InputStream inputStream) {
-        this.inputStream = Preconditions.checkNotNull(inputStream, "InputStream cannot be null.");
+        this.inputStream = Preconditions.notNull(inputStream, "InputStream cannot be null.");
     }
 
     @Override public void close() throws IOException {

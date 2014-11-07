@@ -16,8 +16,8 @@ public class PostTagsRequest extends PostRequest<TagsBody> {
 
     public PostTagsRequest(GcmRegistration gcmRegistration, Tags tagsService, List<Tag> tags) {
         super(null, gcmRegistration);
-        Preconditions.checkNotNull(tagsService, "Tags service cannot be null.");
-        Preconditions.checkNotNull(tags, "Tags list cannot be null.");
+        Preconditions.notNull(tagsService, "Tags service cannot be null.");
+        Preconditions.notNull(tags, "Tags list cannot be null.");
 
         this.tagsService = tagsService;
         this.tags = tags;

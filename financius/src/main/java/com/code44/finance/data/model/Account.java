@@ -11,7 +11,7 @@ import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 
-public class Account extends BaseModel<AccountEntity> {
+public class Account extends Model<AccountEntity> {
     public static final Parcelable.Creator<Account> CREATOR = new Parcelable.Creator<Account>() {
         public Account createFromParcel(Parcel in) {
             return new Account(in);
@@ -174,9 +174,9 @@ public class Account extends BaseModel<AccountEntity> {
         setIncludeInTotals(entity.getIncludeInTotals());
     }
 
-    @Override public void checkValues() throws IllegalStateException {
-        super.checkValues();
-        Preconditions.checkNotNull(currency, "Currency cannot be null.");
+    @Override public void validate() throws IllegalStateException {
+        super.validate();
+        Preconditions.notNull(currency, "Currency cannot be null.");
     }
 
     public Currency getCurrency() {

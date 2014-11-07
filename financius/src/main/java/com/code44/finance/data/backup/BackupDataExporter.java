@@ -7,9 +7,9 @@ import android.net.Uri;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
-import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.Model;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.AccountsProvider;
@@ -200,7 +200,7 @@ public class BackupDataExporter extends DataExporter {
         return Query.create().projection(projection).from(context, uri).execute();
     }
 
-    private void writeBaseModel(BaseModel model, JsonWriter writer) throws IOException {
+    private void writeBaseModel(Model model, JsonWriter writer) throws IOException {
         writer.name("id").value(model.getId());
         writer.name("model_state").value(model.getModelState().asInt());
         writer.name("sync_state").value(model.getSyncState().asInt());

@@ -10,9 +10,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.code44.finance.R;
-import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Model;
 
-public abstract class ModelEditActivity<M extends BaseModel> extends ModelActivity<M> {
+public abstract class ModelEditActivity<M extends Model> extends ModelActivity<M> {
     private static final String STATE_MODEL = "STATE_MODEL";
 
     @Override protected void onCreate(Bundle savedInstanceState) {

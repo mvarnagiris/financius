@@ -16,10 +16,10 @@ public class CurrenciesApi {
     private final CurrenciesRequestService requestService;
 
     public CurrenciesApi(Executor executor, Context context, EventBus eventBus, CurrenciesRequestService requestService) {
-        Preconditions.checkNotNull(executor, "Executor cannot be null.");
-        Preconditions.checkNotNull(context, "Context cannot be null.");
-        Preconditions.checkNotNull(eventBus, "EventBus cannot be null.");
-        Preconditions.checkNotNull(requestService, "CurrenciesRequestService cannot be null.");
+        Preconditions.notNull(executor, "Executor cannot be null.");
+        Preconditions.notNull(context, "Context cannot be null.");
+        Preconditions.notNull(eventBus, "EventBus cannot be null.");
+        Preconditions.notNull(requestService, "CurrenciesRequestService cannot be null.");
 
         this.executor = executor;
         this.context = context;

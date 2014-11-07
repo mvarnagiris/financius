@@ -7,8 +7,8 @@ import com.code44.finance.api.User;
 import com.code44.finance.backend.endpoint.categories.Categories;
 import com.code44.finance.backend.endpoint.categories.model.CategoryEntity;
 import com.code44.finance.common.utils.Preconditions;
-import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Category;
+import com.code44.finance.data.model.Model;
 import com.code44.finance.data.providers.CategoriesProvider;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class GetCategoriesRequest extends GetRequest<CategoryEntity> {
 
     public GetCategoriesRequest(Context context, User user, Categories categoriesService) {
         super(null, context, user);
-        Preconditions.checkNotNull(categoriesService, "Categories cannot be null.");
+        Preconditions.notNull(categoriesService, "Categories cannot be null.");
 
         this.categoriesService = categoriesService;
     }
@@ -31,7 +31,7 @@ public class GetCategoriesRequest extends GetRequest<CategoryEntity> {
         return categoriesService.list(timestamp).execute().getItems();
     }
 
-    @Override protected BaseModel getModelFrom(CategoryEntity entity) {
+    @Override protected Model getModelFrom(CategoryEntity entity) {
         return Category.from(entity);
     }
 

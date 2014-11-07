@@ -21,11 +21,11 @@ public class ExchangeRatesRequest extends Request {
 
     public ExchangeRatesRequest(EventBus eventBus, Context context, CurrenciesRequestService requestService, List<String> fromCodes, String toCode) {
         super(eventBus);
-        Preconditions.checkNotNull(eventBus, "EventBus cannot be empty.");
-        Preconditions.checkNotNull(context, "Context cannot be null.");
-        Preconditions.checkNotNull(requestService, "Request service cannot be null.");
-        Preconditions.checkNotNull(fromCodes, "From codes cannot be null.");
-        Preconditions.checkNotEmpty(toCode, "To code cannot be empty.");
+        Preconditions.notNull(eventBus, "EventBus cannot be empty.");
+        Preconditions.notNull(context, "Context cannot be null.");
+        Preconditions.notNull(requestService, "Request service cannot be null.");
+        Preconditions.notNull(fromCodes, "From codes cannot be null.");
+        Preconditions.notEmpty(toCode, "To code cannot be empty.");
 
         this.context = context;
         this.requestService = requestService;

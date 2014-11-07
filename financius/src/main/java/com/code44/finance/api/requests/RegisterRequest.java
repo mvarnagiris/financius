@@ -22,13 +22,13 @@ public class RegisterRequest extends Request {
     public RegisterRequest(EventBus eventBus, Context context, Users usersService, User user, DBHelper dbHelper, String email, String googleId, String firstName, String lastName, String photoUrl, String coverUrl) {
         super(eventBus);
 
-        Preconditions.checkNotNull(eventBus, "EventBus cannot be null.");
-        Preconditions.checkNotNull(context, "Context cannot be null.");
-        Preconditions.checkNotNull(usersService, "Users cannot be null.");
-        Preconditions.checkNotNull(dbHelper, "DBHelper cannot be null.");
-        Preconditions.checkNotEmpty(email, "Email cannot be empty.");
-        Preconditions.checkNotEmpty(googleId, "Google Id cannot be empty.");
-        Preconditions.checkNotEmpty(firstName, "First name cannot be empty.");
+        Preconditions.notNull(eventBus, "EventBus cannot be null.");
+        Preconditions.notNull(context, "Context cannot be null.");
+        Preconditions.notNull(usersService, "Users cannot be null.");
+        Preconditions.notNull(dbHelper, "DBHelper cannot be null.");
+        Preconditions.notEmpty(email, "Email cannot be empty.");
+        Preconditions.notEmpty(googleId, "Google Id cannot be empty.");
+        Preconditions.notEmpty(firstName, "First name cannot be empty.");
 
         this.context = context;
         this.usersService = usersService;

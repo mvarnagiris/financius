@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Transaction extends BaseModel<TransactionEntity> {
+public class Transaction extends Model<TransactionEntity> {
     public static final Parcelable.Creator<Transaction> CREATOR = new Parcelable.Creator<Transaction>() {
         public Transaction createFromParcel(Parcel in) {
             return new Transaction(in);
@@ -295,25 +295,25 @@ public class Transaction extends BaseModel<TransactionEntity> {
         setIncludeInReports(entity.getIncludeInReports());
     }
 
-    @Override public void checkValues() throws IllegalStateException {
-        super.checkValues();
-        Preconditions.checkNotNull(transactionState, "Transaction state cannot be null.");
-        Preconditions.checkNotNull(transactionType, "Transaction type cannot be null.");
+    @Override public void validate() throws IllegalStateException {
+        super.validate();
+        Preconditions.notNull(transactionState, "Transaction state cannot be null.");
+        Preconditions.notNull(transactionType, "Transaction type cannot be null.");
 
         if (transactionState == TransactionState.Confirmed) {
             switch (transactionType) {
                 case Expense:
-                    Preconditions.checkNotNull(accountFrom, "AccountFrom cannot be null.");
+                    Preconditions.notNull(accountFrom, "AccountFrom cannot be null.");
                     Preconditions.checkTrue(accountFrom.hasId(), "AccountFrom must have an Id.");
                     break;
                 case Income:
-                    Preconditions.checkNotNull(accountTo, "AccountTo cannot be null.");
+                    Preconditions.notNull(accountTo, "AccountTo cannot be null.");
                     Preconditions.checkTrue(accountTo.hasId(), "AccountTo must have an Id.");
                     break;
                 case Transfer:
-                    Preconditions.checkNotNull(accountFrom, "AccountFrom cannot be null.");
+                    Preconditions.notNull(accountFrom, "AccountFrom cannot be null.");
                     Preconditions.checkTrue(accountFrom.hasId(), "AccountFrom must have an Id.");
-                    Preconditions.checkNotNull(accountTo, "AccountTo cannot be null.");
+                    Preconditions.notNull(accountTo, "AccountTo cannot be null.");
                     Preconditions.checkTrue(accountTo.hasId(), "AccountTo must have an Id.");
                     Preconditions.checkNull(category, "Transfer cannot have a category.");
                     Preconditions.checkTrue(accountTo.hasId(), "AccountTo must have an Id.");

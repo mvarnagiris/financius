@@ -16,8 +16,8 @@ public class PostAccountsRequest extends PostRequest<AccountsBody> {
 
     public PostAccountsRequest(GcmRegistration gcmRegistration, Accounts accountsService, List<Account> accounts) {
         super(null, gcmRegistration);
-        Preconditions.checkNotNull(accountsService, "Accounts service cannot be null.");
-        Preconditions.checkNotNull(accounts, "Accounts list cannot be null.");
+        Preconditions.notNull(accountsService, "Accounts service cannot be null.");
+        Preconditions.notNull(accounts, "Accounts list cannot be null.");
 
         this.accountsService = accountsService;
         this.accounts = accounts;

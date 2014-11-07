@@ -7,7 +7,7 @@ import com.code44.finance.api.User;
 import com.code44.finance.backend.endpoint.tags.Tags;
 import com.code44.finance.backend.endpoint.tags.model.TagEntity;
 import com.code44.finance.common.utils.Preconditions;
-import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Model;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.providers.TagsProvider;
 
@@ -18,7 +18,7 @@ public class GetTagsRequest extends GetRequest<TagEntity> {
 
     public GetTagsRequest(Context context, User user, Tags tagsService) {
         super(null, context, user);
-        Preconditions.checkNotNull(tagsService, "Tags service cannot be null.");
+        Preconditions.notNull(tagsService, "Tags service cannot be null.");
 
         this.tagsService = tagsService;
     }
@@ -31,7 +31,7 @@ public class GetTagsRequest extends GetRequest<TagEntity> {
         return tagsService.list(timestamp).execute().getItems();
     }
 
-    @Override protected BaseModel getModelFrom(TagEntity entity) {
+    @Override protected Model getModelFrom(TagEntity entity) {
         return Tag.from(entity);
     }
 

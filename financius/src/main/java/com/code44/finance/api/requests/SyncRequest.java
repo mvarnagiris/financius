@@ -49,16 +49,16 @@ public class SyncRequest extends Request {
 
     public SyncRequest(EventBus eventBus, Context context, DBHelper dbHelper, User user, GcmRegistration gcmRegistration, Currencies currenciesService, Categories categoriesService, Tags tagsService, Accounts accountsService, Transactions transactionsService) {
         super(eventBus);
-        Preconditions.checkNotNull(eventBus, "EventBus cannot be null.");
-        Preconditions.checkNotNull(context, "Context cannot be null.");
-        Preconditions.checkNotNull(dbHelper, "DBHelper cannot be null.");
-        Preconditions.checkNotNull(user, "User cannot be null.");
-        Preconditions.checkNotNull(gcmRegistration, "Gcm registration cannot be null.");
-        Preconditions.checkNotNull(currenciesService, "Currencies service cannot be null.");
-        Preconditions.checkNotNull(categoriesService, "Categories service cannot be null.");
-        Preconditions.checkNotNull(tagsService, "Tags service cannot be null.");
-        Preconditions.checkNotNull(accountsService, "Accounts service cannot be null.");
-        Preconditions.checkNotNull(transactionsService, "Transactions service cannot be null.");
+        Preconditions.notNull(eventBus, "EventBus cannot be null.");
+        Preconditions.notNull(context, "Context cannot be null.");
+        Preconditions.notNull(dbHelper, "DBHelper cannot be null.");
+        Preconditions.notNull(user, "User cannot be null.");
+        Preconditions.notNull(gcmRegistration, "Gcm registration cannot be null.");
+        Preconditions.notNull(currenciesService, "Currencies service cannot be null.");
+        Preconditions.notNull(categoriesService, "Categories service cannot be null.");
+        Preconditions.notNull(tagsService, "Tags service cannot be null.");
+        Preconditions.notNull(accountsService, "Accounts service cannot be null.");
+        Preconditions.notNull(transactionsService, "Transactions service cannot be null.");
 
         this.context = context;
         this.dbHelper = dbHelper;

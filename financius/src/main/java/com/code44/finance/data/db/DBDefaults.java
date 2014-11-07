@@ -21,8 +21,8 @@ public final class DBDefaults {
     private final SQLiteDatabase database;
 
     public DBDefaults(Context context, SQLiteDatabase database) {
-        Preconditions.checkNotNull(context, "Context cannot be null.");
-        Preconditions.checkNotNull(database, "Database cannot be null.");
+        Preconditions.notNull(context, "Context cannot be null.");
+        Preconditions.notNull(database, "Database cannot be null.");
 
         this.context = context;
         this.database = database;

@@ -11,7 +11,7 @@ import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 
-public class Category extends BaseModel<CategoryEntity> {
+public class Category extends Model<CategoryEntity> {
     public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>() {
         public Category createFromParcel(Parcel in) {
             return new Category(in);
@@ -136,10 +136,10 @@ public class Category extends BaseModel<CategoryEntity> {
         return new CategoryEntity();
     }
 
-    @Override public void checkValues() throws IllegalStateException {
-        super.checkValues();
-        Preconditions.checkNotEmpty(title, "Title cannot be empty");
-        Preconditions.checkNotNull(transactionType, "Category type cannot be null.");
+    @Override public void validate() throws IllegalStateException {
+        super.validate();
+        Preconditions.notEmpty(title, "Title cannot be empty");
+        Preconditions.notNull(transactionType, "Category type cannot be null.");
     }
 
     public String getTitle() {

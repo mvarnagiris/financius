@@ -13,10 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.code44.finance.R;
-import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Model;
 import com.code44.finance.ui.dialogs.DeleteDialogFragment;
 
-public abstract class ModelFragment<T extends BaseModel> extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public abstract class ModelFragment<T extends Model> extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final int REQUEST_DELETE = 6666;
 
     protected static final String ARG_MODEL_SERVER_ID = "ARG_MODEL_SERVER_ID";

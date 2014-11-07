@@ -15,9 +15,9 @@ import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.DBHelper;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
-import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.Model;
 import com.code44.finance.data.model.SyncState;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
@@ -221,7 +221,7 @@ public class BackupDataImporter extends DataImporter {
         }
     }
 
-    private void updateBaseModel(BaseModel model, JsonObject json) {
+    private void updateBaseModel(Model model, JsonObject json) {
         model.setId(json.get("id").getAsString());
         model.setModelState(ModelState.fromInt(json.get("model_state").getAsInt()));
         model.setSyncState(SyncState.fromInt(json.get("sync_state").getAsInt()));

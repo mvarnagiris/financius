@@ -12,8 +12,8 @@ import android.view.View;
 import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Category;
+import com.code44.finance.data.model.Model;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.ui.common.ModelListActivity;
@@ -58,11 +58,11 @@ public class CategoriesActivity extends ModelListActivity {
                 .asCursorLoader(this, CategoriesProvider.uriCategories());
     }
 
-    @Override protected BaseModel modelFrom(Cursor cursor) {
+    @Override protected Model modelFrom(Cursor cursor) {
         return Category.from(cursor);
     }
 
-    @Override protected void onModelClick(View view, int position, String modelId, BaseModel model) {
+    @Override protected void onModelClick(View view, int position, String modelId, Model model) {
         CategoryActivity.start(this, modelId);
     }
 

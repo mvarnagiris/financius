@@ -10,7 +10,7 @@ public abstract class DataExporter implements Closeable {
     private final OutputStream outputStream;
 
     protected DataExporter(OutputStream outputStream) {
-        this.outputStream = Preconditions.checkNotNull(outputStream, "OutputStream cannot be null.");
+        this.outputStream = Preconditions.notNull(outputStream, "OutputStream cannot be null.");
     }
 
     @Override public void close() throws IOException {

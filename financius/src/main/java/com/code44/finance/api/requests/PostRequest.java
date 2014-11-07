@@ -12,7 +12,7 @@ public abstract class PostRequest<T extends GenericJson> extends Request {
     public PostRequest(EventBus eventBus, GcmRegistration gcmRegistration) {
         super(eventBus);
 
-        Preconditions.checkNotNull(gcmRegistration, "GCM registration cannot be null.");
+        Preconditions.notNull(gcmRegistration, "GCM registration cannot be null.");
 
         this.gcmRegistration = gcmRegistration;
     }

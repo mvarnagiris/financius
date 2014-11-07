@@ -9,8 +9,8 @@ import com.code44.finance.backend.endpoint.currencies.Currencies;
 import com.code44.finance.backend.endpoint.currencies.model.CurrencyEntity;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.Model;
 import com.code44.finance.data.providers.CurrenciesProvider;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class GetCurrenciesRequest extends GetRequest<CurrencyEntity> {
 
     public GetCurrenciesRequest(Context context, User user, Currencies currenciesService) {
         super(null, context, user);
-        Preconditions.checkNotNull(currenciesService, "Currencies cannot be null.");
+        Preconditions.notNull(currenciesService, "Currencies cannot be null.");
 
         this.currenciesService = currenciesService;
     }
@@ -33,7 +33,7 @@ public class GetCurrenciesRequest extends GetRequest<CurrencyEntity> {
         return currenciesService.list(timestamp).execute().getItems();
     }
 
-    @Override protected BaseModel getModelFrom(CurrencyEntity entity) {
+    @Override protected Model getModelFrom(CurrencyEntity entity) {
         return Currency.from(entity);
     }
 

@@ -15,8 +15,8 @@ import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.api.currencies.ExchangeRatesRequest;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.Model;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.BaseModelsAdapter;
@@ -100,11 +100,11 @@ public class CurrenciesActivity extends ModelListActivity implements CompoundBut
         return Tables.Currencies.getQuery().asCursorLoader(this, CurrenciesProvider.uriCurrencies());
     }
 
-    @Override protected BaseModel modelFrom(Cursor cursor) {
+    @Override protected Model modelFrom(Cursor cursor) {
         return Currency.from(cursor);
     }
 
-    @Override protected void onModelClick(View view, int position, String modelId, BaseModel model) {
+    @Override protected void onModelClick(View view, int position, String modelId, Model model) {
         CurrencyActivity.start(this, modelId);
     }
 

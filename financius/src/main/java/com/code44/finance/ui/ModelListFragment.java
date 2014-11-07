@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.code44.finance.R;
-import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Model;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 
 import java.util.HashSet;
@@ -68,10 +68,10 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
         // Setup
         adapter = createAdapter(getActivity());
         if (mode == Mode.MULTI_SELECT) {
-            final Set<BaseModel> selectedModels = new HashSet<>();
+            final Set<Model> selectedModels = new HashSet<>();
             final Parcelable[] selectedModelsArray = getArguments().getParcelableArray(ARG_SELECTED_MODELS);
             for (Parcelable parcelable : selectedModelsArray) {
-                selectedModels.add((BaseModel) parcelable);
+                selectedModels.add((Model) parcelable);
             }
             adapter.setSelectedModels(selectedModels);
         }
@@ -130,7 +130,7 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
     }
 
     @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        final BaseModel model = modelFrom(adapter.getCursor());
+        final Model model = modelFrom(adapter.getCursor());
         if (mode == Mode.VIEW) {
             onModelClick(getActivity(), view, position, model.getId(), model);
         } else if (mode == Mode.SELECT) {
@@ -146,9 +146,9 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
 
     protected abstract CursorLoader getModelsCursorLoader(Context context);
 
-    protected abstract BaseModel modelFrom(Cursor cursor);
+    protected abstract Model modelFrom(Cursor cursor);
 
-    protected abstract void onModelClick(Context context, View view, int position, String modelServerId, BaseModel model);
+    protected abstract void onModelClick(Context context, View view, int position, String modelServerId, Model model);
 
     protected abstract void startModelEdit(Context context, String modelServerId);
 
@@ -177,7 +177,7 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
         return mode;
     }
 
-    protected void onSaveMultiChoice(Set<BaseModel> selectedModels) {
+    protected void onSaveMultiChoice(Set<Model> selectedModels) {
         if (onModelsSelectedListener != null) {
             onModelsSelectedListener.onModelsSelected(selectedModels);
         }
@@ -194,11 +194,11 @@ public abstract class ModelListFragment extends BaseFragment implements LoaderMa
     }
 
     public static interface OnModelSelectedListener {
-        public void onModelSelected(BaseModel model);
+        public void onModelSelected(Model model);
     }
 
     public static interface OnModelsSelectedListener {
-        public void onModelsSelected(Set<BaseModel> models);
+        public void onModelsSelected(Set<Model> models);
 
         public void onModelsSelectCanceled();
     }

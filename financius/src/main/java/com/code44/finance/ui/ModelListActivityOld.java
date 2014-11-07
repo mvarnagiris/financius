@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 
 import com.code44.finance.R;
-import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Model;
 
 import java.util.List;
 import java.util.Set;
@@ -33,12 +33,12 @@ public abstract class ModelListActivityOld extends DrawerActivity implements Mod
         return intent;
     }
 
-    public static Intent makeIntentMultiSelect(Context context, Class<? extends ModelListActivityOld> activityClass, List<? extends BaseModel> selectedModels) {
+    public static Intent makeIntentMultiSelect(Context context, Class<? extends ModelListActivityOld> activityClass, List<? extends Model> selectedModels) {
         final Intent intent = makeIntentForActivity(context, activityClass);
         intent.putExtra(EXTRA_MODE, ModelListFragment.Mode.MULTI_SELECT);
         final Parcelable[] parcelables = new Parcelable[selectedModels.size()];
         int index = 0;
-        for (BaseModel model : selectedModels) {
+        for (Model model : selectedModels) {
             parcelables[index++] = model;
         }
         intent.putExtra(EXTRA_SELECTED_MODELS, parcelables);
@@ -64,18 +64,18 @@ public abstract class ModelListActivityOld extends DrawerActivity implements Mod
         }
     }
 
-    @Override public void onModelSelected(BaseModel model) {
+    @Override public void onModelSelected(Model model) {
         final Intent data = new Intent();
         data.putExtra(RESULT_EXTRA_MODEL, model);
         setResult(RESULT_OK, data);
         finish();
     }
 
-    @Override public void onModelsSelected(Set<BaseModel> models) {
+    @Override public void onModelsSelected(Set<Model> models) {
         final Intent data = new Intent();
         final Parcelable[] parcelables = new Parcelable[models.size()];
         int index = 0;
-        for (BaseModel model : models) {
+        for (Model model : models) {
             parcelables[index++] = model;
         }
         data.putExtra(RESULT_EXTRA_MODELS, parcelables);

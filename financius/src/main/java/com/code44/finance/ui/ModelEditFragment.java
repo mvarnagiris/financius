@@ -12,9 +12,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.code44.finance.R;
-import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Model;
 
-public abstract class ModelEditFragment<T extends BaseModel> extends ModelFragment<T> {
+public abstract class ModelEditFragment<T extends Model> extends ModelFragment<T> {
     private static final String STATE_MODEL = "STATE_MODEL";
 
     private ModelEditListener listener;

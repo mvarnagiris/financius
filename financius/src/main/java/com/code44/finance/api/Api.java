@@ -34,15 +34,15 @@ public final class Api {
     private final HttpRequestInitializerFactory httpRequestInitializerFactory;
 
     public Api(Executor executor, Context context, EventBus eventBus, DBHelper dbHelper, User user, GcmRegistration gcmRegistration, HttpTransport httpTransport, JsonFactory jsonFactory, HttpRequestInitializerFactory httpRequestInitializerFactory) {
-        Preconditions.checkNotNull(executor, "Executor cannot be null.");
-        Preconditions.checkNotNull(context, "Context cannot be null.");
-        Preconditions.checkNotNull(eventBus, "EventBus cannot be null.");
-        Preconditions.checkNotNull(dbHelper, "DBHelper cannot be null.");
-        Preconditions.checkNotNull(user, "User cannot be null.");
-        Preconditions.checkNotNull(gcmRegistration, "GCM registration cannot be null.");
-        Preconditions.checkNotNull(httpTransport, "Http transport cannot be null.");
-        Preconditions.checkNotNull(jsonFactory, "Json factory cannot be null.");
-        Preconditions.checkNotNull(httpRequestInitializerFactory, "Http request initializer factory cannot be null.");
+        Preconditions.notNull(executor, "Executor cannot be null.");
+        Preconditions.notNull(context, "Context cannot be null.");
+        Preconditions.notNull(eventBus, "EventBus cannot be null.");
+        Preconditions.notNull(dbHelper, "DBHelper cannot be null.");
+        Preconditions.notNull(user, "User cannot be null.");
+        Preconditions.notNull(gcmRegistration, "GCM registration cannot be null.");
+        Preconditions.notNull(httpTransport, "Http transport cannot be null.");
+        Preconditions.notNull(jsonFactory, "Json factory cannot be null.");
+        Preconditions.notNull(httpRequestInitializerFactory, "Http request initializer factory cannot be null.");
 
         this.executor = executor;
         this.context = context;

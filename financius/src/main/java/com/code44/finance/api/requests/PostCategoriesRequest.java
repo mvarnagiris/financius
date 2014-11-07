@@ -16,8 +16,8 @@ public class PostCategoriesRequest extends PostRequest<CategoriesBody> {
 
     public PostCategoriesRequest(GcmRegistration gcmRegistration, Categories categoriesService, List<Category> categories) {
         super(null, gcmRegistration);
-        Preconditions.checkNotNull(categoriesService, "Categories service cannot be null.");
-        Preconditions.checkNotNull(categories, "Categories list cannot be null.");
+        Preconditions.notNull(categoriesService, "Categories service cannot be null.");
+        Preconditions.notNull(categories, "Categories list cannot be null.");
 
         this.categoriesService = categoriesService;
         this.categories = categories;

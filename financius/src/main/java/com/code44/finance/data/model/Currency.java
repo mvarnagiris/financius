@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.code44.finance.backend.endpoint.currencies.model.CurrencyEntity;
 import com.code44.finance.common.model.DecimalSeparator;
 import com.code44.finance.common.model.GroupSeparator;
 import com.code44.finance.common.model.SymbolPosition;
@@ -16,7 +15,7 @@ import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.utils.IOUtils;
 
-public class Currency extends BaseModel<CurrencyEntity> {
+public class Currency extends Model {
     public static final Parcelable.Creator<Currency> CREATOR = new Parcelable.Creator<Currency>() {
         public Currency createFromParcel(Parcel in) {
             return new Currency(in);
@@ -48,8 +47,16 @@ public class Currency extends BaseModel<CurrencyEntity> {
         setExchangeRate(1.0);
     }
 
-    public Currency(Parcel in) {
-        super(in);
+    private Currency(Parcel parcel) {
+        super(parcel);
+        setCode(parcel.readString());
+        setSymbol(parcel.readString());
+        setSymbolPosition(SymbolPosition.fromInt(parcel.readInt()));
+        setDecimalSeparator(DecimalSeparator.fromSymbol(parcel.readString()));
+        setGroupSeparator(GroupSeparator.fromSymbol(parcel.readString()));
+        setDecimalCount(parcel.readInt());
+        setDefault(parcel.readInt() != 0);
+        setExchangeRate(parcel.readDouble());
     }
 
     public static void updateDefaultCurrency(SQLiteDatabase database, Currency defaultCurrency) {
@@ -88,12 +95,6 @@ public class Currency extends BaseModel<CurrencyEntity> {
         return currency;
     }
 
-    public static Currency from(CurrencyEntity entity) {
-        final Currency currency = new Currency();
-        currency.updateFrom(entity);
-        return currency;
-    }
-
     @Override protected Column getLocalIdColumn() {
         return Tables.Currencies.LOCAL_ID;
     }
@@ -110,18 +111,8 @@ public class Currency extends BaseModel<CurrencyEntity> {
         return Tables.Currencies.SYNC_STATE;
     }
 
-    @Override protected void toValues(ContentValues values) {
-        values.put(Tables.Currencies.CODE.getName(), code);
-        values.put(Tables.Currencies.SYMBOL.getName(), symbol);
-        values.put(Tables.Currencies.SYMBOL_POSITION.getName(), symbolPosition.asInt());
-        values.put(Tables.Currencies.DECIMAL_SEPARATOR.getName(), decimalSeparator.symbol());
-        values.put(Tables.Currencies.GROUP_SEPARATOR.getName(), groupSeparator.symbol());
-        values.put(Tables.Currencies.DECIMAL_COUNT.getName(), decimalCount);
-        values.put(Tables.Currencies.IS_DEFAULT.getName(), isDefault);
-        values.put(Tables.Currencies.EXCHANGE_RATE.getName(), isDefault ? 1.0f : getExchangeRate());
-    }
-
-    @Override protected void toParcel(Parcel parcel) {
+    @Override public void writeToParcel(Parcel parcel, int flags) {
+        super.writeToParcel(parcel, flags);
         parcel.writeString(code);
         parcel.writeString(symbol);
         parcel.writeInt(symbolPosition.asInt());
@@ -132,32 +123,8 @@ public class Currency extends BaseModel<CurrencyEntity> {
         parcel.writeDouble(exchangeRate);
     }
 
-    @Override protected void toEntity(CurrencyEntity entity) {
-        entity.setCode(code);
-        entity.setSymbol(symbol);
-        entity.setSymbolPosition(symbolPosition.toString());
-        entity.setDecimalSeparator(decimalSeparator.toString());
-        entity.setGroupSeparator(groupSeparator.toString());
-        entity.setDecimalCount(decimalCount);
-        entity.setIsDefault(isDefault);
-    }
-
-    @Override protected CurrencyEntity createEntity() {
-        return new CurrencyEntity();
-    }
-
-    @Override protected void fromParcel(Parcel parcel) {
-        setCode(parcel.readString());
-        setSymbol(parcel.readString());
-        setSymbolPosition(SymbolPosition.fromInt(parcel.readInt()));
-        setDecimalSeparator(DecimalSeparator.fromSymbol(parcel.readString()));
-        setGroupSeparator(GroupSeparator.fromSymbol(parcel.readString()));
-        setDecimalCount(parcel.readInt());
-        setDefault(parcel.readInt() != 0);
-        setExchangeRate(parcel.readDouble());
-    }
-
-    @Override protected void fromCursor(Cursor cursor, String columnPrefixTable) {
+    @Override public void updateFrom(Cursor cursor, String columnPrefixTable) {
+        super.updateFrom(cursor, columnPrefixTable);
         int index;
 
         // Code
@@ -209,25 +176,56 @@ public class Currency extends BaseModel<CurrencyEntity> {
         }
     }
 
-    @Override protected void fromEntity(CurrencyEntity entity) {
-        setCode(entity.getCode());
-        setSymbol(entity.getSymbol());
-        setSymbolPosition(SymbolPosition.valueOf(entity.getSymbolPosition()));
-        setDecimalSeparator(DecimalSeparator.valueOf(entity.getDecimalSeparator()));
-        setGroupSeparator(GroupSeparator.valueOf(entity.getGroupSeparator()));
-        setDecimalCount(entity.getDecimalCount());
-        setDefault(entity.getDefault());
+    @Override public void prepareForDb() {
+        super.prepareForDb();
+
+        if (symbolPosition == null) {
+            symbolPosition = SymbolPosition.FarRight;
+        }
+
+        if (decimalSeparator == null) {
+            decimalSeparator = DecimalSeparator.Dot;
+        }
+
+        if (groupSeparator == null) {
+            groupSeparator = GroupSeparator.Comma;
+        }
+
+        if (decimalCount > 2) {
+            decimalCount = 2;
+        }
+
+        if (decimalCount < 0) {
+            decimalCount = 0;
+        }
+
+        if (Double.compare(exchangeRate, 0.0) < 0) {
+            exchangeRate = 1.0;
+        }
     }
 
-    @Override public void checkValues() throws IllegalStateException {
-        super.checkValues();
-        Preconditions.checkNotEmpty(code, "Code cannot be empty.");
-        Preconditions.checkLength(code, 3, "Code length must be 3.");
-        Preconditions.checkNotNull(symbolPosition, "SymbolPosition cannot be null.");
-        Preconditions.checkNotNull(decimalSeparator, "DecimalSeparator cannot be null.");
-        Preconditions.checkNotNull(groupSeparator, "GroupSeparator cannot be null.");
-        Preconditions.checkBetween(decimalCount, 0, 2, "Decimal count must be [0, 2]");
-        Preconditions.checkLess(exchangeRate, 0.0, "Exchange rate must be > 0");
+    @Override public void validate() {
+        super.validate();
+        Preconditions.notEmpty(code, "Code cannot be empty.");
+        Preconditions.lengthEquals(code, 3, "Code length must be 3.");
+        Preconditions.notNull(symbolPosition, "SymbolPosition cannot be null.");
+        Preconditions.notNull(decimalSeparator, "DecimalSeparator cannot be null.");
+        Preconditions.notNull(groupSeparator, "GroupSeparator cannot be null.");
+        Preconditions.between(decimalCount, 0, 2, "Decimal count must be [0, 2]");
+        Preconditions.notLess(exchangeRate, 0.0, "Exchange rate must be > 0");
+    }
+
+    @Override public ContentValues asValues() {
+        final ContentValues values = super.asValues();
+        values.put(Tables.Currencies.CODE.getName(), code);
+        values.put(Tables.Currencies.SYMBOL.getName(), symbol);
+        values.put(Tables.Currencies.SYMBOL_POSITION.getName(), symbolPosition.asInt());
+        values.put(Tables.Currencies.DECIMAL_SEPARATOR.getName(), decimalSeparator.symbol());
+        values.put(Tables.Currencies.GROUP_SEPARATOR.getName(), groupSeparator.symbol());
+        values.put(Tables.Currencies.DECIMAL_COUNT.getName(), decimalCount);
+        values.put(Tables.Currencies.IS_DEFAULT.getName(), isDefault);
+        values.put(Tables.Currencies.EXCHANGE_RATE.getName(), isDefault ? 1.0f : getExchangeRate());
+        return values;
     }
 
     public String getCode() {

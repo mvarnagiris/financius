@@ -9,7 +9,7 @@ import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 
-public class Tag extends BaseModel<TagEntity> {
+public class Tag extends Model<TagEntity> {
     public static final Creator<Tag> CREATOR = new Creator<Tag>() {
         public Tag createFromParcel(Parcel in) {
             return new Tag(in);
@@ -95,9 +95,9 @@ public class Tag extends BaseModel<TagEntity> {
         return new TagEntity();
     }
 
-    @Override public void checkValues() throws IllegalStateException {
-        super.checkValues();
-        Preconditions.checkNotEmpty(title, "Title cannot be empty.");
+    @Override public void validate() throws IllegalStateException {
+        super.validate();
+        Preconditions.notEmpty(title, "Title cannot be empty.");
     }
 
     public String getTitle() {

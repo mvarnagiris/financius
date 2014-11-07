@@ -9,7 +9,7 @@ import android.net.Uri;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.DBHelper;
-import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Model;
 import com.code44.finance.utils.IOUtils;
 
 import org.junit.Before;
@@ -49,7 +49,7 @@ public class BaseContentProviderTestCase {
         ShadowContentResolver.registerProvider(BaseProvider.getAuthority(TransactionsProvider.class), transactionsProvider);
     }
 
-    protected void insert(Uri uri, BaseModel model) {
+    protected void insert(Uri uri, Model model) {
         DataStore.insert().model(model).into(context, uri);
     }
 

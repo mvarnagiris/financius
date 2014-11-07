@@ -16,8 +16,8 @@ public class PostTransactionsRequest extends PostRequest<TransactionsBody> {
 
     public PostTransactionsRequest(GcmRegistration gcmRegistration, Transactions transactionsService, List<Transaction> transactions) {
         super(null, gcmRegistration);
-        Preconditions.checkNotNull(transactionsService, "Transactions service cannot be null.");
-        Preconditions.checkNotNull(transactions, "Transactions list cannot be null.");
+        Preconditions.notNull(transactionsService, "Transactions service cannot be null.");
+        Preconditions.notNull(transactions, "Transactions list cannot be null.");
 
         this.transactionsService = transactionsService;
         this.transactions = transactions;

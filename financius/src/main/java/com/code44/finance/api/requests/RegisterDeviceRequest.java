@@ -20,9 +20,9 @@ public class RegisterDeviceRequest extends Request {
     public RegisterDeviceRequest(Context context, Users usersService, GcmRegistration gcmRegistration) {
         super(null);
 
-        Preconditions.checkNotNull(context, "Context cannot be null.");
-        Preconditions.checkNotNull(usersService, "Users cannot be null.");
-        Preconditions.checkNotNull(gcmRegistration, "GCM Registration cannot be null.");
+        Preconditions.notNull(context, "Context cannot be null.");
+        Preconditions.notNull(usersService, "Users cannot be null.");
+        Preconditions.notNull(gcmRegistration, "GCM Registration cannot be null.");
 
         this.context = context;
         this.usersService = usersService;

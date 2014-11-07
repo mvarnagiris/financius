@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
-import com.code44.finance.data.model.BaseModel;
+import com.code44.finance.data.model.Model;
 import com.code44.finance.data.providers.ProviderUtils;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public final class DataStore {
     public static final class DataStoreInsert {
         private ContentValues values;
 
-        public DataStoreInsert model(BaseModel model) {
+        public DataStoreInsert model(Model model) {
             return values(model.asValues());
         }
 

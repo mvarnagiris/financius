@@ -9,29 +9,27 @@ import com.code44.finance.common.model.ModelState;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.db.Column;
-import com.google.api.client.json.GenericJson;
 
 import java.util.UUID;
 
-public abstract class BaseModel<E extends GenericJson> implements Parcelable {
+public abstract class Model implements Parcelable {
     private long localId;
     private String id;
     private ModelState modelState;
     private SyncState syncState;
 
-    protected BaseModel() {
-        setLocalId(0);
+    protected Model() {
+        localId = 0;
         setId(null);
         setModelState(ModelState.Normal);
         setSyncState(SyncState.None);
     }
 
-    protected BaseModel(Parcel parcel) {
-        setLocalId(parcel.readLong());
+    protected Model(Parcel parcel) {
+        localId = parcel.readLong();
         setId(parcel.readString());
         setModelState(ModelState.fromInt(parcel.readInt()));
         setSyncState(SyncState.fromInt(parcel.readInt()));
-        fromParcel(parcel);
     }
 
     @Override public int describeContents() {
@@ -39,23 +37,22 @@ public abstract class BaseModel<E extends GenericJson> implements Parcelable {
     }
 
     @Override public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeLong(getLocalId());
-        parcel.writeString(getId());
-        parcel.writeInt(getModelState().asInt());
-        parcel.writeInt(getSyncState().asInt());
-        toParcel(parcel);
+        parcel.writeLong(localId);
+        parcel.writeString(id);
+        parcel.writeInt(modelState.asInt());
+        parcel.writeInt(syncState.asInt());
     }
 
     @Override public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BaseModel)) return false;
+        if (!(o instanceof Model)) return false;
 
-        final BaseModel baseModel = (BaseModel) o;
+        final Model model = (Model) o;
 
         // We are only checking id, because otherwise some parts of the app might misbehave
         // For example BaseModelAdapter contains Set<BaseModel> selectedItems
         // noinspection RedundantIfStatement
-        return !(StringUtils.isEmpty(id) || StringUtils.isEmpty(baseModel.id)) && id.equals(baseModel.id);
+        return !(StringUtils.isEmpty(id) || StringUtils.isEmpty(model.id)) && id.equals(model.id);
 
     }
 
@@ -72,78 +69,41 @@ public abstract class BaseModel<E extends GenericJson> implements Parcelable {
 
     protected abstract Column getSyncStateColumn();
 
-    protected abstract void toValues(ContentValues values);
-
-    protected abstract void toParcel(Parcel parcel);
-
-    protected abstract void toEntity(E entity);
-
-    protected abstract E createEntity();
-
-    protected abstract void fromParcel(Parcel parcel);
-
-    protected abstract void fromCursor(Cursor cursor, String columnPrefixTable);
-
-    protected abstract void fromEntity(E entity);
-
-    public ContentValues asValues() {
+    public void prepareForDb() {
         if (StringUtils.isEmpty(id)) {
-            setId(UUID.randomUUID().toString());
+            id = UUID.randomUUID().toString();
         }
 
-        checkValues();
+        if (modelState == null) {
+            modelState = ModelState.Normal;
+        }
+
+        if (syncState == null) {
+            syncState = SyncState.None;
+        }
+    }
+
+    public void validate() {
+        Preconditions.notEmpty(id, "Id cannot be empty.");
+        Preconditions.notNull(modelState, "ModelState cannot be null.");
+        Preconditions.notNull(syncState, "SyncState cannot be null.");
+    }
+
+    public ContentValues asValues() {
+        prepareForDb();
+        validate();
 
         final ContentValues values = new ContentValues();
 
-        // Local id
         if (localId != 0) {
             values.put(getLocalIdColumn().getName(), localId);
         }
 
-        // Server id
         values.put(getIdColumn().getName(), id);
-
-        // Model state
         values.put(getModelStateColumn().getName(), modelState.asInt());
-
-        // Sync state
         values.put(getSyncStateColumn().getName(), syncState.asInt());
 
-        // Other values
-        toValues(values);
-
         return values;
-    }
-
-    public E asEntity() {
-        checkValues();
-
-        final E entity = createEntity();
-
-        // Id
-        entity.put("id", id);
-
-        // Model state
-        entity.put("model_state", modelState.toString());
-
-        // Other values
-        toEntity(entity);
-
-        return entity;
-    }
-
-    public void checkValues() throws IllegalStateException {
-        Preconditions.checkNotEmpty(id, "Id cannot be empty.");
-        Preconditions.checkNotNull(modelState, "ModelState cannot be null.");
-        Preconditions.checkNotNull(syncState, "SyncState cannot be null.");
-    }
-
-    public long getLocalId() {
-        return localId;
-    }
-
-    public void setLocalId(long localId) {
-        this.localId = localId;
     }
 
     public String getId() {
@@ -176,7 +136,7 @@ public abstract class BaseModel<E extends GenericJson> implements Parcelable {
         // Local id
         index = cursor.getColumnIndex(getLocalIdColumn().getName(columnPrefixTable));
         if (index >= 0) {
-            setLocalId(cursor.getLong(index));
+            localId = cursor.getLong(index);
         }
 
         // Id
@@ -196,19 +156,9 @@ public abstract class BaseModel<E extends GenericJson> implements Parcelable {
         if (index >= 0) {
             setSyncState(SyncState.fromInt(cursor.getInt(index)));
         }
-
-        // Other values
-        fromCursor(cursor, columnPrefixTable);
     }
 
     public boolean hasId() {
         return !StringUtils.isEmpty(id);
-    }
-
-    protected void updateFrom(E entity) {
-        setId((String) entity.get("id"));
-        setModelState(ModelState.valueOf((String) entity.get("model_state")));
-        setSyncState(SyncState.Synced);
-        fromEntity(entity);
     }
 }

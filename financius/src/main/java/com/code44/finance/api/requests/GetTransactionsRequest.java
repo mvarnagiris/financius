@@ -11,8 +11,8 @@ import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
-import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Category;
+import com.code44.finance.data.model.Model;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CategoriesProvider;
@@ -30,7 +30,7 @@ public class GetTransactionsRequest extends GetRequest<TransactionEntity> {
 
     public GetTransactionsRequest(Context context, User user, Transactions transactions) {
         super(null, context, user);
-        Preconditions.checkNotNull(transactions, "Transactions cannot be null.");
+        Preconditions.notNull(transactions, "Transactions cannot be null.");
 
         this.transactionsService = transactions;
         accounts = new HashMap<>();
@@ -45,7 +45,7 @@ public class GetTransactionsRequest extends GetRequest<TransactionEntity> {
         return transactionsService.list(timestamp).execute().getItems();
     }
 
-    @Override protected BaseModel getModelFrom(TransactionEntity entity) {
+    @Override protected Model getModelFrom(TransactionEntity entity) {
         return Transaction.from(entity, getAccountFor(entity.getAccountFromId()), getAccountFor(entity.getAccountToId()), getCategoryFor(entity));
     }
 
