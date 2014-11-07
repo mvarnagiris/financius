@@ -201,7 +201,7 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
     }
 
     protected void onSetupList(BaseModelsAdapter adapter) {
-        final ListView listView = (ListView) findViewById(R.id.list);
+        final ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
     }

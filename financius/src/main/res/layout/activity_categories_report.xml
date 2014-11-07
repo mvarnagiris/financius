@@ -1,37 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="?android:actionBarSize"
     android:orientation="vertical">
 
-    <com.code44.finance.views.ActiveIntervalView
+    <include layout="@layout/toolbar" />
+
+    <com.code44.finance.ui.common.ActiveIntervalView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary"
+        android:background="?colorPrimary"
         android:elevation="@dimen/elevation_header"
         tools:ignore="UnusedAttribute" />
 
-    <FrameLayout
+    <com.code44.finance.ui.reports.categories.CategoriesReportView
+        android:id="@+id/categoriesReportView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/action_bar_size_2x"
         android:background="@color/primary"
         android:elevation="@dimen/elevation_header"
-        android:padding="@dimen/keyline"
-        tools:ignore="UnusedAttribute">
-
-        <com.code44.finance.views.CategoriesReportView
-            android:id="@+id/categoriesReport_V"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </FrameLayout>
+        app:viewBackgroundTheme="dark"
+        tools:ignore="UnusedAttribute" />
 
     <ListView
-        android:id="@id/list"
+        android:id="@id/listView"
         style="@style/ListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 
 </LinearLayout>

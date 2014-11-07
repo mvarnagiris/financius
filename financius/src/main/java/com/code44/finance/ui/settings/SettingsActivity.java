@@ -48,7 +48,7 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
         setContentView(R.layout.activity_settings);
 
         // Get views
-        final ListView list_V = (ListView) findViewById(R.id.list);
+        final ListView list_V = (ListView) findViewById(R.id.listView);
 
         // Setup
         adapter = new SettingsAdapter(this);

@@ -1,4 +1,4 @@
-package com.code44.finance.views;
+package com.code44.finance.ui.common;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -16,14 +16,10 @@ import com.squareup.otto.Subscribe;
 import javax.inject.Inject;
 
 public class ActiveIntervalView extends LinearLayout implements View.OnClickListener {
-    private final Button interval_B;
+    private final Button intervalButton;
 
     @Inject ActiveInterval activeInterval;
     @Inject EventBus eventBus;
-
-    @SuppressWarnings("UnusedDeclaration") public ActiveIntervalView(Context context) {
-        this(context, null);
-    }
 
     public ActiveIntervalView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -31,30 +27,34 @@ public class ActiveIntervalView extends LinearLayout implements View.OnClickList
 
     public ActiveIntervalView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        inflate(context, R.layout.v_interval, this);
-        App.with(context).inject(this);
+        inflate(context, R.layout.view_active_interval, this);
+        if (!isInEditMode()) {
+            App.with(context).inject(this);
+        }
 
         // Get views
-        final ImageButton prev_IB = (ImageButton) findViewById(R.id.prev_IB);
-        final ImageButton next_IB = (ImageButton) findViewById(R.id.next_IB);
-        interval_B = (Button) findViewById(R.id.interval_B);
+        final ImageButton previousImageButton = (ImageButton) findViewById(R.id.previousImageButton);
+        final ImageButton nextImageButton = (ImageButton) findViewById(R.id.nextImageButton);
+        intervalButton = (Button) findViewById(R.id.intervalButton);
 
         // Setup
-        prev_IB.setOnClickListener(this);
-        next_IB.setOnClickListener(this);
-        interval_B.setOnClickListener(this);
-        eventBus.register(this);
+        previousImageButton.setOnClickListener(this);
+        nextImageButton.setOnClickListener(this);
+        intervalButton.setOnClickListener(this);
+        if (!isInEditMode()) {
+            eventBus.register(this);
+        }
     }
 
     @Override public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.prev_IB:
+            case R.id.previousImageButton:
                 previous();
                 break;
-            case R.id.next_IB:
+            case R.id.nextImageButton:
                 next();
                 break;
-            case R.id.interval_B:
+            case R.id.intervalButton:
                 reset();
                 break;
         }
@@ -65,7 +65,7 @@ public class ActiveIntervalView extends LinearLayout implements View.OnClickList
     }
 
     private void update(ActiveInterval activeInterval) {
-        interval_B.setText(activeInterval.getTitle());
+        intervalButton.setText(activeInterval.getTitle());
     }
 
     private void previous() {

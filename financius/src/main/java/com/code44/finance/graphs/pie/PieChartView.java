@@ -3,13 +3,13 @@ package com.code44.finance.graphs.pie;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.code44.finance.R;
+import com.code44.finance.ui.common.ViewBackgroundTheme;
 
 import java.util.Arrays;
 import java.util.List;
@@ -219,6 +219,14 @@ public class PieChartView extends View {
         invalidate();
     }
 
+    public void setViewBackgroundTheme(ViewBackgroundTheme viewBackgroundTheme) {
+        final int color = getResources().getColor(viewBackgroundTheme == ViewBackgroundTheme.Light ? R.color.dark : R.color.bg_primary);
+        setOutlineColor(color);
+        setInlineColor(color);
+        setEmptyColor(color);
+        invalidate();
+    }
+
     private boolean hasOutline() {
         return Float.compare(outlinePaint.getStrokeWidth(), 0) > 0;
     }
@@ -230,14 +238,17 @@ public class PieChartView extends View {
     private void applyStyle(Context context, AttributeSet attrs) {
         final TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.PieChartView, 0, 0);
         try {
+            final ViewBackgroundTheme viewBackgroundTheme = ViewBackgroundTheme.from(a.getInteger(R.styleable.PieChartView_viewBackgroundTheme, 0));
+            final int color = getResources().getColor(viewBackgroundTheme == ViewBackgroundTheme.Light ? R.color.dark : R.color.bg_primary);
+
             setType(Type.from(a.getInteger(R.styleable.PieChartView_type, 0)));
             setSizeBasedOn(SizeBasedOn.from(a.getInteger(R.styleable.PieChartView_sizeBasedOn, 0)));
             setDonutWidthRatio(a.getFloat(R.styleable.PieChartView_donutWidthRatio, 0.3f));
             setOutlineWidth(a.getDimension(R.styleable.PieChartView_outlineWidth, getResources().getDimension(R.dimen.divider)));
-            setOutlineColor(a.getColor(R.styleable.PieChartView_outlineColor, Color.WHITE));
+            setOutlineColor(a.getColor(R.styleable.PieChartView_outlineColor, color));
             setInlineWidth(a.getDimension(R.styleable.PieChartView_inlineWidth, outlinePaint.getStrokeWidth()));
-            setInlineColor(a.getColor(R.styleable.PieChartView_inlineColor, Color.WHITE));
-            setEmptyColor(a.getColor(R.styleable.PieChartView_emptyColor, Color.WHITE));
+            setInlineColor(a.getColor(R.styleable.PieChartView_inlineColor, color));
+            setEmptyColor(a.getColor(R.styleable.PieChartView_emptyColor, color));
         } finally {
             a.recycle();
         }

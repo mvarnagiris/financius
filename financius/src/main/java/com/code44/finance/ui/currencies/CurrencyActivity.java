@@ -109,7 +109,7 @@ public class CurrencyActivity extends ModelActivity<Currency> implements View.On
         exchangeRateTextView = (TextView) findViewById(R.id.exchangeRateTextView);
         loadingView = (SmoothProgressBar) findViewById(R.id.loadingView);
         refreshRateButton = (FabImageButton) findViewById(R.id.refreshRateButton);
-        final ListView listView = (ListView) findViewById(R.id.list);
+        final ListView listView = (ListView) findViewById(R.id.listView);
 
         // Setup
         adapter = new CurrencyAccountsAdapter(this);

@@ -1,7 +1,9 @@
-package com.code44.finance.views;
+package com.code44.finance.ui.overview;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -11,17 +13,18 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartView;
 import com.code44.finance.qualifiers.Main;
+import com.code44.finance.ui.common.ViewBackgroundTheme;
 import com.code44.finance.utils.LayoutType;
 import com.code44.finance.utils.MoneyFormatter;
 
 import javax.inject.Inject;
 
 public class OverviewGraphView extends LinearLayout {
+    private final PieChartView pieChartView;
+    private final TextView totalExpenseTextView;
+
     @Inject @Main Currency mainCurrency;
     @Inject LayoutType layoutType;
-
-    private PieChartView pieChartView;
-    private TextView totalExpenseView;
 
     public OverviewGraphView(Context context) {
         this(context, null);
@@ -33,31 +36,30 @@ public class OverviewGraphView extends LinearLayout {
 
     public OverviewGraphView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        setBackgroundResource(R.drawable.btn_borderless);
+        setGravity(Gravity.CENTER_VERTICAL);
+        setOrientation(VERTICAL);
+        final int padding = getResources().getDimensionPixelSize(R.dimen.keyline);
+        setPadding(padding, padding, padding, padding);
+        inflate(context, R.layout.view_overview_graph, this);
         if (!isInEditMode()) {
             App.with(context).inject(this);
         }
-    }
-
-    @Override protected void onFinishInflate() {
-        super.onFinishInflate();
 
         // Get views
         final TextView titleView = (TextView) findViewById(R.id.titleTextView);
-        pieChartView = (PieChartView) findViewById(R.id.pieChart);
-        totalExpenseView = (TextView) findViewById(R.id.totalExpense);
+        pieChartView = (PieChartView) findViewById(R.id.pieChartView);
+        totalExpenseTextView = (TextView) findViewById(R.id.totalExpenseTextView);
 
         // Setup
-        pieChartView.setEmptyColor(totalExpenseView.getCurrentTextColor());
+        applyStyle(context, attrs);
+        pieChartView.setEmptyColor(totalExpenseTextView.getCurrentTextColor());
         setPieChartData(null);
         if (isInEditMode()) {
-            totalExpenseView.setText("0.00 $");
+            totalExpenseTextView.setText("0.00 $");
         } else {
             setTotalExpense(0);
-            if (layoutType.isLandscape()) {
-                pieChartView.setOutlineColor(getResources().getColor(R.color.text_secondary));
-                pieChartView.setInlineColor(getResources().getColor(R.color.text_secondary));
-                totalExpenseView.setTextColor(getResources().getColor(R.color.text_secondary));
-            } else {
+            if (!layoutType.isLandscape()) {
                 titleView.setVisibility(GONE);
             }
         }
@@ -74,6 +76,19 @@ public class OverviewGraphView extends LinearLayout {
     }
 
     public void setTotalExpense(long totalExpense) {
-        totalExpenseView.setText(MoneyFormatter.format(mainCurrency, totalExpense));
+        totalExpenseTextView.setText(MoneyFormatter.format(mainCurrency, totalExpense));
+    }
+
+    private void applyStyle(Context context, AttributeSet attrs) {
+        final TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.PieChartView, 0, 0);
+        try {
+            final ViewBackgroundTheme viewBackgroundTheme = ViewBackgroundTheme.from(a.getInteger(R.styleable.OverviewGraphView_viewBackgroundTheme, 0));
+            pieChartView.setViewBackgroundTheme(viewBackgroundTheme);
+
+            final int textColor = getResources().getColor(viewBackgroundTheme == ViewBackgroundTheme.Light ? R.color.text_primary : R.color.text_primary_inverse);
+            totalExpenseTextView.setTextColor(textColor);
+        } finally {
+            a.recycle();
+        }
     }
 }

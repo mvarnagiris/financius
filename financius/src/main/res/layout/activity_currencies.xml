@@ -45,7 +45,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/listView"
         style="@style/ListView"
         android:layout_above="@+id/settingsContainerView"
         android:layout_below="@+id/toolbar" />

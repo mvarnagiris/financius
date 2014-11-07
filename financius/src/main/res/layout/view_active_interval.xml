@@ -1,42 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    tools:background="?android:colorPrimary">
+    tools:background="?colorPrimary"
+    tools:ignore="UnusedAttribute">
 
     <ImageButton
-        android:id="@+id/prev_IB"
+        android:id="@+id/previousImageButton"
         style="@style/Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:contentDescription="@string/previous"
-        android:minWidth="@dimen/recommended_touch_size"
+        android:minWidth="?actionBarSize"
         android:scaleType="centerInside"
         android:src="@drawable/ic_action_chevron_left" />
 
     <Button
-        android:id="@+id/interval_B"
+        android:id="@+id/intervalButton"
         style="@style/Button.Borderless"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:gravity="center"
+        android:minHeight="?actionBarSize"
         android:textAllCaps="false"
         android:textAppearance="@style/Text.Title"
         android:textColor="@color/text_primary_inverse"
         tools:text="September" />
 
     <ImageButton
-        android:id="@+id/next_IB"
+        android:id="@+id/nextImageButton"
         style="@style/Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:contentDescription="@string/next"
-        android:minWidth="@dimen/recommended_touch_size"
+        android:minWidth="?actionBarSize"
         android:scaleType="centerInside"
         android:src="@drawable/ic_action_chevron_right" />
 
-</LinearLayout>
+</merge>

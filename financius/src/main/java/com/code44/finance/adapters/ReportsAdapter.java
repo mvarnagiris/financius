@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.code44.finance.R;
 import com.code44.finance.graphs.pie.PieChartData;
-import com.code44.finance.views.CategoriesReportView;
+import com.code44.finance.ui.reports.categories.CategoriesReportView;
 
 public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHolder> {
     private final Context context;
@@ -27,7 +27,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
         switch (position) {
             case 0:
             case 1:
-                cardView.addView(new CategoriesReportView(context));
+//                cardView.addView(new CategoriesReportView(context));
                 break;
             default:
                 throw new IllegalArgumentException("Position " + position + " is not supported.");
