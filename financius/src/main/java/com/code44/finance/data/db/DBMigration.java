@@ -11,6 +11,7 @@ import com.code44.finance.common.model.ModelState;
 import com.code44.finance.common.model.SymbolPosition;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
+import com.code44.finance.data.Query;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Currency;
@@ -18,6 +19,7 @@ import com.code44.finance.data.model.SyncState;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
+import com.code44.finance.utils.IOUtils;
 
 import java.util.UUID;
 
@@ -52,6 +54,26 @@ public final class DBMigration {
             db.execSQL("drop table " + tempTransactionsTable);
 
             TransactionsProvider.updateAllAccountsBalances(db);
+
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    /**
+     * 57 - v0.14.0
+     */
+    public static void upgradeV20(SQLiteDatabase db) {
+        try {
+            db.beginTransaction();
+
+            v20FixCategoriesIds(db);
+            v20FixCurrencies(db);
+            v20FixAccounts(db);
+            v20FixCategories(db);
+            v20FixTags(db);
+            v20FixTransactions(db);
 
             db.setTransactionSuccessful();
         } finally {
@@ -270,5 +292,53 @@ public final class DBMigration {
         }
 
         return tempTableName;
+    }
+
+    private static void v20FixCategoriesIds(SQLiteDatabase db) {
+        final Cursor cursor = Query.create()
+                .projection(Tables.Categories.ID.getName())
+                .from(db, Tables.Categories.TABLE_NAME)
+                .execute();
+
+        if (cursor != null && cursor.moveToFirst()) {
+            final ContentValues values = new ContentValues();
+            final String[] args = new String[1];
+            do {
+                final String oldId = cursor.getString(0);
+                final String newId = UUID.randomUUID().toString();
+
+                args[0] = oldId;
+
+                values.clear();
+                values.put(Tables.Categories.ID.getName(), newId);
+                db.update(Tables.Categories.TABLE_NAME, values, Tables.Categories.ID + "=?", args);
+
+                values.clear();
+                values.put(Tables.Transactions.CATEGORY_ID.getName(), newId);
+                db.update(Tables.Transactions.TABLE_NAME, values, Tables.Transactions.CATEGORY_ID + "=?", args);
+            } while (cursor.moveToNext());
+        }
+
+        IOUtils.closeQuietly(cursor);
+    }
+
+    private static void v20FixCurrencies(SQLiteDatabase db) {
+        // TODO Implement
+    }
+
+    private static void v20FixAccounts(SQLiteDatabase db) {
+        // TODO Implement
+    }
+
+    private static void v20FixCategories(SQLiteDatabase db) {
+        // TODO Implement
+    }
+
+    private static void v20FixTags(SQLiteDatabase db) {
+        // TODO Implement
+    }
+
+    private static void v20FixTransactions(SQLiteDatabase db) {
+        // TODO Implement
     }
 }
