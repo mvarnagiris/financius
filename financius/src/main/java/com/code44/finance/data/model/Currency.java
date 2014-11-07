@@ -212,7 +212,7 @@ public class Currency extends Model {
         Preconditions.notNull(decimalSeparator, "DecimalSeparator cannot be null.");
         Preconditions.notNull(groupSeparator, "GroupSeparator cannot be null.");
         Preconditions.between(decimalCount, 0, 2, "Decimal count must be [0, 2]");
-        Preconditions.notLess(exchangeRate, 0.0, "Exchange rate must be > 0");
+        Preconditions.moreOrEquals(exchangeRate, 0.0, "Exchange rate must be > 0");
     }
 
     @Override public ContentValues asValues() {

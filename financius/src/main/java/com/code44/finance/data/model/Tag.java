@@ -4,12 +4,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 
-import com.code44.finance.backend.endpoint.tags.model.TagEntity;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 
-public class Tag extends Model<TagEntity> {
+public class Tag extends Model {
     public static final Creator<Tag> CREATOR = new Creator<Tag>() {
         public Tag createFromParcel(Parcel in) {
             return new Tag(in);
@@ -27,8 +26,9 @@ public class Tag extends Model<TagEntity> {
         setTitle(null);
     }
 
-    public Tag(Parcel in) {
-        super(in);
+    public Tag(Parcel parcel) {
+        super(parcel);
+        setTitle(parcel.readString());
     }
 
     public static Tag from(Cursor cursor) {
@@ -36,12 +36,6 @@ public class Tag extends Model<TagEntity> {
         if (cursor.getCount() > 0) {
             tag.updateFrom(cursor, null);
         }
-        return tag;
-    }
-
-    public static Tag from(TagEntity entity) {
-        final Tag tag = new Tag();
-        tag.updateFrom(entity);
         return tag;
     }
 
@@ -61,23 +55,24 @@ public class Tag extends Model<TagEntity> {
         return Tables.Tags.SYNC_STATE;
     }
 
-    @Override protected void toValues(ContentValues values) {
-        values.put(Tables.Tags.TITLE.getName(), title);
+    @Override public void validate() throws IllegalStateException {
+        super.validate();
+        Preconditions.notEmpty(title, "Title cannot be empty.");
     }
 
-    @Override protected void toParcel(Parcel parcel) {
+    @Override public ContentValues asValues() {
+        final ContentValues values = super.asValues();
+        values.put(Tables.Tags.TITLE.getName(), title);
+        return values;
+    }
+
+    @Override public void writeToParcel(Parcel parcel, int flags) {
+        super.writeToParcel(parcel, flags);
         parcel.writeString(getTitle());
     }
 
-    @Override protected void toEntity(TagEntity entity) {
-        entity.setTitle(title);
-    }
-
-    @Override protected void fromParcel(Parcel parcel) {
-        setTitle(parcel.readString());
-    }
-
-    @Override protected void fromCursor(Cursor cursor, String columnPrefixTable) {
+    @Override public void updateFrom(Cursor cursor, String columnPrefixTable) {
+        super.updateFrom(cursor, columnPrefixTable);
         int index;
 
         // Title
@@ -85,19 +80,6 @@ public class Tag extends Model<TagEntity> {
         if (index >= 0) {
             setTitle(cursor.getString(index));
         }
-    }
-
-    @Override protected void fromEntity(TagEntity entity) {
-        setTitle(entity.getTitle());
-    }
-
-    @Override protected TagEntity createEntity() {
-        return new TagEntity();
-    }
-
-    @Override public void validate() throws IllegalStateException {
-        super.validate();
-        Preconditions.notEmpty(title, "Title cannot be empty.");
     }
 
     public String getTitle() {

@@ -5,13 +5,12 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.code44.finance.backend.endpoint.categories.model.CategoryEntity;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 
-public class Category extends Model<CategoryEntity> {
+public class Category extends Model {
     public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>() {
         public Category createFromParcel(Parcel in) {
             return new Category(in);
@@ -35,8 +34,12 @@ public class Category extends Model<CategoryEntity> {
         setSortOrder(0);
     }
 
-    public Category(Parcel in) {
-        super(in);
+    public Category(Parcel parcel) {
+        super(parcel);
+        setTitle(parcel.readString());
+        setColor(parcel.readInt());
+        setTransactionType(TransactionType.fromInt(parcel.readInt()));
+        setSortOrder(parcel.readInt());
     }
 
     public static Category from(Cursor cursor) {
@@ -44,12 +47,6 @@ public class Category extends Model<CategoryEntity> {
         if (cursor.getCount() > 0) {
             category.updateFrom(cursor, null);
         }
-        return category;
-    }
-
-    public static Category from(CategoryEntity entity) {
-        final Category category = new Category();
-        category.updateFrom(entity);
         return category;
     }
 
@@ -69,35 +66,38 @@ public class Category extends Model<CategoryEntity> {
         return Tables.Categories.SYNC_STATE;
     }
 
-    @Override protected void toValues(ContentValues values) {
+    @Override public void prepareForDb() {
+        super.prepareForDb();
+        if (transactionType == null) {
+            transactionType = TransactionType.Expense;
+        }
+    }
+
+    @Override public void validate() throws IllegalStateException {
+        super.validate();
+        Preconditions.notEmpty(title, "Title cannot be empty");
+        Preconditions.notNull(transactionType, "Category type cannot be null.");
+    }
+
+    @Override public ContentValues asValues() {
+        final ContentValues values = super.asValues();
         values.put(Tables.Categories.TRANSACTION_TYPE.getName(), transactionType.asInt());
         values.put(Tables.Categories.TITLE.getName(), title);
         values.put(Tables.Categories.COLOR.getName(), color);
         values.put(Tables.Categories.SORT_ORDER.getName(), sortOrder);
+        return values;
     }
 
-    @Override protected void toParcel(Parcel parcel) {
+    @Override public void writeToParcel(Parcel parcel, int flags) {
+        super.writeToParcel(parcel, flags);
         parcel.writeString(title);
         parcel.writeInt(color);
         parcel.writeInt(transactionType.asInt());
         parcel.writeInt(sortOrder);
     }
 
-    @Override protected void toEntity(CategoryEntity entity) {
-        entity.setTitle(title);
-        entity.setColor(color);
-        entity.setCategoryType(transactionType.toString());
-        entity.setSortOrder(sortOrder);
-    }
-
-    @Override protected void fromParcel(Parcel parcel) {
-        setTitle(parcel.readString());
-        setColor(parcel.readInt());
-        setTransactionType(TransactionType.fromInt(parcel.readInt()));
-        setSortOrder(parcel.readInt());
-    }
-
-    @Override protected void fromCursor(Cursor cursor, String columnPrefixTable) {
+    @Override public void updateFrom(Cursor cursor, String columnPrefixTable) {
+        super.updateFrom(cursor, columnPrefixTable);
         int index;
 
         // Title
@@ -123,23 +123,6 @@ public class Category extends Model<CategoryEntity> {
         if (index >= 0) {
             setSortOrder(cursor.getInt(index));
         }
-    }
-
-    @Override protected void fromEntity(CategoryEntity entity) {
-        setTitle(entity.getTitle());
-        setColor(entity.getColor());
-        setTransactionType(TransactionType.valueOf(entity.getCategoryType()));
-        setSortOrder(entity.getSortOrder());
-    }
-
-    @Override protected CategoryEntity createEntity() {
-        return new CategoryEntity();
-    }
-
-    @Override public void validate() throws IllegalStateException {
-        super.validate();
-        Preconditions.notEmpty(title, "Title cannot be empty");
-        Preconditions.notNull(transactionType, "Category type cannot be null.");
     }
 
     public String getTitle() {

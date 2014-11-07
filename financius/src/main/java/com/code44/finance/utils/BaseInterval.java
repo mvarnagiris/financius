@@ -25,7 +25,7 @@ public abstract class BaseInterval {
         this.context = Preconditions.notNull(context, "Context cannot be null.");
         this.eventBus = Preconditions.notNull(eventBus, "EventBus cannot be null.");
         this.type = Preconditions.notNull(type, "Type cannot be null.");
-        this.length = Preconditions.checkMore(length, 0, "Length must be > 0.");
+        this.length = Preconditions.more(length, 0, "Length must be > 0.");
         reset();
     }
 
@@ -39,7 +39,7 @@ public abstract class BaseInterval {
 
     public void setTypeAndLength(Type type, int length) {
         Preconditions.notNull(type, "Type cannot be null.");
-        Preconditions.checkMore(length, 0, "Length must be > 0.");
+        Preconditions.more(length, 0, "Length must be > 0.");
         final boolean changed = this.type != type || this.length != length;
         this.type = type;
         this.length = length;

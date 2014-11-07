@@ -6,7 +6,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.code44.finance.backend.endpoint.transactions.model.TransactionEntity;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.Preconditions;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Transaction extends Model<TransactionEntity> {
+public class Transaction extends Model {
     public static final Parcelable.Creator<Transaction> CREATOR = new Parcelable.Creator<Transaction>() {
         public Transaction createFromParcel(Parcel in) {
             return new Transaction(in);
@@ -56,8 +55,20 @@ public class Transaction extends Model<TransactionEntity> {
         setIncludeInReports(true);
     }
 
-    public Transaction(Parcel in) {
-        super(in);
+    public Transaction(Parcel parcel) {
+        super(parcel);
+        setAccountFrom((Account) parcel.readParcelable(Account.class.getClassLoader()));
+        setAccountTo((Account) parcel.readParcelable(Account.class.getClassLoader()));
+        setCategory((Category) parcel.readParcelable(Category.class.getClassLoader()));
+        tags = new ArrayList<>();
+        parcel.readTypedList(tags, Tag.CREATOR);
+        setDate(parcel.readLong());
+        setAmount(parcel.readLong());
+        setExchangeRate(parcel.readDouble());
+        setNote(parcel.readString());
+        setTransactionState(TransactionState.fromInt(parcel.readInt()));
+        setTransactionType(TransactionType.fromInt(parcel.readInt()));
+        setIncludeInReports(parcel.readInt() != 0);
     }
 
     public static Transaction from(Cursor cursor) {
@@ -65,15 +76,6 @@ public class Transaction extends Model<TransactionEntity> {
         if (cursor.getCount() > 0) {
             transaction.updateFrom(cursor, null);
         }
-        return transaction;
-    }
-
-    public static Transaction from(TransactionEntity entity, Account accountFrom, Account accountTo, Category category) {
-        final Transaction transaction = new Transaction();
-        transaction.setAccountFrom(accountFrom);
-        transaction.setAccountTo(accountTo);
-        transaction.setCategory(category);
-        transaction.updateFrom(entity);
         return transaction;
     }
 
@@ -93,7 +95,100 @@ public class Transaction extends Model<TransactionEntity> {
         return Tables.Transactions.SYNC_STATE;
     }
 
-    @Override protected void toValues(ContentValues values) {
+    @Override public void prepareForDb() {
+        super.prepareForDb();
+
+        if (tags == null) {
+            tags = Collections.emptyList();
+        }
+
+        if (amount < 0) {
+            amount = 0;
+        }
+
+        if (Double.compare(exchangeRate, 0) < 0) {
+            exchangeRate = 1.0;
+        }
+
+        if (note == null) {
+            note = "";
+        }
+
+        if (transactionState == null) {
+            transactionState = TransactionState.Pending;
+        }
+
+        if (transactionType == null) {
+            transactionType = TransactionType.Expense;
+        }
+
+        switch (transactionType) {
+            case Expense:
+                accountTo = null;
+                exchangeRate = 1.0;
+                break;
+            case Income:
+                accountFrom = null;
+                exchangeRate = 1.0;
+                break;
+            case Transfer:
+                category = null;
+                tags = Collections.emptyList();
+                break;
+        }
+    }
+
+    @Override public void validate() throws IllegalStateException {
+        super.validate();
+        Preconditions.notNull(transactionState, "Transaction state cannot be null.");
+        Preconditions.notNull(transactionType, "Transaction type cannot be null.");
+        Preconditions.moreOrEquals(amount, 0, "Amount must be >= 0.");
+        Preconditions.notNull(note, "Note cannot be null.");
+
+        switch (transactionType) {
+            case Expense:
+                if (transactionState == TransactionState.Confirmed) {
+                    Preconditions.notNull(accountFrom, "AccountFrom cannot be null.");
+                    Preconditions.isTrue(accountFrom.hasId(), "AccountFrom must have an Id.");
+                    //noinspection ResultOfMethodCallIgnored
+                    Preconditions.equals(exchangeRate, 1.0, "Exchange rate must be 1.0.");
+                }
+                Preconditions.isNull(accountTo, "AccountTo must be null.");
+                break;
+            case Income:
+                if (transactionState == TransactionState.Confirmed) {
+                    Preconditions.notNull(accountTo, "AccountTo cannot be null.");
+                    Preconditions.isTrue(accountTo.hasId(), "AccountTo must have an Id.");
+                    //noinspection ResultOfMethodCallIgnored
+                    Preconditions.equals(exchangeRate, 1.0, "Exchange rate must be 1.0.");
+                }
+                Preconditions.isNull(accountFrom, "AccountFrom must be null.");
+                break;
+            case Transfer:
+                if (transactionState == TransactionState.Confirmed) {
+                    Preconditions.notNull(accountFrom, "AccountFrom cannot be null.");
+                    Preconditions.isTrue(accountFrom.hasId(), "AccountFrom must have an Id.");
+                    Preconditions.notNull(accountTo, "AccountTo cannot be null.");
+                    Preconditions.isTrue(accountTo.hasId(), "AccountTo must have an Id.");
+                    Preconditions.moreOrEquals(exchangeRate, 0, "Exchange rate must be > 0.");
+
+                    if (accountFrom.equals(accountTo)) {
+                        throw new IllegalStateException("AccountFrom cannot be equal to AccountTo.");
+                    }
+                }
+                Preconditions.isNull(category, "Transfer cannot have a category.");
+                break;
+            default:
+                throw new IllegalArgumentException("Transaction type " + transactionType + " is not supported.");
+        }
+
+        if (Double.compare(exchangeRate, 0) < 0) {
+            throw new IllegalStateException("Exchange rate must be > 0.");
+        }
+    }
+
+    @Override public ContentValues asValues() {
+        final ContentValues values = super.asValues();
         values.put(Tables.Transactions.ACCOUNT_FROM_ID.getName(), accountFrom == null ? null : accountFrom.getId());
         values.put(Tables.Transactions.ACCOUNT_TO_ID.getName(), accountTo == null ? null : accountTo.getId());
         values.put(Tables.Transactions.CATEGORY_ID.getName(), category == null ? null : category.getId());
@@ -112,9 +207,11 @@ public class Transaction extends Model<TransactionEntity> {
             sb.append(tag.getId());
         }
         values.put(Tables.Tags.ID.getName(), sb.toString());
+        return values;
     }
 
-    @Override protected void toParcel(Parcel parcel) {
+    @Override public void writeToParcel(Parcel parcel, int flags) {
+        super.writeToParcel(parcel, flags);
         parcel.writeParcelable(accountFrom, 0);
         parcel.writeParcelable(accountTo, 0);
         parcel.writeParcelable(category, 0);
@@ -128,40 +225,8 @@ public class Transaction extends Model<TransactionEntity> {
         parcel.writeInt(includeInReports ? 1 : 0);
     }
 
-    @Override protected void toEntity(TransactionEntity entity) {
-        entity.setAccountFromId(accountFrom.getId());
-        entity.setAccountToId(accountTo.getId());
-        entity.setCategoryId(category.getId());
-        // TODO Tags
-        entity.setDate(date);
-        entity.setAmount(amount);
-        entity.setExchangeRate(exchangeRate);
-        entity.setNote(note);
-        entity.setTransactionState(transactionState.toString());
-        // TODO Transaction type
-        entity.setIncludeInReports(includeInReports);
-    }
-
-    @Override protected TransactionEntity createEntity() {
-        return new TransactionEntity();
-    }
-
-    @Override protected void fromParcel(Parcel parcel) {
-        setAccountFrom((Account) parcel.readParcelable(Account.class.getClassLoader()));
-        setAccountTo((Account) parcel.readParcelable(Account.class.getClassLoader()));
-        setCategory((Category) parcel.readParcelable(Category.class.getClassLoader()));
-        tags = new ArrayList<>();
-        parcel.readTypedList(tags, Tag.CREATOR);
-        setDate(parcel.readLong());
-        setAmount(parcel.readLong());
-        setExchangeRate(parcel.readDouble());
-        setNote(parcel.readString());
-        setTransactionState(TransactionState.fromInt(parcel.readInt()));
-        setTransactionType(TransactionType.fromInt(parcel.readInt()));
-        setIncludeInReports(parcel.readInt() != 0);
-    }
-
-    @Override protected void fromCursor(Cursor cursor, String columnPrefixTable) {
+    @Override public void updateFrom(Cursor cursor, String columnPrefixTable) {
+        super.updateFrom(cursor, columnPrefixTable);
         int index;
 
         // Account from
@@ -281,53 +346,6 @@ public class Transaction extends Model<TransactionEntity> {
         index = cursor.getColumnIndex(Tables.Transactions.INCLUDE_IN_REPORTS.getName(columnPrefixTable));
         if (index >= 0) {
             setIncludeInReports(cursor.getInt(index) != 0);
-        }
-    }
-
-    @Override protected void fromEntity(TransactionEntity entity) {
-        // TODO Tags
-        setDate(entity.getDate());
-        setAmount(entity.getAmount());
-        setExchangeRate(entity.getExchangeRate());
-        setNote(entity.getNote());
-        setTransactionState(TransactionState.valueOf(entity.getTransactionState()));
-        // TODO Transaction type
-        setIncludeInReports(entity.getIncludeInReports());
-    }
-
-    @Override public void validate() throws IllegalStateException {
-        super.validate();
-        Preconditions.notNull(transactionState, "Transaction state cannot be null.");
-        Preconditions.notNull(transactionType, "Transaction type cannot be null.");
-
-        if (transactionState == TransactionState.Confirmed) {
-            switch (transactionType) {
-                case Expense:
-                    Preconditions.notNull(accountFrom, "AccountFrom cannot be null.");
-                    Preconditions.checkTrue(accountFrom.hasId(), "AccountFrom must have an Id.");
-                    break;
-                case Income:
-                    Preconditions.notNull(accountTo, "AccountTo cannot be null.");
-                    Preconditions.checkTrue(accountTo.hasId(), "AccountTo must have an Id.");
-                    break;
-                case Transfer:
-                    Preconditions.notNull(accountFrom, "AccountFrom cannot be null.");
-                    Preconditions.checkTrue(accountFrom.hasId(), "AccountFrom must have an Id.");
-                    Preconditions.notNull(accountTo, "AccountTo cannot be null.");
-                    Preconditions.checkTrue(accountTo.hasId(), "AccountTo must have an Id.");
-                    Preconditions.checkNull(category, "Transfer cannot have a category.");
-                    Preconditions.checkTrue(accountTo.hasId(), "AccountTo must have an Id.");
-                    if (accountFrom.equals(accountTo)) {
-                        throw new IllegalStateException("AccountFrom cannot be equal to AccountTo.");
-                    }
-                    break;
-                default:
-                    throw new IllegalArgumentException("Transaction type " + transactionType + " is not supported.");
-            }
-        }
-
-        if (Double.compare(exchangeRate, 0) < 0) {
-            throw new IllegalStateException("Exchange rate must be > 0.");
         }
     }
 

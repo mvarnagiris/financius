@@ -6,12 +6,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.code44.finance.backend.endpoint.accounts.model.AccountEntity;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 
-public class Account extends Model<AccountEntity> {
+public class Account extends Model {
     public static final Parcelable.Creator<Account> CREATOR = new Parcelable.Creator<Account>() {
         public Account createFromParcel(Parcel in) {
             return new Account(in);
@@ -37,8 +36,13 @@ public class Account extends Model<AccountEntity> {
         setIncludeInTotals(true);
     }
 
-    public Account(Parcel in) {
-        super(in);
+    public Account(Parcel parcel) {
+        super(parcel);
+        setCurrency((Currency) parcel.readParcelable(Currency.class.getClassLoader()));
+        setTitle(parcel.readString());
+        setNote(parcel.readString());
+        setBalance(parcel.readLong());
+        setIncludeInTotals(parcel.readInt() != 0);
     }
 
     public static Account from(Cursor cursor) {
@@ -65,13 +69,6 @@ public class Account extends Model<AccountEntity> {
         return account;
     }
 
-    public static Account from(AccountEntity entity, Currency currency) {
-        final Account account = new Account();
-        account.updateFrom(entity);
-        account.setCurrency(currency);
-        return account;
-    }
-
     @Override protected Column getLocalIdColumn() {
         return Tables.Accounts.LOCAL_ID;
     }
@@ -88,15 +85,33 @@ public class Account extends Model<AccountEntity> {
         return Tables.Accounts.SYNC_STATE;
     }
 
-    @Override protected void toValues(ContentValues values) {
+    @Override public void prepareForDb() {
+        super.prepareForDb();
+
+        if (note == null) {
+            note = "";
+        }
+    }
+
+    @Override public void validate() throws IllegalStateException {
+        super.validate();
+        Preconditions.notNull(currency, "Currency cannot be null.");
+        Preconditions.notEmpty(title, "Title cannot be empty.");
+        Preconditions.notNull(note, "Note cannot be null.");
+    }
+
+    @Override public ContentValues asValues() {
+        final ContentValues values = super.asValues();
         values.put(Tables.Accounts.CURRENCY_ID.getName(), currency.getId());
         values.put(Tables.Accounts.TITLE.getName(), title);
         values.put(Tables.Accounts.NOTE.getName(), note);
         values.put(Tables.Accounts.BALANCE.getName(), balance);
         values.put(Tables.Accounts.INCLUDE_IN_TOTALS.getName(), includeInTotals);
+        return values;
     }
 
-    @Override protected void toParcel(Parcel parcel) {
+    @Override public void writeToParcel(Parcel parcel, int flags) {
+        super.writeToParcel(parcel, flags);
         parcel.writeParcelable(currency, 0);
         parcel.writeString(title);
         parcel.writeString(note);
@@ -104,26 +119,8 @@ public class Account extends Model<AccountEntity> {
         parcel.writeInt(includeInTotals ? 1 : 0);
     }
 
-    @Override protected void toEntity(AccountEntity entity) {
-        entity.setCurrencyId(currency.getId());
-        entity.setTitle(title);
-        entity.setNote(note);
-        entity.setIncludeInTotals(includeInTotals);
-    }
-
-    @Override protected AccountEntity createEntity() {
-        return new AccountEntity();
-    }
-
-    @Override protected void fromParcel(Parcel parcel) {
-        setCurrency((Currency) parcel.readParcelable(Currency.class.getClassLoader()));
-        setTitle(parcel.readString());
-        setNote(parcel.readString());
-        setBalance(parcel.readLong());
-        setIncludeInTotals(parcel.readInt() != 0);
-    }
-
-    @Override protected void fromCursor(Cursor cursor, String columnPrefixTable) {
+    @Override public void updateFrom(Cursor cursor, String columnPrefixTable) {
+        super.updateFrom(cursor, columnPrefixTable);
         int index;
 
         // Currency
@@ -166,17 +163,6 @@ public class Account extends Model<AccountEntity> {
         if (index >= 0) {
             setIncludeInTotals(cursor.getInt(index) != 0);
         }
-    }
-
-    @Override protected void fromEntity(AccountEntity entity) {
-        setTitle(entity.getTitle());
-        setNote(entity.getNote());
-        setIncludeInTotals(entity.getIncludeInTotals());
-    }
-
-    @Override public void validate() throws IllegalStateException {
-        super.validate();
-        Preconditions.notNull(currency, "Currency cannot be null.");
     }
 
     public Currency getCurrency() {

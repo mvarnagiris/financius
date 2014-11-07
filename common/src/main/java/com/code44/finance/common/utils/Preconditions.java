@@ -11,7 +11,7 @@ public class Preconditions {
         return object;
     }
 
-    public static <T> T checkNull(T object, String message) throws IllegalStateException {
+    public static <T> T isNull(T object, String message) throws IllegalStateException {
         if (object != null) {
             throw new IllegalStateException(message);
         }
@@ -39,28 +39,42 @@ public class Preconditions {
         return value;
     }
 
-    public static double notLess(double value, double lessThan, String message) throws IllegalArgumentException {
-        if (Double.compare(value, lessThan) < 0) {
+    public static double moreOrEquals(double value, double moreOrEqualsTo, String message) throws IllegalArgumentException {
+        if (Double.compare(value, moreOrEqualsTo) < 0) {
             throw new IllegalStateException(message);
         }
         return value;
     }
 
-    public static int checkMore(int value, int moreThan, String message) throws IllegalArgumentException {
+    public static double equals(double value, double equals, String message) throws IllegalArgumentException {
+        if (Double.compare(value, equals) != 0) {
+            throw new IllegalStateException(message);
+        }
+        return value;
+    }
+
+    public static double moreOrEquals(long value, long moreOrEqualsTo, String message) throws IllegalArgumentException {
+        if (value < moreOrEqualsTo) {
+            throw new IllegalStateException(message);
+        }
+        return value;
+    }
+
+    public static int more(int value, int moreThan, String message) throws IllegalArgumentException {
         if (value <= moreThan) {
             throw new IllegalStateException(message);
         }
         return value;
     }
 
-    public static boolean checkTrue(boolean value, String message) throws IllegalArgumentException {
+    public static boolean isTrue(boolean value, String message) throws IllegalArgumentException {
         if (!value) {
             throw new IllegalArgumentException(message);
         }
         return true;
     }
 
-    public static boolean checkFalse(boolean value, String message) throws IllegalArgumentException {
+    public static boolean isFalse(boolean value, String message) throws IllegalArgumentException {
         if (value) {
             throw new IllegalArgumentException(message);
         }
