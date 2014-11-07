@@ -30,7 +30,7 @@ public class PostTagsRequest extends PostRequest<TagsBody> {
     @Override protected void onAddPostData(TagsBody body) {
         final List<TagEntity> entities = new ArrayList<>();
         for (Tag tag : tags) {
-            entities.add(tag.asEntity());
+//            entities.add(tag.asEntity());
         }
         body.setTags(entities);
     }

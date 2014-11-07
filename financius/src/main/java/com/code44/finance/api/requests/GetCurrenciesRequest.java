@@ -9,7 +9,6 @@ import com.code44.finance.backend.endpoint.currencies.Currencies;
 import com.code44.finance.backend.endpoint.currencies.model.CurrencyEntity;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.data.providers.CurrenciesProvider;
 
@@ -34,7 +33,7 @@ public class GetCurrenciesRequest extends GetRequest<CurrencyEntity> {
     }
 
     @Override protected Model getModelFrom(CurrencyEntity entity) {
-        return Currency.from(entity);
+        return null;
     }
 
     @Override protected void saveNewTimestamp(User user, long newTimestamp) {

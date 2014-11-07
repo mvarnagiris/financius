@@ -8,7 +8,6 @@ import com.code44.finance.backend.endpoint.tags.Tags;
 import com.code44.finance.backend.endpoint.tags.model.TagEntity;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.model.Model;
-import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.providers.TagsProvider;
 
 import java.util.List;
@@ -32,7 +31,7 @@ public class GetTagsRequest extends GetRequest<TagEntity> {
     }
 
     @Override protected Model getModelFrom(TagEntity entity) {
-        return Tag.from(entity);
+        return null;
     }
 
     @Override protected void saveNewTimestamp(User user, long newTimestamp) {

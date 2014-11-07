@@ -10,7 +10,6 @@ import com.code44.finance.backend.endpoint.accounts.model.AccountEntity;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.data.providers.AccountsProvider;
@@ -42,7 +41,7 @@ public class GetAccountsRequest extends GetRequest<AccountEntity> {
     }
 
     @Override protected Model getModelFrom(AccountEntity entity) {
-        return Account.from(entity, getCurrencyFor(entity));
+        return null;
     }
 
     @Override protected void saveNewTimestamp(User user, long newTimestamp) {

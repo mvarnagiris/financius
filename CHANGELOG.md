@@ -1,3 +1,5 @@
+###Version: 0.14.0 - Not released yet
+
 ###Version: 0.13.0
 - ```new``` Landscape layout for categories report.
 - ```new``` Categories report breaks down each category into tags.

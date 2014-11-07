@@ -7,7 +7,6 @@ import com.code44.finance.api.User;
 import com.code44.finance.backend.endpoint.categories.Categories;
 import com.code44.finance.backend.endpoint.categories.model.CategoryEntity;
 import com.code44.finance.common.utils.Preconditions;
-import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.data.providers.CategoriesProvider;
 
@@ -32,7 +31,7 @@ public class GetCategoriesRequest extends GetRequest<CategoryEntity> {
     }
 
     @Override protected Model getModelFrom(CategoryEntity entity) {
-        return Category.from(entity);
+        return null;
     }
 
     @Override protected void saveNewTimestamp(User user, long newTimestamp) {

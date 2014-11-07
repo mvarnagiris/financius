@@ -36,7 +36,7 @@ public class CategoriesReportAdapter extends BaseAdapter {
     }
 
     @Override public long getItemId(int position) {
-        return categoriesReportData.get(position).getCategory().getLocalId();
+        return position;
     }
 
     @Override public View getView(int position, View convertView, ViewGroup parent) {

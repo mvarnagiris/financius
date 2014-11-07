@@ -13,7 +13,6 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Model;
-import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.data.providers.TransactionsProvider;
@@ -46,7 +45,7 @@ public class GetTransactionsRequest extends GetRequest<TransactionEntity> {
     }
 
     @Override protected Model getModelFrom(TransactionEntity entity) {
-        return Transaction.from(entity, getAccountFor(entity.getAccountFromId()), getAccountFor(entity.getAccountToId()), getCategoryFor(entity));
+        return null;
     }
 
     @Override protected void saveNewTimestamp(User user, long newTimestamp) {

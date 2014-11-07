@@ -30,7 +30,7 @@ public class PostTransactionsRequest extends PostRequest<TransactionsBody> {
     @Override protected void onAddPostData(TransactionsBody body) {
         final List<TransactionEntity> transactionEntities = new ArrayList<>();
         for (Transaction transaction : transactions) {
-            transactionEntities.add(transaction.asEntity());
+//            transactionEntities.add(transaction.asEntity());
         }
         body.setTransactions(transactionEntities);
     }
