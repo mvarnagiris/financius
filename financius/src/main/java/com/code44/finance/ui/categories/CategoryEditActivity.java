@@ -49,6 +49,7 @@ public class CategoryEditActivity extends ModelEditActivity<Category> implements
         // Setup
         transactionTypeButton.setOnClickListener(this);
         colorButton.setOnClickListener(this);
+        transactionTypeButton.setEnabled(isNewModel());
     }
 
     @Override public void onResume() {
