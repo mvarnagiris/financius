@@ -6,8 +6,7 @@ import android.graphics.PointF;
 import java.util.List;
 
 public class SharpPathMaker implements PathMaker {
-    @Override
-    public Path makePath(List<PointF> points) {
+    @Override public Path makePath(List<PointF> points) {
         final Path path = new Path();
 
         for (int i = 0, size = points != null ? points.size() : 0; i < size; i++) {

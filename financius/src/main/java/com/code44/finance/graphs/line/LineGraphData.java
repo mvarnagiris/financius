@@ -3,38 +3,49 @@ package com.code44.finance.graphs.line;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class LineGraphData {
     private final List<LineGraphValue> values;
+    private final double maxValue;
+    private final double minValue;
     private final int color;
     private final float lineWidth;
     private final Drawable dividerDrawable;
     private final boolean isSmooth;
-    private final int startIndex;
-    private final int endIndex;
+    private final boolean useGlobalMinMax;
 
-    private LineGraphData(List<LineGraphValue> values, int color, float lineWidth, Drawable dividerDrawable, boolean isSmooth, int startIndex, int endIndex) {
+    private LineGraphData(List<LineGraphValue> values, double maxValue, double minValue, int color, float lineWidth, Drawable dividerDrawable, boolean isSmooth, boolean useGlobalMinMax) {
         this.values = values;
+        this.maxValue = maxValue;
+        this.minValue = minValue;
         this.color = color;
         this.lineWidth = lineWidth;
         this.dividerDrawable = dividerDrawable;
         this.isSmooth = isSmooth;
-        this.startIndex = startIndex;
-        this.endIndex = endIndex;
+        this.useGlobalMinMax = useGlobalMinMax;
     }
 
     public List<LineGraphValue> getValues() {
         return values;
     }
 
-    public LineGraphValue getValueForGraph(int index) {
-        if (index < startIndex || index > Math.min(endIndex, startIndex + values.size() - 1)) {
-            return null;
-        }
+    public LineGraphValue getValue(int position) {
+        return values.get(position);
+    }
 
-        return values.get(index - startIndex);
+    public int size() {
+        return values.size();
+    }
+
+    public double getMaxValue() {
+        return maxValue;
+    }
+
+    public double getMinValue() {
+        return minValue;
     }
 
     public int getColor() {
@@ -53,30 +64,44 @@ public class LineGraphData {
         return isSmooth;
     }
 
-    public int getStartIndex() {
-        return startIndex;
-    }
-
-    public int getEndIndex() {
-        return endIndex;
+    public boolean isUsingGlobalMinMax() {
+        return useGlobalMinMax;
     }
 
     public static class Builder {
         private List<LineGraphValue> values;
+        private double maxValue;
+        private double minValue;
         private int color;
         private float lineWidth;
         private Drawable dividerDrawable;
-        private boolean isSmooth;
-        private int startIndex;
-        private int endIndex;
-
-        public Builder() {
-            startIndex = -1;
-            endIndex = -1;
-        }
+        private boolean isSmooth = true;
+        private boolean useGlobalMinMax = true;
 
         public Builder setValues(List<LineGraphValue> values) {
             this.values = values;
+            return this;
+        }
+
+        public Builder addValues(List<LineGraphValue> values) {
+            if (values == null) {
+                return this;
+            }
+
+            if (this.values == null) {
+                this.values = new ArrayList<>();
+            }
+
+            this.values.addAll(values);
+            return this;
+        }
+
+        public Builder addValue(LineGraphValue value) {
+            if (this.values == null) {
+                this.values = new ArrayList<>();
+            }
+
+            this.values.add(value);
             return this;
         }
 
@@ -100,40 +125,44 @@ public class LineGraphData {
             return this;
         }
 
-        public Builder setStartIndex(int startIndex) {
-            this.startIndex = startIndex;
-            return this;
-        }
-
-        public Builder setEndIndex(int endIndex) {
-            this.endIndex = endIndex;
+        public Builder setUseGlobalMinMax(boolean useGlobalMinMax) {
+            this.useGlobalMinMax = useGlobalMinMax;
             return this;
         }
 
         public LineGraphData build() {
             ensureSaneDefaults();
-            return new LineGraphData(values, color, lineWidth, dividerDrawable, isSmooth, startIndex, endIndex);
+            return new LineGraphData(values, maxValue, minValue, color, lineWidth, dividerDrawable, isSmooth, useGlobalMinMax);
         }
 
         private void ensureSaneDefaults() {
             if (values == null) {
                 values = Collections.emptyList();
             }
+            findMinMax();
 
             if (color == 0) {
                 color = Color.BLACK;
             }
+        }
 
-            if (lineWidth == 0) {
-                lineWidth = 4;
-            }
+        private void findMinMax() {
+            if (values.size() > 0) {
+                for (LineGraphValue value : values) {
+                    minValue = Double.MAX_VALUE;
+                    maxValue = Double.MIN_VALUE;
 
-            if (startIndex < 0) {
-                startIndex = 0;
-            }
+                    if (Double.compare(value.getValue(), minValue) < 0) {
+                        minValue = value.getValue();
+                    }
 
-            if (endIndex < 0) {
-                endIndex = values.size() - 1;
+                    if (Double.compare(value.getValue(), maxValue) > 0) {
+                        maxValue = value.getValue();
+                    }
+                }
+            } else {
+                minValue = 0;
+                maxValue = 0;
             }
         }
     }

@@ -1,7 +1,13 @@
 package com.code44.finance.graphs.line;
 
-public interface LineGraphValue {
-    public double getValue();
+public class LineGraphValue {
+    private final double value;
 
-    public String getFormattedValue();
+    public LineGraphValue(double value) {
+        this.value = value;
+    }
+
+    public double getValue() {
+        return value;
+    }
 }

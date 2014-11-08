@@ -11,24 +11,18 @@ import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.View;
 
-import com.code44.finance.R;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
-@SuppressWarnings("UnusedDeclaration")
 public class LineGraphView extends View {
-    public static final int VISIBLE_SIZE_SHOW_ALL = 0;
+    private final List<LineGraphData> lineGraphDataList = new ArrayList<>();
+    private final Map<LineGraphData, LineData> lineDataCache = new HashMap<>();
 
-    private final List<LineGraphData> lineGraphDataList;
-    private final Map<LineGraphData, LineData> lines;
-    private LineGraphValue minValue;
-    private LineGraphValue maxValue;
-    private int visibleSize;
+    private double maxValue;
+    private double minValue;
 
     public LineGraphView(Context context) {
         this(context, null);
@@ -40,60 +34,43 @@ public class LineGraphView extends View {
 
     public LineGraphView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
-        // Init
-        lineGraphDataList = new ArrayList<>();
-        lines = new HashMap<>();
-        visibleSize = VISIBLE_SIZE_SHOW_ALL;
-
-        // Edit mode
-        //if (isInEditMode()) {
-        final List<LineGraphValue> values = new ArrayList<>();
-        final Random random = new Random();
-        int startingValue = random.nextInt(100);
-        for (int i = 0; i < 30; i++) {
-            startingValue = startingValue + (random.nextInt(5) * (random.nextBoolean() ? -1 : 1));
-            if (i == 5 || i == 6 || i == 20) {
-                values.add(null);
-            } else {
-                values.add(new IntLineGraphValue(startingValue));
-            }
-        }
-        final LineGraphData lineGraphData = new LineGraphData.Builder()
-                .setColor(0xff0099cc)
-                .setValues(values)
-                .setLineWidth(context.getResources().getDimension(R.dimen.space_small))
-                .setSmooth(true)
-                .setDividerDrawable(context.getResources().getDrawable(R.drawable.circle))
-                .build();
-
-        setLineGraphData(lineGraphData);
-        //}
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        prepareGraphs();
+        invalidateGraphs();
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
+    @Override protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         for (LineGraphData lineGraphData : lineGraphDataList) {
-            final LineData lineData = lines.get(lineGraphData);
-            canvas.drawPath(lineData.getPath(), lineData.getPaint());
+            // Check if we have something to draw
+            final boolean hasItems = lineGraphData.size() > 0;
+            final boolean hasLineWidth = Float.compare(lineGraphData.getLineWidth(), 0) > 0;
+            final boolean hasDividers = lineGraphData.getDividerDrawable() != null;
+            final boolean hasSomethingToDraw = hasItems && (hasLineWidth || hasDividers);
+            if (!hasSomethingToDraw) {
+                continue;
+            }
 
-            final Drawable dividerDrawable = lineGraphData.getDividerDrawable();
-            if (dividerDrawable != null) {
+            final LineData lineData = lineDataCache.get(lineGraphData);
+
+            // Draw line if we have line width
+            if (hasLineWidth) {
+                canvas.drawPath(lineData.getPath(), lineData.getPaint());
+            }
+
+            // Draw dividers if we have them
+            if (hasDividers) {
+                final Drawable dividerDrawable = lineGraphData.getDividerDrawable();
+                final int drawableHalfWidth = dividerDrawable.getIntrinsicWidth() / 2;
+                final int drawableHalfHeight = dividerDrawable.getIntrinsicHeight() / 2;
+
                 for (PointF point : lineData.getPoints()) {
                     if (point == null) {
                         continue;
                     }
-
-                    final int drawableHalfWidth = dividerDrawable.getIntrinsicWidth() / 2;
-                    final int drawableHalfHeight = dividerDrawable.getIntrinsicHeight() / 2;
                     dividerDrawable.setBounds((int) point.x - drawableHalfWidth, (int) point.y - drawableHalfHeight, (int) point.x + drawableHalfWidth, (int) point.y + drawableHalfHeight);
                     dividerDrawable.draw(canvas);
                 }
@@ -110,52 +87,27 @@ public class LineGraphView extends View {
         if (lineGraphData != null && lineGraphData.length > 0) {
             this.lineGraphDataList.addAll(Arrays.asList(lineGraphData));
         }
-        prepareGraphs();
+        invalidateGraphs();
     }
 
-    public int getVisibleSize() {
-        return visibleSize;
-    }
-
-    public void setVisibleSize(int visibleSize) {
-        this.visibleSize = visibleSize;
-        prepareGraphs();
-    }
-
-    public LineGraphValue getMinValue() {
-        return minValue;
-    }
-
-    public void setMinValue(LineGraphValue minValue) {
-        this.minValue = minValue;
-    }
-
-    public LineGraphValue getMaxValue() {
-        return maxValue;
-    }
-
-    public void setMaxValue(LineGraphValue maxValue) {
-        this.maxValue = maxValue;
-    }
-
-    private void prepareGraphs() {
-        lines.clear();
+    private void invalidateGraphs() {
+        lineDataCache.clear();
         if (getMeasuredHeight() == 0 || getMeasuredWidth() == 0) {
             invalidate();
             return;
         }
 
-        // Create paths
+        // Create paths.
         GraphPrepareData graphPrepareData = prepareGraphPrepareData(0, 0);
         for (LineGraphData lineGraphData : lineGraphDataList) {
-            lines.put(lineGraphData, prepareGraph(lineGraphData, graphPrepareData));
+            lineDataCache.put(lineGraphData, prepareGraph(lineGraphData, graphPrepareData));
         }
 
         // Check if paths are out of bounds
         final RectF bounds = new RectF();
         float topDelta = 0;
         float bottomDelta = 0;
-        for (LineData line : lines.values()) {
+        for (LineData line : lineDataCache.values()) {
             line.getPath().computeBounds(bounds, true);
             final float lineHalfWidth = line.getPaint().getStrokeWidth() / 2;
             final float currentTopDelta = Math.max(0, graphPrepareData.getBounds().top - bounds.top + lineHalfWidth);
@@ -164,12 +116,12 @@ public class LineGraphView extends View {
             bottomDelta = Math.max(currentBottomDelta, bottomDelta);
         }
         if (Float.compare(topDelta, 0) > 0 || Float.compare(bottomDelta, 0) > 0) {
-            lines.clear();
+            lineDataCache.clear();
 
             // Create paths
             graphPrepareData = prepareGraphPrepareData(topDelta, bottomDelta);
             for (LineGraphData lineGraphData : lineGraphDataList) {
-                lines.put(lineGraphData, prepareGraph(lineGraphData, graphPrepareData));
+                lineDataCache.put(lineGraphData, prepareGraph(lineGraphData, graphPrepareData));
             }
         }
 
@@ -250,7 +202,7 @@ public class LineGraphView extends View {
     private List<PointF> getPoints(LineGraphData lineGraphData, GraphPrepareData graphPrepareData) {
         final List<PointF> points = new ArrayList<>();
         for (int i = 0, size = graphPrepareData.getVisibleSize(); i < size; i++) {
-            final LineGraphValue value = lineGraphData.getValueForGraph(i);
+            final LineGraphValue value = lineGraphData.getValueForGlobalIndex(i);
             if (value == null) {
                 points.add(null);
             } else {

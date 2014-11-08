@@ -9,8 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class SmoothPathMaker implements PathMaker {
-    @Override
-    public Path makePath(List<PointF> points) {
+    @Override public Path makePath(List<PointF> points) {
         final Path path = new Path();
 
         final List<List<PointF>> continuousCurves = prepareListOfContinuousCurves(points);

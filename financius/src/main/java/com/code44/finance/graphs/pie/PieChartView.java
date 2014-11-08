@@ -28,7 +28,6 @@ public class PieChartView extends View {
     private int emptyColor;
     private PieChartData pieChartData;
 
-    @SuppressWarnings("UnusedDeclaration")
     public PieChartView(Context context) {
         this(context, null);
     }
@@ -39,6 +38,7 @@ public class PieChartView extends View {
 
     public PieChartView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
         // Init
         outlinePaint.setStyle(Paint.Style.STROKE);
         inlinePaint.setStyle(Paint.Style.STROKE);
