@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Set;
 
 public class BackupDataImporter extends DataImporter {
-    private static final int MIN_VALID_VERSION = 6;
+    private static final int MIN_VALID_VERSION = 7;
 
     private final Context context;
     private final DBHelper dbHelper;
