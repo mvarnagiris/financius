@@ -1,4 +1,19 @@
+buildscript {
+    repositories {
+        maven { url 'http://download.crashlytics.com/maven' }
+    }
+
+    dependencies {
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.14.3'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'crashlytics'
+
+repositories {
+    maven { url 'http://download.crashlytics.com/maven' }
+}
+
 apply plugin: 'hugo'
 
 android {
@@ -78,6 +93,7 @@ dependencies {
     androidTestCompile 'org.robolectric:robolectric:2.3'
     androidTestCompile 'org.mockito:mockito-all:1.9.5'
     compile project(':common')
+    compile 'com.crashlytics.android:crashlytics:1.1.13'
 }
 
 def buildTime() {
