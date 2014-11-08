@@ -22,6 +22,7 @@ import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.ui.common.ModelListActivity;
 import com.code44.finance.utils.GeneralPrefs;
+import com.code44.finance.utils.analytics.Analytics;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -133,6 +134,10 @@ public class CurrenciesActivity extends ModelListActivity implements CompoundBut
 
     @Override protected int getLayoutId() {
         return R.layout.activity_currencies;
+    }
+
+    @Override protected Analytics.Screen getScreen() {
+        return Analytics.Screen.CurrencyList;
     }
 
     @Subscribe public void onRefreshFinished(ExchangeRatesRequest request) {

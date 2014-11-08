@@ -13,6 +13,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.providers.TagsProvider;
 import com.code44.finance.ui.common.ModelEditActivity;
+import com.code44.finance.utils.analytics.Analytics;
 
 public class TagEditActivity extends ModelEditActivity<Tag> {
     private EditText titleEditText;
@@ -61,5 +62,9 @@ public class TagEditActivity extends ModelEditActivity<Tag> {
 
     @Override protected void onModelLoaded(Tag model) {
         titleEditText.setText(model.getTitle());
+    }
+
+    @Override protected Analytics.Screen getScreen() {
+        return Analytics.Screen.TagEdit;
     }
 }

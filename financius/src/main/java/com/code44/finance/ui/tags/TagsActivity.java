@@ -14,6 +14,7 @@ import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.providers.TagsProvider;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.ui.common.ModelListActivity;
+import com.code44.finance.utils.analytics.Analytics;
 
 import java.util.List;
 
@@ -54,5 +55,9 @@ public class TagsActivity extends ModelListActivity {
 
     @Override protected void startModelEdit(String modelId) {
         TagEditActivity.start(this, modelId);
+    }
+
+    @Override protected Analytics.Screen getScreen() {
+        return Analytics.Screen.TagList;
     }
 }

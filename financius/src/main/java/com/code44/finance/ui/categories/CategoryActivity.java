@@ -16,6 +16,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.ui.common.ModelActivity;
+import com.code44.finance.utils.analytics.Analytics;
 
 public class CategoryActivity extends ModelActivity<Category> {
     private TextView titleTextView;
@@ -70,5 +71,9 @@ public class CategoryActivity extends ModelActivity<Category> {
 
     @Override protected void startModelEdit(String modelId) {
         CategoryEditActivity.start(this, modelId);
+    }
+
+    @Override protected Analytics.Screen getScreen() {
+        return Analytics.Screen.Category;
     }
 }

@@ -20,6 +20,7 @@ import com.code44.finance.data.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.ui.SelectColorFragment;
 import com.code44.finance.ui.common.ModelEditActivity;
+import com.code44.finance.utils.analytics.Analytics;
 
 public class CategoryEditActivity extends ModelEditActivity<Category> implements View.OnClickListener, SelectColorFragment.OnColorSelectedListener {
     private static final String FRAGMENT_SELECT_COLOR = CategoryEditActivity.class.getName() + ".FRAGMENT_SELECT_COLOR";
@@ -120,6 +121,10 @@ public class CategoryEditActivity extends ModelEditActivity<Category> implements
     @Override public void onColorSelected(int color) {
         model.setColor(color);
         onModelLoaded(model);
+    }
+
+    @Override protected Analytics.Screen getScreen() {
+        return Analytics.Screen.CategoryEdit;
     }
 
     private void onTransactionTypeChange() {

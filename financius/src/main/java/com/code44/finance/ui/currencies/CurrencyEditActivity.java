@@ -34,6 +34,7 @@ import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.ModelEditActivity;
 import com.code44.finance.utils.MoneyFormatter;
+import com.code44.finance.utils.analytics.Analytics;
 import com.squareup.otto.Subscribe;
 
 import java.util.HashSet;
@@ -324,6 +325,10 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
                 break;
             }
         }
+    }
+
+    @Override protected Analytics.Screen getScreen() {
+        return Analytics.Screen.CurrencyEdit;
     }
 
     @Subscribe public void onRefreshFinished(final ExchangeRateRequest request) {

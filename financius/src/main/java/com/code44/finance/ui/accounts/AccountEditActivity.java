@@ -25,6 +25,7 @@ import com.code44.finance.ui.ModelListActivityOld;
 import com.code44.finance.ui.common.ModelEditActivity;
 import com.code44.finance.ui.currencies.CurrenciesActivity;
 import com.code44.finance.utils.MoneyFormatter;
+import com.code44.finance.utils.analytics.Analytics;
 
 import javax.inject.Inject;
 
@@ -136,5 +137,9 @@ public class AccountEditActivity extends ModelEditActivity<Account> implements V
 
     @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         model.setIncludeInTotals(isChecked);
+    }
+
+    @Override protected Analytics.Screen getScreen() {
+        return Analytics.Screen.AccountEdit;
     }
 }

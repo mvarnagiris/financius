@@ -17,6 +17,7 @@ import com.code44.finance.data.model.Model;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.ui.common.ModelListActivity;
+import com.code44.finance.utils.analytics.Analytics;
 
 import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
 
@@ -79,5 +80,9 @@ public class CategoriesActivity extends ModelListActivity {
         @SuppressLint("WrongViewCast") final ExpandableStickyListHeadersListView listView = (ExpandableStickyListHeadersListView) findViewById(R.id.listView);
         listView.setAdapter((CategoriesAdapter) adapter);
         listView.setOnItemClickListener(this);
+    }
+
+    @Override protected Analytics.Screen getScreen() {
+        return Analytics.Screen.CategoryList;
     }
 }

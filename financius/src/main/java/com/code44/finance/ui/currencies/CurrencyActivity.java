@@ -23,6 +23,7 @@ import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.ModelActivity;
 import com.code44.finance.utils.MoneyFormatter;
+import com.code44.finance.utils.analytics.Analytics;
 import com.code44.finance.views.FabImageButton;
 import com.squareup.otto.Subscribe;
 
@@ -161,6 +162,10 @@ public class CurrencyActivity extends ModelActivity<Currency> implements View.On
                 refreshRate();
                 break;
         }
+    }
+
+    @Override protected Analytics.Screen getScreen() {
+        return Analytics.Screen.Currency;
     }
 
     @Subscribe public void onRefreshFinished(ExchangeRateRequest request) {

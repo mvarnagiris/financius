@@ -21,6 +21,7 @@ import com.code44.finance.utils.ActiveInterval;
 import com.code44.finance.utils.BaseInterval;
 import com.code44.finance.utils.CurrentInterval;
 import com.code44.finance.utils.GeneralPrefs;
+import com.code44.finance.utils.analytics.Analytics;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -99,6 +100,10 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
         } else if (id == SettingsAdapter.ID_ABOUT) {
             AboutActivity.start(this);
         }
+    }
+
+    @Override protected Analytics.Screen getScreen() {
+        return Analytics.Screen.Settings;
     }
 
     @Subscribe public void onIntervalChanged(CurrentInterval intervalHelper) {

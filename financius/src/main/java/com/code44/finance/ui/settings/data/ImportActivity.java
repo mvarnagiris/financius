@@ -17,6 +17,7 @@ import com.code44.finance.ui.FilePickerActivity;
 import com.code44.finance.ui.GoogleApiFragment;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.utils.GeneralPrefs;
+import com.code44.finance.utils.analytics.Analytics;
 import com.code44.finance.utils.errors.AppError;
 import com.code44.finance.utils.errors.ImportError;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -108,6 +109,10 @@ public class ImportActivity extends BaseActivity {
         if (error instanceof ImportError) {
             finish();
         }
+    }
+
+    @Override protected Analytics.Screen getScreen() {
+        return Analytics.Screen.Import;
     }
 
     @Subscribe public void onDataImporterFinished(DataImporter dataImporter) {

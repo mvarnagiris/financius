@@ -6,6 +6,7 @@ import android.view.Menu;
 
 import com.code44.finance.R;
 import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.utils.analytics.Analytics;
 
 public class AboutActivity extends BaseActivity {
     public static void start(Context context) {
@@ -29,5 +30,9 @@ public class AboutActivity extends BaseActivity {
         super.onCreateOptionsMenu(menu);
         menu.clear();
         return true;
+    }
+
+    @Override protected Analytics.Screen getScreen() {
+        return Analytics.Screen.About;
     }
 }

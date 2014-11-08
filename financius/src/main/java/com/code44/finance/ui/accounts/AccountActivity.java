@@ -18,6 +18,7 @@ import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.ModelActivity;
 import com.code44.finance.utils.MoneyFormatter;
+import com.code44.finance.utils.analytics.Analytics;
 
 import javax.inject.Inject;
 
@@ -78,5 +79,9 @@ public class AccountActivity extends ModelActivity<Account> {
 
     @Override protected void startModelEdit(String modelId) {
         AccountEditActivity.start(this, modelId);
+    }
+
+    @Override protected Analytics.Screen getScreen() {
+        return Analytics.Screen.Account;
     }
 }

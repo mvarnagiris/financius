@@ -15,6 +15,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.providers.TagsProvider;
 import com.code44.finance.ui.common.ModelActivity;
+import com.code44.finance.utils.analytics.Analytics;
 
 public class TagActivity extends ModelActivity<Tag> {
     private TextView titleTextView;
@@ -63,5 +64,9 @@ public class TagActivity extends ModelActivity<Tag> {
 
     @Override protected void startModelEdit(String modelId) {
         TagEditActivity.start(this, modelId);
+    }
+
+    @Override protected Analytics.Screen getScreen() {
+        return Analytics.Screen.Tag;
     }
 }

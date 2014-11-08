@@ -45,6 +45,7 @@ import com.code44.finance.ui.tags.TagsActivity;
 import com.code44.finance.utils.FieldValidationUtils;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.TextBackgroundSpan;
+import com.code44.finance.utils.analytics.Analytics;
 import com.code44.finance.utils.transaction.TransactionAutoComplete;
 import com.squareup.otto.Subscribe;
 
@@ -435,6 +436,10 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
 
     @Override public void onTransactionAutoCompleteTags(List<Tag> tags) {
 
+    }
+
+    @Override protected Analytics.Screen getScreen() {
+        return Analytics.Screen.TransactionEdit;
     }
 
     @Subscribe public void onDateSet(DatePickerDialog.DateSelected dateSelected) {

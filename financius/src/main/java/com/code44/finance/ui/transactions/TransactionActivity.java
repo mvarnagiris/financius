@@ -23,6 +23,7 @@ import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.ui.common.ModelActivity;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.TextBackgroundSpan;
+import com.code44.finance.utils.analytics.Analytics;
 
 import net.danlew.android.joda.DateUtils;
 
@@ -165,5 +166,9 @@ public class TransactionActivity extends ModelActivity<Transaction> {
 
     @Override protected void startModelEdit(String modelId) {
         TransactionEditActivity.start(this, modelId);
+    }
+
+    @Override protected Analytics.Screen getScreen() {
+        return Analytics.Screen.Transaction;
     }
 }
