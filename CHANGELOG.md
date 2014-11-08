@@ -1,5 +1,6 @@
 ###Version: 0.14.0 - Not released yet
 - ```fix``` When editing category you can no longer change category type to prevent data getting corrupt.
+- ```fix``` Should fix data in database to avoid any weird calculations. Also ensures that all data has proper IDs. This means that old backups will not be supported.
 
 ###Version: 0.13.0
 - ```new``` Landscape layout for categories report.
