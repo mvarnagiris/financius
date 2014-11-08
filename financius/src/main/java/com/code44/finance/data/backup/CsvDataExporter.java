@@ -64,7 +64,7 @@ public class CsvDataExporter extends DataExporter {
             outputLine.append(SEPARATOR).append(QUOTE).append(getAccountTo(transaction)).append(QUOTE);
             outputLine.append(SEPARATOR).append(QUOTE).append(getCategory(transaction)).append(QUOTE);
             outputLine.append(SEPARATOR).append(QUOTE).append(getTags(transaction)).append(QUOTE);
-            outputLine.append(SEPARATOR).append(QUOTE).append(transaction.getAmount()).append(QUOTE);
+            outputLine.append(SEPARATOR).append(QUOTE).append(transaction.getAmount() / 100.0).append(QUOTE);
             outputLine.append(SEPARATOR).append(QUOTE).append(getCurrencyCode(transaction)).append(QUOTE);
             outputLine.append(SEPARATOR).append(QUOTE).append(transaction.getExchangeRate()).append(QUOTE);
             writer.write(outputLine.toString());

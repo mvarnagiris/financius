@@ -1,3 +1,8 @@
+###Version: 0.15.0 - Not released yet
+- ```new``` Added Crashlytics for better crash tracking. I will be able to fix things better.
+- ```new``` Better Google Analytics tracking.
+- ```fix``` CSV export adds decimals to amount.
+
 ###Version: 0.14.0
 - ```fix``` When editing category you can no longer change category type to prevent data getting corrupt.
 - ```fix``` Should fix data in database to avoid any weird calculations. Also ensures that all data has proper IDs. This means that old backups will not be supported.
