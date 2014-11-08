@@ -69,10 +69,7 @@ public final class DBMigration {
             db.beginTransaction();
 
             v20FixCategoriesIds(db);
-            v20FixCurrencies(db);
             v20FixAccounts(db);
-            v20FixCategories(db);
-            v20FixTags(db);
             v20FixTransactions(db);
 
             db.setTransactionSuccessful();
@@ -322,23 +319,31 @@ public final class DBMigration {
         IOUtils.closeQuietly(cursor);
     }
 
-    private static void v20FixCurrencies(SQLiteDatabase db) {
-        // TODO Implement
-    }
-
     private static void v20FixAccounts(SQLiteDatabase db) {
-        // TODO Implement
-    }
-
-    private static void v20FixCategories(SQLiteDatabase db) {
-        // TODO Implement
-    }
-
-    private static void v20FixTags(SQLiteDatabase db) {
-        // TODO Implement
+        final ContentValues values = new ContentValues();
+        values.put(Tables.Accounts.NOTE.getName(), "");
+        db.update(Tables.Accounts.TABLE_NAME, values, Tables.Accounts.NOTE + " is null", null);
     }
 
     private static void v20FixTransactions(SQLiteDatabase db) {
-        // TODO Implement
+        final ContentValues values = new ContentValues();
+        values.put(Tables.Transactions.NOTE.getName(), "");
+        db.update(Tables.Transactions.TABLE_NAME, values, Tables.Transactions.NOTE + " is null", null);
+
+        final String[] args = new String[1];
+        args[0] = TransactionType.Transfer.asString();
+        values.clear();
+        values.put(Tables.Transactions.CATEGORY_ID.getName(), "");
+        db.update(Tables.Transactions.TABLE_NAME, values, Tables.Transactions.TYPE + "=?", args);
+
+        args[0] = TransactionType.Expense.asString();
+        values.clear();
+        values.put(Tables.Transactions.ACCOUNT_TO_ID.getName(), "");
+        db.update(Tables.Transactions.TABLE_NAME, values, Tables.Transactions.TYPE + "=?", args);
+
+        args[0] = TransactionType.Income.asString();
+        values.clear();
+        values.put(Tables.Transactions.ACCOUNT_FROM_ID.getName(), "");
+        db.update(Tables.Transactions.TABLE_NAME, values, Tables.Transactions.TYPE + "=?", args);
     }
 }
