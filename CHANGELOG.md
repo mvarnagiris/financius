@@ -1,4 +1,4 @@
-###Version: 0.14.0 - Not released yet
+###Version: 0.14.0
 - ```fix``` When editing category you can no longer change category type to prevent data getting corrupt.
 - ```fix``` Should fix data in database to avoid any weird calculations. Also ensures that all data has proper IDs. This means that old backups will not be supported.
 
