@@ -25,9 +25,10 @@ public class TrendsGraphData {
         long totalExpense = 0;
         final LineGraphData.Builder builder = new LineGraphData.Builder()
                 .setColor(context.getResources().getColor(R.color.text_negative))
+                .setLineWidth(context.getResources().getDimension(R.dimen.divider))
+                .setDividerDrawable(context.getResources().getDrawable(R.drawable.trends_divider))
                 .setUseGlobalMinMax(false)
-                .setSmooth(true)
-                .setLineWidth(context.getResources().getDimension(R.dimen.divider));
+                .setSmooth(true);
         final Period period = getPeriod(interval);
         Interval currentInterval = getFirstInterval(interval, period);
         long expense = 0;
