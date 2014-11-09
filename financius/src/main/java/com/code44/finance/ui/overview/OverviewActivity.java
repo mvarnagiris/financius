@@ -19,6 +19,8 @@ import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.DrawerActivity;
 import com.code44.finance.ui.reports.categories.CategoriesReportData;
+import com.code44.finance.ui.reports.trends.TrendsGraphData;
+import com.code44.finance.ui.reports.trends.TrendsGraphView;
 import com.code44.finance.ui.transactions.TransactionEditActivity;
 import com.code44.finance.utils.CurrentInterval;
 import com.code44.finance.utils.analytics.Analytics;
@@ -40,6 +42,7 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
 
     private OverviewGraphView overviewGraphView;
     private AccountsView accountsView;
+    private TrendsGraphView trendsGraphView;
 
     public static Intent makeIntent(Context context) {
         return makeIntentForActivity(context, OverviewActivity.class);
@@ -60,11 +63,13 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
         final FabImageButton newTransactionView = (FabImageButton) findViewById(R.id.newTransaction);
         overviewGraphView = (OverviewGraphView) findViewById(R.id.overviewGraphView);
         accountsView = (AccountsView) findViewById(R.id.accounts);
+        trendsGraphView = (TrendsGraphView) findViewById(R.id.trendsGraphView);
 
         // Setup
         newTransactionView.setOnClickListener(this);
         overviewGraphView.setOnClickListener(this);
         accountsView.setOnClickListener(this);
+        trendsGraphView.setOnClickListener(this);
 
         // Loader
         getSupportLoaderManager().initLoader(LOADER_TRANSACTIONS, null, this);
@@ -95,6 +100,8 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
                 return Tables.Transactions
                         .getQuery()
                         .selection(" and " + Tables.Transactions.DATE + " between ? and ?", String.valueOf(currentInterval.getInterval().getStartMillis()), String.valueOf(currentInterval.getInterval().getEndMillis() - 1))
+                        .clearSort()
+                        .sortOrder(Tables.Transactions.DATE.getName())
                         .asCursorLoader(this, TransactionsProvider.uriTransactions());
             case LOADER_ACCOUNTS:
                 return Tables.Accounts
@@ -130,6 +137,9 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
             case R.id.accounts:
                 onNavigationItemSelected(NavigationAdapter.NavigationScreen.Accounts);
                 break;
+            case R.id.trendsGraphView:
+                onNavigationItemSelected(NavigationAdapter.NavigationScreen.Transactions);
+                break;
         }
     }
 
@@ -142,6 +152,10 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
         final CategoriesReportData categoriesReportData = new CategoriesReportData(this, cursor, mainCurrency, TransactionType.Expense);
         overviewGraphView.setPieChartData(categoriesReportData.getPieChartData());
         overviewGraphView.setTotalExpense(categoriesReportData.getPieChartData().getTotalValue());
+
+        final TrendsGraphData trendsGraphData = new TrendsGraphData(this, cursor, mainCurrency, currentInterval);
+        trendsGraphView.setTotalIncomeAndExpense(trendsGraphData.getTotalIncome(), trendsGraphData.getTotalExpense(), mainCurrency);
+        trendsGraphView.setLineGraphData(trendsGraphData.getLineGraphData(), mainCurrency);
     }
 
     private void onAccountsLoaded(Cursor cursor) {

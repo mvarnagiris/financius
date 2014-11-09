@@ -232,6 +232,11 @@ public class Query {
         return this;
     }
 
+    public Query clearSort() {
+        sortOrder.clear();
+        return this;
+    }
+
     private String makeInClause(String value, int count) {
         final StringBuilder sb = new StringBuilder();
         sb.append(value).append(" in (");

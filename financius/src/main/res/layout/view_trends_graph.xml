@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/btn_borderless"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <TextView
         style="@style/Text.Title"
@@ -14,9 +12,23 @@
         android:text="@string/trends"
         android:textColor="@color/primary" />
 
-    <com.code44.finance.graphs.line.LineGraphView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/action_bar_size_2x" />
+        android:layout_height="wrap_content">
+
+        <com.code44.finance.graphs.line.LineGraphView
+            android:id="@+id/trendsLineGraphView"
+            android:layout_width="match_parent"
+            android:layout_height="96dp" />
+
+        <TextView
+            android:id="@+id/maxExpenseTextView"
+            style="@style/Text.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            tools:text="892.58 $" />
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/balanceContainer"
@@ -25,21 +37,22 @@
         android:layout_marginTop="@dimen/keyline">
 
         <TextView
+            android:id="@+id/totalIncomeTextView"
             style="@style/Text.Body2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/balance"
-            android:textColor="@color/text_secondary" />
+            android:textColor="@color/text_positive"
+            tools:text="8579.48 $" />
 
         <TextView
-            android:id="@+id/totalBalance"
+            android:id="@+id/totalExpenseTextView"
             style="@style/Text.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_secondary"
+            android:textColor="@color/text_negative"
             tools:text="5892.58 $" />
 
     </LinearLayout>
 
-</LinearLayout>
+</merge>

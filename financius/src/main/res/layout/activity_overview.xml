@@ -35,6 +35,7 @@
             android:id="@+id/containerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
             android:orientation="vertical"
             android:padding="@dimen/space_normal"
             android:paddingBottom="@dimen/keyline">
@@ -55,6 +56,7 @@
                 app:cardCornerRadius="@dimen/card_radius">
 
                 <com.code44.finance.ui.reports.trends.TrendsGraphView
+                    android:id="@+id/trendsGraphView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
