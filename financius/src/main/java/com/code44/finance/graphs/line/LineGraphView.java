@@ -8,14 +8,16 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Pair;
 import android.view.View;
+
+import com.code44.finance.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class LineGraphView extends View {
     private final List<LineGraphData> lineGraphDataList = new ArrayList<>();
@@ -34,6 +36,20 @@ public class LineGraphView extends View {
 
     public LineGraphView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        if (isInEditMode()) {
+            final LineGraphData.Builder builder = new LineGraphData.Builder()
+                    .setColor(getResources().getColor(R.color.text_negative))
+                    .setLineWidth(getResources().getDimension(R.dimen.divider))
+                    .setSmooth(true)
+                    .setUseGlobalMinMax(true);
+
+            final Random random = new Random();
+            for (int i = 0; i < 30; i++) {
+                builder.addValue(new LineGraphValue(random.nextFloat() * 1000));
+            }
+            setLineGraphData(builder.build());
+        }
     }
 
     @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -97,101 +113,80 @@ public class LineGraphView extends View {
             return;
         }
 
-        // Create paths.
-        GraphPrepareData graphPrepareData = prepareGraphPrepareData(0, 0);
-        for (LineGraphData lineGraphData : lineGraphDataList) {
-            lineDataCache.put(lineGraphData, prepareGraph(lineGraphData, graphPrepareData));
-        }
+        invalidateMinMax();
+        final GraphsInfo graphsInfo = invalidateLineDataCache(0, 0);
 
         // Check if paths are out of bounds
+        final float[] topBottomDelta = getTopBottomOffsetToFitGraphs(graphsInfo);
+        final float topDelta = topBottomDelta[0];
+        final float bottomDelta = topBottomDelta[1];
+        if (Float.compare(topDelta, 0) > 0 || Float.compare(bottomDelta, 0) > 0) {
+            lineDataCache.clear();
+            invalidateLineDataCache(topDelta, bottomDelta);
+        }
+
+        invalidate();
+    }
+
+    private void invalidateMinMax() {
+        minValue = Double.MAX_VALUE;
+        maxValue = Double.MIN_VALUE;
+        for (LineGraphData lineGraphData : lineGraphDataList) {
+            if (!lineGraphData.isUsingGlobalMinMax()) {
+                continue;
+            }
+
+            if (Double.compare(lineGraphData.getMinValue(), minValue) < 0) {
+                minValue = lineGraphData.getMinValue();
+            }
+
+            if (Double.compare(lineGraphData.getMaxValue(), maxValue) > 0) {
+                maxValue = lineGraphData.getMaxValue();
+            }
+        }
+    }
+
+    private GraphsInfo invalidateLineDataCache(float topDelta, float bottomDelta) {
+        final GraphsInfo graphsInfo = getGraphsInfo(topDelta, bottomDelta);
+        for (LineGraphData lineGraphData : lineGraphDataList) {
+            lineDataCache.put(lineGraphData, getLineData(lineGraphData, graphsInfo));
+        }
+        return graphsInfo;
+    }
+
+    private float[] getTopBottomOffsetToFitGraphs(GraphsInfo graphsInfo) {
         final RectF bounds = new RectF();
         float topDelta = 0;
         float bottomDelta = 0;
         for (LineData line : lineDataCache.values()) {
             line.getPath().computeBounds(bounds, true);
             final float lineHalfWidth = line.getPaint().getStrokeWidth() / 2;
-            final float currentTopDelta = Math.max(0, graphPrepareData.getBounds().top - bounds.top + lineHalfWidth);
-            final float currentBottomDelta = Math.max(0, bounds.bottom - graphPrepareData.getBounds().bottom + lineHalfWidth);
+            final float currentTopDelta = Math.max(0, graphsInfo.getBounds().top - bounds.top + lineHalfWidth);
+            final float currentBottomDelta = Math.max(0, bounds.bottom - graphsInfo.getBounds().bottom + lineHalfWidth);
             topDelta = Math.max(currentTopDelta, topDelta);
             bottomDelta = Math.max(currentBottomDelta, bottomDelta);
         }
-        if (Float.compare(topDelta, 0) > 0 || Float.compare(bottomDelta, 0) > 0) {
-            lineDataCache.clear();
 
-            // Create paths
-            graphPrepareData = prepareGraphPrepareData(topDelta, bottomDelta);
-            for (LineGraphData lineGraphData : lineGraphDataList) {
-                lineDataCache.put(lineGraphData, prepareGraph(lineGraphData, graphPrepareData));
-            }
-        }
-
-        invalidate();
+        return new float[]{topDelta, bottomDelta};
     }
 
-    private GraphPrepareData prepareGraphPrepareData(float extraTopSpace, float extraBottomSpace) {
-        final boolean findMinValue = this.minValue == null;
-        final boolean findMaxValue = this.maxValue == null;
-        final boolean findVisibleSize = this.visibleSize == VISIBLE_SIZE_SHOW_ALL;
-
-        LineGraphValue minValue = this.minValue;
-        LineGraphValue maxValue = this.maxValue;
-        int visibleSize = this.visibleSize;
+    private GraphsInfo getGraphsInfo(float extraTopSpace, float extraBottomSpace) {
         float paddingHorizontal = 0;
         float paddingVertical = 0;
 
         for (LineGraphData lineGraphData : lineGraphDataList) {
-            // Visible size
-            if (findVisibleSize) {
-                visibleSize = Math.max(lineGraphData.getEndIndex() + 1, visibleSize);
-            }
-
-            // MinMax values
-            if (findMinValue || findMaxValue) {
-                final Pair<LineGraphValue, LineGraphValue> minMaxValues = getMinMaxValues(lineGraphData.getValues());
-                if (findMinValue && (minValue == null || (minMaxValues.first != null && Double.compare(minMaxValues.first.getValue(), minValue.getValue()) < 0))) {
-                    minValue = minMaxValues.first;
-                }
-
-                if (findMaxValue && (maxValue == null || (minMaxValues.second != null && Double.compare(minMaxValues.second.getValue(), maxValue.getValue()) > 0))) {
-                    maxValue = minMaxValues.second;
-                }
-            }
-
-            // Padding for bounds
             final Drawable dividerDrawable = lineGraphData.getDividerDrawable();
             paddingHorizontal = Math.max(paddingHorizontal, Math.max(dividerDrawable != null ? dividerDrawable.getIntrinsicWidth() : 0, lineGraphData.getLineWidth()));
             paddingVertical = Math.max(paddingVertical, Math.max(dividerDrawable != null ? dividerDrawable.getIntrinsicHeight() : 0, lineGraphData.getLineWidth()));
         }
         paddingHorizontal /= 2;
         paddingVertical /= 2;
-        if (minValue == null) {
-            minValue = new IntLineGraphValue(0);
-        }
-        if (maxValue == null) {
-            maxValue = new IntLineGraphValue(0);
-        }
         final RectF bounds = new RectF(paddingHorizontal, paddingVertical + extraTopSpace, getMeasuredWidth() - paddingHorizontal, getMeasuredHeight() - paddingVertical - extraBottomSpace);
-
-        return new GraphPrepareData(visibleSize, minValue, maxValue, bounds);
+        return new GraphsInfo(bounds);
     }
 
-    private Pair<LineGraphValue, LineGraphValue> getMinMaxValues(List<LineGraphValue> values) {
-        LineGraphValue minValue = null;
-        LineGraphValue maxValue = null;
-        for (LineGraphValue value : values) {
-            if (minValue == null || (value != null && Double.compare(value.getValue(), minValue.getValue()) < 0)) {
-                minValue = value;
-            }
-
-            if (maxValue == null || (value != null && Double.compare(value.getValue(), maxValue.getValue()) > 0)) {
-                maxValue = value;
-            }
-        }
-        return Pair.create(minValue, maxValue);
-    }
-
-    private LineData prepareGraph(LineGraphData lineGraphData, GraphPrepareData graphPrepareData) {
-        final List<PointF> points = getPoints(lineGraphData, graphPrepareData);
+    private LineData getLineData(LineGraphData lineGraphData, GraphsInfo graphsInfo) {
+        final List<PointF> points = getPoints(lineGraphData, graphsInfo);
         final PathMaker pathMaker = lineGraphData.isSmooth() ? new SmoothPathMaker() : new SharpPathMaker();
         final Path path = pathMaker.makePath(points);
         final Paint paint = createLinePaint(lineGraphData);
@@ -199,41 +194,45 @@ public class LineGraphView extends View {
         return new LineData(points, path, paint);
     }
 
-    private List<PointF> getPoints(LineGraphData lineGraphData, GraphPrepareData graphPrepareData) {
+    private List<PointF> getPoints(LineGraphData lineGraphData, GraphsInfo graphsInfo) {
         final List<PointF> points = new ArrayList<>();
-        for (int i = 0, size = graphPrepareData.getVisibleSize(); i < size; i++) {
-            final LineGraphValue value = lineGraphData.getValueForGlobalIndex(i);
+        for (int i = 0, size = lineGraphData.size(); i < size; i++) {
+            final LineGraphValue value = lineGraphData.getValue(i);
             if (value == null) {
                 points.add(null);
             } else {
-                final PointF point = getPoint(i, graphPrepareData, value);
+                final PointF point = getPoint(i, lineGraphData, graphsInfo, value);
                 points.add(point);
             }
         }
         return points;
     }
 
-    private PointF getPoint(int index, GraphPrepareData graphPrepareData, LineGraphValue value) {
+    private PointF getPoint(int index, LineGraphData lineGraphData, GraphsInfo graphsInfo, LineGraphValue value) {
         if (value == null) {
-            return null;
-        }
-
-        if (index >= graphPrepareData.getVisibleSize()) {
             return null;
         }
 
         final float x;
         if (index == 0) {
-            x = graphPrepareData.getBounds().left;
-        } else if (index == graphPrepareData.getVisibleSize() - 1) {
-            x = graphPrepareData.getBounds().right;
+            x = graphsInfo.getBounds().left;
+        } else if (index == lineGraphData.size() - 1) {
+            x = graphsInfo.getBounds().right;
         } else {
-            final float step = graphPrepareData.getBounds().width() / (graphPrepareData.getVisibleSize() - 1);
-            x = graphPrepareData.getBounds().left + (step * index);
+            final float step = graphsInfo.getBounds().width() / (lineGraphData.size() - 1);
+            x = graphsInfo.getBounds().left + (step * index);
         }
 
-        final double minValue = graphPrepareData.getMinValue().getValue();
-        final double maxValue = graphPrepareData.getMaxValue().getValue();
+        final double minValue;
+        final double maxValue;
+        if (lineGraphData.isUsingGlobalMinMax()) {
+            minValue = this.minValue;
+            maxValue = this.maxValue;
+        } else {
+            minValue = lineGraphData.getMinValue();
+            maxValue = lineGraphData.getMaxValue();
+        }
+
         final float ratio;
         if (Double.compare(minValue, maxValue) == 0) {
             ratio = 0.5f;
@@ -241,8 +240,8 @@ public class LineGraphView extends View {
             ratio = (float) ((value.getValue() - minValue) / (maxValue - minValue));
         }
 
-        final float height = graphPrepareData.getBounds().height();
-        final float y = graphPrepareData.getBounds().bottom - (height * ratio);
+        final float height = graphsInfo.getBounds().height();
+        final float y = graphsInfo.getBounds().bottom - (height * ratio);
 
         return new PointF(x, y);
     }
@@ -282,29 +281,11 @@ public class LineGraphView extends View {
         }
     }
 
-    private static class GraphPrepareData {
-        final int visibleSize;
-        final LineGraphValue minValue;
-        final LineGraphValue maxValue;
+    private static class GraphsInfo {
         final RectF bounds;
 
-        private GraphPrepareData(int visibleSize, LineGraphValue minValue, LineGraphValue maxValue, RectF bounds) {
-            this.visibleSize = visibleSize;
-            this.minValue = minValue;
-            this.maxValue = maxValue;
+        private GraphsInfo(RectF bounds) {
             this.bounds = bounds;
-        }
-
-        public int getVisibleSize() {
-            return visibleSize;
-        }
-
-        public LineGraphValue getMinValue() {
-            return minValue;
-        }
-
-        public LineGraphValue getMaxValue() {
-            return maxValue;
         }
 
         public RectF getBounds() {

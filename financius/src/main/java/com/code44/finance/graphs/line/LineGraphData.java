@@ -148,9 +148,12 @@ public class LineGraphData {
 
         private void findMinMax() {
             if (values.size() > 0) {
+                minValue = Double.MAX_VALUE;
+                maxValue = Double.MIN_VALUE;
                 for (LineGraphValue value : values) {
-                    minValue = Double.MAX_VALUE;
-                    maxValue = Double.MIN_VALUE;
+                    if (value == null) {
+                        continue;
+                    }
 
                     if (Double.compare(value.getValue(), minValue) < 0) {
                         minValue = value.getValue();
