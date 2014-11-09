@@ -1,4 +1,4 @@
-###Version: 0.15.0 - Not released yet
+###Version: 0.14.1
 - ```new``` Added trends graph for expenses in overview screen.
 - ```new``` Added Crashlytics for better crash tracking. I will be able to fix things better.
 - ```new``` Better Google Analytics tracking.
