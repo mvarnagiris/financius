@@ -26,8 +26,8 @@ public class NavigationAdapter extends BaseAdapter {
         items = new ArrayList<>();
         // TODO items.add(new NavigationItem(NAV_ID_USER, context.getString(R.string.user)));
         items.add(new NavigationItem(NavigationScreen.Overview, context.getString(R.string.overview)));
-        items.add(new NavigationItem(NavigationScreen.Accounts, context.getString(R.string.accounts)));
-        items.add(new NavigationItem(NavigationScreen.Transactions, context.getString(R.string.transactions)));
+        items.add(new NavigationItem(NavigationScreen.Accounts, context.getString(R.string.accounts_other)));
+        items.add(new NavigationItem(NavigationScreen.Transactions, context.getString(R.string.transactions_other)));
         items.add(new NavigationItem(NavigationScreen.Reports, context.getString(R.string.reports)));
 
         selectedTextColor = context.getResources().getColor(R.color.text_brand);

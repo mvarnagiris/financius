@@ -12,8 +12,12 @@
     <string name="expenses">Expenses</string>
     <string name="income">Income</string>
     <string name="transfer">Transfer</string>
-    <string name="currencies">Currencies</string>
-    <string name="currency">Currency</string>
+    <string name="currencies_zero">Currencies</string>
+    <string name="currencies_one">Currency</string>
+    <string name="currencies_two">Currencies</string>
+    <string name="currencies_few">Currencies</string>
+    <string name="currencies_many">Currencies</string>
+    <string name="currencies_other">Currencies</string>
     <string name="currency_code">Currency code</string>
     <string name="create">Create</string>
     <string name="main_currency">Main currency</string>
@@ -21,8 +25,12 @@
     <string name="refresh_rate">Refresh rate</string>
     <string name="refresh_rates">Refresh rates</string>
     <string name="exchange_rate">Exchange rate</string>
-    <string name="accounts">Accounts</string>
-    <string name="account">Account</string>
+    <string name="accounts_zero">Accounts</string>
+    <string name="accounts_one">Account</string>
+    <string name="accounts_two">Accounts</string>
+    <string name="accounts_few">Accounts</string>
+    <string name="accounts_many">Accounts</string>
+    <string name="accounts_other">Accounts</string>
     <string name="include_in_totals">Include in totals</string>
     <string name="balance">Balance</string>
     <string name="title">Title</string>
@@ -43,21 +51,33 @@
     <string name="close_left">Close left</string>
     <string name="far_left">Far left</string>
     <string name="calculator">Calculator</string>
-    <string name="categories">Categories</string>
-    <string name="category">Category</string>
+    <string name="categories_zero">Categories</string>
+    <string name="categories_one">Category</string>
+    <string name="categories_two">Categories</string>
+    <string name="categories_few">Categories</string>
+    <string name="categories_many">Categories</string>
+    <string name="categories_other">Categories</string>
     <string name="transaction_type">Transaction type</string>
     <string name="account_balance_update">Account balance update</string>
     <string name="color">Color</string>
-    <string name="transaction">Transaction</string>
-    <string name="transactions">Transactions</string>
+    <string name="transactions_zero">Transactions</string>
+    <string name="transactions_one">Transaction</string>
+    <string name="transactions_two">Transactions</string>
+    <string name="transactions_few">Transactions</string>
+    <string name="transactions_many">Transactions</string>
+    <string name="transactions_other">Transactions</string>
     <string name="overview">Overview</string>
     <string name="open_navigation">Open navigation</string>
     <string name="close_navigation">Close navigation</string>
     <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="user">User</string>
-    <string name="tags">Tags</string>
-    <string name="tag">Tag</string>
+    <string name="tags_zero">Tags</string>
+    <string name="tags_one">Tag</string>
+    <string name="tags_two">Tags</string>
+    <string name="tags_few">Tags</string>
+    <string name="tags_many">Tags</string>
+    <string name="tags_other">Tags</string>
     <string name="period">Period</string>
     <string name="day">Day</string>
     <string name="week">Week</string>
@@ -111,50 +131,5 @@
     <string name="c_household">Household</string>
     <string name="c_bills_and_utilities">Bills and Utilities</string>
     <string name="c_salary">Salary</string>
-
-    <plurals name="currency">
-        <item quantity="zero">@string/currencies</item>
-        <item quantity="one">@string/currency</item>
-        <item quantity="two">@string/currencies</item>
-        <item quantity="few">@string/currencies</item>
-        <item quantity="many">@string/currencies</item>
-        <item quantity="other">@string/currencies</item>
-    </plurals>
-
-    <plurals name="account">
-        <item quantity="zero">@string/accounts</item>
-        <item quantity="one">@string/account</item>
-        <item quantity="two">@string/accounts</item>
-        <item quantity="few">@string/accounts</item>
-        <item quantity="many">@string/accounts</item>
-        <item quantity="other">@string/accounts</item>
-    </plurals>
-
-    <plurals name="category">
-        <item quantity="zero">@string/categories</item>
-        <item quantity="one">@string/category</item>
-        <item quantity="two">@string/categories</item>
-        <item quantity="few">@string/categories</item>
-        <item quantity="many">@string/categories</item>
-        <item quantity="other">@string/categories</item>
-    </plurals>
-
-    <plurals name="tag">
-        <item quantity="zero">@string/tags</item>
-        <item quantity="one">@string/tag</item>
-        <item quantity="two">@string/tags</item>
-        <item quantity="few">@string/tags</item>
-        <item quantity="many">@string/tags</item>
-        <item quantity="other">@string/tags</item>
-    </plurals>
-
-    <plurals name="transaction">
-        <item quantity="zero">@string/transactions</item>
-        <item quantity="one">@string/transaction</item>
-        <item quantity="two">@string/transactions</item>
-        <item quantity="few">@string/transactions</item>
-        <item quantity="many">@string/transactions</item>
-        <item quantity="other">@string/transactions</item>
-    </plurals>
 
 </resources>

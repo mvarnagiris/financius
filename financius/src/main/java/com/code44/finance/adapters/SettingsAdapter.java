@@ -28,9 +28,9 @@ public class SettingsAdapter extends BaseAdapter {
     public SettingsAdapter(Context context) {
         this.context = context;
         settingsItems = new ArrayList<>();
-        settingsItems.add(new SettingsItem(ID_CURRENCIES, ViewType.SettingsItem, context.getString(R.string.currencies)));
-        settingsItems.add(new SettingsItem(ID_CATEGORIES, ViewType.SettingsItem, context.getString(R.string.categories)));
-        settingsItems.add(new SettingsItem(ID_TAGS, ViewType.SettingsItem, context.getString(R.string.tags)));
+        settingsItems.add(new SettingsItem(ID_CURRENCIES, ViewType.SettingsItem, context.getString(R.string.currencies_other)));
+        settingsItems.add(new SettingsItem(ID_CATEGORIES, ViewType.SettingsItem, context.getString(R.string.categories_other)));
+        settingsItems.add(new SettingsItem(ID_TAGS, ViewType.SettingsItem, context.getString(R.string.tags_other)));
         settingsItems.add(new SettingsSubtitleItem(ID_PERIOD, ViewType.SettingsSubtitleItem, context.getString(R.string.period), ""));
         settingsItems.add(new SettingsItem(ID_DATA, ViewType.SettingsItem, context.getString(R.string.your_data)));
         settingsItems.add(new SettingsSubtitleItem(ID_ABOUT, ViewType.SettingsSubtitleItem, context.getString(R.string.about), BuildConfig.VERSION_NAME));

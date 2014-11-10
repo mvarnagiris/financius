@@ -50,4 +50,49 @@
         <item>#259b24</item>
     </string-array>
 
+    <plurals name="currency">
+        <item quantity="zero">@string/currencies_zero</item>
+        <item quantity="one">@string/currencies_one</item>
+        <item quantity="two">@string/currencies_two</item>
+        <item quantity="few">@string/currencies_few</item>
+        <item quantity="many">@string/currencies_many</item>
+        <item quantity="other">@string/currencies_other</item>
+    </plurals>
+
+    <plurals name="account">
+        <item quantity="zero">@string/accounts_zero</item>
+        <item quantity="one">@string/accounts_one</item>
+        <item quantity="two">@string/accounts_two</item>
+        <item quantity="few">@string/accounts_few</item>
+        <item quantity="many">@string/accounts_many</item>
+        <item quantity="other">@string/accounts_other</item>
+    </plurals>
+
+    <plurals name="category">
+        <item quantity="zero">@string/categories_zero</item>
+        <item quantity="one">@string/categories_one</item>
+        <item quantity="two">@string/categories_two</item>
+        <item quantity="few">@string/categories_few</item>
+        <item quantity="many">@string/categories_many</item>
+        <item quantity="other">@string/categories_other</item>
+    </plurals>
+
+    <plurals name="tag">
+        <item quantity="zero">@string/tags_zero</item>
+        <item quantity="one">@string/tags_one</item>
+        <item quantity="two">@string/tags_two</item>
+        <item quantity="few">@string/tags_few</item>
+        <item quantity="many">@string/tags_many</item>
+        <item quantity="other">@string/tags_other</item>
+    </plurals>
+
+    <plurals name="transaction">
+        <item quantity="zero">@string/transactions_zero</item>
+        <item quantity="one">@string/transactions_one</item>
+        <item quantity="two">@string/transactions_two</item>
+        <item quantity="few">@string/transactions_few</item>
+        <item quantity="many">@string/transactions_many</item>
+        <item quantity="other">@string/transactions_other</item>
+    </plurals>
+
 </resources>

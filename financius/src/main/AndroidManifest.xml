@@ -45,49 +45,49 @@
             android:label="@string/calculator" />
         <activity
             android:name=".ui.currencies.CurrenciesActivity"
-            android:label="@string/currencies" />
+            android:label="@string/currencies_other" />
         <activity
             android:name=".ui.currencies.CurrencyActivity"
-            android:label="@string/currency" />
+            android:label="@string/currencies_one" />
         <activity
             android:name=".ui.currencies.CurrencyEditActivity"
-            android:label="@string/currency" />
+            android:label="@string/currencies_one" />
         <activity
             android:name=".ui.accounts.AccountsActivity"
-            android:label="@string/accounts" />
+            android:label="@string/accounts_other" />
         <activity
             android:name=".ui.accounts.AccountActivity"
-            android:label="@string/account" />
+            android:label="@string/accounts_one" />
         <activity
             android:name=".ui.accounts.AccountEditActivity"
-            android:label="@string/account" />
+            android:label="@string/accounts_one" />
         <activity
             android:name=".ui.categories.CategoriesActivity"
-            android:label="@string/categories" />
+            android:label="@string/categories_other" />
         <activity
             android:name=".ui.categories.CategoryActivity"
-            android:label="@string/category" />
+            android:label="@string/categories_one" />
         <activity
             android:name=".ui.categories.CategoryEditActivity"
-            android:label="@string/category" />
+            android:label="@string/categories_one" />
         <activity
             android:name=".ui.tags.TagsActivity"
-            android:label="@string/tags" />
+            android:label="@string/tags_other" />
         <activity
             android:name=".ui.tags.TagActivity"
-            android:label="@string/tag" />
+            android:label="@string/tags_one" />
         <activity
             android:name=".ui.tags.TagEditActivity"
-            android:label="@string/tag" />
+            android:label="@string/tags_one" />
         <activity
             android:name=".ui.transactions.TransactionsActivity"
-            android:label="@string/transactions" />
+            android:label="@string/transactions_other" />
         <activity
             android:name=".ui.transactions.TransactionActivity"
-            android:label="@string/transaction" />
+            android:label="@string/transactions_one" />
         <activity
             android:name=".ui.transactions.TransactionEditActivity"
-            android:label="@string/transaction" />
+            android:label="@string/transactions_one" />
         <activity android:name=".ui.user.LoginActivity" />
         <activity
             android:name=".ui.settings.data.DataActivity"

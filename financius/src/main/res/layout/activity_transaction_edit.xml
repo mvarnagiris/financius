@@ -139,7 +139,7 @@
                     style="@style/Button.Borderless.Select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/category" />
+                    android:hint="@string/categories_one" />
 
             </LinearLayout>
 
@@ -149,7 +149,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_large"
-                android:hint="@string/tags" />
+                android:hint="@string/tags_other" />
 
             <EditText
                 android:id="@+id/noteEditText"
