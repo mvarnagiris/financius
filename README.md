@@ -6,6 +6,7 @@ Personal finance tracking tool for Android.
 - [Google+ community][2]
 - [Join beta testing program][3] *(You must be joined to Google+ community)*
 - [Report an issue or  request a feature][4] but before **[read this](#report-a-bug-or-request-a-feature)**
+- [Translate to a different language][7]
 
 ##Future plans
 I plan to add paid features to the app. Everything that is in the app as of v0.9.x will be free, but some (or maybe all)
@@ -45,3 +46,4 @@ of this license document, but changing it is not allowed.
 [4]: https://github.com/mvarnagiris/Financius/issues/new
 [5]: https://github.com/mvarnagiris/Financius/issues?state=open
 [6]: https://github.com/mvarnagiris/Financius/issues?state=closed
+[7]: https://crowdin.com/project/financius
