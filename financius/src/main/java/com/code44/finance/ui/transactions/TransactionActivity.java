@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.db.Tables;
+import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
@@ -106,7 +107,7 @@ public class TransactionActivity extends ModelActivity<Transaction> {
                 }
                 break;
             case Transfer:
-                if (transaction.getAccountFrom().getCurrency().equals(transaction.getAccountTo().getCurrency())) {
+                if (isSameCurrency(transaction)) {
                     amountToTextView.setVisibility(View.GONE);
                 } else {
                     amountToTextView.setVisibility(View.VISIBLE);
@@ -170,5 +171,11 @@ public class TransactionActivity extends ModelActivity<Transaction> {
 
     @Override protected Analytics.Screen getScreen() {
         return Analytics.Screen.Transaction;
+    }
+
+    private boolean isSameCurrency(Transaction transaction) {
+        final Account accountFrom = transaction.getAccountFrom();
+        final Account accountTo = transaction.getAccountTo();
+        return accountFrom == null || accountTo == null || accountFrom.getCurrency().equals(accountTo.getCurrency());
     }
 }

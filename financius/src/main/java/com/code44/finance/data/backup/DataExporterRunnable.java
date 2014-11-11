@@ -2,6 +2,7 @@ package com.code44.finance.data.backup;
 
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.errors.ExportError;
+import com.crashlytics.android.Crashlytics;
 
 public class DataExporterRunnable implements Runnable {
     private final EventBus eventBus;
@@ -18,7 +19,9 @@ public class DataExporterRunnable implements Runnable {
             eventBus.post(dataExporter);
         } catch (Exception e) {
             e.printStackTrace();
-            eventBus.post(new ExportError("Data export has failed.", e));
+            final ExportError error = new ExportError("Data export has failed. " + e.getMessage(), e);
+            Crashlytics.logException(error);
+            eventBus.post(error);
         }
     }
 }
