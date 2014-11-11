@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Financius</string>
+    <string name="app_name" translatable="false">Financius</string>
     <string name="google_drive" translatable="false">Google Drive</string>
     <string name="divide" translatable="false">÷</string>
     <string name="multiply" translatable="false">×</string>
@@ -22,8 +22,8 @@
     <string name="github" translatable="false">Github</string>
     <string name="csv" translatable="false">CSV</string>
 
-    <string-array name="expense_categories">
-        <item>@string/c_food</item>
+    <string-array name="expense_categories" translatable="false">
+    <item>@string/c_food</item>
         <item>@string/c_leisure</item>
         <item>@string/c_transportation</item>
         <item>@string/c_health_and_beauty</item>
@@ -32,8 +32,8 @@
         <item>@string/c_bills_and_utilities</item>
     </string-array>
 
-    <string-array name="expense_categories_colors">
-        <item>#8bc34a</item>
+    <string-array name="expense_categories_colors" translatable="false">
+    <item>#8bc34a</item>
         <item>#03a9f4</item>
         <item>#ffc107</item>
         <item>#9c27b0</item>
@@ -42,16 +42,16 @@
         <item>#795548</item>
     </string-array>
 
-    <string-array name="income_categories">
-        <item>@string/c_salary</item>
+    <string-array name="income_categories" translatable="false">
+    <item>@string/c_salary</item>
     </string-array>
 
-    <string-array name="income_categories_colors">
-        <item>#259b24</item>
+    <string-array name="income_categories_colors" translatable="false">
+    <item>#259b24</item>
     </string-array>
 
-    <plurals name="currency">
-        <item quantity="zero">@string/currencies_zero</item>
+    <plurals name="currency" translatable="false">
+    <item quantity="zero">@string/currencies_zero</item>
         <item quantity="one">@string/currencies_one</item>
         <item quantity="two">@string/currencies_two</item>
         <item quantity="few">@string/currencies_few</item>
@@ -59,8 +59,8 @@
         <item quantity="other">@string/currencies_other</item>
     </plurals>
 
-    <plurals name="account">
-        <item quantity="zero">@string/accounts_zero</item>
+    <plurals name="account" translatable="false">
+    <item quantity="zero">@string/accounts_zero</item>
         <item quantity="one">@string/accounts_one</item>
         <item quantity="two">@string/accounts_two</item>
         <item quantity="few">@string/accounts_few</item>
@@ -68,8 +68,8 @@
         <item quantity="other">@string/accounts_other</item>
     </plurals>
 
-    <plurals name="category">
-        <item quantity="zero">@string/categories_zero</item>
+    <plurals name="category" translatable="false">
+    <item quantity="zero">@string/categories_zero</item>
         <item quantity="one">@string/categories_one</item>
         <item quantity="two">@string/categories_two</item>
         <item quantity="few">@string/categories_few</item>
@@ -77,8 +77,8 @@
         <item quantity="other">@string/categories_other</item>
     </plurals>
 
-    <plurals name="tag">
-        <item quantity="zero">@string/tags_zero</item>
+    <plurals name="tag" translatable="false">
+    <item quantity="zero">@string/tags_zero</item>
         <item quantity="one">@string/tags_one</item>
         <item quantity="two">@string/tags_two</item>
         <item quantity="few">@string/tags_few</item>
@@ -86,8 +86,8 @@
         <item quantity="other">@string/tags_other</item>
     </plurals>
 
-    <plurals name="transaction">
-        <item quantity="zero">@string/transactions_zero</item>
+    <plurals name="transaction" translatable="false">
+    <item quantity="zero">@string/transactions_zero</item>
         <item quantity="one">@string/transactions_one</item>
         <item quantity="two">@string/transactions_two</item>
         <item quantity="few">@string/transactions_few</item>
