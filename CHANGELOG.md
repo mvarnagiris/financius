@@ -1,3 +1,7 @@
+###Version: 0.14.2
+- ```new``` Added new languages: Chinese Simplified, Czech, French, German, Hungarian, Italian, Lithuanian, Portuguese Brazilian, Russian, Slovenian, Spanish.
+- ```fix``` Fixed some crashes in transaction and transaction edit views.
+
 ###Version: 0.14.1
 - ```new``` Added trends graph for expenses in overview screen.
 - ```new``` Added Crashlytics for better crash tracking. I will be able to fix things better.
