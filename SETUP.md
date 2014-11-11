@@ -1,0 +1,1 @@
+- Add crashlytics.properties to financius module.
