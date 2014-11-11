@@ -55,8 +55,10 @@ public abstract class ModelEditActivity<M extends Model> extends ModelActivity<M
 
     @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        ensureModelUpdated(model);
-        outState.putParcelable(STATE_MODEL, model);
+        if (model != null) {
+            ensureModelUpdated(model);
+            outState.putParcelable(STATE_MODEL, model);
+        }
     }
 
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
