@@ -180,6 +180,9 @@ public class BackupDataImporter extends DataImporter {
         model.setCategory(category);
         model.setTags(tags);
         for (int i = 0, size = modelsJson.size(); i < size; i++) {
+            model.setAccountFrom(accountFrom);
+            model.setAccountTo(accountTo);
+            model.setCategory(category);
             final JsonObject modelJson = modelsJson.get(i).getAsJsonObject();
             updateBaseModel(model, modelJson);
             accountFrom.setId(modelJson.get("account_from_id").isJsonNull() ? null : modelJson.get("account_from_id").getAsString());
@@ -200,11 +203,6 @@ public class BackupDataImporter extends DataImporter {
             model.setTransactionState(TransactionState.fromInt(modelJson.get("transaction_state").getAsInt()));
             model.setTransactionType(TransactionType.fromInt(modelJson.get("transaction_type").getAsInt()));
             model.setIncludeInReports(modelJson.get("include_in_reports").getAsBoolean());
-            if (model.getTransactionType() == TransactionType.Transfer) {
-                model.setCategory(null);
-            } else if (model.getCategory() == null) {
-                model.setCategory(category);
-            }
             valuesList.add(model.asValues());
         }
         insert(valuesList, TransactionsProvider.uriTransactions());
