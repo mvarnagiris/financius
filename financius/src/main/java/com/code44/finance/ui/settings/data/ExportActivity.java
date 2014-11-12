@@ -46,12 +46,15 @@ public class ExportActivity extends BaseActivity {
     private static final String FRAGMENT_GOOGLE_API = "FRAGMENT_GOOGLE_API";
     private static final String UNIQUE_GOOGLE_API_ID = ExportActivity.class.getName();
 
+    private static final String STATE_IS_PROCESS_STARTED = "STATE_IS_PROCESS_STARTED";
+
     @Inject @Local Executor localExecutor;
     @Inject GeneralPrefs generalPrefs;
 
     private ExportType exportType;
     private Destination destination;
     private GoogleApiClient googleApiClient;
+    private boolean isProcessStarted = false;
 
     public static void start(Context context, ExportType exportType, Destination destination) {
         final Intent intent = makeIntentForActivity(context, ExportActivity.class);
@@ -68,11 +71,24 @@ public class ExportActivity extends BaseActivity {
         exportType = (ExportType) getIntent().getSerializableExtra(EXTRA_EXPORT_TYPE);
         destination = (Destination) getIntent().getSerializableExtra(EXTRA_DESTINATION);
 
-        // Setup
+        // Restore state
+        if (savedInstanceState != null) {
+            isProcessStarted = savedInstanceState.getBoolean(STATE_IS_PROCESS_STARTED, false);
+        }
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
         getEventBus().register(this);
-        if (savedInstanceState == null) {
+        if (!isProcessStarted) {
+            isProcessStarted = true;
             destination.startExportProcess(this, generalPrefs);
         }
+    }
+
+    @Override protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_IS_PROCESS_STARTED, isProcessStarted);
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -103,8 +119,8 @@ public class ExportActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override protected void onDestroy() {
-        super.onDestroy();
+    @Override protected void onPause() {
+        super.onPause();
         getEventBus().unregister(this);
     }
 
