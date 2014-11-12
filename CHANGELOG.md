@@ -1,4 +1,6 @@
 ###Version: 0.14.3
+- ```new``` Added Chinese Traditional translations.
+- ```new``` Updated German, Hungarian, Russian, Brazilian translations.
 - ```fix``` Fixed backup import bug.
 - ```fix``` Potentially solved export backup crash.
 - ```fix``` Various other bugs squashed.

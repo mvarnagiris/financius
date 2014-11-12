@@ -229,6 +229,12 @@ public class Transaction extends Model {
         super.updateFrom(cursor, columnPrefixTable);
         int index;
 
+        // Transaction type
+        index = cursor.getColumnIndex(Tables.Transactions.TYPE.getName(columnPrefixTable));
+        if (index >= 0) {
+            setTransactionType(TransactionType.fromInt(cursor.getInt(index)));
+        }
+
         // Account from
         index = cursor.getColumnIndex(Tables.Transactions.ACCOUNT_FROM_ID.getName(columnPrefixTable));
         if (index >= 0 && !StringUtils.isEmpty(cursor.getString(index))) {
@@ -334,12 +340,6 @@ public class Transaction extends Model {
         index = cursor.getColumnIndex(Tables.Transactions.STATE.getName(columnPrefixTable));
         if (index >= 0) {
             setTransactionState(TransactionState.fromInt(cursor.getInt(index)));
-        }
-
-        // Transaction state
-        index = cursor.getColumnIndex(Tables.Transactions.TYPE.getName(columnPrefixTable));
-        if (index >= 0) {
-            setTransactionType(TransactionType.fromInt(cursor.getInt(index)));
         }
 
         // Include in reports

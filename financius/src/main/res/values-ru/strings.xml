@@ -16,11 +16,11 @@
     <string name="currencies_two">Валюты</string>
     <string name="currencies_few">Валют</string>
     <string name="currencies_many">Валют</string>
-    <string name="currencies_other">Валют</string>
+    <string name="currencies_other">Валюты</string>
     <string name="currency_code">Код валюты</string>
     <string name="create">Создать</string>
     <string name="main_currency">Основная валюта</string>
-    <string name="set_as_main_currency">Установить как основную валюту</string>
+    <string name="set_as_main_currency">Установить как основную</string>
     <string name="refresh_rate">Обновить курс</string>
     <string name="refresh_rates">Обновить курсы</string>
     <string name="exchange_rate">Обменный курс</string>
@@ -29,7 +29,7 @@
     <string name="accounts_two">Счёта</string>
     <string name="accounts_few">Счетов</string>
     <string name="accounts_many">Счетов</string>
-    <string name="accounts_other">Счетов</string>
+    <string name="accounts_other">Счета</string>
     <string name="include_in_totals">Включить в итоги</string>
     <string name="balance">Баланс</string>
     <string name="title">Название</string>
@@ -55,7 +55,7 @@
     <string name="categories_two">Категории</string>
     <string name="categories_few">Категорий</string>
     <string name="categories_many">Категорий</string>
-    <string name="categories_other">Категорий</string>
+    <string name="categories_other">Категории</string>
     <string name="transaction_type">Тип транзакции</string>
     <string name="account_balance_update">Обновление баланса счёта</string>
     <string name="color">Цвет</string>
@@ -64,7 +64,7 @@
     <string name="transactions_two">Транзакции</string>
     <string name="transactions_few">Транзакций</string>
     <string name="transactions_many">Транзакций</string>
-    <string name="transactions_other">Транзакций</string>
+    <string name="transactions_other">Транзакции</string>
     <string name="overview">Обзор</string>
     <string name="open_navigation">Показать панель навигации</string>
     <string name="close_navigation">Cкрыть панель навигации</string>
@@ -76,7 +76,7 @@
     <string name="tags_two">Тега</string>
     <string name="tags_few">Тегов</string>
     <string name="tags_many">Тегов</string>
-    <string name="tags_other">Тегов</string>
+    <string name="tags_other">Теги</string>
     <string name="period">Период</string>
     <string name="day">День</string>
     <string name="week">Неделя</string>
@@ -85,9 +85,9 @@
     <string name="from">Со счета</string>
     <string name="to">На счет</string>
     <string name="date">Дата</string>
-    <string name="include_in_reports">Включать в отчёты</string>
-    <string name="confirmed">Подтверждённые</string>
-    <string name="pending">Ожидают подтверждения</string>
+    <string name="include_in_reports">Включить в отчёт</string>
+    <string name="confirmed">Подтверждена</string>
+    <string name="pending">Ожидает подтверждения</string>
     <string name="your_data">Ваши данные</string>
     <string name="backup">Резервное копирование</string>
     <string name="clear_and_restore">Удалить всё и восстановить из файла</string>

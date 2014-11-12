@@ -45,10 +45,10 @@
     <string name="comma">Komma</string>
     <string name="dot">Punkt</string>
     <string name="space">Leerzeichen</string>
-    <string name="close_right">Nahe rechts</string>
-    <string name="far_right">Ganz rechts</string>
-    <string name="close_left">Nahe links</string>
-    <string name="far_left">Ganz links</string>
+    <string name="close_right">Rechts daneben</string>
+    <string name="far_right">Rechts mit Abstand</string>
+    <string name="close_left">Links daneben</string>
+    <string name="far_left">Links mit Abstand</string>
     <string name="calculator">Taschenrechner</string>
     <string name="categories_zero">Kategorien</string>
     <string name="categories_one">Kategorie</string>
@@ -57,7 +57,7 @@
     <string name="categories_many">Kategorien</string>
     <string name="categories_other">Kategorien</string>
     <string name="transaction_type">Transaktionsart</string>
-    <string name="account_balance_update">Konstostand aktualisierung</string>
+    <string name="account_balance_update">Konstostandaktualisierung</string>
     <string name="color">Farbe</string>
     <string name="transactions_zero">Transaktionen</string>
     <string name="transactions_one">Transaktion</string>
@@ -100,7 +100,7 @@
     <string name="change_log">Änderungsprotokoll</string>
     <string name="about">Über</string>
     <string name="version">Version</string>
-    <string name="last_updated">Letzte aktualisierung</string>
+    <string name="last_updated">Letzte Aktualisierung</string>
     <string name="readme">Readme</string>
     <string name="rate">Bewerten</string>
     <string name="community">Community</string>

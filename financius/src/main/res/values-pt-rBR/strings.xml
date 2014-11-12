@@ -9,7 +9,7 @@
     <string name="ok">Ok</string>
     <string name="expense">Despesa</string>
     <string name="expenses">Despesas</string>
-    <string name="income">Receita</string>
+    <string name="income">Receitas</string>
     <string name="transfer">Transferência</string>
     <string name="currencies_zero">Moedas</string>
     <string name="currencies_one">Moeda</string>
@@ -30,9 +30,9 @@
     <string name="accounts_few">Contas</string>
     <string name="accounts_many">Contas</string>
     <string name="accounts_other">Contas</string>
-    <string name="include_in_totals">Considerar no Balanço</string>
+    <string name="include_in_totals">Considerar no Saldo</string>
     <string name="balance">Saldo</string>
-    <string name="title">Titulo</string>
+    <string name="title">Título</string>
     <string name="note">Nota</string>
     <string name="select">Selecionar</string>
     <string name="select_color">Escolher Cor</string>
@@ -85,7 +85,7 @@
     <string name="from">De</string>
     <string name="to">até</string>
     <string name="date">Data</string>
-    <string name="include_in_reports">Considerar nos Relatórios</string>
+    <string name="include_in_reports">Mostrar nos Relatórios</string>
     <string name="confirmed">Confirmado</string>
     <string name="pending">Pendente</string>
     <string name="your_data">Seus Dados</string>
@@ -102,7 +102,7 @@
     <string name="version">Versão</string>
     <string name="last_updated">Última Atualização</string>
     <string name="readme">Leia-me</string>
-    <string name="rate">Taxa</string>
+    <string name="rate">Avaliar</string>
     <string name="community">Comunidade</string>
     <string name="export">Exportar</string>
     <string name="import_backup">Importar Backup</string>
