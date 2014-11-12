@@ -226,6 +226,8 @@ public class BackupDataImporter extends DataImporter {
     }
 
     private void insert(List<ContentValues> valuesList, Uri uri) {
-        DataStore.bulkInsert().values(valuesList).into(context, uri);
+        if (valuesList.size() > 0) {
+            DataStore.bulkInsert().values(valuesList).into(context, uri);
+        }
     }
 }

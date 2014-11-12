@@ -169,7 +169,7 @@ public class CurrencyActivity extends ModelActivity<Currency> implements View.On
     }
 
     @Subscribe public void onRefreshFinished(ExchangeRateRequest request) {
-        if (model.getCode().equals(request.getFromCode())) {
+        if (model != null && model.getCode().equals(request.getFromCode())) {
             setRefreshing(false);
         }
     }

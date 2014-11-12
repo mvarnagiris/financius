@@ -1,6 +1,7 @@
 ###Version: 0.14.3
 - ```fix``` Fixed backup import bug.
 - ```fix``` Potentially solved export backup crash.
+- ```fix``` Various other bugs squashed.
 
 ###Version: 0.14.2
 - ```new``` Added new languages: Chinese Simplified, Czech, French, German, Hungarian, Italian, Lithuanian, Portuguese Brazilian, Russian, Slovenian, Spanish.
