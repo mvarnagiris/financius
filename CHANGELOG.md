@@ -1,3 +1,6 @@
+###Version: 0.14.4
+- ```fix``` Squashed some bugs.
+
 ###Version: 0.14.3
 - ```new``` Added Chinese Traditional translations.
 - ```new``` Updated German, Hungarian, Russian, Brazilian translations.

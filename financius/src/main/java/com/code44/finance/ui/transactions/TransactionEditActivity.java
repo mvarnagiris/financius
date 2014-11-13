@@ -147,7 +147,9 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
             }
 
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-                model.setNote(noteEditText.getText().toString());
+                if (model != null) {
+                    model.setNote(noteEditText.getText().toString());
+                }
             }
 
             @Override public void afterTextChanged(Editable s) {
