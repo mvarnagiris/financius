@@ -1,4 +1,4 @@
-package com.code44.finance.ui;
+package com.code44.finance.ui.playservices;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -6,6 +6,7 @@ import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
+import com.code44.finance.ui.BaseFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;

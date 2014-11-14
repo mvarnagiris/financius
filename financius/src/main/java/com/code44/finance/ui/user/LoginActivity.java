@@ -6,8 +6,8 @@ import android.os.Bundle;
 
 import com.code44.finance.R;
 import com.code44.finance.api.Api;
-import com.code44.finance.ui.GoogleApiFragment;
 import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.playservices.GoogleApiFragment;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;

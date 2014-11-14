@@ -65,8 +65,10 @@ public class CurrencyAccountsAdapter extends BaseModelsAdapter {
 
             final String text = mContext.getString(R.string.f_change_to_x, currency.getCode()).toUpperCase();
             final SpannableStringBuilder ssb = new SpannableStringBuilder(text);
-            final int codeIndex = text.indexOf(currency.getCode());
-            ssb.setSpan(new ForegroundColorSpan(textBrandColor), codeIndex, codeIndex + currency.getCode().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            final int codeIndex = text.indexOf(currency.getCode().toUpperCase());
+            if (codeIndex > 0) {
+                ssb.setSpan(new ForegroundColorSpan(textBrandColor), codeIndex, codeIndex + currency.getCode().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
 
             holder.currencyButton.setText(ssb);
         }
