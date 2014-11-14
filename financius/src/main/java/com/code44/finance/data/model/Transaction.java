@@ -133,7 +133,6 @@ public class Transaction extends Model {
                 break;
             case Transfer:
                 category = null;
-                tags = Collections.emptyList();
                 break;
         }
     }

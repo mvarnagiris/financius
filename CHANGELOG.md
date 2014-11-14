@@ -4,6 +4,7 @@
 - ```fix``` Squashed some bugs.
 - ```fix``` Import/Export fixes.
 - ```fix``` Fixed import tags issue.
+- ```fix``` Transfers can have tags again.
 
 ###Version: 0.14.3
 - ```new``` Added Chinese Traditional translations.
