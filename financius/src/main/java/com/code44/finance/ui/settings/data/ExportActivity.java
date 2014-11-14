@@ -15,6 +15,7 @@ import com.code44.finance.data.backup.DriveDataExporterRunnable;
 import com.code44.finance.qualifiers.Local;
 import com.code44.finance.ui.FilePickerActivity;
 import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.playservices.GoogleApiConnection;
 import com.code44.finance.ui.playservices.GoogleApiFragment;
 import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.analytics.Analytics;
@@ -48,6 +49,7 @@ public class ExportActivity extends BaseActivity {
 
     private static final String STATE_IS_PROCESS_STARTED = "STATE_IS_PROCESS_STARTED";
 
+    @Inject GoogleApiConnection googleApiConnection;
     @Inject @Local Executor localExecutor;
     @Inject GeneralPrefs generalPrefs;
 
@@ -74,6 +76,9 @@ public class ExportActivity extends BaseActivity {
         // Restore state
         if (savedInstanceState != null) {
             isProcessStarted = savedInstanceState.getBoolean(STATE_IS_PROCESS_STARTED, false);
+            if (googleApiClient == null || !(googleApiClient.isConnecting() || googleApiClient.isConnected())) {
+                googleApiClient = googleApiConnection.get(UNIQUE_GOOGLE_API_ID);
+            }
         }
     }
 
@@ -140,12 +145,12 @@ public class ExportActivity extends BaseActivity {
         finish();
     }
 
-    @Subscribe public void onGoogleApiClientConnected(GoogleApiFragment.GoogleApiConnectedEvent connectedEvent) {
-        if (!UNIQUE_GOOGLE_API_ID.equals(connectedEvent.getUniqueClientId())) {
+    @Subscribe public void onGoogleApiClientConnected(GoogleApiConnection connection) {
+        if (!connection.contains(UNIQUE_GOOGLE_API_ID)) {
             return;
         }
 
-        googleApiClient = connectedEvent.getClient();
+        googleApiClient = connection.get(UNIQUE_GOOGLE_API_ID);
         final IntentSender intentSender = Drive.DriveApi
                 .newOpenFileActivityBuilder()
                 .setMimeType(new String[]{"application/vnd.google-apps.folder"})

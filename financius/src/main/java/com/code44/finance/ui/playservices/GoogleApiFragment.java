@@ -12,7 +12,8 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.plus.Plus;
-import com.squareup.otto.Produce;
+
+import javax.inject.Inject;
 
 public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final String ARG_UNIQUE_CLIENT_ID = "ARG_UNIQUE_CLIENT_ID";
@@ -24,8 +25,9 @@ public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.C
     private static final int REQUEST_RESOLVE_ERROR = 9000;
     private static final int REQUEST_GOOGLE_PLAY_SERVICES = 9001;
 
+    @Inject GoogleApiConnection googleApiConnection;
+
     private GoogleApiClient client;
-    private GoogleApiConnectedEvent googleApiConnectedEvent = null;
     private String uniqueClientId;
     private boolean connectWhenPossible = false;
 
@@ -36,7 +38,6 @@ public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.C
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        getEventBus().register(this);
 
         buildGoogleApiClient();
         if (connectWhenPossible) {
@@ -46,7 +47,6 @@ public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.C
 
     @Override public void onDestroy() {
         super.onDestroy();
-        getEventBus().unregister(this);
         disconnect();
     }
 
@@ -74,10 +74,6 @@ public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.C
             // Show dialog using GooglePlayServicesUtil.getErrorDialog()
             showErrorDialog(connectionResult.getErrorCode());
         }
-    }
-
-    @Produce public GoogleApiConnectedEvent produceGoogleApiConnectedEvent() {
-        return googleApiConnectedEvent;
     }
 
     public boolean handleOnActivityResult(int requestCode, int resultCode) {
@@ -108,7 +104,7 @@ public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.C
     }
 
     public void disconnect() {
-        googleApiConnectedEvent = null;
+        googleApiConnection.remove(uniqueClientId);
         connectWhenPossible = false;
 
         if (client != null && (client.isConnected() || client.isConnecting())) {
@@ -123,17 +119,18 @@ public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.C
     }
 
     protected void sendEventConnected() {
-        googleApiConnectedEvent = new GoogleApiConnectedEvent(client, uniqueClientId);
-        getEventBus().post(googleApiConnectedEvent);
+        googleApiConnection.put(uniqueClientId, client);
+        getEventBus().post(new GoogleApiConnectedEvent(client, uniqueClientId));
+
     }
 
     protected void sendEventSuspended() {
-        googleApiConnectedEvent = null;
+        googleApiConnection.remove(uniqueClientId);
         getEventBus().post(new GoogleApiSuspendedEvent(client, uniqueClientId));
     }
 
     protected void sendEventFailed() {
-        googleApiConnectedEvent = null;
+        googleApiConnection.remove(uniqueClientId);
         getEventBus().post(new GoogleApiFailedEvent(client, uniqueClientId));
     }
 

@@ -21,6 +21,21 @@ public class GoogleApiConnection {
     }
 
     public void put(String clientUniqueId, GoogleApiClient client) {
+        if (client != null && (client.isConnected() || client.isConnecting())) {
+            googleApiClients.put(clientUniqueId, client);
+            eventBus.post(this);
+        }
+    }
 
+    public void remove(String clientUniqueId) {
+        googleApiClients.remove(clientUniqueId);
+    }
+
+    public GoogleApiClient get(String clientUniqueId) {
+        return googleApiClients.get(clientUniqueId);
+    }
+
+    public boolean contains(String clientUniqueId) {
+        return googleApiClients.containsKey(clientUniqueId);
     }
 }
