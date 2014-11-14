@@ -175,14 +175,11 @@ public class BackupDataImporter extends DataImporter {
         final Category category = new Category();
         final List<Tag> tags = new ArrayList<>();
         final Set<Tag> tagCache = new HashSet<>();
-        model.setAccountFrom(accountFrom);
-        model.setAccountTo(accountTo);
-        model.setCategory(category);
-        model.setTags(tags);
         for (int i = 0, size = modelsJson.size(); i < size; i++) {
             model.setAccountFrom(accountFrom);
             model.setAccountTo(accountTo);
             model.setCategory(category);
+            model.setTags(tags);
             final JsonObject modelJson = modelsJson.get(i).getAsJsonObject();
             updateBaseModel(model, modelJson);
             accountFrom.setId(modelJson.get("account_from_id").isJsonNull() ? null : modelJson.get("account_from_id").getAsString());
