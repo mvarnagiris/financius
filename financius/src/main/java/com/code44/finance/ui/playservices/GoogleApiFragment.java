@@ -62,6 +62,9 @@ public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.C
         sendEventFailed();
         if (connectionResult.hasResolution()) {
             try {
+                if (getActivity() == null) {
+                    return;
+                }
                 connectionResult.startResolutionForResult(getActivity(), REQUEST_RESOLVE_ERROR);
             } catch (IntentSender.SendIntentException e) {
                 // There was an error with the resolution intent. Try again.
