@@ -45,13 +45,19 @@ public class ImportActivity extends BaseActivity {
     private static final String FRAGMENT_GOOGLE_API = "FRAGMENT_GOOGLE_API";
     private static final String UNIQUE_GOOGLE_API_ID = ImportActivity.class.getName();
 
-    @Inject GoogleApiConnection googleApiConnection;
+    private static final String STATE_IS_PROCESS_STARTED = "STATE_IS_PROCESS_STARTED";
+    private static final String STATE_IS_FILE_REQUESTED = "STATE_IS_FILE_REQUESTED";
+
+    @Inject GoogleApiConnection connection;
     @Inject @Local Executor localExecutor;
     @Inject GeneralPrefs generalPrefs;
     @Inject DBHelper dbHelper;
 
     private ImportType importType;
+    private Source source;
     private GoogleApiClient googleApiClient;
+    private boolean isProcessStarted = false;
+    private boolean isFileRequested = false;
 
     public static void start(Context context, ImportType importType, Source source) {
         final Intent intent = makeIntentForActivity(context, ImportActivity.class);
@@ -66,16 +72,28 @@ public class ImportActivity extends BaseActivity {
 
         // Get extras
         importType = (ImportType) getIntent().getSerializableExtra(EXTRA_IMPORT_TYPE);
-        final Source source = (Source) getIntent().getSerializableExtra(EXTRA_SOURCE);
+        source = (Source) getIntent().getSerializableExtra(EXTRA_SOURCE);
 
-        // Setup
-        getEventBus().register(this);
-        if (savedInstanceState == null) {
-            source.startImportProcess(this, generalPrefs);
-            if (googleApiClient == null || !(googleApiClient.isConnecting() || googleApiClient.isConnected())) {
-                googleApiClient = googleApiConnection.get(UNIQUE_GOOGLE_API_ID);
-            }
+        // Restore state
+        if (savedInstanceState != null) {
+            isProcessStarted = savedInstanceState.getBoolean(STATE_IS_PROCESS_STARTED, false);
+            isFileRequested = savedInstanceState.getBoolean(STATE_IS_FILE_REQUESTED, false);
         }
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        getEventBus().register(this);
+        if (!isProcessStarted) {
+            isProcessStarted = true;
+            isFileRequested = source.startImportProcess(this, generalPrefs);
+        }
+    }
+
+    @Override protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_IS_PROCESS_STARTED, isProcessStarted);
+        outState.putBoolean(STATE_IS_FILE_REQUESTED, isFileRequested);
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -92,6 +110,7 @@ public class ImportActivity extends BaseActivity {
 
             case REQUEST_DRIVE_FILE:
                 final DriveId driveId = data.getParcelableExtra(OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
+                googleApiClient = connection.get(UNIQUE_GOOGLE_API_ID);
                 onDriveFileSelected(driveId);
                 break;
         }
@@ -104,8 +123,8 @@ public class ImportActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override protected void onDestroy() {
-        super.onDestroy();
+    @Override protected void onPause() {
+        super.onPause();
         getEventBus().unregister(this);
     }
 
@@ -126,7 +145,7 @@ public class ImportActivity extends BaseActivity {
     }
 
     @Subscribe public void onGoogleApiClientConnected(GoogleApiConnection connection) {
-        if (!connection.contains(UNIQUE_GOOGLE_API_ID)) {
+        if (isFileRequested || !connection.contains(UNIQUE_GOOGLE_API_ID)) {
             return;
         }
 
@@ -138,6 +157,7 @@ public class ImportActivity extends BaseActivity {
 
         try {
             startIntentSenderForResult(intentSender, REQUEST_DRIVE_FILE, null, 0, 0, 0);
+            isFileRequested = true;
         } catch (IntentSender.SendIntentException e) {
             throw new ImportError("Unable to show Google Drive.", e);
         }
@@ -186,22 +206,24 @@ public class ImportActivity extends BaseActivity {
 
     public static enum Source {
         File {
-            @Override public void startImportProcess(BaseActivity activity, GeneralPrefs generalPrefs) {
+            @Override public boolean startImportProcess(BaseActivity activity, GeneralPrefs generalPrefs) {
                 FilePickerActivity.startFile(activity, REQUEST_LOCAL_FILE, generalPrefs.getLastFileExportPath());
+                return true;
             }
         },
 
         GoogleDrive {
-            @Override public void startImportProcess(BaseActivity activity, GeneralPrefs generalPrefs) {
+            @Override public boolean startImportProcess(BaseActivity activity, GeneralPrefs generalPrefs) {
                 GoogleApiFragment googleApi_F = (GoogleApiFragment) activity.getSupportFragmentManager().findFragmentByTag(FRAGMENT_GOOGLE_API);
                 if (googleApi_F == null) {
                     googleApi_F = GoogleApiFragment.with(UNIQUE_GOOGLE_API_ID).setUseDrive(true).build();
                     activity.getSupportFragmentManager().beginTransaction().add(android.R.id.content, googleApi_F, FRAGMENT_GOOGLE_API).commit();
                 }
                 googleApi_F.connect();
+                return false;
             }
         };
 
-        public abstract void startImportProcess(BaseActivity activity, GeneralPrefs generalPrefs);
+        public abstract boolean startImportProcess(BaseActivity activity, GeneralPrefs generalPrefs);
     }
 }
