@@ -95,9 +95,9 @@ public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.C
 
         connectWhenPossible = false;
         if (checkGooglePlayServicesAvailable()) {
-            if (client.isConnected()) {
+            if (client.isConnected() || client.isConnecting()) {
                 sendEventConnected();
-            } else if (!client.isConnecting()) {
+            } else {
                 client.connect();
             }
         }

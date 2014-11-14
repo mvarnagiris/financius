@@ -48,8 +48,9 @@ public class ExportActivity extends BaseActivity {
     private static final String UNIQUE_GOOGLE_API_ID = ExportActivity.class.getName();
 
     private static final String STATE_IS_PROCESS_STARTED = "STATE_IS_PROCESS_STARTED";
+    private static final String STATE_IS_DIRECTORY_REQUESTED = "STATE_IS_DIRECTORY_REQUESTED";
 
-    @Inject GoogleApiConnection googleApiConnection;
+    @Inject GoogleApiConnection connection;
     @Inject @Local Executor localExecutor;
     @Inject GeneralPrefs generalPrefs;
 
@@ -57,6 +58,7 @@ public class ExportActivity extends BaseActivity {
     private Destination destination;
     private GoogleApiClient googleApiClient;
     private boolean isProcessStarted = false;
+    private boolean isDirectoryRequested = false;
 
     public static void start(Context context, ExportType exportType, Destination destination) {
         final Intent intent = makeIntentForActivity(context, ExportActivity.class);
@@ -76,9 +78,7 @@ public class ExportActivity extends BaseActivity {
         // Restore state
         if (savedInstanceState != null) {
             isProcessStarted = savedInstanceState.getBoolean(STATE_IS_PROCESS_STARTED, false);
-            if (googleApiClient == null || !(googleApiClient.isConnecting() || googleApiClient.isConnected())) {
-                googleApiClient = googleApiConnection.get(UNIQUE_GOOGLE_API_ID);
-            }
+            isDirectoryRequested = savedInstanceState.getBoolean(STATE_IS_DIRECTORY_REQUESTED, false);
         }
     }
 
@@ -87,13 +87,14 @@ public class ExportActivity extends BaseActivity {
         getEventBus().register(this);
         if (!isProcessStarted) {
             isProcessStarted = true;
-            destination.startExportProcess(this, generalPrefs);
+            isDirectoryRequested = destination.startExportProcess(this, generalPrefs);
         }
     }
 
     @Override protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_IS_PROCESS_STARTED, isProcessStarted);
+        outState.putBoolean(STATE_IS_DIRECTORY_REQUESTED, isDirectoryRequested);
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -112,6 +113,7 @@ public class ExportActivity extends BaseActivity {
             case REQUEST_DRIVE_DIRECTORY:
                 final DriveId driveId = data.getParcelableExtra(OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
                 // TODO Maybe store this driveId to open Google Drive in this folder next time.
+                googleApiClient = connection.get(UNIQUE_GOOGLE_API_ID);
                 onDriveDirectorySelected(driveId);
                 break;
         }
@@ -146,7 +148,7 @@ public class ExportActivity extends BaseActivity {
     }
 
     @Subscribe public void onGoogleApiClientConnected(GoogleApiConnection connection) {
-        if (!connection.contains(UNIQUE_GOOGLE_API_ID)) {
+        if (isDirectoryRequested || !connection.contains(UNIQUE_GOOGLE_API_ID)) {
             return;
         }
 
@@ -158,6 +160,7 @@ public class ExportActivity extends BaseActivity {
 
         try {
             startIntentSenderForResult(intentSender, REQUEST_DRIVE_DIRECTORY, null, 0, 0, 0);
+            isDirectoryRequested = true;
         } catch (IntentSender.SendIntentException e) {
             throw new ExportError("Unable to show Google Drive.", e);
         }
@@ -231,22 +234,24 @@ public class ExportActivity extends BaseActivity {
 
     public static enum Destination {
         File {
-            @Override public void startExportProcess(BaseActivity activity, GeneralPrefs generalPrefs) {
+            @Override public boolean startExportProcess(BaseActivity activity, GeneralPrefs generalPrefs) {
                 FilePickerActivity.startDir(activity, REQUEST_LOCAL_DIRECTORY, generalPrefs.getLastFileExportPath());
+                return true;
             }
         },
 
         GoogleDrive {
-            @Override public void startExportProcess(BaseActivity activity, GeneralPrefs generalPrefs) {
+            @Override public boolean startExportProcess(BaseActivity activity, GeneralPrefs generalPrefs) {
                 GoogleApiFragment googleApi_F = (GoogleApiFragment) activity.getSupportFragmentManager().findFragmentByTag(FRAGMENT_GOOGLE_API);
                 if (googleApi_F == null) {
                     googleApi_F = GoogleApiFragment.with(UNIQUE_GOOGLE_API_ID).setUseDrive(true).build();
                     activity.getSupportFragmentManager().beginTransaction().add(android.R.id.content, googleApi_F, FRAGMENT_GOOGLE_API).commit();
                 }
                 googleApi_F.connect();
+                return false;
             }
         };
 
-        public abstract void startExportProcess(BaseActivity activity, GeneralPrefs generalPrefs);
+        public abstract boolean startExportProcess(BaseActivity activity, GeneralPrefs generalPrefs);
     }
 }
