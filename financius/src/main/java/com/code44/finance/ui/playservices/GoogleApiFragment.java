@@ -170,9 +170,13 @@ public class GoogleApiFragment extends BaseFragment implements GoogleApiClient.C
     }
 
     private void showErrorDialog(int errorCode) {
+        final Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+
         // Get the error dialog fromInt Google Play services
-        Dialog errorDialog = GooglePlayServicesUtil
-                .getErrorDialog(errorCode, getActivity(), REQUEST_GOOGLE_PLAY_SERVICES);
+        Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(errorCode, getActivity(), REQUEST_GOOGLE_PLAY_SERVICES);
 
         // If Google Play services can provide an error dialog
         if (errorDialog != null) {
