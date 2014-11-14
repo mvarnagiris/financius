@@ -1,4 +1,6 @@
 ###Version: 0.14.4
+- ```new``` New translations: Polish, Portuguese, Slovak.
+- ```new``` Updated translations: Chinese Simplified, Chinese Traditional.
 - ```fix``` Squashed some bugs.
 - ```fix``` Import/Export fixes.
 - ```fix``` Fixed import tags issue.
