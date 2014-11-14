@@ -237,7 +237,7 @@ public class Transaction extends Model {
 
         // Account from
         index = cursor.getColumnIndex(Tables.Transactions.ACCOUNT_FROM_ID.getName(columnPrefixTable));
-        if (index >= 0 && !StringUtils.isEmpty(cursor.getString(index))) {
+        if (index >= 0 && !StringUtils.isEmpty(cursor.getString(index)) && !cursor.getString(index).equals("null")) {
             final Account accountFrom = Account.fromAccountFrom(cursor);
             accountFrom.setId(cursor.getString(index));
             setAccountFrom(accountFrom);
@@ -247,7 +247,7 @@ public class Transaction extends Model {
 
         // Account to
         index = cursor.getColumnIndex(Tables.Transactions.ACCOUNT_TO_ID.getName(columnPrefixTable));
-        if (index >= 0 && !StringUtils.isEmpty(cursor.getString(index))) {
+        if (index >= 0 && !StringUtils.isEmpty(cursor.getString(index)) && !cursor.getString(index).equals("null")) {
             final Account accountTo = Account.fromAccountTo(cursor);
             accountTo.setId(cursor.getString(index));
             setAccountTo(accountTo);
@@ -257,7 +257,7 @@ public class Transaction extends Model {
 
         // Category
         index = cursor.getColumnIndex(Tables.Transactions.CATEGORY_ID.getName(columnPrefixTable));
-        if (index >= 0 && !StringUtils.isEmpty(cursor.getString(index))) {
+        if (index >= 0 && !StringUtils.isEmpty(cursor.getString(index)) && !cursor.getString(index).equals("null")) {
             final Category category = Category.from(cursor);
             category.setId(cursor.getString(index));
             setCategory(category);
