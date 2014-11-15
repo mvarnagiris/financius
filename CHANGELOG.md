@@ -1,3 +1,6 @@
+###Version: 0.14.5 - Not released yet
+- ```fix``` Squashed some bugs.
+
 ###Version: 0.14.4
 - ```new``` New translations: Polish, Portuguese, Slovak.
 - ```new``` Updated translations: Chinese Simplified, Chinese Traditional.

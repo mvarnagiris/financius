@@ -332,7 +332,7 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
     }
 
     @Subscribe public void onRefreshFinished(final ExchangeRateRequest request) {
-        if (model.getCode().equals(request.getFromCode())) {
+        if (model != null && model.getCode().equals(request.getFromCode())) {
             loadingView.post(new Runnable() {
                 @Override public void run() {
                     setRefreshing(false);
