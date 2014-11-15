@@ -112,10 +112,11 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         final String title;
         final TransactionState transactionState = TransactionState.fromInt(getCursor().getInt(getCursor().getColumnIndex(Tables.Transactions.STATE.getName())));
         if (transactionState == TransactionState.Confirmed) {
+            final BaseInterval.Type type = interval.getType();
             final long date = getCursor().getLong(getCursor().getColumnIndex(Tables.Transactions.DATE.getName()));
-            final Period period = IntervalHelperDeprecated.getPeriod(interval.getLength(), interval.getType());
-            final Interval interval = IntervalHelperDeprecated.getInterval(date, period, this.interval.getType());
-            title = IntervalHelperDeprecated.getIntervalTitle(mContext, interval, this.interval.getType());
+            final Period period = BaseInterval.getPeriod(type, interval.getLength());
+            final Interval interval = BaseInterval.getInterval(date, period, type);
+            title = BaseInterval.getTitle(mContext, interval, type);
         } else {
             title = mContext.getString(R.string.pending);
         }
