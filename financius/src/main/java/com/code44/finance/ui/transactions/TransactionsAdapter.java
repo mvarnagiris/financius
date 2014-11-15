@@ -21,7 +21,6 @@ import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.utils.BaseInterval;
-import com.code44.finance.utils.IntervalHelperDeprecated;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.TextBackgroundSpan;
 
@@ -133,9 +132,10 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
             return 0;
         }
 
+        final BaseInterval.Type type = interval.getType();
         final long date = getCursor().getLong(getCursor().getColumnIndex(Tables.Transactions.DATE.getName()));
-        final Period period = IntervalHelperDeprecated.getPeriod(interval.getLength(), interval.getType());
-        final Interval interval = IntervalHelperDeprecated.getInterval(date, period, this.interval.getType());
+        final Period period = BaseInterval.getPeriod(type, interval.getLength());
+        final Interval interval = BaseInterval.getInterval(date, period, type);
         return interval.getStartMillis();
     }
 
