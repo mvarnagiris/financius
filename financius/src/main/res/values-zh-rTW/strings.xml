@@ -86,8 +86,8 @@
     <string name="to">到</string>
     <string name="date">日期</string>
     <string name="include_in_reports">在報表中列出</string>
-    <string name="confirmed">已確認</string>
-    <string name="pending">待確認</string>
+    <string name="confirmed">交易已確認</string>
+    <string name="pending">保存為待確認</string>
     <string name="your_data">您的資料</string>
     <string name="backup">備份</string>
     <string name="clear_and_restore">清除並還原</string>

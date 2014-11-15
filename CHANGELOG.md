@@ -1,5 +1,6 @@
-###Version: 0.14.5 - Not released yet
+###Version: 0.14.5
 - ```new``` Titles in transactions list headers now include more detail if necessary.
+- ```new``` Updated translations.
 - ```fix``` Squashed some bugs.
 
 ###Version: 0.14.4
