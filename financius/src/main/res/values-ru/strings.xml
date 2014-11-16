@@ -9,7 +9,7 @@
     <string name="ok">OK</string>
     <string name="expense">Расход</string>
     <string name="expenses">Расходы</string>
-    <string name="income">Приход</string>
+    <string name="income">Доход</string>
     <string name="transfer">Перевод</string>
     <string name="currencies_zero">Валют</string>
     <string name="currencies_one">Валюта</string>
