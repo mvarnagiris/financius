@@ -2,6 +2,7 @@ package com.code44.finance.data.model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
+import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,7 +76,12 @@ public class Transaction extends Model {
     public static Transaction from(Cursor cursor) {
         final Transaction transaction = new Transaction();
         if (cursor.getCount() > 0) {
-            transaction.updateFrom(cursor, null);
+            try {
+                transaction.updateFrom(cursor, null);
+            } catch (Exception e) {
+                Crashlytics.log(DatabaseUtils.dumpCurrentRowToString(cursor));
+                throw e;
+            }
         }
         return transaction;
     }
