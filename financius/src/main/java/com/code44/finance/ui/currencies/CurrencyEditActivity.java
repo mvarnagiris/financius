@@ -27,6 +27,7 @@ import com.code44.finance.api.currencies.ExchangeRateRequest;
 import com.code44.finance.common.model.DecimalSeparator;
 import com.code44.finance.common.model.GroupSeparator;
 import com.code44.finance.common.model.SymbolPosition;
+import com.code44.finance.common.utils.StringUtils;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Currency;
@@ -256,11 +257,13 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
                 final AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                        listPopupWindow.dismiss();
-                        listPopupWindow = null;
-                        model.setSymbolPosition(SymbolPosition.values()[position]);
-                        ensureModelUpdated(model);
-                        onModelLoaded(model);
+                        if (listPopupWindow != null) {
+                            listPopupWindow.dismiss();
+                            listPopupWindow = null;
+                            model.setSymbolPosition(SymbolPosition.values()[position]);
+                            ensureModelUpdated(model);
+                            onModelLoaded(model);
+                        }
                     }
                 };
                 showPopupList(view, adapter, itemClickListener);
@@ -332,7 +335,7 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
     }
 
     @Subscribe public void onRefreshFinished(final ExchangeRateRequest request) {
-        if (model != null && model.getCode().equals(request.getFromCode())) {
+        if (model != null && !StringUtils.isEmpty(model.getCode()) && model.getCode().equals(request.getFromCode())) {
             loadingView.post(new Runnable() {
                 @Override public void run() {
                     setRefreshing(false);

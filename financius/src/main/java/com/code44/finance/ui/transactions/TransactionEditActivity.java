@@ -176,6 +176,12 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
+
+            // TODO This is a temporary fix. Need to come up with a solution where this is never null.
+            if (model == null) {
+                return;
+            }
+
             switch (requestCode) {
                 case REQUEST_AMOUNT:
                     model.setAmount(data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0));

@@ -1,5 +1,6 @@
 ###Version: 0.14.6 - Not released yet
 - ```fix``` Possible fix for devices that could not restore backup from file.
+- ```fix``` Squashed some other bugs.
 
 ###Version: 0.14.5
 - ```new``` Titles in transactions list headers now include more detail if necessary.
