@@ -20,7 +20,7 @@
     <string name="currency_code">货币代码</string>
     <string name="create">创建</string>
     <string name="main_currency">主货币</string>
-    <string name="set_as_main_currency">设置为主要货币</string>
+    <string name="set_as_main_currency">设置为主货币</string>
     <string name="refresh_rate">刷新汇率</string>
     <string name="refresh_rates">刷新汇率</string>
     <string name="exchange_rate">汇率</string>
@@ -31,8 +31,8 @@
     <string name="accounts_many">帐户</string>
     <string name="accounts_other">帐户</string>
     <string name="include_in_totals">包含在总计中</string>
-    <string name="balance">余额</string>
-    <string name="title">标题​​​</string>
+    <string name="balance">总计</string>
+    <string name="title">主题</string>
     <string name="note">备注</string>
     <string name="select">选择</string>
     <string name="select_color">选择颜色</string>
@@ -43,7 +43,7 @@
     <string name="symbol_position">符号位置</string>
     <string name="none">无</string>
     <string name="comma">逗号</string>
-    <string name="dot">点</string>
+    <string name="dot">点号</string>
     <string name="space">空格</string>
     <string name="close_right">右侧紧贴</string>
     <string name="far_right">右侧分开</string>
@@ -57,7 +57,7 @@
     <string name="categories_many">分类</string>
     <string name="categories_other">分类</string>
     <string name="transaction_type">交易类型</string>
-    <string name="account_balance_update">帐户余额更改</string>
+    <string name="account_balance_update">帐户余额变更</string>
     <string name="color">颜色</string>
     <string name="transactions_zero">交易</string>
     <string name="transactions_one">交易</string>

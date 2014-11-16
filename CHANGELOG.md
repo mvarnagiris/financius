@@ -1,4 +1,6 @@
-###Version: 0.14.6 - Not released yet
+###Version: 0.14.6
+- ```new``` Added Bulgarian translations.
+- ```new``` Updated translations: Chinese Simplified, Slovak.
 - ```fix``` Possible fix for devices that could not restore backup from file.
 - ```fix``` Squashed some other bugs.
 
