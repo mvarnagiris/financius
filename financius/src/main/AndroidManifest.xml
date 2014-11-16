@@ -103,6 +103,12 @@
             android:name=".ui.settings.about.AboutActivity"
             android:label="@string/about" />
         <activity
+            android:name=".ui.settings.security.UnlockActivity"
+            android:label="@string/unlock" />
+        <activity
+            android:name=".ui.settings.security.LockActivity"
+            android:label="@string/unlock" />
+        <activity
             android:name=".ui.reports.categories.CategoriesReportActivity"
             android:label="" />
         <activity

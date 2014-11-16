@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.code44.finance.BuildConfig;
 import com.code44.finance.R;
+import com.code44.finance.ui.settings.security.Security;
 import com.code44.finance.utils.BaseInterval;
 
 import java.util.ArrayList;
@@ -19,8 +20,9 @@ public class SettingsAdapter extends BaseAdapter {
     public static final int ID_CATEGORIES = 2;
     public static final int ID_TAGS = 3;
     public static final int ID_PERIOD = 4;
-    public static final int ID_DATA = 5;
-    public static final int ID_ABOUT = 6;
+    public static final int ID_SECURITY = 5;
+    public static final int ID_DATA = 6;
+    public static final int ID_ABOUT = 7;
 
     private final Context context;
     private final List<SettingsItem> settingsItems;
@@ -32,6 +34,7 @@ public class SettingsAdapter extends BaseAdapter {
         settingsItems.add(new SettingsItem(ID_CATEGORIES, ViewType.SettingsItem, context.getString(R.string.categories_other)));
         settingsItems.add(new SettingsItem(ID_TAGS, ViewType.SettingsItem, context.getString(R.string.tags_other)));
         settingsItems.add(new SettingsSubtitleItem(ID_PERIOD, ViewType.SettingsSubtitleItem, context.getString(R.string.period), ""));
+        settingsItems.add(new SettingsSubtitleItem(ID_SECURITY, ViewType.SettingsSubtitleItem, context.getString(R.string.security), ""));
         settingsItems.add(new SettingsItem(ID_DATA, ViewType.SettingsItem, context.getString(R.string.your_data)));
         settingsItems.add(new SettingsSubtitleItem(ID_ABOUT, ViewType.SettingsSubtitleItem, context.getString(R.string.about), BuildConfig.VERSION_NAME));
     }
@@ -68,9 +71,13 @@ public class SettingsAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void onIntervalChanged(BaseInterval intervalHelper) {
-        ((SettingsSubtitleItem) settingsItems.get(ID_PERIOD - 1)).setSubtitle(intervalHelper.getTypeTitle());
+    public void setInterval(BaseInterval interval) {
+        ((SettingsSubtitleItem) settingsItems.get(ID_PERIOD - 1)).setSubtitle(interval.getTypeTitle());
         notifyDataSetChanged();
+    }
+
+    public void setSecurity(Security security) {
+
     }
 
     private static enum ViewType {

@@ -1,6 +1,7 @@
 package com.code44.finance.ui.settings;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -16,6 +17,8 @@ import com.code44.finance.ui.currencies.CurrenciesActivity;
 import com.code44.finance.ui.dialogs.ListDialogFragment;
 import com.code44.finance.ui.settings.about.AboutActivity;
 import com.code44.finance.ui.settings.data.DataActivity;
+import com.code44.finance.ui.settings.security.Security;
+import com.code44.finance.ui.settings.security.UnlockActivity;
 import com.code44.finance.ui.tags.TagsActivity;
 import com.code44.finance.utils.ActiveInterval;
 import com.code44.finance.utils.BaseInterval;
@@ -31,12 +34,16 @@ import javax.inject.Inject;
 
 public class SettingsActivity extends DrawerActivity implements AdapterView.OnItemClickListener {
     private static final int REQUEST_INTERVAL = 98527;
+    private static final int REQUEST_UNLOCK = 2351;
+    private static final int REQUEST_LOCK = 49542;
 
     private static final String FRAGMENT_INTERVAL = "FRAGMENT_INTERVAL";
+    private static final String FRAGMENT_SECURITY = "FRAGMENT_SECURITY";
 
     @Inject GeneralPrefs generalPrefs;
     @Inject CurrentInterval currentInterval;
     @Inject ActiveInterval activeInterval;
+    @Inject Security security;
 
     private SettingsAdapter adapter;
 
@@ -62,8 +69,14 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
         getEventBus().register(this);
     }
 
-    @Override protected NavigationAdapter.NavigationScreen getNavigationScreen() {
-        return null;
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_UNLOCK:
+                if (resultCode == RESULT_OK) {
+                    requestLock();
+                }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -77,6 +90,10 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
         getEventBus().unregister(this);
     }
 
+    @Override protected NavigationAdapter.NavigationScreen getNavigationScreen() {
+        return null;
+    }
+
     @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (id == SettingsAdapter.ID_CURRENCIES) {
             CurrenciesActivity.start(this);
@@ -85,16 +102,9 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
         } else if (id == SettingsAdapter.ID_TAGS) {
             TagsActivity.start(this);
         } else if (id == SettingsAdapter.ID_PERIOD) {
-            final List<ListDialogFragment.ListDialogItem> items = new ArrayList<>();
-            items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.day), generalPrefs.getIntervalType() == BaseInterval.Type.DAY));
-            items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.week), generalPrefs.getIntervalType() == BaseInterval.Type.WEEK));
-            items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.month), generalPrefs.getIntervalType() == BaseInterval.Type.MONTH));
-            items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.year), generalPrefs.getIntervalType() == BaseInterval.Type.YEAR));
-            new ListDialogFragment.Builder(REQUEST_INTERVAL)
-                    .setTitle(getString(R.string.period))
-                    .setItems(items)
-                    .setPositiveButtonText(getString(R.string.cancel))
-                    .build().show(getSupportFragmentManager(), FRAGMENT_INTERVAL);
+            requestInterval();
+        } else if (id == SettingsAdapter.ID_SECURITY) {
+            UnlockActivity.startForResult(this, REQUEST_UNLOCK, false);
         } else if (id == SettingsAdapter.ID_DATA) {
             DataActivity.start(this);
         } else if (id == SettingsAdapter.ID_ABOUT) {
@@ -107,7 +117,7 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
     }
 
     @Subscribe public void onIntervalChanged(CurrentInterval intervalHelper) {
-        adapter.onIntervalChanged(intervalHelper);
+        adapter.setInterval(intervalHelper);
     }
 
     @Subscribe public void onNewIntervalSelected(ListDialogFragment.ListDialogEvent event) {
@@ -143,5 +153,33 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
         currentInterval.setTypeAndLength(type, length);
         activeInterval.setTypeAndLength(type, length);
         event.dismiss();
+    }
+
+    @Subscribe public void onNewLockSelected(Security security) {
+
+    }
+
+    private void requestInterval() {
+        final List<ListDialogFragment.ListDialogItem> items = new ArrayList<>();
+        items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.day), generalPrefs.getIntervalType() == BaseInterval.Type.DAY));
+        items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.week), generalPrefs.getIntervalType() == BaseInterval.Type.WEEK));
+        items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.month), generalPrefs.getIntervalType() == BaseInterval.Type.MONTH));
+        items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.year), generalPrefs.getIntervalType() == BaseInterval.Type.YEAR));
+        new ListDialogFragment.Builder(REQUEST_INTERVAL)
+                .setTitle(getString(R.string.period))
+                .setItems(items)
+                .setPositiveButtonText(getString(R.string.cancel))
+                .build().show(getSupportFragmentManager(), FRAGMENT_INTERVAL);
+    }
+
+    private void requestLock() {
+        final List<ListDialogFragment.ListDialogItem> items = new ArrayList<>();
+        items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.none), security.getType() == Security.Type.None));
+        items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.pin), security.getType() == Security.Type.Pin));
+        new ListDialogFragment.Builder(REQUEST_LOCK)
+                .setTitle(getString(R.string.security))
+                .setItems(items)
+                .setPositiveButtonText(getString(R.string.cancel))
+                .build().show(getSupportFragmentManager(), FRAGMENT_SECURITY);
     }
 }

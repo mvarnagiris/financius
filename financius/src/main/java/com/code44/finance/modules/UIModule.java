@@ -28,6 +28,8 @@ import com.code44.finance.ui.settings.data.DataActivity;
 import com.code44.finance.ui.settings.data.DataFragment;
 import com.code44.finance.ui.settings.data.ExportActivity;
 import com.code44.finance.ui.settings.data.ImportActivity;
+import com.code44.finance.ui.settings.security.LockActivity;
+import com.code44.finance.ui.settings.security.UnlockActivity;
 import com.code44.finance.ui.tags.TagActivity;
 import com.code44.finance.ui.tags.TagEditActivity;
 import com.code44.finance.ui.tags.TagsActivity;
@@ -65,6 +67,8 @@ import dagger.Module;
                 ImportActivity.class,
                 AboutActivity.class,
                 CategoriesReportActivity.class,
+                UnlockActivity.class,
+                LockActivity.class,
 
                 NavigationFragment.class,
                 DeleteDialogFragment.class,
