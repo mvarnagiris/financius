@@ -170,6 +170,7 @@ public class BackupDataExporter extends DataExporter {
                 final Transaction transaction = new Transaction();
                 do {
                     transaction.updateFrom(cursor, null);
+                    transaction.prepareForDb();
 
                     writer.beginObject();
                     writeBaseModel(transaction, writer);

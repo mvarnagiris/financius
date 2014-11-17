@@ -200,6 +200,13 @@ public class BackupDataImporter extends DataImporter {
             model.setTransactionState(TransactionState.fromInt(modelJson.get("transaction_state").getAsInt()));
             model.setTransactionType(TransactionType.fromInt(modelJson.get("transaction_type").getAsInt()));
             model.setIncludeInReports(modelJson.get("include_in_reports").getAsBoolean());
+
+            // This is a hack to solve data migration issue where account_to_id = 2
+            if (model.getAccountTo() != null && model.getAccountTo().getId() != null && model.getAccountTo().getId().equals("2")) {
+                model.setAccountTo(null);
+                model.setTransactionState(TransactionState.Pending);
+            }
+
             valuesList.add(model.asValues());
         }
         insert(valuesList, TransactionsProvider.uriTransactions());
