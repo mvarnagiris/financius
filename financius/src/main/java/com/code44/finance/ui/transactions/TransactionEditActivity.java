@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.content.CursorLoader;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
@@ -35,10 +34,10 @@ import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.CalculatorActivity;
-import com.code44.finance.ui.ModelListActivityOld;
 import com.code44.finance.ui.accounts.AccountsActivity;
 import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.ui.common.ModelEditActivity;
+import com.code44.finance.ui.common.ModelListActivity;
 import com.code44.finance.ui.dialogs.DatePickerDialog;
 import com.code44.finance.ui.dialogs.TimePickerDialog;
 import com.code44.finance.ui.tags.TagsActivity;
@@ -55,7 +54,6 @@ import org.joda.time.DateTime;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -189,31 +187,26 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
                     transactionAutoComplete.setAmount(model.getAmount());
                     return;
                 case REQUEST_ACCOUNT_FROM:
-                    model.setAccountFrom(data.<Account>getParcelableExtra(ModelListActivityOld.RESULT_EXTRA_MODEL));
+                    model.setAccountFrom(ModelListActivity.<Account>getModelExtra(data));
                     onModelLoaded(model);
                     transactionAutoComplete.setAccountFrom(model.getAccountFrom());
                     refreshExchangeRate();
                     return;
                 case REQUEST_ACCOUNT_TO:
-                    model.setAccountTo(data.<Account>getParcelableExtra(ModelListActivityOld.RESULT_EXTRA_MODEL));
+                    model.setAccountTo(ModelListActivity.<Account>getModelExtra(data));
                     onModelLoaded(model);
                     transactionAutoComplete.setAccountTo(model.getAccountTo());
                     refreshExchangeRate();
                     return;
                 case REQUEST_CATEGORY:
-                    model.setCategory(data.<Category>getParcelableExtra(ModelListActivityOld.RESULT_EXTRA_MODEL));
+                    model.setCategory(ModelListActivity.<Category>getModelExtra(data));
                     onModelLoaded(model);
                     transactionAutoComplete.setCategory(model.getCategory());
                     return;
                 case REQUEST_TAGS:
-                    final Parcelable[] parcelables = data.getParcelableArrayExtra(ModelListActivityOld.RESULT_EXTRA_MODELS);
-                    final List<Tag> tags = new ArrayList<>();
-                    for (Parcelable parcelable : parcelables) {
-                        tags.add((Tag) parcelable);
-                    }
-                    model.setTags(tags);
+                    model.setTags(ModelListActivity.<Tag>getModelsExtra(data));
                     onModelLoaded(model);
-                    transactionAutoComplete.setTags(tags);
+                    transactionAutoComplete.setTags(model.getTags());
                     return;
                 case REQUEST_EXCHANGE_RATE:
                     model.setExchangeRate(data.getDoubleExtra(CalculatorActivity.RESULT_EXTRA_RAW_RESULT, 1.0));

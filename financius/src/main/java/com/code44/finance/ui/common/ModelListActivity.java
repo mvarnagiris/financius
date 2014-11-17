@@ -19,15 +19,16 @@ import com.code44.finance.R;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.ui.DrawerActivity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public abstract class ModelListActivity extends DrawerActivity implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener, View.OnClickListener {
-    public static final String RESULT_EXTRA_MODEL = "RESULT_EXTRA_MODEL";
-    public static final String RESULT_EXTRA_MODELS = "RESULT_EXTRA_MODELS";
-
     protected static final int LOADER_MODELS = 1245;
+
+    private static final String RESULT_EXTRA_MODEL = "RESULT_EXTRA_MODEL";
+    private static final String RESULT_EXTRA_MODELS = "RESULT_EXTRA_MODELS";
 
     private static final String EXTRA_MODE = ModelListActivity.class.getName() + ".EXTRA_MODE";
     private static final String EXTRA_SELECTED_MODELS = ModelListActivity.class.getName() + ".EXTRA_SELECTED_MODELS";
@@ -58,6 +59,20 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
         }
         intent.putExtra(EXTRA_SELECTED_MODELS, parcelables);
         return intent;
+    }
+
+    public static <T extends Parcelable> T getModelExtra(Intent data) {
+        return data.getParcelableExtra(ModelListActivity.RESULT_EXTRA_MODEL);
+    }
+
+    public static <T extends Parcelable> List<T> getModelsExtra(Intent data) {
+        final Parcelable[] parcelables = data.getParcelableArrayExtra(ModelListActivity.RESULT_EXTRA_MODELS);
+        final List<T> models = new ArrayList<>();
+        for (Parcelable parcelable : parcelables) {
+            //noinspection unchecked
+            models.add((T) parcelable);
+        }
+        return models;
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
