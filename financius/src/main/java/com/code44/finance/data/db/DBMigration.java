@@ -78,6 +78,24 @@ public final class DBMigration {
         }
     }
 
+    /**
+     * 58 - v0.14.7
+     */
+    public static void upgradeV21(SQLiteDatabase db) {
+        try {
+            db.beginTransaction();
+
+            final ContentValues values = new ContentValues();
+            values.put(Tables.Transactions.ACCOUNT_TO_ID.getName(), (String) null);
+            values.put(Tables.Transactions.STATE.getName(), TransactionState.Pending.asInt());
+            db.update(Tables.Transactions.TABLE_NAME, values, Tables.Transactions.ACCOUNT_TO_ID + "=2", null);
+
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
     private static void v19EnsureIds(SQLiteDatabase db, String tableName) {
         final String serverIdName = tableName + "_server_id";
         final Cursor cursor = db.query(tableName, new String[]{BaseColumns._ID}, null, null, null, null, null);
