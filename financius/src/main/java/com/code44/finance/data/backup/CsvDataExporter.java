@@ -115,10 +115,13 @@ public class CsvDataExporter extends DataExporter {
     }
 
     private String getCurrencyCode(Transaction transaction) {
+        final Account account;
         if (transaction.getTransactionType() == TransactionType.Income) {
-            return transaction.getAccountTo().getCurrency().getCode();
+            account = transaction.getAccountTo();
         } else {
-            return transaction.getAccountFrom().getCurrency().getCode();
+            account = transaction.getAccountFrom();
         }
+
+        return account != null ? account.getCurrency().getCode() : "";
     }
 }
