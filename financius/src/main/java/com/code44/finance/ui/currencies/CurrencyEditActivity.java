@@ -317,6 +317,10 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
                 final AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                        if (listPopupWindow == null) {
+                            return;
+                        }
+
                         listPopupWindow.dismiss();
                         listPopupWindow = null;
                         model.setDecimalCount(position);
