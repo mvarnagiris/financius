@@ -45,13 +45,6 @@ public class Security extends Prefs {
         }
     }
 
-    public void refresh() {
-        type = Type.fromInt(getInteger("type", 0));
-        password = getString("password", "");
-        lastUnlockTimestamp = getLong("lastUnlockTimestamp", 0);
-        unlockDuration = getLong("unlockDuration", DEFAULT_UNLOCK_DURATION);
-    }
-
     public void clear() {
         clear("type", "password", "lastUnlockTimestamp", "unlockDuration");
         refresh();
@@ -61,23 +54,12 @@ public class Security extends Prefs {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(Type type, String password) {
         this.type = type;
-        setInteger("type", type.asInt());
-        notifyChanged();
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
         this.password = password;
+        setInteger("type", type.asInt());
         setString("password", password);
-    }
-
-    public long getLastUnlockTimestamp() {
-        return lastUnlockTimestamp;
+        notifyChanged();
     }
 
     public void setLastUnlockTimestamp(long lastUnlockTimestamp) {
@@ -85,14 +67,11 @@ public class Security extends Prefs {
         setLong("lastUnlockTimestamp", lastUnlockTimestamp);
     }
 
-    public long getUnlockDuration() {
-        return unlockDuration;
-    }
-
-    public void setUnlockDuration(long unlockDuration) {
-        this.unlockDuration = unlockDuration;
-        setLong("unlockDuration", unlockDuration);
-        notifyChanged();
+    private void refresh() {
+        type = Type.fromInt(getInteger("type", 0));
+        password = getString("password", "");
+        lastUnlockTimestamp = getLong("lastUnlockTimestamp", 0);
+        unlockDuration = getLong("unlockDuration", DEFAULT_UNLOCK_DURATION);
     }
 
     private void notifyChanged() {

@@ -17,6 +17,7 @@ import com.code44.finance.ui.currencies.CurrenciesActivity;
 import com.code44.finance.ui.dialogs.ListDialogFragment;
 import com.code44.finance.ui.settings.about.AboutActivity;
 import com.code44.finance.ui.settings.data.DataActivity;
+import com.code44.finance.ui.settings.security.LockActivity;
 import com.code44.finance.ui.settings.security.Security;
 import com.code44.finance.ui.settings.security.UnlockActivity;
 import com.code44.finance.ui.tags.TagsActivity;
@@ -120,12 +121,30 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
         adapter.setInterval(intervalHelper);
     }
 
-    @Subscribe public void onNewIntervalSelected(ListDialogFragment.ListDialogEvent event) {
-        if (event.getRequestCode() != REQUEST_INTERVAL || event.isActionButtonClicked()) {
+    @Subscribe public void onListDialogItemSelected(ListDialogFragment.ListDialogEvent event) {
+        if (event.isActionButtonClicked()) {
             return;
         }
 
-        final int selectedPosition = event.getPosition();
+        switch (event.getRequestCode()) {
+            case REQUEST_INTERVAL:
+                onIntervalSelected(event.getPosition());
+                break;
+            case REQUEST_LOCK:
+                onLockSelected(event.getPosition());
+                break;
+            default:
+                return;
+        }
+
+        event.dismiss();
+    }
+
+    @Subscribe public void onNewLockSelected(Security security) {
+        adapter.setSecurity(security);
+    }
+
+    private void onIntervalSelected(int selectedPosition) {
         final BaseInterval.Type type;
         final int length;
         switch (selectedPosition) {
@@ -152,11 +171,20 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
         generalPrefs.setIntervalTypeAndLength(type, length);
         currentInterval.setTypeAndLength(type, length);
         activeInterval.setTypeAndLength(type, length);
-        event.dismiss();
     }
 
-    @Subscribe public void onNewLockSelected(Security security) {
+    private void onLockSelected(int selectedPosition) {
+        final Security.Type type;
+        switch (selectedPosition) {
+            case 1:
+                type = Security.Type.Pin;
+                break;
+            default:
+                type = Security.Type.None;
+                break;
+        }
 
+        LockActivity.start(this, type);
     }
 
     private void requestInterval() {

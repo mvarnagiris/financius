@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.code44.finance.data.db.DBHelper;
+import com.code44.finance.ui.settings.security.Security;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.Prefs;
 import com.squareup.otto.Produce;
@@ -13,6 +14,7 @@ public class User extends Prefs {
 
     private final DBHelper dbHelper;
     private final GcmRegistration gcmRegistration;
+    private final Security security;
     private final EventBus eventBus;
 
     private String id;
@@ -30,10 +32,11 @@ public class User extends Prefs {
     private long transactionsTimestamp;
     private long tagsTimestamp;
 
-    public User(Context context, DBHelper dbHelper, GcmRegistration gcmRegistration, EventBus eventBus) {
+    public User(Context context, DBHelper dbHelper, GcmRegistration gcmRegistration, Security security, EventBus eventBus) {
         super(context);
         this.dbHelper = dbHelper;
         this.gcmRegistration = gcmRegistration;
+        this.security = security;
         this.eventBus = eventBus;
 
         refresh();
@@ -68,6 +71,7 @@ public class User extends Prefs {
     public void logout() {
         clear();
         gcmRegistration.clear();
+        security.clear();
         dbHelper.clear();
         notifyChanged();
     }

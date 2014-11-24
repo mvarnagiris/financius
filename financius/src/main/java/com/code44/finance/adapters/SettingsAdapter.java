@@ -77,7 +77,8 @@ public class SettingsAdapter extends BaseAdapter {
     }
 
     public void setSecurity(Security security) {
-
+        ((SettingsSubtitleItem) settingsItems.get(ID_SECURITY - 1)).setSubtitle(security.getLockTitle());
+        notifyDataSetChanged();
     }
 
     private static enum ViewType {
