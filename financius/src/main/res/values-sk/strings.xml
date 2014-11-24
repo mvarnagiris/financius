@@ -4,7 +4,7 @@
     <string name="edit">Upraviť</string>
     <string name="delete">Vymazať</string>
     <string name="save">Uložiť</string>
-    <string name="cancel">Storno</string>
+    <string name="cancel">Zrušiť</string>
     <string name="done">Hotovo</string>
     <string name="ok">OK</string>
     <string name="expense">Výdavok</string>
@@ -116,7 +116,7 @@
     <string name="l_currency_exists">Táto mena už existuje</string>
     <string name="l_delete_short">DEL</string>
     <string name="l_delete_confirmation">Naozaj chcete odstrániť tieto záznamy?</string>
-    <string name="l_about_new_issue">Problémy &amp; žiadosti o nové funkcie. Prečítajte si najprv informácie.</string>
+    <string name="l_about_new_issue">Chceli by ste nahlásiť problém či požiadať o nové funkcie? Prečítajte si najprv informácie.</string>
     <string name="l_about_rate">Páči sa vám táto aplikácia? Ohodnoťte ju v obchode Google Play.</string>
     <string name="l_about_community">Chcete vedieť čo sa chystá? Pridajte sa ku komunite.</string>
     <string name="c_food">Jedlo</string>

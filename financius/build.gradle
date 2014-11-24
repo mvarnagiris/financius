@@ -25,6 +25,7 @@ android {
         minSdkVersion 16
         versionCode 65
         versionName '0.14.8'
+        multiDexEnabled true
         buildConfigField "boolean", "USE_LOCAL_SERVER", "true"
         buildConfigField "String", "LOCAL_SERVER_IP", "\"192.168.0.7\""
         buildConfigField "long", "BUILD_TIME", "" + buildTime() + "L"
