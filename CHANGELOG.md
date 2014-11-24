@@ -1,3 +1,12 @@
+###Version: 0.14.8
+- ```new``` Added new translations: Tamil, Ukrainian, Turkish.
+- ```new``` Updated translations: Chinese Simplified, Slovak, Portuguese Brazil.
+- ```fix``` Backup import fixes.
+- ```fix``` General stability improvements.
+
+###Version: 0.14.7
+- ```fix``` Backup export fixes.
+
 ###Version: 0.14.6
 - ```new``` Added Bulgarian translations.
 - ```new``` Updated translations: Chinese Simplified, Slovak.

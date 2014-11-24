@@ -79,7 +79,7 @@ public final class DBMigration {
     }
 
     /**
-     * 58 - v0.14.7
+     * 64 - v0.14.7
      */
     public static void upgradeV21(SQLiteDatabase db) {
         try {
@@ -94,6 +94,45 @@ public final class DBMigration {
         } finally {
             db.endTransaction();
         }
+    }
+
+    /**
+     * 65 - v0.14.8
+     */
+    public static void upgradeV22(SQLiteDatabase db) {
+        try {
+            db.beginTransaction();
+            fixTransactionsWithNotExistingAccounts(db);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    public static void fixTransactionsWithNotExistingAccounts(SQLiteDatabase db) {
+        final String tables = Tables.Transactions.TABLE_NAME
+                + " left join " + Tables.Accounts.TABLE_NAME + " as " + Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT
+                + " on " + Tables.Accounts.ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT)
+                + "=" + Tables.Transactions.ACCOUNT_FROM_ID;
+
+        final Cursor cursor = Query.create()
+                .projectionLocalId(Tables.Transactions.LOCAL_ID)
+                .selection("(" + Tables.Transactions.TYPE + "=" + TransactionType.Expense.asInt())
+                .selection("or " + Tables.Transactions.TYPE + "=" + TransactionType.Transfer.asInt() + ")")
+                .selection(" and " + Tables.Accounts.ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT) + " is null")
+                .from(db, tables)
+                .execute();
+        if (cursor.moveToFirst()) {
+            do {
+                final ContentValues values = new ContentValues();
+                values.put(Tables.Transactions.ACCOUNT_FROM_ID.getName(), (String) null);
+                values.put(Tables.Transactions.STATE.getName(), TransactionState.Pending.asInt());
+                db.update(Tables.Transactions.TABLE_NAME, values, Tables.Transactions.LOCAL_ID + "=?", new String[]{String.valueOf(cursor.getLong(0))});
+            } while (cursor.moveToNext());
+
+            TransactionsProvider.updateAllAccountsBalances(db);
+        }
+        IOUtils.closeQuietly(cursor);
     }
 
     private static void v19EnsureIds(SQLiteDatabase db, String tableName) {

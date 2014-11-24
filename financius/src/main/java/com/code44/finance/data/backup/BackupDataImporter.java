@@ -13,6 +13,7 @@ import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.DBHelper;
+import com.code44.finance.data.db.DBMigration;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
@@ -55,7 +56,7 @@ public class BackupDataImporter extends DataImporter {
 
     @Override protected void importData(InputStream inputStream) throws Exception {
         final JsonObject json = inputStreamToJson(inputStream);
-        validate(json);
+        final int version = validate(json);
 
         final SQLiteDatabase database = dbHelper.getWritableDatabase();
         try {
@@ -71,6 +72,10 @@ public class BackupDataImporter extends DataImporter {
             importAccounts(json);
             importTransactions(json);
 
+            if (version <= 7) {
+                DBMigration.fixTransactionsWithNotExistingAccounts(database);
+            }
+
             database.setTransactionSuccessful();
         } finally {
             database.endTransaction();
@@ -83,11 +88,12 @@ public class BackupDataImporter extends DataImporter {
         return jsonElement.getAsJsonObject();
     }
 
-    private void validate(JsonObject json) {
+    private int validate(JsonObject json) {
         final int version = json.get("version").getAsInt();
         if (version < MIN_VALID_VERSION) {
             throw new IllegalArgumentException("Backup version " + version + " is not supported anymore.");
         }
+        return version;
     }
 
     private void cleanDatabase(SQLiteDatabase database) {
