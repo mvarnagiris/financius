@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.ui.common.BaseActivity;
@@ -14,6 +15,7 @@ public class LockActivity extends BaseActivity implements LockView.OnPasswordEnt
     private static final String STATE_PASSWORD = "STATE_PASSWORD";
     private static final String STATE_STATE = "STATE_STATE";
 
+    private TextView titleTextView;
     private LockView lockView;
 
     private Security.Type type;
@@ -28,6 +30,8 @@ public class LockActivity extends BaseActivity implements LockView.OnPasswordEnt
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock);
+
+        titleTextView = (TextView) findViewById(R.id.titleTextView);
 
         type = (Security.Type) getIntent().getExtras().getSerializable(EXTRA_SECURITY_TYPE);
 
@@ -52,14 +56,14 @@ public class LockActivity extends BaseActivity implements LockView.OnPasswordEnt
             case NewLock:
                 this.password = password;
                 lockView.setState(LockView.State.NewLockConfirm);
+                titleTextView.setText(R.string.confirm_password);
                 break;
 
             case NewLockConfirm:
                 if (isPasswordMatch(password)) {
                     onNewLockCreated(password);
                 } else {
-                    // TODO Create message for error
-                    lockView.showError("Password doesn't match, try again.");
+                    lockView.showError(getString(R.string.error_unlock_password));
                 }
                 break;
 

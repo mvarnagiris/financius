@@ -77,7 +77,7 @@ public class UnlockActivity extends BaseActivity implements LockView.OnPasswordE
     public void onVerificationFailed() {
         // TODO Show proper text
         isPasswordValidated = false;
-        lockView.showError("Password is incorrect.");
+        lockView.showError(getString(R.string.error_unlock_password));
         getSecurity().setLastUnlockTimestamp(0);
     }
 }

@@ -113,6 +113,8 @@
     <string name="security">Security</string>
     <string name="lock">Lock</string>
     <string name="unlock">Unlock</string>
+    <string name="create_password">Create password</string>
+    <string name="confirm_password">Confirm password</string>
 
     <string name="f_change_to_x">Change to %s</string>
     <string name="f_current_main_currency_is_x">Current main currency is %s</string>
@@ -125,6 +127,8 @@
     <string name="l_about_new_issue">Issues &amp; feature requests. Read the README first.</string>
     <string name="l_about_rate">Like the app? Rate it on Google Play.</string>
     <string name="l_about_community">Want to see what\'s coming next? Join the community.</string>
+
+    <string name="error_unlock_password">Password doesn\'t match. Try again.</string>
 
     <string name="c_food">Food</string>
     <string name="c_leisure">Leisure</string>
