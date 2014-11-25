@@ -47,6 +47,8 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
     @Inject Security security;
 
     private SettingsAdapter adapter;
+    private boolean isResumed = false;
+    private boolean requestLock = false;
 
     public static void start(Context context) {
         startActivity(context, makeIntentForActivity(context, SettingsActivity.class));
@@ -67,7 +69,12 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
 
     @Override protected void onResume() {
         super.onResume();
+        isResumed = true;
         getEventBus().register(this);
+
+        if (requestLock) {
+            requestLock();
+        }
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -88,6 +95,7 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
 
     @Override protected void onPause() {
         super.onPause();
+        isResumed = false;
         getEventBus().unregister(this);
     }
 
@@ -201,6 +209,12 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
     }
 
     private void requestLock() {
+        if (!isResumed) {
+            requestLock = true;
+            return;
+        }
+        requestLock = false;
+
         final List<ListDialogFragment.ListDialogItem> items = new ArrayList<>();
         items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.none), security.getType() == Security.Type.None));
         items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.pin), security.getType() == Security.Type.Pin));
