@@ -25,6 +25,10 @@ public abstract class BaseActivity extends ActionBarActivity {
         @Subscribe public void onAppError(AppError error) {
             onHandleError(error);
         }
+
+        @Subscribe public void onKill(KillEverythingThanMoves kill) {
+            finish();
+        }
     };
 
     @Inject EventBus eventBus;
@@ -114,5 +118,8 @@ public abstract class BaseActivity extends ActionBarActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
+    }
+
+    public static class KillEverythingThanMoves {
     }
 }

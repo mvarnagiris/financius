@@ -3,15 +3,19 @@ package com.code44.finance.ui.settings.security;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ViewGroup;
 
+import com.code44.finance.R;
 import com.code44.finance.ui.common.BaseActivity;
 
 import javax.inject.Inject;
 
-public class UnlockActivity extends BaseActivity {
+public class UnlockActivity extends BaseActivity implements LockView.OnPasswordEnteredListener {
     private static final String EXTRA_CLOSE_IF_NOT_VERIFIED = "EXTRA_CLOSE_IF_NOT_VERIFIED";
 
     @Inject Security security;
+
+    private LockView lockView;
 
     private boolean closeIfNotVerified;
 
@@ -23,16 +27,43 @@ public class UnlockActivity extends BaseActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_unlock);
+
         closeIfNotVerified = getIntent().getBooleanExtra(EXTRA_CLOSE_IF_NOT_VERIFIED, true);
-        startVerification();
+        startUnlockProcess();
     }
 
-    private void startVerification() {
-        if (security.getType() == Security.Type.None) {
-            onVerificationSuccessful();
-            return;
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        if (isFinishing() && closeIfNotVerified) {
+            getEventBus().post(new KillEverythingThanMoves());
         }
-        onVerificationFailed();
+    }
+
+    @Override public void onPasswordEntered(String password) {
+        if (security.validate(password)) {
+            onVerificationSuccessful();
+        } else {
+            onVerificationFailed();
+        }
+    }
+
+    private void startUnlockProcess() {
+        switch (security.getType()) {
+            case None:
+                onVerificationSuccessful();
+                return;
+
+            case Pin:
+                lockView = new PinLockView(this);
+                break;
+            default:
+                throw new IllegalStateException("Security type " + security.getType() + " is not supported.");
+        }
+
+        ((ViewGroup) findViewById(R.id.content)).addView(lockView);
+        lockView.setListener(this);
+        lockView.setState(LockView.State.Unlock);
     }
 
     public void onVerificationSuccessful() {
@@ -41,5 +72,7 @@ public class UnlockActivity extends BaseActivity {
     }
 
     public void onVerificationFailed() {
+        // TODO Show proper text
+        lockView.showError("Password is incorrect.");
     }
 }

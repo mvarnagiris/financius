@@ -67,6 +67,15 @@ public class Security extends Prefs {
         setLong("lastUnlockTimestamp", lastUnlockTimestamp);
     }
 
+    public boolean validate(String password) {
+        switch (type) {
+            case None:
+                return true;
+            default:
+                return this.password.equals(password);
+        }
+    }
+
     private void refresh() {
         type = Type.fromInt(getInteger("type", 0));
         password = getString("password", "");

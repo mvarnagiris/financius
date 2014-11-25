@@ -74,7 +74,7 @@ public class PinLockView extends LockView implements TextWatcher {
         postDelayed(new Runnable() {
             @Override public void run() {
                 final InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.showSoftInput(pinEditText, InputMethodManager.SHOW_FORCED);
+                inputMethodManager.showSoftInput(pinEditText, InputMethodManager.SHOW_IMPLICIT);
                 pinEditText.requestFocus();
             }
         }, 100);
