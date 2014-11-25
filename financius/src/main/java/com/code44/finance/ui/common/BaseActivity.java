@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.code44.finance.App;
 import com.code44.finance.R;
 import com.code44.finance.ui.settings.SettingsActivity;
+import com.code44.finance.ui.settings.security.Security;
+import com.code44.finance.ui.settings.security.UnlockActivity;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.analytics.Analytics;
 import com.code44.finance.utils.errors.AppError;
@@ -21,18 +23,24 @@ import com.squareup.otto.Subscribe;
 import javax.inject.Inject;
 
 public abstract class BaseActivity extends ActionBarActivity {
+    private static final int REQUEST_UNLOCK = 17172;
+
     private final Object eventHandler = new Object() {
         @Subscribe public void onAppError(AppError error) {
             onHandleError(error);
         }
-
+    };
+    private final Object killEventHandler = new Object() {
         @Subscribe public void onKill(KillEverythingThanMoves kill) {
-            finish();
+            kill();
         }
     };
 
+    @Inject Security security;
     @Inject EventBus eventBus;
     @Inject Analytics analytics;
+
+    private boolean isKilling = false;
 
     protected static Intent makeIntentForActivity(Context context, Class activityClass) {
         return new Intent(context, activityClass);
@@ -49,6 +57,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.with(this).inject(this);
+        eventBus.register(killEventHandler);
     }
 
     @Override public void setContentView(int layoutResID) {
@@ -56,14 +65,31 @@ public abstract class BaseActivity extends ActionBarActivity {
         setupToolbar();
     }
 
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_UNLOCK && resultCode != RESULT_OK) {
+            kill();
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     @Override protected void onResume() {
         super.onResume();
+
         getEventBus().register(eventHandler);
+
         final Analytics.Screen screen = getScreen();
         if (screen == Analytics.Screen.None) {
             getAnalytics().clearScreen();
         } else {
             getAnalytics().trackScreen(screen);
+        }
+
+        if (security.isUnlockRequired()) {
+            UnlockActivity.startForResult(this, REQUEST_UNLOCK, true);
+        } else {
+            security.setLastUnlockTimestamp(System.currentTimeMillis());
         }
     }
 
@@ -71,6 +97,15 @@ public abstract class BaseActivity extends ActionBarActivity {
         super.onPause();
         getEventBus().unregister(eventHandler);
         getAnalytics().clearScreen();
+
+        if (!isKilling) {
+            security.setLastUnlockTimestamp(System.currentTimeMillis());
+        }
+    }
+
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        eventBus.unregister(killEventHandler);
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -93,6 +128,10 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     protected void onHandleError(AppError error) {
         Toast.makeText(this, error.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    protected Security getSecurity() {
+        return security;
     }
 
     protected EventBus getEventBus() {
@@ -118,6 +157,11 @@ public abstract class BaseActivity extends ActionBarActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
+    }
+
+    private void kill() {
+        isKilling = true;
+        finish();
     }
 
     public static class KillEverythingThanMoves {

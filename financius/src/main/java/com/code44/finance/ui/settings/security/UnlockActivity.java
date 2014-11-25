@@ -8,21 +8,21 @@ import android.view.ViewGroup;
 import com.code44.finance.R;
 import com.code44.finance.ui.common.BaseActivity;
 
-import javax.inject.Inject;
-
 public class UnlockActivity extends BaseActivity implements LockView.OnPasswordEnteredListener {
     private static final String EXTRA_CLOSE_IF_NOT_VERIFIED = "EXTRA_CLOSE_IF_NOT_VERIFIED";
-
-    @Inject Security security;
 
     private LockView lockView;
 
     private boolean closeIfNotVerified;
+    private boolean isPasswordValidated = false;
 
     public static void startForResult(Activity activity, int requestCode, boolean closeIfNotVerified) {
         final Intent intent = makeIntentForActivity(activity, UnlockActivity.class);
         intent.putExtra(EXTRA_CLOSE_IF_NOT_VERIFIED, closeIfNotVerified);
         startActivityForResult(activity, intent, requestCode);
+        if (closeIfNotVerified) {
+            activity.overridePendingTransition(0, 0);
+        }
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +35,14 @@ public class UnlockActivity extends BaseActivity implements LockView.OnPasswordE
 
     @Override protected void onDestroy() {
         super.onDestroy();
-        if (isFinishing() && closeIfNotVerified) {
+        if (isFinishing() && closeIfNotVerified && !isPasswordValidated) {
+            getSecurity().setLastUnlockTimestamp(0);
             getEventBus().post(new KillEverythingThanMoves());
         }
     }
 
     @Override public void onPasswordEntered(String password) {
-        if (security.validate(password)) {
+        if (getSecurity().validate(password)) {
             onVerificationSuccessful();
         } else {
             onVerificationFailed();
@@ -49,7 +50,7 @@ public class UnlockActivity extends BaseActivity implements LockView.OnPasswordE
     }
 
     private void startUnlockProcess() {
-        switch (security.getType()) {
+        switch (getSecurity().getType()) {
             case None:
                 onVerificationSuccessful();
                 return;
@@ -58,7 +59,7 @@ public class UnlockActivity extends BaseActivity implements LockView.OnPasswordE
                 lockView = new PinLockView(this);
                 break;
             default:
-                throw new IllegalStateException("Security type " + security.getType() + " is not supported.");
+                throw new IllegalStateException("Security type " + getSecurity().getType() + " is not supported.");
         }
 
         ((ViewGroup) findViewById(R.id.content)).addView(lockView);
@@ -67,12 +68,16 @@ public class UnlockActivity extends BaseActivity implements LockView.OnPasswordE
     }
 
     public void onVerificationSuccessful() {
+        getSecurity().setLastUnlockTimestamp(System.currentTimeMillis());
         setResult(RESULT_OK);
+        isPasswordValidated = true;
         finish();
     }
 
     public void onVerificationFailed() {
         // TODO Show proper text
+        isPasswordValidated = false;
         lockView.showError("Password is incorrect.");
+        getSecurity().setLastUnlockTimestamp(0);
     }
 }

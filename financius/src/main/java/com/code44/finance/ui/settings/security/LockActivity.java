@@ -8,15 +8,11 @@ import android.view.ViewGroup;
 import com.code44.finance.R;
 import com.code44.finance.ui.common.BaseActivity;
 
-import javax.inject.Inject;
-
 public class LockActivity extends BaseActivity implements LockView.OnPasswordEnteredListener {
     private static final String EXTRA_SECURITY_TYPE = "EXTRA_SECURITY_TYPE";
 
     private static final String STATE_PASSWORD = "STATE_PASSWORD";
     private static final String STATE_STATE = "STATE_STATE";
-
-    @Inject Security security;
 
     private LockView lockView;
 
@@ -75,7 +71,7 @@ public class LockActivity extends BaseActivity implements LockView.OnPasswordEnt
     private void startNewLockProcess(LockView.State restoredState) {
         switch (type) {
             case None:
-                security.clear();
+                getSecurity().clear();
                 finish();
                 return;
             case Pin:
@@ -91,8 +87,8 @@ public class LockActivity extends BaseActivity implements LockView.OnPasswordEnt
     }
 
     private void onNewLockCreated(String password) {
-        security.setLastUnlockTimestamp(System.currentTimeMillis());
-        security.setType(type, password);
+        getSecurity().setLastUnlockTimestamp(System.currentTimeMillis());
+        getSecurity().setType(type, password);
         finish();
     }
 

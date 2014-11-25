@@ -76,6 +76,10 @@ public class Security extends Prefs {
         }
     }
 
+    public boolean isUnlockRequired() {
+        return type != Type.None && Math.abs(lastUnlockTimestamp - System.currentTimeMillis()) > unlockDuration;
+    }
+
     private void refresh() {
         type = Type.fromInt(getInteger("type", 0));
         password = getString("password", "");

@@ -44,7 +44,6 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
     @Inject GeneralPrefs generalPrefs;
     @Inject CurrentInterval currentInterval;
     @Inject ActiveInterval activeInterval;
-    @Inject Security security;
 
     private SettingsAdapter adapter;
     private boolean isResumed = false;
@@ -216,8 +215,8 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
         requestLock = false;
 
         final List<ListDialogFragment.ListDialogItem> items = new ArrayList<>();
-        items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.none), security.getType() == Security.Type.None));
-        items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.pin), security.getType() == Security.Type.Pin));
+        items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.none), getSecurity().getType() == Security.Type.None));
+        items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.pin), getSecurity().getType() == Security.Type.Pin));
         new ListDialogFragment.Builder(REQUEST_LOCK)
                 .setTitle(getString(R.string.security))
                 .setItems(items)
