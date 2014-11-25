@@ -74,6 +74,7 @@ public class Calculator {
             result = interpreter.eval(getExpression()).toString();
             final Double number = Double.parseDouble(result);
             final NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
+            format.setMaximumFractionDigits(20);
             format.setGroupingUsed(false);
             result = Double.isInfinite(number) ? null : format.format(number);
         } catch (Exception e) {

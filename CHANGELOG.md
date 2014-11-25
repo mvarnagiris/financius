@@ -1,3 +1,11 @@
+###Version: 0.15.0
+- ```new``` Added PIN lock. To enable, go to Settings-Security.
+- ```new``` Traditional Chinese translations are also applied to Honk Kong.
+- ```fix``` Fixed exchange rate precision.
+
+###Version: 0.14.9
+- ```fix``` App launch crash fixed.
+
 ###Version: 0.14.8
 - ```new``` Added new translations: Tamil, Ukrainian, Turkish.
 - ```new``` Updated translations: Chinese Simplified, Slovak, Portuguese Brazil.

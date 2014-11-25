@@ -217,7 +217,7 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
                     return;
                 case REQUEST_AMOUNT_TO:
                     final long amountTo = data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0);
-                    if (Double.compare(model.getExchangeRate(), 0) == 0) {
+                    if (Double.compare(model.getExchangeRate(), 0) <= 0) {
                         model.setExchangeRate(1.0);
                     }
                     final long amount = Math.round(amountTo / model.getExchangeRate());
@@ -287,8 +287,10 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
                     exchangeRateButton.setVisibility(View.VISIBLE);
                     amountToButton.setVisibility(View.VISIBLE);
 
+                    // TODO This is also done in calculator. Do not duplicate.
                     NumberFormat format = DecimalFormat.getInstance(Locale.ENGLISH);
                     format.setGroupingUsed(false);
+                    format.setMaximumFractionDigits(20);
                     exchangeRateButton.setText(format.format(model.getExchangeRate()));
                     amountToButton.setText(MoneyFormatter.format(transaction.getAccountTo().getCurrency(), Math.round(transaction.getAmount() * transaction.getExchangeRate())));
                 } else {
