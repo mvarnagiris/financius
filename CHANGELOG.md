@@ -1,3 +1,6 @@
+###Version: 0.15.1
+- ```fix``` Attempt to fix Android 4.2.2 issue where app is crashing because some manufacturers are dumb.
+
 ###Version: 0.15.0
 - ```new``` Added PIN lock. To enable, go to Settings-Security.
 - ```new``` Traditional Chinese translations are also applied to Honk Kong.
