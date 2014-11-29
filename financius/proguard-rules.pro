@@ -16,8 +16,7 @@
 #   public *;
 #}
 
--keep class !android.support.v7.internal.view.menu.MenuBuilder
--keep class !android.support.v7.internal.view.menu.SubMenuBuilder
+-keep class !android.support.v7.internal.view.menu.MenuBuilder, !android.support.v7.internal.view.menu.SubMenuBuilder { *; }
 
 -dontwarn retrofit.**
 -dontwarn okio.**
