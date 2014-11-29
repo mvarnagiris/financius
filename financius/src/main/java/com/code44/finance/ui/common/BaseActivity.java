@@ -18,7 +18,6 @@ import com.code44.finance.ui.settings.security.UnlockActivity;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.analytics.Analytics;
 import com.code44.finance.utils.errors.AppError;
-import com.crashlytics.android.Crashlytics;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
@@ -154,12 +153,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     protected void setupToolbar() {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-            try {
-                setSupportActionBar(toolbar);
-            } catch (Throwable t) {
-                // 4.2.2 Is crashing because Samsung.
-                Crashlytics.logException(t);
-            }
+            setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
