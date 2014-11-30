@@ -83,7 +83,9 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
     private Button accountFromButton;
     private Button accountToButton;
     private ImageView colorImageView;
+    private View categoryContainerView;
     private Button categoryButton;
+    private View categoryDividerView;
     private Button tagsButton;
     private EditText noteEditText;
     private CheckBox confirmedCheckBox;
@@ -106,19 +108,30 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
         amountButton = (Button) findViewById(R.id.amountButton);
         exchangeRateButton = (Button) findViewById(R.id.exchangeRateButton);
         amountToButton = (Button) findViewById(R.id.amountToButton);
+        dateButton = (Button) findViewById(R.id.dateButton);
+        timeButton = (Button) findViewById(R.id.timeButton);
         accountFromButton = (Button) findViewById(R.id.accountFromButton);
         accountToButton = (Button) findViewById(R.id.accountToButton);
         colorImageView = (ImageView) findViewById(R.id.colorImageView);
+        categoryContainerView = findViewById(R.id.categoryContainerView);
         categoryButton = (Button) findViewById(R.id.categoryButton);
+        categoryDividerView = findViewById(R.id.categoryDividerView);
         tagsButton = (Button) findViewById(R.id.tagsButton);
-        dateButton = (Button) findViewById(R.id.dateButton);
-        timeButton = (Button) findViewById(R.id.timeButton);
         noteEditText = (EditText) findViewById(R.id.noteEditText);
         confirmedCheckBox = (CheckBox) findViewById(R.id.confirmedCheckBox);
         includeInReportsCheckBox = (CheckBox) findViewById(R.id.includeInReportsCheckBox);
         saveButton = (Button) findViewById(R.id.saveButton);
+        final ImageView dateTimeImageView = (ImageView) findViewById(R.id.dateTimeImageView);
+        final ImageView accountImageView = (ImageView) findViewById(R.id.accountImageView);
+        final ImageView tagsImageView = (ImageView) findViewById(R.id.tagsImageView);
+        final ImageView noteImageView = (ImageView) findViewById(R.id.noteImageView);
 
         // Setup
+        final int imageViewColor = getResources().getColor(R.color.text_secondary);
+        dateTimeImageView.setColorFilter(imageViewColor);
+        accountImageView.setColorFilter(imageViewColor);
+        tagsImageView.setColorFilter(imageViewColor);
+        noteImageView.setColorFilter(imageViewColor);
         transactionTypeImageButton.setOnClickListener(this);
         amountButton.setOnClickListener(this);
         amountButton.setOnLongClickListener(this);
@@ -261,7 +274,8 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
                 accountFromButton.setVisibility(View.VISIBLE);
                 accountToButton.setVisibility(View.GONE);
                 colorImageView.setVisibility(View.VISIBLE);
-                categoryButton.setVisibility(View.VISIBLE);
+                categoryContainerView.setVisibility(View.VISIBLE);
+                categoryDividerView.setVisibility(View.VISIBLE);
                 transactionTypeImageButton.setImageResource(R.drawable.ic_category_type_expense);
                 exchangeRateButton.setVisibility(View.GONE);
                 amountToButton.setVisibility(View.GONE);
@@ -270,7 +284,8 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
                 accountFromButton.setVisibility(View.GONE);
                 accountToButton.setVisibility(View.VISIBLE);
                 colorImageView.setVisibility(View.VISIBLE);
-                categoryButton.setVisibility(View.VISIBLE);
+                categoryContainerView.setVisibility(View.VISIBLE);
+                categoryDividerView.setVisibility(View.VISIBLE);
                 transactionTypeImageButton.setImageResource(R.drawable.ic_category_type_income);
                 exchangeRateButton.setVisibility(View.GONE);
                 amountToButton.setVisibility(View.GONE);
@@ -279,7 +294,8 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
                 accountFromButton.setVisibility(View.VISIBLE);
                 accountToButton.setVisibility(View.VISIBLE);
                 colorImageView.setVisibility(View.GONE);
-                categoryButton.setVisibility(View.GONE);
+                categoryContainerView.setVisibility(View.GONE);
+                categoryDividerView.setVisibility(View.GONE);
                 transactionTypeImageButton.setImageResource(R.drawable.ic_category_type_transfer);
                 final boolean bothAccountsSet = transaction.getAccountFrom() != null && transaction.getAccountTo() != null;
                 final boolean differentCurrencies = bothAccountsSet && !transaction.getAccountFrom().getCurrency().getId().equals(transaction.getAccountTo().getCurrency().getId());

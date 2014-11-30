@@ -16,17 +16,91 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/keyline">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="bottom">
+                android:background="?colorPrimary"
+                android:elevation="@dimen/elevation_header"
+                android:orientation="vertical"
+                tools:ignore="UnusedAttribute">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/action_bar_size_2x">
+
+                    <ImageButton
+                        android:id="@+id/transactionTypeImageButton"
+                        style="@style/Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/transaction_type"
+                        android:minWidth="@dimen/big_touch_size"
+                        android:scaleType="centerInside"
+                        tools:src="@drawable/ic_category_type_expense" />
+
+                    <me.grantland.widget.AutofitLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/action_bar_size_2x">
+
+                        <Button
+                            android:id="@+id/amountButton"
+                            style="@style/Button.Borderless"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="end|center_vertical"
+                            android:padding="@dimen/keyline"
+                            android:singleLine="true"
+                            android:textAppearance="@style/Text.Display3"
+                            android:textColor="@color/text_primary_inverse"
+                            tools:text="1,000.00 $" />
+                    </me.grantland.widget.AutofitLayout>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/exchangeRateButton"
+                    style="@style/Button.Borderless.Select"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_large"
+                    android:gravity="end|bottom"
+                    android:visibility="gone"
+                    tools:text="0.83548" />
+
+                <Button
+                    android:id="@+id/amountToButton"
+                    style="@style/Button.Borderless.Select"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_large"
+                    android:gravity="end|bottom"
+                    android:visibility="gone"
+                    tools:text="835.48 £" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_large"
+                android:paddingLeft="@dimen/keyline"
+                android:paddingRight="@dimen/keyline">
+
+                <ImageView
+                    android:id="@+id/dateTimeImageView"
+                    style="@style/ImageView.Form"
+                    android:src="@drawable/ic_time"
+                    tools:ignore="RtlHardcoded"
+                    tools:tint="@color/text_secondary" />
 
                 <Button
                     android:id="@+id/dateButton"
-                    style="@style/Button.Borderless.Select"
+                    style="@style/Button.Borderless.Bounded.Select"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -35,139 +109,162 @@
 
                 <Button
                     android:id="@+id/timeButton"
-                    style="@style/Button.Borderless.Select"
+                    style="@style/Button.Borderless.Bounded.Select"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="end|bottom"
+                    android:gravity="end|center_vertical"
                     android:hint="@string/date"
                     tools:text="16:27" />
 
             </LinearLayout>
 
+            <View
+                style="@style/Divider.Thin"
+                android:layout_marginLeft="@dimen/keyline_content"
+                tools:ignore="RtlHardcoded" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_large"
-                android:gravity="bottom">
+                android:paddingLeft="@dimen/keyline"
+                android:paddingRight="@dimen/keyline">
 
-                <ImageButton
-                    android:id="@+id/transactionTypeImageButton"
-                    style="@style/Button.Borderless.Select"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/transaction_type"
-                    android:gravity="end|bottom"
-                    android:minWidth="@dimen/big_touch_size"
-                    android:scaleType="centerInside"
-                    tools:src="@drawable/ic_category_type_expense"
-                    tools:text="1,000.00 $" />
+                <ImageView
+                    android:id="@+id/accountImageView"
+                    style="@style/ImageView.Form"
+                    android:src="@drawable/ic_bank"
+                    tools:ignore="RtlHardcoded"
+                    tools:tint="@color/text_secondary" />
 
-                <Button
-                    android:id="@+id/amountButton"
-                    style="@style/Button.Borderless.Select"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="end|bottom"
-                    tools:text="1,000.00 $" />
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/accountFromButton"
+                        style="@style/Button.Borderless.Bounded.Select"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/from" />
+
+                    <Button
+                        android:id="@+id/accountToButton"
+                        style="@style/Button.Borderless.Bounded.Select"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/to"
+                        android:visibility="gone" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/exchangeRateButton"
-                style="@style/Button.Borderless.Select"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_large"
-                android:gravity="end|bottom"
-                android:visibility="gone"
-                tools:text="0.83548" />
-
-            <Button
-                android:id="@+id/amountToButton"
-                style="@style/Button.Borderless.Select"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_large"
-                android:gravity="end|bottom"
-                android:visibility="gone"
-                tools:text="835.48 £" />
+            <View
+                style="@style/Divider.Thin"
+                android:layout_marginLeft="@dimen/keyline_content"
+                tools:ignore="RtlHardcoded" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_large">
-
-                <Button
-                    android:id="@+id/accountFromButton"
-                    style="@style/Button.Borderless.Select"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="@string/from" />
-
-                <Button
-                    android:id="@+id/accountToButton"
-                    style="@style/Button.Borderless.Select"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="@string/to"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-            <LinearLayout
+                android:id="@+id/categoryContainerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_large"
-                android:paddingLeft="4dp"
-                tools:ignore="RtlHardcoded,RtlSymmetry">
+                android:paddingLeft="@dimen/keyline"
+                android:paddingRight="@dimen/keyline">
 
                 <ImageView
                     android:id="@+id/colorImageView"
-                    android:layout_width="@dimen/min_touch_size"
-                    android:layout_height="@dimen/min_touch_size"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/space_normal"
-                    android:layout_marginRight="@dimen/space_normal"
+                    style="@style/ImageView.Form"
+                    android:padding="10dp"
                     android:src="@drawable/circle"
-                    tools:ignore="ContentDescription" />
+                    tools:ignore="RtlHardcoded"
+                    tools:tint="@color/text_secondary" />
 
                 <Button
                     android:id="@+id/categoryButton"
-                    style="@style/Button.Borderless.Select"
+                    style="@style/Button.Borderless.Bounded.Select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/categories_one" />
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/tagsButton"
-                style="@style/Button.Borderless.Select"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_large"
-                android:hint="@string/tags_other" />
-
-            <EditText
-                android:id="@+id/noteEditText"
-                style="@style/EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_large"
-                android:gravity="bottom"
-                android:hint="@string/note"
-                android:inputType="textCapSentences|textMultiLine"
-                android:minHeight="@dimen/recommended_touch_size" />
+            <View
+                android:id="@+id/categoryDividerView"
+                style="@style/Divider.Thin"
+                android:layout_marginLeft="@dimen/keyline_content"
+                tools:ignore="RtlHardcoded" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_xlarge"
+                android:layout_marginTop="@dimen/space_large"
+                android:paddingLeft="@dimen/keyline"
+                android:paddingRight="@dimen/keyline">
+
+                <ImageView
+                    android:id="@+id/tagsImageView"
+                    style="@style/ImageView.Form"
+                    android:src="@drawable/ic_tags"
+                    tools:ignore="RtlHardcoded"
+                    tools:tint="@color/text_secondary" />
+
+                <Button
+                    android:id="@+id/tagsButton"
+                    style="@style/Button.Borderless.Bounded.Select"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/tags_other" />
+
+            </LinearLayout>
+
+            <View
+                style="@style/Divider.Thin"
+                android:layout_marginLeft="@dimen/keyline_content"
+                tools:ignore="RtlHardcoded" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_large"
+                android:paddingLeft="@dimen/keyline"
+                android:paddingRight="@dimen/keyline">
+
+                <ImageView
+                    android:id="@+id/noteImageView"
+                    style="@style/ImageView.Form"
+                    android:src="@drawable/ic_note"
+                    tools:ignore="RtlHardcoded"
+                    tools:tint="@color/text_secondary" />
+
+                <EditText
+                    android:id="@+id/noteEditText"
+                    style="@style/Button.Borderless.Bounded.Select"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="@string/note"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:minHeight="@dimen/recommended_touch_size" />
+
+            </LinearLayout>
+
+            <View
+                style="@style/Divider.Thin"
+                android:layout_marginLeft="@dimen/keyline_content"
+                tools:ignore="RtlHardcoded" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-8dp"
+                android:layout_marginTop="@dimen/space_xxlarge"
                 android:orientation="vertical"
-                android:paddingLeft="4dp"
+                android:paddingBottom="@dimen/keyline"
+                android:paddingLeft="@dimen/keyline_content"
                 tools:ignore="RtlHardcoded,RtlSymmetry">
 
                 <CheckBox
@@ -175,7 +272,8 @@
                     style="@style/CheckBox.Field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/confirmed" />
+                    android:text="@string/confirmed"
+                    android:textAppearance="@style/Text" />
 
                 <CheckBox
                     android:id="@+id/includeInReportsCheckBox"
@@ -183,7 +281,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_large"
-                    android:text="@string/include_in_reports" />
+                    android:text="@string/include_in_reports"
+                    android:textAppearance="@style/Text" />
             </LinearLayout>
 
         </LinearLayout>
