@@ -109,6 +109,11 @@
     <string name="create_backup">建立備份</string>
     <string name="no_category">無類別</string>
     <string name="trends">趨勢</string>
+    <string name="security">安全性</string>
+    <string name="lock">程式鎖</string>
+    <string name="unlock">解鎖</string>
+    <string name="create_password">創建密碼</string>
+    <string name="confirm_password">再次確認密碼</string>
     <string name="f_change_to_x">更改為 %s</string>
     <string name="f_current_main_currency_is_x">目前主要的貨幣是 %s</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s 將會被刪除</string>
@@ -119,6 +124,7 @@
     <string name="l_about_new_issue">如有問題或想請求添加新功能，請先檢視讀我檔案。</string>
     <string name="l_about_rate">喜歡我嗎？在Google Play上為我評分吧。</string>
     <string name="l_about_community">想知道接下來會有什麼改進嗎？那就加入社群吧！</string>
+    <string name="error_unlock_password">密碼錯誤，請再試一次。</string>
     <string name="c_food">食物</string>
     <string name="c_leisure">休閒</string>
     <string name="c_clothing">服裝</string>

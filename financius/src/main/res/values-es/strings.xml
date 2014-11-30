@@ -109,6 +109,11 @@
     <string name="create_backup">Crear copia de seguridad</string>
     <string name="no_category">Sin categoría</string>
     <string name="trends">Tendencias</string>
+    <string name="security">Seguridad</string>
+    <string name="lock">Bloquear</string>
+    <string name="unlock">Desbloquear</string>
+    <string name="create_password">Crear contraseña</string>
+    <string name="confirm_password">Confirmar contraseña</string>
     <string name="f_change_to_x">Cambiar a %s</string>
     <string name="f_current_main_currency_is_x">La moneda principal actual es %s</string>
     <string name="f_x_y_will_be_deleted">Confirme que desea eliminar %1$d %2$s</string>
@@ -119,6 +124,7 @@
     <string name="l_about_new_issue">Peticiones y temas relacionados. Lea el archivo Léame primero.</string>
     <string name="l_about_rate">¿Le gusta la aplicación? Califíquela en Google Play.</string>
     <string name="l_about_community">¿Quiere ver que viene? Únase a la comunidad.</string>
+    <string name="error_unlock_password">Contraseña no coincide, Vuelva a intentarlo</string>
     <string name="c_food">Comida</string>
     <string name="c_leisure">Ocio</string>
     <string name="c_clothing">Vestido</string>

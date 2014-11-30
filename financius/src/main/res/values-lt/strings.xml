@@ -109,6 +109,11 @@
     <string name="create_backup">Sukurti atsarginę kopiją</string>
     <string name="no_category">Be kategorijos</string>
     <string name="trends">Tendencijos</string>
+    <string name="security">Apsauga</string>
+    <string name="lock">Užrakinti</string>
+    <string name="unlock">Atrakinti</string>
+    <string name="create_password">Sukurkite slaptažodį</string>
+    <string name="confirm_password">Patvirtinkite slaptažodį</string>
     <string name="f_change_to_x">Pakeisti į %s</string>
     <string name="f_current_main_currency_is_x">Dabartinė pagrindinė valiuta yra %s</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s bus ištrinta</string>
@@ -119,6 +124,7 @@
     <string name="l_about_new_issue">Problemos ir funkcijų prašymai. Pirmiausia perskaityti informaciją.</string>
     <string name="l_about_rate">Patinka aplikacija? Įvertink ją Google Play.</string>
     <string name="l_about_community">Nori gauti naujausias funkcijas anksčiau? Prisijunk prie bendruomenės.</string>
+    <string name="error_unlock_password">Slaptažodis neatitinka. Bandykite dar kartą.</string>
     <string name="c_food">Maistas</string>
     <string name="c_leisure">Laisvalaikis</string>
     <string name="c_clothing">Apranga</string>

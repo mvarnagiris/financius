@@ -109,6 +109,11 @@
     <string name="create_backup">Vytvořit zálohu</string>
     <string name="no_category">Žádné kategorie</string>
     <string name="trends">Trendy</string>
+    <string name="security">Zabezpečení</string>
+    <string name="lock">Zamknout</string>
+    <string name="unlock">Odemknout</string>
+    <string name="create_password">Vytvořte heslo</string>
+    <string name="confirm_password">Potvrďte heslo</string>
     <string name="f_change_to_x">Změnit na %s</string>
     <string name="f_current_main_currency_is_x">Aktuální hlavní měnou je %s</string>
     <string name="f_x_y_will_be_deleted">Vymazat %1$d %2$s</string>
@@ -119,6 +124,7 @@
     <string name="l_about_new_issue">Problémy &amp; návrhy nových funkcí. Nejdříve si přečtěte informace.</string>
     <string name="l_about_rate">Líbí se vám tato aplikace. Ohodnoťte ji na Google Play.</string>
     <string name="l_about_community">Chcete vědět co je v plánu? Přidejte se ke komunitě.</string>
+    <string name="error_unlock_password">Hesla se neshodují. Zkuste to znovu.</string>
     <string name="c_food">Jídlo</string>
     <string name="c_leisure">Volný čas</string>
     <string name="c_clothing">Oblečení</string>

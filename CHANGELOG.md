@@ -1,3 +1,9 @@
+###Version: 0.15.3
+- ```new``` Updated translations.
+
+###Version: 0.15.2
+- ```fix``` Actually fixed Android 4.2.2 issue where app is crashing because some manufacturers are dumb.
+
 ###Version: 0.15.1
 - ```fix``` Attempt to fix Android 4.2.2 issue where app is crashing because some manufacturers are dumb.
 

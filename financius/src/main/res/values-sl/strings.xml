@@ -109,6 +109,11 @@
     <string name="create_backup">Ustvarjanje varnostne kopije</string>
     <string name="no_category">Brez kategorije</string>
     <string name="trends">Trendi</string>
+    <string name="security">Varnost</string>
+    <string name="lock">Zaklep</string>
+    <string name="unlock">Odklep</string>
+    <string name="create_password">Ustvari geslo</string>
+    <string name="confirm_password">Potrdi geslo</string>
     <string name="f_change_to_x">Spremeni v %s</string>
     <string name="f_current_main_currency_is_x">Trenutna glavna valuta je %s</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s bo izbrisan</string>
@@ -119,6 +124,7 @@
     <string name="l_about_new_issue">Vprašanja &amp; predlogi. Najprej preberite Preberi me.</string>
     <string name="l_about_rate">Vam je aplikacija všeč? Ocenite jo na Google Play.</string>
     <string name="l_about_community">Želite videti kaj se razvija? Pridružite se skupnosti.</string>
+    <string name="error_unlock_password">Geslo se ne ujema. Poskusi znova.</string>
     <string name="c_food">Hrana</string>
     <string name="c_leisure">Prosti čas</string>
     <string name="c_clothing">Oblačila</string>

@@ -109,6 +109,11 @@
     <string name="create_backup">Crea backup</string>
     <string name="no_category">Nessuna categoria</string>
     <string name="trends">Andamento</string>
+    <string name="security">Sicurezza</string>
+    <string name="lock">Blocca</string>
+    <string name="unlock">Sblocca</string>
+    <string name="create_password">Scegli la password</string>
+    <string name="confirm_password">Conferma la password</string>
     <string name="f_change_to_x">Cambia in %s</string>
     <string name="f_current_main_currency_is_x">L\'attuale valuta principale è %s</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s saranno eliminati</string>
@@ -119,6 +124,7 @@
     <string name="l_about_new_issue">Problemi &amp; richieste di aggiornamento. Leggi prima il LEGGIMI.</string>
     <string name="l_about_rate">Ti piace l\'applicazione? Valutala sul Google Play.</string>
     <string name="l_about_community">Vuoi sapere cosa accadrà in futuro? Unisciti alla community.</string>
+    <string name="error_unlock_password">La password non corrisponde. Riprova.</string>
     <string name="c_food">Cibo</string>
     <string name="c_leisure">Tempo libero</string>
     <string name="c_clothing">Abbigliamento</string>

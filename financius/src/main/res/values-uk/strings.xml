@@ -109,6 +109,11 @@
     <string name="create_backup">Створити резервну копію</string>
     <string name="no_category">Без категорії</string>
     <string name="trends">Тенденції</string>
+    <string name="security">Захист</string>
+    <string name="lock">Заблокувати</string>
+    <string name="unlock">Розблокувати</string>
+    <string name="create_password">Задати пароль</string>
+    <string name="confirm_password">Підтвердити пароль</string>
     <string name="f_change_to_x">Змінити на %s</string>
     <string name="f_current_main_currency_is_x">Основною валютою є %s</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s буде видалено</string>
@@ -119,6 +124,7 @@
     <string name="l_about_new_issue">Питання та побажання. Спочатку ознайомтеся з розділом \"Інформація\".</string>
     <string name="l_about_rate">Подобається додаток? Оціни в Google Play.</string>
     <string name="l_about_community">Хочеш побачити, що буде далі? Приєднуйся до спільноти.</string>
+    <string name="error_unlock_password">Паролі не збігаються. Спробуй ще раз.</string>
     <string name="c_food">Їжа</string>
     <string name="c_leisure">Дозвілля</string>
     <string name="c_clothing">Одяг</string>

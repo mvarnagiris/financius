@@ -109,6 +109,11 @@
     <string name="create_backup">மறுபிரதி உருவாக்கு</string>
     <string name="no_category">பகுப்பற்றது</string>
     <string name="trends">போக்குகள்</string>
+    <string name="security">பாதுகாப்பு</string>
+    <string name="lock">பூட்டு</string>
+    <string name="unlock">பூட்டவிழ்</string>
+    <string name="create_password">கடவுச்சொல் உருவாக்கவும்</string>
+    <string name="confirm_password">கடவுச்சொல் உறுதிசெய்</string>
     <string name="f_change_to_x">%s-க்கு மாற்ற</string>
     <string name="f_current_main_currency_is_x">தற்போதைய பிரதான நாணயம் %s  உள்ளது</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s நீக்கப்படும்</string>
@@ -119,6 +124,7 @@
     <string name="l_about_new_issue">பிரச்சினைகள் &amp; அம்ச கோரிக்கைகள். முன்தகவலை முதலில் படிக்கவும்.</string>
     <string name="l_about_rate">மென் ஒருங்கு பிடித்ததா? கூகுள் பிலேயில் மதிப்பளிக்க.</string>
     <string name="l_about_community">அடுத்து வருவதென்ன எனப் பார்க்க வேண்டுமா? குழுவில் சேரவும்.</string>
+    <string name="error_unlock_password">கடவுச்சொல் பொருத்தமாக இல்லை. மீண்டும் முயற்சி செய்.</string>
     <string name="c_food">உணவு</string>
     <string name="c_leisure">ஓய்வு</string>
     <string name="c_clothing">உடை</string>
