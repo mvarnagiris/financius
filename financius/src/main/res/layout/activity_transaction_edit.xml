@@ -246,8 +246,8 @@
                     tools:ignore="RtlHardcoded"
                     tools:tint="@color/text_secondary" />
 
-                <EditText
-                    android:id="@+id/noteEditText"
+                <AutoCompleteTextView
+                    android:id="@+id/noteAutoCompleteTextView"
                     style="@style/Button.Borderless.Bounded.Select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -6,15 +6,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
-import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -87,10 +85,10 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
     private Button categoryButton;
     private View categoryDividerView;
     private Button tagsButton;
-    private EditText noteEditText;
     private CheckBox confirmedCheckBox;
     private CheckBox includeInReportsCheckBox;
     private Button saveButton;
+    private NoteController noteController;
 
     public static void start(Context context, String transactionServerId) {
         startActivity(context, makeIntent(context, TransactionEditActivity.class, transactionServerId));
@@ -117,10 +115,10 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
         categoryButton = (Button) findViewById(R.id.categoryButton);
         categoryDividerView = findViewById(R.id.categoryDividerView);
         tagsButton = (Button) findViewById(R.id.tagsButton);
-        noteEditText = (EditText) findViewById(R.id.noteEditText);
         confirmedCheckBox = (CheckBox) findViewById(R.id.confirmedCheckBox);
         includeInReportsCheckBox = (CheckBox) findViewById(R.id.includeInReportsCheckBox);
         saveButton = (Button) findViewById(R.id.saveButton);
+        final AutoCompleteTextView noteAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.noteAutoCompleteTextView);
         final ImageView dateTimeImageView = (ImageView) findViewById(R.id.dateTimeImageView);
         final ImageView accountImageView = (ImageView) findViewById(R.id.accountImageView);
         final ImageView tagsImageView = (ImageView) findViewById(R.id.tagsImageView);
@@ -153,19 +151,8 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
         timeButton.setOnLongClickListener(this);
         confirmedCheckBox.setOnCheckedChangeListener(this);
         includeInReportsCheckBox.setOnCheckedChangeListener(this);
-        noteEditText.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+        noteController = new NoteController(noteAutoCompleteTextView);
 
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (model != null) {
-                    model.setNote(noteEditText.getText().toString());
-                }
-            }
-
-            @Override public void afterTextChanged(Editable s) {
-            }
-        });
 
         final boolean isAutoAmountRequested = savedInstanceState != null;
         if ((StringUtils.isEmpty(modelId) || modelId.equals("0")) && !isAutoAmountRequested) {
@@ -250,7 +237,7 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
     }
 
     @Override protected void ensureModelUpdated(Transaction model) {
-        model.setNote(noteEditText.getText().toString());
+        model.setNote(noteController.getNote());
     }
 
     @Override protected CursorLoader getModelCursorLoader(String modelId) {
@@ -324,7 +311,7 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
         accountToButton.setText(transaction.getAccountTo() == null ? null : transaction.getAccountTo().getTitle());
         colorImageView.setColorFilter(getCategoryColor(transaction));
         categoryButton.setText(transaction.getCategory() == null ? null : transaction.getCategory().getTitle());
-        noteEditText.setText(transaction.getNote());
+        noteController.setNote(transaction.getNote());
         confirmedCheckBox.setChecked(transaction.getTransactionState() == TransactionState.Confirmed && canBeConfirmed(transaction, false));
         includeInReportsCheckBox.setChecked(transaction.includeInReports());
         saveButton.setText(confirmedCheckBox.isChecked() ? R.string.save : R.string.pending);
