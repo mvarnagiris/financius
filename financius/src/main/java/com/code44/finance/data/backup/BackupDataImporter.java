@@ -31,6 +31,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -84,7 +85,9 @@ public class BackupDataImporter extends DataImporter {
 
     private JsonObject inputStreamToJson(InputStream inputStream) {
         final JsonParser parser = new JsonParser();
-        final JsonElement jsonElement = parser.parse(new InputStreamReader(inputStream));
+        final JsonReader jsonReader = new JsonReader(new InputStreamReader(inputStream));
+        jsonReader.setLenient(true);
+        final JsonElement jsonElement = parser.parse(jsonReader);
         return jsonElement.getAsJsonObject();
     }
 
