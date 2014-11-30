@@ -35,10 +35,10 @@
                     <ImageButton
                         android:id="@+id/transactionTypeImageButton"
                         style="@style/Button.Borderless"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/keyline_content"
                         android:layout_height="match_parent"
                         android:contentDescription="@string/transaction_type"
-                        android:minWidth="@dimen/big_touch_size"
+                        android:padding="@dimen/keyline"
                         android:scaleType="centerInside"
                         tools:src="@drawable/ic_category_type_expense" />
 
@@ -64,21 +64,27 @@
 
                 <Button
                     android:id="@+id/exchangeRateButton"
-                    style="@style/Button.Borderless.Select"
+                    style="@style/Button.Borderless.Bounded.Select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_large"
-                    android:gravity="end|bottom"
+                    android:gravity="end|center_vertical"
+                    android:paddingLeft="@dimen/keyline"
+                    android:paddingRight="@dimen/keyline"
+                    android:singleLine="true"
+                    android:textColor="@color/text_primary_inverse"
                     android:visibility="gone"
                     tools:text="0.83548" />
 
                 <Button
                     android:id="@+id/amountToButton"
-                    style="@style/Button.Borderless.Select"
+                    style="@style/Button.Borderless.Bounded.Select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_large"
-                    android:gravity="end|bottom"
+                    android:gravity="end|center_vertical"
+                    android:paddingLeft="@dimen/keyline"
+                    android:paddingRight="@dimen/keyline"
+                    android:singleLine="true"
+                    android:textColor="@color/text_primary_inverse"
                     android:visibility="gone"
                     tools:text="835.48 £" />
 
