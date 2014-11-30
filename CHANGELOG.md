@@ -1,3 +1,6 @@
+###Version: 0.15.4
+- ```new``` Updated UI for new transaction screen. More improvements are still to come.
+
 ###Version: 0.15.3
 - ```new``` Updated translations.
 
