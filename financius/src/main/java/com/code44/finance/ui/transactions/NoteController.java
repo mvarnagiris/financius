@@ -49,7 +49,9 @@ public class NoteController implements LoaderManager.LoaderCallbacks<Cursor>, Te
     }
 
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        adapter.swapCursor(data);
+        if (!data.isClosed()) {
+            adapter.swapCursor(data);
+        }
     }
 
     @Override public void onLoaderReset(Loader<Cursor> loader) {
