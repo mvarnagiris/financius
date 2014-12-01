@@ -1,3 +1,6 @@
+###Version: 0.15.5
+- ```new``` Note field in new transaction screen now has auto complete.
+
 ###Version: 0.15.4
 - ```new``` Updated UI for new transaction screen. More improvements are still to come.
 
