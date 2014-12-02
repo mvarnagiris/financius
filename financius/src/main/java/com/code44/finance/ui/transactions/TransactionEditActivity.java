@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -41,7 +39,6 @@ import com.code44.finance.ui.dialogs.TimePickerDialog;
 import com.code44.finance.ui.tags.TagsActivity;
 import com.code44.finance.utils.FieldValidationUtils;
 import com.code44.finance.utils.MoneyFormatter;
-import com.code44.finance.utils.TextBackgroundSpan;
 import com.code44.finance.utils.analytics.Analytics;
 import com.code44.finance.utils.transaction.TransactionAutoComplete;
 import com.squareup.otto.Subscribe;
@@ -57,7 +54,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-public class TransactionEditActivity extends ModelEditActivity<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TransactionAutoComplete.TransactionAutoCompleteListener, View.OnLongClickListener {
+public class TransactionEditActivity extends ModelEditActivity<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TransactionAutoComplete.TransactionAutoCompleteListener, View.OnLongClickListener, TagsController.Callbacks {
     private static final int REQUEST_AMOUNT = 1;
     private static final int REQUEST_ACCOUNT_FROM = 2;
     private static final int REQUEST_ACCOUNT_TO = 3;
@@ -84,10 +81,10 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
     private View categoryContainerView;
     private Button categoryButton;
     private View categoryDividerView;
-    private Button tagsButton;
     private CheckBox confirmedCheckBox;
     private CheckBox includeInReportsCheckBox;
     private Button saveButton;
+    private TagsController tagsController;
     private NoteController noteController;
 
     public static void start(Context context, String transactionServerId) {
@@ -114,10 +111,10 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
         categoryContainerView = findViewById(R.id.categoryContainerView);
         categoryButton = (Button) findViewById(R.id.categoryButton);
         categoryDividerView = findViewById(R.id.categoryDividerView);
-        tagsButton = (Button) findViewById(R.id.tagsButton);
         confirmedCheckBox = (CheckBox) findViewById(R.id.confirmedCheckBox);
         includeInReportsCheckBox = (CheckBox) findViewById(R.id.includeInReportsCheckBox);
         saveButton = (Button) findViewById(R.id.saveButton);
+        final Button tagsButton = (Button) findViewById(R.id.tagsButton);
         final AutoCompleteTextView noteAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.noteAutoCompleteTextView);
         final ImageView dateTimeImageView = (ImageView) findViewById(R.id.dateTimeImageView);
         final ImageView accountImageView = (ImageView) findViewById(R.id.accountImageView);
@@ -143,14 +140,13 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
         accountToButton.setOnLongClickListener(this);
         categoryButton.setOnClickListener(this);
         categoryButton.setOnLongClickListener(this);
-        tagsButton.setOnClickListener(this);
-        tagsButton.setOnLongClickListener(this);
         dateButton.setOnClickListener(this);
         dateButton.setOnLongClickListener(this);
         timeButton.setOnClickListener(this);
         timeButton.setOnLongClickListener(this);
         confirmedCheckBox.setOnCheckedChangeListener(this);
         includeInReportsCheckBox.setOnCheckedChangeListener(this);
+        tagsController = new TagsController(tagsButton, this);
         noteController = new NoteController(noteAutoCompleteTextView);
 
 
@@ -204,9 +200,7 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
                     transactionAutoComplete.setCategory(model.getCategory());
                     return;
                 case REQUEST_TAGS:
-                    model.setTags(ModelListActivity.<Tag>getModelsExtra(data));
-                    onModelLoaded(model);
-                    transactionAutoComplete.setTags(model.getTags());
+                    tagsController.handleActivityResult(data);
                     return;
                 case REQUEST_EXCHANGE_RATE:
                     model.setExchangeRate(data.getDoubleExtra(CalculatorActivity.RESULT_EXTRA_RAW_RESULT, 1.0));
@@ -311,18 +305,12 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
         accountToButton.setText(transaction.getAccountTo() == null ? null : transaction.getAccountTo().getTitle());
         colorImageView.setColorFilter(getCategoryColor(transaction));
         categoryButton.setText(transaction.getCategory() == null ? null : transaction.getCategory().getTitle());
-        noteController.setNote(transaction.getNote());
         confirmedCheckBox.setChecked(transaction.getTransactionState() == TransactionState.Confirmed && canBeConfirmed(transaction, false));
         includeInReportsCheckBox.setChecked(transaction.includeInReports());
         saveButton.setText(confirmedCheckBox.isChecked() ? R.string.save : R.string.pending);
 
-        final SpannableStringBuilder subtitle = new SpannableStringBuilder();
-        for (Tag tag : transaction.getTags()) {
-            subtitle.append(tag.getTitle());
-            subtitle.setSpan(new TextBackgroundSpan(getResources().getColor(R.color.bg_secondary), getResources().getDimension(R.dimen.tag_radius)), subtitle.length() - tag.getTitle().length(), subtitle.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            subtitle.append(" ");
-        }
-        tagsButton.setText(subtitle);
+        tagsController.setTags(transaction.getTags());
+        noteController.setNote(transaction.getNote());
     }
 
     @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -362,9 +350,6 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
             case R.id.categoryButton:
                 CategoriesActivity.startSelect(this, REQUEST_CATEGORY, model.getTransactionType());
                 break;
-            case R.id.tagsButton:
-                TagsActivity.startMultiSelect(this, REQUEST_TAGS, model.getTags());
-                break;
             case R.id.dateButton:
                 DatePickerDialog.show(getSupportFragmentManager(), REQUEST_DATE, model.getDate());
                 break;
@@ -398,10 +383,6 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
                 return true;
             case R.id.categoryButton:
                 model.setCategory(null);
-                onModelLoaded(model);
-                return true;
-            case R.id.tagsButton:
-                model.setTags(null);
                 onModelLoaded(model);
                 return true;
             case R.id.dateButton:
@@ -446,6 +427,15 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
 
     @Override protected Analytics.Screen getScreen() {
         return Analytics.Screen.TransactionEdit;
+    }
+
+    @Override public void onRequestTags(List<Tag> tags) {
+        TagsActivity.startMultiSelect(this, REQUEST_TAGS, tags);
+    }
+
+    @Override public void onTagsUpdated(List<Tag> tags) {
+        model.setTags(tags);
+        transactionAutoComplete.setTags(tags);
     }
 
     @Subscribe public void onDateSet(DatePickerDialog.DateSelected dateSelected) {
