@@ -1,4 +1,4 @@
-package com.code44.finance.utils.transaction;
+package com.code44.finance.ui.transactions.autocomplete;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-public class LastTransactionAutoComplete extends TransactionAutoComplete {
+public class LastTransactionAutoComplete extends TransactionAutoCompleteOld {
     public LastTransactionAutoComplete(Context context, Executor executor) {
         super(context, executor);
     }

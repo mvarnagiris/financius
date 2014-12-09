@@ -8,6 +8,8 @@ import com.code44.finance.qualifiers.Local;
 import com.code44.finance.qualifiers.Network;
 import com.code44.finance.ui.playservices.GoogleApiConnection;
 import com.code44.finance.ui.settings.security.Security;
+import com.code44.finance.ui.transactions.autocomplete.LastTransactionAutoComplete;
+import com.code44.finance.ui.transactions.autocomplete.TransactionAutoCompleteOld;
 import com.code44.finance.utils.ActiveInterval;
 import com.code44.finance.utils.Calculator;
 import com.code44.finance.utils.CurrentInterval;
@@ -15,8 +17,6 @@ import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.LayoutType;
 import com.code44.finance.utils.LocalExecutor;
-import com.code44.finance.utils.transaction.LastTransactionAutoComplete;
-import com.code44.finance.utils.transaction.TransactionAutoComplete;
 
 import java.util.concurrent.Executor;
 
@@ -60,7 +60,7 @@ public final class UtilsModule {
         return new LayoutType(context);
     }
 
-    @Provides public TransactionAutoComplete provideTransactionAutoComplete(@ApplicationContext Context context, @Local Executor executor) {
+    @Provides public TransactionAutoCompleteOld provideTransactionAutoComplete(@ApplicationContext Context context, @Local Executor executor) {
         return new LastTransactionAutoComplete(context, executor);
     }
 

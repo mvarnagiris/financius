@@ -37,10 +37,10 @@ import com.code44.finance.ui.common.ModelListActivity;
 import com.code44.finance.ui.dialogs.DatePickerDialog;
 import com.code44.finance.ui.dialogs.TimePickerDialog;
 import com.code44.finance.ui.tags.TagsActivity;
+import com.code44.finance.ui.transactions.autocomplete.TransactionAutoCompleteOld;
 import com.code44.finance.utils.FieldValidationUtils;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.analytics.Analytics;
-import com.code44.finance.utils.transaction.TransactionAutoComplete;
 import com.squareup.otto.Subscribe;
 
 import net.danlew.android.joda.DateUtils;
@@ -54,7 +54,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-public class TransactionEditActivity extends ModelEditActivity<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TransactionAutoComplete.TransactionAutoCompleteListener, View.OnLongClickListener, TagsController.Callbacks {
+public class TransactionEditActivity extends ModelEditActivity<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TransactionAutoCompleteOld.TransactionAutoCompleteListener, View.OnLongClickListener, TagsController.Callbacks {
     private static final int REQUEST_AMOUNT = 1;
     private static final int REQUEST_ACCOUNT_FROM = 2;
     private static final int REQUEST_ACCOUNT_TO = 3;
@@ -67,7 +67,7 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
 
     @Inject CurrenciesApi currenciesApi;
     @Inject @Main Currency mainCurrency;
-    @Inject TransactionAutoComplete transactionAutoComplete;
+    @Inject TransactionAutoCompleteOld transactionAutoComplete;
 
     private Button dateButton;
     private Button timeButton;

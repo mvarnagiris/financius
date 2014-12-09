@@ -4,7 +4,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.14.3'
+        //noinspection GradleDynamicVersion
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
     }
 }
 apply plugin: 'com.android.application'
@@ -88,7 +89,8 @@ dependencies {
     compile 'se.emilsjolander:stickylistheaders:2.5.0'
     compile 'com.nononsenseapps:filepicker:1.1.3'
     compile project(':common')
-    compile 'com.crashlytics.android:crashlytics:1.1.13'
+    //noinspection GradleDynamicVersion
+    compile 'com.crashlytics.android:crashlytics:1.+'
 }
 
 def buildTime() {

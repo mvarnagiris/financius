@@ -1,4 +1,4 @@
-package com.code44.finance.utils.transaction;
+package com.code44.finance.ui.transactions.autocomplete;
 
 import android.content.Context;
 
@@ -11,14 +11,14 @@ import com.code44.finance.data.model.Transaction;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-public abstract class TransactionAutoComplete {
+public abstract class TransactionAutoCompleteOld {
     private final Context context;
     private final Executor executor;
     private final Transaction transaction;
 
     private TransactionAutoCompleteListener listener;
 
-    protected TransactionAutoComplete(Context context, Executor executor) {
+    protected TransactionAutoCompleteOld(Context context, Executor executor) {
         this.context = context;
         this.executor = executor;
         this.transaction = new Transaction();
