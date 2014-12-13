@@ -1,4 +1,4 @@
-package com.code44.finance.ui.transactions.autocomplete.finders.smart;
+package com.code44.finance.ui.transactions.autocomplete.smart;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -12,7 +12,6 @@ import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
-import com.code44.finance.ui.transactions.autocomplete.finders.Finder;
 import com.code44.finance.utils.IOUtils;
 
 import org.joda.time.DateTime;
@@ -24,9 +23,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CategoriesFinder extends Finder<Category> {
-    protected CategoriesFinder(Context context, TransactionType transactionType, Long date, Long amount, Account accountFrom, Account accountTo, Category category, List<Tag> tags, String note) {
-        super(context, transactionType, date, amount, accountFrom, accountTo, category, tags, note);
+public class TagsFinder extends Finder<Category> {
+    private final long date;
+    private final Account accountFrom;
+    private final Account accountTo;
+    private final Category category;
+    private final List<Tag> tags;
+    private final String note;
+
+    protected TagsFinder(Context context, TransactionType transactionType, long date, Long amount, Account accountFrom, Account accountTo, Category category, List<Tag> tags, String note) {
+        super(context, transactionType);
+        this.date = date;
+        this.accountFrom = accountFrom;
+        this.accountTo = accountTo;
+        this.category = category;
+        this.tags = tags;
+        this.note = note;
     }
 
     @Override public List<Category> find() {
@@ -138,7 +150,7 @@ public class CategoriesFinder extends Finder<Category> {
         private static final float WEIGHT_SAME_DAY_OF_MONTH = 0.1f;
         private static final float WEIGHT_LAST_TRANSACTION = 0.15f;
 
-        private final DateTime currentDateTime = new DateTime();
+        private final DateTime currentDateTime = new DateTime(date);
 
         private int sameTimeOfDayCount = 0;
         private int sameDayOfWeekCount = 0;

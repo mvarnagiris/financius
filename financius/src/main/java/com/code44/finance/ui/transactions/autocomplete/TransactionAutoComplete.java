@@ -15,14 +15,14 @@ public abstract class TransactionAutoComplete implements Runnable {
     private final Executor executor;
     private final TransactionAutoCompleteListener listener;
 
-    protected TransactionType transactionType;
-    protected Long date;
-    protected Long amount;
-    protected Account accountFrom;
-    protected Account accountTo;
-    protected Category category;
-    protected List<Tag> tags;
-    protected String note;
+    private TransactionType transactionType;
+    private Long date;
+    private Long amount;
+    private Account accountFrom;
+    private Account accountTo;
+    private Category category;
+    private List<Tag> tags;
+    private String note;
 
     protected TransactionAutoComplete(Executor executor, TransactionAutoCompleteListener listener) {
         this.executor = executor;
@@ -35,7 +35,7 @@ public abstract class TransactionAutoComplete implements Runnable {
         final Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             @Override public void run() {
-                listener.onTransactionAutoComplete(getAmounts(), getAccountsFrom(), getAccountsTo(), getCategories(), getTags());
+                listener.onTransactionAutoComplete(getResultAmounts(), getResultAccountsFrom(), getResultAccountsTo(), getResultCategories(), getResultTags());
             }
         });
     }
@@ -46,15 +46,15 @@ public abstract class TransactionAutoComplete implements Runnable {
 
     protected abstract void autoComplete();
 
-    protected abstract List<Long> getAmounts();
+    protected abstract List<Long> getResultAmounts();
 
-    protected abstract List<Account> getAccountsFrom();
+    protected abstract List<Account> getResultAccountsFrom();
 
-    protected abstract List<Account> getAccountsTo();
+    protected abstract List<Account> getResultAccountsTo();
 
-    protected abstract List<Category> getCategories();
+    protected abstract List<Category> getResultCategories();
 
-    protected abstract List<Tag> getTags();
+    protected abstract List<Tag> getResultTags();
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
@@ -86,6 +86,38 @@ public abstract class TransactionAutoComplete implements Runnable {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    protected TransactionType getTransactionType() {
+        return transactionType;
+    }
+
+    protected Long getDate() {
+        return date;
+    }
+
+    protected Long getAmount() {
+        return amount;
+    }
+
+    protected Account getAccountFrom() {
+        return transactionType != TransactionType.Income ? accountFrom : null;
+    }
+
+    protected Account getAccountTo() {
+        return transactionType != TransactionType.Expense ? accountTo : null;
+    }
+
+    protected Category getCategory() {
+        return transactionType != TransactionType.Transfer ? category : null;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    protected String getNote() {
+        return note;
     }
 
     public static interface TransactionAutoCompleteListener {
