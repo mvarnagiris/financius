@@ -1,7 +1,7 @@
 package com.code44.finance.utils;
 
 import com.code44.finance.common.model.TransactionType;
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Transaction;
@@ -49,7 +49,7 @@ public class MoneyFormatter {
         }
 
         final String currencyId = currency.getId();
-        if (StringUtils.isEmpty(currencyId) || !useCache) {
+        if (Strings.isEmpty(currencyId) || !useCache) {
             return new CurrencyFormat(currency);
         } else {
             CurrencyFormat currencyFormat = currencyFormats.get(currency.getId());

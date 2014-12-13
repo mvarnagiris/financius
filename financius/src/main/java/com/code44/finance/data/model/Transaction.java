@@ -10,7 +10,7 @@ import android.text.TextUtils;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.Preconditions;
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 import com.crashlytics.android.Crashlytics;
@@ -243,7 +243,7 @@ public class Transaction extends Model {
 
         // Account from
         index = cursor.getColumnIndex(Tables.Transactions.ACCOUNT_FROM_ID.getName(columnPrefixTable));
-        if (index >= 0 && !StringUtils.isEmpty(cursor.getString(index)) && !cursor.getString(index).equals("null")) {
+        if (index >= 0 && !Strings.isEmpty(cursor.getString(index)) && !cursor.getString(index).equals("null")) {
             final Account accountFrom = Account.fromAccountFrom(cursor);
             accountFrom.setId(cursor.getString(index));
             setAccountFrom(accountFrom);
@@ -253,7 +253,7 @@ public class Transaction extends Model {
 
         // Account to
         index = cursor.getColumnIndex(Tables.Transactions.ACCOUNT_TO_ID.getName(columnPrefixTable));
-        if (index >= 0 && !StringUtils.isEmpty(cursor.getString(index)) && !cursor.getString(index).equals("null")) {
+        if (index >= 0 && !Strings.isEmpty(cursor.getString(index)) && !cursor.getString(index).equals("null")) {
             final Account accountTo = Account.fromAccountTo(cursor);
             accountTo.setId(cursor.getString(index));
             setAccountTo(accountTo);
@@ -263,7 +263,7 @@ public class Transaction extends Model {
 
         // Category
         index = cursor.getColumnIndex(Tables.Transactions.CATEGORY_ID.getName(columnPrefixTable));
-        if (index >= 0 && !StringUtils.isEmpty(cursor.getString(index)) && !cursor.getString(index).equals("null")) {
+        if (index >= 0 && !Strings.isEmpty(cursor.getString(index)) && !cursor.getString(index).equals("null")) {
             final Category category = Category.from(cursor);
             category.setId(cursor.getString(index));
             setCategory(category);
@@ -278,7 +278,7 @@ public class Transaction extends Model {
         index = cursor.getColumnIndex(Tables.Tags.ID.getName(columnPrefixTable));
         if (index >= 0) {
             final String str = cursor.getString(index);
-            if (!StringUtils.isEmpty(str)) {
+            if (!Strings.isEmpty(str)) {
                 tagIds = TextUtils.split(str, Tables.CONCAT_SEPARATOR);
             } else {
                 tagIds = null;
@@ -290,7 +290,7 @@ public class Transaction extends Model {
         index = cursor.getColumnIndex(Tables.Tags.TITLE.getName(columnPrefixTable));
         if (index >= 0) {
             final String str = cursor.getString(index);
-            if (!StringUtils.isEmpty(str)) {
+            if (!Strings.isEmpty(str)) {
                 tagTitles = TextUtils.split(str, Tables.CONCAT_SEPARATOR);
             } else {
                 tagTitles = null;

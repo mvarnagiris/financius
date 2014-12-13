@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
@@ -39,7 +39,7 @@ public class CurrencyAccountsAdapter extends BaseModelsAdapter {
     }
 
     @Override public int getCount() {
-        return currency == null || StringUtils.isEmpty(currency.getCode()) ? 0 : super.getCount();
+        return currency == null || Strings.isEmpty(currency.getCode()) ? 0 : super.getCount();
     }
 
     @Override public View newView(Context context, Cursor cursor, ViewGroup parent) {

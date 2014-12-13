@@ -4,7 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.text.format.DateUtils;
 
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.model.TransactionType;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
@@ -15,7 +16,10 @@ import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.utils.IOUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.Executor;
 
 public class SmartTransactionAutoComplete extends TransactionAutoComplete {
@@ -43,10 +47,35 @@ public class SmartTransactionAutoComplete extends TransactionAutoComplete {
             return;
         }
 
+        final TreeMap<Transaction, Float>
         do {
             final Transaction transaction = Transaction.from(cursor);
 
+
         } while (cursor.moveToNext());
+
+
+        if (category == null && transactionType != TransactionType.Transfer) {
+            findCategories(cursor);
+        }
+
+        if (tags == null) {
+            findTags(cursor);
+        }
+
+        if (accountFrom == null && transactionType != TransactionType.Income) {
+            findAccountsFrom(cursor);
+        }
+
+        if (accountTo == null && transactionType != TransactionType.Expense) {
+            findAccountsTo(cursor);
+        }
+
+        if (amount == null) {
+            findAmounts(cursor);
+        }
+
+        IOUtils.closeQuietly(cursor);
     }
 
     @Override protected List<Long> getAmounts() {
@@ -69,9 +98,35 @@ public class SmartTransactionAutoComplete extends TransactionAutoComplete {
         return resultTags;
     }
 
+    private void findCategories(Cursor cursor) {
+        cursor.moveToFirst();
+        final Map<Category, Float> categories = new HashMap<>();
+        do {
+            final Transaction transaction = Transaction.from(cursor);
+
+
+        } while (cursor.moveToNext());
+    }
+
+    private void findTags(Cursor cursor) {
+        cursor.moveToFirst();
+    }
+
+    private void findAccountsFrom(Cursor cursor) {
+        cursor.moveToFirst();
+    }
+
+    private void findAccountsTo(Cursor cursor) {
+        cursor.moveToFirst();
+    }
+
+    private void findAmounts(Cursor cursor) {
+        cursor.moveToFirst();
+    }
+
     private Cursor query() {
         final boolean useNoteAsTemplate = true;
-        final boolean queryOnlyTemplates = useNoteAsTemplate && !StringUtils.isEmpty(note);
+        final boolean queryOnlyTemplates = useNoteAsTemplate && !Strings.isEmpty(note);
 
         if (queryOnlyTemplates) {
             final Cursor cursor = queryTemplates();
@@ -91,6 +146,7 @@ public class SmartTransactionAutoComplete extends TransactionAutoComplete {
     private Cursor queryTemplates() {
         final Cursor cursor = getBaseQuery()
                 .selection(" and " + Tables.Transactions.NOTE + "=?", note)
+                .limit(1)
                 .from(context, TransactionsProvider.uriTransactions())
                 .execute();
 

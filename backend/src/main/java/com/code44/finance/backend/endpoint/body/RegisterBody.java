@@ -1,6 +1,6 @@
 package com.code44.finance.backend.endpoint.body;
 
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.gson.annotations.SerializedName;
 
@@ -21,11 +21,11 @@ public class RegisterBody implements Body {
     private String coverUrl;
 
     public void verifyRequiredFields() throws BadRequestException {
-        if (StringUtils.isEmpty(googleId)) {
+        if (Strings.isEmpty(googleId)) {
             throw new BadRequestException("google_id cannot be empty.");
         }
 
-        if (StringUtils.isEmpty(firstName)) {
+        if (Strings.isEmpty(firstName)) {
             throw new BadRequestException("first_name cannot be empty.");
         }
     }

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 
 import java.io.File;
 
@@ -24,7 +24,7 @@ public class FilePickerActivity extends com.nononsenseapps.filepicker.FilePicker
         intent.putExtra(EXTRA_ALLOW_CREATE_DIR, allowCreateDir);
         intent.putExtra(EXTRA_ALLOW_MULTIPLE, false);
         intent.putExtra(EXTRA_MODE, mode);
-        if (!StringUtils.isEmpty(startPath) && new File(startPath).exists()) {
+        if (!Strings.isEmpty(startPath) && new File(startPath).exists()) {
             intent.putExtra(EXTRA_START_PATH, startPath);
         }
         return intent;

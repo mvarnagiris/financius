@@ -19,7 +19,7 @@ public class Preconditions {
     }
 
     public static String notEmpty(String str, String message) throws IllegalArgumentException {
-        if (StringUtils.isEmpty(str)) {
+        if (Strings.isEmpty(str)) {
             throw new IllegalArgumentException(message);
         }
         return str;

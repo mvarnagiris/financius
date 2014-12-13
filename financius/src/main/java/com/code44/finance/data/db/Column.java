@@ -1,6 +1,6 @@
 package com.code44.finance.data.db;
 
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 
 public final class Column {
     private final String tableName;
@@ -49,7 +49,7 @@ public final class Column {
      * same as using {@link #getName()}.
      */
     public String getName(String prefix) {
-        if (StringUtils.isEmpty(prefix)) {
+        if (Strings.isEmpty(prefix)) {
             return getName();
         } else {
             return prefix + "_" + name;
@@ -80,7 +80,7 @@ public final class Column {
     }
 
     public String getCreateScript() {
-        return name + " " + dataType + (StringUtils.isEmpty(defaultValue) ? "" : " default " + defaultValue);
+        return name + " " + dataType + (Strings.isEmpty(defaultValue) ? "" : " default " + defaultValue);
     }
 
     public static enum DataType {

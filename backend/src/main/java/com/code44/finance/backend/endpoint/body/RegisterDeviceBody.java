@@ -1,6 +1,6 @@
 package com.code44.finance.backend.endpoint.body;
 
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.gson.annotations.SerializedName;
 
@@ -9,7 +9,7 @@ public class RegisterDeviceBody implements Body {
     private String regId;
 
     public void verifyRequiredFields() throws BadRequestException {
-        if (StringUtils.isEmpty(regId)) {
+        if (Strings.isEmpty(regId)) {
             throw new BadRequestException("registration_id cannot be empty.");
         }
     }

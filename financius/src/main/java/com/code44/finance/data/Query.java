@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
 
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.db.Column;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class Query {
     private static String getSelectionWithGroupBy(Query query) {
         final String groupBy = query.getGroupBy();
         final String selection;
-        if (StringUtils.isEmpty(groupBy)) {
+        if (Strings.isEmpty(groupBy)) {
             selection = query.getSelection();
         } else {
             selection = query.getSelection() + ") group by (" + groupBy;
@@ -47,7 +47,7 @@ public class Query {
         final int limit = query.getLimit();
         String sortOrder = query.getSortOrder();
         if (limit >= 0) {
-            sortOrder = StringUtils.isEmpty(sortOrder) ? "1" : sortOrder + " limit " + limit;
+            sortOrder = Strings.isEmpty(sortOrder) ? "1" : sortOrder + " limit " + limit;
         }
         return sortOrder;
     }

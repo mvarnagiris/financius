@@ -19,7 +19,7 @@ import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.api.currencies.ExchangeRateRequest;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
@@ -151,7 +151,7 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
 
 
         final boolean isAutoAmountRequested = savedInstanceState != null;
-        if ((StringUtils.isEmpty(modelId) || modelId.equals("0")) && !isAutoAmountRequested) {
+        if ((Strings.isEmpty(modelId) || modelId.equals("0")) && !isAutoAmountRequested) {
             CalculatorActivity.start(this, REQUEST_AMOUNT, 0);
         }
     }

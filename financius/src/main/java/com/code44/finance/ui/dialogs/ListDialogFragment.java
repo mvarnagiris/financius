@@ -13,7 +13,7 @@ import android.widget.ListView;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.ListDialogAdapter;
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,7 +60,7 @@ public class ListDialogFragment extends BaseDialogFragment implements View.OnCli
         list_V.setAdapter(adapter);
         list_V.setOnItemClickListener(this);
 
-        if (StringUtils.isEmpty(positiveButtonTitle)) {
+        if (Strings.isEmpty(positiveButtonTitle)) {
             positive_B.setVisibility(View.GONE);
         } else {
             positive_B.setText(positiveButtonTitle);
@@ -68,7 +68,7 @@ public class ListDialogFragment extends BaseDialogFragment implements View.OnCli
             positive_B.setOnClickListener(this);
         }
 
-        if (StringUtils.isEmpty(negativeButtonTitle)) {
+        if (Strings.isEmpty(negativeButtonTitle)) {
             negative_B.setVisibility(View.GONE);
         } else {
             negative_B.setText(negativeButtonTitle);

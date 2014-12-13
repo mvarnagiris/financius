@@ -12,7 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.providers.TransactionsProvider;
@@ -46,7 +46,7 @@ public class NoteController implements LoaderManager.LoaderCallbacks<Cursor>, Te
                 .selection(Tables.Transactions.DATE + ">?", String.valueOf(fromDate))
                 .groupBy(Tables.Transactions.NOTE.getName());
 
-        if (!StringUtils.isEmpty(filter)) {
+        if (!Strings.isEmpty(filter)) {
             query.selection(" and lower(" + Tables.Transactions.NOTE + ") glob ?", "*" + filter.toLowerCase() + "*");
         }
 

@@ -7,7 +7,7 @@ import android.os.Parcelable;
 
 import com.code44.finance.common.model.ModelState;
 import com.code44.finance.common.utils.Preconditions;
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.db.Column;
 
 import java.util.UUID;
@@ -52,7 +52,7 @@ public abstract class Model implements Parcelable {
         // We are only checking id, because otherwise some parts of the app might misbehave
         // For example BaseModelAdapter contains Set<BaseModel> selectedItems
         // noinspection RedundantIfStatement
-        return !(StringUtils.isEmpty(id) || StringUtils.isEmpty(model.id)) && id.equals(model.id);
+        return !(Strings.isEmpty(id) || Strings.isEmpty(model.id)) && id.equals(model.id);
 
     }
 
@@ -70,7 +70,7 @@ public abstract class Model implements Parcelable {
     protected abstract Column getSyncStateColumn();
 
     public void prepareForDb() {
-        if (StringUtils.isEmpty(id)) {
+        if (Strings.isEmpty(id)) {
             id = UUID.randomUUID().toString();
         }
 
@@ -159,6 +159,6 @@ public abstract class Model implements Parcelable {
     }
 
     public boolean hasId() {
-        return !StringUtils.isEmpty(id);
+        return !Strings.isEmpty(id);
     }
 }

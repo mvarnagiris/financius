@@ -13,7 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.code44.finance.R;
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.ui.DrawerActivity;
 import com.code44.finance.ui.ModelFragment;
@@ -115,7 +115,7 @@ public abstract class ModelActivity<M extends Model> extends DrawerActivity impl
 
     protected void onExtras(Intent extras) {
         modelId = extras.getStringExtra(EXTRA_MODEL_ID);
-        if (StringUtils.isEmpty(modelId)) {
+        if (Strings.isEmpty(modelId)) {
             modelId = "0";
         }
     }

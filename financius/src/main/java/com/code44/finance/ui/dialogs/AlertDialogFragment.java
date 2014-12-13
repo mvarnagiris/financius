@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 
 public class AlertDialogFragment extends BaseDialogFragment implements View.OnClickListener {
     private static final String ARG_MESSAGE = "ARG_MESSAGE";
@@ -36,13 +36,13 @@ public class AlertDialogFragment extends BaseDialogFragment implements View.OnCl
         final int positiveButtonColor = getArguments().getInt(ARG_POSITIVE_BUTTON_COLOR, getResources().getColor(R.color.text_primary));
         final int negativeButtonColor = getArguments().getInt(ARG_NEGATIVE_BUTTON_COLOR, getResources().getColor(R.color.text_primary));
 
-        if (StringUtils.isEmpty(message)) {
+        if (Strings.isEmpty(message)) {
             message_TV.setVisibility(View.GONE);
         } else {
             message_TV.setText(message);
         }
 
-        if (StringUtils.isEmpty(positiveButtonTitle)) {
+        if (Strings.isEmpty(positiveButtonTitle)) {
             positive_B.setVisibility(View.GONE);
         } else {
             positive_B.setText(positiveButtonTitle);
@@ -50,7 +50,7 @@ public class AlertDialogFragment extends BaseDialogFragment implements View.OnCl
             positive_B.setOnClickListener(this);
         }
 
-        if (StringUtils.isEmpty(negativeButtonTitle)) {
+        if (Strings.isEmpty(negativeButtonTitle)) {
             negative_B.setVisibility(View.GONE);
         } else {
             negative_B.setText(negativeButtonTitle);

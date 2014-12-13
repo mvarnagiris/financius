@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Tag;
@@ -145,7 +145,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
     }
 
     private String getTitle(Transaction transaction) {
-        if (StringUtils.isEmpty(transaction.getNote())) {
+        if (Strings.isEmpty(transaction.getNote())) {
             if (transaction.getCategory() != null && transaction.getCategory().hasId()) {
                 return transaction.getCategory().getTitle();
             } else {
@@ -174,7 +174,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
                 subtitle.append(" ");
             }
             return subtitle;
-        } else if (transaction.getCategory() != null && !StringUtils.isEmpty(transaction.getNote())) {
+        } else if (transaction.getCategory() != null && !Strings.isEmpty(transaction.getNote())) {
             return transaction.getCategory().getTitle();
         }
         return null;

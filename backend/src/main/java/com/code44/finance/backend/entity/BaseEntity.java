@@ -1,7 +1,7 @@
 package com.code44.finance.backend.entity;
 
 import com.code44.finance.common.model.ModelState;
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.google.api.server.spi.config.ApiResourceProperty;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
@@ -28,7 +28,7 @@ public class BaseEntity {
     }
 
     public void onCreate() {
-        if (StringUtils.isEmpty(getId())) {
+        if (Strings.isEmpty(getId())) {
             setId(UUID.randomUUID().toString());
         }
         final long timestamp = System.currentTimeMillis();

@@ -5,7 +5,7 @@ import android.database.Cursor;
 
 import com.code44.finance.api.Request;
 import com.code44.finance.common.utils.Preconditions;
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Currency;
@@ -57,7 +57,7 @@ public class ExchangeRateRequest extends Request {
         IOUtils.closeQuietly(cursor);
 
         boolean currencyExists = true;
-        if (currency == null || StringUtils.isEmpty(currency.getId())) {
+        if (currency == null || Strings.isEmpty(currency.getId())) {
             currencyExists = false;
             currency = new Currency();
             currency.setId(UUID.randomUUID().toString());

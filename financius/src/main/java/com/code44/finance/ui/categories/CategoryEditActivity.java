@@ -13,7 +13,7 @@ import android.widget.EditText;
 
 import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Category;
@@ -88,7 +88,7 @@ public class CategoryEditActivity extends ModelEditActivity<Category> implements
 
     @Override protected Category getModelFrom(Cursor cursor) {
         final Category category = Category.from(cursor);
-        if (StringUtils.isEmpty(category.getId())) {
+        if (Strings.isEmpty(category.getId())) {
             category.setColor(0xff607d8b);
         }
         return category;

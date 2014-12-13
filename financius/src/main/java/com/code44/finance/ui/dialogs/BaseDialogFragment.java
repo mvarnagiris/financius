@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.code44.finance.App;
 import com.code44.finance.R;
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.utils.EventBus;
 
 import javax.inject.Inject;
@@ -39,7 +39,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
         requestCode = getArguments().getInt(ARG_REQUEST_CODE);
         if (titleView != null) {
             final String title = getArguments().getString(ARG_TITLE);
-            if (StringUtils.isEmpty(title)) {
+            if (Strings.isEmpty(title)) {
                 titleView.setVisibility(View.GONE);
             } else {
                 titleView.setText(title);

@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
@@ -77,7 +77,7 @@ public class TransactionActivity extends ModelActivity<Transaction> {
         amountTextView.setText(MoneyFormatter.format(transaction));
         dateTextView.setText(DateUtils.formatDateTime(this, date, DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_WEEKDAY));
 
-        if (StringUtils.isEmpty(transaction.getNote())) {
+        if (Strings.isEmpty(transaction.getNote())) {
             noteTextView.setVisibility(View.GONE);
         } else {
             noteTextView.setVisibility(View.VISIBLE);
@@ -96,13 +96,13 @@ public class TransactionActivity extends ModelActivity<Transaction> {
         switch (transaction.getTransactionType()) {
             case Expense:
                 amountToTextView.setVisibility(View.GONE);
-                if (StringUtils.isEmpty(categoryTitle)) {
+                if (Strings.isEmpty(categoryTitle)) {
                     categoryTitle = getString(R.string.expense);
                 }
                 break;
             case Income:
                 amountToTextView.setVisibility(View.GONE);
-                if (StringUtils.isEmpty(categoryTitle)) {
+                if (Strings.isEmpty(categoryTitle)) {
                     categoryTitle = getString(R.string.income);
                 }
                 break;
@@ -114,7 +114,7 @@ public class TransactionActivity extends ModelActivity<Transaction> {
                     amountToTextView.setText(MoneyFormatter.format(transaction.getAccountTo().getCurrency(), (long) (transaction.getAmount() * transaction.getExchangeRate())));
                 }
 
-                if (StringUtils.isEmpty(categoryTitle)) {
+                if (Strings.isEmpty(categoryTitle)) {
                     categoryTitle = getString(R.string.transfer);
                 }
                 break;

@@ -3,7 +3,7 @@ package com.code44.finance.backend.utils;
 import com.code44.finance.backend.endpoint.body.Body;
 import com.code44.finance.backend.entity.DeviceEntity;
 import com.code44.finance.backend.entity.UserAccount;
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.google.android.gcm.server.Constants;
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.Result;
@@ -36,7 +36,7 @@ public class EndpointUtils {
     }
 
     public static void verifyIdNotEmpty(String id) throws BadRequestException {
-        if (StringUtils.isEmpty(id)) {
+        if (Strings.isEmpty(id)) {
             throw new BadRequestException("Id cannot be empty.");
         }
     }

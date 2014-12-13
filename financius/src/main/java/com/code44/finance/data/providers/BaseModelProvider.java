@@ -11,7 +11,7 @@ import android.text.TextUtils;
 
 import com.code44.finance.api.Api;
 import com.code44.finance.common.model.ModelState;
-import com.code44.finance.common.utils.StringUtils;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
@@ -91,7 +91,7 @@ public abstract class BaseModelProvider extends BaseProvider {
 
     @Override public Uri insert(Uri uri, ContentValues values) {
         final String serverId = values.getAsString(getIdColumn().getName());
-        if (StringUtils.isEmpty(serverId)) {
+        if (Strings.isEmpty(serverId)) {
             throw new IllegalArgumentException("Server Id cannot be empty.");
         }
 
