@@ -30,13 +30,14 @@ public class NoteViewController extends ViewController implements LoaderManager.
     private final AutoCompleteTextView noteAutoCompleteTextView;
     private final Callbacks callbacks;
 
-    public NoteViewController(BaseActivity activity, Callbacks callbacks) {
+    public NoteViewController(BaseActivity activity, Callbacks callbacks, View.OnLongClickListener longClickListener) {
         this.callbacks = callbacks;
 
         noteAutoCompleteTextView = findView(activity, R.id.noteAutoCompleteTextView);
 
         noteAutoCompleteTextView.addTextChangedListener(this);
         noteAutoCompleteTextView.setOnItemClickListener(this);
+        noteAutoCompleteTextView.setOnLongClickListener(longClickListener);
         setAutoCompleteAdapter(Collections.<String>emptyList());
 
         activity.getSupportLoaderManager().initLoader(LOADER_NOTES, null, this);

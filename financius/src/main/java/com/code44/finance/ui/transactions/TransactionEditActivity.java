@@ -79,10 +79,6 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
     private Button amountToButton;
     private Button accountFromButton;
     private Button accountToButton;
-    private ImageView colorImageView;
-    private View categoryContainerView;
-    private Button categoryButton;
-    private View categoryDividerView;
     private CheckBox confirmedCheckBox;
     private CheckBox includeInReportsCheckBox;
     private Button saveButton;
@@ -109,10 +105,6 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
         timeButton = (Button) findViewById(R.id.timeButton);
         accountFromButton = (Button) findViewById(R.id.accountFromButton);
         accountToButton = (Button) findViewById(R.id.accountToButton);
-        colorImageView = (ImageView) findViewById(R.id.colorImageView);
-        categoryContainerView = findViewById(R.id.categoryContainerView);
-        categoryButton = (Button) findViewById(R.id.categoryButton);
-        categoryDividerView = findViewById(R.id.categoryDividerView);
         confirmedCheckBox = (CheckBox) findViewById(R.id.confirmedCheckBox);
         includeInReportsCheckBox = (CheckBox) findViewById(R.id.includeInReportsCheckBox);
         saveButton = (Button) findViewById(R.id.saveButton);
