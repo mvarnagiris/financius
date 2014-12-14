@@ -1,4 +1,4 @@
-package com.code44.finance.ui.transactions;
+package com.code44.finance.ui.transactions.controllers;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -12,29 +12,37 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
+import com.code44.finance.R;
 import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.ViewController;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class NoteController implements LoaderManager.LoaderCallbacks<Cursor>, TextWatcher, AdapterView.OnItemClickListener {
+public class NoteViewController extends ViewController implements LoaderManager.LoaderCallbacks<Cursor>, TextWatcher, AdapterView.OnItemClickListener {
     private static final int LOADER_NOTES = 8125;
 
     private final AutoCompleteTextView noteAutoCompleteTextView;
+    private final Callbacks callbacks;
 
-    public NoteController(AutoCompleteTextView noteAutoCompleteTextView) {
-        this.noteAutoCompleteTextView = noteAutoCompleteTextView;
+    public NoteViewController(BaseActivity activity, Callbacks callbacks) {
+        this.callbacks = callbacks;
 
-        this.noteAutoCompleteTextView.addTextChangedListener(this);
-        this.noteAutoCompleteTextView.setOnItemClickListener(this);
+        noteAutoCompleteTextView = findView(activity, R.id.noteAutoCompleteTextView);
+
+        noteAutoCompleteTextView.addTextChangedListener(this);
+        noteAutoCompleteTextView.setOnItemClickListener(this);
         setAutoCompleteAdapter(Collections.<String>emptyList());
 
-        ((BaseActivity) this.noteAutoCompleteTextView.getContext()).getSupportLoaderManager().initLoader(LOADER_NOTES, null, this);
+        activity.getSupportLoaderManager().initLoader(LOADER_NOTES, null, this);
+    }
+
+    @Override protected void showError(Throwable error) {
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -72,6 +80,7 @@ public class NoteController implements LoaderManager.LoaderCallbacks<Cursor>, Te
 
     @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
         ((BaseActivity) this.noteAutoCompleteTextView.getContext()).getSupportLoaderManager().restartLoader(LOADER_NOTES, null, this);
+        callbacks.onNoteUpdated(getNote());
     }
 
     @Override public void afterTextChanged(Editable s) {
@@ -81,6 +90,7 @@ public class NoteController implements LoaderManager.LoaderCallbacks<Cursor>, Te
         final String value = (String) parent.getItemAtPosition(position);
         setNote(value);
         noteAutoCompleteTextView.setSelection(noteAutoCompleteTextView.getText().length());
+        callbacks.onNoteUpdated(getNote());
     }
 
     public String getNote() {
@@ -94,5 +104,9 @@ public class NoteController implements LoaderManager.LoaderCallbacks<Cursor>, Te
     private void setAutoCompleteAdapter(List<String> values) {
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(noteAutoCompleteTextView.getContext(), android.R.layout.simple_dropdown_item_1line, values);
         this.noteAutoCompleteTextView.setAdapter(adapter);
+    }
+
+    public static interface Callbacks {
+        public void onNoteUpdated(String note);
     }
 }

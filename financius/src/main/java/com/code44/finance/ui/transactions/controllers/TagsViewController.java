@@ -1,4 +1,4 @@
-package com.code44.finance.ui.transactions;
+package com.code44.finance.ui.transactions.controllers;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -9,29 +9,36 @@ import android.widget.Button;
 
 import com.code44.finance.R;
 import com.code44.finance.data.model.Tag;
+import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.ModelListActivity;
+import com.code44.finance.ui.common.ViewController;
 import com.code44.finance.utils.TextBackgroundSpan;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TagsController implements View.OnClickListener, View.OnLongClickListener {
+public class TagsViewController extends ViewController implements View.OnClickListener, View.OnLongClickListener {
     private final Button tagsButton;
     private final Callbacks callbacks;
     private final List<Tag> tags;
     private final int tagBackgroundColor;
     private final float tagBackgroundRadius;
 
-    public TagsController(Button tagsButton, Callbacks callbacks) {
-        this.tagsButton = tagsButton;
-        this.tagsButton.setOnClickListener(this);
-        this.tagsButton.setOnLongClickListener(this);
+    public TagsViewController(BaseActivity activity, Callbacks callbacks) {
         this.callbacks = callbacks;
-        this.tags = new ArrayList<>();
+
+        tagsButton = findView(activity, R.id.tagsButton);
 
         final Resources res = tagsButton.getResources();
         tagBackgroundColor = res.getColor(R.color.bg_secondary);
         tagBackgroundRadius = res.getDimension(R.dimen.tag_radius);
+        tagsButton.setOnClickListener(this);
+        tagsButton.setOnLongClickListener(this);
+        tags = new ArrayList<>();
+    }
+
+    @Override protected void showError(Throwable error) {
+        return true;
     }
 
     @Override public void onClick(View v) {

@@ -2,16 +2,16 @@ package com.code44.finance.ui.transactions.autocomplete.smart;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.util.Pair;
 import android.text.format.DateUtils;
 
-import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
+import com.code44.finance.ui.transactions.autocomplete.AutoCompleteInput;
 import com.code44.finance.utils.IOUtils;
 
 import org.joda.time.DateTime;
@@ -24,39 +24,25 @@ import java.util.List;
 import java.util.Map;
 
 public class CategoriesFinder extends Finder<Category> {
-    private final long date;
-    private final Long amount;
-    private final Account accountFrom;
-    private final Account accountTo;
-    private final Category category;
-    private final List<Tag> tags;
-    private final String note;
-
-    protected CategoriesFinder(Context context, TransactionType transactionType, long date, Long amount, Account accountFrom, Account accountTo, Category category, List<Tag> tags, String note) {
-        super(context, transactionType);
-        this.date = date;
-        this.amount = amount;
-        this.accountFrom = accountFrom;
-        this.accountTo = accountTo;
-        this.category = category;
-        this.tags = tags;
-        this.note = note;
+    protected CategoriesFinder(Context context, AutoCompleteInput autoCompleteInput) {
+        super(context, autoCompleteInput);
     }
 
-    @Override public List<Category> find() {
-        final Cursor cursor = query();
+    @Override protected Pair<Category, List<Category>> find(AutoCompleteInput input) {
+        final Cursor cursor = query(input);
         if (cursor == null || !cursor.moveToFirst()) {
-            return Collections.emptyList();
+            return Pair.create(null, Collections.<Category>emptyList());
         }
 
         final Map<Category, Score> categoryScores = new HashMap<>();
-        final Score maxScore = calculateCategoryScoresAndGetMaxScore(cursor, categoryScores);
+        final Score maxScore = calculateCategoryScoresAndGetMaxScore(cursor, categoryScores, input);
         IOUtils.closeQuietly(cursor);
 
-        return getSortedCategories(categoryScores, maxScore);
+        final List<Category> sortedCategories = getSortedCategories(categoryScores, maxScore);
+        return getResult(sortedCategories);
     }
 
-    private Score calculateCategoryScoresAndGetMaxScore(Cursor cursor, Map<Category, Score> categoryScores) {
+    private Score calculateCategoryScoresAndGetMaxScore(Cursor cursor, Map<Category, Score> categoryScores, AutoCompleteInput input) {
         int maxSameTimeOfDayCount = 0;
         int maxSameDayOfWeekCount = 0;
         int maxSameDayOfMonthCount = 0;
@@ -67,14 +53,14 @@ public class CategoriesFinder extends Finder<Category> {
                 continue;
             }
 
-            final Score score = score(categoryScores, transaction);
+            final Score score = score(categoryScores, transaction, input);
             maxSameTimeOfDayCount = Math.max(score.sameTimeOfDayCount, maxSameTimeOfDayCount);
             maxSameDayOfWeekCount = Math.max(score.sameDayOfWeekCount, maxSameDayOfWeekCount);
             maxSameDayOfMonthCount = Math.max(score.sameDayOfMonthCount, maxSameDayOfMonthCount);
             latestTransactionDate = Math.max(score.lastTransactionDate, latestTransactionDate);
         } while (cursor.moveToNext());
 
-        final Score score = new Score();
+        final Score score = new Score(0, 0);
         score.sameTimeOfDayCount = maxSameTimeOfDayCount;
         score.sameDayOfWeekCount = maxSameDayOfWeekCount;
         score.sameDayOfMonthCount = maxSameDayOfMonthCount;
@@ -88,41 +74,52 @@ public class CategoriesFinder extends Finder<Category> {
         return categories;
     }
 
-    private Score score(Map<Category, Score> categoryScores, Transaction transaction) {
+    private Pair<Category, List<Category>> getResult(List<Category> sortedCategories) {
+        final Category bestMatch;
+        if (sortedCategories.size() > 0) {
+            bestMatch = sortedCategories.remove(0);
+        } else {
+            bestMatch = null;
+        }
+
+        return Pair.create(bestMatch, sortedCategories);
+    }
+
+    private Score score(Map<Category, Score> categoryScores, Transaction transaction, AutoCompleteInput input) {
         Score score = categoryScores.get(transaction.getCategory());
         if (score == null) {
-            score = new Score();
+            score = new Score(input.getDate(), input.getAmount());
             categoryScores.put(transaction.getCategory(), score);
         }
         score.add(transaction);
         return score;
     }
 
-    private Cursor query() {
+    private Cursor query(AutoCompleteInput input) {
         final Query query = getBaseQuery();
 
-        if (!Strings.isEmpty(note)) {
-            query.selection(" and " + Tables.Transactions.NOTE + "=?", note);
+        if (!Strings.isEmpty(input.getNote())) {
+            query.selection(" and " + Tables.Transactions.NOTE + "=?", input.getNote());
         }
 
-        if (tags != null && tags.size() > 0) {
+        if (input.getTags() != null && input.getTags().size() > 0) {
             final List<String> tagIds = new ArrayList<>();
-            for (Tag tag : tags) {
+            for (Tag tag : input.getTags()) {
                 tagIds.add(tag.getId());
             }
             query.selection(" and ").selectionInClause(Tables.TransactionTags.TAG_ID.getName(), tagIds);
         }
 
-        if (category != null) {
-            query.selection(" and " + Tables.Transactions.CATEGORY_ID + "<>?", category.getId());
+        if (input.getCategory() != null) {
+            query.selection(" and " + Tables.Transactions.CATEGORY_ID + "<>?", input.getCategory().getId());
         }
 
-        if (accountFrom != null) {
-            query.selection(" and " + Tables.Transactions.ACCOUNT_FROM_ID + "=?", accountFrom.getId());
+        if (input.getAccountFrom() != null) {
+            query.selection(" and " + Tables.Transactions.ACCOUNT_FROM_ID + "=?", input.getAccountFrom().getId());
         }
 
-        if (accountTo != null) {
-            query.selection(" and " + Tables.Transactions.ACCOUNT_TO_ID + "=?", accountTo.getId());
+        if (input.getAccountTo() != null) {
+            query.selection(" and " + Tables.Transactions.ACCOUNT_TO_ID + "=?", input.getAccountTo().getId());
         }
 
         return query(query);
@@ -146,34 +143,71 @@ public class CategoriesFinder extends Finder<Category> {
 
     private class Score {
         private static final long MAX_TIME_OF_DAY_DELTA = DateUtils.HOUR_IN_MILLIS;
+        private static final long MAX_SIMILAR_AMOUNT_DELTA = 5000;
 
-        private static final float WEIGHT_SAME_TIME_OF_DAY = 0.5f;
+        private static final float WEIGHT_SAME_TIME_OF_DAY = 0.4f;
+        private static final float WEIGHT_SIMILAR_AMOUNT = 0.1f;
         private static final float WEIGHT_SAME_DAY_OF_WEEK = 0.25f;
         private static final float WEIGHT_SAME_DAY_OF_MONTH = 0.1f;
         private static final float WEIGHT_LAST_TRANSACTION = 0.15f;
 
-        private final DateTime currentDateTime = new DateTime(date);
+        private final DateTime currentDateTime;
+        private final long amount;
 
         private int sameTimeOfDayCount = 0;
         private int sameDayOfWeekCount = 0;
         private int sameDayOfMonthCount = 0;
+        private int sameAmountSameTimeOfDayCount = 0;
+        private int sameAmountSameDayOfWeekCount = 0;
+        private int sameAmountSameDayOfMonthCount = 0;
+        private int similarAmountSameTimeOfDayCount = 0;
+        private int similarAmountSameDayOfWeekCount = 0;
+        private int similarAmountSameDayOfMonthCount = 0;
         private long lastTransactionDate = 0;
 
         private float scoreCache = -1;
 
+        private Score(long date, long amount) {
+            this.currentDateTime = new DateTime(date);
+            this.amount = amount;
+        }
+
         public void add(Transaction transaction) {
             final DateTime dateTime = new DateTime(transaction.getDate());
+            final boolean isSameTimeOfDay = Math.abs(dateTime.getMillisOfDay() - currentDateTime.getMillisOfDay()) <= MAX_TIME_OF_DAY_DELTA;
+            final boolean isSameDayOfWeek = dateTime.getDayOfWeek() == currentDateTime.getDayOfWeek();
+            final boolean isSameDayOfMonth = dateTime.getDayOfMonth() == currentDateTime.getDayOfMonth();
+            final boolean isSameAmount = amount > 0 && amount == transaction.getAmount();
+            final boolean isSimilarAmount = amount > 0 && Math.abs(amount - transaction.getAmount()) < MAX_SIMILAR_AMOUNT_DELTA;
 
-            if (Math.abs(dateTime.getMillisOfDay() - currentDateTime.getMillisOfDay()) <= MAX_TIME_OF_DAY_DELTA) {
+            if (isSameTimeOfDay) {
                 sameTimeOfDayCount++;
+                if (isSameAmount) {
+                    sameAmountSameTimeOfDayCount++;
+                    similarAmountSameTimeOfDayCount++;
+                } else if (isSimilarAmount) {
+                    similarAmountSameTimeOfDayCount++;
+                }
             }
 
-            if (dateTime.getDayOfWeek() == currentDateTime.getDayOfWeek()) {
+            if (isSameDayOfWeek) {
                 sameDayOfWeekCount++;
+                if (isSameAmount) {
+                    sameAmountSameDayOfWeekCount++;
+                    similarAmountSameDayOfWeekCount++;
+                } else if (isSimilarAmount) {
+                    similarAmountSameDayOfWeekCount++;
+                }
             }
 
-            if (dateTime.getDayOfMonth() == currentDateTime.getDayOfMonth()) {
+            if (isSameDayOfMonth) {
                 sameDayOfMonthCount++;
+                if (isSameAmount) {
+                    sameAmountSameDayOfMonthCount++;
+                    similarAmountSameDayOfMonthCount++;
+                } else if (isSimilarAmount) {
+                    similarAmountSameDayOfMonthCount++;
+                }
             }
 
             if (transaction.getDate() > lastTransactionDate) {
@@ -188,12 +222,21 @@ public class CategoriesFinder extends Finder<Category> {
                 return scoreCache;
             }
 
+            if (sameAmountSameTimeOfDayCount > 0 || sameAmountSameDayOfWeekCount > 0 || sameAmountSameDayOfMonthCount > 0) {
+                scoreCache = 1f;
+                return scoreCache;
+            }
+
             final float sameTimeOfDayScore = maxScore.sameTimeOfDayCount > 0 ? WEIGHT_SAME_TIME_OF_DAY * sameTimeOfDayCount / maxScore.sameTimeOfDayCount : 0;
             final float sameDayOfWeekScore = maxScore.sameDayOfWeekCount > 0 ? WEIGHT_SAME_DAY_OF_WEEK * sameDayOfWeekCount / maxScore.sameDayOfWeekCount : 0;
             final float sameDayOfMonthScore = maxScore.sameDayOfMonthCount > 0 ? WEIGHT_SAME_DAY_OF_MONTH * sameDayOfMonthCount / maxScore.sameDayOfMonthCount : 0;
+            final float similarAmountSameTimeOfDayScore = maxScore.similarAmountSameDayOfMonthCount > 0 ? WEIGHT_SIMILAR_AMOUNT / 3 * similarAmountSameTimeOfDayCount / maxScore.similarAmountSameTimeOfDayCount : 0;
+            final float similarAmountSameDayOfWeekScore = maxScore.similarAmountSameDayOfWeekCount > 0 ? WEIGHT_SIMILAR_AMOUNT / 3 * similarAmountSameDayOfWeekCount / maxScore.similarAmountSameDayOfWeekCount : 0;
+            final float similarAmountSameDayOfMonthScore = maxScore.similarAmountSameDayOfMonthCount > 0 ? WEIGHT_SIMILAR_AMOUNT / 3 * similarAmountSameDayOfMonthCount / maxScore.similarAmountSameDayOfMonthCount : 0;
             final float lastTransactionDateScore = lastTransactionDate == maxScore.lastTransactionDate ? WEIGHT_LAST_TRANSACTION : 0;
 
-            return sameTimeOfDayScore + sameDayOfWeekScore + sameDayOfMonthScore + lastTransactionDateScore;
+            scoreCache = sameTimeOfDayScore + sameDayOfWeekScore + sameDayOfMonthScore + similarAmountSameTimeOfDayScore + similarAmountSameDayOfWeekScore + similarAmountSameDayOfMonthScore + lastTransactionDateScore;
+            return scoreCache;
         }
     }
 }

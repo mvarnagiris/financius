@@ -6,11 +6,13 @@ import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
+import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
 
 import java.util.List;
 
 public class TransactionController {
     private Transaction storedTransaction;
+    private AutoCompleteResult autoCompleteResult;
 
     private Account accountFrom;
     private Account accountTo;
@@ -24,67 +26,7 @@ public class TransactionController {
     private TransactionType transactionType;
     private Boolean includeInReports;
 
-    private Account getAccountFrom() {
-        if (accountFrom != null) {
-            return accountFrom;
-        }
-
-        if (storedTransaction != null && storedTransaction.getAccountFrom() != null) {
-            return storedTransaction.getAccountFrom();
-        }
-
-        return autoCompleteTransaction.getAccountFrom();
-    }
-
-    private Account getAccountTo() {
-        if (accountTo != null) {
-            return accountTo;
-        }
-
-        if (storedTransaction != null && storedTransaction.getAccountTo() != null) {
-            return storedTransaction.getAccountTo();
-        }
-
-        return autoCompleteTransaction.getAccountTo();
-    }
-
-    private Category getCategory() {
-        if (category != null) {
-            return category;
-        }
-
-        if (storedTransaction != null && storedTransaction.getCategory() != null) {
-            return storedTransaction.getCategory();
-        }
-
-        return autoCompleteTransaction.getCategory();
-    }
-
-    private List<Tag> getTags() {
-        if (tags != null) {
-            return tags;
-        }
-
-        if (storedTransaction != null && storedTransaction.getTags() != null) {
-            return storedTransaction.getTags();
-        }
-
-        return autoCompleteTransaction.getTags();
-    }
-
-    private long getDate() {
-        if (date != null) {
-            return date;
-        }
-
-        if (storedTransaction != null) {
-            return storedTransaction.getDate();
-        }
-
-        return autoCompleteTransaction.getDate();
-    }
-
-    private long getAmount() {
-
+    public void setStoredTransaction(Transaction storedTransaction) {
+        this.storedTransaction = storedTransaction;
     }
 }

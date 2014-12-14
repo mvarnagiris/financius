@@ -38,6 +38,8 @@ import com.code44.finance.ui.dialogs.DatePickerDialog;
 import com.code44.finance.ui.dialogs.TimePickerDialog;
 import com.code44.finance.ui.tags.TagsActivity;
 import com.code44.finance.ui.transactions.autocomplete.TransactionAutoCompleteOld;
+import com.code44.finance.ui.transactions.controllers.NoteViewController;
+import com.code44.finance.ui.transactions.controllers.TagsViewController;
 import com.code44.finance.utils.FieldValidationUtils;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.analytics.Analytics;
@@ -54,7 +56,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-public class TransactionEditActivity extends ModelEditActivity<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TransactionAutoCompleteOld.TransactionAutoCompleteListener, View.OnLongClickListener, TagsController.Callbacks {
+public class TransactionEditActivity extends ModelEditActivity<Transaction> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TransactionAutoCompleteOld.TransactionAutoCompleteListener, View.OnLongClickListener, TagsViewController.Callbacks {
     private static final int REQUEST_AMOUNT = 1;
     private static final int REQUEST_ACCOUNT_FROM = 2;
     private static final int REQUEST_ACCOUNT_TO = 3;
@@ -84,8 +86,8 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
     private CheckBox confirmedCheckBox;
     private CheckBox includeInReportsCheckBox;
     private Button saveButton;
-    private TagsController tagsController;
-    private NoteController noteController;
+    private TagsViewController tagsViewController;
+    private NoteViewController noteViewController;
 
     public static void start(Context context, String transactionServerId) {
         startActivity(context, makeIntent(context, TransactionEditActivity.class, transactionServerId));
@@ -146,8 +148,8 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
         timeButton.setOnLongClickListener(this);
         confirmedCheckBox.setOnCheckedChangeListener(this);
         includeInReportsCheckBox.setOnCheckedChangeListener(this);
-        tagsController = new TagsController(tagsButton, this);
-        noteController = new NoteController(noteAutoCompleteTextView);
+        tagsViewController = new TagsViewController(tagsButton, this);
+        noteViewController = new NoteViewController(noteAutoCompleteTextView, callbacks);
 
 
         final boolean isAutoAmountRequested = savedInstanceState != null;
@@ -200,7 +202,7 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
                     transactionAutoComplete.setCategory(model.getCategory());
                     return;
                 case REQUEST_TAGS:
-                    tagsController.handleActivityResult(data);
+                    tagsViewController.handleActivityResult(data);
                     return;
                 case REQUEST_EXCHANGE_RATE:
                     model.setExchangeRate(data.getDoubleExtra(CalculatorActivity.RESULT_EXTRA_RAW_RESULT, 1.0));
@@ -231,7 +233,7 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
     }
 
     @Override protected void ensureModelUpdated(Transaction model) {
-        model.setNote(noteController.getNote());
+        model.setNote(noteViewController.getNote());
     }
 
     @Override protected CursorLoader getModelCursorLoader(String modelId) {
@@ -309,8 +311,8 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
         includeInReportsCheckBox.setChecked(transaction.includeInReports());
         saveButton.setText(confirmedCheckBox.isChecked() ? R.string.save : R.string.pending);
 
-        tagsController.setTags(transaction.getTags());
-        noteController.setNote(transaction.getNote());
+        tagsViewController.setTags(transaction.getTags());
+        noteViewController.setNote(transaction.getNote());
     }
 
     @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

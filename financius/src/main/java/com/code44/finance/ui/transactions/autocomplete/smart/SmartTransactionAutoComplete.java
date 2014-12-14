@@ -1,56 +1,31 @@
 package com.code44.finance.ui.transactions.autocomplete.smart;
 
 import android.content.Context;
+import android.support.v4.util.Pair;
 
-import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
-import com.code44.finance.data.model.Tag;
+import com.code44.finance.ui.transactions.autocomplete.AutoCompleteInput;
+import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
 import com.code44.finance.ui.transactions.autocomplete.TransactionAutoComplete;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
 public class SmartTransactionAutoComplete extends TransactionAutoComplete {
     private final Context context;
-    private final List<Long> resultAmounts = new ArrayList<>();
-    private final List<Account> resultAccountsFrom = new ArrayList<>();
-    private final List<Account> resultAccountsTo = new ArrayList<>();
-    private final List<Category> resultCategories = new ArrayList<>();
-    private final List<Tag> resultTags = new ArrayList<>();
 
-    protected SmartTransactionAutoComplete(Context context, Executor executor, TransactionAutoCompleteListener listener) {
-        super(executor, listener);
+    public SmartTransactionAutoComplete(Context context, Executor executor, TransactionAutoCompleteListener listener, AutoCompleteInput autoCompleteInput) {
+        super(executor, listener, autoCompleteInput);
         this.context = context.getApplicationContext();
     }
 
-    @Override protected void autoComplete() {
-        resultAmounts.clear();
-        resultAccountsFrom.clear();
-        resultAccountsTo.clear();
-        resultCategories.clear();
-        resultTags.clear();
+    @Override protected AutoCompleteResult autoComplete(AutoCompleteInput input) {
+        final AutoCompleteResult result = new AutoCompleteResult();
+        final Pair<Category, List<Category>> categoriesResult = new CategoriesFinder(context, input).find();
 
-        resultCategories.addAll(new CategoriesFinder(context, getTransactionType(), getDate(), getAccountFrom(), getAccountTo(), getCategory(), getTags(), getNote()).find());
-    }
+        result.setCategory(categoriesResult.first);
+        result.setOtherCategories(categoriesResult.second);
 
-    @Override protected List<Long> getResultAmounts() {
-        return resultAmounts;
-    }
-
-    @Override protected List<Account> getResultAccountsFrom() {
-        return resultAccountsFrom;
-    }
-
-    @Override protected List<Account> getResultAccountsTo() {
-        return resultAccountsTo;
-    }
-
-    @Override protected List<Category> getResultCategories() {
-        return resultCategories;
-    }
-
-    @Override protected List<Tag> getResultTags() {
-        return resultTags;
+        return result;
     }
 }
