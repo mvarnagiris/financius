@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="TintImageView">
+        <attr name="supportTintColor" format="color" />
+    </declare-styleable>
+
     <attr name="viewBackgroundTheme" format="enum">
         <enum name="light" value="0" />
         <enum name="dark" value="1" />

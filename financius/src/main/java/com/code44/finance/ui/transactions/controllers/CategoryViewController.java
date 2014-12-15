@@ -15,6 +15,7 @@ public class CategoryViewController extends ViewController {
     private View categoryContainerView;
     private Button categoryButton;
     private View categoryDividerView;
+    private TransactionType transactionType;
 
     public CategoryViewController(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
         colorImageView = findView(activity, R.id.colorImageView);
@@ -29,7 +30,8 @@ public class CategoryViewController extends ViewController {
     @Override protected void showError(Throwable error) {
     }
 
-    protected void setCategoryAndTransactionType(Category category, TransactionType transactionType) {
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
         switch (transactionType) {
             case Expense:
                 colorImageView.setVisibility(View.VISIBLE);
@@ -47,7 +49,9 @@ public class CategoryViewController extends ViewController {
                 categoryDividerView.setVisibility(View.GONE);
                 break;
         }
+    }
 
+    public void setCategory(Category category) {
         colorImageView.setColorFilter(getCategoryColor(category, transactionType));
         categoryButton.setText(category == null ? null : category.getTitle());
     }

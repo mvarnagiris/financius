@@ -256,6 +256,22 @@ public class TransactionEditData {
         this.exchangeRate = exchangeRate;
     }
 
+    public Transaction getModel() {
+        final Transaction transaction = new Transaction();
+        transaction.setAccountFrom(getAccountFrom());
+        transaction.setAccountTo(getAccountTo());
+        transaction.setCategory(getCategory());
+        transaction.setTags(getTags());
+        transaction.setDate(getDate());
+        transaction.setAmount(getAmount());
+        transaction.setExchangeRate(getExchangeRate());
+        transaction.setNote(getNote());
+        transaction.setTransactionState(getTransactionState());
+        transaction.setTransactionType(getTransactionType());
+        transaction.setIncludeInReports(getIncludeInReports());
+        return transaction;
+    }
+
     private boolean canBeConfirmed() {
         return validateAmount() && validateAccountFrom() && validateAccountTo() && validateAccounts();
     }
