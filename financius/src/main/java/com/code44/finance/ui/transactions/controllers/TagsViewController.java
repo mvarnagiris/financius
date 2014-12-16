@@ -29,7 +29,7 @@ public class TagsViewController extends ViewController {
         tagsButton.setOnLongClickListener(longClickListener);
     }
 
-    @Override protected void showError(Throwable error) {
+    @Override public void showError(Throwable error) {
     }
 
     public void setTags(List<Tag> tags) {

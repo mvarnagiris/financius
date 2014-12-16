@@ -5,7 +5,7 @@ import android.support.annotation.IdRes;
 import android.view.View;
 
 public abstract class ViewController {
-    protected abstract void showError(Throwable error);
+    public abstract void showError(Throwable error);
 
     protected <T extends View> T findView(Activity activity, @IdRes int viewId) {
         return findView(activity.findViewById(android.R.id.content), viewId);

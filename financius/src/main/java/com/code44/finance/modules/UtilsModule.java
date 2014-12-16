@@ -8,8 +8,6 @@ import com.code44.finance.qualifiers.Local;
 import com.code44.finance.qualifiers.Network;
 import com.code44.finance.ui.playservices.GoogleApiConnection;
 import com.code44.finance.ui.settings.security.Security;
-import com.code44.finance.ui.transactions.autocomplete.LastTransactionAutoComplete;
-import com.code44.finance.ui.transactions.autocomplete.TransactionAutoCompleteOld;
 import com.code44.finance.utils.ActiveInterval;
 import com.code44.finance.utils.Calculator;
 import com.code44.finance.utils.CurrentInterval;
@@ -58,10 +56,6 @@ public final class UtilsModule {
 
     @Provides public LayoutType provideLayoutType(@ApplicationContext Context context) {
         return new LayoutType(context);
-    }
-
-    @Provides public TransactionAutoCompleteOld provideTransactionAutoComplete(@ApplicationContext Context context, @Local Executor executor) {
-        return new LastTransactionAutoComplete(context, executor);
     }
 
     @Provides @Singleton public GoogleApiConnection provideGoogleApiConnection(EventBus eventBus) {

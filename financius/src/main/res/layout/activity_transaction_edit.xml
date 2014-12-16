@@ -98,7 +98,7 @@
                 android:paddingLeft="@dimen/keyline"
                 android:paddingRight="@dimen/keyline">
 
-                <TintImageView
+                <com.code44.finance.ui.common.views.TintImageView
                     android:id="@+id/dateTimeImageView"
                     style="@style/ImageView.Form"
                     android:src="@drawable/ic_time"

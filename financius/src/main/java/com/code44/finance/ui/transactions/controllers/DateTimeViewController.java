@@ -25,7 +25,7 @@ public class DateTimeViewController extends ViewController {
         timeButton.setOnLongClickListener(longClickListener);
     }
 
-    @Override protected void showError(Throwable error) {
+    @Override public void showError(Throwable error) {
     }
 
     protected void setDateTime(long date) {

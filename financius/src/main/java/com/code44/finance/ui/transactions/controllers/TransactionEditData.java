@@ -6,6 +6,7 @@ import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
+import com.code44.finance.ui.common.ViewController;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
 
 import java.util.List;
@@ -143,11 +144,11 @@ public class TransactionEditData {
             return null;
         }
 
-        if (category != null) {
+        if (category != null && category.getTransactionType() == getTransactionType()) {
             return category;
         }
 
-        if (storedTransaction != null && storedTransaction.getCategory() != null) {
+        if (storedTransaction != null && storedTransaction.getCategory() != null && storedTransaction.getCategory().getTransactionType() == getTransactionType()) {
             return storedTransaction.getCategory();
         }
 
@@ -222,7 +223,7 @@ public class TransactionEditData {
         this.transactionState = transactionState;
     }
 
-    public Boolean getIncludeInReports() {
+    public boolean getIncludeInReports() {
         if (includeInReports != null) {
             return includeInReports;
         }
@@ -234,7 +235,7 @@ public class TransactionEditData {
         this.includeInReports = includeInReports;
     }
 
-    public Double getExchangeRate() {
+    public double getExchangeRate() {
         double exchangeRate;
 
         if (this.exchangeRate != null) {
@@ -272,23 +273,63 @@ public class TransactionEditData {
         return transaction;
     }
 
-    private boolean canBeConfirmed() {
-        return validateAmount() && validateAccountFrom() && validateAccountTo() && validateAccounts();
+    public boolean canBeConfirmed() {
+        return validateAmount(null) && validateAccountFrom(null) && validateAccountTo(null);
     }
 
-    private boolean validateAmount() {
-        return getAmount() > 0;
+    public boolean validateAmount(ViewController controller) {
+        if (getAmount() > 0) {
+            return true;
+        }
+
+        if (controller != null) {
+            controller.showError(new Throwable());
+        }
+
+        return false;
     }
 
-    private boolean validateAccountFrom() {
-        return getTransactionType() == TransactionType.Income || (getAccountFrom() != null && getAccountFrom().hasId());
+    public boolean validateAccountFrom(ViewController controller) {
+        if (getTransactionType() == TransactionType.Income) {
+            return true;
+        }
+
+        if (getAccountFrom() == null) {
+            if (controller != null) {
+                controller.showError(new Throwable());
+            }
+            return false;
+        }
+
+        if (getTransactionType() == TransactionType.Transfer && getAccountFrom().equals(getAccountTo())) {
+            if (controller != null) {
+                controller.showError(new Throwable());
+            }
+            return false;
+        }
+
+        return true;
     }
 
-    private boolean validateAccountTo() {
-        return getTransactionType() == TransactionType.Expense || (getAccountTo() != null && getAccountTo().hasId());
-    }
+    public boolean validateAccountTo(ViewController controller) {
+        if (getTransactionType() == TransactionType.Expense) {
+            return true;
+        }
 
-    private boolean validateAccounts() {
-        return getTransactionType() != TransactionType.Transfer || !getAccountFrom().getId().equals(getAccountTo().getId());
+        if (getAccountTo() == null) {
+            if (controller != null) {
+                controller.showError(new Throwable());
+            }
+            return false;
+        }
+
+        if (getTransactionType() == TransactionType.Transfer && getAccountTo().equals(getAccountFrom())) {
+            if (controller != null) {
+                controller.showError(new Throwable());
+            }
+            return false;
+        }
+
+        return true;
     }
 }

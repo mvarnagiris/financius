@@ -1,14 +1,14 @@
 package com.code44.finance;
 
+import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDexApplication;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
 
-public class App extends MultiDexApplication {
+public class App extends Application {
     private ObjectGraph objectGraph;
 
     public static App with(Context context) {

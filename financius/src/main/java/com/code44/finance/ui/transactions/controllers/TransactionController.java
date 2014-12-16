@@ -3,15 +3,13 @@ package com.code44.finance.ui.transactions.controllers;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 
 import com.code44.finance.R;
+import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.api.currencies.ExchangeRateRequest;
 import com.code44.finance.common.model.TransactionState;
-import com.code44.finance.common.utils.Strings;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
@@ -32,15 +30,11 @@ import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
 import com.code44.finance.ui.transactions.autocomplete.TransactionAutoComplete;
 import com.code44.finance.ui.transactions.autocomplete.smart.SmartTransactionAutoComplete;
 import com.code44.finance.utils.EventBus;
-import com.code44.finance.utils.MoneyFormatter;
 import com.squareup.otto.Subscribe;
 
 import org.joda.time.DateTime;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.Executor;
 
 public class TransactionController implements TransactionAutoComplete.TransactionAutoCompleteListener, NoteViewController.Callbacks, View.OnClickListener, View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
@@ -57,66 +51,56 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     private final BaseActivity activity;
     private final EventBus eventBus;
     private final Executor autoCompleteExecutor;
+    private final CurrenciesApi currenciesApi;
+    private final OnTransactionUpdatedListener listener;
     private final TransactionEditData transactionEditData;
+
+    private final TransactionTypeViewController transactionTypeViewController;
+    private final AmountViewController amountViewController;
     private final DateTimeViewController dateTimeViewController;
     private final AccountsViewController accountsViewController;
     private final CategoryViewController categoryViewController;
     private final TagsViewController tagsViewController;
     private final NoteViewController noteViewController;
+    private final TransactionStateViewController transactionStateViewController;
+    private final FlagsViewController flagsViewController;
 
     private boolean isResumed = false;
 
-    public TransactionController(BaseActivity activity, EventBus eventBus, Executor autoCompleteExecutor) {
+    public TransactionController(BaseActivity activity, EventBus eventBus, Executor autoCompleteExecutor, Currency mainCurrency, CurrenciesApi currenciesApi, OnTransactionUpdatedListener listener) {
         this.activity = activity;
         this.eventBus = eventBus;
         this.autoCompleteExecutor = autoCompleteExecutor;
+        this.currenciesApi = currenciesApi;
+        this.listener = listener;
 
         transactionEditData = new TransactionEditData();
+        transactionTypeViewController = new TransactionTypeViewController(activity, this);
+        amountViewController = new AmountViewController(activity, this, this, mainCurrency);
         dateTimeViewController = new DateTimeViewController(activity, this, this);
         accountsViewController = new AccountsViewController(activity, this, this);
         categoryViewController = new CategoryViewController(activity, this, this);
         tagsViewController = new TagsViewController(activity, this, this);
         noteViewController = new NoteViewController(activity, this, this);
+        transactionStateViewController = new TransactionStateViewController(activity, this);
+        flagsViewController = new FlagsViewController(activity, this);
 
-        // Get views
-        transactionTypeImageButton = (ImageButton) findViewById(R.id.transactionTypeImageButton);
-        amountButton = (Button) findViewById(R.id.amountButton);
-        exchangeRateButton = (Button) findViewById(R.id.exchangeRateButton);
-        amountToButton = (Button) findViewById(R.id.amountToButton);
-        confirmedCheckBox = (CheckBox) findViewById(R.id.confirmedCheckBox);
-        includeInReportsCheckBox = (CheckBox) findViewById(R.id.includeInReportsCheckBox);
-        saveButton = (Button) findViewById(R.id.saveButton);
-
-        // Setup
-        transactionTypeImageButton.setOnClickListener(this);
-        amountButton.setOnClickListener(this);
-        amountButton.setOnLongClickListener(this);
-        exchangeRateButton.setOnClickListener(this);
-        exchangeRateButton.setOnLongClickListener(this);
-        amountToButton.setOnClickListener(this);
-        amountButton.setOnLongClickListener(this);
-        confirmedCheckBox.setOnCheckedChangeListener(this);
-        includeInReportsCheckBox.setOnCheckedChangeListener(this);
-
-        final boolean isAutoAmountRequested = savedInstanceState != null;
-        if ((Strings.isEmpty(modelId) || modelId.equals("0")) && !isAutoAmountRequested) {
-            CalculatorActivity.start(this, REQUEST_AMOUNT, 0);
-        }
+        CalculatorActivity.start(activity, REQUEST_AMOUNT, 0);
     }
 
     @Override public void onClick(View v) {
         switch (v.getId()) {
             case R.id.transactionTypeImageButton:
-//                toggleTransactionType();
+                toggleTransactionType();
                 break;
             case R.id.amountButton:
-//                CalculatorActivity.start(this, REQUEST_AMOUNT, model.getAmount());
+                CalculatorActivity.start(activity, REQUEST_AMOUNT, transactionEditData.getAmount());
                 break;
             case R.id.exchangeRateButton:
-//                CalculatorActivity.start(this, REQUEST_EXCHANGE_RATE, model.getExchangeRate());
+                CalculatorActivity.start(activity, REQUEST_EXCHANGE_RATE, transactionEditData.getExchangeRate());
                 break;
             case R.id.amountToButton:
-//                CalculatorActivity.start(this, REQUEST_AMOUNT_TO, Math.round(model.getAmount() * model.getExchangeRate()));
+                CalculatorActivity.start(activity, REQUEST_AMOUNT_TO, Math.round(transactionEditData.getAmount() * transactionEditData.getExchangeRate()));
                 break;
             case R.id.dateButton:
                 DatePickerDialog.show(activity.getSupportFragmentManager(), REQUEST_DATE, transactionEditData.getDate());
@@ -142,56 +126,39 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     @Override public boolean onLongClick(View v) {
         switch (v.getId()) {
             case R.id.amountButton:
-//                model.setAmount(0);
-//                onModelLoaded(model);
+                updateAmount(0);
                 return true;
             case R.id.exchangeRateButton:
-//                model.setExchangeRate(1.0);
-//                onModelLoaded(model);
+                updateExchangeRate(1.0);
                 return true;
             case R.id.amountToButton:
-//                model.setAmount(0);
-//                onModelLoaded(model);
+                updateAmountTo(0);
                 return true;
             case R.id.dateButton:
             case R.id.timeButton:
-                final long date = System.currentTimeMillis();
-                dateTimeViewController.setDateTime(date);
-                transactionEditData.setDate(date);
-                requestAutoComplete();
+                updateDate(System.currentTimeMillis());
                 return true;
             case R.id.accountFromButton:
-                accountsViewController.setAccountFrom(null);
-                transactionEditData.setAccountFrom(null);
-                requestAutoComplete();
+                updateAccountFrom(null);
                 return true;
             case R.id.accountToButton:
-                accountsViewController.setAccountTo(null);
-                transactionEditData.setAccountTo(null);
-                requestAutoComplete();
+                updateAccountTo(null);
                 return true;
             case R.id.categoryButton:
-                categoryViewController.setCategory(null);
-                transactionEditData.setCategory(null);
-                requestAutoComplete();
+                updateCategory(null);
                 return true;
             case R.id.tagsButton:
-                tagsViewController.setTags(null);
-                transactionEditData.setTags(null);
-                requestAutoComplete();
+                updateTags(null);
                 return true;
             case R.id.noteAutoCompleteTextView:
-                noteViewController.setNote(null);
-                transactionEditData.setNote(null);
-                requestAutoComplete();
+                updateNote(null);
                 return true;
         }
         return false;
     }
 
     @Override public void onNoteUpdated(String note) {
-        transactionEditData.setNote(note);
-        requestAutoComplete();
+        updateNote(note);
     }
 
     @Override public void onTransactionAutoComplete(AutoCompleteResult result) {
@@ -202,13 +169,11 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
             case R.id.confirmedCheckBox:
-//                if (canBeConfirmed(model, true)) {
-//                    model.setTransactionState(isChecked ? TransactionState.Confirmed : TransactionState.Pending);
-//                }
-//                onModelLoaded(model);
+                final boolean canBeConfirmed = transactionEditData.validateAmount(amountViewController) && transactionEditData.validateAccountFrom(accountsViewController) && transactionEditData.validateAccountTo(accountsViewController);
+                updateTransactionState(canBeConfirmed && isChecked ? TransactionState.Confirmed : TransactionState.Pending);
                 break;
             case R.id.includeInReportsCheckBox:
-//                model.setIncludeInReports(isChecked);
+                updateIncludeInReports(isChecked);
                 break;
         }
     }
@@ -219,9 +184,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
                 .withMonthOfYear(dateSelected.getMonthOfYear())
                 .withDayOfMonth(dateSelected.getDayOfMonth())
                 .getMillis();
-        dateTimeViewController.setDateTime(date);
-        transactionEditData.setDate(date);
-        requestAutoComplete();
+        updateDate(date);
     }
 
     @Subscribe public void onTimeSet(TimePickerDialog.TimeSelected timeSelected) {
@@ -229,15 +192,13 @@ public class TransactionController implements TransactionAutoComplete.Transactio
                 .withHourOfDay(timeSelected.getHourOfDay())
                 .withMinuteOfHour(timeSelected.getMinute())
                 .getMillis();
-        dateTimeViewController.setDateTime(date);
-        transactionEditData.setDate(date);
-        requestAutoComplete();
+        updateDate(date);
     }
 
     @Subscribe public void onExchangeRateUpdated(ExchangeRateRequest request) {
-//        if (!request.isError() && model.getAccountFrom() != null && model.getAccountTo() != null && model.getAccountFrom().getCurrency().getCode().equals(request.getFromCode()) && model.getAccountTo().getCurrency().getCode().equals(request.getToCode())) {
-//            setExchangeRate(request.getCurrency().getExchangeRate());
-//        }
+        if (!request.isError() && transactionEditData.getAccountFrom() != null && transactionEditData.getAccountTo() != null && transactionEditData.getAccountFrom().getCurrency().getCode().equals(request.getFromCode()) && transactionEditData.getAccountTo().getCurrency().getCode().equals(request.getToCode())) {
+            updateExchangeRate(request.getCurrency().getExchangeRate());
+        }
     }
 
     public void onResume() {
@@ -255,51 +216,28 @@ public class TransactionController implements TransactionAutoComplete.Transactio
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_AMOUNT:
-//                    model.setAmount(data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0));
-//                    onModelLoaded(model);
-//                    transactionAutoComplete.setAmount(model.getAmount());
-                    return;
-                case REQUEST_ACCOUNT_FROM:
-                    final Account accountFrom = ModelListActivity.getModelExtra(data);
-                    accountsViewController.setAccountFrom(accountFrom);
-                    transactionEditData.setAccountFrom(accountFrom);
-                    requestAutoComplete();
-                    return;
-                case REQUEST_ACCOUNT_TO:
-                    final Account accountTo = ModelListActivity.getModelExtra(data);
-                    accountsViewController.setAccountTo(accountTo);
-                    transactionEditData.setAccountTo(accountTo);
-                    requestAutoComplete();
-                    return;
-                case REQUEST_CATEGORY:
-                    final Category category = ModelListActivity.getModelExtra(data);
-                    categoryViewController.setCategory(category);
-                    transactionEditData.setCategory(category);
-                    requestAutoComplete();
-                    return;
-                case REQUEST_TAGS:
-                    final List<Tag> tags = ModelListActivity.getModelsExtra(data);
-                    tagsViewController.setTags(tags);
-                    transactionEditData.setTags(tags);
-                    requestAutoComplete();
-                    return;
+                    updateAmount(data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0));
+                    break;
                 case REQUEST_EXCHANGE_RATE:
-//                    model.setExchangeRate(data.getDoubleExtra(CalculatorActivity.RESULT_EXTRA_RAW_RESULT, 1.0));
-//                    if (Double.compare(model.getExchangeRate(), 0) <= 0) {
-//                        model.setExchangeRate(1.0);
-//                    }
-//                    onModelLoaded(model);
-                    return;
+                    updateExchangeRate(data.getDoubleExtra(CalculatorActivity.RESULT_EXTRA_RAW_RESULT, 1.0));
+                    break;
                 case REQUEST_AMOUNT_TO:
-//                    final long amountTo = data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0);
-//                    if (Double.compare(model.getExchangeRate(), 0) <= 0) {
-//                        model.setExchangeRate(1.0);
-//                    }
-//                    final long amount = Math.round(amountTo / model.getExchangeRate());
-//                    model.setAmount(amount);
-//                    onModelLoaded(model);
-//                    transactionAutoComplete.setAmount(model.getAmount());
-                    return;
+                    updateAmountTo(data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0));
+                    refreshExchangeRate();
+                    break;
+                case REQUEST_ACCOUNT_FROM:
+                    updateAccountFrom(ModelListActivity.<Account>getModelExtra(data));
+                    refreshExchangeRate();
+                    break;
+                case REQUEST_ACCOUNT_TO:
+                    updateAccountTo(ModelListActivity.<Account>getModelExtra(data));
+                    break;
+                case REQUEST_CATEGORY:
+                    updateCategory(ModelListActivity.<Category>getModelExtra(data));
+                    break;
+                case REQUEST_TAGS:
+                    updateTags(ModelListActivity.<Tag>getModelsExtra(data));
+                    break;
             }
         }
     }
@@ -319,7 +257,9 @@ public class TransactionController implements TransactionAutoComplete.Transactio
             return;
         }
 
-        // TODO Update all controllers.
+        transactionTypeViewController.setTransactionType(transactionEditData.getTransactionType());
+        amountViewController.setAmount(transactionEditData.getAmount());
+        amountViewController.setExchangeRate(transactionEditData.getExchangeRate());
         dateTimeViewController.setDateTime(transactionEditData.getDate());
         accountsViewController.setTransactionType(transactionEditData.getTransactionType());
         accountsViewController.setAccountFrom(transactionEditData.getAccountFrom());
@@ -328,58 +268,10 @@ public class TransactionController implements TransactionAutoComplete.Transactio
         categoryViewController.setCategory(transactionEditData.getCategory());
         tagsViewController.setTags(transactionEditData.getTags());
         noteViewController.setNote(transactionEditData.getNote());
+        transactionStateViewController.setTransactionState(transactionEditData.getTransactionState());
+        flagsViewController.setIncludeInReports(transactionEditData.getIncludeInReports());
 
-        switch (transaction.getTransactionType()) {
-            case Expense:
-                accountFromButton.setVisibility(View.VISIBLE);
-                accountToButton.setVisibility(View.GONE);
-                colorImageView.setVisibility(View.VISIBLE);
-                categoryContainerView.setVisibility(View.VISIBLE);
-                categoryDividerView.setVisibility(View.VISIBLE);
-                transactionTypeImageButton.setImageResource(R.drawable.ic_category_type_expense);
-                exchangeRateButton.setVisibility(View.GONE);
-                amountToButton.setVisibility(View.GONE);
-                break;
-            case Income:
-                accountFromButton.setVisibility(View.GONE);
-                accountToButton.setVisibility(View.VISIBLE);
-                colorImageView.setVisibility(View.VISIBLE);
-                categoryContainerView.setVisibility(View.VISIBLE);
-                categoryDividerView.setVisibility(View.VISIBLE);
-                transactionTypeImageButton.setImageResource(R.drawable.ic_category_type_income);
-                exchangeRateButton.setVisibility(View.GONE);
-                amountToButton.setVisibility(View.GONE);
-                break;
-            case Transfer:
-                accountFromButton.setVisibility(View.VISIBLE);
-                accountToButton.setVisibility(View.VISIBLE);
-                colorImageView.setVisibility(View.GONE);
-                categoryContainerView.setVisibility(View.GONE);
-                categoryDividerView.setVisibility(View.GONE);
-                transactionTypeImageButton.setImageResource(R.drawable.ic_category_type_transfer);
-                final boolean bothAccountsSet = transaction.getAccountFrom() != null && transaction.getAccountTo() != null;
-                final boolean differentCurrencies = bothAccountsSet && !transaction.getAccountFrom().getCurrency().getId().equals(transaction.getAccountTo().getCurrency().getId());
-                if (bothAccountsSet && differentCurrencies) {
-                    exchangeRateButton.setVisibility(View.VISIBLE);
-                    amountToButton.setVisibility(View.VISIBLE);
-
-                    // TODO This is also done in calculator. Do not duplicate.
-                    NumberFormat format = DecimalFormat.getInstance(Locale.ENGLISH);
-                    format.setGroupingUsed(false);
-                    format.setMaximumFractionDigits(20);
-                    exchangeRateButton.setText(format.format(model.getExchangeRate()));
-                    amountToButton.setText(MoneyFormatter.format(transaction.getAccountTo().getCurrency(), Math.round(transaction.getAmount() * transaction.getExchangeRate())));
-                } else {
-                    exchangeRateButton.setVisibility(View.GONE);
-                    amountToButton.setVisibility(View.GONE);
-                }
-                break;
-        }
-
-        amountButton.setText(MoneyFormatter.format(getAmountCurrency(transaction), transaction.getAmount()));
-        confirmedCheckBox.setChecked(transaction.getTransactionState() == TransactionState.Confirmed && canBeConfirmed(transaction, false));
-        includeInReportsCheckBox.setChecked(transaction.includeInReports());
-        saveButton.setText(confirmedCheckBox.isChecked() ? R.string.save : R.string.pending);
+        listener.onTransactionUpdated(transactionEditData);
     }
 
     private void requestAutoComplete() {
@@ -400,80 +292,136 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     }
 
     private void toggleTransactionType() {
-//        switch (model.getTransactionType()) {
-//            case Expense:
-//                model.setTransactionType(TransactionType.Income);
-//                model.setAccountFrom(null);
-//                break;
-//            case Income:
-//                model.setTransactionType(TransactionType.Transfer);
-//                model.setAccountTo(null);
-//                break;
-//            case Transfer:
-//                model.setTransactionType(TransactionType.Expense);
-//                model.setCategory(null);
-//                break;
-//        }
-//        model.setCategory(null);
-//        onModelLoaded(model);
-//        transactionAutoComplete.setTransactionType(model.getTransactionType());
-    }
-
-    private Currency getAmountCurrency(Transaction transaction) {
-        Currency transactionCurrency;
-        switch (transaction.getTransactionType()) {
+        switch (transactionEditData.getTransactionType()) {
             case Expense:
-                transactionCurrency = transaction.getAccountFrom() == null ? null : transaction.getAccountFrom().getCurrency();
+                updateTransactionType(TransactionType.Income);
                 break;
             case Income:
-                transactionCurrency = transaction.getAccountTo() == null ? null : transaction.getAccountTo().getCurrency();
+                updateTransactionType(TransactionType.Transfer);
                 break;
             case Transfer:
-                transactionCurrency = transaction.getAccountFrom() == null ? null : transaction.getAccountFrom().getCurrency();
+                updateTransactionType(TransactionType.Expense);
                 break;
-            default:
-                throw new IllegalStateException("Category type " + transaction.getTransactionType() + " is not supported.");
         }
-
-        if (transactionCurrency == null || !transactionCurrency.hasId()) {
-            // When account is not selected yet, we use main currency.
-            transactionCurrency = mainCurrency;
-        }
-
-        return transactionCurrency;
     }
 
     private void refreshExchangeRate() {
-        switch (model.getTransactionType()) {
+        switch (transactionEditData.getTransactionType()) {
             case Expense:
-                model.setExchangeRate(1);
-                break;
             case Income:
-                model.setExchangeRate(1);
+                updateExchangeRate(1);
                 break;
             case Transfer:
-                if (model.getAccountFrom() != null && model.getAccountTo() != null) {
-                    final Currency currencyFrom = model.getAccountFrom().getCurrency();
-                    final Currency currencyTo = model.getAccountTo().getCurrency();
+                if (transactionEditData.getAccountFrom() != null && transactionEditData.getAccountTo() != null) {
+                    final Currency currencyFrom = transactionEditData.getAccountFrom().getCurrency();
+                    final Currency currencyTo = transactionEditData.getAccountTo().getCurrency();
                     if (currencyFrom.isDefault() || currencyTo.isDefault()) {
                         if (currencyFrom.isDefault()) {
-                            setExchangeRate(1.0 / currencyTo.getExchangeRate());
+                            updateExchangeRate(1.0 / currencyTo.getExchangeRate());
                         } else {
-                            setExchangeRate(currencyFrom.getExchangeRate());
+                            updateExchangeRate(currencyFrom.getExchangeRate());
                         }
                     } else {
-                        currenciesApi.getExchangeRate(model.getAccountFrom().getCurrency().getCode(), model.getAccountTo().getCurrency().getCode());
+                        currenciesApi.getExchangeRate(transactionEditData.getAccountFrom().getCurrency().getCode(), transactionEditData.getAccountTo().getCurrency().getCode());
                     }
                 }
                 break;
         }
     }
 
-    private void setExchangeRate(double exchangeRate) {
-        model.setExchangeRate(exchangeRate);
-        if (Double.compare(model.getExchangeRate(), 0) <= 0) {
-            model.setExchangeRate(1.0);
+    private void updateTransactionType(TransactionType transactionType) {
+        transactionEditData.setTransactionType(transactionType);
+        transactionTypeViewController.setTransactionType(transactionType);
+        amountViewController.setTransactionType(transactionType);
+        accountsViewController.setTransactionType(transactionType);
+        categoryViewController.setTransactionType(transactionType);
+        listener.onTransactionUpdated(transactionEditData);
+        requestAutoComplete();
+    }
+
+    private void updateAmount(long amount) {
+        transactionEditData.setAmount(amount);
+        amountViewController.setAmount(amount);
+        listener.onTransactionUpdated(transactionEditData);
+        requestAutoComplete();
+    }
+
+    private void updateExchangeRate(double exchangeRate) {
+        if (Double.compare(exchangeRate, 0) <= 0) {
+            exchangeRate = 1.0;
         }
-        onModelLoaded(model);
+        transactionEditData.setExchangeRate(exchangeRate);
+        amountViewController.setExchangeRate(exchangeRate);
+        listener.onTransactionUpdated(transactionEditData);
+        requestAutoComplete();
+    }
+
+    private void updateAmountTo(long amountTo) {
+        if (Double.compare(transactionEditData.getExchangeRate(), 0) <= 0) {
+            transactionEditData.setExchangeRate(1.0);
+        }
+        final long newAmount = Math.round(amountTo / transactionEditData.getExchangeRate());
+        transactionEditData.setAmount(newAmount);
+        amountViewController.setAmount(newAmount);
+        listener.onTransactionUpdated(transactionEditData);
+        requestAutoComplete();
+    }
+
+    private void updateDate(long date) {
+        transactionEditData.setDate(date);
+        dateTimeViewController.setDateTime(date);
+        listener.onTransactionUpdated(transactionEditData);
+        requestAutoComplete();
+    }
+
+    private void updateAccountFrom(Account account) {
+        transactionEditData.setAccountFrom(account);
+        accountsViewController.setAccountFrom(account);
+        listener.onTransactionUpdated(transactionEditData);
+        requestAutoComplete();
+    }
+
+    private void updateAccountTo(Account account) {
+        transactionEditData.setAccountTo(account);
+        accountsViewController.setAccountTo(account);
+        listener.onTransactionUpdated(transactionEditData);
+        requestAutoComplete();
+    }
+
+    private void updateCategory(Category category) {
+        transactionEditData.setCategory(category);
+        categoryViewController.setCategory(category);
+        listener.onTransactionUpdated(transactionEditData);
+        requestAutoComplete();
+    }
+
+    private void updateTags(List<Tag> tags) {
+        transactionEditData.setTags(tags);
+        tagsViewController.setTags(tags);
+        listener.onTransactionUpdated(transactionEditData);
+        requestAutoComplete();
+    }
+
+    private void updateNote(String note) {
+        transactionEditData.setNote(note);
+        noteViewController.setNote(note);
+        listener.onTransactionUpdated(transactionEditData);
+        requestAutoComplete();
+    }
+
+    private void updateTransactionState(TransactionState transactionState) {
+        transactionEditData.setTransactionState(transactionState);
+        transactionStateViewController.setTransactionState(transactionState);
+        listener.onTransactionUpdated(transactionEditData);
+    }
+
+    private void updateIncludeInReports(boolean includeInReports) {
+        transactionEditData.setIncludeInReports(includeInReports);
+        flagsViewController.setIncludeInReports(includeInReports);
+        listener.onTransactionUpdated(transactionEditData);
+    }
+
+    public static interface OnTransactionUpdatedListener {
+        public void onTransactionUpdated(TransactionEditData transactionEditData);
     }
 }

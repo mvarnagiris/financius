@@ -7,9 +7,9 @@ import com.code44.finance.ui.settings.data.ImportActivity;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.errors.ImportError;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.Contents;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveId;
 
@@ -32,15 +32,14 @@ public class DriveDataImporterRunnable implements Runnable {
 
     @Override public void run() {
         final DriveFile driveFile = Drive.DriveApi.getFile(googleApiClient, driveId);
-        final DriveApi.ContentsResult result = driveFile.openContents(googleApiClient, DriveFile.MODE_READ_ONLY, null).await();
+        final DriveApi.DriveContentsResult result = driveFile.open(googleApiClient, DriveFile.MODE_READ_ONLY, null).await();
 
         if (!result.getStatus().isSuccess()) {
             throw new ImportError("Import failed.");
         }
 
-        final Contents contents = result.getContents();
+        final DriveContents contents = result.getDriveContents();
         final DataImporterRunnable dataImporterRunnable = new DataImporterRunnable(eventBus, importType.getDataImporter(contents.getInputStream(), context, dbHelper));
         dataImporterRunnable.run();
-        driveFile.discardContents(googleApiClient, contents);
     }
 }

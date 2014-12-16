@@ -27,7 +27,7 @@ public class CategoryViewController extends ViewController {
         categoryButton.setOnLongClickListener(longClickListener);
     }
 
-    @Override protected void showError(Throwable error) {
+    @Override public void showError(Throwable error) {
     }
 
     public void setTransactionType(TransactionType transactionType) {

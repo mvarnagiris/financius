@@ -43,7 +43,7 @@ public class NoteViewController extends ViewController implements LoaderManager.
         activity.getSupportLoaderManager().initLoader(LOADER_NOTES, null, this);
     }
 
-    @Override protected void showError(Throwable error) {
+    @Override public void showError(Throwable error) {
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {

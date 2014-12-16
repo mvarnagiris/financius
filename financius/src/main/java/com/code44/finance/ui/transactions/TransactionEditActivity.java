@@ -6,11 +6,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ImageButton;
 
 import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
+import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Transaction;
@@ -19,23 +18,18 @@ import com.code44.finance.qualifiers.Local;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.ModelEditActivity;
 import com.code44.finance.ui.transactions.controllers.TransactionController;
+import com.code44.finance.ui.transactions.controllers.TransactionEditData;
 import com.code44.finance.utils.analytics.Analytics;
 
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
 
-public class TransactionEditActivity extends ModelEditActivity<Transaction> {
+public class TransactionEditActivity extends ModelEditActivity<Transaction> implements TransactionController.OnTransactionUpdatedListener {
     @Inject CurrenciesApi currenciesApi;
     @Inject @Main Currency mainCurrency;
     @Inject @Local Executor localExecutor;
 
-    private ImageButton transactionTypeImageButton;
-    private Button amountButton;
-    private Button exchangeRateButton;
-    private Button amountToButton;
-    private CheckBox confirmedCheckBox;
-    private CheckBox includeInReportsCheckBox;
     private Button saveButton;
 
     private TransactionController transactionController;
@@ -50,7 +44,8 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> {
 
     @Override protected void onViewCreated(Bundle savedInstanceState) {
         super.onViewCreated(savedInstanceState);
-        transactionController = new TransactionController(this, getEventBus(), localExecutor);
+        saveButton = (Button) findViewById(R.id.saveButton);
+        transactionController = new TransactionController(this, getEventBus(), localExecutor, mainCurrency, currenciesApi, this);
     }
 
     @Override public void onResume() {
@@ -91,5 +86,9 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> {
 
     @Override protected Analytics.Screen getScreen() {
         return Analytics.Screen.TransactionEdit;
+    }
+
+    @Override public void onTransactionUpdated(TransactionEditData transactionEditData) {
+        saveButton.setText(transactionEditData.getTransactionState() == TransactionState.Confirmed ? R.string.save : R.string.pending);
     }
 }
