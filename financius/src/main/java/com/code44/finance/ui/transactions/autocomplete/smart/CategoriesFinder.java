@@ -111,7 +111,7 @@ public class CategoriesFinder extends Finder<Category> {
         }
 
         if (input.getCategory() != null) {
-            query.selection(" and " + Tables.Transactions.CATEGORY_ID + "<>?", input.getCategory().getId());
+            query.selection(" and " + Tables.Transactions.CATEGORY_ID + "=?", input.getCategory().getId());
         }
 
         if (input.getAccountFrom() != null) {
@@ -137,7 +137,7 @@ public class CategoriesFinder extends Finder<Category> {
         @Override public int compare(Category lhs, Category rhs) {
             final float leftScore = categoryScores.get(lhs).getScore(maxScore);
             final float rightScore = categoryScores.get(rhs).getScore(maxScore);
-            return Float.compare(leftScore, rightScore);
+            return Float.compare(rightScore, leftScore);
         }
     }
 

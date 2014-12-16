@@ -81,7 +81,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
         accountsViewController = new AccountsViewController(activity, this, this);
         categoryViewController = new CategoryViewController(activity, this, this);
         tagsViewController = new TagsViewController(activity, this, this);
-        noteViewController = new NoteViewController(activity, this, this);
+        noteViewController = new NoteViewController(activity, this);
         transactionStateViewController = new TransactionStateViewController(activity, this);
         flagsViewController = new FlagsViewController(activity, this);
 
@@ -126,39 +126,45 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     @Override public boolean onLongClick(View v) {
         switch (v.getId()) {
             case R.id.amountButton:
-                updateAmount(0);
+                transactionEditData.setAmount(0L);
+                requestAutoComplete();
                 return true;
             case R.id.exchangeRateButton:
-                updateExchangeRate(1.0);
+                transactionEditData.setExchangeRate(1.0);
+                requestAutoComplete();
                 return true;
             case R.id.amountToButton:
-                updateAmountTo(0);
+                transactionEditData.setAmount(0L);
+                requestAutoComplete();
                 return true;
             case R.id.dateButton:
             case R.id.timeButton:
-                updateDate(System.currentTimeMillis());
+                transactionEditData.setDate(System.currentTimeMillis());
+                requestAutoComplete();
                 return true;
             case R.id.accountFromButton:
-                updateAccountFrom(null);
+                transactionEditData.setAccountFrom(null);
+                requestAutoComplete();
                 return true;
             case R.id.accountToButton:
-                updateAccountTo(null);
+                transactionEditData.setAccountTo(null);
+                requestAutoComplete();
                 return true;
             case R.id.categoryButton:
-                updateCategory(null);
+                transactionEditData.setCategory(null);
+                requestAutoComplete();
                 return true;
             case R.id.tagsButton:
-                updateTags(null);
-                return true;
-            case R.id.noteAutoCompleteTextView:
-                updateNote(null);
+                transactionEditData.setTags(null);
+                requestAutoComplete();
                 return true;
         }
         return false;
     }
 
     @Override public void onNoteUpdated(String note) {
-        updateNote(note);
+        transactionEditData.setNote(note);
+        requestAutoComplete();
     }
 
     @Override public void onTransactionAutoComplete(AutoCompleteResult result) {
@@ -170,10 +176,12 @@ public class TransactionController implements TransactionAutoComplete.Transactio
         switch (buttonView.getId()) {
             case R.id.confirmedCheckBox:
                 final boolean canBeConfirmed = transactionEditData.validateAmount(amountViewController) && transactionEditData.validateAccountFrom(accountsViewController) && transactionEditData.validateAccountTo(accountsViewController);
-                updateTransactionState(canBeConfirmed && isChecked ? TransactionState.Confirmed : TransactionState.Pending);
+                transactionEditData.setTransactionState(canBeConfirmed && isChecked ? TransactionState.Confirmed : TransactionState.Pending);
+                update();
                 break;
             case R.id.includeInReportsCheckBox:
-                updateIncludeInReports(isChecked);
+                transactionEditData.setIncludeInReports(isChecked);
+                update();
                 break;
         }
     }
@@ -184,7 +192,8 @@ public class TransactionController implements TransactionAutoComplete.Transactio
                 .withMonthOfYear(dateSelected.getMonthOfYear())
                 .withDayOfMonth(dateSelected.getDayOfMonth())
                 .getMillis();
-        updateDate(date);
+        transactionEditData.setDate(date);
+        requestAutoComplete();
     }
 
     @Subscribe public void onTimeSet(TimePickerDialog.TimeSelected timeSelected) {
@@ -192,12 +201,14 @@ public class TransactionController implements TransactionAutoComplete.Transactio
                 .withHourOfDay(timeSelected.getHourOfDay())
                 .withMinuteOfHour(timeSelected.getMinute())
                 .getMillis();
-        updateDate(date);
+        transactionEditData.setDate(date);
+        requestAutoComplete();
     }
 
     @Subscribe public void onExchangeRateUpdated(ExchangeRateRequest request) {
         if (!request.isError() && transactionEditData.getAccountFrom() != null && transactionEditData.getAccountTo() != null && transactionEditData.getAccountFrom().getCurrency().getCode().equals(request.getFromCode()) && transactionEditData.getAccountTo().getCurrency().getCode().equals(request.getToCode())) {
-            updateExchangeRate(request.getCurrency().getExchangeRate());
+            transactionEditData.setExchangeRate(request.getCurrency().getExchangeRate());
+            requestAutoComplete();
         }
     }
 
@@ -216,27 +227,36 @@ public class TransactionController implements TransactionAutoComplete.Transactio
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_AMOUNT:
-                    updateAmount(data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0));
+                    transactionEditData.setAmount(data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0));
+                    requestAutoComplete();
                     break;
                 case REQUEST_EXCHANGE_RATE:
-                    updateExchangeRate(data.getDoubleExtra(CalculatorActivity.RESULT_EXTRA_RAW_RESULT, 1.0));
+                    transactionEditData.setExchangeRate(data.getDoubleExtra(CalculatorActivity.RESULT_EXTRA_RAW_RESULT, 1.0));
+                    requestAutoComplete();
                     break;
                 case REQUEST_AMOUNT_TO:
-                    updateAmountTo(data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0));
+                    final long newAmount = Math.round(data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0) / transactionEditData.getExchangeRate());
+                    transactionEditData.setAmount(newAmount);
                     refreshExchangeRate();
+                    requestAutoComplete();
                     break;
                 case REQUEST_ACCOUNT_FROM:
-                    updateAccountFrom(ModelListActivity.<Account>getModelExtra(data));
+                    transactionEditData.setAccountFrom(ModelListActivity.<Account>getModelExtra(data));
                     refreshExchangeRate();
+                    requestAutoComplete();
                     break;
                 case REQUEST_ACCOUNT_TO:
-                    updateAccountTo(ModelListActivity.<Account>getModelExtra(data));
+                    transactionEditData.setAccountTo(ModelListActivity.<Account>getModelExtra(data));
+                    refreshExchangeRate();
+                    requestAutoComplete();
                     break;
                 case REQUEST_CATEGORY:
-                    updateCategory(ModelListActivity.<Category>getModelExtra(data));
+                    transactionEditData.setCategory(ModelListActivity.<Category>getModelExtra(data));
+                    requestAutoComplete();
                     break;
                 case REQUEST_TAGS:
-                    updateTags(ModelListActivity.<Tag>getModelsExtra(data));
+                    transactionEditData.setTags(ModelListActivity.<Tag>getModelsExtra(data));
+                    requestAutoComplete();
                     break;
             }
         }
@@ -257,59 +277,86 @@ public class TransactionController implements TransactionAutoComplete.Transactio
             return;
         }
 
-        transactionTypeViewController.setTransactionType(transactionEditData.getTransactionType());
-        amountViewController.setAmount(transactionEditData.getAmount());
-        amountViewController.setExchangeRate(transactionEditData.getExchangeRate());
-        dateTimeViewController.setDateTime(transactionEditData.getDate());
-        accountsViewController.setTransactionType(transactionEditData.getTransactionType());
-        accountsViewController.setAccountFrom(transactionEditData.getAccountFrom());
-        accountsViewController.setAccountTo(transactionEditData.getAccountTo());
-        categoryViewController.setTransactionType(transactionEditData.getTransactionType());
-        categoryViewController.setCategory(transactionEditData.getCategory());
-        tagsViewController.setTags(transactionEditData.getTags());
-        noteViewController.setNote(transactionEditData.getNote());
-        transactionStateViewController.setTransactionState(transactionEditData.getTransactionState());
-        flagsViewController.setIncludeInReports(transactionEditData.getIncludeInReports());
+        updateTransactionType(transactionEditData.getTransactionType());
+        updateAmount(transactionEditData.getAmount());
+        updateExchangeRate(transactionEditData.getExchangeRate());
+        updateDate(transactionEditData.getDate());
+        updateAccountFrom(transactionEditData.getAccountFrom());
+        updateAccountTo(transactionEditData.getAccountTo());
+        updateCategory(transactionEditData.getCategory());
+        updateTags(transactionEditData.getTags());
+        updateNote(transactionEditData.getNote());
+        updateTransactionState(transactionEditData.getTransactionState());
+        updateIncludeInReports(transactionEditData.getIncludeInReports());
 
         listener.onTransactionUpdated(transactionEditData);
     }
 
     private void requestAutoComplete() {
         if (transactionEditData.getStoredTransaction() != null) {
+            update();
             return;
         }
 
-        final AutoCompleteInput input = AutoCompleteInput.build(transactionEditData.getTransactionType())
-                .setDate(transactionEditData.getDate())
-                .setAmount(transactionEditData.getAmount())
-                .setAccountFrom(transactionEditData.getAccountFrom())
-                .setAccountTo(transactionEditData.getAccountTo())
-                .setCategory(transactionEditData.getCategory())
-                .setTags(transactionEditData.getTags())
-                .setNote(transactionEditData.getNote())
-                .build();
-        new SmartTransactionAutoComplete(activity, autoCompleteExecutor, this, input);
+        final AutoCompleteInput.Builder input = AutoCompleteInput.build(transactionEditData.getTransactionType());
+
+        if (transactionEditData.isDateSet()) {
+            input.setDate(transactionEditData.getDate());
+        }
+
+        if (transactionEditData.isAmountSet()) {
+            input.setAmount(transactionEditData.getAmount());
+        }
+
+        if (transactionEditData.isAccountFromSet()) {
+            input.setAccountFrom(transactionEditData.getAccountFrom());
+        }
+
+        if (transactionEditData.isAccountToSet()) {
+            input.setAccountTo(transactionEditData.getAccountTo());
+        }
+
+        if (transactionEditData.isCategorySet()) {
+            input.setCategory(transactionEditData.getCategory());
+        }
+
+        if (transactionEditData.isTagsSet()) {
+            input.setTags(transactionEditData.getTags());
+        }
+
+        if (transactionEditData.isNoteSet()) {
+            input.setNote(transactionEditData.getNote());
+        }
+
+        new SmartTransactionAutoComplete(activity, autoCompleteExecutor, this, input.build()).execute();
     }
 
     private void toggleTransactionType() {
+        TransactionType transactionType;
         switch (transactionEditData.getTransactionType()) {
             case Expense:
-                updateTransactionType(TransactionType.Income);
+                transactionType = TransactionType.Income;
                 break;
             case Income:
-                updateTransactionType(TransactionType.Transfer);
+                transactionType = TransactionType.Transfer;
                 break;
             case Transfer:
-                updateTransactionType(TransactionType.Expense);
+                transactionType = TransactionType.Expense;
                 break;
+            default:
+                throw new IllegalArgumentException("TransactionType " + transactionEditData.getTransactionType() + " is not supported.");
         }
+
+        transactionEditData.setTransactionType(transactionType);
+        requestAutoComplete();
     }
 
     private void refreshExchangeRate() {
         switch (transactionEditData.getTransactionType()) {
             case Expense:
             case Income:
-                updateExchangeRate(1);
+                transactionEditData.setExchangeRate(1.0);
+                requestAutoComplete();
                 break;
             case Transfer:
                 if (transactionEditData.getAccountFrom() != null && transactionEditData.getAccountTo() != null) {
@@ -317,10 +364,11 @@ public class TransactionController implements TransactionAutoComplete.Transactio
                     final Currency currencyTo = transactionEditData.getAccountTo().getCurrency();
                     if (currencyFrom.isDefault() || currencyTo.isDefault()) {
                         if (currencyFrom.isDefault()) {
-                            updateExchangeRate(1.0 / currencyTo.getExchangeRate());
+                            transactionEditData.setExchangeRate(1.0 / currencyTo.getExchangeRate());
                         } else {
-                            updateExchangeRate(currencyFrom.getExchangeRate());
+                            transactionEditData.setExchangeRate(currencyFrom.getExchangeRate());
                         }
+                        requestAutoComplete();
                     } else {
                         currenciesApi.getExchangeRate(transactionEditData.getAccountFrom().getCurrency().getCode(), transactionEditData.getAccountTo().getCurrency().getCode());
                     }
@@ -330,95 +378,50 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     }
 
     private void updateTransactionType(TransactionType transactionType) {
-        transactionEditData.setTransactionType(transactionType);
         transactionTypeViewController.setTransactionType(transactionType);
         amountViewController.setTransactionType(transactionType);
         accountsViewController.setTransactionType(transactionType);
         categoryViewController.setTransactionType(transactionType);
-        listener.onTransactionUpdated(transactionEditData);
-        requestAutoComplete();
     }
 
     private void updateAmount(long amount) {
-        transactionEditData.setAmount(amount);
         amountViewController.setAmount(amount);
-        listener.onTransactionUpdated(transactionEditData);
-        requestAutoComplete();
     }
 
     private void updateExchangeRate(double exchangeRate) {
-        if (Double.compare(exchangeRate, 0) <= 0) {
-            exchangeRate = 1.0;
-        }
-        transactionEditData.setExchangeRate(exchangeRate);
         amountViewController.setExchangeRate(exchangeRate);
-        listener.onTransactionUpdated(transactionEditData);
-        requestAutoComplete();
-    }
-
-    private void updateAmountTo(long amountTo) {
-        if (Double.compare(transactionEditData.getExchangeRate(), 0) <= 0) {
-            transactionEditData.setExchangeRate(1.0);
-        }
-        final long newAmount = Math.round(amountTo / transactionEditData.getExchangeRate());
-        transactionEditData.setAmount(newAmount);
-        amountViewController.setAmount(newAmount);
-        listener.onTransactionUpdated(transactionEditData);
-        requestAutoComplete();
     }
 
     private void updateDate(long date) {
-        transactionEditData.setDate(date);
         dateTimeViewController.setDateTime(date);
-        listener.onTransactionUpdated(transactionEditData);
-        requestAutoComplete();
     }
 
     private void updateAccountFrom(Account account) {
-        transactionEditData.setAccountFrom(account);
         accountsViewController.setAccountFrom(account);
-        listener.onTransactionUpdated(transactionEditData);
-        requestAutoComplete();
     }
 
     private void updateAccountTo(Account account) {
-        transactionEditData.setAccountTo(account);
         accountsViewController.setAccountTo(account);
-        listener.onTransactionUpdated(transactionEditData);
-        requestAutoComplete();
     }
 
     private void updateCategory(Category category) {
-        transactionEditData.setCategory(category);
         categoryViewController.setCategory(category);
-        listener.onTransactionUpdated(transactionEditData);
-        requestAutoComplete();
     }
 
     private void updateTags(List<Tag> tags) {
-        transactionEditData.setTags(tags);
         tagsViewController.setTags(tags);
-        listener.onTransactionUpdated(transactionEditData);
-        requestAutoComplete();
     }
 
     private void updateNote(String note) {
-        transactionEditData.setNote(note);
         noteViewController.setNote(note);
-        listener.onTransactionUpdated(transactionEditData);
-        requestAutoComplete();
     }
 
     private void updateTransactionState(TransactionState transactionState) {
-        transactionEditData.setTransactionState(transactionState);
         transactionStateViewController.setTransactionState(transactionState);
-        listener.onTransactionUpdated(transactionEditData);
     }
 
     private void updateIncludeInReports(boolean includeInReports) {
-        transactionEditData.setIncludeInReports(includeInReports);
         flagsViewController.setIncludeInReports(includeInReports);
-        listener.onTransactionUpdated(transactionEditData);
     }
 
     public static interface OnTransactionUpdatedListener {

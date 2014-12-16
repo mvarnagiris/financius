@@ -27,6 +27,18 @@ public class TransactionEditData {
     private Boolean includeInReports;
     private Double exchangeRate;
 
+    private boolean isTransactionTypeSet = false;
+    private boolean isAmountSet = false;
+    private boolean isDateSet = false;
+    private boolean isAccountFromSet = false;
+    private boolean isAccountToSet = false;
+    private boolean isCategorySet = false;
+    private boolean isTagsSet = false;
+    private boolean isNoteSet = false;
+    private boolean isTransactionStateSet = false;
+    private boolean isIncludeInReportsSet = false;
+    private boolean isExchangeRateSet = false;
+
     public Transaction getStoredTransaction() {
         return storedTransaction;
     }
@@ -44,7 +56,7 @@ public class TransactionEditData {
     }
 
     public TransactionType getTransactionType() {
-        if (transactionType != null) {
+        if (isTransactionTypeSet && transactionType != null) {
             return transactionType;
         }
 
@@ -57,10 +69,11 @@ public class TransactionEditData {
 
     public void setTransactionType(TransactionType transactionType) {
         this.transactionType = transactionType;
+        isTransactionTypeSet = true;
     }
 
     public long getAmount() {
-        if (amount != null) {
+        if (isAmountSet && amount != null) {
             return amount;
         }
 
@@ -73,10 +86,11 @@ public class TransactionEditData {
 
     public void setAmount(Long amount) {
         this.amount = amount;
+        isAmountSet = true;
     }
 
     public long getDate() {
-        if (date != null) {
+        if (isDateSet && date != null) {
             return date;
         }
 
@@ -89,6 +103,7 @@ public class TransactionEditData {
 
     public void setDate(Long date) {
         this.date = date;
+        isDateSet = true;
     }
 
     public Account getAccountFrom() {
@@ -96,7 +111,7 @@ public class TransactionEditData {
             return null;
         }
 
-        if (accountFrom != null) {
+        if (isAccountFromSet && accountFrom != null) {
             return accountFrom;
         }
 
@@ -113,6 +128,7 @@ public class TransactionEditData {
 
     public void setAccountFrom(Account accountFrom) {
         this.accountFrom = accountFrom;
+        isAccountFromSet = true;
     }
 
     public Account getAccountTo() {
@@ -120,7 +136,7 @@ public class TransactionEditData {
             return null;
         }
 
-        if (accountTo != null) {
+        if (isAccountToSet && accountTo != null) {
             return accountTo;
         }
 
@@ -137,6 +153,7 @@ public class TransactionEditData {
 
     public void setAccountTo(Account accountTo) {
         this.accountTo = accountTo;
+        isAccountToSet = true;
     }
 
     public Category getCategory() {
@@ -144,7 +161,7 @@ public class TransactionEditData {
             return null;
         }
 
-        if (category != null && category.getTransactionType() == getTransactionType()) {
+        if (isCategorySet && category != null && category.getTransactionType() == getTransactionType()) {
             return category;
         }
 
@@ -161,10 +178,11 @@ public class TransactionEditData {
 
     public void setCategory(Category category) {
         this.category = category;
+        isCategorySet = true;
     }
 
     public List<Tag> getTags() {
-        if (tags != null) {
+        if (isTagsSet && tags != null) {
             return tags;
         }
 
@@ -181,10 +199,11 @@ public class TransactionEditData {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+        isTagsSet = true;
     }
 
     public String getNote() {
-        if (note != null) {
+        if (isNoteSet && note != null) {
             return note;
         }
 
@@ -201,6 +220,7 @@ public class TransactionEditData {
 
     public void setNote(String note) {
         this.note = note;
+        isNoteSet = true;
     }
 
     public TransactionState getTransactionState() {
@@ -208,7 +228,7 @@ public class TransactionEditData {
             return TransactionState.Pending;
         }
 
-        if (transactionState != null) {
+        if (isTransactionStateSet && transactionState != null) {
             return transactionState;
         }
 
@@ -221,10 +241,11 @@ public class TransactionEditData {
 
     public void setTransactionState(TransactionState transactionState) {
         this.transactionState = transactionState;
+        isTransactionStateSet = true;
     }
 
     public boolean getIncludeInReports() {
-        if (includeInReports != null) {
+        if (isIncludeInReportsSet && includeInReports != null) {
             return includeInReports;
         }
 
@@ -233,12 +254,13 @@ public class TransactionEditData {
 
     public void setIncludeInReports(Boolean includeInReports) {
         this.includeInReports = includeInReports;
+        isIncludeInReportsSet = true;
     }
 
     public double getExchangeRate() {
         double exchangeRate;
 
-        if (this.exchangeRate != null) {
+        if (isExchangeRateSet && this.exchangeRate != null) {
             exchangeRate = this.exchangeRate;
         } else if (storedTransaction != null) {
             exchangeRate = storedTransaction.getExchangeRate();
@@ -254,7 +276,55 @@ public class TransactionEditData {
     }
 
     public void setExchangeRate(Double exchangeRate) {
+        if (Double.compare(exchangeRate, 0) <= 0) {
+            exchangeRate = 1.0;
+        }
         this.exchangeRate = exchangeRate;
+        isExchangeRateSet = true;
+    }
+
+    public boolean isTransactionTypeSet() {
+        return isTransactionTypeSet;
+    }
+
+    public boolean isAmountSet() {
+        return isAmountSet;
+    }
+
+    public boolean isDateSet() {
+        return isDateSet;
+    }
+
+    public boolean isAccountFromSet() {
+        return isAccountFromSet;
+    }
+
+    public boolean isAccountToSet() {
+        return isAccountToSet;
+    }
+
+    public boolean isCategorySet() {
+        return isCategorySet;
+    }
+
+    public boolean isTagsSet() {
+        return isTagsSet;
+    }
+
+    public boolean isNoteSet() {
+        return isNoteSet;
+    }
+
+    public boolean isTransactionStateSet() {
+        return isTransactionStateSet;
+    }
+
+    public boolean isIncludeInReportsSet() {
+        return isIncludeInReportsSet;
+    }
+
+    public boolean isExchangeRateSet() {
+        return isExchangeRateSet;
     }
 
     public Transaction getModel() {

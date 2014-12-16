@@ -12,6 +12,7 @@ import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.ViewController;
 import com.code44.finance.utils.TextBackgroundSpan;
 
+import java.util.Collections;
 import java.util.List;
 
 public class TagsViewController extends ViewController {
@@ -33,6 +34,10 @@ public class TagsViewController extends ViewController {
     }
 
     public void setTags(List<Tag> tags) {
+        if (tags == null) {
+            tags = Collections.emptyList();
+        }
+
         final SpannableStringBuilder ssb = new SpannableStringBuilder();
         for (Tag tag : tags) {
             ssb.append(tag.getTitle());
