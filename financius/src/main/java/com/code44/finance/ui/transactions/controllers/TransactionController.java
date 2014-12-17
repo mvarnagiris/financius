@@ -299,10 +299,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
         }
 
         final AutoCompleteInput.Builder input = AutoCompleteInput.build(transactionEditData.getTransactionType());
-
-        if (transactionEditData.isDateSet()) {
-            input.setDate(transactionEditData.getDate());
-        }
+        input.setDate(transactionEditData.getDate());
 
         if (transactionEditData.isAmountSet()) {
             input.setAmount(transactionEditData.getAmount());
