@@ -13,6 +13,7 @@ import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteInput;
 import com.code44.finance.utils.IOUtils;
+import com.code44.finance.utils.LogUtils;
 
 import org.joda.time.DateTime;
 
@@ -39,6 +40,12 @@ public class CategoriesFinder extends Finder<Category> {
         IOUtils.closeQuietly(cursor);
 
         final List<Category> sortedCategories = getSortedCategories(categoryScores, maxScore);
+
+        LogUtils.d(CategoriesFinder.class.getSimpleName(), "Categories scores-----------------------------------------");
+        for (Category category : sortedCategories) {
+            LogUtils.d(CategoriesFinder.class.getSimpleName(), category.getTitle() + ": " + categoryScores.get(category).scoreCache);
+        }
+
         return getResult(sortedCategories);
     }
 
