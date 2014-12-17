@@ -11,10 +11,11 @@ import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.ViewController;
 
 public class CategoryViewController extends ViewController {
-    private ImageView colorImageView;
-    private View categoryContainerView;
-    private Button categoryButton;
-    private View categoryDividerView;
+    private final ImageView colorImageView;
+    private final View categoryContainerView;
+    private final Button categoryButton;
+    private final View categoryDividerView;
+    private final int defaultTextColor;
     private TransactionType transactionType;
 
     public CategoryViewController(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
@@ -25,6 +26,8 @@ public class CategoryViewController extends ViewController {
 
         categoryButton.setOnClickListener(clickListener);
         categoryButton.setOnLongClickListener(longClickListener);
+
+        defaultTextColor = categoryButton.getCurrentTextColor();
     }
 
     @Override public void showError(Throwable error) {
@@ -54,6 +57,10 @@ public class CategoryViewController extends ViewController {
     public void setCategory(Category category) {
         colorImageView.setColorFilter(getCategoryColor(category, transactionType));
         categoryButton.setText(category == null ? null : category.getTitle());
+    }
+
+    public void setIsSetByUser(boolean isSetByUser) {
+        categoryButton.setTextColor(isSetByUser ? defaultTextColor : categoryButton.getContext().getResources().getColor(R.color.primary));
     }
 
     private int getCategoryColor(Category category, TransactionType transactionType) {

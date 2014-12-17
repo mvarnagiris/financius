@@ -403,6 +403,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
 
     private void updateCategory(Category category) {
         categoryViewController.setCategory(category);
+        categoryViewController.setIsSetByUser(transactionEditData.isCategorySet());
     }
 
     private void updateTags(List<Tag> tags) {
