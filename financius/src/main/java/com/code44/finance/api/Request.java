@@ -1,10 +1,10 @@
 package com.code44.finance.api;
 
 import com.code44.finance.utils.EventBus;
-import com.code44.finance.utils.LogUtils;
+import com.code44.finance.utils.Logger;
 
 public abstract class Request implements Runnable {
-    private static final String TAG = LogUtils.makeLogTag(Request.class);
+    private static final String TAG = Logger.makeLogTag(Request.class);
 
     protected final EventBus eventBus;
 
@@ -21,7 +21,7 @@ public abstract class Request implements Runnable {
         try {
             performRequest();
         } catch (Exception e) {
-            LogUtils.e(TAG, "Request failed.", e);
+            Logger.e(TAG, "Request failed.", e);
             error = e;
         }
 

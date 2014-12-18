@@ -48,6 +48,8 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     private static final int REQUEST_EXCHANGE_RATE = 8;
     private static final int REQUEST_AMOUNT_TO = 9;
 
+    private static final boolean LOG_AUTO_COMPLETE = true;
+
     private final BaseActivity activity;
     private final EventBus eventBus;
     private final Executor autoCompleteExecutor;
@@ -325,7 +327,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
             input.setNote(transactionEditData.getNote());
         }
 
-        new SmartTransactionAutoComplete(activity, autoCompleteExecutor, this, input.build()).execute();
+        new SmartTransactionAutoComplete(activity, autoCompleteExecutor, this, input.build(), LOG_AUTO_COMPLETE).execute();
     }
 
     private void toggleTransactionType() {

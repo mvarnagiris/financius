@@ -13,15 +13,17 @@ import java.util.concurrent.Executor;
 
 public class SmartTransactionAutoComplete extends TransactionAutoComplete {
     private final Context context;
+    private final boolean log;
 
-    public SmartTransactionAutoComplete(Context context, Executor executor, TransactionAutoCompleteListener listener, AutoCompleteInput autoCompleteInput) {
+    public SmartTransactionAutoComplete(Context context, Executor executor, TransactionAutoCompleteListener listener, AutoCompleteInput autoCompleteInput, boolean log) {
         super(executor, listener, autoCompleteInput);
         this.context = context.getApplicationContext();
+        this.log = log;
     }
 
     @Override protected AutoCompleteResult autoComplete(AutoCompleteInput input) {
         final AutoCompleteResult result = new AutoCompleteResult();
-        final Pair<Category, List<Category>> categoriesResult = new CategoriesFinder(context, input).find();
+        final Pair<Category, List<Category>> categoriesResult = new CategoriesFinder(context, input, log).find();
 
         result.setCategory(categoriesResult.first);
         result.setOtherCategories(categoriesResult.second);

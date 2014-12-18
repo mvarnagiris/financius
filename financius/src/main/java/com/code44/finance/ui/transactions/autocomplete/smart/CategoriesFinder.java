@@ -2,9 +2,7 @@ package com.code44.finance.ui.transactions.autocomplete.smart;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.util.Pair;
 import android.text.format.DateUtils;
-import android.util.Log;
 
 import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.Query;
@@ -13,80 +11,20 @@ import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteInput;
-import com.code44.finance.utils.IOUtils;
+import com.code44.finance.ui.transactions.autocomplete.Finder;
+import com.code44.finance.ui.transactions.autocomplete.FinderScore;
 
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CategoriesFinder extends Finder<Category> {
-    protected CategoriesFinder(Context context, AutoCompleteInput autoCompleteInput) {
-        super(context, autoCompleteInput);
+    protected CategoriesFinder(Context context, AutoCompleteInput autoCompleteInput, boolean log) {
+        super(context, autoCompleteInput, log);
     }
 
-    @Override protected Pair<Category, List<Category>> find(AutoCompleteInput input) {
-        final Cursor cursor = query(input);
-        if (cursor == null || !cursor.moveToFirst()) {
-            return Pair.create(null, Collections.<Category>emptyList());
-        }
-
-        final Map<Category, Score> categoryScores = new HashMap<>();
-        calculateCategoryScores(cursor, categoryScores, input);
-        IOUtils.closeQuietly(cursor);
-
-        final List<Category> sortedCategories = getSortedCategories(categoryScores);
-
-        Log.d(CategoriesFinder.class.getSimpleName(), "Categories scores-----------------------------------------");
-        for (Category category : sortedCategories) {
-            Log.d(CategoriesFinder.class.getSimpleName(), category.getTitle() + ": " + categoryScores.get(category).getScore());
-        }
-
-        return getResult(sortedCategories);
-    }
-
-    private void calculateCategoryScores(Cursor cursor, Map<Category, Score> categoryScores, AutoCompleteInput input) {
-        do {
-            final Transaction transaction = Transaction.from(cursor);
-            if (transaction.getCategory() == null) {
-                continue;
-            }
-
-            score(categoryScores, transaction, input);
-        } while (cursor.moveToNext());
-    }
-
-    private List<Category> getSortedCategories(final Map<Category, Score> categoryScores) {
-        final List<Category> categories = new ArrayList<>(categoryScores.keySet());
-        Collections.sort(categories, new ScoreComparator(categoryScores));
-        return categories;
-    }
-
-    private Pair<Category, List<Category>> getResult(List<Category> sortedCategories) {
-        final Category bestMatch;
-        if (sortedCategories.size() > 0) {
-            bestMatch = sortedCategories.remove(0);
-        } else {
-            bestMatch = null;
-        }
-
-        return Pair.create(bestMatch, sortedCategories);
-    }
-
-    private void score(Map<Category, Score> categoryScores, Transaction transaction, AutoCompleteInput input) {
-        Score score = categoryScores.get(transaction.getCategory());
-        if (score == null) {
-            score = new Score(input.getDate(), input.getAmount());
-            categoryScores.put(transaction.getCategory(), score);
-        }
-        score.add(transaction);
-    }
-
-    private Cursor query(AutoCompleteInput input) {
+    @Override protected Cursor queryTransactions(AutoCompleteInput input) {
         final Query query = getBaseQuery();
 
         if (!Strings.isEmpty(input.getNote())) {
@@ -113,24 +51,26 @@ public class CategoriesFinder extends Finder<Category> {
             query.selection(" and " + Tables.Transactions.ACCOUNT_TO_ID + "=?", input.getAccountTo().getId());
         }
 
-        return query(query);
+        return executeQuery(query);
     }
 
-    private static class ScoreComparator implements Comparator<Category> {
-        private final Map<Category, Score> categoryScores;
-
-        private ScoreComparator(Map<Category, Score> categoryScores) {
-            this.categoryScores = categoryScores;
-        }
-
-        @Override public int compare(Category lhs, Category rhs) {
-            final float leftScore = categoryScores.get(lhs).getScore();
-            final float rightScore = categoryScores.get(rhs).getScore();
-            return Float.compare(rightScore, leftScore);
-        }
+    @Override protected FinderScore createScore(AutoCompleteInput autoCompleteInput) {
+        return new Score(autoCompleteInput.getDate(), autoCompleteInput.getAmount());
     }
 
-    private class Score {
+    @Override protected boolean isValidTransaction(Transaction transaction) {
+        return transaction.getCategory() != null;
+    }
+
+    @Override protected Category getModelForTransaction(Transaction transaction) {
+        return transaction.getCategory();
+    }
+
+    @Override protected String getLogName(Category model) {
+        return model.getTitle();
+    }
+
+    private class Score implements FinderScore {
         private static final long MAX_TIME_OF_DAY_DELTA = DateUtils.MINUTE_IN_MILLIS * 45;
         private static final long MAX_SIMILAR_AMOUNT_DELTA = 5000;
 
@@ -166,7 +106,7 @@ public class CategoriesFinder extends Finder<Category> {
             this.amount = amount;
         }
 
-        public void add(Transaction transaction) {
+        @Override public void add(Transaction transaction) {
             final DateTime dateTime = new DateTime(transaction.getDate());
             final boolean isSameTimeOfDay = Math.abs(dateTime.getMillisOfDay() - currentDateTime.getMillisOfDay()) <= MAX_TIME_OF_DAY_DELTA;
             final boolean isSameDayOfWeek = dateTime.getDayOfWeek() == currentDateTime.getDayOfWeek();
@@ -212,19 +152,53 @@ public class CategoriesFinder extends Finder<Category> {
             }
         }
 
-        public float getScore() {
+        @Override public float getScore() {
             float score = 0.0f;
-            score += hasSameTimeOfDay ? SCORE_SAME_TIME_OF_DAY : 0;
-            score += hasSameDayOfWeek ? SCORE_SAME_DAY_OF_WEEK : 0;
-            score += hasSameDayOfMonth ? SCORE_SAME_DAY_OF_MONTH : 0;
-            score += hasSameAmountSameTimeOfDay ? SCORE_SAME_AMOUNT_SAME_TIME_OF_DAY : 0;
-            score += hasSameAmountSameDayOfWeek ? SCORE_SAME_AMOUNT_SAME_DAY_OF_WEEK : 0;
-            score += hasSameAmountSameDayOfMonth ? SCORE_SAME_AMOUNT_SAME_DAY_OF_MONTH : 0;
-            score += hasSimilarAmountSameTimeOfDay ? SCORE_SIMILAR_AMOUNT_SAME_TIME_OF_DAY : 0;
-            score += hasSimilarAmountSameDayOfWeek ? SCORE_SIMILAR_AMOUNT_SAME_DAY_OF_WEEK : 0;
-            score += hasSimilarAmountSameDayOfMonth ? SCORE_SIMILAR_AMOUNT_SAME_DAY_OF_MONTH : 0;
-            score += hasSameAmount ? SCORE_SAME_AMOUNT : 0;
-            score += hasSimilarAmount ? SCORE_SIMILAR_AMOUNT : 0;
+
+            if (hasSameTimeOfDay) {
+                score += SCORE_SAME_TIME_OF_DAY;
+            }
+
+            if (hasSameDayOfWeek) {
+                score += SCORE_SAME_DAY_OF_WEEK;
+            }
+
+            if (hasSameDayOfMonth) {
+                score += SCORE_SAME_DAY_OF_MONTH;
+            }
+
+            if (hasSameAmountSameTimeOfDay) {
+                score += SCORE_SAME_AMOUNT_SAME_TIME_OF_DAY;
+            }
+
+            if (hasSameAmountSameDayOfWeek) {
+                score += SCORE_SAME_AMOUNT_SAME_DAY_OF_WEEK;
+            }
+
+            if (hasSameAmountSameDayOfMonth) {
+                score += SCORE_SAME_AMOUNT_SAME_DAY_OF_MONTH;
+            }
+
+            if (hasSimilarAmountSameTimeOfDay) {
+                score += SCORE_SIMILAR_AMOUNT_SAME_TIME_OF_DAY;
+            }
+
+            if (hasSimilarAmountSameDayOfWeek) {
+                score += SCORE_SIMILAR_AMOUNT_SAME_DAY_OF_WEEK;
+            }
+
+            if (hasSimilarAmountSameDayOfMonth) {
+                score += SCORE_SIMILAR_AMOUNT_SAME_DAY_OF_MONTH;
+            }
+
+            if (hasSameAmount) {
+                score += SCORE_SAME_AMOUNT;
+            }
+
+            if (hasSimilarAmount) {
+                score += SCORE_SIMILAR_AMOUNT;
+            }
+
             return score;
         }
     }
