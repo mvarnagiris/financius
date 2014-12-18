@@ -47,6 +47,12 @@ public class SmartTransactionAutoComplete extends TransactionAutoComplete {
             result.setOtherAccountsTo(accountsResult.second);
         }
 
+        if (input.getAmount() == 0) {
+            final Pair<Long, List<Long>> amountsResult = new AmountsFinder(context, input, log, categoriesResult.first).find();
+            result.setAmount(amountsResult.first);
+            result.setOtherAmounts(amountsResult.second);
+        }
+
 
         return result;
     }

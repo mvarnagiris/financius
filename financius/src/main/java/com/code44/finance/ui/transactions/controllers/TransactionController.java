@@ -34,6 +34,7 @@ import com.squareup.otto.Subscribe;
 
 import org.joda.time.DateTime;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -68,6 +69,8 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     private final FlagsViewController flagsViewController;
 
     private boolean isResumed = false;
+    private boolean isUpdated = false;
+    private boolean isAutoCompleteUpdateQueued = false;
 
     public TransactionController(BaseActivity activity, EventBus eventBus, Executor autoCompleteExecutor, Currency mainCurrency, CurrenciesApi currenciesApi, OnTransactionUpdatedListener listener) {
         this.activity = activity;
@@ -120,7 +123,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
                 CategoriesActivity.startSelect(activity, REQUEST_CATEGORY, transactionEditData.getTransactionType());
                 break;
             case R.id.tagsButton:
-                TagsActivity.startMultiSelect(activity, REQUEST_TAGS, transactionEditData.getTags());
+                TagsActivity.startMultiSelect(activity, REQUEST_TAGS, transactionEditData.getTags() != null ? transactionEditData.getTags() : Collections.<Tag>emptyList());
                 break;
         }
     }
@@ -217,7 +220,11 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     public void onResume() {
         isResumed = true;
         eventBus.register(this);
-        update(false);
+        if (!isUpdated) {
+            update(false);
+        } else if (isAutoCompleteUpdateQueued) {
+            update(true);
+        }
     }
 
     public void onPause() {
@@ -276,8 +283,13 @@ public class TransactionController implements TransactionAutoComplete.Transactio
 
     private void update(boolean isAutoComplete) {
         if (!isResumed) {
+            if (isAutoComplete) {
+                isAutoCompleteUpdateQueued = true;
+            }
             return;
         }
+        isUpdated = true;
+        isAutoCompleteUpdateQueued = false;
 
         updateTransactionType(transactionEditData.getTransactionType());
         updateAmount(transactionEditData.getAmount());

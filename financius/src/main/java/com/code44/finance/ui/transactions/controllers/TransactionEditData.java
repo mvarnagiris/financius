@@ -47,10 +47,6 @@ public class TransactionEditData {
         this.storedTransaction = storedTransaction;
     }
 
-    public AutoCompleteResult getAutoCompleteResult() {
-        return autoCompleteResult;
-    }
-
     public void setAutoCompleteResult(AutoCompleteResult autoCompleteResult) {
         this.autoCompleteResult = autoCompleteResult;
     }
@@ -73,7 +69,7 @@ public class TransactionEditData {
     }
 
     public long getAmount() {
-        if (isAmountSet || amount != null) {
+        if (amount != null && amount > 0) {
             return amount;
         }
 
@@ -81,12 +77,16 @@ public class TransactionEditData {
             return storedTransaction.getAmount();
         }
 
+        if (autoCompleteResult != null && autoCompleteResult.getAmount() != null) {
+            return autoCompleteResult.getAmount();
+        }
+
         return 0;
     }
 
     public void setAmount(Long amount) {
         this.amount = amount;
-        isAmountSet = true;
+        isAmountSet = amount != null && amount > 0;
     }
 
     public long getDate() {
