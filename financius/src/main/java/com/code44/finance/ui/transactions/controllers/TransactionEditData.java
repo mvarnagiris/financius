@@ -284,47 +284,47 @@ public class TransactionEditData {
     }
 
     public boolean isTransactionTypeSet() {
-        return isTransactionTypeSet;
+        return isTransactionTypeSet || storedTransaction != null;
     }
 
     public boolean isAmountSet() {
-        return isAmountSet;
+        return isAmountSet || storedTransaction != null;
     }
 
     public boolean isDateSet() {
-        return isDateSet;
+        return isDateSet || storedTransaction != null;
     }
 
     public boolean isAccountFromSet() {
-        return isAccountFromSet;
+        return isAccountFromSet || storedTransaction != null;
     }
 
     public boolean isAccountToSet() {
-        return isAccountToSet;
+        return isAccountToSet || storedTransaction != null;
     }
 
     public boolean isCategorySet() {
-        return isCategorySet;
+        return isCategorySet || storedTransaction != null;
     }
 
     public boolean isTagsSet() {
-        return isTagsSet;
+        return isTagsSet || storedTransaction != null;
     }
 
     public boolean isNoteSet() {
-        return isNoteSet;
+        return isNoteSet || storedTransaction != null;
     }
 
     public boolean isTransactionStateSet() {
-        return isTransactionStateSet;
+        return isTransactionStateSet || storedTransaction != null;
     }
 
     public boolean isIncludeInReportsSet() {
-        return isIncludeInReportsSet;
+        return isIncludeInReportsSet || storedTransaction != null;
     }
 
     public boolean isExchangeRateSet() {
-        return isExchangeRateSet;
+        return isExchangeRateSet || storedTransaction != null;
     }
 
     public Transaction getModel() {

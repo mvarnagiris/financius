@@ -10,6 +10,7 @@ import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.ViewController;
 
 public class AccountsViewController extends ViewController {
+    private final int defaultTextColor;
     private Button accountFromButton;
     private Button accountToButton;
 
@@ -21,6 +22,8 @@ public class AccountsViewController extends ViewController {
         accountFromButton.setOnLongClickListener(longClickListener);
         accountToButton.setOnClickListener(clickListener);
         accountToButton.setOnLongClickListener(longClickListener);
+
+        defaultTextColor = accountFromButton.getCurrentTextColor();
     }
 
     @Override public void showError(Throwable error) {
@@ -49,5 +52,13 @@ public class AccountsViewController extends ViewController {
 
     protected void setAccountTo(Account account) {
         accountToButton.setText(account == null ? null : account.getTitle());
+    }
+
+    public void setIsAccountFromSetByUser(boolean isSetByUser) {
+        accountFromButton.setTextColor(isSetByUser ? defaultTextColor : accountFromButton.getContext().getResources().getColor(R.color.primary));
+    }
+
+    public void setIsAccountToSetByUser(boolean isSetByUser) {
+        accountToButton.setTextColor(isSetByUser ? defaultTextColor : accountToButton.getContext().getResources().getColor(R.color.primary));
     }
 }

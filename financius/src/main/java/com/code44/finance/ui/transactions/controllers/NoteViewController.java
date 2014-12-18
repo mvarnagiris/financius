@@ -100,6 +100,9 @@ public class NoteViewController extends ViewController implements LoaderManager.
     public void setNote(String note) {
         noteAutoCompleteTextView.removeTextChangedListener(this);
         noteAutoCompleteTextView.setText(note);
+        if (noteAutoCompleteTextView.hasFocus()) {
+            noteAutoCompleteTextView.setSelection(noteAutoCompleteTextView.getText().length());
+        }
         noteAutoCompleteTextView.addTextChangedListener(this);
     }
 

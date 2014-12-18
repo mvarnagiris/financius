@@ -171,7 +171,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
 
     @Override public void onTransactionAutoComplete(AutoCompleteResult result) {
         transactionEditData.setAutoCompleteResult(result);
-        update();
+        update(true);
     }
 
     @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -179,11 +179,11 @@ public class TransactionController implements TransactionAutoComplete.Transactio
             case R.id.confirmedCheckBox:
                 final boolean canBeConfirmed = transactionEditData.validateAmount(amountViewController) && transactionEditData.validateAccountFrom(accountsViewController) && transactionEditData.validateAccountTo(accountsViewController);
                 transactionEditData.setTransactionState(canBeConfirmed && isChecked ? TransactionState.Confirmed : TransactionState.Pending);
-                update();
+                update(false);
                 break;
             case R.id.includeInReportsCheckBox:
                 transactionEditData.setIncludeInReports(isChecked);
-                update();
+                update(false);
                 break;
         }
     }
@@ -217,7 +217,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     public void onResume() {
         isResumed = true;
         eventBus.register(this);
-        update();
+        update(false);
     }
 
     public void onPause() {
@@ -271,10 +271,10 @@ public class TransactionController implements TransactionAutoComplete.Transactio
 
     public void setStoredTransaction(Transaction transaction) {
         transactionEditData.setStoredTransaction(transaction);
-        update();
+        update(false);
     }
 
-    private void update() {
+    private void update(boolean isAutoComplete) {
         if (!isResumed) {
             return;
         }
@@ -287,16 +287,19 @@ public class TransactionController implements TransactionAutoComplete.Transactio
         updateAccountTo(transactionEditData.getAccountTo());
         updateCategory(transactionEditData.getCategory());
         updateTags(transactionEditData.getTags());
-        updateNote(transactionEditData.getNote());
         updateTransactionState(transactionEditData.getTransactionState());
         updateIncludeInReports(transactionEditData.getIncludeInReports());
+
+        if (!isAutoComplete) {
+            updateNote(transactionEditData.getNote());
+        }
 
         listener.onTransactionUpdated(transactionEditData);
     }
 
     private void requestAutoComplete() {
         if (transactionEditData.getStoredTransaction() != null) {
-            update();
+            update(true);
             return;
         }
 
@@ -397,10 +400,12 @@ public class TransactionController implements TransactionAutoComplete.Transactio
 
     private void updateAccountFrom(Account account) {
         accountsViewController.setAccountFrom(account);
+        accountsViewController.setIsAccountFromSetByUser(transactionEditData.isAccountFromSet());
     }
 
     private void updateAccountTo(Account account) {
         accountsViewController.setAccountTo(account);
+        accountsViewController.setIsAccountToSetByUser(transactionEditData.isAccountToSet());
     }
 
     private void updateCategory(Category category) {
