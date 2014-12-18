@@ -4,10 +4,8 @@ import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.Logger;
 
 public abstract class Request implements Runnable {
-    private static final String TAG = Logger.makeLogTag(Request.class);
-
     protected final EventBus eventBus;
-
+    private final Logger logger = Logger.with(Request.class.getSimpleName());
     protected Exception error;
 
     /**
@@ -21,7 +19,7 @@ public abstract class Request implements Runnable {
         try {
             performRequest();
         } catch (Exception e) {
-            Logger.e(TAG, "Request failed.", e);
+            logger.error("Request failed.", e);
             error = e;
         }
 
