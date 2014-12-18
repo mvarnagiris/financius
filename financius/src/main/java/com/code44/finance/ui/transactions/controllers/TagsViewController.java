@@ -19,6 +19,7 @@ public class TagsViewController extends ViewController {
     private final Button tagsButton;
     private final int tagBackgroundColor;
     private final float tagBackgroundRadius;
+    private final int defaultTextColor;
 
     public TagsViewController(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
         tagsButton = findView(activity, R.id.tagsButton);
@@ -28,6 +29,7 @@ public class TagsViewController extends ViewController {
         tagBackgroundRadius = res.getDimension(R.dimen.tag_radius);
         tagsButton.setOnClickListener(clickListener);
         tagsButton.setOnLongClickListener(longClickListener);
+        defaultTextColor = tagsButton.getCurrentTextColor();
     }
 
     @Override public void showError(Throwable error) {
@@ -45,5 +47,9 @@ public class TagsViewController extends ViewController {
             ssb.append(" ");
         }
         tagsButton.setText(ssb);
+    }
+
+    public void setIsSetByUser(boolean isSetByUser) {
+        tagsButton.setTextColor(isSetByUser ? defaultTextColor : tagsButton.getContext().getResources().getColor(R.color.primary));
     }
 }

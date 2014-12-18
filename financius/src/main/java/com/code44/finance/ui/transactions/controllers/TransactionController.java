@@ -410,6 +410,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
 
     private void updateTags(List<Tag> tags) {
         tagsViewController.setTags(tags);
+        tagsViewController.setIsSetByUser(transactionEditData.isTagsSet());
     }
 
     private void updateNote(String note) {

@@ -13,12 +13,14 @@ import com.code44.finance.ui.transactions.autocomplete.AutoCompleteInput;
 import com.code44.finance.ui.transactions.autocomplete.Finder;
 import com.code44.finance.ui.transactions.autocomplete.FinderScore;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class CategoriesFinder extends Finder<Category> {
-    protected CategoriesFinder(Context context, AutoCompleteInput autoCompleteInput, boolean log) {
+public class TagsFinder extends Finder<List<Tag>> {
+    private final Category category;
+
+    protected TagsFinder(Context context, AutoCompleteInput autoCompleteInput, boolean log, Category category) {
         super(context, autoCompleteInput, log);
+        this.category = category;
     }
 
     @Override protected Cursor queryTransactions(AutoCompleteInput input) {
@@ -28,12 +30,10 @@ public class CategoriesFinder extends Finder<Category> {
             query.selection(" and " + Tables.Transactions.NOTE + "=?", input.getNote());
         }
 
-        if (input.getTags() != null && input.getTags().size() > 0) {
-            final List<String> tagIds = new ArrayList<>();
-            for (Tag tag : input.getTags()) {
-                tagIds.add(tag.getId());
-            }
-            query.selection(" and ").selectionInClause(Tables.TransactionTags.TAG_ID.getName(), tagIds);
+        if (input.getCategory() != null) {
+            query.selection(" and " + Tables.Transactions.CATEGORY_ID + "=?", input.getCategory().getId());
+        } else if (category != null) {
+            query.selection(" and " + Tables.Transactions.CATEGORY_ID + "=?", category.getId());
         }
 
         if (input.getAccountFrom() != null) {
@@ -52,14 +52,21 @@ public class CategoriesFinder extends Finder<Category> {
     }
 
     @Override protected boolean isValidTransaction(Transaction transaction) {
-        return transaction.getCategory() != null;
+        return transaction.getTags() != null && !transaction.getTags().isEmpty();
     }
 
-    @Override protected Category getModelForTransaction(Transaction transaction) {
-        return transaction.getCategory();
+    @Override protected List<Tag> getModelForTransaction(Transaction transaction) {
+        return transaction.getTags();
     }
 
-    @Override protected String getLogName(Category model) {
-        return model.getTitle();
+    @Override protected String getLogName(List<Tag> model) {
+        StringBuilder sb = new StringBuilder();
+        for (Tag tag : model) {
+            if (sb.length() > 0) {
+                sb.append(", ");
+            }
+            sb.append(tag.getTitle());
+        }
+        return sb.toString();
     }
 }

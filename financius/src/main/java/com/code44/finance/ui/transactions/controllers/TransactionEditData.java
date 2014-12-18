@@ -56,7 +56,7 @@ public class TransactionEditData {
     }
 
     public TransactionType getTransactionType() {
-        if (isTransactionTypeSet && transactionType != null) {
+        if (isTransactionTypeSet || transactionType != null) {
             return transactionType;
         }
 
@@ -73,7 +73,7 @@ public class TransactionEditData {
     }
 
     public long getAmount() {
-        if (isAmountSet && amount != null) {
+        if (isAmountSet || amount != null) {
             return amount;
         }
 
@@ -90,7 +90,7 @@ public class TransactionEditData {
     }
 
     public long getDate() {
-        if (isDateSet && date != null) {
+        if (isDateSet || date != null) {
             return date;
         }
 
@@ -111,7 +111,7 @@ public class TransactionEditData {
             return null;
         }
 
-        if (isAccountFromSet && accountFrom != null) {
+        if (isAccountFromSet || accountFrom != null) {
             return accountFrom;
         }
 
@@ -136,7 +136,7 @@ public class TransactionEditData {
             return null;
         }
 
-        if (isAccountToSet && accountTo != null) {
+        if (isAccountToSet || accountTo != null) {
             return accountTo;
         }
 
@@ -161,7 +161,7 @@ public class TransactionEditData {
             return null;
         }
 
-        if (isCategorySet && category != null && category.getTransactionType() == getTransactionType()) {
+        if (isCategorySet || category != null) {
             return category;
         }
 
@@ -182,7 +182,7 @@ public class TransactionEditData {
     }
 
     public List<Tag> getTags() {
-        if (isTagsSet && tags != null) {
+        if (isTagsSet || tags != null) {
             return tags;
         }
 
@@ -203,7 +203,7 @@ public class TransactionEditData {
     }
 
     public String getNote() {
-        if (isNoteSet && note != null) {
+        if (isNoteSet || note != null) {
             return note;
         }
 
@@ -260,7 +260,7 @@ public class TransactionEditData {
     public double getExchangeRate() {
         double exchangeRate;
 
-        if (isExchangeRateSet && this.exchangeRate != null) {
+        if (isExchangeRateSet || this.exchangeRate != null) {
             exchangeRate = this.exchangeRate;
         } else if (storedTransaction != null) {
             exchangeRate = storedTransaction.getExchangeRate();

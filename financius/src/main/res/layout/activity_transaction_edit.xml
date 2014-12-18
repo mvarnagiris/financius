@@ -138,12 +138,12 @@
                 android:paddingLeft="@dimen/keyline"
                 android:paddingRight="@dimen/keyline">
 
-                <ImageView
+                <com.code44.finance.ui.common.views.TintImageView
                     android:id="@+id/accountImageView"
                     style="@style/ImageView.Form"
                     android:src="@drawable/ic_bank"
-                    tools:ignore="RtlHardcoded"
-                    tools:tint="@color/text_secondary" />
+                    app:supportTintColor="@color/text_secondary"
+                    tools:ignore="RtlHardcoded" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -212,12 +212,12 @@
                 android:paddingLeft="@dimen/keyline"
                 android:paddingRight="@dimen/keyline">
 
-                <ImageView
+                <com.code44.finance.ui.common.views.TintImageView
                     android:id="@+id/tagsImageView"
                     style="@style/ImageView.Form"
                     android:src="@drawable/ic_tags"
-                    tools:ignore="RtlHardcoded"
-                    tools:tint="@color/text_secondary" />
+                    app:supportTintColor="@color/text_secondary"
+                    tools:ignore="RtlHardcoded" />
 
                 <Button
                     android:id="@+id/tagsButton"
@@ -240,12 +240,12 @@
                 android:paddingLeft="@dimen/keyline"
                 android:paddingRight="@dimen/keyline">
 
-                <ImageView
+                <com.code44.finance.ui.common.views.TintImageView
                     android:id="@+id/noteImageView"
                     style="@style/ImageView.Form"
                     android:src="@drawable/ic_note"
-                    tools:ignore="RtlHardcoded"
-                    tools:tint="@color/text_secondary" />
+                    app:supportTintColor="@color/text_secondary"
+                    tools:ignore="RtlHardcoded" />
 
                 <AutoCompleteTextView
                     android:id="@+id/noteAutoCompleteTextView"
