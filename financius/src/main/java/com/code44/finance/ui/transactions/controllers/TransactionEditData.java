@@ -1,5 +1,8 @@
 package com.code44.finance.ui.transactions.controllers;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.model.Account;
@@ -11,7 +14,17 @@ import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
 
 import java.util.List;
 
-public class TransactionEditData {
+public class TransactionEditData implements Parcelable {
+    public static final Parcelable.Creator<TransactionEditData> CREATOR = new Parcelable.Creator<TransactionEditData>() {
+        public TransactionEditData createFromParcel(Parcel in) {
+            return new TransactionEditData(in);
+        }
+
+        public TransactionEditData[] newArray(int size) {
+            return new TransactionEditData[size];
+        }
+    };
+
     private Transaction storedTransaction;
     private AutoCompleteResult autoCompleteResult;
 
@@ -38,6 +51,67 @@ public class TransactionEditData {
     private boolean isTransactionStateSet = false;
     private boolean isIncludeInReportsSet = false;
     private boolean isExchangeRateSet = false;
+
+    public TransactionEditData() {
+    }
+
+    private TransactionEditData(Parcel in) {
+        storedTransaction = in.readParcelable(Transaction.class.getClassLoader());
+        autoCompleteResult = in.readParcelable(AutoCompleteResult.class.getClassLoader());
+        transactionType = (TransactionType) in.readSerializable();
+        amount = (Long) in.readValue(Long.class.getClassLoader());
+        date = (Long) in.readValue(Long.class.getClassLoader());
+        accountFrom = in.readParcelable(Account.class.getClassLoader());
+        accountTo = in.readParcelable(Account.class.getClassLoader());
+        category = in.readParcelable(Category.class.getClassLoader());
+        in.readTypedList(tags, Tag.CREATOR);
+        note = in.readString();
+        transactionState = (TransactionState) in.readSerializable();
+        includeInReports = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        exchangeRate = (Double) in.readValue(Double.class.getClassLoader());
+        isTransactionTypeSet = in.readInt() == 1;
+        isAmountSet = in.readInt() == 1;
+        isDateSet = in.readInt() == 1;
+        isAccountFromSet = in.readInt() == 1;
+        isAccountToSet = in.readInt() == 1;
+        isCategorySet = in.readInt() == 1;
+        isTagsSet = in.readInt() == 1;
+        isNoteSet = in.readInt() == 1;
+        isTransactionStateSet = in.readInt() == 1;
+        isIncludeInReportsSet = in.readInt() == 1;
+        isExchangeRateSet = in.readInt() == 1;
+    }
+
+    @Override public int describeContents() {
+        return 0;
+    }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(storedTransaction, flags);
+        dest.writeParcelable(autoCompleteResult, flags);
+        dest.writeSerializable(transactionType);
+        dest.writeValue(amount);
+        dest.writeValue(date);
+        dest.writeParcelable(accountFrom, flags);
+        dest.writeParcelable(accountTo, flags);
+        dest.writeParcelable(category, flags);
+        dest.writeTypedList(tags);
+        dest.writeString(note);
+        dest.writeSerializable(transactionState);
+        dest.writeValue(includeInReports);
+        dest.writeValue(exchangeRate);
+        dest.writeInt(isTransactionTypeSet ? 1 : 0);
+        dest.writeInt(isAmountSet ? 1 : 0);
+        dest.writeInt(isDateSet ? 1 : 0);
+        dest.writeInt(isAccountFromSet ? 1 : 0);
+        dest.writeInt(isAccountToSet ? 1 : 0);
+        dest.writeInt(isCategorySet ? 1 : 0);
+        dest.writeInt(isTagsSet ? 1 : 0);
+        dest.writeInt(isNoteSet ? 1 : 0);
+        dest.writeInt(isTransactionStateSet ? 1 : 0);
+        dest.writeInt(isIncludeInReportsSet ? 1 : 0);
+        dest.writeInt(isExchangeRateSet ? 1 : 0);
+    }
 
     public Transaction getStoredTransaction() {
         return storedTransaction;
@@ -66,6 +140,7 @@ public class TransactionEditData {
     public void setTransactionType(TransactionType transactionType) {
         this.transactionType = transactionType;
         isTransactionTypeSet = true;
+        onTransactionTypeChanged();
     }
 
     public long getAmount() {
@@ -401,5 +476,21 @@ public class TransactionEditData {
         }
 
         return true;
+    }
+
+    private void onTransactionTypeChanged() {
+        autoCompleteResult = null;
+
+        accountFrom = null;
+        accountTo = null;
+        category = null;
+        tags = null;
+        note = null;
+
+        isAccountFromSet = false;
+        isAccountToSet = false;
+        isCategorySet = false;
+        isTagsSet = false;
+        isNoteSet = false;
     }
 }

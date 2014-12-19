@@ -58,6 +58,11 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
         transactionController.onPause();
     }
 
+    @Override public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        transactionController.onSaveInstanceState(outState);
+    }
+
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         transactionController.handleActivityResult(requestCode, resultCode, data);

@@ -50,6 +50,8 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     private static final int REQUEST_EXCHANGE_RATE = 8;
     private static final int REQUEST_AMOUNT_TO = 9;
 
+    private static final String STATE_TRANSACTION_EDIT_DATA = "STATE_TRANSACTION_EDIT_DATA";
+
     private static final boolean LOG_AUTO_COMPLETE = true;
 
     private final BaseActivity activity;
@@ -57,6 +59,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     private final Executor autoCompleteExecutor;
     private final CurrenciesApi currenciesApi;
     private final OnTransactionUpdatedListener listener;
+
     private final TransactionEditData transactionEditData;
 
     private final TransactionTypeViewController transactionTypeViewController;
@@ -80,7 +83,12 @@ public class TransactionController implements TransactionAutoComplete.Transactio
         this.currenciesApi = currenciesApi;
         this.listener = listener;
 
-        transactionEditData = new TransactionEditData();
+        if (savedInstanceState == null) {
+            transactionEditData = new TransactionEditData();
+        } else {
+            transactionEditData = savedInstanceState.getParcelable(STATE_TRANSACTION_EDIT_DATA);
+        }
+
         transactionTypeViewController = new TransactionTypeViewController(activity, this);
         amountViewController = new AmountViewController(activity, this, this, mainCurrency);
         dateTimeViewController = new DateTimeViewController(activity, this, this);
@@ -262,6 +270,10 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     public void onPause() {
         isResumed = false;
         eventBus.unregister(this);
+    }
+
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(STATE_TRANSACTION_EDIT_DATA, transactionEditData);
     }
 
     public void handleActivityResult(int requestCode, int resultCode, Intent data) {
