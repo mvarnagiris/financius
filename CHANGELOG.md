@@ -5,6 +5,7 @@
 - ```new``` Updated icons.
 - ```new``` Auto-completed fields have transparent icon.
 - ```new``` Clicking on auto-completed field icon confirms that field.
+- ```new``` Updated translations.
 
 ###Version: 0.15.4
 - ```new``` Updated UI for new transaction screen. More improvements are still to come.

@@ -109,6 +109,11 @@
     <string name="create_backup">Criar Backup</string>
     <string name="no_category">Sem Categoria</string>
     <string name="trends">Tendências</string>
+    <string name="security">Segurança</string>
+    <string name="lock">Bloqueio</string>
+    <string name="unlock">Desbloqueio</string>
+    <string name="create_password">Senha</string>
+    <string name="confirm_password">Confirme a Senha</string>
     <string name="f_change_to_x">Alterar para %s</string>
     <string name="f_current_main_currency_is_x">A Moeda Principal Atual é %s</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s Será Deletada</string>
@@ -117,8 +122,9 @@
     <string name="l_delete_short">Deletar</string>
     <string name="l_delete_confirmation">Tem Certeza que Deseja Excluir?</string>
     <string name="l_about_new_issue">Problemas e Pedidos de Novas Funcionalidades. Primeiro leia o arquivo Leia-me.</string>
-    <string name="l_about_rate">Gostou do Financious? Avalie-nos no Google Play.</string>
+    <string name="l_about_rate">Gostou do Financius? Avalie-nos no Google Play.</string>
     <string name="l_about_community">Quer ver o que vem pela Frente? Participe da Comunidade.</string>
+    <string name="error_unlock_password">A Senha não corresponde. Tente novamente.</string>
     <string name="c_food">Comida</string>
     <string name="c_leisure">Lazer</string>
     <string name="c_clothing">Roupas e Acessórios</string>

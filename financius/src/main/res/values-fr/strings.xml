@@ -109,6 +109,11 @@
     <string name="create_backup">Créer une sauvegarde</string>
     <string name="no_category">Aucune catégorie</string>
     <string name="trends">Courbe de Dépenses</string>
+    <string name="security">Sécurité</string>
+    <string name="lock">Verouiller</string>
+    <string name="unlock">Dévérrouiller</string>
+    <string name="create_password">Créer un mot de passe</string>
+    <string name="confirm_password">Confirmer mot de passe</string>
     <string name="f_change_to_x">Changer pour %s</string>
     <string name="f_current_main_currency_is_x">La devise principal actuelle est %s</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s à effacer</string>
@@ -119,6 +124,7 @@
     <string name="l_about_new_issue">Bug &amp; demande de fonctionnalité. Liser les informations d\'abord.</string>
     <string name="l_about_rate">Vous aimez cette application ? Noter la sur Google Play.</string>
     <string name="l_about_community">Vous voulez connaître ce qui viendra plus tard ? Rejoignez la communauté.</string>
+    <string name="error_unlock_password">Le mot de passe est incorrect. Essayer de nouveau.</string>
     <string name="c_food">Alimentaire</string>
     <string name="c_leisure">Loisirs</string>
     <string name="c_clothing">Vêtements</string>
