@@ -182,11 +182,11 @@ public class TransactionController implements TransactionAutoComplete.Transactio
             case R.id.confirmedCheckBox:
                 final boolean canBeConfirmed = transactionEditData.validateAmount(amountViewController) && transactionEditData.validateAccountFrom(accountsViewController) && transactionEditData.validateAccountTo(accountsViewController);
                 transactionEditData.setTransactionState(canBeConfirmed && isChecked ? TransactionState.Confirmed : TransactionState.Pending);
-                update(false);
+                requestAutoComplete();
                 break;
             case R.id.includeInReportsCheckBox:
                 transactionEditData.setIncludeInReports(isChecked);
-                update(false);
+                requestAutoComplete();
                 break;
         }
     }
@@ -408,6 +408,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
 
     private void updateDate(long date) {
         dateTimeViewController.setDateTime(date);
+        dateTimeViewController.isSetByUser(transactionEditData.isDateSet());
     }
 
     private void updateAccountFrom(Account account) {

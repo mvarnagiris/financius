@@ -9,10 +9,12 @@ import com.code44.finance.ui.common.ViewController;
 
 public class FlagsViewController extends ViewController {
     private final CheckBox includeInReportsCheckBox;
+    private final CompoundButton.OnCheckedChangeListener onCheckedChangeListener;
 
     public FlagsViewController(BaseActivity activity, CompoundButton.OnCheckedChangeListener checkedChangeListener) {
         includeInReportsCheckBox = findView(activity, R.id.includeInReportsCheckBox);
 
+        onCheckedChangeListener = checkedChangeListener;
         includeInReportsCheckBox.setOnCheckedChangeListener(checkedChangeListener);
     }
 
@@ -20,6 +22,8 @@ public class FlagsViewController extends ViewController {
     }
 
     public void setIncludeInReports(boolean includeInReports) {
+        includeInReportsCheckBox.setOnCheckedChangeListener(null);
         includeInReportsCheckBox.setChecked(includeInReports);
+        includeInReportsCheckBox.setOnCheckedChangeListener(onCheckedChangeListener);
     }
 }

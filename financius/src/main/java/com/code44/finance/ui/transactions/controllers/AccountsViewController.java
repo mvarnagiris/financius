@@ -2,6 +2,7 @@ package com.code44.finance.ui.transactions.controllers;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
@@ -10,11 +11,14 @@ import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.ViewController;
 
 public class AccountsViewController extends ViewController {
-    private final int defaultTextColor;
-    private Button accountFromButton;
-    private Button accountToButton;
+    private final ImageView accountImageView;
+    private final Button accountFromButton;
+    private final Button accountToButton;
+    private boolean isAccountFromSet = false;
+    private boolean isAccountToSet = false;
 
     public AccountsViewController(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
+        accountImageView = findView(activity, R.id.accountImageView);
         accountFromButton = findView(activity, R.id.accountFromButton);
         accountToButton = findView(activity, R.id.accountToButton);
 
@@ -22,8 +26,6 @@ public class AccountsViewController extends ViewController {
         accountFromButton.setOnLongClickListener(longClickListener);
         accountToButton.setOnClickListener(clickListener);
         accountToButton.setOnLongClickListener(longClickListener);
-
-        defaultTextColor = accountFromButton.getCurrentTextColor();
     }
 
     @Override public void showError(Throwable error) {
@@ -55,10 +57,16 @@ public class AccountsViewController extends ViewController {
     }
 
     public void setIsAccountFromSetByUser(boolean isSetByUser) {
-        accountFromButton.setTextColor(isSetByUser ? defaultTextColor : accountFromButton.getContext().getResources().getColor(R.color.primary));
+        isAccountFromSet = isSetByUser;
+        updateAccountImageView();
     }
 
     public void setIsAccountToSetByUser(boolean isSetByUser) {
-        accountToButton.setTextColor(isSetByUser ? defaultTextColor : accountToButton.getContext().getResources().getColor(R.color.primary));
+        isAccountToSet = isSetByUser;
+        updateAccountImageView();
+    }
+
+    private void updateAccountImageView() {
+        accountImageView.setImageAlpha(isAccountFromSet || isAccountToSet ? 255 : 64);
     }
 }

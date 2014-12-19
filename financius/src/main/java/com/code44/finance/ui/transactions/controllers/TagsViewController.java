@@ -5,6 +5,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.code44.finance.R;
 import com.code44.finance.data.model.Tag;
@@ -16,12 +17,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class TagsViewController extends ViewController {
+    private final ImageView tagsImageView;
     private final Button tagsButton;
     private final int tagBackgroundColor;
     private final float tagBackgroundRadius;
-    private final int defaultTextColor;
 
     public TagsViewController(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
+        tagsImageView = findView(activity, R.id.tagsImageView);
         tagsButton = findView(activity, R.id.tagsButton);
 
         final Resources res = tagsButton.getResources();
@@ -29,7 +31,6 @@ public class TagsViewController extends ViewController {
         tagBackgroundRadius = res.getDimension(R.dimen.tag_radius);
         tagsButton.setOnClickListener(clickListener);
         tagsButton.setOnLongClickListener(longClickListener);
-        defaultTextColor = tagsButton.getCurrentTextColor();
     }
 
     @Override public void showError(Throwable error) {
@@ -50,6 +51,6 @@ public class TagsViewController extends ViewController {
     }
 
     public void setIsSetByUser(boolean isSetByUser) {
-        tagsButton.setTextColor(isSetByUser ? defaultTextColor : tagsButton.getContext().getResources().getColor(R.color.primary));
+        tagsImageView.setImageAlpha(isSetByUser ? 255 : 64);
     }
 }

@@ -15,7 +15,6 @@ public class CategoryViewController extends ViewController {
     private final View categoryContainerView;
     private final Button categoryButton;
     private final View categoryDividerView;
-    private final int defaultTextColor;
     private TransactionType transactionType;
 
     public CategoryViewController(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
@@ -26,8 +25,6 @@ public class CategoryViewController extends ViewController {
 
         categoryButton.setOnClickListener(clickListener);
         categoryButton.setOnLongClickListener(longClickListener);
-
-        defaultTextColor = categoryButton.getCurrentTextColor();
     }
 
     @Override public void showError(Throwable error) {
@@ -60,7 +57,7 @@ public class CategoryViewController extends ViewController {
     }
 
     public void setIsSetByUser(boolean isSetByUser) {
-        categoryButton.setTextColor(isSetByUser ? defaultTextColor : categoryButton.getContext().getResources().getColor(R.color.primary));
+        colorImageView.setImageAlpha(isSetByUser ? 255 : 64);
     }
 
     private int getCategoryColor(Category category, TransactionType transactionType) {

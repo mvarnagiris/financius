@@ -10,10 +10,12 @@ import com.code44.finance.ui.common.ViewController;
 
 public class TransactionStateViewController extends ViewController {
     private final CheckBox confirmedCheckBox;
+    private final CompoundButton.OnCheckedChangeListener onCheckedChangeListener;
 
     public TransactionStateViewController(BaseActivity activity, CompoundButton.OnCheckedChangeListener checkedChangeListener) {
         confirmedCheckBox = findView(activity, R.id.confirmedCheckBox);
 
+        onCheckedChangeListener = checkedChangeListener;
         confirmedCheckBox.setOnCheckedChangeListener(checkedChangeListener);
     }
 
@@ -21,6 +23,8 @@ public class TransactionStateViewController extends ViewController {
     }
 
     public void setTransactionState(TransactionState transactionState) {
+        confirmedCheckBox.setOnCheckedChangeListener(null);
         confirmedCheckBox.setChecked(transactionState == TransactionState.Confirmed);
+        confirmedCheckBox.setOnCheckedChangeListener(onCheckedChangeListener);
     }
 }

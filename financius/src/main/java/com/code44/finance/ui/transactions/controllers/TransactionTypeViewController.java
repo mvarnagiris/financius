@@ -21,16 +21,20 @@ public class TransactionTypeViewController extends ViewController {
     }
 
     protected void setTransactionType(TransactionType transactionType) {
+        final int color;
         switch (transactionType) {
             case Expense:
-                transactionTypeImageButton.setImageResource(R.drawable.ic_category_type_expense);
+                color = transactionTypeImageButton.getContext().getResources().getColor(R.color.text_negative);
                 break;
             case Income:
-                transactionTypeImageButton.setImageResource(R.drawable.ic_category_type_income);
+                color = transactionTypeImageButton.getContext().getResources().getColor(R.color.text_positive);
                 break;
             case Transfer:
-                transactionTypeImageButton.setImageResource(R.drawable.ic_category_type_transfer);
+                color = transactionTypeImageButton.getContext().getResources().getColor(R.color.text_neutral);
                 break;
+            default:
+                throw new IllegalArgumentException("Transaction type " + transactionType + " is not supported.");
         }
+        transactionTypeImageButton.setColorFilter(color);
     }
 }

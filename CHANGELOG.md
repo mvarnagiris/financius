@@ -2,6 +2,7 @@
 - ```new``` Note field in new transaction screen now has auto complete.
 - ```new``` Note field works as template.
 - ```new``` New transaction screen auto completes all other fields based on entered data.
+- ```new``` Updated icons.
 
 ###Version: 0.15.4
 - ```new``` Updated UI for new transaction screen. More improvements are still to come.
