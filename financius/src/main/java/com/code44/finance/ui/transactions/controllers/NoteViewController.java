@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 
 import com.code44.finance.R;
 import com.code44.finance.common.utils.Strings;
@@ -24,19 +25,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class NoteViewController extends ViewController implements LoaderManager.LoaderCallbacks<Cursor>, TextWatcher, AdapterView.OnItemClickListener {
+public class NoteViewController extends ViewController implements LoaderManager.LoaderCallbacks<Cursor>, TextWatcher, AdapterView.OnItemClickListener, View.OnFocusChangeListener {
     private static final int LOADER_NOTES = 8125;
 
+    private final ImageView noteImageView;
     private final AutoCompleteTextView noteAutoCompleteTextView;
     private final Callbacks callbacks;
 
-    public NoteViewController(BaseActivity activity, Callbacks callbacks) {
+    public NoteViewController(BaseActivity activity, View.OnClickListener clickListener, Callbacks callbacks) {
         this.callbacks = callbacks;
 
+        noteImageView = findView(activity, R.id.noteImageView);
         noteAutoCompleteTextView = findView(activity, R.id.noteAutoCompleteTextView);
 
+        noteImageView.setOnClickListener(clickListener);
         noteAutoCompleteTextView.addTextChangedListener(this);
         noteAutoCompleteTextView.setOnItemClickListener(this);
+        noteAutoCompleteTextView.setOnFocusChangeListener(this);
         setAutoCompleteAdapter(Collections.<String>emptyList());
 
         activity.getSupportLoaderManager().initLoader(LOADER_NOTES, null, this);
@@ -93,6 +98,12 @@ public class NoteViewController extends ViewController implements LoaderManager.
         callbacks.onNoteUpdated(getNote());
     }
 
+    @Override public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            callbacks.onNoteFocusFained();
+        }
+    }
+
     public String getNote() {
         return noteAutoCompleteTextView.getText().toString();
     }
@@ -106,6 +117,14 @@ public class NoteViewController extends ViewController implements LoaderManager.
         noteAutoCompleteTextView.addTextChangedListener(this);
     }
 
+    public void setIsSetByUser(boolean isSetByUser) {
+        noteImageView.setImageAlpha(isSetByUser ? 255 : 64);
+    }
+
+    public boolean hasFocus() {
+        return noteAutoCompleteTextView.hasFocus();
+    }
+
     private void setAutoCompleteAdapter(List<String> values) {
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(noteAutoCompleteTextView.getContext(), android.R.layout.simple_dropdown_item_1line, values);
         this.noteAutoCompleteTextView.setAdapter(adapter);
@@ -113,5 +132,7 @@ public class NoteViewController extends ViewController implements LoaderManager.
 
     public static interface Callbacks {
         public void onNoteUpdated(String note);
+
+        public void onNoteFocusFained();
     }
 }

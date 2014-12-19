@@ -29,6 +29,7 @@ public class TagsViewController extends ViewController {
         final Resources res = tagsButton.getResources();
         tagBackgroundColor = res.getColor(R.color.bg_secondary);
         tagBackgroundRadius = res.getDimension(R.dimen.tag_radius);
+        tagsImageView.setOnClickListener(clickListener);
         tagsButton.setOnClickListener(clickListener);
         tagsButton.setOnLongClickListener(longClickListener);
     }

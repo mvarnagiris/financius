@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.util.Pair;
 
 import com.code44.finance.common.model.TransactionType;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Tag;
@@ -53,6 +54,11 @@ public class SmartTransactionAutoComplete extends TransactionAutoComplete {
             result.setOtherAmounts(amountsResult.second);
         }
 
+        if (Strings.isEmpty(input.getNote())) {
+            final Pair<String, List<String>> notesResult = new NotesFinder(context, input, log, categoriesResult.first, tagsResult.first).find();
+            result.setNote(notesResult.first);
+            result.setOtherNotes(notesResult.second);
+        }
 
         return result;
     }

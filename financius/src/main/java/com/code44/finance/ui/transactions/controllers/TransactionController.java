@@ -2,6 +2,7 @@ package com.code44.finance.ui.transactions.controllers;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
 
@@ -72,7 +73,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     private boolean isUpdated = false;
     private boolean isAutoCompleteUpdateQueued = false;
 
-    public TransactionController(BaseActivity activity, EventBus eventBus, Executor autoCompleteExecutor, Currency mainCurrency, CurrenciesApi currenciesApi, OnTransactionUpdatedListener listener) {
+    public TransactionController(BaseActivity activity, Bundle savedInstanceState, EventBus eventBus, Executor autoCompleteExecutor, Currency mainCurrency, CurrenciesApi currenciesApi, OnTransactionUpdatedListener listener) {
         this.activity = activity;
         this.eventBus = eventBus;
         this.autoCompleteExecutor = autoCompleteExecutor;
@@ -86,11 +87,13 @@ public class TransactionController implements TransactionAutoComplete.Transactio
         accountsViewController = new AccountsViewController(activity, this, this);
         categoryViewController = new CategoryViewController(activity, this, this);
         tagsViewController = new TagsViewController(activity, this, this);
-        noteViewController = new NoteViewController(activity, this);
+        noteViewController = new NoteViewController(activity, this, this);
         transactionStateViewController = new TransactionStateViewController(activity, this);
         flagsViewController = new FlagsViewController(activity, this);
 
-        CalculatorActivity.start(activity, REQUEST_AMOUNT, 0);
+        if (savedInstanceState == null) {
+            CalculatorActivity.start(activity, REQUEST_AMOUNT, 0);
+        }
     }
 
     @Override public void onClick(View v) {
@@ -107,11 +110,20 @@ public class TransactionController implements TransactionAutoComplete.Transactio
             case R.id.amountToButton:
                 CalculatorActivity.start(activity, REQUEST_AMOUNT_TO, Math.round(transactionEditData.getAmount() * transactionEditData.getExchangeRate()));
                 break;
+            case R.id.dateTimeImageView:
+                transactionEditData.setDate(transactionEditData.getDate());
+                requestAutoComplete();
+                break;
             case R.id.dateButton:
                 DatePickerDialog.show(activity.getSupportFragmentManager(), REQUEST_DATE, transactionEditData.getDate());
                 break;
             case R.id.timeButton:
                 TimePickerDialog.show(activity.getSupportFragmentManager(), REQUEST_TIME, transactionEditData.getDate());
+                break;
+            case R.id.accountImageView:
+                transactionEditData.setAccountFrom(transactionEditData.getAccountFrom());
+                transactionEditData.setAccountTo(transactionEditData.getAccountTo());
+                requestAutoComplete();
                 break;
             case R.id.accountFromButton:
                 AccountsActivity.startSelect(activity, REQUEST_ACCOUNT_FROM);
@@ -119,11 +131,23 @@ public class TransactionController implements TransactionAutoComplete.Transactio
             case R.id.accountToButton:
                 AccountsActivity.startSelect(activity, REQUEST_ACCOUNT_TO);
                 break;
+            case R.id.colorImageView:
+                transactionEditData.setCategory(transactionEditData.getCategory());
+                requestAutoComplete();
+                break;
             case R.id.categoryButton:
                 CategoriesActivity.startSelect(activity, REQUEST_CATEGORY, transactionEditData.getTransactionType());
                 break;
+            case R.id.tagsImageView:
+                transactionEditData.setTags(transactionEditData.getTags());
+                requestAutoComplete();
+                break;
             case R.id.tagsButton:
                 TagsActivity.startMultiSelect(activity, REQUEST_TAGS, transactionEditData.getTags() != null ? transactionEditData.getTags() : Collections.<Tag>emptyList());
+                break;
+            case R.id.noteImageView:
+                transactionEditData.setNote(transactionEditData.getNote());
+                requestAutoComplete();
                 break;
         }
     }
@@ -170,6 +194,14 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     @Override public void onNoteUpdated(String note) {
         transactionEditData.setNote(note);
         requestAutoComplete();
+    }
+
+    @Override public void onNoteFocusFained() {
+        if (!transactionEditData.isNoteSet()) {
+            transactionEditData.setNote(null);
+            updateNote(transactionEditData.getNote());
+            requestAutoComplete();
+        }
     }
 
     @Override public void onTransactionAutoComplete(AutoCompleteResult result) {
@@ -302,7 +334,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
         updateTransactionState(transactionEditData.getTransactionState());
         updateIncludeInReports(transactionEditData.getIncludeInReports());
 
-        if (!isAutoComplete) {
+        if (!isAutoComplete || !noteViewController.hasFocus()) {
             updateNote(transactionEditData.getNote());
         }
 
@@ -433,6 +465,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
 
     private void updateNote(String note) {
         noteViewController.setNote(note);
+        noteViewController.setIsSetByUser(transactionEditData.isNoteSet());
     }
 
     private void updateTransactionState(TransactionState transactionState) {

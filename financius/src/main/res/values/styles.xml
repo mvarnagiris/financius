@@ -77,6 +77,7 @@
         <item name="android:layout_marginRight">@dimen/keyline</item>
         <item name="android:padding">8dp</item>
         <item name="android:scaleType">centerInside</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
     </style>
 
     <!-- EditText -->

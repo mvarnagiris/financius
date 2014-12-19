@@ -22,6 +22,7 @@ public class AccountsViewController extends ViewController {
         accountFromButton = findView(activity, R.id.accountFromButton);
         accountToButton = findView(activity, R.id.accountToButton);
 
+        accountImageView.setOnClickListener(clickListener);
         accountFromButton.setOnClickListener(clickListener);
         accountFromButton.setOnLongClickListener(longClickListener);
         accountToButton.setOnClickListener(clickListener);

@@ -22,6 +22,7 @@ public class DateTimeViewController extends ViewController {
         dateButton = findView(activity, R.id.dateButton);
         timeButton = findView(activity, R.id.timeButton);
 
+        dateTimeImageView.setOnClickListener(clickListener);
         dateButton.setOnClickListener(clickListener);
         dateButton.setOnLongClickListener(longClickListener);
         timeButton.setOnClickListener(clickListener);
