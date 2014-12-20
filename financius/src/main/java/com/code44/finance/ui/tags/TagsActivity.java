@@ -42,7 +42,7 @@ public class TagsActivity extends ModelListActivity {
     }
 
     @Override protected CursorLoader getModelsCursorLoader() {
-        return Tables.Tags.getQuery().sortOrder(Tables.Tags.TITLE.getName()).asCursorLoader(this, TagsProvider.uriTags());
+        return Tables.Tags.getQuery().sortOrder("lower(" + Tables.Tags.TITLE + ")").asCursorLoader(this, TagsProvider.uriTags());
     }
 
     @Override protected Model modelFrom(Cursor cursor) {

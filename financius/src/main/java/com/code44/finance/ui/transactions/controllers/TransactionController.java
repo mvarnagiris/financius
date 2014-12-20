@@ -441,6 +441,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
         amountViewController.setTransactionType(transactionType);
         accountsViewController.setTransactionType(transactionType);
         categoryViewController.setTransactionType(transactionType);
+        noteViewController.setTransactionType(transactionType);
     }
 
     private void updateAmount(long amount) {

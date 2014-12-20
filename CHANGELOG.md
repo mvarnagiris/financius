@@ -1,3 +1,8 @@
+###Version: 0.15.6
+- ```fix``` Transaction edit working again.
+- ```fix``` Alphabetical tag ordering works better with upper and lowercase letters.
+- ```fix``` Note auto-complete will not show suggestions from deleted transactions and from transactions of different type.
+
 ###Version: 0.15.5
 - ```new``` Note field in new transaction screen now has auto complete.
 - ```new``` Note field works as template.

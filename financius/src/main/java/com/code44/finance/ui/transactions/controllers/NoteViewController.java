@@ -14,6 +14,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 
 import com.code44.finance.R;
+import com.code44.finance.common.model.ModelState;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
@@ -31,6 +33,7 @@ public class NoteViewController extends ViewController implements LoaderManager.
     private final ImageView noteImageView;
     private final AutoCompleteTextView noteAutoCompleteTextView;
     private final Callbacks callbacks;
+    private TransactionType transactionType = TransactionType.Expense;
 
     public NoteViewController(BaseActivity activity, View.OnClickListener clickListener, Callbacks callbacks) {
         this.callbacks = callbacks;
@@ -57,6 +60,8 @@ public class NoteViewController extends ViewController implements LoaderManager.
                 .projectionLocalId(Tables.Transactions.LOCAL_ID)
                 .projection(Tables.Transactions.NOTE.getName())
                 .selection(Tables.Transactions.DATE + ">?", String.valueOf(fromDate))
+                .selection(" and " + Tables.Transactions.TYPE + "=?", transactionType.asString())
+                .selection(" and " + Tables.Transactions.MODEL_STATE + "=?", ModelState.Normal.asString())
                 .groupBy(Tables.Transactions.NOTE.getName());
 
         if (!Strings.isEmpty(filter)) {
@@ -84,11 +89,11 @@ public class NoteViewController extends ViewController implements LoaderManager.
     }
 
     @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-        ((BaseActivity) this.noteAutoCompleteTextView.getContext()).getSupportLoaderManager().restartLoader(LOADER_NOTES, null, this);
-        callbacks.onNoteUpdated(getNote());
     }
 
     @Override public void afterTextChanged(Editable s) {
+        ((BaseActivity) this.noteAutoCompleteTextView.getContext()).getSupportLoaderManager().restartLoader(LOADER_NOTES, null, this);
+        callbacks.onNoteUpdated(getNote());
     }
 
     @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -119,6 +124,11 @@ public class NoteViewController extends ViewController implements LoaderManager.
 
     public void setIsSetByUser(boolean isSetByUser) {
         noteImageView.setImageAlpha(isSetByUser ? 255 : 64);
+    }
+
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
+        ((BaseActivity) this.noteAutoCompleteTextView.getContext()).getSupportLoaderManager().restartLoader(LOADER_NOTES, null, this);
     }
 
     public boolean hasFocus() {
