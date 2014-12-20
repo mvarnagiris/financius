@@ -11,6 +11,7 @@ import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.api.currencies.ExchangeRateRequest;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
@@ -76,7 +77,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     private boolean isUpdated = false;
     private boolean isAutoCompleteUpdateQueued = false;
 
-    public TransactionController(BaseActivity activity, Bundle savedInstanceState, EventBus eventBus, Executor autoCompleteExecutor, Currency mainCurrency, CurrenciesApi currenciesApi, OnTransactionUpdatedListener listener) {
+    public TransactionController(BaseActivity activity, String transactionId, Bundle savedInstanceState, EventBus eventBus, Executor autoCompleteExecutor, Currency mainCurrency, CurrenciesApi currenciesApi, OnTransactionUpdatedListener listener) {
         this.activity = activity;
         this.eventBus = eventBus;
         this.autoCompleteExecutor = autoCompleteExecutor;
@@ -99,7 +100,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
         transactionStateViewController = new TransactionStateViewController(activity, this);
         flagsViewController = new FlagsViewController(activity, this);
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null && (Strings.isEmpty(transactionId) || transactionId.equals("0"))) {
             CalculatorActivity.start(activity, REQUEST_AMOUNT, 0);
         }
     }

@@ -45,7 +45,7 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
     @Override protected void onViewCreated(Bundle savedInstanceState) {
         super.onViewCreated(savedInstanceState);
         saveButton = (Button) findViewById(R.id.saveButton);
-        transactionController = new TransactionController(this, savedInstanceState, getEventBus(), localExecutor, mainCurrency, currenciesApi, this);
+        transactionController = new TransactionController(this, modelId, savedInstanceState, getEventBus(), localExecutor, mainCurrency, currenciesApi, this);
     }
 
     @Override public void onResume() {

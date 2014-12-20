@@ -404,6 +404,9 @@ public class TransactionEditData implements Parcelable {
 
     public Transaction getModel() {
         final Transaction transaction = new Transaction();
+        if (storedTransaction != null) {
+            transaction.setId(storedTransaction.getId());
+        }
         transaction.setAccountFrom(getAccountFrom());
         transaction.setAccountTo(getAccountTo());
         transaction.setCategory(getCategory());
