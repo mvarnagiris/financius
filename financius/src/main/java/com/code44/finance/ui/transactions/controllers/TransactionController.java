@@ -460,11 +460,13 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     private void updateAccountFrom(Account account) {
         accountsViewController.setAccountFrom(account);
         accountsViewController.setIsAccountFromSetByUser(transactionEditData.isAccountFromSet());
+        amountViewController.setAccountFrom(account);
     }
 
     private void updateAccountTo(Account account) {
         accountsViewController.setAccountTo(account);
         accountsViewController.setIsAccountToSetByUser(transactionEditData.isAccountToSet());
+        amountViewController.setAccountTo(account);
     }
 
     private void updateCategory(Category category) {

@@ -1,3 +1,6 @@
+###Version: 0.15.7
+- ```fix``` Transfers between accounts with different currencies show exchange rate and other currency fields.
+
 ###Version: 0.15.6
 - ```fix``` Transaction edit working again.
 - ```fix``` Alphabetical tag ordering works better with upper and lowercase letters.
