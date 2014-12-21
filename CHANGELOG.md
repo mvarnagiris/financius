@@ -1,4 +1,4 @@
-###Version: 0.15.7
+###Version: 0.16.0
 - ```fix``` Transfers between accounts with different currencies show exchange rate and other currency fields.
 
 ###Version: 0.15.6
