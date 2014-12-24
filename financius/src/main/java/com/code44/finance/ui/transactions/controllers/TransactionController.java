@@ -52,6 +52,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     private static final int REQUEST_AMOUNT_TO = 9;
 
     private static final String STATE_TRANSACTION_EDIT_DATA = "STATE_TRANSACTION_EDIT_DATA";
+    private static final String STATE_AUTO_COMPLETE_RESULT = "STATE_AUTO_COMPLETE_RESULT";
 
     private static final boolean LOG_AUTO_COMPLETE = true;
 
@@ -73,6 +74,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     private final TransactionStateViewController transactionStateViewController;
     private final FlagsViewController flagsViewController;
 
+    private AutoCompleteResult autoCompleteResult;
     private boolean isResumed = false;
     private boolean isUpdated = false;
     private boolean isAutoCompleteUpdateQueued = false;
@@ -86,8 +88,10 @@ public class TransactionController implements TransactionAutoComplete.Transactio
 
         if (savedInstanceState == null) {
             transactionEditData = new TransactionEditData();
+            autoCompleteResult = null;
         } else {
             transactionEditData = savedInstanceState.getParcelable(STATE_TRANSACTION_EDIT_DATA);
+            autoCompleteResult = savedInstanceState.getParcelable(STATE_AUTO_COMPLETE_RESULT);
         }
 
         transactionTypeViewController = new TransactionTypeViewController(activity, this);
@@ -214,8 +218,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     }
 
     @Override public void onTransactionAutoComplete(AutoCompleteResult result) {
-        transactionEditData.setAutoCompleteResult(result);
-        update(true);
+        autoCompleteResult = result;
     }
 
     @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -275,6 +278,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
 
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(STATE_TRANSACTION_EDIT_DATA, transactionEditData);
+        outState.putParcelable(STATE_AUTO_COMPLETE_RESULT, autoCompleteResult);
     }
 
     public void handleActivityResult(int requestCode, int resultCode, Intent data) {

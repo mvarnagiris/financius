@@ -39,6 +39,6 @@ public class DateTimeViewController extends ViewController {
     }
 
     public void isSetByUser(boolean isSetByUser) {
-        dateTimeImageView.setImageAlpha(isSetByUser ? 255 : 64);
+//        dateTimeImageView.setImageAlpha(isSetByUser ? 255 : 64);
     }
 }

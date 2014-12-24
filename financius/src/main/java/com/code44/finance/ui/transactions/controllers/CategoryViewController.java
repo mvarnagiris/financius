@@ -58,7 +58,7 @@ public class CategoryViewController extends ViewController {
     }
 
     public void setIsSetByUser(boolean isSetByUser) {
-        colorImageView.setImageAlpha(isSetByUser ? 255 : 64);
+//        colorImageView.setImageAlpha(isSetByUser ? 255 : 64);
     }
 
     private int getCategoryColor(Category category, TransactionType transactionType) {

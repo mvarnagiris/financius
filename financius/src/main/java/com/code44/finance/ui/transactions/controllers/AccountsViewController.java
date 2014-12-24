@@ -68,6 +68,6 @@ public class AccountsViewController extends ViewController {
     }
 
     private void updateAccountImageView() {
-        accountImageView.setImageAlpha(isAccountFromSet || isAccountToSet ? 255 : 64);
+//        accountImageView.setImageAlpha(isAccountFromSet || isAccountToSet ? 255 : 64);
     }
 }

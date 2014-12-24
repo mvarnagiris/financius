@@ -123,7 +123,7 @@ public class NoteViewController extends ViewController implements LoaderManager.
     }
 
     public void setIsSetByUser(boolean isSetByUser) {
-        noteImageView.setImageAlpha(isSetByUser ? 255 : 64);
+//        noteImageView.setImageAlpha(isSetByUser ? 255 : 64);
     }
 
     public void setTransactionType(TransactionType transactionType) {
