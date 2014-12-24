@@ -12,6 +12,7 @@ import com.code44.finance.data.model.Transaction;
 import com.code44.finance.ui.common.ViewController;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionEditData implements Parcelable {
@@ -64,7 +65,11 @@ public class TransactionEditData implements Parcelable {
         accountFrom = in.readParcelable(Account.class.getClassLoader());
         accountTo = in.readParcelable(Account.class.getClassLoader());
         category = in.readParcelable(Category.class.getClassLoader());
-        in.readTypedList(tags, Tag.CREATOR);
+        final boolean hasTags = in.readInt() != 0;
+        if (hasTags) {
+            tags = new ArrayList<>();
+            in.readTypedList(tags, Tag.CREATOR);
+        }
         note = in.readString();
         transactionState = (TransactionState) in.readSerializable();
         includeInReports = (Boolean) in.readValue(Boolean.class.getClassLoader());
@@ -95,7 +100,11 @@ public class TransactionEditData implements Parcelable {
         dest.writeParcelable(accountFrom, flags);
         dest.writeParcelable(accountTo, flags);
         dest.writeParcelable(category, flags);
-        dest.writeTypedList(tags);
+        final boolean hasTags = tags != null;
+        dest.writeInt(hasTags ? 1 : 0);
+        if (hasTags) {
+            dest.writeTypedList(tags);
+        }
         dest.writeString(note);
         dest.writeSerializable(transactionState);
         dest.writeValue(includeInReports);

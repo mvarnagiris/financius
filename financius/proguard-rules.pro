@@ -17,6 +17,7 @@
 #}
 
 -keep class !android.support.v7.internal.view.menu.MenuBuilder, !android.support.v7.internal.view.menu.SubMenuBuilder { *; }
+-keepattributes SourceFile, LineNumberTable
 
 -dontwarn retrofit.**
 -dontwarn okio.**

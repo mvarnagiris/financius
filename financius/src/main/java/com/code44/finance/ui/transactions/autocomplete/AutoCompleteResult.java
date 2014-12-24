@@ -42,7 +42,10 @@ public final class AutoCompleteResult implements Parcelable {
         accountFrom = in.readParcelable(Account.class.getClassLoader());
         accountTo = in.readParcelable(Account.class.getClassLoader());
         category = in.readParcelable(Category.class.getClassLoader());
-        in.readTypedList(tags, Tag.CREATOR);
+        final boolean hasTags = in.readInt() != 0;
+        if (hasTags) {
+            in.readTypedList(tags, Tag.CREATOR);
+        }
         note = in.readString();
         otherAmounts = new ArrayList<>();
         in.readList(otherAmounts, Long.class.getClassLoader());
@@ -67,7 +70,11 @@ public final class AutoCompleteResult implements Parcelable {
         dest.writeParcelable(accountFrom, flags);
         dest.writeParcelable(accountTo, flags);
         dest.writeParcelable(category, flags);
-        dest.writeTypedList(tags);
+        final boolean hasTags = tags != null;
+        dest.writeInt(hasTags ? 1 : 0);
+        if (hasTags) {
+            dest.writeTypedList(tags);
+        }
         dest.writeString(note);
         dest.writeList(otherAmounts);
         dest.writeTypedList(otherAccountsFrom);
