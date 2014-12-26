@@ -2,7 +2,6 @@ package com.code44.finance.ui.transactions.controllers;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.code44.finance.R;
 import com.code44.finance.ui.common.BaseActivity;
@@ -13,16 +12,13 @@ import net.danlew.android.joda.DateUtils;
 import org.joda.time.DateTime;
 
 public class DateTimeViewController extends ViewController {
-    private final ImageView dateTimeImageView;
     private final Button dateButton;
     private final Button timeButton;
 
     public DateTimeViewController(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
-        dateTimeImageView = findView(activity, R.id.dateTimeImageView);
         dateButton = findView(activity, R.id.dateButton);
         timeButton = findView(activity, R.id.timeButton);
 
-        dateTimeImageView.setOnClickListener(clickListener);
         dateButton.setOnClickListener(clickListener);
         dateButton.setOnLongClickListener(longClickListener);
         timeButton.setOnClickListener(clickListener);

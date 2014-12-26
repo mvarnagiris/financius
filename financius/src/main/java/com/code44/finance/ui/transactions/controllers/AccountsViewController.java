@@ -2,7 +2,6 @@ package com.code44.finance.ui.transactions.controllers;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
@@ -11,18 +10,15 @@ import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.ViewController;
 
 public class AccountsViewController extends ViewController {
-    private final ImageView accountImageView;
     private final Button accountFromButton;
     private final Button accountToButton;
     private boolean isAccountFromSet = false;
     private boolean isAccountToSet = false;
 
     public AccountsViewController(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
-        accountImageView = findView(activity, R.id.accountImageView);
         accountFromButton = findView(activity, R.id.accountFromButton);
         accountToButton = findView(activity, R.id.accountToButton);
 
-        accountImageView.setOnClickListener(clickListener);
         accountFromButton.setOnClickListener(clickListener);
         accountFromButton.setOnLongClickListener(longClickListener);
         accountToButton.setOnClickListener(clickListener);

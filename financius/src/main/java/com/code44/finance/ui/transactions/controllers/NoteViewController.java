@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.ImageView;
 
 import com.code44.finance.R;
 import com.code44.finance.common.model.ModelState;
@@ -30,7 +29,6 @@ import java.util.List;
 public class NoteViewController extends ViewController implements LoaderManager.LoaderCallbacks<Cursor>, TextWatcher, AdapterView.OnItemClickListener, View.OnFocusChangeListener {
     private static final int LOADER_NOTES = 8125;
 
-    private final ImageView noteImageView;
     private final AutoCompleteTextView noteAutoCompleteTextView;
     private final Callbacks callbacks;
     private TransactionType transactionType = TransactionType.Expense;
@@ -38,10 +36,8 @@ public class NoteViewController extends ViewController implements LoaderManager.
     public NoteViewController(BaseActivity activity, View.OnClickListener clickListener, Callbacks callbacks) {
         this.callbacks = callbacks;
 
-        noteImageView = findView(activity, R.id.noteImageView);
         noteAutoCompleteTextView = findView(activity, R.id.noteAutoCompleteTextView);
 
-        noteImageView.setOnClickListener(clickListener);
         noteAutoCompleteTextView.addTextChangedListener(this);
         noteAutoCompleteTextView.setOnItemClickListener(this);
         noteAutoCompleteTextView.setOnFocusChangeListener(this);

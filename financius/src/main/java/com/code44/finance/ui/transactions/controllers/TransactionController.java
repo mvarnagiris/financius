@@ -123,20 +123,11 @@ public class TransactionController implements TransactionAutoComplete.Transactio
             case R.id.amountToButton:
                 CalculatorActivity.start(activity, REQUEST_AMOUNT_TO, Math.round(transactionEditData.getAmount() * transactionEditData.getExchangeRate()));
                 break;
-            case R.id.dateTimeImageView:
-                transactionEditData.setDate(transactionEditData.getDate());
-                requestAutoComplete();
-                break;
             case R.id.dateButton:
                 DatePickerDialog.show(activity.getSupportFragmentManager(), REQUEST_DATE, transactionEditData.getDate());
                 break;
             case R.id.timeButton:
                 TimePickerDialog.show(activity.getSupportFragmentManager(), REQUEST_TIME, transactionEditData.getDate());
-                break;
-            case R.id.accountImageView:
-                transactionEditData.setAccountFrom(transactionEditData.getAccountFrom());
-                transactionEditData.setAccountTo(transactionEditData.getAccountTo());
-                requestAutoComplete();
                 break;
             case R.id.accountFromButton:
                 AccountsActivity.startSelect(activity, REQUEST_ACCOUNT_FROM);
@@ -144,23 +135,11 @@ public class TransactionController implements TransactionAutoComplete.Transactio
             case R.id.accountToButton:
                 AccountsActivity.startSelect(activity, REQUEST_ACCOUNT_TO);
                 break;
-            case R.id.colorImageView:
-                transactionEditData.setCategory(transactionEditData.getCategory());
-                requestAutoComplete();
-                break;
             case R.id.categoryButton:
                 CategoriesActivity.startSelect(activity, REQUEST_CATEGORY, transactionEditData.getTransactionType());
                 break;
-            case R.id.tagsImageView:
-                transactionEditData.setTags(transactionEditData.getTags());
-                requestAutoComplete();
-                break;
             case R.id.tagsButton:
                 TagsActivity.startMultiSelect(activity, REQUEST_TAGS, transactionEditData.getTags() != null ? transactionEditData.getTags() : Collections.<Tag>emptyList());
-                break;
-            case R.id.noteImageView:
-                transactionEditData.setNote(transactionEditData.getNote());
-                requestAutoComplete();
                 break;
         }
     }

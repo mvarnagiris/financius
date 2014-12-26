@@ -23,7 +23,6 @@ public class CategoryViewController extends ViewController {
         categoryButton = findView(activity, R.id.categoryButton);
         categoryDividerView = findView(activity, R.id.categoryDividerView);
 
-        colorImageView.setOnClickListener(clickListener);
         categoryButton.setOnClickListener(clickListener);
         categoryButton.setOnLongClickListener(longClickListener);
     }
