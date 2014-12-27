@@ -9,10 +9,11 @@
 
     <ImageView
         android:id="@+id/colorImageView"
-        android:layout_width="@dimen/keyline_between"
-        android:layout_height="@dimen/keyline_between"
+        android:layout_width="@dimen/action_item"
+        android:layout_height="@dimen/action_item"
         android:layout_gravity="center_vertical"
-        android:layout_marginRight="@dimen/keyline"
+        android:layout_marginRight="@dimen/action_item_to_keyline_content"
+        android:padding="@dimen/action_item_padding"
         android:src="@drawable/circle"
         tools:ignore="ContentDescription,RtlHardcoded" />
 

@@ -71,13 +71,11 @@
     <style name="ImageView"></style>
 
     <style name="ImageView.Form">
-        <item name="android:layout_width">@dimen/keyline_between</item>
-        <item name="android:layout_height">@dimen/keyline_between</item>
+        <item name="android:layout_width">@dimen/action_item</item>
+        <item name="android:layout_height">@dimen/action_item</item>
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:layout_marginRight">@dimen/keyline</item>
-        <item name="android:padding">8dp</item>
+        <item name="android:layout_marginRight">@dimen/action_item_to_keyline_content</item>
         <item name="android:scaleType">centerInside</item>
-        <item name="android:background">?selectableItemBackgroundBorderless</item>
     </style>
 
     <!-- EditText -->

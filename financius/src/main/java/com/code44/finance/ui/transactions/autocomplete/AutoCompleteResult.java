@@ -8,6 +8,7 @@ import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Tag;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public final class AutoCompleteResult implements Parcelable {
@@ -21,44 +22,29 @@ public final class AutoCompleteResult implements Parcelable {
         }
     };
 
-    private Long amount;
-    private Account accountFrom;
-    private Account accountTo;
-    private Category category;
-    private List<Tag> tags;
-    private String note;
-    private List<Long> otherAmounts;
-    private List<Account> otherAccountsFrom;
-    private List<Account> otherAccountsTo;
-    private List<Category> otherCategories;
-    private List<Tag> otherTags;
-    private List<String> otherNotes;
+    private List<Long> amounts;
+    private List<Account> accountsFrom;
+    private List<Account> accountsTo;
+    private List<Category> categories;
+    private List<List<Tag>> tags;
+    private List<String> notes;
 
     public AutoCompleteResult() {
     }
 
     private AutoCompleteResult(Parcel in) {
-        amount = (Long) in.readValue(Long.class.getClassLoader());
-        accountFrom = in.readParcelable(Account.class.getClassLoader());
-        accountTo = in.readParcelable(Account.class.getClassLoader());
-        category = in.readParcelable(Category.class.getClassLoader());
-        final boolean hasTags = in.readInt() != 0;
-        if (hasTags) {
-            in.readTypedList(tags, Tag.CREATOR);
-        }
-        note = in.readString();
-        otherAmounts = new ArrayList<>();
-        in.readList(otherAmounts, Long.class.getClassLoader());
-        otherAccountsFrom = new ArrayList<>();
-        in.readTypedList(otherAccountsFrom, Account.CREATOR);
-        otherAccountsTo = new ArrayList<>();
-        in.readTypedList(otherAccountsTo, Account.CREATOR);
-        otherCategories = new ArrayList<>();
-        in.readTypedList(otherCategories, Category.CREATOR);
-        otherTags = new ArrayList<>();
-        in.readTypedList(otherTags, Tag.CREATOR);
-        otherNotes = new ArrayList<>();
-        in.readStringList(otherNotes);
+        amounts = new ArrayList<>();
+        in.readList(amounts, Long.class.getClassLoader());
+        accountsFrom = new ArrayList<>();
+        in.readTypedList(accountsFrom, Account.CREATOR);
+        accountsTo = new ArrayList<>();
+        in.readTypedList(accountsTo, Account.CREATOR);
+        categories = new ArrayList<>();
+        in.readTypedList(categories, Category.CREATOR);
+        tags = new ArrayList<>();
+        in.readList(tags, List.class.getClassLoader());
+        notes = new ArrayList<>();
+        in.readStringList(notes);
     }
 
     @Override public int describeContents() {
@@ -66,117 +52,59 @@ public final class AutoCompleteResult implements Parcelable {
     }
 
     @Override public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(amount);
-        dest.writeParcelable(accountFrom, flags);
-        dest.writeParcelable(accountTo, flags);
-        dest.writeParcelable(category, flags);
-        final boolean hasTags = tags != null;
-        dest.writeInt(hasTags ? 1 : 0);
-        if (hasTags) {
-            dest.writeTypedList(tags);
-        }
-        dest.writeString(note);
-        dest.writeList(otherAmounts);
-        dest.writeTypedList(otherAccountsFrom);
-        dest.writeTypedList(otherAccountsTo);
-        dest.writeTypedList(otherCategories);
-        dest.writeTypedList(otherTags);
-        dest.writeStringList(otherNotes);
+        dest.writeList(amounts);
+        dest.writeTypedList(accountsFrom);
+        dest.writeTypedList(accountsTo);
+        dest.writeTypedList(categories);
+        dest.writeList(tags);
+        dest.writeStringList(notes);
     }
 
-    public Long getAmount() {
-        return amount;
+    public List<Long> getAmounts() {
+        return amounts;
     }
 
-    public void setAmount(Long amount) {
-        this.amount = amount;
+    public void setAmounts(List<Long> amounts) {
+        this.amounts = amounts == null ? Collections.<Long>emptyList() : amounts;
     }
 
-    public Account getAccountFrom() {
-        return accountFrom;
+    public List<Account> getAccountsFrom() {
+        return accountsFrom;
     }
 
-    public void setAccountFrom(Account accountFrom) {
-        this.accountFrom = accountFrom;
+    public void setAccountsFrom(List<Account> accountsFrom) {
+        this.accountsFrom = accountsFrom == null ? Collections.<Account>emptyList() : accountsFrom;
     }
 
-    public Account getAccountTo() {
-        return accountTo;
+    public List<Account> getAccountsTo() {
+        return accountsTo;
     }
 
-    public void setAccountTo(Account accountTo) {
-        this.accountTo = accountTo;
+    public void setAccountsTo(List<Account> accountsTo) {
+        this.accountsTo = accountsTo == null ? Collections.<Account>emptyList() : accountsTo;
     }
 
-    public Category getCategory() {
-        return category;
+    public List<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories == null ? Collections.<Category>emptyList() : categories;
     }
 
-    public List<Tag> getTags() {
+    public List<List<Tag>> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
+    public void setTags(List<List<Tag>> tags) {
+        this.tags = tags == null ? Collections.<List<Tag>>emptyList() : tags;
     }
 
-    public String getNote() {
-        return note;
+    public List<String> getNotes() {
+        return notes;
     }
 
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public List<Long> getOtherAmounts() {
-        return otherAmounts;
-    }
-
-    public void setOtherAmounts(List<Long> otherAmounts) {
-        this.otherAmounts = otherAmounts;
-    }
-
-    public List<Account> getOtherAccountsFrom() {
-        return otherAccountsFrom;
-    }
-
-    public void setOtherAccountsFrom(List<Account> otherAccountsFrom) {
-        this.otherAccountsFrom = otherAccountsFrom;
-    }
-
-    public List<Account> getOtherAccountsTo() {
-        return otherAccountsTo;
-    }
-
-    public void setOtherAccountsTo(List<Account> otherAccountsTo) {
-        this.otherAccountsTo = otherAccountsTo;
-    }
-
-    public List<Category> getOtherCategories() {
-        return otherCategories;
-    }
-
-    public void setOtherCategories(List<Category> otherCategories) {
-        this.otherCategories = otherCategories;
-    }
-
-    public List<Tag> getOtherTags() {
-        return otherTags;
-    }
-
-    public void setOtherTags(List<Tag> otherTags) {
-        this.otherTags = otherTags;
-    }
-
-    public List<String> getOtherNotes() {
-        return otherNotes;
-    }
-
-    public void setOtherNotes(List<String> otherNotes) {
-        this.otherNotes = otherNotes;
+    public void setNotes(List<String> notes) {
+        this.notes = notes == null ? Collections.<String>emptyList() : notes;
     }
 }

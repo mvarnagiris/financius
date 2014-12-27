@@ -1,6 +1,7 @@
 package com.code44.finance.ui.transactions.controllers;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -9,12 +10,16 @@ import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.ViewController;
+import com.code44.finance.ui.transactions.autocomplete.AutoCompleteAdapter;
+import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
+import com.code44.finance.ui.transactions.autocomplete.adapters.AutoCompleteCategoriesAdapter;
 
-public class CategoryViewController extends ViewController {
+public class CategoryViewController extends ViewController implements AutoCompleteController<Category>, AutoCompleteAdapter.AutoCompleteAdapterListener {
     private final ImageView colorImageView;
     private final View categoryContainerView;
     private final Button categoryButton;
     private final View categoryDividerView;
+    private final ViewGroup categoriesAutoCompleteContainerView;
     private TransactionType transactionType;
 
     public CategoryViewController(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
@@ -22,12 +27,29 @@ public class CategoryViewController extends ViewController {
         categoryContainerView = findView(activity, R.id.categoryContainerView);
         categoryButton = findView(activity, R.id.categoryButton);
         categoryDividerView = findView(activity, R.id.categoryDividerView);
+        categoriesAutoCompleteContainerView = findView(activity, R.id.categoriesAutoCompleteContainerView);
 
         categoryButton.setOnClickListener(clickListener);
         categoryButton.setOnLongClickListener(longClickListener);
     }
 
     @Override public void showError(Throwable error) {
+    }
+
+    @Override public AutoCompleteAdapter<Category> show(AutoCompleteAdapter<?> currentAdapter, AutoCompleteResult autoCompleteResult, AutoCompleteAdapter.OnAutoCompleteItemClickListener<Category> clickListener) {
+        final AutoCompleteCategoriesAdapter adapter = new AutoCompleteCategoriesAdapter(categoriesAutoCompleteContainerView, this, clickListener);
+        if (adapter.show(currentAdapter, autoCompleteResult)) {
+            return adapter;
+        }
+        return null;
+    }
+
+    @Override public void onAutoCompleteAdapterShown() {
+        categoryButton.setHint(R.string.show_all);
+    }
+
+    @Override public void onAutoCompleteAdapterHidden() {
+        categoryButton.setHint(R.string.categories_one);
     }
 
     public void setTransactionType(TransactionType transactionType) {
@@ -49,6 +71,7 @@ public class CategoryViewController extends ViewController {
                 categoryDividerView.setVisibility(View.GONE);
                 break;
         }
+        categoriesAutoCompleteContainerView.setVisibility(View.GONE);
     }
 
     public void setCategory(Category category) {

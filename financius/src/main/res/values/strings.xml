@@ -115,6 +115,7 @@
     <string name="unlock">Unlock</string>
     <string name="create_password">Create password</string>
     <string name="confirm_password">Confirm password</string>
+    <string name="show_all">Show all</string>
 
     <string name="f_change_to_x">Change to %s</string>
     <string name="f_current_main_currency_is_x">Current main currency is %s</string>

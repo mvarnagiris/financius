@@ -1,7 +1,6 @@
 package com.code44.finance.ui.transactions.autocomplete.smart;
 
 import android.content.Context;
-import android.support.v4.util.Pair;
 
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.Strings;
@@ -28,36 +27,31 @@ public class SmartTransactionAutoComplete extends TransactionAutoComplete {
     @Override protected AutoCompleteResult autoComplete(AutoCompleteInput input) {
         final AutoCompleteResult result = new AutoCompleteResult();
 
-        final Pair<Category, List<Category>> categoriesResult = new CategoriesFinder(context, input, log).find();
-        result.setCategory(categoriesResult.first);
-        result.setOtherCategories(categoriesResult.second);
+        final List<Category> categoriesResult = new CategoriesFinder(context, input, log).find();
+        result.setCategories(categoriesResult);
+        final Category categoryBestMatch = categoriesResult.isEmpty() ? null : categoriesResult.get(0);
 
-        final Pair<List<Tag>, List<List<Tag>>> tagsResult = new TagsFinder(context, input, log, categoriesResult.first).find();
-        result.setTags(tagsResult.first);
-        // TODO Set other tags
+        final List<List<Tag>> tagsResult = new TagsFinder(context, input, log, categoryBestMatch).find();
+        result.setTags(tagsResult);
 
         if (input.getTransactionType() != TransactionType.Income) {
-            final Pair<Account, List<Account>> accountsResult = new AccountsFromFinder(context, input, log, categoriesResult.first).find();
-            result.setAccountFrom(accountsResult.first);
-            result.setOtherAccountsFrom(accountsResult.second);
+            final List<Account> accountsResult = new AccountsFromFinder(context, input, log, categoryBestMatch).find();
+            result.setAccountsFrom(accountsResult);
         }
 
         if (input.getTransactionType() != TransactionType.Expense) {
-            final Pair<Account, List<Account>> accountsResult = new AccountsToFinder(context, input, log, categoriesResult.first).find();
-            result.setAccountTo(accountsResult.first);
-            result.setOtherAccountsTo(accountsResult.second);
+            final List<Account> accountsResult = new AccountsToFinder(context, input, log, categoryBestMatch).find();
+            result.setAccountsTo(accountsResult);
         }
 
         if (input.getAmount() == 0) {
-            final Pair<Long, List<Long>> amountsResult = new AmountsFinder(context, input, log, categoriesResult.first).find();
-            result.setAmount(amountsResult.first);
-            result.setOtherAmounts(amountsResult.second);
+            final List<Long> amountsResult = new AmountsFinder(context, input, log, categoryBestMatch).find();
+            result.setAmounts(amountsResult);
         }
 
         if (Strings.isEmpty(input.getNote())) {
-            final Pair<String, List<String>> notesResult = new NotesFinder(context, input, log, categoriesResult.first, tagsResult.first).find();
-            result.setNote(notesResult.first);
-            result.setOtherNotes(notesResult.second);
+            final List<String> notesResult = new NotesFinder(context, input, log, categoryBestMatch, tagsResult.isEmpty() ? null : tagsResult.get(0)).find();
+            result.setNotes(notesResult);
         }
 
         return result;

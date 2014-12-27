@@ -2,7 +2,6 @@ package com.code44.finance.ui.transactions.autocomplete;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.util.Pair;
 import android.text.format.DateUtils;
 
 import com.code44.finance.common.model.TransactionState;
@@ -31,18 +30,17 @@ public abstract class Finder<T> {
         this.logger = Logger.with(getClass().getSimpleName()).logLevel(log ? Logger.LogLevel.Debug : Logger.LogLevel.Warning);
     }
 
-    public Pair<T, List<T>> find() {
+    public List<T> find() {
         final Cursor cursor = queryTransactions(autoCompleteInput);
         if (cursor == null || !cursor.moveToFirst()) {
-            // TODO Fallback
-            return Pair.create(null, Collections.<T>emptyList());
+            return Collections.emptyList();
         }
 
         final Map<T, ? extends FinderScore> scores = findScores(cursor);
         IOUtils.closeQuietly(cursor);
         final List<T> sorted = getSorted(scores);
         log(sorted, scores);
-        return getResult(sorted);
+        return sorted;
     }
 
     protected abstract Cursor queryTransactions(AutoCompleteInput input);
@@ -101,17 +99,6 @@ public abstract class Finder<T> {
             logger.debug(getLogName(model) + ": " + scores.get(model).getScore());
         }
         logger.debug("End scores -------------------------------------------");
-    }
-
-    private Pair<T, List<T>> getResult(List<T> sorted) {
-        final T bestMatch;
-        if (sorted.size() > 0) {
-            bestMatch = sorted.remove(0);
-        } else {
-            bestMatch = null;
-        }
-
-        return Pair.create(bestMatch, sorted);
     }
 
     private static class ScoreComparator<T> implements Comparator<T> {

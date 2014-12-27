@@ -17,6 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
             android:orientation="vertical">
 
             <LinearLayout
@@ -201,7 +202,7 @@
                 <ImageView
                     android:id="@+id/colorImageView"
                     style="@style/ImageView.Form"
-                    android:padding="10dp"
+                    android:padding="@dimen/action_item_padding"
                     android:src="@drawable/circle"
                     tools:ignore="RtlHardcoded"
                     tools:tint="@color/text_secondary" />
@@ -214,6 +215,13 @@
                     android:hint="@string/categories_one" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/categoriesAutoCompleteContainerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_secondary"
+                android:orientation="vertical" />
 
             <View
                 android:id="@+id/categoryDividerView"
@@ -231,6 +239,9 @@
                 <com.code44.finance.ui.common.views.TintImageView
                     android:id="@+id/tagsImageView"
                     style="@style/ImageView.Form"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="0dp"
                     android:src="@drawable/ic_action_tags"
                     app:supportTintColor="@color/text_secondary"
                     tools:ignore="RtlHardcoded" />

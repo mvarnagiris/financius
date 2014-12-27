@@ -50,4 +50,8 @@ public class TagsViewController extends ViewController {
     public void setIsSetByUser(boolean isSetByUser) {
 //        tagsImageView.setImageAlpha(isSetByUser ? 255 : 64);
     }
+
+    public View getMainView() {
+        return tagsButton;
+    }
 }

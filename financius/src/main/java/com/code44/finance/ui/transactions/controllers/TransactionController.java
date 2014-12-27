@@ -3,8 +3,12 @@ package com.code44.finance.ui.transactions.controllers;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.ListPopupWindow;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.ListAdapter;
 
 import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
@@ -27,6 +31,7 @@ import com.code44.finance.ui.common.ModelListActivity;
 import com.code44.finance.ui.dialogs.DatePickerDialog;
 import com.code44.finance.ui.dialogs.TimePickerDialog;
 import com.code44.finance.ui.tags.TagsActivity;
+import com.code44.finance.ui.transactions.autocomplete.AutoCompleteAdapter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteInput;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
 import com.code44.finance.ui.transactions.autocomplete.TransactionAutoComplete;
@@ -75,6 +80,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     private final FlagsViewController flagsViewController;
 
     private AutoCompleteResult autoCompleteResult;
+    private AutoCompleteAdapter<?> currentAutoCompleteAdapter;
     private boolean isResumed = false;
     private boolean isUpdated = false;
     private boolean isAutoCompleteUpdateQueued = false;
@@ -136,10 +142,42 @@ public class TransactionController implements TransactionAutoComplete.Transactio
                 AccountsActivity.startSelect(activity, REQUEST_ACCOUNT_TO);
                 break;
             case R.id.categoryButton:
-                CategoriesActivity.startSelect(activity, REQUEST_CATEGORY, transactionEditData.getTransactionType());
+                final boolean showPopup = !transactionEditData.isCategorySet();
+                if (showPopup) {
+                    currentAutoCompleteAdapter = categoryViewController.show(currentAutoCompleteAdapter, autoCompleteResult, new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Category>() {
+                        @Override public void onAutoCompleteItemClick(Category item) {
+                            currentAutoCompleteAdapter = null;
+                            transactionEditData.setCategory(item);
+                            requestAutoComplete();
+                        }
+                    });
+                }
+
+                if (currentAutoCompleteAdapter == null) {
+                    CategoriesActivity.startSelect(activity, REQUEST_CATEGORY, transactionEditData.getTransactionType());
+                }
                 break;
             case R.id.tagsButton:
-                TagsActivity.startMultiSelect(activity, REQUEST_TAGS, transactionEditData.getTags() != null ? transactionEditData.getTags() : Collections.<Tag>emptyList());
+                final boolean showPopups = !transactionEditData.isTagsSet() && autoCompleteResult != null && autoCompleteResult.getTags() != null;
+                if (showPopups) {
+                    final ListAdapter adapter = new ArrayAdapter<>(activity, android.R.layout.simple_dropdown_item_1line, autoCompleteResult.getTags());
+                    final ListPopupWindow listPopupWindow = new ListPopupWindow(activity);
+                    final AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                            listPopupWindow.dismiss();
+                            transactionEditData.setTags(autoCompleteResult.getTags().get(position));
+                            requestAutoComplete();
+                        }
+                    };
+                    listPopupWindow.setModal(true);
+                    listPopupWindow.setAdapter(adapter);
+                    listPopupWindow.setOnItemClickListener(itemClickListener);
+                    listPopupWindow.setAnchorView(tagsViewController.getMainView());
+                    listPopupWindow.show();
+                } else {
+                    TagsActivity.startMultiSelect(activity, REQUEST_TAGS, transactionEditData.getTags() != null ? transactionEditData.getTags() : Collections.<Tag>emptyList());
+                }
                 break;
         }
     }
@@ -198,6 +236,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
 
     @Override public void onTransactionAutoComplete(AutoCompleteResult result) {
         autoCompleteResult = result;
+        update(true);
     }
 
     @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
