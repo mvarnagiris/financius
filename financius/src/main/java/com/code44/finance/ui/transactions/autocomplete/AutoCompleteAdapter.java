@@ -4,10 +4,12 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.code44.finance.R;
+
 import java.util.List;
 
 public abstract class AutoCompleteAdapter<T> implements View.OnClickListener {
-    private static final int MAX_CHILD_COUNT = 2;
+    private static final int MAX_CHILD_COUNT = 3;
 
     private final ViewGroup containerView;
     private final AutoCompleteAdapterListener listener;
@@ -46,6 +48,7 @@ public abstract class AutoCompleteAdapter<T> implements View.OnClickListener {
             final View view = newView(containerView.getContext(), containerView);
             bindView(view, item);
             containerView.addView(view);
+            view.setBackgroundResource(R.drawable.btn_borderless_bounded);
             view.setTag(item);
             view.setOnClickListener(this);
         }

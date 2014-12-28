@@ -4,24 +4,33 @@ import android.content.res.Resources;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.code44.finance.R;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.ViewController;
+import com.code44.finance.ui.transactions.autocomplete.AutoCompleteAdapter;
+import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
+import com.code44.finance.ui.transactions.autocomplete.adapters.AutoCompleteTagsAdapter;
 import com.code44.finance.utils.TextBackgroundSpan;
 
 import java.util.Collections;
 import java.util.List;
 
-public class TagsViewController extends ViewController {
+public class TagsViewController extends ViewController implements AutoCompleteController<List<Tag>>, AutoCompleteAdapter.AutoCompleteAdapterListener {
     private final Button tagsButton;
+    private final View tagsDividerView;
+    private final ViewGroup tagsAutoCompleteContainerView;
+
     private final int tagBackgroundColor;
     private final float tagBackgroundRadius;
 
     public TagsViewController(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
         tagsButton = findView(activity, R.id.tagsButton);
+        tagsDividerView = findView(activity, R.id.tagsDividerView);
+        tagsAutoCompleteContainerView = findView(activity, R.id.tagsAutoCompleteContainerView);
 
         final Resources res = tagsButton.getResources();
         tagBackgroundColor = res.getColor(R.color.bg_secondary);
@@ -31,6 +40,24 @@ public class TagsViewController extends ViewController {
     }
 
     @Override public void showError(Throwable error) {
+    }
+
+    @Override public void onAutoCompleteAdapterShown() {
+        tagsButton.setHint(R.string.show_all);
+        tagsDividerView.setVisibility(View.GONE);
+    }
+
+    @Override public void onAutoCompleteAdapterHidden() {
+        tagsButton.setHint(R.string.tags_other);
+        tagsDividerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override public AutoCompleteAdapter<List<Tag>> show(AutoCompleteAdapter<?> currentAdapter, AutoCompleteResult autoCompleteResult, AutoCompleteAdapter.OnAutoCompleteItemClickListener<List<Tag>> clickListener) {
+        final AutoCompleteTagsAdapter adapter = new AutoCompleteTagsAdapter(tagsAutoCompleteContainerView, this, clickListener);
+        if (adapter.show(currentAdapter, autoCompleteResult)) {
+            return adapter;
+        }
+        return null;
     }
 
     public void setTags(List<Tag> tags) {
@@ -45,13 +72,5 @@ public class TagsViewController extends ViewController {
             ssb.append(" ");
         }
         tagsButton.setText(ssb);
-    }
-
-    public void setIsSetByUser(boolean isSetByUser) {
-//        tagsImageView.setImageAlpha(isSetByUser ? 255 : 64);
-    }
-
-    public View getMainView() {
-        return tagsButton;
     }
 }

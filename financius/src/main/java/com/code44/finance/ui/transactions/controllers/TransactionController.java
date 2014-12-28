@@ -3,12 +3,8 @@ package com.code44.finance.ui.transactions.controllers;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.ListPopupWindow;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.ListAdapter;
 
 import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
@@ -141,12 +137,12 @@ public class TransactionController implements TransactionAutoComplete.Transactio
             case R.id.accountToButton:
                 AccountsActivity.startSelect(activity, REQUEST_ACCOUNT_TO);
                 break;
-            case R.id.categoryButton:
+
+            case R.id.categoryButton: {
                 final boolean showPopup = !transactionEditData.isCategorySet();
                 if (showPopup) {
                     currentAutoCompleteAdapter = categoryViewController.show(currentAutoCompleteAdapter, autoCompleteResult, new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Category>() {
                         @Override public void onAutoCompleteItemClick(Category item) {
-                            currentAutoCompleteAdapter = null;
                             transactionEditData.setCategory(item);
                             requestAutoComplete();
                         }
@@ -157,28 +153,24 @@ public class TransactionController implements TransactionAutoComplete.Transactio
                     CategoriesActivity.startSelect(activity, REQUEST_CATEGORY, transactionEditData.getTransactionType());
                 }
                 break;
-            case R.id.tagsButton:
-                final boolean showPopups = !transactionEditData.isTagsSet() && autoCompleteResult != null && autoCompleteResult.getTags() != null;
-                if (showPopups) {
-                    final ListAdapter adapter = new ArrayAdapter<>(activity, android.R.layout.simple_dropdown_item_1line, autoCompleteResult.getTags());
-                    final ListPopupWindow listPopupWindow = new ListPopupWindow(activity);
-                    final AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                            listPopupWindow.dismiss();
-                            transactionEditData.setTags(autoCompleteResult.getTags().get(position));
+            }
+
+            case R.id.tagsButton: {
+                final boolean showPopup = !transactionEditData.isTagsSet();
+                if (showPopup) {
+                    currentAutoCompleteAdapter = tagsViewController.show(currentAutoCompleteAdapter, autoCompleteResult, new AutoCompleteAdapter.OnAutoCompleteItemClickListener<List<Tag>>() {
+                        @Override public void onAutoCompleteItemClick(List<Tag> item) {
+                            transactionEditData.setTags(item);
                             requestAutoComplete();
                         }
-                    };
-                    listPopupWindow.setModal(true);
-                    listPopupWindow.setAdapter(adapter);
-                    listPopupWindow.setOnItemClickListener(itemClickListener);
-                    listPopupWindow.setAnchorView(tagsViewController.getMainView());
-                    listPopupWindow.show();
-                } else {
+                    });
+                }
+
+                if (currentAutoCompleteAdapter == null) {
                     TagsActivity.startMultiSelect(activity, REQUEST_TAGS, transactionEditData.getTags() != null ? transactionEditData.getTags() : Collections.<Tag>emptyList());
                 }
                 break;
+            }
         }
     }
 
@@ -377,6 +369,8 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     }
 
     private void requestAutoComplete() {
+        hideAutoCompleteItems();
+
         if (transactionEditData.getStoredTransaction() != null) {
             update(true);
             return;
@@ -426,6 +420,11 @@ public class TransactionController implements TransactionAutoComplete.Transactio
                 break;
             default:
                 throw new IllegalArgumentException("TransactionType " + transactionEditData.getTransactionType() + " is not supported.");
+        }
+
+        if (currentAutoCompleteAdapter != null) {
+            currentAutoCompleteAdapter.hide();
+            currentAutoCompleteAdapter = null;
         }
 
         transactionEditData.setTransactionType(transactionType);
@@ -493,12 +492,10 @@ public class TransactionController implements TransactionAutoComplete.Transactio
 
     private void updateCategory(Category category) {
         categoryViewController.setCategory(category);
-        categoryViewController.setIsSetByUser(transactionEditData.isCategorySet());
     }
 
     private void updateTags(List<Tag> tags) {
         tagsViewController.setTags(tags);
-        tagsViewController.setIsSetByUser(transactionEditData.isTagsSet());
     }
 
     private void updateNote(String note) {
@@ -512,6 +509,13 @@ public class TransactionController implements TransactionAutoComplete.Transactio
 
     private void updateIncludeInReports(boolean includeInReports) {
         flagsViewController.setIncludeInReports(includeInReports);
+    }
+
+    private void hideAutoCompleteItems() {
+        if (currentAutoCompleteAdapter != null) {
+            currentAutoCompleteAdapter.hide();
+            currentAutoCompleteAdapter = null;
+        }
     }
 
     public static interface OnTransactionUpdatedListener {

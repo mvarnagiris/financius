@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
@@ -12,7 +13,8 @@
     <ScrollView
         style="@style/ScrollView"
         android:layout_height="0px"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:animateLayoutChanges="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,6 +33,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
                     android:gravity="center_vertical"
                     android:minHeight="@dimen/action_bar_size_2x">
 
@@ -111,108 +114,140 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_large"
-                android:paddingLeft="@dimen/keyline"
-                android:paddingRight="@dimen/keyline">
+                android:animateLayoutChanges="true"
+                android:background="@color/bg_window"
+                android:elevation="@dimen/elevation_sub_header"
+                android:orientation="vertical"
+                tools:ignore="UnusedAttribute">
 
-                <com.code44.finance.ui.common.views.TintImageView
-                    android:id="@+id/dateTimeImageView"
-                    style="@style/ImageView.Form"
-                    android:src="@drawable/ic_action_date"
-                    app:supportTintColor="@color/text_secondary"
-                    tools:ignore="RtlHardcoded" />
-
-                <Button
-                    android:id="@+id/dateButton"
-                    style="@style/Button.Borderless.Bounded.Select"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:hint="@string/date"
-                    tools:text="August 17" />
+                    android:layout_marginTop="@dimen/space_large"
+                    android:animateLayoutChanges="true"
+                    android:paddingLeft="@dimen/keyline"
+                    android:paddingRight="@dimen/keyline">
 
-                <Button
-                    android:id="@+id/timeButton"
-                    style="@style/Button.Borderless.Bounded.Select"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="end|center_vertical"
-                    android:hint="@string/date"
-                    tools:text="16:27" />
+                    <com.code44.finance.ui.common.views.TintImageView
+                        android:id="@+id/dateTimeImageView"
+                        style="@style/ImageView.Form"
+                        android:src="@drawable/ic_action_date"
+                        app:supportTintColor="@color/text_secondary"
+                        tools:ignore="RtlHardcoded" />
 
-            </LinearLayout>
+                    <Button
+                        android:id="@+id/dateButton"
+                        style="@style/Button.Borderless.Bounded.Select"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:hint="@string/date"
+                        tools:text="August 17" />
 
-            <View
-                style="@style/Divider.Thin"
-                android:layout_marginLeft="@dimen/keyline_content"
-                tools:ignore="RtlHardcoded" />
+                    <Button
+                        android:id="@+id/timeButton"
+                        style="@style/Button.Borderless.Bounded.Select"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end|center_vertical"
+                        android:hint="@string/date"
+                        tools:text="16:27" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_large"
-                android:paddingLeft="@dimen/keyline"
-                android:paddingRight="@dimen/keyline">
+                </LinearLayout>
 
-                <com.code44.finance.ui.common.views.TintImageView
-                    android:id="@+id/accountImageView"
-                    style="@style/ImageView.Form"
-                    android:src="@drawable/ic_action_account"
-                    app:supportTintColor="@color/text_secondary"
+                <View
+                    style="@style/Divider.Thin"
+                    android:layout_marginLeft="@dimen/keyline_content"
                     tools:ignore="RtlHardcoded" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginTop="@dimen/space_large"
+                    android:animateLayoutChanges="true"
+                    android:paddingLeft="@dimen/keyline"
+                    android:paddingRight="@dimen/keyline">
 
-                    <Button
-                        android:id="@+id/accountFromButton"
-                        style="@style/Button.Borderless.Bounded.Select"
+                    <com.code44.finance.ui.common.views.TintImageView
+                        android:id="@+id/accountImageView"
+                        style="@style/ImageView.Form"
+                        android:src="@drawable/ic_action_account"
+                        app:supportTintColor="@color/text_secondary"
+                        tools:ignore="RtlHardcoded" />
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/from" />
+                        android:animateLayoutChanges="true"
+                        android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/accountToButton"
-                        style="@style/Button.Borderless.Bounded.Select"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/to"
-                        android:visibility="gone" />
+                        <Button
+                            android:id="@+id/accountFromButton"
+                            style="@style/Button.Borderless.Bounded.Select"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/from" />
+
+                        <Button
+                            android:id="@+id/accountToButton"
+                            style="@style/Button.Borderless.Bounded.Select"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/to"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
+                <View
+                    style="@style/Divider.Thin"
+                    android:layout_marginLeft="@dimen/keyline_content"
+                    tools:ignore="RtlHardcoded" />
+
             </LinearLayout>
 
-            <View
-                style="@style/Divider.Thin"
-                android:layout_marginLeft="@dimen/keyline_content"
-                tools:ignore="RtlHardcoded" />
-
             <LinearLayout
-                android:id="@+id/categoryContainerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_large"
-                android:paddingLeft="@dimen/keyline"
-                android:paddingRight="@dimen/keyline">
+                android:animateLayoutChanges="true"
+                android:background="@color/bg_window"
+                android:elevation="@dimen/elevation_sub_header"
+                android:orientation="vertical"
+                tools:ignore="UnusedAttribute">
 
-                <ImageView
-                    android:id="@+id/colorImageView"
-                    style="@style/ImageView.Form"
-                    android:padding="@dimen/action_item_padding"
-                    android:src="@drawable/circle"
-                    tools:ignore="RtlHardcoded"
-                    tools:tint="@color/text_secondary" />
-
-                <Button
-                    android:id="@+id/categoryButton"
-                    style="@style/Button.Borderless.Bounded.Select"
+                <LinearLayout
+                    android:id="@+id/categoryContainerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/categories_one" />
+                    android:layout_marginTop="@dimen/space_large"
+                    android:animateLayoutChanges="true"
+                    android:paddingLeft="@dimen/keyline"
+                    android:paddingRight="@dimen/keyline">
+
+                    <ImageView
+                        android:id="@+id/colorImageView"
+                        style="@style/ImageView.Form"
+                        android:padding="@dimen/action_item_padding"
+                        android:src="@drawable/circle"
+                        tools:ignore="RtlHardcoded"
+                        tools:tint="@color/text_secondary" />
+
+                    <Button
+                        android:id="@+id/categoryButton"
+                        style="@style/Button.Borderless.Bounded.Select"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/categories_one" />
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/categoryDividerView"
+                    style="@style/Divider.Thin"
+                    android:layout_marginLeft="@dimen/keyline_content"
+                    tools:ignore="RtlHardcoded" />
 
             </LinearLayout>
 
@@ -220,103 +255,143 @@
                 android:id="@+id/categoriesAutoCompleteContainerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
                 android:background="@color/bg_secondary"
                 android:orientation="vertical" />
 
-            <View
-                android:id="@+id/categoryDividerView"
-                style="@style/Divider.Thin"
-                android:layout_marginLeft="@dimen/keyline_content"
-                tools:ignore="RtlHardcoded" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_large"
-                android:paddingLeft="@dimen/keyline"
-                android:paddingRight="@dimen/keyline">
-
-                <com.code44.finance.ui.common.views.TintImageView
-                    android:id="@+id/tagsImageView"
-                    style="@style/ImageView.Form"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="0dp"
-                    android:src="@drawable/ic_action_tags"
-                    app:supportTintColor="@color/text_secondary"
-                    tools:ignore="RtlHardcoded" />
-
-                <Button
-                    android:id="@+id/tagsButton"
-                    style="@style/Button.Borderless.Bounded.Select"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/tags_other" />
-
-            </LinearLayout>
-
-            <View
-                style="@style/Divider.Thin"
-                android:layout_marginLeft="@dimen/keyline_content"
-                tools:ignore="RtlHardcoded" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_large"
-                android:paddingLeft="@dimen/keyline"
-                android:paddingRight="@dimen/keyline">
-
-                <com.code44.finance.ui.common.views.TintImageView
-                    android:id="@+id/noteImageView"
-                    style="@style/ImageView.Form"
-                    android:src="@drawable/ic_action_note"
-                    app:supportTintColor="@color/text_secondary"
-                    tools:ignore="RtlHardcoded" />
-
-                <AutoCompleteTextView
-                    android:id="@+id/noteAutoCompleteTextView"
-                    style="@style/Button.Borderless.Bounded.Select"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:hint="@string/note"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:minHeight="@dimen/recommended_touch_size" />
-
-            </LinearLayout>
-
-            <View
-                style="@style/Divider.Thin"
-                android:layout_marginLeft="@dimen/keyline_content"
-                tools:ignore="RtlHardcoded" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="-8dp"
-                android:layout_marginTop="@dimen/space_xxlarge"
+                android:animateLayoutChanges="true"
+                android:background="@color/bg_window"
+                android:elevation="@dimen/elevation_sub_header"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/keyline"
-                android:paddingLeft="@dimen/keyline_content"
-                tools:ignore="RtlHardcoded,RtlSymmetry">
+                tools:ignore="UnusedAttribute">
 
-                <CheckBox
-                    android:id="@+id/confirmedCheckBox"
-                    style="@style/CheckBox.Field"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/confirmed"
-                    android:textAppearance="@style/Text" />
-
-                <CheckBox
-                    android:id="@+id/includeInReportsCheckBox"
-                    style="@style/CheckBox.Field"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_large"
-                    android:text="@string/include_in_reports"
-                    android:textAppearance="@style/Text" />
+                    android:animateLayoutChanges="true"
+                    android:paddingLeft="@dimen/keyline"
+                    android:paddingRight="@dimen/keyline">
+
+                    <com.code44.finance.ui.common.views.TintImageView
+                        android:id="@+id/tagsImageView"
+                        style="@style/ImageView.Form"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="0dp"
+                        android:src="@drawable/ic_action_tags"
+                        app:supportTintColor="@color/text_secondary"
+                        tools:ignore="RtlHardcoded" />
+
+                    <Button
+                        android:id="@+id/tagsButton"
+                        style="@style/Button.Borderless.Bounded.Select"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/tags_other" />
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/tagsDividerView"
+                    style="@style/Divider.Thin"
+                    android:layout_marginLeft="@dimen/keyline_content"
+                    tools:ignore="RtlHardcoded" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tagsAutoCompleteContainerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:background="@color/bg_secondary"
+                android:orientation="vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:background="@color/bg_window"
+                android:elevation="@dimen/elevation_sub_header"
+                android:orientation="vertical"
+                tools:ignore="UnusedAttribute">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_large"
+                    android:animateLayoutChanges="true"
+                    android:paddingLeft="@dimen/keyline"
+                    android:paddingRight="@dimen/keyline">
+
+                    <com.code44.finance.ui.common.views.TintImageView
+                        android:id="@+id/noteImageView"
+                        style="@style/ImageView.Form"
+                        android:src="@drawable/ic_action_note"
+                        app:supportTintColor="@color/text_secondary"
+                        tools:ignore="RtlHardcoded" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/noteAutoCompleteTextView"
+                        style="@style/Button.Borderless.Bounded.Select"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="@string/note"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:minHeight="@dimen/recommended_touch_size" />
+
+                </LinearLayout>
+
+                <View
+                    style="@style/Divider.Thin"
+                    android:layout_marginLeft="@dimen/keyline_content"
+                    tools:ignore="RtlHardcoded" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:animateLayoutChanges="true"
+                android:background="@color/bg_window"
+                android:elevation="@dimen/elevation_sub_header"
+                android:orientation="vertical"
+                tools:ignore="UnusedAttribute">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="-8dp"
+                    android:layout_marginTop="@dimen/space_xxlarge"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/keyline"
+                    android:paddingLeft="@dimen/keyline_content"
+                    tools:ignore="RtlHardcoded,RtlSymmetry">
+
+                    <CheckBox
+                        android:id="@+id/confirmedCheckBox"
+                        style="@style/CheckBox.Field"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/confirmed"
+                        android:textAppearance="@style/Text" />
+
+                    <CheckBox
+                        android:id="@+id/includeInReportsCheckBox"
+                        style="@style/CheckBox.Field"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_large"
+                        android:text="@string/include_in_reports"
+                        android:textAppearance="@style/Text" />
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>

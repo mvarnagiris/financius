@@ -8,7 +8,7 @@
     android:background="@color/bg_primary"
     android:divider="?android:attr/dividerVertical"
     android:dividerPadding="@dimen/space_normal"
-    android:elevation="@dimen/elevation_sub_header"
+    android:elevation="@dimen/elevation_header"
     android:orientation="horizontal"
     android:showDividers="middle"
     tools:ignore="UnusedAttribute">

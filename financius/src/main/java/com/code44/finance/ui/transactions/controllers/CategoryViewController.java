@@ -46,10 +46,12 @@ public class CategoryViewController extends ViewController implements AutoComple
 
     @Override public void onAutoCompleteAdapterShown() {
         categoryButton.setHint(R.string.show_all);
+        categoryDividerView.setVisibility(View.GONE);
     }
 
     @Override public void onAutoCompleteAdapterHidden() {
         categoryButton.setHint(R.string.categories_one);
+        categoryDividerView.setVisibility(View.VISIBLE);
     }
 
     public void setTransactionType(TransactionType transactionType) {
@@ -71,16 +73,11 @@ public class CategoryViewController extends ViewController implements AutoComple
                 categoryDividerView.setVisibility(View.GONE);
                 break;
         }
-        categoriesAutoCompleteContainerView.setVisibility(View.GONE);
     }
 
     public void setCategory(Category category) {
         colorImageView.setColorFilter(getCategoryColor(category, transactionType));
         categoryButton.setText(category == null ? null : category.getTitle());
-    }
-
-    public void setIsSetByUser(boolean isSetByUser) {
-//        colorImageView.setImageAlpha(isSetByUser ? 255 : 64);
     }
 
     private int getCategoryColor(Category category, TransactionType transactionType) {
