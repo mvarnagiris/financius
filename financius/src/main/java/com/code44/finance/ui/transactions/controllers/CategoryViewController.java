@@ -36,7 +36,7 @@ public class CategoryViewController extends ViewController implements AutoComple
     @Override public void showError(Throwable error) {
     }
 
-    @Override public AutoCompleteAdapter<Category> show(AutoCompleteAdapter<?> currentAdapter, AutoCompleteResult autoCompleteResult, AutoCompleteAdapter.OnAutoCompleteItemClickListener<Category> clickListener) {
+    @Override public AutoCompleteAdapter<Category> showAutoComplete(AutoCompleteAdapter<?> currentAdapter, AutoCompleteResult autoCompleteResult, AutoCompleteAdapter.OnAutoCompleteItemClickListener<Category> clickListener, View view) {
         final AutoCompleteCategoriesAdapter adapter = new AutoCompleteCategoriesAdapter(categoriesAutoCompleteContainerView, this, clickListener);
         if (adapter.show(currentAdapter, autoCompleteResult)) {
             return adapter;
@@ -44,12 +44,12 @@ public class CategoryViewController extends ViewController implements AutoComple
         return null;
     }
 
-    @Override public void onAutoCompleteAdapterShown() {
+    @Override public void onAutoCompleteAdapterShown(AutoCompleteAdapter autoCompleteAdapter) {
         categoryButton.setHint(R.string.show_all);
         categoryDividerView.setVisibility(View.GONE);
     }
 
-    @Override public void onAutoCompleteAdapterHidden() {
+    @Override public void onAutoCompleteAdapterHidden(AutoCompleteAdapter autoCompleteAdapter) {
         categoryButton.setHint(R.string.categories_one);
         categoryDividerView.setVisibility(View.VISIBLE);
     }

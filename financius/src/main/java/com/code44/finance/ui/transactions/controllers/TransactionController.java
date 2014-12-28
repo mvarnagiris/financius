@@ -131,22 +131,49 @@ public class TransactionController implements TransactionAutoComplete.Transactio
             case R.id.timeButton:
                 TimePickerDialog.show(activity.getSupportFragmentManager(), REQUEST_TIME, transactionEditData.getDate());
                 break;
-            case R.id.accountFromButton:
-                AccountsActivity.startSelect(activity, REQUEST_ACCOUNT_FROM);
+            case R.id.accountFromButton: {
+                final boolean showPopup = !transactionEditData.isAccountFromSet();
+                if (showPopup) {
+                    currentAutoCompleteAdapter = accountsViewController.showAutoComplete(currentAutoCompleteAdapter, autoCompleteResult, new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Account>() {
+                        @Override public void onAutoCompleteItemClick(Account item) {
+                            transactionEditData.setAccountFrom(item);
+                            requestAutoComplete();
+                        }
+                    }, v);
+                }
+
+                if (currentAutoCompleteAdapter == null) {
+                    AccountsActivity.startSelect(activity, REQUEST_ACCOUNT_FROM);
+                }
                 break;
-            case R.id.accountToButton:
-                AccountsActivity.startSelect(activity, REQUEST_ACCOUNT_TO);
+            }
+
+            case R.id.accountToButton: {
+                final boolean showPopup = !transactionEditData.isAccountFromSet();
+                if (showPopup) {
+                    currentAutoCompleteAdapter = accountsViewController.showAutoComplete(currentAutoCompleteAdapter, autoCompleteResult, new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Account>() {
+                        @Override public void onAutoCompleteItemClick(Account item) {
+                            transactionEditData.setAccountTo(item);
+                            requestAutoComplete();
+                        }
+                    }, v);
+                }
+
+                if (currentAutoCompleteAdapter == null) {
+                    AccountsActivity.startSelect(activity, REQUEST_ACCOUNT_TO);
+                }
                 break;
+            }
 
             case R.id.categoryButton: {
                 final boolean showPopup = !transactionEditData.isCategorySet();
                 if (showPopup) {
-                    currentAutoCompleteAdapter = categoryViewController.show(currentAutoCompleteAdapter, autoCompleteResult, new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Category>() {
+                    currentAutoCompleteAdapter = categoryViewController.showAutoComplete(currentAutoCompleteAdapter, autoCompleteResult, new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Category>() {
                         @Override public void onAutoCompleteItemClick(Category item) {
                             transactionEditData.setCategory(item);
                             requestAutoComplete();
                         }
-                    });
+                    }, v);
                 }
 
                 if (currentAutoCompleteAdapter == null) {
@@ -158,12 +185,12 @@ public class TransactionController implements TransactionAutoComplete.Transactio
             case R.id.tagsButton: {
                 final boolean showPopup = !transactionEditData.isTagsSet();
                 if (showPopup) {
-                    currentAutoCompleteAdapter = tagsViewController.show(currentAutoCompleteAdapter, autoCompleteResult, new AutoCompleteAdapter.OnAutoCompleteItemClickListener<List<Tag>>() {
+                    currentAutoCompleteAdapter = tagsViewController.showAutoComplete(currentAutoCompleteAdapter, autoCompleteResult, new AutoCompleteAdapter.OnAutoCompleteItemClickListener<List<Tag>>() {
                         @Override public void onAutoCompleteItemClick(List<Tag> item) {
                             transactionEditData.setTags(item);
                             requestAutoComplete();
                         }
-                    });
+                    }, v);
                 }
 
                 if (currentAutoCompleteAdapter == null) {
@@ -480,13 +507,11 @@ public class TransactionController implements TransactionAutoComplete.Transactio
 
     private void updateAccountFrom(Account account) {
         accountsViewController.setAccountFrom(account);
-        accountsViewController.setIsAccountFromSetByUser(transactionEditData.isAccountFromSet());
         amountViewController.setAccountFrom(account);
     }
 
     private void updateAccountTo(Account account) {
         accountsViewController.setAccountTo(account);
-        accountsViewController.setIsAccountToSetByUser(transactionEditData.isAccountToSet());
         amountViewController.setAccountTo(account);
     }
 

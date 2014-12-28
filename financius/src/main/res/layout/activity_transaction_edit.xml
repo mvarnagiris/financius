@@ -202,11 +202,20 @@
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/accountsDividerView"
                     style="@style/Divider.Thin"
                     android:layout_marginLeft="@dimen/keyline_content"
                     tools:ignore="RtlHardcoded" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/accountsAutoCompleteContainerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:background="@color/bg_secondary"
+                android:orientation="vertical" />
 
             <LinearLayout
                 android:layout_width="match_parent"

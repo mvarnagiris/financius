@@ -54,13 +54,13 @@ public abstract class AutoCompleteAdapter<T> implements View.OnClickListener {
         }
 
         containerView.setVisibility(View.VISIBLE);
-        listener.onAutoCompleteAdapterShown();
+        listener.onAutoCompleteAdapterShown(this);
         return true;
     }
 
     public void hide() {
         containerView.setVisibility(View.GONE);
-        listener.onAutoCompleteAdapterHidden();
+        listener.onAutoCompleteAdapterHidden(this);
     }
 
     protected abstract View newView(Context context, ViewGroup containerView);
@@ -72,9 +72,9 @@ public abstract class AutoCompleteAdapter<T> implements View.OnClickListener {
     protected abstract List<T> getItems(AutoCompleteResult autoCompleteResult);
 
     public static interface AutoCompleteAdapterListener {
-        public void onAutoCompleteAdapterShown();
+        public void onAutoCompleteAdapterShown(AutoCompleteAdapter autoCompleteAdapter);
 
-        public void onAutoCompleteAdapterHidden();
+        public void onAutoCompleteAdapterHidden(AutoCompleteAdapter autoCompleteAdapter);
     }
 
     public static interface OnAutoCompleteItemClickListener<T> {

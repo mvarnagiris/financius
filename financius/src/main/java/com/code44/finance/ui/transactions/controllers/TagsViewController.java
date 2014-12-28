@@ -42,17 +42,17 @@ public class TagsViewController extends ViewController implements AutoCompleteCo
     @Override public void showError(Throwable error) {
     }
 
-    @Override public void onAutoCompleteAdapterShown() {
+    @Override public void onAutoCompleteAdapterShown(AutoCompleteAdapter autoCompleteAdapter) {
         tagsButton.setHint(R.string.show_all);
         tagsDividerView.setVisibility(View.GONE);
     }
 
-    @Override public void onAutoCompleteAdapterHidden() {
+    @Override public void onAutoCompleteAdapterHidden(AutoCompleteAdapter autoCompleteAdapter) {
         tagsButton.setHint(R.string.tags_other);
         tagsDividerView.setVisibility(View.VISIBLE);
     }
 
-    @Override public AutoCompleteAdapter<List<Tag>> show(AutoCompleteAdapter<?> currentAdapter, AutoCompleteResult autoCompleteResult, AutoCompleteAdapter.OnAutoCompleteItemClickListener<List<Tag>> clickListener) {
+    @Override public AutoCompleteAdapter<List<Tag>> showAutoComplete(AutoCompleteAdapter<?> currentAdapter, AutoCompleteResult autoCompleteResult, AutoCompleteAdapter.OnAutoCompleteItemClickListener<List<Tag>> clickListener, View view) {
         final AutoCompleteTagsAdapter adapter = new AutoCompleteTagsAdapter(tagsAutoCompleteContainerView, this, clickListener);
         if (adapter.show(currentAdapter, autoCompleteResult)) {
             return adapter;
