@@ -28,7 +28,6 @@ public class NavigationBottomAdapter extends BaseAdapter {
         this.context = context;
 
         items = new ArrayList<>();
-        // TODO items.add(new NavigationItem(NAV_ID_USER, context.getString(R.string.user)));
         items.add(new NavigationAdapter.NavigationItem(NavigationAdapter.NavigationScreen.Settings, context.getString(R.string.settings), R.drawable.ic_settings_black_24dp));
         items.add(new NavigationAdapter.NavigationItem(NavigationAdapter.NavigationScreen.About, context.getString(R.string.about), R.drawable.ic_info_outline_black_24dp));
 
@@ -74,31 +73,18 @@ public class NavigationBottomAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public static enum NavigationScreen {
-        User(1), Overview(2), Accounts(3), Transactions(4), Reports(5), Settings(6), About(7);
-        private final int id;
-
-        NavigationScreen(int id) {
-            this.id = id;
-        }
-
-        public int getId() {
-            return id;
-        }
-    }
-
     public static class NavigationItem {
-        private final NavigationScreen navigationScreen;
+        private final NavigationAdapter.NavigationScreen navigationScreen;
         private final String title;
         private int icon;
 
-        public NavigationItem(NavigationScreen navigationScreen, String title, int icon) {
+        public NavigationItem(NavigationAdapter.NavigationScreen navigationScreen, String title, int icon) {
             this.navigationScreen = navigationScreen;
             this.title = title;
             this.icon = icon;
         }
 
-        public NavigationScreen getNavigationScreen() {
+        public NavigationAdapter.NavigationScreen getNavigationScreen() {
             return navigationScreen;
         }
 
