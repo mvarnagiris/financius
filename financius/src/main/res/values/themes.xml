@@ -9,6 +9,8 @@
         <item name="android:navigationBarColor" tools:ignore="NewApi">?android:colorPrimaryDark
         </item>
 
+        <item name="android:statusBarColor" tools:ignore="NewApi">#44000000</item>
+
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowContentTransitions" tools:ignore="NewApi">true</item>
         <item name="android:windowBackground">@color/bg_window</item>

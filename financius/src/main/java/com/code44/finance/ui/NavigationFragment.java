@@ -10,11 +10,13 @@ import android.widget.ListView;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.NavigationAdapter;
+import com.code44.finance.adapters.NavigationBottomAdapter;
 
-public class NavigationFragment extends BaseFragment implements AdapterView.OnItemClickListener {
+public class NavigationFragment extends BaseFragment {
     private NavigationAdapter adapter;
     private NavigationListener navigationListener;
     private NavigationAdapter.NavigationScreen pendingNavigationScreen;
+    private NavigationBottomAdapter bottomAdapter;
 
     @Override public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -38,18 +40,32 @@ public class NavigationFragment extends BaseFragment implements AdapterView.OnIt
         // Setup
         adapter = new NavigationAdapter(getActivity());
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                final NavigationAdapter.NavigationScreen navigationScreen = ((NavigationAdapter.NavigationItem) adapter.getItem(position)).getNavigationScreen();
+                adapter.setSelectedNavigationScreen(navigationScreen);
+                navigationListener.onNavigationItemSelected(navigationScreen);
+            }
+        });
 
         if (pendingNavigationScreen != null) {
             adapter.setSelectedNavigationScreen(pendingNavigationScreen);
             pendingNavigationScreen = null;
         }
-    }
 
-    @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        final NavigationAdapter.NavigationScreen navigationScreen = ((NavigationAdapter.NavigationItem) adapter.getItem(position)).getNavigationScreen();
-        adapter.setSelectedNavigationScreen(navigationScreen);
-        navigationListener.onNavigationItemSelected(navigationScreen);
+        final ListView listViewBottom = (ListView) view.findViewById(R.id.listViewBottom);
+
+        bottomAdapter = new NavigationBottomAdapter(getActivity());
+
+        listViewBottom.setAdapter(bottomAdapter);
+        listViewBottom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+                final NavigationAdapter.NavigationScreen navigationScreen = ((NavigationAdapter.NavigationItem) bottomAdapter.getItem(position)).getNavigationScreen();
+                //bottomAdapter.setSelectedNavigationScreen(navigationScreen);
+                navigationListener.onNavigationItemSelected(navigationScreen);
+            }
+        });
     }
 
     public void setSelected(NavigationAdapter.NavigationScreen navigationScreen) {

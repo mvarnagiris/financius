@@ -3,13 +3,16 @@
     android:id="@+id/drawer"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/primary"
+    >
 
     <FrameLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@color/bg_window"/>
 
-    <include layout="@layout/include_navigation" />
+    <include layout="@layout/include_navigation"/>
 
 </android.support.v4.widget.DrawerLayout>
