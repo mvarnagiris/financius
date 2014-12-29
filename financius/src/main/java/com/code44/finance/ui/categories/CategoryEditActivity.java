@@ -99,7 +99,6 @@ public class CategoryEditActivity extends ModelEditActivity<Category> implements
         containerView.setBackgroundColor(model.getColor());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(model.getColor());
-            getWindow().setNavigationBarColor(model.getColor());
         }
 
         transactionTypeButton.setText(model.getTransactionType() == TransactionType.Expense ? R.string.expense : R.string.income);

@@ -79,7 +79,6 @@ public class CurrenciesActivity extends ModelListActivity implements CompoundBut
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        menu.findItem(R.id.action_settings).setVisible(false);
         getMenuInflater().inflate(R.menu.currencies, menu);
         return true;
     }

@@ -57,7 +57,6 @@ public class CategoryActivity extends ModelActivity<Category> {
         getToolbar().setBackgroundColor(model.getColor());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(model.getColor());
-            getWindow().setNavigationBarColor(model.getColor());
         }
     }
 
