@@ -116,7 +116,7 @@ public class NavigationAdapter extends BaseAdapter {
         }
     }
 
-    public static class ViewHolder {
+    private static class ViewHolder {
         public TextView title_TV;
         public ImageView icon_IV;
 
