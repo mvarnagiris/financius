@@ -18,6 +18,8 @@ import com.code44.finance.ui.accounts.AccountsActivity;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.overview.OverviewActivity;
 import com.code44.finance.ui.reports.categories.CategoriesReportActivity;
+import com.code44.finance.ui.settings.SettingsActivity;
+import com.code44.finance.ui.settings.about.AboutActivity;
 import com.code44.finance.ui.transactions.TransactionsActivity;
 
 public abstract class DrawerActivity extends BaseActivity implements NavigationFragment.NavigationListener {
@@ -131,6 +133,12 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
                 break;
             case Reports:
                 intent = CategoriesReportActivity.makeIntent(this);
+                break;
+            case Settings:
+                intent = SettingsActivity.makeIntentForActivity(this, SettingsActivity.class);
+                break;
+            case About:
+                intent = AboutActivity.makeIntentForActivity(this, AboutActivity.class);
                 break;
             default:
                 intent = null;

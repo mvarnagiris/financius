@@ -109,17 +109,13 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.common, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
-                return true;
-            case R.id.action_settings:
-                SettingsActivity.start(this);
                 return true;
         }
 

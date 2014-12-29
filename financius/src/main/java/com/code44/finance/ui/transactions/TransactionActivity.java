@@ -89,7 +89,6 @@ public class TransactionActivity extends ModelActivity<Transaction> {
         getToolbar().setBackgroundColor(color);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(color);
-            getWindow().setNavigationBarColor(color);
         }
 
         String categoryTitle = category != null ? category.getTitle() : null;
