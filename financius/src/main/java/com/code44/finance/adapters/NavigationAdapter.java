@@ -15,11 +15,13 @@ import java.util.List;
 
 public class NavigationAdapter extends BaseAdapter {
     private final Context context;
-    private final List<NavigationItem> items;
+    protected final List<NavigationItem> items;
     private final int selectedTextColor;
     private final int normalTextColor;
 
     private NavigationScreen selectedNavigationScreen;
+
+
 
     public NavigationAdapter(Context context) {
         this.context = context;
