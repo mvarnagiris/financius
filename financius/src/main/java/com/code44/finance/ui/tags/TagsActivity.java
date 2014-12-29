@@ -29,7 +29,6 @@ public class TagsActivity extends ModelListActivity {
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        //menu.findItem(R.id.action_settings).setVisible(false);
         return true;
     }
 

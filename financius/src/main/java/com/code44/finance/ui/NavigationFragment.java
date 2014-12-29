@@ -60,9 +60,7 @@ public class NavigationFragment extends BaseFragment {
         listViewBottom.setAdapter(bottomAdapter);
         listViewBottom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
                 final NavigationAdapter.NavigationScreen navigationScreen = ((NavigationAdapter.NavigationItem) bottomAdapter.getItem(position)).getNavigationScreen();
-                //bottomAdapter.setSelectedNavigationScreen(navigationScreen);
                 navigationListener.onNavigationItemSelected(navigationScreen);
             }
         });
