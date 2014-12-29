@@ -109,8 +109,10 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.common, menu);
-        return true;
+        return false;
+
+        //getMenuInflater().inflate(R.menu.common, menu);
+        //return true;
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {

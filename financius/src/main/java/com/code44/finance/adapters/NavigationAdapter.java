@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code44.finance.R;
@@ -25,10 +26,10 @@ public class NavigationAdapter extends BaseAdapter {
 
         items = new ArrayList<>();
         // TODO items.add(new NavigationItem(NAV_ID_USER, context.getString(R.string.user)));
-        items.add(new NavigationItem(NavigationScreen.Overview, context.getString(R.string.overview)));
-        items.add(new NavigationItem(NavigationScreen.Accounts, context.getString(R.string.accounts_other)));
-        items.add(new NavigationItem(NavigationScreen.Transactions, context.getString(R.string.transactions_other)));
-        items.add(new NavigationItem(NavigationScreen.Reports, context.getString(R.string.reports)));
+        items.add(new NavigationItem(NavigationScreen.Overview, context.getString(R.string.overview), R.drawable.ic_dashboard_black_24dp));
+        items.add(new NavigationItem(NavigationScreen.Accounts, context.getString(R.string.accounts_other), R.drawable.ic_supervisor_account_black_24dp));
+        items.add(new NavigationItem(NavigationScreen.Transactions, context.getString(R.string.transactions_other), R.drawable.ic_swap_horiz_black_24dp));
+        items.add(new NavigationItem(NavigationScreen.Reports, context.getString(R.string.reports), R.drawable.ic_trending_up_black_24dp));
 
         selectedTextColor = context.getResources().getColor(R.color.text_brand);
         normalTextColor = context.getResources().getColor(R.color.text_primary);
@@ -62,6 +63,7 @@ public class NavigationAdapter extends BaseAdapter {
         final NavigationItem item = items.get(position);
         holder.title_TV.setText(item.getTitle());
         holder.title_TV.setTextColor(item.getNavigationScreen() == selectedNavigationScreen ? selectedTextColor : normalTextColor);
+        holder.icon_IV.setImageResource(item.getIcon());
 
         return view;
     }
@@ -72,7 +74,7 @@ public class NavigationAdapter extends BaseAdapter {
     }
 
     public static enum NavigationScreen {
-        User(1), Overview(2), Accounts(3), Transactions(4), Reports(5);
+        User(1), Overview(2), Accounts(3), Transactions(4), Reports(5), Settings(6), About(7);
         private final int id;
 
         NavigationScreen(int id) {
@@ -87,10 +89,12 @@ public class NavigationAdapter extends BaseAdapter {
     public static class NavigationItem {
         private final NavigationScreen navigationScreen;
         private final String title;
+        private int icon;
 
-        public NavigationItem(NavigationScreen navigationScreen, String title) {
+        public NavigationItem(NavigationScreen navigationScreen, String title, int icon) {
             this.navigationScreen = navigationScreen;
             this.title = title;
+            this.icon = icon;
         }
 
         public NavigationScreen getNavigationScreen() {
@@ -104,14 +108,22 @@ public class NavigationAdapter extends BaseAdapter {
         public String getTitle() {
             return title;
         }
+
+        public int getIcon() {
+            return icon;
+        }
     }
 
-    private static class ViewHolder {
+    public static class ViewHolder {
         public TextView title_TV;
+        public ImageView icon_IV;
 
         public static ViewHolder setAsTag(View view) {
             final ViewHolder holder = new ViewHolder();
+
             holder.title_TV = (TextView) view.findViewById(R.id.titleTextView);
+            holder.icon_IV = (ImageView) view.findViewById(R.id.drawer_item_icon);
+
             view.setTag(holder);
 
             return holder;
