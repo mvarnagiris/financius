@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fragment
     android:id="@+id/navigation_F"
-    android:name="com.code44.finance.ui.NavigationFragment"
+    android:name="com.code44.finance.ui.navigation.NavigationFragment"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/navigation_drawer_width"

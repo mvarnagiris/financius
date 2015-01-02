@@ -1,4 +1,4 @@
-package com.code44.finance.ui;
+package com.code44.finance.ui.navigation;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.code44.finance.R;
-import com.code44.finance.adapters.NavigationAdapter;
+import com.code44.finance.ui.BaseFragment;
 
 public class NavigationFragment extends BaseFragment implements AdapterView.OnItemClickListener {
     private NavigationAdapter adapter;

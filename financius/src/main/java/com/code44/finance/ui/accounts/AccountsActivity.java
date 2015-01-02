@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
@@ -20,6 +19,7 @@ import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.ui.common.ModelListActivity;
+import com.code44.finance.ui.navigation.NavigationAdapter;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.analytics.Analytics;
 

@@ -1,10 +1,11 @@
-package com.code44.finance.adapters;
+package com.code44.finance.ui.navigation;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code44.finance.R;
@@ -25,10 +26,10 @@ public class NavigationAdapter extends BaseAdapter {
 
         items = new ArrayList<>();
         // TODO items.add(new NavigationItem(NAV_ID_USER, context.getString(R.string.user)));
-        items.add(new NavigationItem(NavigationScreen.Overview, context.getString(R.string.overview)));
-        items.add(new NavigationItem(NavigationScreen.Accounts, context.getString(R.string.accounts_other)));
-        items.add(new NavigationItem(NavigationScreen.Transactions, context.getString(R.string.transactions_other)));
-        items.add(new NavigationItem(NavigationScreen.Reports, context.getString(R.string.reports)));
+        items.add(new NavigationItem(NavigationScreen.Overview, R.drawable.ic_action_overview, context.getString(R.string.overview)));
+        items.add(new NavigationItem(NavigationScreen.Accounts, R.drawable.ic_action_account, context.getString(R.string.accounts_other)));
+        items.add(new NavigationItem(NavigationScreen.Transactions, R.drawable.ic_action_transactions, context.getString(R.string.transactions_other)));
+        items.add(new NavigationItem(NavigationScreen.Reports, R.drawable.ic_action_reports, context.getString(R.string.reports)));
 
         selectedTextColor = context.getResources().getColor(R.color.text_brand);
         normalTextColor = context.getResources().getColor(R.color.text_primary);
@@ -60,8 +61,11 @@ public class NavigationAdapter extends BaseAdapter {
         }
 
         final NavigationItem item = items.get(position);
-        holder.title_TV.setText(item.getTitle());
-        holder.title_TV.setTextColor(item.getNavigationScreen() == selectedNavigationScreen ? selectedTextColor : normalTextColor);
+        final int color = item.getNavigationScreen() == selectedNavigationScreen ? selectedTextColor : normalTextColor;
+        holder.iconImageView.setImageResource(item.getIconResId());
+        holder.iconImageView.setColorFilter(color);
+        holder.titleTextView.setText(item.getTitle());
+        holder.titleTextView.setTextColor(color);
 
         return view;
     }
@@ -86,10 +90,12 @@ public class NavigationAdapter extends BaseAdapter {
 
     public static class NavigationItem {
         private final NavigationScreen navigationScreen;
+        private final int iconResId;
         private final String title;
 
-        public NavigationItem(NavigationScreen navigationScreen, String title) {
+        public NavigationItem(NavigationScreen navigationScreen, int iconResId, String title) {
             this.navigationScreen = navigationScreen;
+            this.iconResId = iconResId;
             this.title = title;
         }
 
@@ -101,17 +107,23 @@ public class NavigationAdapter extends BaseAdapter {
             return navigationScreen.getId();
         }
 
+        public int getIconResId() {
+            return iconResId;
+        }
+
         public String getTitle() {
             return title;
         }
     }
 
     private static class ViewHolder {
-        public TextView title_TV;
+        public ImageView iconImageView;
+        public TextView titleTextView;
 
         public static ViewHolder setAsTag(View view) {
             final ViewHolder holder = new ViewHolder();
-            holder.title_TV = (TextView) view.findViewById(R.id.titleTextView);
+            holder.iconImageView = (ImageView) view.findViewById(R.id.iconImageView);
+            holder.titleTextView = (TextView) view.findViewById(R.id.titleTextView);
             view.setTag(holder);
 
             return holder;

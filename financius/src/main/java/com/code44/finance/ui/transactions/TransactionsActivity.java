@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.code44.finance.R;
-import com.code44.finance.adapters.NavigationAdapter;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Model;
@@ -18,6 +17,7 @@ import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.ui.common.ModelListActivity;
+import com.code44.finance.ui.navigation.NavigationAdapter;
 import com.code44.finance.utils.CurrentInterval;
 import com.code44.finance.utils.analytics.Analytics;
 import com.squareup.otto.Subscribe;

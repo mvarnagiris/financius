@@ -2,7 +2,6 @@ package com.code44.finance.modules;
 
 import com.code44.finance.ui.CalculatorActivity;
 import com.code44.finance.ui.CalculatorFragment;
-import com.code44.finance.ui.NavigationFragment;
 import com.code44.finance.ui.SplashActivity;
 import com.code44.finance.ui.accounts.AccountActivity;
 import com.code44.finance.ui.accounts.AccountEditActivity;
@@ -17,6 +16,7 @@ import com.code44.finance.ui.dialogs.DatePickerDialog;
 import com.code44.finance.ui.dialogs.DeleteDialogFragment;
 import com.code44.finance.ui.dialogs.ListDialogFragment;
 import com.code44.finance.ui.dialogs.TimePickerDialog;
+import com.code44.finance.ui.navigation.NavigationFragment;
 import com.code44.finance.ui.overview.OverviewActivity;
 import com.code44.finance.ui.playservices.GoogleApiFragment;
 import com.code44.finance.ui.reports.ReportsFragment;

@@ -2,14 +2,25 @@
 <LinearLayout
     style="@style/ListItem"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center_vertical"
     tools:ignore="RtlHardcoded">
+
+    <com.code44.finance.ui.common.views.TintImageView
+        android:id="@+id/iconImageView"
+        android:layout_width="@dimen/action_item"
+        android:layout_height="@dimen/action_item"
+        android:layout_marginRight="@dimen/action_item_to_keyline_content"
+        android:scaleType="centerInside"
+        app:supportTintColor="@color/text_primary"
+        tools:src="@drawable/ic_action_overview" />
 
     <TextView
         android:id="@+id/titleTextView"
         style="@style/Text.Body2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:text="Navigation item" />
 
 </LinearLayout>
