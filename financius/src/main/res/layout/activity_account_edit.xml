@@ -40,7 +40,7 @@
                         android:hint="@string/title"
                         android:inputType="textCapWords|textNoSuggestions"
                         android:textColor="?android:textColorPrimaryInverse"
-                        android:textColorHint="@color/text_secondary_inverse" />
+                        android:textColorHint="?android:textColorSecondaryInverse" />
 
                 </me.grantland.widget.AutofitLayout>
 

@@ -34,7 +34,7 @@
                     android:singleLine="true"
                     android:textAppearance="@style/Text.Display4"
                     android:textColor="?android:textColorPrimaryInverse"
-                    android:textColorHint="@color/text_secondary_inverse"
+                    android:textColorHint="?android:textColorSecondaryInverse"
                     tools:ignore="RtlHardcoded" />
 
             </me.grantland.widget.AutofitLayout>

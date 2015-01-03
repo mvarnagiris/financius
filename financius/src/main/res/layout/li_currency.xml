@@ -21,7 +21,7 @@
         style="@style/Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/text_secondary"
+        android:textColor="?android:textColorSecondary"
         tools:text="1,000.00 £" />
 
     <TextView

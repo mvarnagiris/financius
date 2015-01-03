@@ -29,14 +29,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/balance"
-            android:textColor="@color/text_secondary" />
+            android:textColor="?android:textColorSecondary" />
 
         <TextView
             android:id="@+id/totalBalance"
             style="@style/Text.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_secondary"
+            android:textColor="?android:textColorSecondary"
             tools:text="5892.58 $" />
 
     </LinearLayout>

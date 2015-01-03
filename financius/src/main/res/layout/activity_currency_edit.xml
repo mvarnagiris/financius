@@ -250,7 +250,7 @@
                     android:layout_below="@id/isDefaultCheckBox"
                     android:layout_marginTop="@dimen/space_normal"
                     android:textAppearance="@style/Text"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="?android:textColorSecondary"
                     tools:text="Current main currency GBP" />
 
                 <LinearLayout

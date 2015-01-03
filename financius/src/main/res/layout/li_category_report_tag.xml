@@ -25,7 +25,7 @@
         android:layout_weight="1"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textColor="@color/text_secondary"
+        android:textColor="?android:textColorSecondary"
         tools:text="Lunch" />
 
     <TextView
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right|center_vertical"
         android:layout_marginLeft="@dimen/space_normal"
-        android:textColor="@color/text_secondary"
+        android:textColor="?android:textColorSecondary"
         tools:ignore="RtlHardcoded"
         tools:text="58.99 $" />
 

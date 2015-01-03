@@ -19,8 +19,6 @@
     <color name="bg_actionbar">@color/primary</color>
     <color name="bg_brand">@color/primary</color>
 
-    <color name="text_secondary">#757575</color>
-    <color name="text_secondary_inverse">#8ef0f0f0</color>
     <color name="text_weak">#9a9a9a</color>
     <color name="text_hint">#42000000</color>
     <color name="text_brand">@color/primary</color>
