@@ -14,6 +14,7 @@ import android.widget.ListView;
 import com.code44.finance.R;
 import com.code44.finance.adapters.ListDialogAdapter;
 import com.code44.finance.common.utils.Strings;
+import com.code44.finance.utils.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,8 +53,8 @@ public class ListDialogFragment extends BaseDialogFragment implements View.OnCli
         final ArrayList<ListDialogItem> items = getArguments().getParcelableArrayList(ARG_ITEMS);
         final String positiveButtonTitle = getArguments().getString(ARG_POSITIVE_BUTTON_TEXT);
         final String negativeButtonTitle = getArguments().getString(ARG_NEGATIVE_BUTTON_TEXT);
-        final int positiveButtonColor = getArguments().getInt(ARG_POSITIVE_BUTTON_COLOR, getResources().getColor(R.color.text_primary));
-        final int negativeButtonColor = getArguments().getInt(ARG_NEGATIVE_BUTTON_COLOR, getResources().getColor(R.color.text_primary));
+        final int positiveButtonColor = getArguments().getInt(ARG_POSITIVE_BUTTON_COLOR, ThemeUtils.getColor(getActivity(), android.R.attr.textColorPrimary));
+        final int negativeButtonColor = getArguments().getInt(ARG_NEGATIVE_BUTTON_COLOR, ThemeUtils.getColor(getActivity(), android.R.attr.textColorPrimary));
 
         adapter = new ListDialogAdapter(getActivity(), items);
         list_V.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);

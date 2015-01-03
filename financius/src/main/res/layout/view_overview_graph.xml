@@ -34,7 +34,7 @@
             android:layout_marginRight="@dimen/space_large"
             android:gravity="right"
             android:singleLine="true"
-            android:textColor="@color/text_primary_inverse"
+            android:textColor="?android:textColorPrimaryInverse"
             tools:ignore="RtlHardcoded"
             tools:text="34" />
 

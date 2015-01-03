@@ -44,8 +44,8 @@
     </style>
 
     <style name="ToolbarTheme">
-        <item name="android:textColorPrimary">@color/text_primary_inverse</item>
-        <item name="colorControlNormal">@color/text_primary_inverse</item>
+        <item name="android:textColorPrimary">?android:textColorPrimaryInverse</item>
+        <item name="colorControlNormal">?android:textColorPrimaryInverse</item>
         <item name="colorControlHighlight">@color/accent_transparent</item>
     </style>
 
@@ -65,7 +65,7 @@
     </style>
 
     <style name="ToolbarPopupTextAppearance">
-        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
 </resources>

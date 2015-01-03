@@ -10,6 +10,7 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.Presenter;
 import com.code44.finance.utils.MoneyFormatter;
+import com.code44.finance.utils.ThemeUtils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -73,7 +74,7 @@ public class AmountPresenter extends Presenter {
 
     private void update() {
         if (amount > 0) {
-            amountButton.setTextColor(amountButton.getResources().getColor(R.color.text_primary_inverse));
+            amountButton.setTextColor(ThemeUtils.getColor(amountButton.getContext(), android.R.attr.textColorPrimaryInverse));
         }
 
         switch (transactionType) {

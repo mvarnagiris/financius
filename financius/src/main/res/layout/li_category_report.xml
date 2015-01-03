@@ -31,9 +31,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="@color/text_primary_inverse"
+                android:textColor="?android:textColorPrimaryInverse"
                 tools:text="100%"
-                tools:textColor="@color/text_primary" />
+                tools:textColor="?android:textColorPrimary" />
 
         </FrameLayout>
 

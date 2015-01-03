@@ -12,6 +12,7 @@ import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.utils.MoneyFormatter;
+import com.code44.finance.utils.ThemeUtils;
 
 public class AccountsAdapter extends BaseModelsAdapter {
     private final Currency defaultCurrency;
@@ -21,8 +22,8 @@ public class AccountsAdapter extends BaseModelsAdapter {
     public AccountsAdapter(Context context, Currency defaultCurrency) {
         super(context);
         this.defaultCurrency = defaultCurrency;
-        includeInTotalsTextColor = context.getResources().getColor(R.color.text_primary);
-        doNotIncludeInTotalsTextColor = context.getResources().getColor(R.color.text_secondary);
+        includeInTotalsTextColor = ThemeUtils.getColor(context, android.R.attr.textColorPrimary);
+        doNotIncludeInTotalsTextColor = ThemeUtils.getColor(context, android.R.attr.textColorSecondary);
     }
 
     @Override
@@ -37,6 +38,7 @@ public class AccountsAdapter extends BaseModelsAdapter {
         final ViewHolder holder = (ViewHolder) view.getTag();
         final Account account = Account.from(cursor);
         holder.title_TV.setText(account.getTitle());
+        holder.title_TV.setTextColor(account.includeInTotals() ? includeInTotalsTextColor : doNotIncludeInTotalsTextColor);
         holder.balance_TV.setText(MoneyFormatter.format(account.getCurrency(), account.getBalance()));
         holder.balance_TV.setTextColor(account.includeInTotals() ? includeInTotalsTextColor : doNotIncludeInTotalsTextColor);
         if (account.getCurrency().getId().equals(defaultCurrency.getId())) {

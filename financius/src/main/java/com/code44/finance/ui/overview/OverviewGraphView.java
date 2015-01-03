@@ -16,6 +16,7 @@ import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.ViewBackgroundTheme;
 import com.code44.finance.utils.LayoutType;
 import com.code44.finance.utils.MoneyFormatter;
+import com.code44.finance.utils.ThemeUtils;
 
 import javax.inject.Inject;
 
@@ -85,7 +86,7 @@ public class OverviewGraphView extends LinearLayout {
             final ViewBackgroundTheme viewBackgroundTheme = ViewBackgroundTheme.from(a.getInteger(R.styleable.OverviewGraphView_viewBackgroundTheme, 0));
             pieChartView.setViewBackgroundTheme(viewBackgroundTheme);
 
-            final int textColor = getResources().getColor(viewBackgroundTheme == ViewBackgroundTheme.Light ? R.color.text_primary : R.color.text_primary_inverse);
+            final int textColor = ThemeUtils.getColor(getContext(), viewBackgroundTheme == ViewBackgroundTheme.Light ? android.R.attr.textColorPrimary : android.R.attr.textColorPrimaryInverse);
             totalExpenseTextView.setTextColor(textColor);
         } finally {
             a.recycle();

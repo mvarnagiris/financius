@@ -16,7 +16,7 @@
         android:elevation="@dimen/elevation_header"
         android:gravity="center_vertical"
         android:padding="@dimen/keyline"
-        android:textColor="@color/text_primary_inverse"
+        android:textColor="?android:textColorPrimaryInverse"
         tools:ignore="UnusedAttribute"
         tools:text="Lloyds TSB" />
 

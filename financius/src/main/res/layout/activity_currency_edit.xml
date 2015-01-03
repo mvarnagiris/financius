@@ -46,7 +46,7 @@
                         android:paddingRight="4dp"
                         android:text="@string/currency_code"
                         android:textAppearance="@style/Text.Caption"
-                        android:textColor="@color/text_primary_inverse" />
+                        android:textColor="?android:textColorPrimaryInverse" />
 
                     <AutoCompleteTextView
                         android:id="@+id/codeEditTextView"
@@ -58,7 +58,7 @@
                         android:inputType="textCapCharacters"
                         android:maxLength="3"
                         android:textAllCaps="true"
-                        android:textColor="@color/text_primary_inverse"
+                        android:textColor="?android:textColorPrimaryInverse"
                         tools:text="USD" />
 
                 </LinearLayout>
@@ -80,7 +80,7 @@
                         android:paddingRight="4dp"
                         android:text="@string/symbol"
                         android:textAppearance="@style/Text.Caption"
-                        android:textColor="@color/text_primary_inverse" />
+                        android:textColor="?android:textColorPrimaryInverse" />
 
                     <EditText
                         android:id="@+id/symbolEditTextView"
@@ -89,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/symbol"
                         android:inputType="textCapWords"
-                        android:textColor="@color/text_primary_inverse"
+                        android:textColor="?android:textColorPrimaryInverse"
                         tools:text="$" />
                 </LinearLayout>
 

@@ -82,7 +82,7 @@
                             android:padding="@dimen/keyline"
                             android:singleLine="true"
                             android:textAppearance="@style/Text.Display3"
-                            android:textColor="@color/text_primary_inverse"
+                            android:textColor="?android:textColorPrimaryInverse"
                             tools:text="1,000.00 $" />
                     </me.grantland.widget.AutofitLayout>
 
@@ -97,7 +97,7 @@
                     android:paddingLeft="@dimen/keyline"
                     android:paddingRight="@dimen/keyline"
                     android:singleLine="true"
-                    android:textColor="@color/text_primary_inverse"
+                    android:textColor="?android:textColorPrimaryInverse"
                     android:visibility="gone"
                     tools:text="0.83548" />
 
@@ -110,7 +110,7 @@
                     android:paddingLeft="@dimen/keyline"
                     android:paddingRight="@dimen/keyline"
                     android:singleLine="true"
-                    android:textColor="@color/text_primary_inverse"
+                    android:textColor="?android:textColorPrimaryInverse"
                     android:visibility="gone"
                     tools:text="835.48 £" />
 

@@ -20,7 +20,7 @@
         android:gravity="center_vertical"
         android:padding="@dimen/keyline"
         android:singleLine="true"
-        android:textColor="@color/text_primary_inverse"
+        android:textColor="?android:textColorPrimaryInverse"
         tools:ignore="UnusedAttribute"
         tools:text="GBP" />
 
@@ -42,7 +42,7 @@
             style="@style/Text.Headline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_primary_inverse"
+            android:textColor="?android:textColorPrimaryInverse"
             tools:text="1,000.00 £" />
 
         <TextView
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_normal"
             android:gravity="right"
-            android:textColor="@color/text_primary_inverse"
+            android:textColor="?android:textColorPrimaryInverse"
             tools:ignore="RtlHardcoded"
             tools:text="1.2489" />
 

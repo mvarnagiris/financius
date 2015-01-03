@@ -11,6 +11,7 @@ import com.code44.finance.R;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.utils.MoneyFormatter;
+import com.code44.finance.utils.ThemeUtils;
 
 public class CurrenciesAdapter extends BaseModelsAdapter {
     private final int textPrimaryColor;
@@ -18,8 +19,8 @@ public class CurrenciesAdapter extends BaseModelsAdapter {
 
     public CurrenciesAdapter(Context context) {
         super(context);
-        textPrimaryColor = context.getResources().getColor(R.color.text_primary);
-        textBrandColor = context.getResources().getColor(R.color.text_brand);
+        textPrimaryColor = ThemeUtils.getColor(context, android.R.attr.textColorPrimary);
+        textBrandColor = ThemeUtils.getColor(context, R.attr.colorPrimary);
     }
 
     @Override

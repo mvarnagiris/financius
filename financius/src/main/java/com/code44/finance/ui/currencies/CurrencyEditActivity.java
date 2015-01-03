@@ -35,6 +35,7 @@ import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.ModelEditActivity;
 import com.code44.finance.utils.MoneyFormatter;
+import com.code44.finance.utils.ThemeUtils;
 import com.code44.finance.utils.analytics.Analytics;
 import com.squareup.otto.Subscribe;
 
@@ -195,7 +196,7 @@ public class CurrencyEditActivity extends ModelEditActivity<Currency> implements
         symbolPositionButton.setOnClickListener(this);
         isDefaultCheckBox.setOnCheckedChangeListener(this);
         refreshRateButton.setOnClickListener(this);
-        refreshRateButton.setColorFilter(getResources().getColor(R.color.text_primary));
+        refreshRateButton.setColorFilter(ThemeUtils.getColor(this, android.R.attr.textColorPrimary));
         symbolEditTextView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {

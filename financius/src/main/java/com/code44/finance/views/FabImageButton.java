@@ -12,6 +12,7 @@ import android.view.ViewOutlineProvider;
 import android.widget.ImageButton;
 
 import com.code44.finance.R;
+import com.code44.finance.utils.ThemeUtils;
 
 public class FabImageButton extends ImageButton {
     private static final boolean SUPPORTS_LOLLIPOP = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
@@ -45,7 +46,7 @@ public class FabImageButton extends ImageButton {
                 }
             });
         }
-        setColorFilter(getResources().getColor(R.color.text_primary));
+        setColorFilter(ThemeUtils.getColor(getContext(), android.R.attr.textColorPrimary));
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP) @Override

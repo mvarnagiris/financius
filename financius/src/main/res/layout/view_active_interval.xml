@@ -27,7 +27,7 @@
         android:minHeight="?actionBarSize"
         android:textAllCaps="false"
         android:textAppearance="@style/Text.Title"
-        android:textColor="@color/text_primary_inverse"
+        android:textColor="?android:textColorPrimaryInverse"
         tools:text="September" />
 
     <ImageButton

@@ -33,9 +33,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="-3dp"
-                android:textColor="@color/text_primary_inverse"
+                android:textColor="?android:textColorPrimaryInverse"
                 tools:text="wed"
-                tools:textColor="@color/text_primary" />
+                tools:textColor="?android:textColorPrimary" />
 
             <TextView
                 android:id="@+id/dayTextView"
@@ -44,10 +44,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="-3dp"
-
-                android:textColor="@color/text_primary_inverse"
+                android:textColor="?android:textColorPrimaryInverse"
                 tools:text="16"
-                tools:textColor="@color/text_primary" />
+                tools:textColor="?android:textColorPrimary" />
 
         </LinearLayout>
 

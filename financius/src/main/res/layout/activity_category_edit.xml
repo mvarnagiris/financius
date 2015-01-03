@@ -39,7 +39,7 @@
                         android:inputType="textCapWords"
                         android:singleLine="true"
                         android:textAppearance="@style/Text.Display3"
-                        android:textColor="@color/text_primary_inverse"
+                        android:textColor="?android:textColorPrimaryInverse"
                         android:textColorHint="@color/text_secondary_inverse"
                         tools:ignore="RtlHardcoded" />
 
@@ -53,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/select_color"
-                    android:textColor="@color/text_primary_inverse" />
+                    android:textColor="?android:textColorPrimaryInverse" />
 
             </LinearLayout>
 

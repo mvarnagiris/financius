@@ -23,6 +23,7 @@ import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.utils.BaseInterval;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.TextBackgroundSpan;
+import com.code44.finance.utils.ThemeUtils;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
@@ -59,13 +60,13 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         unknownExpenseTitle = context.getString(R.string.expense);
         unknownIncomeTitle = context.getString(R.string.income);
         unknownTransferTitle = context.getString(R.string.transfer);
-        expenseAmountColor = context.getResources().getColor(R.color.text_primary);
+        expenseAmountColor = ThemeUtils.getColor(context, android.R.attr.textColorPrimary);
         incomeAmountColor = context.getResources().getColor(R.color.text_positive);
         transferAmountColor = context.getResources().getColor(R.color.text_neutral);
         unknownExpenseColor = context.getResources().getColor(R.color.text_negative);
         unknownIncomeColor = context.getResources().getColor(R.color.text_positive);
         unknownTransferColor = context.getResources().getColor(R.color.text_neutral);
-        primaryColor = context.getResources().getColor(R.color.text_primary);
+        primaryColor = ThemeUtils.getColor(context, android.R.attr.textColorPrimary);
         weakColor = context.getResources().getColor(R.color.text_weak);
         tagBackgroundColor = context.getResources().getColor(R.color.bg_secondary);
         tagBackgroundRadius = context.getResources().getDimension(R.dimen.tag_radius);
