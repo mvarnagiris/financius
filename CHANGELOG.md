@@ -1,3 +1,7 @@
+###Version: 0.16.2
+- ```new``` Updated navigation drawer UI.
+- ```new``` Moved settings to navigation drawer.
+
 ###Version: 0.16.1
 - ```new``` Note no longer works as a template for now. It will come back later.
 - ```new``` Fields are not longer populated automatically, due to being very confusing. Now a drop down will show with most likely items for you to pick.
