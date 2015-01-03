@@ -5,17 +5,17 @@ import android.widget.Button;
 
 import com.code44.finance.R;
 import com.code44.finance.ui.common.BaseActivity;
-import com.code44.finance.ui.common.ViewController;
+import com.code44.finance.ui.common.Presenter;
 
 import net.danlew.android.joda.DateUtils;
 
 import org.joda.time.DateTime;
 
-public class DateTimeViewController extends ViewController {
+public class DateTimePresenter extends Presenter {
     private final Button dateButton;
     private final Button timeButton;
 
-    public DateTimeViewController(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
+    public DateTimePresenter(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
         dateButton = findView(activity, R.id.dateButton);
         timeButton = findView(activity, R.id.timeButton);
 

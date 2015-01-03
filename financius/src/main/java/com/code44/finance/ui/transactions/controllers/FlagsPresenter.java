@@ -5,13 +5,13 @@ import android.widget.CompoundButton;
 
 import com.code44.finance.R;
 import com.code44.finance.ui.common.BaseActivity;
-import com.code44.finance.ui.common.ViewController;
+import com.code44.finance.ui.common.Presenter;
 
-public class FlagsViewController extends ViewController {
+public class FlagsPresenter extends Presenter {
     private final CheckBox includeInReportsCheckBox;
     private final CompoundButton.OnCheckedChangeListener onCheckedChangeListener;
 
-    public FlagsViewController(BaseActivity activity, CompoundButton.OnCheckedChangeListener checkedChangeListener) {
+    public FlagsPresenter(BaseActivity activity, CompoundButton.OnCheckedChangeListener checkedChangeListener) {
         includeInReportsCheckBox = findView(activity, R.id.includeInReportsCheckBox);
 
         onCheckedChangeListener = checkedChangeListener;

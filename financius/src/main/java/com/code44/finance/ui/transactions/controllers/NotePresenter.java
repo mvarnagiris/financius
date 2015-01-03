@@ -20,20 +20,20 @@ import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.ui.common.BaseActivity;
-import com.code44.finance.ui.common.ViewController;
+import com.code44.finance.ui.common.Presenter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class NoteViewController extends ViewController implements LoaderManager.LoaderCallbacks<Cursor>, TextWatcher, AdapterView.OnItemClickListener, View.OnFocusChangeListener {
+public class NotePresenter extends Presenter implements LoaderManager.LoaderCallbacks<Cursor>, TextWatcher, AdapterView.OnItemClickListener, View.OnFocusChangeListener {
     private static final int LOADER_NOTES = 8125;
 
     private final AutoCompleteTextView noteAutoCompleteTextView;
     private final Callbacks callbacks;
     private TransactionType transactionType = TransactionType.Expense;
 
-    public NoteViewController(BaseActivity activity, View.OnClickListener clickListener, Callbacks callbacks) {
+    public NotePresenter(BaseActivity activity, View.OnClickListener clickListener, Callbacks callbacks) {
         this.callbacks = callbacks;
 
         noteAutoCompleteTextView = findView(activity, R.id.noteAutoCompleteTextView);

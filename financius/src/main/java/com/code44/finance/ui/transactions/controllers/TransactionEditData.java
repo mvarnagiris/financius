@@ -9,7 +9,7 @@ import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
-import com.code44.finance.ui.common.ViewController;
+import com.code44.finance.ui.common.Presenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -402,7 +402,7 @@ public class TransactionEditData implements Parcelable {
         return validateAmount(null) && validateAccountFrom(null) && validateAccountTo(null);
     }
 
-    public boolean validateAmount(ViewController controller) {
+    public boolean validateAmount(Presenter controller) {
         if (getAmount() > 0) {
             return true;
         }
@@ -414,7 +414,7 @@ public class TransactionEditData implements Parcelable {
         return false;
     }
 
-    public boolean validateAccountFrom(ViewController controller) {
+    public boolean validateAccountFrom(Presenter controller) {
         if (getTransactionType() == TransactionType.Income) {
             return true;
         }
@@ -436,7 +436,7 @@ public class TransactionEditData implements Parcelable {
         return true;
     }
 
-    public boolean validateAccountTo(ViewController controller) {
+    public boolean validateAccountTo(Presenter controller) {
         if (getTransactionType() == TransactionType.Expense) {
             return true;
         }

@@ -41,7 +41,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-public class TransactionController implements TransactionAutoComplete.TransactionAutoCompleteListener, NoteViewController.Callbacks, View.OnClickListener, View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
+public class TransactionController implements TransactionAutoComplete.TransactionAutoCompleteListener, NotePresenter.Callbacks, View.OnClickListener, View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int REQUEST_AMOUNT = 1;
     private static final int REQUEST_ACCOUNT_FROM = 2;
     private static final int REQUEST_ACCOUNT_TO = 3;
@@ -65,15 +65,15 @@ public class TransactionController implements TransactionAutoComplete.Transactio
 
     private final TransactionEditData transactionEditData;
 
-    private final TransactionTypeViewController transactionTypeViewController;
-    private final AmountViewController amountViewController;
-    private final DateTimeViewController dateTimeViewController;
-    private final AccountsViewController accountsViewController;
-    private final CategoryViewController categoryViewController;
-    private final TagsViewController tagsViewController;
-    private final NoteViewController noteViewController;
-    private final TransactionStateViewController transactionStateViewController;
-    private final FlagsViewController flagsViewController;
+    private final TransactionTypePresenter transactionTypeViewController;
+    private final AmountPresenter amountViewController;
+    private final DateTimePresenter dateTimeViewController;
+    private final AccountsPresenter accountsViewController;
+    private final CategoryPresenter categoryViewController;
+    private final TagsPresenter tagsViewController;
+    private final NotePresenter noteViewController;
+    private final TransactionStatePresenter transactionStateViewController;
+    private final FlagsPresenter flagsViewController;
 
     private AutoCompleteResult autoCompleteResult;
     private AutoCompleteAdapter<?> currentAutoCompleteAdapter;
@@ -96,15 +96,15 @@ public class TransactionController implements TransactionAutoComplete.Transactio
             autoCompleteResult = savedInstanceState.getParcelable(STATE_AUTO_COMPLETE_RESULT);
         }
 
-        transactionTypeViewController = new TransactionTypeViewController(activity, this);
-        amountViewController = new AmountViewController(activity, this, this, mainCurrency);
-        dateTimeViewController = new DateTimeViewController(activity, this, this);
-        accountsViewController = new AccountsViewController(activity, this, this);
-        categoryViewController = new CategoryViewController(activity, this, this);
-        tagsViewController = new TagsViewController(activity, this, this);
-        noteViewController = new NoteViewController(activity, this, this);
-        transactionStateViewController = new TransactionStateViewController(activity, this);
-        flagsViewController = new FlagsViewController(activity, this);
+        transactionTypeViewController = new TransactionTypePresenter(activity, this);
+        amountViewController = new AmountPresenter(activity, this, this, mainCurrency);
+        dateTimeViewController = new DateTimePresenter(activity, this, this);
+        accountsViewController = new AccountsPresenter(activity, this, this);
+        categoryViewController = new CategoryPresenter(activity, this, this);
+        tagsViewController = new TagsPresenter(activity, this, this);
+        noteViewController = new NotePresenter(activity, this, this);
+        transactionStateViewController = new TransactionStatePresenter(activity, this);
+        flagsViewController = new FlagsPresenter(activity, this);
 
         if (savedInstanceState == null && (Strings.isEmpty(transactionId) || transactionId.equals("0"))) {
             CalculatorActivity.start(activity, REQUEST_AMOUNT, 0);

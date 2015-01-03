@@ -8,14 +8,14 @@ import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.ui.common.BaseActivity;
-import com.code44.finance.ui.common.ViewController;
+import com.code44.finance.ui.common.Presenter;
 import com.code44.finance.utils.MoneyFormatter;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class AmountViewController extends ViewController {
+public class AmountPresenter extends Presenter {
     private final Currency mainCurrency;
     private final Button amountButton;
     private final Button exchangeRateButton;
@@ -27,7 +27,7 @@ public class AmountViewController extends ViewController {
     private long amount = 0;
     private double exchangeRate = 1.0;
 
-    public AmountViewController(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener, Currency mainCurrency) {
+    public AmountPresenter(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener, Currency mainCurrency) {
         this.mainCurrency = mainCurrency;
 
         amountButton = findView(activity, R.id.amountButton);

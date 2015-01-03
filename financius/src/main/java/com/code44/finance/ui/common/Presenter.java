@@ -4,8 +4,9 @@ import android.app.Activity;
 import android.support.annotation.IdRes;
 import android.view.View;
 
-public abstract class ViewController {
-    public abstract void showError(Throwable error);
+public abstract class Presenter {
+    public void showError(Throwable error) {
+    }
 
     protected <T extends View> T findView(Activity activity, @IdRes int viewId) {
         return findView(activity.findViewById(android.R.id.content), viewId);

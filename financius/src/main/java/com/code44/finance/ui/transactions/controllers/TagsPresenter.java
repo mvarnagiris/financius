@@ -10,7 +10,7 @@ import android.widget.Button;
 import com.code44.finance.R;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.ui.common.BaseActivity;
-import com.code44.finance.ui.common.ViewController;
+import com.code44.finance.ui.common.Presenter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteAdapter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
 import com.code44.finance.ui.transactions.autocomplete.adapters.AutoCompleteTagsAdapter;
@@ -19,7 +19,7 @@ import com.code44.finance.utils.TextBackgroundSpan;
 import java.util.Collections;
 import java.util.List;
 
-public class TagsViewController extends ViewController implements AutoCompleteController<List<Tag>>, AutoCompleteAdapter.AutoCompleteAdapterListener {
+public class TagsPresenter extends Presenter implements AutoCompleteController<List<Tag>>, AutoCompleteAdapter.AutoCompleteAdapterListener {
     private final Button tagsButton;
     private final View tagsDividerView;
     private final ViewGroup tagsAutoCompleteContainerView;
@@ -27,7 +27,7 @@ public class TagsViewController extends ViewController implements AutoCompleteCo
     private final int tagBackgroundColor;
     private final float tagBackgroundRadius;
 
-    public TagsViewController(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
+    public TagsPresenter(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
         tagsButton = findView(activity, R.id.tagsButton);
         tagsDividerView = findView(activity, R.id.tagsDividerView);
         tagsAutoCompleteContainerView = findView(activity, R.id.tagsAutoCompleteContainerView);

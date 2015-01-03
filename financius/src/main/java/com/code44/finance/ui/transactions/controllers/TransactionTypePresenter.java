@@ -6,12 +6,12 @@ import android.widget.ImageButton;
 import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.ui.common.BaseActivity;
-import com.code44.finance.ui.common.ViewController;
+import com.code44.finance.ui.common.Presenter;
 
-public class TransactionTypeViewController extends ViewController {
+public class TransactionTypePresenter extends Presenter {
     private ImageButton transactionTypeImageButton;
 
-    public TransactionTypeViewController(BaseActivity activity, View.OnClickListener clickListener) {
+    public TransactionTypePresenter(BaseActivity activity, View.OnClickListener clickListener) {
         transactionTypeImageButton = findView(activity, R.id.transactionTypeImageButton);
 
         transactionTypeImageButton.setOnClickListener(clickListener);

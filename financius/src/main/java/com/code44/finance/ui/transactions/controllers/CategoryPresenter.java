@@ -9,12 +9,12 @@ import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.ui.common.BaseActivity;
-import com.code44.finance.ui.common.ViewController;
+import com.code44.finance.ui.common.Presenter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteAdapter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
 import com.code44.finance.ui.transactions.autocomplete.adapters.AutoCompleteCategoriesAdapter;
 
-public class CategoryViewController extends ViewController implements AutoCompleteController<Category>, AutoCompleteAdapter.AutoCompleteAdapterListener {
+public class CategoryPresenter extends Presenter implements AutoCompleteController<Category>, AutoCompleteAdapter.AutoCompleteAdapterListener {
     private final ImageView colorImageView;
     private final View categoryContainerView;
     private final Button categoryButton;
@@ -22,7 +22,7 @@ public class CategoryViewController extends ViewController implements AutoComple
     private final ViewGroup categoriesAutoCompleteContainerView;
     private TransactionType transactionType;
 
-    public CategoryViewController(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
+    public CategoryPresenter(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
         colorImageView = findView(activity, R.id.colorImageView);
         categoryContainerView = findView(activity, R.id.categoryContainerView);
         categoryButton = findView(activity, R.id.categoryButton);

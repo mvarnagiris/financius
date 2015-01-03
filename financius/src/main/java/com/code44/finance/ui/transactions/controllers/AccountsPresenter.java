@@ -8,19 +8,19 @@ import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.ui.common.BaseActivity;
-import com.code44.finance.ui.common.ViewController;
+import com.code44.finance.ui.common.Presenter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteAdapter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
 import com.code44.finance.ui.transactions.autocomplete.adapters.AutoCompleteAccountsFromAdapter;
 import com.code44.finance.ui.transactions.autocomplete.adapters.AutoCompleteAccountsToAdapter;
 
-public class AccountsViewController extends ViewController implements AutoCompleteController<Account>, AutoCompleteAdapter.AutoCompleteAdapterListener {
+public class AccountsPresenter extends Presenter implements AutoCompleteController<Account>, AutoCompleteAdapter.AutoCompleteAdapterListener {
     private final Button accountFromButton;
     private final Button accountToButton;
     private final View accountsDividerView;
     private final ViewGroup accountsAutoCompleteContainerView;
 
-    public AccountsViewController(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
+    public AccountsPresenter(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
         accountFromButton = findView(activity, R.id.accountFromButton);
         accountToButton = findView(activity, R.id.accountToButton);
         accountsDividerView = findView(activity, R.id.accountsDividerView);
