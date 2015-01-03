@@ -17,8 +17,8 @@ import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Local;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.ModelEditActivity;
-import com.code44.finance.ui.transactions.controllers.TransactionController;
-import com.code44.finance.ui.transactions.controllers.TransactionEditData;
+import com.code44.finance.ui.transactions.presenters.TransactionController;
+import com.code44.finance.ui.transactions.presenters.TransactionEditData;
 import com.code44.finance.utils.analytics.Analytics;
 
 import java.util.concurrent.Executor;

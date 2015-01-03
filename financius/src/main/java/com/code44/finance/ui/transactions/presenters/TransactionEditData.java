@@ -1,4 +1,4 @@
-package com.code44.finance.ui.transactions.controllers;
+package com.code44.finance.ui.transactions.presenters;
 
 import android.os.Parcel;
 import android.os.Parcelable;
