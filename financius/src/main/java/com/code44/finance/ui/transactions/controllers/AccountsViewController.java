@@ -33,6 +33,8 @@ public class AccountsViewController extends ViewController implements AutoComple
     }
 
     @Override public void showError(Throwable error) {
+        accountFromButton.setHintTextColor(accountFromButton.getResources().getColor(R.color.error));
+        accountToButton.setHintTextColor(accountToButton.getResources().getColor(R.color.error));
     }
 
     @Override public void onAutoCompleteAdapterShown(AutoCompleteAdapter autoCompleteAdapter) {

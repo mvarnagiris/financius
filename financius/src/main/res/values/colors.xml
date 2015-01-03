@@ -10,6 +10,7 @@
     <color name="accent_dark_transparent">#8fafb42b</color>
     <color name="dark_transparent">#8f000000</color>
     <color name="dark">#212121</color>
+    <color name="error">#e51c23</color>
 
     <color name="bg_window">#f0f0f0</color>
     <color name="bg_primary">#fafafa</color>

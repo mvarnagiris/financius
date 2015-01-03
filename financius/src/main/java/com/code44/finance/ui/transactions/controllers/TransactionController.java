@@ -261,7 +261,19 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
             case R.id.confirmedCheckBox:
-                final boolean canBeConfirmed = transactionEditData.validateAmount(amountViewController) && transactionEditData.validateAccountFrom(accountsViewController) && transactionEditData.validateAccountTo(accountsViewController);
+                boolean canBeConfirmed = true;
+                if (!transactionEditData.validateAmount(amountViewController)) {
+                    canBeConfirmed = false;
+                }
+
+                if (!transactionEditData.validateAccountFrom(accountsViewController)) {
+                    canBeConfirmed = false;
+                }
+
+                if (!transactionEditData.validateAccountTo(accountsViewController)) {
+                    canBeConfirmed = false;
+                }
+
                 transactionEditData.setTransactionState(canBeConfirmed && isChecked ? TransactionState.Confirmed : TransactionState.Pending);
                 requestAutoComplete();
                 break;

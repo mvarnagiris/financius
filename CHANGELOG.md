@@ -1,6 +1,7 @@
 ###Version: 0.16.2
 - ```new``` Updated navigation drawer UI.
 - ```new``` Moved settings to navigation drawer.
+- ```new``` Showing required fields when trying to make transaction confirmed.
 - ```fix``` In calculator, when there is an operator at the end after pressing = that operator will be ignored.
 
 ###Version: 0.16.1

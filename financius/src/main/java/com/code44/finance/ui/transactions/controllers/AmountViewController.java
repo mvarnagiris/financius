@@ -43,6 +43,7 @@ public class AmountViewController extends ViewController {
     }
 
     @Override public void showError(Throwable error) {
+        amountButton.setTextColor(amountButton.getResources().getColor(R.color.error));
     }
 
     public void setTransactionType(TransactionType transactionType) {
@@ -71,6 +72,10 @@ public class AmountViewController extends ViewController {
     }
 
     private void update() {
+        if (amount > 0) {
+            amountButton.setTextColor(amountButton.getResources().getColor(R.color.text_primary_inverse));
+        }
+
         switch (transactionType) {
             case Expense:
                 exchangeRateButton.setVisibility(View.GONE);
