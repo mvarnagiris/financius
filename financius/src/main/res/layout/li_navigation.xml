@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center_vertical"
+    android:minHeight="48dp"
     tools:ignore="RtlHardcoded">
 
     <com.code44.finance.ui.common.views.TintImageView

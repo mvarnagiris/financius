@@ -1,4 +1,4 @@
-package com.code44.finance.ui.navigation;
+package com.code44.finance.ui.common.navigation;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,9 +12,9 @@ import com.code44.finance.R;
 import com.code44.finance.ui.BaseFragment;
 
 public class NavigationFragment extends BaseFragment implements AdapterView.OnItemClickListener {
-    private NavigationAdapter adapter;
+    private NavigationDrawerAdapter adapter;
     private NavigationListener navigationListener;
-    private NavigationAdapter.NavigationScreen pendingNavigationScreen;
+    private NavigationScreen pendingNavigationScreen;
 
     @Override public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -36,7 +36,7 @@ public class NavigationFragment extends BaseFragment implements AdapterView.OnIt
         final ListView listView = (ListView) view.findViewById(R.id.listView);
 
         // Setup
-        adapter = new NavigationAdapter(getActivity());
+        adapter = new NavigationDrawerAdapter(getActivity());
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
 
@@ -47,12 +47,12 @@ public class NavigationFragment extends BaseFragment implements AdapterView.OnIt
     }
 
     @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        final NavigationAdapter.NavigationScreen navigationScreen = ((NavigationAdapter.NavigationItem) adapter.getItem(position)).getNavigationScreen();
+        final NavigationScreen navigationScreen = adapter.getItem(position).getNavigationScreen();
         adapter.setSelectedNavigationScreen(navigationScreen);
         navigationListener.onNavigationItemSelected(navigationScreen);
     }
 
-    public void setSelected(NavigationAdapter.NavigationScreen navigationScreen) {
+    public void setSelected(NavigationScreen navigationScreen) {
         if (adapter == null) {
             pendingNavigationScreen = navigationScreen;
         } else {
@@ -61,6 +61,6 @@ public class NavigationFragment extends BaseFragment implements AdapterView.OnIt
     }
 
     public static interface NavigationListener {
-        public void onNavigationItemSelected(NavigationAdapter.NavigationScreen navigationScreen);
+        public void onNavigationItemSelected(NavigationScreen navigationScreen);
     }
 }

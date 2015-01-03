@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.content.CursorLoader;
-import android.view.Menu;
 import android.view.View;
 
 import com.code44.finance.R;
@@ -25,12 +24,6 @@ public class TagsActivity extends ModelListActivity {
 
     public static void startMultiSelect(Activity activity, int requestCode, List<Tag> selectedTags) {
         startActivityForResult(activity, makeMultiSelectIntent(activity, TagsActivity.class, selectedTags), requestCode);
-    }
-
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        menu.findItem(R.id.action_settings).setVisible(false);
-        return true;
     }
 
     @Override protected int getLayoutId() {

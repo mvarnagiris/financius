@@ -17,7 +17,7 @@ import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.DrawerActivity;
-import com.code44.finance.ui.navigation.NavigationAdapter;
+import com.code44.finance.ui.common.navigation.NavigationScreen;
 import com.code44.finance.ui.reports.categories.CategoriesReportData;
 import com.code44.finance.ui.reports.trends.TrendsGraphData;
 import com.code44.finance.ui.reports.trends.TrendsGraphView;
@@ -86,8 +86,8 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
         getEventBus().unregister(this);
     }
 
-    @Override protected NavigationAdapter.NavigationScreen getNavigationScreen() {
-        return NavigationAdapter.NavigationScreen.Overview;
+    @Override protected NavigationScreen getNavigationScreen() {
+        return NavigationScreen.Overview;
     }
 
     @Override protected Analytics.Screen getScreen() {
@@ -132,13 +132,13 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
                 TransactionEditActivity.start(this, null);
                 break;
             case R.id.overviewGraphView:
-                onNavigationItemSelected(NavigationAdapter.NavigationScreen.Reports);
+                onNavigationItemSelected(NavigationScreen.Reports);
                 break;
             case R.id.accounts:
-                onNavigationItemSelected(NavigationAdapter.NavigationScreen.Accounts);
+                onNavigationItemSelected(NavigationScreen.Accounts);
                 break;
             case R.id.trendsGraphView:
-                onNavigationItemSelected(NavigationAdapter.NavigationScreen.Transactions);
+                onNavigationItemSelected(NavigationScreen.Transactions);
                 break;
         }
     }

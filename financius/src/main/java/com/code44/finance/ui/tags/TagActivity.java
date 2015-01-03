@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.util.Pair;
-import android.view.Menu;
 import android.widget.TextView;
 
 import com.code44.finance.R;
@@ -23,12 +22,6 @@ public class TagActivity extends ModelActivity<Tag> {
     public static void start(Context context, String tagId) {
         final Intent intent = makeIntent(context, TagActivity.class, tagId);
         startActivity(context, intent);
-    }
-
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        menu.findItem(R.id.action_settings).setVisible(false);
-        return true;
     }
 
     @Override protected int getLayoutId() {

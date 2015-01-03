@@ -15,10 +15,11 @@ import android.view.ViewGroup;
 import com.code44.finance.R;
 import com.code44.finance.ui.accounts.AccountsActivity;
 import com.code44.finance.ui.common.BaseActivity;
-import com.code44.finance.ui.navigation.NavigationAdapter;
-import com.code44.finance.ui.navigation.NavigationFragment;
+import com.code44.finance.ui.common.navigation.NavigationFragment;
+import com.code44.finance.ui.common.navigation.NavigationScreen;
 import com.code44.finance.ui.overview.OverviewActivity;
 import com.code44.finance.ui.reports.categories.CategoriesReportActivity;
+import com.code44.finance.ui.settings.SettingsActivity;
 import com.code44.finance.ui.transactions.TransactionsActivity;
 
 public abstract class DrawerActivity extends BaseActivity implements NavigationFragment.NavigationListener {
@@ -110,7 +111,7 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
         setupToolbar();
     }
 
-    @Override public void onNavigationItemSelected(NavigationAdapter.NavigationScreen navigationScreen) {
+    @Override public void onNavigationItemSelected(NavigationScreen navigationScreen) {
         if (isSameNavigationScreen(navigationScreen)) {
             drawerLayout.closeDrawers();
             return;
@@ -132,6 +133,9 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
                 break;
             case Reports:
                 intent = CategoriesReportActivity.makeIntent(this);
+                break;
+            case Settings:
+                intent = SettingsActivity.makeIntent(this);
                 break;
             default:
                 intent = null;
@@ -158,7 +162,7 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
         }, DRAWER_LAUNCH_DELAY);
     }
 
-    protected NavigationAdapter.NavigationScreen getNavigationScreen() {
+    protected NavigationScreen getNavigationScreen() {
         return null;
     }
 
@@ -170,7 +174,7 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
         this.showDrawerToggle = showDrawerToggle;
     }
 
-    private boolean isSameNavigationScreen(NavigationAdapter.NavigationScreen navigationScreen) {
+    private boolean isSameNavigationScreen(NavigationScreen navigationScreen) {
         switch (navigationScreen) {
             case User:
                 break;

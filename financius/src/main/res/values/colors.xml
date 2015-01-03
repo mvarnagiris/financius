@@ -32,6 +32,9 @@
 
     <color name="divider">#1f000000</color>
 
+    <color name="navigation_drawer_icon">#757575</color>
+    <color name="navigation_drawer_selected_background">#8ee0e0e0</color>
+
     <array name="progress_bar_colors">
         <item>#cddc39</item>
         <item>#8bc34a</item>

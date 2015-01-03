@@ -12,9 +12,9 @@ import com.code44.finance.R;
 import com.code44.finance.adapters.SettingsAdapter;
 import com.code44.finance.ui.DrawerActivity;
 import com.code44.finance.ui.categories.CategoriesActivity;
+import com.code44.finance.ui.common.navigation.NavigationScreen;
 import com.code44.finance.ui.currencies.CurrenciesActivity;
 import com.code44.finance.ui.dialogs.ListDialogFragment;
-import com.code44.finance.ui.navigation.NavigationAdapter;
 import com.code44.finance.ui.settings.about.AboutActivity;
 import com.code44.finance.ui.settings.data.DataActivity;
 import com.code44.finance.ui.settings.security.LockActivity;
@@ -49,8 +49,12 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
     private boolean isResumed = false;
     private boolean requestLock = false;
 
+    public static Intent makeIntent(Context context) {
+        return makeIntentForActivity(context, SettingsActivity.class);
+    }
+
     public static void start(Context context) {
-        startActivity(context, makeIntentForActivity(context, SettingsActivity.class));
+        startActivity(context, makeIntent(context));
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +102,8 @@ public class SettingsActivity extends DrawerActivity implements AdapterView.OnIt
         getEventBus().unregister(this);
     }
 
-    @Override protected NavigationAdapter.NavigationScreen getNavigationScreen() {
-        return null;
+    @Override protected NavigationScreen getNavigationScreen() {
+        return NavigationScreen.Settings;
     }
 
     @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

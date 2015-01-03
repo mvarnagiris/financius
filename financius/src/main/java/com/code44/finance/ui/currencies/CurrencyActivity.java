@@ -57,12 +57,6 @@ public class CurrencyActivity extends ModelActivity<Currency> implements View.On
         getEventBus().register(this);
     }
 
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        menu.findItem(R.id.action_settings).setVisible(false);
-        return true;
-    }
-
     @Override public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.action_delete).setVisible(model != null && !model.isDefault());

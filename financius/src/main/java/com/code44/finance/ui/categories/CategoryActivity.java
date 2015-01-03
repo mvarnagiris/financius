@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.util.Pair;
-import android.view.Menu;
 import android.widget.TextView;
 
 import com.code44.finance.R;
@@ -35,12 +34,6 @@ public class CategoryActivity extends ModelActivity<Category> {
 
         // Get views
         titleTextView = (TextView) findViewById(R.id.titleTextView);
-    }
-
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        menu.findItem(R.id.action_settings).setVisible(false);
-        return true;
     }
 
     @Override protected CursorLoader getModelCursorLoader(String modelId) {

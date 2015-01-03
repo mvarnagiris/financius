@@ -17,7 +17,7 @@ import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.ui.common.ModelListActivity;
-import com.code44.finance.ui.navigation.NavigationAdapter;
+import com.code44.finance.ui.common.navigation.NavigationScreen;
 import com.code44.finance.utils.CurrentInterval;
 import com.code44.finance.utils.analytics.Analytics;
 import com.squareup.otto.Subscribe;
@@ -98,8 +98,8 @@ public class TransactionsActivity extends ModelListActivity {
         TransactionEditActivity.start(this, modelId);
     }
 
-    @Override protected NavigationAdapter.NavigationScreen getNavigationScreen() {
-        return NavigationAdapter.NavigationScreen.Transactions;
+    @Override protected NavigationScreen getNavigationScreen() {
+        return NavigationScreen.Transactions;
     }
 
     @Override protected Analytics.Screen getScreen() {

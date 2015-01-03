@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.content.CursorLoader;
-import android.view.Menu;
 import android.view.View;
 
 import com.code44.finance.R;
@@ -35,12 +34,6 @@ public class CategoriesActivity extends ModelListActivity {
         final Intent intent = makeSelectIntent(activity, CategoriesActivity.class);
         intent.putExtra(EXTRA_TRANSACTION_TYPE, transactionType);
         startActivityForResult(activity, intent, requestCode);
-    }
-
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        menu.findItem(R.id.action_settings).setVisible(false);
-        return true;
     }
 
     @Override protected int getLayoutId() {

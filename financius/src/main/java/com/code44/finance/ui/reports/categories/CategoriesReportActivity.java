@@ -14,7 +14,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
-import com.code44.finance.ui.navigation.NavigationAdapter;
+import com.code44.finance.ui.common.navigation.NavigationScreen;
 import com.code44.finance.ui.reports.BaseReportActivity;
 import com.code44.finance.utils.ActiveInterval;
 import com.code44.finance.utils.analytics.Analytics;
@@ -52,8 +52,8 @@ public class CategoriesReportActivity extends BaseReportActivity implements Load
         listView.setAdapter(adapter);
     }
 
-    @Override protected NavigationAdapter.NavigationScreen getNavigationScreen() {
-        return NavigationAdapter.NavigationScreen.Reports;
+    @Override protected NavigationScreen getNavigationScreen() {
+        return NavigationScreen.Reports;
     }
 
     @Override protected Analytics.Screen getScreen() {

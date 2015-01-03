@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.code44.finance.App;
 import com.code44.finance.R;
-import com.code44.finance.ui.settings.SettingsActivity;
 import com.code44.finance.ui.settings.security.Security;
 import com.code44.finance.ui.settings.security.UnlockActivity;
 import com.code44.finance.utils.EventBus;
@@ -117,9 +116,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
-                return true;
-            case R.id.action_settings:
-                SettingsActivity.start(this);
                 return true;
         }
 

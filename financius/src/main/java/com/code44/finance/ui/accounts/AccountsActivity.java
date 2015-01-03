@@ -19,7 +19,7 @@ import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.ui.common.ModelListActivity;
-import com.code44.finance.ui.navigation.NavigationAdapter;
+import com.code44.finance.ui.common.navigation.NavigationScreen;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.analytics.Analytics;
 
@@ -82,8 +82,8 @@ public class AccountsActivity extends ModelListActivity {
         AccountEditActivity.start(this, modelId);
     }
 
-    @Override protected NavigationAdapter.NavigationScreen getNavigationScreen() {
-        return NavigationAdapter.NavigationScreen.Accounts;
+    @Override protected NavigationScreen getNavigationScreen() {
+        return NavigationScreen.Accounts;
     }
 
     @Override protected Analytics.Screen getScreen() {
