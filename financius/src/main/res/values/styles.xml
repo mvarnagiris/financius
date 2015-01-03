@@ -1,89 +1,50 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TextAppearance -->
-    <!-- =========================================================================================================== -->
+    <!-- Text -->
+    <!-- ======================================================================================= -->
 
-    <style name="Text">
-        <item name="android:textStyle">normal</item>
-        <item name="android:textSize">@dimen/text_body</item>
-        <item name="android:textColor">@color/text_primary</item>
-        <item name="android:textColorHint">@color/text_secondary</item>
-    </style>
+    <style name="Text" parent="TextAppearance.AppCompat" />
 
-    <style name="Text.Caption">
-        <item name="android:textSize">@dimen/text_caption</item>
-        <item name="android:textColor">@color/text_secondary</item>
-    </style>
+    <style name="Text.Body1" parent="TextAppearance.AppCompat.Body1" />
 
-    <style name="Text.Menu">
-        <item name="android:textSize">@dimen/text_menu</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@string/font_medium</item>
-    </style>
+    <style name="Text.Body2" parent="TextAppearance.AppCompat.Body2" />
 
-    <style name="Text.Button">
-        <item name="android:textSize">@dimen/text_button</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@string/font_medium</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
+    <style name="Text.Button" parent="TextAppearance.AppCompat.Button" />
 
-    <style name="Text.Body2">
-        <item name="android:fontFamily" tools:ignore="NewApi">@string/font_medium</item>
-    </style>
+    <style name="Text.Caption" parent="TextAppearance.AppCompat.Caption" />
 
-    <style name="Text.Subhead">
-        <item name="android:textSize">@dimen/text_subhead</item>
-        <item name="android:textColor">@color/text_secondary</item>
-    </style>
+    <style name="Text.Display1" parent="TextAppearance.AppCompat.Display1" />
 
-    <style name="Text.Title">
-        <item name="android:fontFamily" tools:ignore="NewApi">@string/font_medium</item>
-        <item name="android:textSize">@dimen/text_title</item>
-    </style>
+    <style name="Text.Display2" parent="TextAppearance.AppCompat.Display2" />
 
-    <style name="Text.Headline">
-        <item name="android:textSize">@dimen/text_headline</item>
-    </style>
+    <style name="Text.Display3" parent="TextAppearance.AppCompat.Display3" />
 
-    <style name="Text.Display1">
-        <item name="android:textSize">@dimen/text_display1</item>
-        <item name="android:textColor">@color/text_secondary</item>
-    </style>
+    <style name="Text.Display4" parent="TextAppearance.AppCompat.Display4" />
 
-    <style name="Text.Display2">
-        <item name="android:textSize">@dimen/text_display2</item>
-        <item name="android:textColor">@color/text_secondary</item>
-    </style>
+    <style name="Text.Headline" parent="TextAppearance.AppCompat.Headline" />
 
-    <style name="Text.Display3">
-        <item name="android:textSize">@dimen/text_display3</item>
-        <item name="android:textColor">@color/text_secondary</item>
-    </style>
+    <style name="Text.Subhead" parent="TextAppearance.AppCompat.Subhead" />
 
-    <style name="Text.Display4">
-        <item name="android:fontFamily" tools:ignore="NewApi">@string/font_light</item>
-        <item name="android:textSize">@dimen/text_display4</item>
-        <item name="android:textColor">@color/text_secondary</item>
-    </style>
+    <style name="Text.Title" parent="TextAppearance.AppCompat.Title" />
 
     <!-- ImageView -->
     <!-- =========================================================================================================== -->
 
-    <style name="ImageView"></style>
+    <style name="ImageView">
+        <item name="android:scaleType">centerInside</item>
+    </style>
 
     <style name="ImageView.Form">
         <item name="android:layout_width">@dimen/action_item</item>
         <item name="android:layout_height">@dimen/action_item</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_marginRight">@dimen/action_item_to_keyline_content</item>
-        <item name="android:scaleType">centerInside</item>
     </style>
 
     <!-- EditText -->
     <!-- =========================================================================================================== -->
 
-    <style name="EditText">
-        <item name="android:textAppearance">@style/Text.Subhead</item>
-    </style>
+    <style name="EditText" parent="Widget.AppCompat.EditText"></style>
 
     <style name="EditText.Large">
         <item name="android:textAppearance">@style/Text.Display1</item>
@@ -101,8 +62,21 @@
     <!-- Button -->
     <!-- =========================================================================================================== -->
 
-    <style name="Button">
-        <item name="android:textAppearance">@style/Text.Button</item>
+    <style name="Button" />
+
+    <style name="Button.Borderless">
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="Button.Borderless.ButtonBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/text_primary_inverse</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="Button.Borderless.Bounded">
+        <item name="android:background">?selectableItemBackground</item>
     </style>
 
     <style name="Button.Small">
@@ -113,20 +87,12 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
-    <style name="Button.Borderless">
-        <item name="android:background">@drawable/btn_borderless</item>
-    </style>
-
-    <style name="Button.Borderless.Bounded">
-        <item name="android:background">@drawable/btn_borderless_bounded</item>
-    </style>
-
     <style name="Button.Borderless.Bounded.Select">
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textColorHint">@color/text_weak</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textAppearance">@style/Text.Body2</item>
+        <item name="android:textAppearance">@style/Text.Subhead</item>
     </style>
 
     <!-- Deprecated -->

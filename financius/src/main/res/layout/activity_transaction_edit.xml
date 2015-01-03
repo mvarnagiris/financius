@@ -393,8 +393,7 @@
                         style="@style/CheckBox.Field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/confirmed"
-                        android:textAppearance="@style/Text" />
+                        android:text="@string/confirmed" />
 
                     <CheckBox
                         android:id="@+id/includeInReportsCheckBox"
@@ -402,8 +401,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space_large"
-                        android:text="@string/include_in_reports"
-                        android:textAppearance="@style/Text" />
+                        android:text="@string/include_in_reports" />
                 </LinearLayout>
 
             </LinearLayout>
