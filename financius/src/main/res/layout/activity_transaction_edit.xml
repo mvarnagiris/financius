@@ -120,7 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
-                android:background="@color/bg_window"
+                android:background="?backgroundColor"
                 android:elevation="@dimen/elevation_sub_header"
                 android:orientation="vertical"
                 tools:ignore="UnusedAttribute">
@@ -162,7 +162,7 @@
                 </LinearLayout>
 
                 <View
-                    style="@style/Divider.Thin"
+                    style="@style/Divider"
                     android:layout_marginLeft="@dimen/keyline_content"
                     tools:ignore="RtlHardcoded" />
 
@@ -208,7 +208,7 @@
 
                 <View
                     android:id="@+id/accountsDividerView"
-                    style="@style/Divider.Thin"
+                    style="@style/Divider"
                     android:layout_marginLeft="@dimen/keyline_content"
                     tools:ignore="RtlHardcoded" />
 
@@ -219,14 +219,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
-                android:background="@color/bg_secondary"
+                android:background="?backgroundColorSecondary"
                 android:orientation="vertical" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
-                android:background="@color/bg_window"
+                android:background="?backgroundColor"
                 android:elevation="@dimen/elevation_sub_header"
                 android:orientation="vertical"
                 tools:ignore="UnusedAttribute">
@@ -259,7 +259,7 @@
 
                 <View
                     android:id="@+id/categoryDividerView"
-                    style="@style/Divider.Thin"
+                    style="@style/Divider"
                     android:layout_marginLeft="@dimen/keyline_content"
                     tools:ignore="RtlHardcoded" />
 
@@ -270,14 +270,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
-                android:background="@color/bg_secondary"
+                android:background="?backgroundColorSecondary"
                 android:orientation="vertical" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
-                android:background="@color/bg_window"
+                android:background="?backgroundColor"
                 android:elevation="@dimen/elevation_sub_header"
                 android:orientation="vertical"
                 tools:ignore="UnusedAttribute">
@@ -311,7 +311,7 @@
 
                 <View
                     android:id="@+id/tagsDividerView"
-                    style="@style/Divider.Thin"
+                    style="@style/Divider"
                     android:layout_marginLeft="@dimen/keyline_content"
                     tools:ignore="RtlHardcoded" />
 
@@ -322,14 +322,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
-                android:background="@color/bg_secondary"
+                android:background="?backgroundColorSecondary"
                 android:orientation="vertical" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
-                android:background="@color/bg_window"
+                android:background="?backgroundColor"
                 android:elevation="@dimen/elevation_sub_header"
                 android:orientation="vertical"
                 tools:ignore="UnusedAttribute">
@@ -362,7 +362,7 @@
                 </LinearLayout>
 
                 <View
-                    style="@style/Divider.Thin"
+                    style="@style/Divider"
                     android:layout_marginLeft="@dimen/keyline_content"
                     tools:ignore="RtlHardcoded" />
 
@@ -373,7 +373,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:animateLayoutChanges="true"
-                android:background="@color/bg_window"
+                android:background="?backgroundColor"
                 android:elevation="@dimen/elevation_sub_header"
                 android:orientation="vertical"
                 tools:ignore="UnusedAttribute">

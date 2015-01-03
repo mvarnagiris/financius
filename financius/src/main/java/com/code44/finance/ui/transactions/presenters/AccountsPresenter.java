@@ -12,6 +12,7 @@ import com.code44.finance.ui.common.Presenter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteAdapter;
 import com.code44.finance.ui.transactions.autocomplete.adapters.AutoCompleteAccountsFromAdapter;
 import com.code44.finance.ui.transactions.autocomplete.adapters.AutoCompleteAccountsToAdapter;
+import com.code44.finance.utils.ThemeUtils;
 
 public class AccountsPresenter extends Presenter implements AutoCompletePresenter<Account>, AutoCompleteAdapter.AutoCompleteAdapterListener {
     private final Button accountFromButton;
@@ -32,8 +33,8 @@ public class AccountsPresenter extends Presenter implements AutoCompletePresente
     }
 
     @Override public void showError(Throwable error) {
-        accountFromButton.setHintTextColor(accountFromButton.getResources().getColor(R.color.error));
-        accountToButton.setHintTextColor(accountToButton.getResources().getColor(R.color.error));
+        accountFromButton.setHintTextColor(ThemeUtils.getColor(accountFromButton.getContext(), R.attr.colorError));
+        accountToButton.setHintTextColor(ThemeUtils.getColor(accountToButton.getContext(), R.attr.colorError));
     }
 
     @Override public void onAutoCompleteAdapterShown(AutoCompleteAdapter autoCompleteAdapter) {

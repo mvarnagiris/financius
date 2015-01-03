@@ -36,7 +36,7 @@
 
     <View
         android:id="@+id/separator_V"
-        style="@style/Divider.Thin"
+        style="@style/Divider"
         android:layout_marginTop="@dimen/space_large" />
 
     <LinearLayout
@@ -44,7 +44,7 @@
         style="?android:buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bg_primary"
+        android:background="?backgroundColorPrimary"
         android:divider="?android:attr/dividerVertical"
         android:dividerPadding="@dimen/space_normal"
         android:orientation="horizontal"

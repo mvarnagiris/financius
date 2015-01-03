@@ -44,7 +44,7 @@ public class AmountPresenter extends Presenter {
     }
 
     @Override public void showError(Throwable error) {
-        amountButton.setTextColor(amountButton.getResources().getColor(R.color.error));
+        amountButton.setTextColor(ThemeUtils.getColor(amountButton.getContext(), R.attr.colorError));
     }
 
     public void setTransactionType(TransactionType transactionType) {

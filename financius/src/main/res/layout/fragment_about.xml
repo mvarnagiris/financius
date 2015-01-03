@@ -76,7 +76,7 @@
         </LinearLayout>
 
         <View
-            style="@style/Divider.Thin"
+            style="@style/Divider"
             android:layout_marginBottom="@dimen/space_large"
             android:layout_marginTop="@dimen/space_large" />
 

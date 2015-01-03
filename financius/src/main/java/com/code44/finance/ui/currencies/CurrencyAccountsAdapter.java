@@ -18,6 +18,7 @@ import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.ui.common.BaseModelsAdapter;
+import com.code44.finance.utils.ThemeUtils;
 
 public class CurrencyAccountsAdapter extends BaseModelsAdapter {
     private final int textBrandColor;
@@ -35,7 +36,7 @@ public class CurrencyAccountsAdapter extends BaseModelsAdapter {
 
     public CurrencyAccountsAdapter(Context context) {
         super(context);
-        textBrandColor = context.getResources().getColor(R.color.text_brand);
+        textBrandColor = ThemeUtils.getColor(context, R.attr.colorPrimary);
     }
 
     @Override public int getCount() {

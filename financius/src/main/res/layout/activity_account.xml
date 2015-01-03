@@ -12,7 +12,7 @@
         style="@style/Text.Display2"
         android:layout_width="match_parent"
         android:layout_height="@dimen/action_bar_size_2x"
-        android:background="@color/bg_brand"
+        android:background="?colorPrimary"
         android:elevation="@dimen/elevation_header"
         android:gravity="center_vertical"
         android:padding="@dimen/keyline"
@@ -30,7 +30,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/bg_primary"
+                android:background="?backgroundColorPrimary"
                 android:elevation="@dimen/elevation_sub_header"
                 android:orientation="vertical"
                 android:padding="@dimen/keyline"

@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.code44.finance.R;
 import com.code44.finance.ui.common.ViewBackgroundTheme;
+import com.code44.finance.utils.ThemeUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -220,7 +221,7 @@ public class PieChartView extends View {
     }
 
     public void setViewBackgroundTheme(ViewBackgroundTheme viewBackgroundTheme) {
-        final int color = getResources().getColor(viewBackgroundTheme == ViewBackgroundTheme.Light ? R.color.dark : R.color.bg_primary);
+        final int color = ThemeUtils.getColor(getContext(), viewBackgroundTheme == ViewBackgroundTheme.Light ? R.attr.backgroundColorPrimaryInverse : R.attr.backgroundColorPrimary);
         setOutlineColor(color);
         setInlineColor(color);
         setEmptyColor(color);
@@ -239,7 +240,7 @@ public class PieChartView extends View {
         final TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.PieChartView, 0, 0);
         try {
             final ViewBackgroundTheme viewBackgroundTheme = ViewBackgroundTheme.from(a.getInteger(R.styleable.PieChartView_viewBackgroundTheme, 0));
-            final int color = getResources().getColor(viewBackgroundTheme == ViewBackgroundTheme.Light ? R.color.dark : R.color.bg_primary);
+            final int color = ThemeUtils.getColor(context, viewBackgroundTheme == ViewBackgroundTheme.Light ? R.attr.backgroundColorPrimaryInverse : R.attr.backgroundColorPrimary);
 
             setType(Type.from(a.getInteger(R.styleable.PieChartView_type, 0)));
             setSizeBasedOn(SizeBasedOn.from(a.getInteger(R.styleable.PieChartView_sizeBasedOn, 0)));

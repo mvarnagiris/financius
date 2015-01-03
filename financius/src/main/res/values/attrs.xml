@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="Theme">
+        <attr name="textColorPositive" format="color" />
+        <attr name="textColorNegative" format="color" />
+        <attr name="textColorNeutral" format="color" />
+        <attr name="colorAccentDark" format="color" />
+        <attr name="colorError" format="color" />
+        <attr name="backgroundColor" format="color" />
+        <attr name="backgroundColorPrimary" format="color" />
+        <attr name="backgroundColorPrimaryInverse" format="color" />
+        <attr name="backgroundColorSecondary" format="color" />
+        <attr name="actionItemColor" format="color" />
+    </declare-styleable>
+
     <declare-styleable name="TintImageView">
         <attr name="supportTintColor" format="color" />
     </declare-styleable>

@@ -7,6 +7,7 @@ import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.Presenter;
+import com.code44.finance.utils.ThemeUtils;
 
 public class TransactionTypePresenter extends Presenter {
     private final ImageView transactionTypeImageView;
@@ -25,13 +26,13 @@ public class TransactionTypePresenter extends Presenter {
         final int color;
         switch (transactionType) {
             case Expense:
-                color = transactionTypeImageView.getContext().getResources().getColor(R.color.text_negative);
+                color = ThemeUtils.getColor(transactionTypeImageView.getContext(), R.attr.textColorNegative);
                 break;
             case Income:
-                color = transactionTypeImageView.getContext().getResources().getColor(R.color.text_positive);
+                color = ThemeUtils.getColor(transactionTypeImageView.getContext(), R.attr.textColorPositive);
                 break;
             case Transfer:
-                color = transactionTypeImageView.getContext().getResources().getColor(R.color.text_neutral);
+                color = ThemeUtils.getColor(transactionTypeImageView.getContext(), R.attr.textColorNeutral);
                 break;
             default:
                 throw new IllegalArgumentException("Transaction type " + transactionType + " is not supported.");

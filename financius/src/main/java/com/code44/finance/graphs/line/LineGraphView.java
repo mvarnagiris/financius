@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.code44.finance.R;
+import com.code44.finance.utils.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,7 +40,7 @@ public class LineGraphView extends View {
 
         if (isInEditMode()) {
             final LineGraphData.Builder builder = new LineGraphData.Builder()
-                    .setColor(getResources().getColor(R.color.text_negative))
+                    .setColor(ThemeUtils.getColor(getContext(), R.attr.textColorNegative))
                     .setLineWidth(getResources().getDimension(R.dimen.divider))
                     .setSmooth(true)
                     .setUseGlobalMinMax(true);

@@ -23,7 +23,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/primary"
+                android:background="?colorPrimary"
                 android:baselineAligned="false"
                 android:elevation="@dimen/elevation_header"
                 android:padding="@dimen/keyline"
@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/space_small"
                     android:layout_weight="1"
-                    android:textColor="@color/text_brand"
+                    android:textColor="?colorPrimary"
                     tools:ignore="RtlHardcoded"
                     tools:stateListAnimator="@android:animator/fade_in"
                     tools:text="1,000.00 $" />
@@ -223,7 +223,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_large"
                 android:animateLayoutChanges="true"
-                android:background="@color/bg_secondary"
+                android:background="?backgroundColorSecondary"
                 android:clipToPadding="false"
                 android:elevation="@dimen/elevation_sub_header"
                 android:paddingBottom="@dimen/keyline"

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/space_large"
         android:text="@string/expenses"
-        android:textColor="@color/primary"
+        android:textColor="?colorPrimary"
         tools:visibility="gone" />
 
     <LinearLayout

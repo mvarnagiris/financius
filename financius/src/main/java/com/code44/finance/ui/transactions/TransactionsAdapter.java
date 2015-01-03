@@ -61,14 +61,14 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         unknownIncomeTitle = context.getString(R.string.income);
         unknownTransferTitle = context.getString(R.string.transfer);
         expenseAmountColor = ThemeUtils.getColor(context, android.R.attr.textColorPrimary);
-        incomeAmountColor = context.getResources().getColor(R.color.text_positive);
-        transferAmountColor = context.getResources().getColor(R.color.text_neutral);
-        unknownExpenseColor = context.getResources().getColor(R.color.text_negative);
-        unknownIncomeColor = context.getResources().getColor(R.color.text_positive);
-        unknownTransferColor = context.getResources().getColor(R.color.text_neutral);
+        incomeAmountColor = ThemeUtils.getColor(context, R.attr.textColorPositive);
+        transferAmountColor = ThemeUtils.getColor(context, R.attr.textColorNeutral);
+        unknownExpenseColor = ThemeUtils.getColor(context, R.attr.textColorNegative);
+        unknownIncomeColor = ThemeUtils.getColor(context, R.attr.textColorPositive);
+        unknownTransferColor = ThemeUtils.getColor(context, R.attr.textColorNeutral);
         primaryColor = ThemeUtils.getColor(context, android.R.attr.textColorPrimary);
-        weakColor = context.getResources().getColor(R.color.text_weak);
-        tagBackgroundColor = context.getResources().getColor(R.color.bg_secondary);
+        weakColor = ThemeUtils.getColor(context, android.R.attr.textColorSecondary);
+        tagBackgroundColor = ThemeUtils.getColor(context, R.attr.backgroundColorSecondary);
         tagBackgroundRadius = context.getResources().getDimension(R.dimen.tag_radius);
     }
 

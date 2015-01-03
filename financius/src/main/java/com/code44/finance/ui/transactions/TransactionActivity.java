@@ -24,6 +24,7 @@ import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.ui.common.ModelActivity;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.TextBackgroundSpan;
+import com.code44.finance.utils.ThemeUtils;
 import com.code44.finance.utils.analytics.Analytics;
 
 import net.danlew.android.joda.DateUtils;
@@ -84,7 +85,7 @@ public class TransactionActivity extends ModelActivity<Transaction> {
             noteTextView.setText(transaction.getNote());
         }
 
-        final int color = category != null ? category.getColor() : getResources().getColor(R.color.primary);
+        final int color = category != null ? category.getColor() : ThemeUtils.getColor(this, R.attr.colorPrimary);
         containerView.setBackgroundColor(color);
         getToolbar().setBackgroundColor(color);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -124,7 +125,7 @@ public class TransactionActivity extends ModelActivity<Transaction> {
         categoryTextView.setText(categoryTitle);
 
         if (transaction.getTags().size() > 0) {
-            final int tagBackgroundColor = getResources().getColor(R.color.bg_secondary);
+            final int tagBackgroundColor = ThemeUtils.getColor(this, R.attr.backgroundColorSecondary);
             final float tagBackgroundRadius = getResources().getDimension(R.dimen.tag_radius);
             final SpannableStringBuilder tags = new SpannableStringBuilder();
             for (Tag tag : transaction.getTags()) {

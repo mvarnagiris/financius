@@ -2,16 +2,25 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/accent</item>
+        <item name="colorPrimary">#00bcd4</item>
+        <item name="colorPrimaryDark">#0097a7</item>
+        <item name="colorAccent">#cddc39</item>
+        <item name="colorAccentDark">#afb42b</item>
+        <item name="colorError">#e51c23</item>
         <item name="colorControlHighlight">@color/accent_transparent</item>
-        <item name="android:navigationBarColor" tools:ignore="NewApi">?android:colorPrimaryDark
-        </item>
+        <item name="backgroundColor">#f0f0f0</item>
+        <item name="backgroundColorPrimary">#fafafa</item>
+        <item name="backgroundColorPrimaryInverse">#212121</item>
+        <item name="backgroundColorSecondary">#e4e4e4</item>
+        <item name="actionItemColor">#757575</item>
+        <item name="textColorPositive">#259b24</item>
+        <item name="textColorNegative">#e51c23</item>
+        <item name="textColorNeutral">#607d8b</item>
+        <item name="android:navigationBarColor" tools:ignore="NewApi">?colorPrimaryDark</item>
 
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowContentTransitions" tools:ignore="NewApi">true</item>
-        <item name="android:windowBackground">@color/bg_window</item>
+        <item name="android:windowBackground">@drawable/window_background</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
 
@@ -53,7 +62,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?actionBarSize</item>
         <item name="android:minHeight">?actionBarSize</item>
-        <item name="android:background">@color/primary</item>
+        <item name="android:background">?colorPrimary</item>
         <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_header</item>
         <item name="contentInsetStart">@dimen/keyline_content</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>

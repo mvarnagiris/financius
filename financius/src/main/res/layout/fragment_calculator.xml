@@ -9,7 +9,7 @@
         android:id="@+id/resultContainer_V"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bg_primary"
+        android:background="?backgroundColorPrimary"
         android:elevation="@dimen/elevation_header"
         tools:ignore="UnusedAttribute">
 
@@ -45,7 +45,7 @@
             android:id="@+id/resultClearer_V"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/primary"
+            android:background="?colorPrimary"
             android:visibility="invisible" />
 
     </RelativeLayout>
@@ -59,7 +59,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:background="@color/bg_primary_inverse"
+            android:background="?backgroundColorPrimaryInverse"
             android:elevation="@dimen/elevation_sub_header"
             android:orientation="vertical"
             tools:ignore="NestedWeights,UnusedAttribute">
@@ -150,7 +150,7 @@
                     android:id="@+id/equals_B"
                     style="@style/Button.Borderless.Calc"
                     android:text="@string/equals"
-                    android:textColor="@color/text_accent"
+                    android:textColor="?colorAccent"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -161,7 +161,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/bg_secondary"
+            android:background="?backgroundColorSecondary"
             android:orientation="vertical">
 
             <Button

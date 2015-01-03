@@ -13,6 +13,7 @@ import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartValue;
+import com.code44.finance.utils.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,7 +88,7 @@ public class CategoriesReportData {
         final Category noCategory = new Category();
         noCategory.setId("0");
         noCategory.setTitle(context.getString(R.string.no_category));
-        noCategory.setColor(context.getResources().getColor(transactionType == TransactionType.Expense ? R.color.text_negative : R.color.text_positive));
+        noCategory.setColor(ThemeUtils.getColor(context, transactionType == TransactionType.Expense ? R.attr.textColorNegative : R.attr.textColorPositive));
         return noCategory;
     }
 

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code44.finance.R;
+import com.code44.finance.utils.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +25,10 @@ public class NavigationDrawerAdapter extends BaseAdapter {
 
     public NavigationDrawerAdapter(Context context) {
         this.inflater = LayoutInflater.from(context);
-        defaultTextColor = context.getResources().getColor(android.R.color.primary_text_light);
-        defaultIconColor = context.getResources().getColor(R.color.navigation_drawer_icon);
-        selectedColor = context.getResources().getColor(R.color.primary);
-        selectedBackgroundColor = context.getResources().getColor(R.color.navigation_drawer_selected_background);
+        defaultTextColor = ThemeUtils.getColor(context, android.R.attr.textColorPrimary);
+        defaultIconColor = ThemeUtils.getColor(context, R.attr.actionItemColor);
+        selectedColor = ThemeUtils.getColor(context, R.attr.colorPrimary);
+        selectedBackgroundColor = ThemeUtils.getColor(context, R.attr.backgroundColorSecondary);
 
         navigationItems = new ArrayList<>();
         navigationItems.add(new PrimaryNavigationItem(NavigationScreen.Overview, R.drawable.ic_action_overview, R.string.overview));

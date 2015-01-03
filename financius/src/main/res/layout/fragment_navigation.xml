@@ -3,4 +3,4 @@
     android:id="@+id/listView"
     style="@style/ListView.NoDivider"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/bg_window" />
+    android:background="?backgroundColor" />

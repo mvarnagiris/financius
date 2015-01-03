@@ -1,6 +1,5 @@
 package com.code44.finance.ui.transactions.presenters;
 
-import android.content.res.Resources;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.view.View;
@@ -14,6 +13,7 @@ import com.code44.finance.ui.common.Presenter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteAdapter;
 import com.code44.finance.ui.transactions.autocomplete.adapters.AutoCompleteTagsAdapter;
 import com.code44.finance.utils.TextBackgroundSpan;
+import com.code44.finance.utils.ThemeUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,9 +31,8 @@ public class TagsPresenter extends Presenter implements AutoCompletePresenter<Li
         tagsDividerView = findView(activity, R.id.tagsDividerView);
         tagsAutoCompleteContainerView = findView(activity, R.id.tagsAutoCompleteContainerView);
 
-        final Resources res = tagsButton.getResources();
-        tagBackgroundColor = res.getColor(R.color.bg_secondary);
-        tagBackgroundRadius = res.getDimension(R.dimen.tag_radius);
+        tagBackgroundColor = ThemeUtils.getColor(tagsButton.getContext(), R.attr.backgroundColorSecondary);
+        tagBackgroundRadius = tagsButton.getResources().getDimension(R.dimen.tag_radius);
         tagsButton.setOnClickListener(clickListener);
         tagsButton.setOnLongClickListener(longClickListener);
     }

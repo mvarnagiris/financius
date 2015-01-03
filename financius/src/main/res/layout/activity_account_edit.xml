@@ -23,7 +23,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/bg_brand"
+                android:background="?colorPrimary"
                 android:elevation="@dimen/elevation_header"
                 android:padding="@dimen/keyline"
                 tools:ignore="UnusedAttribute">

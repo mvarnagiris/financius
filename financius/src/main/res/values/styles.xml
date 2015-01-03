@@ -90,7 +90,7 @@
     <style name="Button.Borderless.Bounded.Select">
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">?android:textColorPrimary</item>
-        <item name="android:textColorHint">@color/text_weak</item>
+        <item name="android:textColorHint">?android:textColorSecondary</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textAppearance">@style/Text.Subhead</item>
     </style>
@@ -110,7 +110,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_display1</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textColor">?android:textColorPrimaryInverse</item>
         <item name="android:fontFamily" tools:ignore="NewApi">@string/font_light</item>
         <item name="android:background">@drawable/btn_calc</item>
     </style>
@@ -185,21 +185,14 @@
 
     <style name="Divider">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/divider</item>
-        <item name="android:background">@color/divider</item>
-    </style>
-
-    <style name="Divider.Thin">
-        <item name="android:layout_height">@dimen/divider_thin</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">?dividerHorizontal</item>
     </style>
 
     <style name="Divider.Vertical">
-        <item name="android:layout_width">@dimen/divider</item>
+        <item name="android:layout_width">1dp</item>
         <item name="android:layout_height">match_parent</item>
-    </style>
-
-    <style name="Divider.Vertical.Thin">
-        <item name="android:layout_width">@dimen/divider_thin</item>
+        <item name="android:background">?dividerVertical</item>
     </style>
 
     <!-- Containers -->
@@ -212,7 +205,7 @@
 
     <style name="Container.Title">
         <item name="android:paddingTop">@dimen/edit_title_padding_top</item>
-        <item name="android:background">@color/bg_secondary</item>
+        <item name="android:background">?backgroundColorSecondary</item>
     </style>
 
     <style name="Container.Edit">

@@ -19,7 +19,7 @@
                 android:id="@+id/containerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/primary"
+                android:background="?colorPrimary"
                 android:elevation="@dimen/elevation_header"
                 android:orientation="vertical"
                 tools:ignore="UnusedAttribute">
@@ -45,7 +45,7 @@
 
                 </me.grantland.widget.AutofitLayout>
 
-                <View style="@style/Divider.Thin" />
+                <View style="@style/Divider" />
 
                 <Button
                     android:id="@+id/colorButton"

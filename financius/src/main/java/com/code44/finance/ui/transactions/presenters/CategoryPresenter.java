@@ -12,6 +12,7 @@ import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.Presenter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteAdapter;
 import com.code44.finance.ui.transactions.autocomplete.adapters.AutoCompleteCategoriesAdapter;
+import com.code44.finance.utils.ThemeUtils;
 
 public class CategoryPresenter extends Presenter implements AutoCompletePresenter<Category>, AutoCompleteAdapter.AutoCompleteAdapterListener {
     private final ImageView colorImageView;
@@ -83,11 +84,11 @@ public class CategoryPresenter extends Presenter implements AutoCompletePresente
         if (category == null) {
             switch (transactionType) {
                 case Expense:
-                    return categoryButton.getResources().getColor(R.color.text_negative);
+                    return ThemeUtils.getColor(categoryButton.getContext(), R.attr.textColorNegative);
                 case Income:
-                    return categoryButton.getResources().getColor(R.color.text_positive);
+                    return ThemeUtils.getColor(categoryButton.getContext(), R.attr.textColorPositive);
                 case Transfer:
-                    return categoryButton.getResources().getColor(R.color.text_neutral);
+                    return ThemeUtils.getColor(categoryButton.getContext(), R.attr.textColorNeutral);
                 default:
                     throw new IllegalArgumentException("Transaction type " + transactionType + " is not supported.");
             }

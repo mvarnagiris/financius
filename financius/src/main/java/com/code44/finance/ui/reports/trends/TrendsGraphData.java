@@ -11,6 +11,7 @@ import com.code44.finance.data.model.Transaction;
 import com.code44.finance.graphs.line.LineGraphData;
 import com.code44.finance.graphs.line.LineGraphValue;
 import com.code44.finance.utils.BaseInterval;
+import com.code44.finance.utils.ThemeUtils;
 
 import org.joda.time.Interval;
 import org.joda.time.Period;
@@ -24,7 +25,7 @@ public class TrendsGraphData {
         long totalIncome = 0;
         long totalExpense = 0;
         final LineGraphData.Builder builder = new LineGraphData.Builder()
-                .setColor(context.getResources().getColor(R.color.text_negative))
+                .setColor(ThemeUtils.getColor(context, R.attr.textColorNegative))
                 .setLineWidth(context.getResources().getDimension(R.dimen.divider))
                 .setDividerDrawable(context.getResources().getDrawable(R.drawable.trends_divider))
                 .setUseGlobalMinMax(false)

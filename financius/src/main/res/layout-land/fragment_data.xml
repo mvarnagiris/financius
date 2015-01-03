@@ -32,7 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/backup"
-                    android:textColor="@color/primary" />
+                    android:textColor="?colorPrimary" />
 
                 <Button
                     android:id="@+id/backup_B"
@@ -51,7 +51,7 @@
                     android:text="@string/import_backup" />
 
                 <View
-                    style="@style/Divider.Thin"
+                    style="@style/Divider"
                     android:layout_marginBottom="@dimen/space_normal"
                     android:layout_marginTop="@dimen/space_normal" />
 
@@ -86,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/csv"
-                    android:textColor="@color/primary" />
+                    android:textColor="?colorPrimary" />
 
                 <Button
                     android:id="@+id/exportCsv_B"

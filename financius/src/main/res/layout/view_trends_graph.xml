@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/space_large"
         android:text="@string/trends"
-        android:textColor="@color/primary" />
+        android:textColor="?colorPrimary" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/text_positive"
+            android:textColor="?textColorPositive"
             tools:text="8579.48 $" />
 
         <TextView
@@ -50,7 +50,7 @@
             style="@style/Text.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_negative"
+            android:textColor="?textColorNegative"
             tools:text="5892.58 $" />
 
     </LinearLayout>

@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/space_large"
         android:text="@string/accounts_other"
-        android:textColor="@color/primary" />
+        android:textColor="?colorPrimary" />
 
     <LinearLayout
         android:id="@+id/balanceContainer"

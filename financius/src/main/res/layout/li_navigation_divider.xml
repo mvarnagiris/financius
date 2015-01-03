@@ -5,7 +5,7 @@
     android:paddingTop="@dimen/space_normal">
 
     <View
-        style="@style/Divider.Thin"
+        style="@style/Divider"
         android:layout_marginBottom="8dp" />
 
 </FrameLayout>

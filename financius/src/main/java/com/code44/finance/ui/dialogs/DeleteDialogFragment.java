@@ -23,6 +23,7 @@ import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.data.providers.TagsProvider;
 import com.code44.finance.data.providers.TransactionsProvider;
+import com.code44.finance.utils.ThemeUtils;
 
 public class DeleteDialogFragment extends AlertDialogFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String ARG_DELETE_URI = "ARG_DELETE_URI";
@@ -232,7 +233,7 @@ public class DeleteDialogFragment extends AlertDialogFragment implements LoaderM
             super.setTitle(context.getString(R.string.l_delete_confirmation));
             super.setPositiveButtonText(context.getString(R.string.delete));
             super.setNegativeButtonText(context.getString(R.string.cancel));
-            super.setPositiveButtonColor(context.getResources().getColor(R.color.text_negative));
+            super.setPositiveButtonColor(ThemeUtils.getColor(context, R.attr.textColorNegative));
             args.putParcelable(ARG_DELETE_URI, deleteUri);
             args.putString(ARG_DELETE_SELECTION, deleteSelection);
             args.putStringArray(ARG_DELETE_SELECTION_ARGS, deleteSelectionArgs);

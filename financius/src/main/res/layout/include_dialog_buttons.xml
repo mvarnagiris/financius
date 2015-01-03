@@ -23,6 +23,6 @@
         android:layout_height="wrap_content"
         tools:stateListAnimator="@android:animator/fade_in"
         tools:text="@string/ok"
-        tools:textColor="@color/text_brand" />
+        tools:textColor="?colorPrimary" />
 
 </LinearLayout>

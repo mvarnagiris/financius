@@ -12,7 +12,7 @@
         style="@style/Text.Display4"
         android:layout_width="match_parent"
         android:layout_height="@dimen/action_bar_size_3x"
-        android:background="@color/primary"
+        android:background="?colorPrimary"
         android:elevation="@dimen/elevation_header"
         android:gravity="center"
         android:padding="@dimen/keyline"
