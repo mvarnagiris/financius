@@ -24,6 +24,7 @@ import com.code44.finance.ui.accounts.AccountsActivity;
 import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.ModelListActivity;
+import com.code44.finance.ui.common.Presenter;
 import com.code44.finance.ui.dialogs.DatePickerDialog;
 import com.code44.finance.ui.dialogs.TimePickerDialog;
 import com.code44.finance.ui.tags.TagsActivity;
@@ -41,7 +42,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-public class TransactionPresenter implements TransactionAutoComplete.TransactionAutoCompleteListener, NotePresenter.Callbacks, View.OnClickListener, View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
+public class TransactionPresenter extends Presenter implements TransactionAutoComplete.TransactionAutoCompleteListener, NotePresenter.Callbacks, View.OnClickListener, View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int REQUEST_AMOUNT = 1;
     private static final int REQUEST_ACCOUNT_FROM = 2;
     private static final int REQUEST_ACCOUNT_TO = 3;
@@ -53,7 +54,6 @@ public class TransactionPresenter implements TransactionAutoComplete.Transaction
     private static final int REQUEST_AMOUNT_TO = 9;
 
     private static final String STATE_TRANSACTION_EDIT_DATA = "STATE_TRANSACTION_EDIT_DATA";
-    private static final String STATE_AUTO_COMPLETE_RESULT = "STATE_AUTO_COMPLETE_RESULT";
 
     private static final boolean LOG_AUTO_COMPLETE = true;
 
@@ -75,9 +75,7 @@ public class TransactionPresenter implements TransactionAutoComplete.Transaction
     private final TransactionStatePresenter transactionStateViewController;
     private final FlagsPresenter flagsViewController;
 
-    private AutoCompleteResult autoCompleteResult;
     private AutoCompleteAdapter<?> currentAutoCompleteAdapter;
-    private boolean isResumed = false;
     private boolean isUpdated = false;
     private boolean isAutoCompleteUpdateQueued = false;
 
@@ -90,10 +88,8 @@ public class TransactionPresenter implements TransactionAutoComplete.Transaction
 
         if (savedInstanceState == null) {
             transactionEditData = new TransactionEditData();
-            autoCompleteResult = null;
         } else {
             transactionEditData = savedInstanceState.getParcelable(STATE_TRANSACTION_EDIT_DATA);
-            autoCompleteResult = savedInstanceState.getParcelable(STATE_AUTO_COMPLETE_RESULT);
         }
 
         transactionTypeViewController = new TransactionTypePresenter(activity, this);
@@ -106,9 +102,33 @@ public class TransactionPresenter implements TransactionAutoComplete.Transaction
         transactionStateViewController = new TransactionStatePresenter(activity, this);
         flagsViewController = new FlagsPresenter(activity, this);
 
-        if (savedInstanceState == null && (Strings.isEmpty(transactionId) || transactionId.equals("0"))) {
-            CalculatorActivity.start(activity, REQUEST_AMOUNT, 0);
+        if (Strings.isEmpty(transactionId) || transactionId.equals("0")) {
+            if (savedInstanceState == null) {
+                CalculatorActivity.start(activity, REQUEST_AMOUNT, 0);
+            }
+
+            requestAutoComplete();
         }
+    }
+
+    @Override public void onResume() {
+        super.onResume();
+        eventBus.register(this);
+        if (!isUpdated) {
+            update(false);
+        } else if (isAutoCompleteUpdateQueued) {
+            update(true);
+        }
+    }
+
+    @Override public void onPause() {
+        super.onPause();
+        eventBus.unregister(this);
+    }
+
+    @Override public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(STATE_TRANSACTION_EDIT_DATA, transactionEditData);
     }
 
     @Override public void onClick(View v) {
@@ -134,7 +154,7 @@ public class TransactionPresenter implements TransactionAutoComplete.Transaction
             case R.id.accountFromButton: {
                 final boolean showPopup = !transactionEditData.isAccountFromSet();
                 if (showPopup) {
-                    currentAutoCompleteAdapter = accountsViewController.showAutoComplete(currentAutoCompleteAdapter, autoCompleteResult, new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Account>() {
+                    currentAutoCompleteAdapter = accountsViewController.showAutoComplete(currentAutoCompleteAdapter, transactionEditData.getAutoCompleteResult(), new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Account>() {
                         @Override public void onAutoCompleteItemClick(Account item) {
                             transactionEditData.setAccountFrom(item);
                             requestAutoComplete();
@@ -151,7 +171,7 @@ public class TransactionPresenter implements TransactionAutoComplete.Transaction
             case R.id.accountToButton: {
                 final boolean showPopup = !transactionEditData.isAccountFromSet();
                 if (showPopup) {
-                    currentAutoCompleteAdapter = accountsViewController.showAutoComplete(currentAutoCompleteAdapter, autoCompleteResult, new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Account>() {
+                    currentAutoCompleteAdapter = accountsViewController.showAutoComplete(currentAutoCompleteAdapter, transactionEditData.getAutoCompleteResult(), new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Account>() {
                         @Override public void onAutoCompleteItemClick(Account item) {
                             transactionEditData.setAccountTo(item);
                             requestAutoComplete();
@@ -168,7 +188,7 @@ public class TransactionPresenter implements TransactionAutoComplete.Transaction
             case R.id.categoryButton: {
                 final boolean showPopup = !transactionEditData.isCategorySet();
                 if (showPopup) {
-                    currentAutoCompleteAdapter = categoryViewController.showAutoComplete(currentAutoCompleteAdapter, autoCompleteResult, new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Category>() {
+                    currentAutoCompleteAdapter = categoryViewController.showAutoComplete(currentAutoCompleteAdapter, transactionEditData.getAutoCompleteResult(), new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Category>() {
                         @Override public void onAutoCompleteItemClick(Category item) {
                             transactionEditData.setCategory(item);
                             requestAutoComplete();
@@ -185,7 +205,7 @@ public class TransactionPresenter implements TransactionAutoComplete.Transaction
             case R.id.tagsButton: {
                 final boolean showPopup = !transactionEditData.isTagsSet();
                 if (showPopup) {
-                    currentAutoCompleteAdapter = tagsViewController.showAutoComplete(currentAutoCompleteAdapter, autoCompleteResult, new AutoCompleteAdapter.OnAutoCompleteItemClickListener<List<Tag>>() {
+                    currentAutoCompleteAdapter = tagsViewController.showAutoComplete(currentAutoCompleteAdapter, transactionEditData.getAutoCompleteResult(), new AutoCompleteAdapter.OnAutoCompleteItemClickListener<List<Tag>>() {
                         @Override public void onAutoCompleteItemClick(List<Tag> item) {
                             transactionEditData.setTags(item);
                             requestAutoComplete();
@@ -254,7 +274,7 @@ public class TransactionPresenter implements TransactionAutoComplete.Transaction
     }
 
     @Override public void onTransactionAutoComplete(AutoCompleteResult result) {
-        autoCompleteResult = result;
+        transactionEditData.setAutoCompleteResult(result);
         update(true);
     }
 
@@ -310,26 +330,6 @@ public class TransactionPresenter implements TransactionAutoComplete.Transaction
         }
     }
 
-    public void onResume() {
-        isResumed = true;
-        eventBus.register(this);
-        if (!isUpdated) {
-            update(false);
-        } else if (isAutoCompleteUpdateQueued) {
-            update(true);
-        }
-    }
-
-    public void onPause() {
-        isResumed = false;
-        eventBus.unregister(this);
-    }
-
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(STATE_TRANSACTION_EDIT_DATA, transactionEditData);
-        outState.putParcelable(STATE_AUTO_COMPLETE_RESULT, autoCompleteResult);
-    }
-
     public void handleActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
@@ -380,7 +380,7 @@ public class TransactionPresenter implements TransactionAutoComplete.Transaction
     }
 
     private void update(boolean isAutoComplete) {
-        if (!isResumed) {
+        if (!isResumed()) {
             if (isAutoComplete) {
                 isAutoCompleteUpdateQueued = true;
             }

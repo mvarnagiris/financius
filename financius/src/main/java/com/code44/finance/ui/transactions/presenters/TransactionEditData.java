@@ -10,6 +10,7 @@ import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.ui.common.Presenter;
+import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,8 @@ public class TransactionEditData implements Parcelable {
     };
 
     private Transaction storedTransaction;
+    private AutoCompleteResult firstAutoCompleteResult;
+    private AutoCompleteResult autoCompleteResult;
 
     private TransactionType transactionType;
     private Long amount;
@@ -56,6 +59,8 @@ public class TransactionEditData implements Parcelable {
 
     private TransactionEditData(Parcel in) {
         storedTransaction = in.readParcelable(Transaction.class.getClassLoader());
+        firstAutoCompleteResult = in.readParcelable(AutoCompleteResult.class.getClassLoader());
+        autoCompleteResult = in.readParcelable(AutoCompleteResult.class.getClassLoader());
         transactionType = (TransactionType) in.readSerializable();
         amount = (Long) in.readValue(Long.class.getClassLoader());
         date = (Long) in.readValue(Long.class.getClassLoader());
@@ -90,6 +95,8 @@ public class TransactionEditData implements Parcelable {
 
     @Override public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(storedTransaction, flags);
+        dest.writeParcelable(firstAutoCompleteResult, flags);
+        dest.writeParcelable(autoCompleteResult, flags);
         dest.writeSerializable(transactionType);
         dest.writeValue(amount);
         dest.writeValue(date);
@@ -124,6 +131,17 @@ public class TransactionEditData implements Parcelable {
 
     public void setStoredTransaction(Transaction storedTransaction) {
         this.storedTransaction = storedTransaction;
+    }
+
+    public AutoCompleteResult getAutoCompleteResult() {
+        return autoCompleteResult;
+    }
+
+    public void setAutoCompleteResult(AutoCompleteResult autoCompleteResult) {
+        this.autoCompleteResult = autoCompleteResult;
+        if (firstAutoCompleteResult == null) {
+            firstAutoCompleteResult = autoCompleteResult;
+        }
     }
 
     public TransactionType getTransactionType() {
@@ -191,6 +209,10 @@ public class TransactionEditData implements Parcelable {
             return storedTransaction.getAccountFrom();
         }
 
+        if (firstAutoCompleteResult != null && !firstAutoCompleteResult.getAccountsFrom().isEmpty()) {
+            return firstAutoCompleteResult.getAccountsFrom().get(0);
+        }
+
         return null;
     }
 
@@ -210,6 +232,10 @@ public class TransactionEditData implements Parcelable {
 
         if (storedTransaction != null && storedTransaction.getAccountTo() != null) {
             return storedTransaction.getAccountTo();
+        }
+
+        if (firstAutoCompleteResult != null && !firstAutoCompleteResult.getAccountsTo().isEmpty()) {
+            return firstAutoCompleteResult.getAccountsTo().get(0);
         }
 
         return null;
@@ -233,6 +259,10 @@ public class TransactionEditData implements Parcelable {
             return storedTransaction.getCategory();
         }
 
+        if (firstAutoCompleteResult != null && !firstAutoCompleteResult.getCategories().isEmpty()) {
+            return firstAutoCompleteResult.getCategories().get(0);
+        }
+
         return null;
     }
 
@@ -248,6 +278,10 @@ public class TransactionEditData implements Parcelable {
 
         if (storedTransaction != null && storedTransaction.getTags() != null) {
             return storedTransaction.getTags();
+        }
+
+        if (firstAutoCompleteResult != null && !firstAutoCompleteResult.getTags().isEmpty()) {
+            return firstAutoCompleteResult.getTags().get(0);
         }
 
         return null;

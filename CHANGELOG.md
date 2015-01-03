@@ -2,6 +2,7 @@
 - ```new``` Updated navigation drawer UI.
 - ```new``` Moved settings to navigation drawer.
 - ```new``` Showing required fields when trying to make transaction confirmed.
+- ```new``` Auto complete for new transaction is back. This time should be less confusing. Fields will be auto completed only once.
 - ```fix``` In calculator, when there is an operator at the end after pressing = that operator will be ignored.
 
 ###Version: 0.16.1

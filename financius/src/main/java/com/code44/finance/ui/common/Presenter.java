@@ -1,11 +1,29 @@
 package com.code44.finance.ui.common;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.view.View;
 
 public abstract class Presenter {
+    private boolean isResumed = false;
+
+    public void onResume() {
+        isResumed = true;
+    }
+
+    public void onPause() {
+        isResumed = false;
+    }
+
+    public void onSaveInstanceState(Bundle outState) {
+    }
+
     public void showError(Throwable error) {
+    }
+
+    protected boolean isResumed() {
+        return isResumed;
     }
 
     protected <T extends View> T findView(Activity activity, @IdRes int viewId) {
