@@ -11,6 +11,7 @@
     <string name="expense">Expense</string>
     <string name="expenses">Expenses</string>
     <string name="income">Income</string>
+    <string name="incomes">Income</string>
     <string name="transfer">Transfer</string>
     <string name="currencies_zero">Currencies</string>
     <string name="currencies_one">Currency</string>

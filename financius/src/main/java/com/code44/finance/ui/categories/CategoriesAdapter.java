@@ -43,7 +43,7 @@ public class CategoriesAdapter extends BaseModelsAdapter implements StickyListHe
             holder = (HeaderViewHolder) convertView.getTag();
         }
 
-        holder.titleTextView.setText(mContext.getString(Category.from(mCursor).getTransactionType() == TransactionType.Expense ? R.string.expenses : R.string.income));
+        holder.titleTextView.setText(mContext.getString(Category.from(mCursor).getTransactionType() == TransactionType.Expense ? R.string.expenses : R.string.incomes));
 
         return convertView;
     }
