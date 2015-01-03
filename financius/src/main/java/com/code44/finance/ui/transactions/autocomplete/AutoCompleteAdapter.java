@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.code44.finance.R;
+import com.code44.finance.ui.transactions.presenters.TransactionEditData;
 
 import java.util.List;
 
@@ -27,8 +28,9 @@ public abstract class AutoCompleteAdapter<T> implements View.OnClickListener {
         hide();
     }
 
-    public boolean show(AutoCompleteAdapter<?> currentAdapter, AutoCompleteResult autoCompleteResult) {
+    public boolean show(AutoCompleteAdapter<?> currentAdapter, TransactionEditData transactionEditData) {
         containerView.removeAllViews();
+        final AutoCompleteResult autoCompleteResult = transactionEditData.getAutoCompleteResult();
         final boolean isSameAdapterVisible = currentAdapter != null && isSameAdapter(currentAdapter);
         final boolean isAutoCompleteResultEmpty = autoCompleteResult == null || getItems(autoCompleteResult) == null || getItems(autoCompleteResult).isEmpty();
         if (isSameAdapterVisible || isAutoCompleteResultEmpty) {
@@ -43,6 +45,10 @@ public abstract class AutoCompleteAdapter<T> implements View.OnClickListener {
         for (T item : getItems(autoCompleteResult)) {
             if (containerView.getChildCount() == MAX_CHILD_COUNT) {
                 break;
+            }
+
+            if (!showItem(transactionEditData, item)) {
+                continue;
             }
 
             final View view = newView(containerView.getContext(), containerView);
@@ -68,6 +74,8 @@ public abstract class AutoCompleteAdapter<T> implements View.OnClickListener {
     protected abstract void bindView(View view, T item);
 
     protected abstract boolean isSameAdapter(AutoCompleteAdapter<?> currentAdapter);
+
+    protected abstract boolean showItem(TransactionEditData transactionEditData, T item);
 
     protected abstract List<T> getItems(AutoCompleteResult autoCompleteResult);
 

@@ -154,7 +154,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
             case R.id.accountFromButton: {
                 final boolean showPopup = !transactionEditData.isAccountFromSet();
                 if (showPopup) {
-                    currentAutoCompleteAdapter = accountsViewController.showAutoComplete(currentAutoCompleteAdapter, transactionEditData.getAutoCompleteResult(), new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Account>() {
+                    currentAutoCompleteAdapter = accountsViewController.showAutoComplete(currentAutoCompleteAdapter, transactionEditData, new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Account>() {
                         @Override public void onAutoCompleteItemClick(Account item) {
                             transactionEditData.setAccountFrom(item);
                             requestAutoComplete();
@@ -171,7 +171,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
             case R.id.accountToButton: {
                 final boolean showPopup = !transactionEditData.isAccountFromSet();
                 if (showPopup) {
-                    currentAutoCompleteAdapter = accountsViewController.showAutoComplete(currentAutoCompleteAdapter, transactionEditData.getAutoCompleteResult(), new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Account>() {
+                    currentAutoCompleteAdapter = accountsViewController.showAutoComplete(currentAutoCompleteAdapter, transactionEditData, new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Account>() {
                         @Override public void onAutoCompleteItemClick(Account item) {
                             transactionEditData.setAccountTo(item);
                             requestAutoComplete();
@@ -188,7 +188,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
             case R.id.categoryButton: {
                 final boolean showPopup = !transactionEditData.isCategorySet();
                 if (showPopup) {
-                    currentAutoCompleteAdapter = categoryViewController.showAutoComplete(currentAutoCompleteAdapter, transactionEditData.getAutoCompleteResult(), new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Category>() {
+                    currentAutoCompleteAdapter = categoryViewController.showAutoComplete(currentAutoCompleteAdapter, transactionEditData, new AutoCompleteAdapter.OnAutoCompleteItemClickListener<Category>() {
                         @Override public void onAutoCompleteItemClick(Category item) {
                             transactionEditData.setCategory(item);
                             requestAutoComplete();
@@ -205,7 +205,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
             case R.id.tagsButton: {
                 final boolean showPopup = !transactionEditData.isTagsSet();
                 if (showPopup) {
-                    currentAutoCompleteAdapter = tagsViewController.showAutoComplete(currentAutoCompleteAdapter, transactionEditData.getAutoCompleteResult(), new AutoCompleteAdapter.OnAutoCompleteItemClickListener<List<Tag>>() {
+                    currentAutoCompleteAdapter = tagsViewController.showAutoComplete(currentAutoCompleteAdapter, transactionEditData, new AutoCompleteAdapter.OnAutoCompleteItemClickListener<List<Tag>>() {
                         @Override public void onAutoCompleteItemClick(List<Tag> item) {
                             transactionEditData.setTags(item);
                             requestAutoComplete();

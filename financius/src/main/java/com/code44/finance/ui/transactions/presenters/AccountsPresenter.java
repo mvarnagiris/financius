@@ -10,7 +10,6 @@ import com.code44.finance.data.model.Account;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.Presenter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteAdapter;
-import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
 import com.code44.finance.ui.transactions.autocomplete.adapters.AutoCompleteAccountsFromAdapter;
 import com.code44.finance.ui.transactions.autocomplete.adapters.AutoCompleteAccountsToAdapter;
 
@@ -55,9 +54,9 @@ public class AccountsPresenter extends Presenter implements AutoCompletePresente
         accountsDividerView.setVisibility(View.VISIBLE);
     }
 
-    @Override public AutoCompleteAdapter<Account> showAutoComplete(AutoCompleteAdapter<?> currentAdapter, AutoCompleteResult autoCompleteResult, AutoCompleteAdapter.OnAutoCompleteItemClickListener<Account> clickListener, View view) {
+    @Override public AutoCompleteAdapter<Account> showAutoComplete(AutoCompleteAdapter<?> currentAdapter, TransactionEditData transactionEditData, AutoCompleteAdapter.OnAutoCompleteItemClickListener<Account> clickListener, View view) {
         final AutoCompleteAdapter<Account> adapter = view.getId() == R.id.accountFromButton ? new AutoCompleteAccountsFromAdapter(accountsAutoCompleteContainerView, this, clickListener) : new AutoCompleteAccountsToAdapter(accountsAutoCompleteContainerView, this, clickListener);
-        if (adapter.show(currentAdapter, autoCompleteResult)) {
+        if (adapter.show(currentAdapter, transactionEditData)) {
             return adapter;
         }
         return null;

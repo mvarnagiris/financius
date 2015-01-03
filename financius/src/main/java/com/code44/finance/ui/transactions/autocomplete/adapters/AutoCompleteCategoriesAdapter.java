@@ -11,6 +11,7 @@ import com.code44.finance.R;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteAdapter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
+import com.code44.finance.ui.transactions.presenters.TransactionEditData;
 
 import java.util.List;
 
@@ -30,6 +31,10 @@ public class AutoCompleteCategoriesAdapter extends AutoCompleteAdapter<Category>
 
     @Override protected boolean isSameAdapter(AutoCompleteAdapter<?> currentAdapter) {
         return currentAdapter instanceof AutoCompleteCategoriesAdapter;
+    }
+
+    @Override protected boolean showItem(TransactionEditData transactionEditData, Category item) {
+        return item != null && !item.equals(transactionEditData.getCategory());
     }
 
     @Override protected List<Category> getItems(AutoCompleteResult autoCompleteResult) {

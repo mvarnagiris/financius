@@ -11,7 +11,6 @@ import com.code44.finance.data.model.Category;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.Presenter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteAdapter;
-import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
 import com.code44.finance.ui.transactions.autocomplete.adapters.AutoCompleteCategoriesAdapter;
 
 public class CategoryPresenter extends Presenter implements AutoCompletePresenter<Category>, AutoCompleteAdapter.AutoCompleteAdapterListener {
@@ -36,9 +35,9 @@ public class CategoryPresenter extends Presenter implements AutoCompletePresente
     @Override public void showError(Throwable error) {
     }
 
-    @Override public AutoCompleteAdapter<Category> showAutoComplete(AutoCompleteAdapter<?> currentAdapter, AutoCompleteResult autoCompleteResult, AutoCompleteAdapter.OnAutoCompleteItemClickListener<Category> clickListener, View view) {
+    @Override public AutoCompleteAdapter<Category> showAutoComplete(AutoCompleteAdapter<?> currentAdapter, TransactionEditData transactionEditData, AutoCompleteAdapter.OnAutoCompleteItemClickListener<Category> clickListener, View view) {
         final AutoCompleteCategoriesAdapter adapter = new AutoCompleteCategoriesAdapter(categoriesAutoCompleteContainerView, this, clickListener);
-        if (adapter.show(currentAdapter, autoCompleteResult)) {
+        if (adapter.show(currentAdapter, transactionEditData)) {
             return adapter;
         }
         return null;
