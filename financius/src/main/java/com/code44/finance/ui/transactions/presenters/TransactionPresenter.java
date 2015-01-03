@@ -133,7 +133,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
 
     @Override public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.transactionTypeImageButton:
+            case R.id.transactionTypeContainerView:
                 toggleTransactionType();
                 break;
             case R.id.amountButton:

@@ -38,27 +38,32 @@
                     android:minHeight="@dimen/action_bar_size_2x">
 
                     <FrameLayout
+                        android:id="@+id/transactionTypeContainerView"
+                        style="@style/Button.Borderless"
                         android:layout_width="@dimen/keyline_content"
                         android:layout_height="match_parent">
 
                         <ImageView
-                            android:layout_width="@dimen/keyline_content"
-                            android:layout_height="match_parent"
+                            android:layout_width="@dimen/action_item"
+                            android:layout_height="@dimen/action_item"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/keyline"
                             android:elevation="@dimen/elevation_fab"
-                            android:padding="24dp"
                             android:scaleType="centerInside"
-                            android:src="@drawable/circle" />
+                            android:src="@drawable/circle"
+                            tools:ignore="ContentDescription,RtlHardcoded" />
 
-                        <ImageButton
-                            android:id="@+id/transactionTypeImageButton"
-                            style="@style/Button.Borderless"
-                            android:layout_width="@dimen/keyline_content"
-                            android:layout_height="match_parent"
+                        <ImageView
+                            android:id="@+id/transactionTypeImageView"
+                            android:layout_width="@dimen/action_item"
+                            android:layout_height="@dimen/action_item"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/keyline"
                             android:contentDescription="@string/transaction_type"
                             android:elevation="@dimen/elevation_fab"
-                            android:padding="@dimen/keyline"
                             android:scaleType="centerInside"
                             android:src="@drawable/ic_action_category_type"
+                            tools:ignore="RtlHardcoded"
                             tools:tint="@color/text_negative" />
 
                     </FrameLayout>

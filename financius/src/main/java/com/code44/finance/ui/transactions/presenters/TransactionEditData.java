@@ -157,8 +157,15 @@ public class TransactionEditData implements Parcelable {
     }
 
     public void setTransactionType(TransactionType transactionType) {
+        final boolean isChanged = this.transactionType != transactionType;
         this.transactionType = transactionType;
         isTransactionTypeSet = true;
+
+        if (isChanged) {
+            autoCompleteResult = null;
+            firstAutoCompleteResult = null;
+        }
+        
         onTransactionTypeChanged();
     }
 
@@ -209,7 +216,7 @@ public class TransactionEditData implements Parcelable {
             return storedTransaction.getAccountFrom();
         }
 
-        if (firstAutoCompleteResult != null && !firstAutoCompleteResult.getAccountsFrom().isEmpty()) {
+        if (firstAutoCompleteResult != null && firstAutoCompleteResult.getAccountsFrom() != null && !firstAutoCompleteResult.getAccountsFrom().isEmpty()) {
             return firstAutoCompleteResult.getAccountsFrom().get(0);
         }
 
@@ -234,7 +241,7 @@ public class TransactionEditData implements Parcelable {
             return storedTransaction.getAccountTo();
         }
 
-        if (firstAutoCompleteResult != null && !firstAutoCompleteResult.getAccountsTo().isEmpty()) {
+        if (firstAutoCompleteResult != null && firstAutoCompleteResult.getAccountsTo() != null && !firstAutoCompleteResult.getAccountsTo().isEmpty()) {
             return firstAutoCompleteResult.getAccountsTo().get(0);
         }
 
@@ -259,7 +266,7 @@ public class TransactionEditData implements Parcelable {
             return storedTransaction.getCategory();
         }
 
-        if (firstAutoCompleteResult != null && !firstAutoCompleteResult.getCategories().isEmpty()) {
+        if (firstAutoCompleteResult != null && firstAutoCompleteResult.getCategories() != null && !firstAutoCompleteResult.getCategories().isEmpty()) {
             return firstAutoCompleteResult.getCategories().get(0);
         }
 
@@ -280,7 +287,7 @@ public class TransactionEditData implements Parcelable {
             return storedTransaction.getTags();
         }
 
-        if (firstAutoCompleteResult != null && !firstAutoCompleteResult.getTags().isEmpty()) {
+        if (firstAutoCompleteResult != null && firstAutoCompleteResult.getTags() != null && !firstAutoCompleteResult.getTags().isEmpty()) {
             return firstAutoCompleteResult.getTags().get(0);
         }
 

@@ -1,7 +1,7 @@
 package com.code44.finance.ui.transactions.presenters;
 
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
@@ -9,12 +9,13 @@ import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.Presenter;
 
 public class TransactionTypePresenter extends Presenter {
-    private ImageButton transactionTypeImageButton;
+    private final ImageView transactionTypeImageView;
 
     public TransactionTypePresenter(BaseActivity activity, View.OnClickListener clickListener) {
-        transactionTypeImageButton = findView(activity, R.id.transactionTypeImageButton);
+        final View transactionTypeContainerView = findView(activity, R.id.transactionTypeContainerView);
+        transactionTypeImageView = findView(activity, R.id.transactionTypeImageView);
 
-        transactionTypeImageButton.setOnClickListener(clickListener);
+        transactionTypeContainerView.setOnClickListener(clickListener);
     }
 
     @Override public void showError(Throwable error) {
@@ -24,17 +25,17 @@ public class TransactionTypePresenter extends Presenter {
         final int color;
         switch (transactionType) {
             case Expense:
-                color = transactionTypeImageButton.getContext().getResources().getColor(R.color.text_negative);
+                color = transactionTypeImageView.getContext().getResources().getColor(R.color.text_negative);
                 break;
             case Income:
-                color = transactionTypeImageButton.getContext().getResources().getColor(R.color.text_positive);
+                color = transactionTypeImageView.getContext().getResources().getColor(R.color.text_positive);
                 break;
             case Transfer:
-                color = transactionTypeImageButton.getContext().getResources().getColor(R.color.text_neutral);
+                color = transactionTypeImageView.getContext().getResources().getColor(R.color.text_neutral);
                 break;
             default:
                 throw new IllegalArgumentException("Transaction type " + transactionType + " is not supported.");
         }
-        transactionTypeImageButton.setColorFilter(color);
+        transactionTypeImageView.setColorFilter(color);
     }
 }
