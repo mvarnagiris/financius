@@ -14,7 +14,7 @@ import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
 import com.code44.finance.ui.transactions.autocomplete.adapters.AutoCompleteAccountsFromAdapter;
 import com.code44.finance.ui.transactions.autocomplete.adapters.AutoCompleteAccountsToAdapter;
 
-public class AccountsPresenter extends Presenter implements AutoCompleteController<Account>, AutoCompleteAdapter.AutoCompleteAdapterListener {
+public class AccountsPresenter extends Presenter implements AutoCompletePresenter<Account>, AutoCompleteAdapter.AutoCompleteAdapterListener {
     private final Button accountFromButton;
     private final Button accountToButton;
     private final View accountsDividerView;

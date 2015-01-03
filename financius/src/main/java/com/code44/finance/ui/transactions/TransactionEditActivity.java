@@ -17,22 +17,22 @@ import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Local;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.ModelEditActivity;
-import com.code44.finance.ui.transactions.presenters.TransactionController;
 import com.code44.finance.ui.transactions.presenters.TransactionEditData;
+import com.code44.finance.ui.transactions.presenters.TransactionPresenter;
 import com.code44.finance.utils.analytics.Analytics;
 
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
 
-public class TransactionEditActivity extends ModelEditActivity<Transaction> implements TransactionController.OnTransactionUpdatedListener {
+public class TransactionEditActivity extends ModelEditActivity<Transaction> implements TransactionPresenter.OnTransactionUpdatedListener {
     @Inject CurrenciesApi currenciesApi;
     @Inject @Main Currency mainCurrency;
     @Inject @Local Executor localExecutor;
 
     private Button saveButton;
 
-    private TransactionController transactionController;
+    private TransactionPresenter transactionPresenter;
 
     public static void start(Context context, String transactionServerId) {
         startActivity(context, makeIntent(context, TransactionEditActivity.class, transactionServerId));
@@ -45,31 +45,31 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
     @Override protected void onViewCreated(Bundle savedInstanceState) {
         super.onViewCreated(savedInstanceState);
         saveButton = (Button) findViewById(R.id.saveButton);
-        transactionController = new TransactionController(this, modelId, savedInstanceState, getEventBus(), localExecutor, mainCurrency, currenciesApi, this);
+        transactionPresenter = new TransactionPresenter(this, modelId, savedInstanceState, getEventBus(), localExecutor, mainCurrency, currenciesApi, this);
     }
 
     @Override public void onResume() {
         super.onResume();
-        transactionController.onResume();
+        transactionPresenter.onResume();
     }
 
     @Override public void onPause() {
         super.onPause();
-        transactionController.onPause();
+        transactionPresenter.onPause();
     }
 
     @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        transactionController.onSaveInstanceState(outState);
+        transactionPresenter.onSaveInstanceState(outState);
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        transactionController.handleActivityResult(requestCode, resultCode, data);
+        transactionPresenter.handleActivityResult(requestCode, resultCode, data);
     }
 
     @Override protected boolean onSave(Transaction model) {
-        return transactionController.save();
+        return transactionPresenter.save();
     }
 
     @Override protected void ensureModelUpdated(Transaction model) {
@@ -85,7 +85,7 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
 
     @Override protected void onModelLoaded(Transaction transaction) {
         if (transaction.hasId()) {
-            transactionController.setStoredTransaction(transaction);
+            transactionPresenter.setStoredTransaction(transaction);
         }
     }
 

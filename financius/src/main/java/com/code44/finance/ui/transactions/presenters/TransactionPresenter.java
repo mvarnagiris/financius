@@ -41,7 +41,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-public class TransactionController implements TransactionAutoComplete.TransactionAutoCompleteListener, NotePresenter.Callbacks, View.OnClickListener, View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
+public class TransactionPresenter implements TransactionAutoComplete.TransactionAutoCompleteListener, NotePresenter.Callbacks, View.OnClickListener, View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int REQUEST_AMOUNT = 1;
     private static final int REQUEST_ACCOUNT_FROM = 2;
     private static final int REQUEST_ACCOUNT_TO = 3;
@@ -81,7 +81,7 @@ public class TransactionController implements TransactionAutoComplete.Transactio
     private boolean isUpdated = false;
     private boolean isAutoCompleteUpdateQueued = false;
 
-    public TransactionController(BaseActivity activity, String transactionId, Bundle savedInstanceState, EventBus eventBus, Executor autoCompleteExecutor, Currency mainCurrency, CurrenciesApi currenciesApi, OnTransactionUpdatedListener listener) {
+    public TransactionPresenter(BaseActivity activity, String transactionId, Bundle savedInstanceState, EventBus eventBus, Executor autoCompleteExecutor, Currency mainCurrency, CurrenciesApi currenciesApi, OnTransactionUpdatedListener listener) {
         this.activity = activity;
         this.eventBus = eventBus;
         this.autoCompleteExecutor = autoCompleteExecutor;

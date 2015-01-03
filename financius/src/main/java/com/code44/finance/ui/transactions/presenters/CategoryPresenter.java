@@ -14,7 +14,7 @@ import com.code44.finance.ui.transactions.autocomplete.AutoCompleteAdapter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
 import com.code44.finance.ui.transactions.autocomplete.adapters.AutoCompleteCategoriesAdapter;
 
-public class CategoryPresenter extends Presenter implements AutoCompleteController<Category>, AutoCompleteAdapter.AutoCompleteAdapterListener {
+public class CategoryPresenter extends Presenter implements AutoCompletePresenter<Category>, AutoCompleteAdapter.AutoCompleteAdapterListener {
     private final ImageView colorImageView;
     private final View categoryContainerView;
     private final Button categoryButton;

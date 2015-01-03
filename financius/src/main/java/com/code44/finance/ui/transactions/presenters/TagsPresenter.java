@@ -19,7 +19,7 @@ import com.code44.finance.utils.TextBackgroundSpan;
 import java.util.Collections;
 import java.util.List;
 
-public class TagsPresenter extends Presenter implements AutoCompleteController<List<Tag>>, AutoCompleteAdapter.AutoCompleteAdapterListener {
+public class TagsPresenter extends Presenter implements AutoCompletePresenter<List<Tag>>, AutoCompleteAdapter.AutoCompleteAdapterListener {
     private final Button tagsButton;
     private final View tagsDividerView;
     private final ViewGroup tagsAutoCompleteContainerView;
