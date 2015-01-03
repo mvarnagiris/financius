@@ -109,7 +109,11 @@ public class Calculator {
         for (Part part : parts) {
             sb.append(part.toString());
         }
-        sb.append(currentPart.toString());
+
+        if (currentPart instanceof NumberPart) {
+            sb.append(currentPart.toString());
+        }
+
         return sb.toString();
     }
 
