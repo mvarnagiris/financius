@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.code44.finance.R;
 import com.code44.finance.ui.transactions.presenters.TransactionEditData;
+import com.code44.finance.utils.ThemeUtils;
 
 import java.util.List;
 
@@ -54,7 +55,7 @@ public abstract class AutoCompleteAdapter<T> implements View.OnClickListener {
             final View view = newView(containerView.getContext(), containerView);
             bindView(view, item);
             containerView.addView(view);
-            view.setBackgroundResource(R.drawable.btn_borderless_bounded);
+            view.setBackground(ThemeUtils.getDrawable(containerView.getContext(), R.attr.selectableItemBackground));
             view.setTag(item);
             view.setOnClickListener(this);
         }

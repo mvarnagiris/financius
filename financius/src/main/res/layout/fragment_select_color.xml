@@ -58,7 +58,7 @@
             android:layout_weight="1"
             android:text="@string/cancel"
             android:textAllCaps="true"
-            android:textSize="@dimen/text_caption" />
+            android:textAppearance="@style/Text.Caption" />
 
         <Button
             android:id="@+id/select_B"
@@ -68,7 +68,7 @@
             android:layout_weight="1"
             android:text="@string/select"
             android:textAllCaps="true"
-            android:textSize="@dimen/text_caption" />
+            android:textAppearance="@style/Text.Caption" />
 
     </LinearLayout>
 

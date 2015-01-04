@@ -37,7 +37,7 @@ public class OverviewGraphView extends LinearLayout {
 
     public OverviewGraphView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setBackgroundResource(R.drawable.btn_borderless);
+        setBackground(ThemeUtils.getDrawable(context, R.attr.selectableItemBackgroundBorderless));
         setGravity(Gravity.CENTER_VERTICAL);
         setOrientation(VERTICAL);
         final int padding = getResources().getDimensionPixelSize(R.dimen.keyline);

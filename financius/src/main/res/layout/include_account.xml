@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/titleTextView"
-        style="@style/Text"
+        style="@style/Text.Subhead"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/balanceTextView"
-        style="@style/Text"
+        style="@style/Text.Subhead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_normal"

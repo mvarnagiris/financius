@@ -10,6 +10,7 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.graphs.line.LineGraphData;
 import com.code44.finance.graphs.line.LineGraphView;
 import com.code44.finance.utils.MoneyFormatter;
+import com.code44.finance.utils.ThemeUtils;
 
 public class TrendsGraphView extends LinearLayout {
     private final LineGraphView trendsLineGraphView;
@@ -26,7 +27,7 @@ public class TrendsGraphView extends LinearLayout {
         setOrientation(VERTICAL);
         final int padding = getResources().getDimensionPixelSize(R.dimen.keyline);
         setPadding(padding, padding, padding, padding);
-        setBackgroundResource(R.drawable.btn_borderless);
+        setBackground(ThemeUtils.getDrawable(context, R.attr.selectableItemBackgroundBorderless));
         inflate(context, R.layout.view_trends_graph, this);
 
         // Get views

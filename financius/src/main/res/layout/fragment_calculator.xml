@@ -169,7 +169,7 @@
                 style="@style/Button.Borderless.Calc.Action"
                 android:fontFamily="@string/font_regular"
                 android:text="@string/l_delete_short"
-                android:textSize="@dimen/text_subhead"
+                android:textAppearance="@style/Text.Subhead"
                 tools:ignore="UnusedAttribute" />
 
             <Button
