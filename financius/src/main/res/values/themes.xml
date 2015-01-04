@@ -6,7 +6,7 @@
         <item name="colorPrimaryDark">#0097a7</item>
         <item name="colorAccent">#cddc39</item>
         <item name="colorAccentDark">#afb42b</item>
-        <item name="colorControlHighlight">#84afb42b</item>
+        <item name="colorControlHighlight">#84cddc39</item>
         <item name="colorError">#e51c23</item>
         <item name="backgroundColor">#f0f0f0</item>
         <item name="backgroundColorPrimary">#fafafa</item>
