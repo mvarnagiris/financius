@@ -151,6 +151,30 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xlarge"
+            android:gravity="center_vertical">
+
+            <TextView
+                style="@style/Text.Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/l_about_translate" />
+
+            <Button
+                android:id="@+id/translate_B"
+                style="@style/Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_normal"
+                android:text="@string/translate"
+                tools:ignore="RtlHardcoded" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </ScrollView>

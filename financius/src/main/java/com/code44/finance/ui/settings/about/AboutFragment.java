@@ -36,6 +36,7 @@ public class AboutFragment extends BaseFragment implements View.OnClickListener 
         final Button issues_B = (Button) view.findViewById(R.id.issues_B);
         final Button rate_B = (Button) view.findViewById(R.id.rate_B);
         final Button community_B = (Button) view.findViewById(R.id.community_B);
+        final Button translate_B = (Button) view.findViewById(R.id.translate_B);
 
         // Setup
         version_TV.setText(BuildConfig.VERSION_NAME);
@@ -44,6 +45,7 @@ public class AboutFragment extends BaseFragment implements View.OnClickListener 
         issues_B.setOnClickListener(this);
         rate_B.setOnClickListener(this);
         community_B.setOnClickListener(this);
+        translate_B.setOnClickListener(this);
     }
 
     @Override public void onClick(View view) {
@@ -59,6 +61,9 @@ public class AboutFragment extends BaseFragment implements View.OnClickListener 
                 break;
             case R.id.community_B:
                 showCommunity();
+                break;
+            case R.id.translate_B:
+                showTranslate();
                 break;
         }
     }
@@ -77,6 +82,10 @@ public class AboutFragment extends BaseFragment implements View.OnClickListener 
 
     private void showCommunity() {
         openUrl("https://plus.google.com/communities/105052097023793642366");
+    }
+
+    private void showTranslate() {
+        openUrl("https://crowdin.com/project/financius");
     }
 
     private void openUrl(String url) {
