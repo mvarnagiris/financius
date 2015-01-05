@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/titleTextView"
-        style="@style/Text.Body2"
+        style="@style/Text.Subhead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Trip to Las Vegas" />
