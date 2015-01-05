@@ -27,7 +27,6 @@ public class TrendsGraphData {
         final LineGraphData.Builder builder = new LineGraphData.Builder()
                 .setColor(ThemeUtils.getColor(context, R.attr.textColorNegative))
                 .setLineWidth(context.getResources().getDimension(R.dimen.divider))
-                .setDividerDrawable(context.getResources().getDrawable(R.drawable.trends_divider))
                 .setUseGlobalMinMax(false)
                 .setSmooth(true);
         final Period period = getPeriod(interval);

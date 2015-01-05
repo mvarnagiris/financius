@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- When changing this, you need to change <item name="backgroundColor">#f0f0f0</item> in theme-->
+    <color name="window_background">#f0f0f0</color>
+
     <array name="progress_bar_colors">
         <item>#cddc39</item>
         <item>#8bc34a</item>
