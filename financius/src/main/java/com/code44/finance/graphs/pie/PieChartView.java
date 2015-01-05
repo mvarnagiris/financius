@@ -137,11 +137,11 @@ public class PieChartView extends View {
         }
 
         if (hasOutline()) {
-            canvas.drawCircle(outlineRect.centerX(), outlineRect.centerY(), outlineRect.width() / 2.0f, outlinePaint);
+            canvas.drawCircle(outlineRect.centerX(), outlineRect.centerY(), outlineRect.width() / 2.0f - 0.8f, outlinePaint);
         }
 
         if (hasInline()) {
-            canvas.drawCircle(inlineRect.centerX(), inlineRect.centerY(), inlineRect.width() / 2.0f, inlinePaint);
+            canvas.drawCircle(inlineRect.centerX(), inlineRect.centerY(), inlineRect.width() / 2.0f + 0.8f, inlinePaint);
         }
     }
 
