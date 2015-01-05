@@ -1,3 +1,6 @@
+###Version: 0.17.1
+- ```fix``` Fixed a crash on older versions of Android when starting the app.
+
 ###Version: 0.17.0
 - ```new``` Updated navigation drawer UI.
 - ```new``` Moved settings to navigation drawer.
