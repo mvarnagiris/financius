@@ -18,6 +18,7 @@ import android.widget.ListView;
 import com.code44.finance.R;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.ui.DrawerActivity;
+import com.code44.finance.ui.common.presenters.ModelsPresenter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,25 +34,25 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
     private static final String EXTRA_MODE = ModelListActivity.class.getName() + ".EXTRA_MODE";
     private static final String EXTRA_SELECTED_MODELS = ModelListActivity.class.getName() + ".EXTRA_SELECTED_MODELS";
 
-    protected Mode mode;
+    protected ModelsPresenter.Mode mode;
     protected Parcelable[] selectedModels;
     protected BaseModelsAdapter adapter;
 
     public static Intent makeViewIntent(Context context, Class<? extends ModelListActivity> activityClass) {
         final Intent intent = makeIntentForActivity(context, activityClass);
-        intent.putExtra(EXTRA_MODE, Mode.VIEW);
+        intent.putExtra(EXTRA_MODE, ModelsPresenter.Mode.View);
         return intent;
     }
 
     public static Intent makeSelectIntent(Context context, Class<? extends ModelListActivity> activityClass) {
         final Intent intent = makeIntentForActivity(context, activityClass);
-        intent.putExtra(EXTRA_MODE, Mode.SELECT);
+        intent.putExtra(EXTRA_MODE, ModelsPresenter.Mode.Select);
         return intent;
     }
 
     public static Intent makeMultiSelectIntent(Context context, Class<? extends ModelListActivity> activityClass, List<? extends Model> selectedModels) {
         final Intent intent = makeIntentForActivity(context, activityClass);
-        intent.putExtra(EXTRA_MODE, Mode.MULTI_SELECT);
+        intent.putExtra(EXTRA_MODE, ModelsPresenter.Mode.MultiSelect);
         final Parcelable[] parcelables = new Parcelable[selectedModels.size()];
         int index = 0;
         for (Model model : selectedModels) {
@@ -119,9 +120,9 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
 
     @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         final Model model = modelFrom(adapter.getCursor());
-        if (mode == Mode.VIEW) {
+        if (mode == ModelsPresenter.Mode.View) {
             onModelClick(view, position, model.getId(), model);
-        } else if (mode == Mode.SELECT) {
+        } else if (mode == ModelsPresenter.Mode.Select) {
             onModelSelected(model);
         } else {
             adapter.toggleModelSelected(modelFrom(adapter.getCursor()));
@@ -152,16 +153,16 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
     protected abstract void startModelEdit(String modelId);
 
     protected void onExtras(Intent extras) {
-        mode = (Mode) extras.getSerializableExtra(EXTRA_MODE);
+        mode = (ModelsPresenter.Mode) extras.getSerializableExtra(EXTRA_MODE);
         selectedModels = extras.getParcelableArrayExtra(EXTRA_SELECTED_MODELS);
         if (mode == null) {
-            throw new IllegalStateException("Activity " + ((Object) this).getClass().getName() + " must be created with Intent containing " + EXTRA_MODE + " with values from " + Mode.class.getName());
+            throw new IllegalStateException("Activity " + ((Object) this).getClass().getName() + " must be created with Intent containing " + EXTRA_MODE + " with values from " + ModelsPresenter.Mode.class.getName());
         }
     }
 
     protected void onViewCreated() {
         // Setup Toolbar
-        if (mode != Mode.VIEW) {
+        if (mode != ModelsPresenter.Mode.View) {
             getSupportActionBar().setTitle(R.string.select);
         }
 
@@ -170,7 +171,7 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
 
         // Setup
         adapter = createAdapter();
-        if (mode == Mode.MULTI_SELECT) {
+        if (mode == ModelsPresenter.Mode.MultiSelect) {
             final Set<Model> selectedModelsSet = new HashSet<>();
             for (Parcelable parcelable : selectedModels) {
                 selectedModelsSet.add((Model) parcelable);
@@ -179,7 +180,7 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
         }
 
         if (editButtonsContainerView != null) {
-            if (mode == Mode.MULTI_SELECT) {
+            if (mode == ModelsPresenter.Mode.MultiSelect) {
                 editButtonsContainerView.setVisibility(View.VISIBLE);
                 final Button save_B = (Button) findViewById(R.id.saveButton);
                 final Button cancel_B = (Button) findViewById(R.id.cancelButton);
@@ -211,7 +212,7 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
         finish();
     }
 
-    protected Mode getMode() {
+    protected ModelsPresenter.Mode getMode() {
         return mode;
     }
 
@@ -221,7 +222,4 @@ public abstract class ModelListActivity extends DrawerActivity implements Loader
         listView.setOnItemClickListener(this);
     }
 
-    public static enum Mode {
-        VIEW, SELECT, MULTI_SELECT
-    }
 }

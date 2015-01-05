@@ -75,6 +75,9 @@
             android:name=".ui.tags.TagsActivity"
             android:label="@string/tags_other" />
         <activity
+            android:name=".ui.tags.TagsActivityV2"
+            android:label="@string/tags_other" />
+        <activity
             android:name=".ui.tags.TagActivity"
             android:label="@string/tags_one" />
         <activity

@@ -5,7 +5,7 @@ import android.widget.CompoundButton;
 
 import com.code44.finance.R;
 import com.code44.finance.ui.common.BaseActivity;
-import com.code44.finance.ui.common.Presenter;
+import com.code44.finance.ui.common.presenters.Presenter;
 
 public class FlagsPresenter extends Presenter {
     private final CheckBox includeInReportsCheckBox;

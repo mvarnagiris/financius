@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ListView
     android:id="@+id/listView"
-    style="@style/ListView.NoDivider"
+    style="@style/AdapterView.NoDivider"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="?backgroundColor" />

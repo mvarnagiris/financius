@@ -141,7 +141,7 @@
     <!-- List -->
     <!-- =========================================================================================================== -->
 
-    <style name="ListView">
+    <style name="AdapterView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:clipToPadding">false</item>
@@ -149,13 +149,13 @@
         <item name="android:drawSelectorOnTop">true</item>
     </style>
 
-    <style name="ListView.NoDivider">
+    <style name="AdapterView.NoDivider">
         <item name="android:divider">@null</item>
         <item name="android:dividerHeight">0dp</item>
         <item name="android:dividerPadding">0dp</item>
     </style>
 
-    <style name="ListView.NoDivider.NoSelector">
+    <style name="AdapterView.NoDivider.NoSelector">
         <item name="android:listSelector">#0000</item>
     </style>
 
@@ -167,6 +167,7 @@
         <item name="android:paddingTop">@dimen/space_normal</item>
         <item name="android:paddingBottom">@dimen/space_normal</item>
         <item name="android:minHeight">?android:actionBarSize</item>
+        <item name="android:background">?selectableItemBackground</item>
     </style>
 
     <!-- ScrollView -->

@@ -20,7 +20,7 @@ import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.ui.common.BaseActivity;
-import com.code44.finance.ui.common.Presenter;
+import com.code44.finance.ui.common.presenters.Presenter;
 
 import java.util.ArrayList;
 import java.util.Collections;

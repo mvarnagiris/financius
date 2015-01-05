@@ -13,6 +13,7 @@ import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.providers.TagsProvider;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.ui.common.ModelListActivity;
+import com.code44.finance.ui.common.presenters.ModelsPresenter;
 import com.code44.finance.utils.analytics.Analytics;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class TagsActivity extends ModelListActivity {
     }
 
     @Override protected BaseModelsAdapter createAdapter() {
-        return new TagsAdapter(this, getMode() == Mode.MULTI_SELECT);
+        return new TagsAdapter(this, getMode() == ModelsPresenter.Mode.MultiSelect);
     }
 
     @Override protected CursorLoader getModelsCursorLoader() {

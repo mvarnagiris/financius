@@ -14,8 +14,8 @@
         tools:ignore="UnusedAttribute" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
-        style="@style/ListView"
+        android:id="@+id/recyclerView"
+        style="@style/AdapterView"
         android:paddingBottom="@dimen/space_small"
         android:paddingLeft="@dimen/space_normal"
         android:paddingRight="@dimen/space_normal"

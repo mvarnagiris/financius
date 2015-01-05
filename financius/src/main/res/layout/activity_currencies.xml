@@ -46,7 +46,7 @@
 
     <ListView
         android:id="@+id/listView"
-        style="@style/ListView"
+        style="@style/AdapterView"
         android:layout_above="@+id/settingsContainerView"
         android:layout_below="@+id/toolbar" />
 

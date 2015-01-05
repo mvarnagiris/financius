@@ -6,8 +6,8 @@
 
     <include layout="@layout/toolbar" />
 
-    <se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView
-        android:id="@+id/headerList"
-        style="@style/AdapterView.NoDivider" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        style="@style/AdapterView" />
 
 </LinearLayout>

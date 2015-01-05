@@ -9,7 +9,7 @@
 
     <ListView
         android:id="@+id/listView"
-        style="@style/ListView"
+        style="@style/AdapterView"
         android:layout_height="0dp"
         android:layout_weight="1" />
 

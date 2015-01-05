@@ -82,7 +82,7 @@
 
     <ListView
         android:id="@+id/listView"
-        style="@style/ListView"
+        style="@style/AdapterView"
         android:layout_below="@+id/subHeaderContainerView" />
 
 </RelativeLayout>
