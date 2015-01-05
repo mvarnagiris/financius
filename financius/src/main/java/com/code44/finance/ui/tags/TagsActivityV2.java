@@ -8,10 +8,12 @@ import android.os.Bundle;
 import com.code44.finance.R;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.presenters.ModelsPresenter;
+import com.code44.finance.utils.analytics.Analytics;
 
 import java.util.List;
 
-public class TagsActivityV2 extends BaseActivity {
+public class TagsActivityV2 extends BaseActivity implements ModelsPresenter.OnModelPresenterListener {
     private TagsPresenter tagsPresenter;
 
     public static void start(Context context) {
@@ -30,6 +32,15 @@ public class TagsActivityV2 extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tags_v2);
 
-        tagsPresenter = new TagsPresenter(this);
+        tagsPresenter = new TagsPresenter(this, this);
+    }
+
+    @Override public void onModelsSelected(Intent data) {
+        setResult(RESULT_OK, data);
+        finish();
+    }
+
+    @Override protected Analytics.Screen getScreen() {
+        return Analytics.Screen.TagList;
     }
 }

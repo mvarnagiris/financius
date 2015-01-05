@@ -13,8 +13,8 @@ import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsPresenter;
 
 public class TagsPresenter extends ModelsPresenter<Tag> {
-    public TagsPresenter(ActionBarActivity activity) {
-        super(activity);
+    public TagsPresenter(ActionBarActivity activity, OnModelPresenterListener onModelPresenterListener) {
+        super(activity, onModelPresenterListener);
     }
 
     @Override protected ModelsAdapter<Tag> createAdapter(ModelsAdapter.OnModelClickListener<Tag> defaultOnModelClickListener) {

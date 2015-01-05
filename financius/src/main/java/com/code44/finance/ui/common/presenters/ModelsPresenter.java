@@ -17,21 +17,28 @@ import android.view.View;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public abstract class ModelsPresenter<M extends Model> extends RecyclerViewPresenter<ModelsAdapter<M>> implements LoaderManager.LoaderCallbacks<Cursor>, ModelsAdapter.OnModelClickListener<M> {
+    private static final String RESULT_EXTRA_MODEL = "RESULT_EXTRA_MODEL";
+    private static final String RESULT_EXTRA_MODELS = "RESULT_EXTRA_MODELS";
+
     private static final String EXTRA_MODE = ModelsPresenter.class.getName() + ".EXTRA_MODE";
     private static final String EXTRA_SELECTED_MODELS = ModelsPresenter.class.getName() + ".EXTRA_SELECTED_MODELS";
 
     private static final int LOADER_MODELS = 4124;
 
+    private final OnModelPresenterListener onModelPresenterListener;
     private final Mode mode;
     private final Parcelable[] selectedModels;
 
-    public ModelsPresenter(ActionBarActivity activity) {
+    public ModelsPresenter(ActionBarActivity activity, OnModelPresenterListener onModelPresenterListener) {
         super(activity);
+        this.onModelPresenterListener = onModelPresenterListener;
+
         mode = (Mode) activity.getIntent().getSerializableExtra(EXTRA_MODE);
         selectedModels = activity.getIntent().getParcelableArrayExtra(EXTRA_SELECTED_MODELS);
 
@@ -54,6 +61,20 @@ public abstract class ModelsPresenter<M extends Model> extends RecyclerViewPrese
             parcelables[index++] = model;
         }
         intent.putExtra(EXTRA_SELECTED_MODELS, parcelables);
+    }
+
+    public static <T extends Parcelable> T getModelExtra(Intent data) {
+        return data.getParcelableExtra(RESULT_EXTRA_MODEL);
+    }
+
+    public static <T extends Parcelable> List<T> getModelsExtra(Intent data) {
+        final Parcelable[] parcelables = data.getParcelableArrayExtra(RESULT_EXTRA_MODELS);
+        final List<T> models = new ArrayList<>();
+        for (Parcelable parcelable : parcelables) {
+            //noinspection unchecked
+            models.add((T) parcelable);
+        }
+        return models;
     }
 
     @Override protected void setupRecyclerView(RecyclerView recyclerView) {
@@ -101,9 +122,9 @@ public abstract class ModelsPresenter<M extends Model> extends RecyclerViewPrese
         if (mode == ModelsPresenter.Mode.View) {
             onModelClick(view.getContext(), view, model, cursor, position);
         } else if (mode == ModelsPresenter.Mode.Select) {
-            // TODO onModelSelected(model);
+            onModelSelected(model);
         } else {
-            // TODO adapter.toggleModelSelected(modelFrom(adapter.getCursor()));
+            getAdapter().toggleModelSelected(model);
         }
     }
 
@@ -113,7 +134,28 @@ public abstract class ModelsPresenter<M extends Model> extends RecyclerViewPrese
 
     protected abstract void onModelClick(Context context, View view, M model, Cursor cursor, int position);
 
+    protected void onModelSelected(Model model) {
+        final Intent data = new Intent();
+        data.putExtra(RESULT_EXTRA_MODEL, model);
+        onModelPresenterListener.onModelsSelected(data);
+    }
+
+    protected void onMultipleModelsSelected(Set<Model> selectedModels) {
+        final Intent data = new Intent();
+        final Parcelable[] parcelables = new Parcelable[selectedModels.size()];
+        int index = 0;
+        for (Model model : selectedModels) {
+            parcelables[index++] = model;
+        }
+        data.putExtra(RESULT_EXTRA_MODELS, parcelables);
+        onModelPresenterListener.onModelsSelected(data);
+    }
+
     public static enum Mode {
         View, Select, MultiSelect
+    }
+
+    public static interface OnModelPresenterListener {
+        public void onModelsSelected(Intent data);
     }
 }
