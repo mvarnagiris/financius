@@ -50,7 +50,7 @@ public class ActivityPresenter extends Presenter {
         //noinspection unchecked
         T view = (T) activity.findViewById(viewId);
         if (view == null) {
-            throw new IllegalStateException("Layout must contain view with id: " + activity.getResources().getResourceName(viewId));
+            throw new IllegalStateException("Layout must contain view with id: " + activity.getResources().getResourceName(viewId) + " in " + activity.getClass().getName() + ". You should override onViewCreated(Bundle) method.");
         }
 
         return view;
