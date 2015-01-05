@@ -162,7 +162,7 @@
                 </LinearLayout>
 
                 <View
-                    style="@style/Divider"
+                    style="@style/Divider.Thick"
                     android:layout_marginLeft="@dimen/keyline_content"
                     tools:ignore="RtlHardcoded" />
 
@@ -208,7 +208,7 @@
 
                 <View
                     android:id="@+id/accountsDividerView"
-                    style="@style/Divider"
+                    style="@style/Divider.Thick"
                     android:layout_marginLeft="@dimen/keyline_content"
                     tools:ignore="RtlHardcoded" />
 
@@ -259,7 +259,7 @@
 
                 <View
                     android:id="@+id/categoryDividerView"
-                    style="@style/Divider"
+                    style="@style/Divider.Thick"
                     android:layout_marginLeft="@dimen/keyline_content"
                     tools:ignore="RtlHardcoded" />
 
@@ -311,7 +311,7 @@
 
                 <View
                     android:id="@+id/tagsDividerView"
-                    style="@style/Divider"
+                    style="@style/Divider.Thick"
                     android:layout_marginLeft="@dimen/keyline_content"
                     tools:ignore="RtlHardcoded" />
 
@@ -362,7 +362,7 @@
                 </LinearLayout>
 
                 <View
-                    style="@style/Divider"
+                    style="@style/Divider.Thick"
                     android:layout_marginLeft="@dimen/keyline_content"
                     tools:ignore="RtlHardcoded" />
 

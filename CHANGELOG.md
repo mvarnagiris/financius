@@ -1,6 +1,7 @@
 ###Version: 0.17.2
 - ```new``` Updated settings page UI.
-- ```new``` Unnoticeable UI improvements to pie chart.
+- ```fix``` Unnoticeable UI improvements to pie chart.
+- ```fix``` Updated separator UI, no longer too white on older versions of Android.
 
 ###Version: 0.17.1
 - ```fix``` Fixed a crash on older versions of Android when starting the app.
