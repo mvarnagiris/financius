@@ -40,7 +40,10 @@ public class TagsAdapter extends ModelsAdapter<Tag> {
         @Override protected void bind(Tag tag, Cursor cursor, int position, ModelsPresenter.Mode mode, boolean isSelected) {
             titleTextView.setText(tag.getTitle());
             if (mode != ModelsPresenter.Mode.View) {
+                selectCheckBox.setVisibility(View.VISIBLE);
                 selectCheckBox.setChecked(isSelected);
+            } else {
+                selectCheckBox.setVisibility(View.GONE);
             }
         }
 

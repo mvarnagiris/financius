@@ -18,8 +18,6 @@ public abstract class RecyclerViewPresenter<A extends RecyclerView.Adapter<?>> e
 
     protected abstract void setupRecyclerView(RecyclerView recyclerView);
 
-    protected abstract void setupAdapter(A adapter);
-
     protected abstract A createAdapter();
 
     protected RecyclerView getRecyclerView() {

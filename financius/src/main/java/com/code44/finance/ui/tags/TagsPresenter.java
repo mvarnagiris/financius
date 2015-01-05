@@ -2,6 +2,7 @@ package com.code44.finance.ui.tags;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -13,8 +14,8 @@ import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsPresenter;
 
 public class TagsPresenter extends ModelsPresenter<Tag> {
-    public TagsPresenter(ActionBarActivity activity, OnModelPresenterListener onModelPresenterListener) {
-        super(activity, onModelPresenterListener);
+    public TagsPresenter(ActionBarActivity activity, Bundle savedInstanceState, OnModelPresenterListener onModelPresenterListener) {
+        super(activity, savedInstanceState, onModelPresenterListener);
     }
 
     @Override protected ModelsAdapter<Tag> createAdapter(ModelsAdapter.OnModelClickListener<Tag> defaultOnModelClickListener) {

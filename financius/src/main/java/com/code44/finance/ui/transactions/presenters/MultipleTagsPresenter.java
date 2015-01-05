@@ -18,7 +18,7 @@ import com.code44.finance.utils.ThemeUtils;
 import java.util.Collections;
 import java.util.List;
 
-public class TagsPresenter extends Presenter implements AutoCompletePresenter<List<Tag>>, AutoCompleteAdapter.AutoCompleteAdapterListener {
+public class MultipleTagsPresenter extends Presenter implements AutoCompletePresenter<List<Tag>>, AutoCompleteAdapter.AutoCompleteAdapterListener {
     private final Button tagsButton;
     private final View tagsDividerView;
     private final ViewGroup tagsAutoCompleteContainerView;
@@ -26,7 +26,7 @@ public class TagsPresenter extends Presenter implements AutoCompletePresenter<Li
     private final int tagBackgroundColor;
     private final float tagBackgroundRadius;
 
-    public TagsPresenter(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
+    public MultipleTagsPresenter(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener) {
         tagsButton = findView(activity, R.id.tagsButton);
         tagsDividerView = findView(activity, R.id.tagsDividerView);
         tagsAutoCompleteContainerView = findView(activity, R.id.tagsAutoCompleteContainerView);

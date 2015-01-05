@@ -19,6 +19,9 @@ public abstract class Presenter {
     public void onSaveInstanceState(Bundle outState) {
     }
 
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+    }
+
     public void showError(Throwable error) {
     }
 

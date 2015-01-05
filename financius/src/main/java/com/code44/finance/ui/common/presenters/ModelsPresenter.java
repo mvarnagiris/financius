@@ -13,7 +13,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 
+import com.code44.finance.R;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 
@@ -29,32 +31,72 @@ public abstract class ModelsPresenter<M extends Model> extends RecyclerViewPrese
     private static final String EXTRA_MODE = ModelsPresenter.class.getName() + ".EXTRA_MODE";
     private static final String EXTRA_SELECTED_MODELS = ModelsPresenter.class.getName() + ".EXTRA_SELECTED_MODELS";
 
+    private static final String STATE_SELECTED_MODELS = ModelsPresenter.class.getName() + ".STATE_SELECTED_MODELS";
+
     private static final int LOADER_MODELS = 4124;
 
     private final OnModelPresenterListener onModelPresenterListener;
-    private final Mode mode;
-    private final Parcelable[] selectedModels;
 
-    public ModelsPresenter(ActionBarActivity activity, OnModelPresenterListener onModelPresenterListener) {
+    public ModelsPresenter(ActionBarActivity activity, Bundle savedInstanceState, final OnModelPresenterListener onModelPresenterListener) {
         super(activity);
         this.onModelPresenterListener = onModelPresenterListener;
 
-        mode = (Mode) activity.getIntent().getSerializableExtra(EXTRA_MODE);
-        selectedModels = activity.getIntent().getParcelableArrayExtra(EXTRA_SELECTED_MODELS);
+        final Mode mode = (Mode) activity.getIntent().getSerializableExtra(EXTRA_MODE);
+        final Parcelable[] selectedModels = activity.getIntent().getParcelableArrayExtra(EXTRA_SELECTED_MODELS);
+
+        getAdapter().setMode(mode);
+        if (mode == Mode.MultiSelect) {
+            final Set<M> selectedModelsSet = new HashSet<>();
+            final Parcelable[] parcelables;
+            if (savedInstanceState == null) {
+                parcelables = selectedModels;
+            } else {
+                final List<Parcelable> parcelableList = savedInstanceState.getParcelableArrayList(STATE_SELECTED_MODELS);
+                parcelables = new Parcelable[parcelableList.size()];
+                parcelableList.toArray(parcelables);
+            }
+
+            for (Parcelable parcelable : parcelables) {
+                //noinspection unchecked
+                selectedModelsSet.add((M) parcelable);
+            }
+            getAdapter().setSelectedModels(selectedModelsSet);
+        }
+
+        final View editButtonsContainerView = findView(activity, R.id.editButtonsContainerView);
+        if (editButtonsContainerView != null) {
+            if (mode == Mode.MultiSelect) {
+                editButtonsContainerView.setVisibility(View.VISIBLE);
+                final Button saveButton = findView(editButtonsContainerView, R.id.saveButton);
+                final Button cancelButton = findView(editButtonsContainerView, R.id.cancelButton);
+                saveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override public void onClick(View v) {
+                        onMultipleModelsSelected(getAdapter().getSelectedModels());
+                    }
+                });
+                cancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override public void onClick(View v) {
+                        onModelPresenterListener.onCancel();
+                    }
+                });
+            } else {
+                editButtonsContainerView.setVisibility(View.GONE);
+            }
+        }
 
         activity.getSupportLoaderManager().initLoader(LOADER_MODELS, null, this);
     }
 
     public static void addViewExtras(Intent intent) {
-        intent.putExtra(EXTRA_MODE, ModelsPresenter.Mode.View);
+        intent.putExtra(EXTRA_MODE, Mode.View);
     }
 
     public static void addSelectExtras(Intent intent) {
-        intent.putExtra(EXTRA_MODE, ModelsPresenter.Mode.Select);
+        intent.putExtra(EXTRA_MODE, Mode.Select);
     }
 
     public static void addMultiSelectExtras(Intent intent, List<? extends Model> selectedModels) {
-        intent.putExtra(EXTRA_MODE, ModelsPresenter.Mode.MultiSelect);
+        intent.putExtra(EXTRA_MODE, Mode.MultiSelect);
         final Parcelable[] parcelables = new Parcelable[selectedModels.size()];
         int index = 0;
         for (Model model : selectedModels) {
@@ -77,6 +119,11 @@ public abstract class ModelsPresenter<M extends Model> extends RecyclerViewPrese
         return models;
     }
 
+    @Override public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(STATE_SELECTED_MODELS, new ArrayList<Parcelable>(getAdapter().getSelectedModels()));
+    }
+
     @Override protected void setupRecyclerView(RecyclerView recyclerView) {
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -85,18 +132,6 @@ public abstract class ModelsPresenter<M extends Model> extends RecyclerViewPrese
 
     @Override protected ModelsAdapter<M> createAdapter() {
         return createAdapter(this);
-    }
-
-    @Override protected void setupAdapter(ModelsAdapter<M> adapter) {
-        adapter.setMode(mode);
-        if (mode == ModelsPresenter.Mode.MultiSelect) {
-            final Set<M> selectedModelsSet = new HashSet<>();
-            for (Parcelable parcelable : selectedModels) {
-                //noinspection unchecked
-                selectedModelsSet.add((M) parcelable);
-            }
-            adapter.setSelectedModels(selectedModelsSet);
-        }
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -119,12 +154,12 @@ public abstract class ModelsPresenter<M extends Model> extends RecyclerViewPrese
     }
 
     @Override public void onModelClick(View view, M model, Cursor cursor, int position, Mode mode, boolean isSelected) {
-        if (mode == ModelsPresenter.Mode.View) {
+        if (mode == Mode.View) {
             onModelClick(view.getContext(), view, model, cursor, position);
-        } else if (mode == ModelsPresenter.Mode.Select) {
+        } else if (mode == Mode.Select) {
             onModelSelected(model);
         } else {
-            getAdapter().toggleModelSelected(model);
+            getAdapter().toggleModelSelected(model, position);
         }
     }
 
@@ -134,13 +169,13 @@ public abstract class ModelsPresenter<M extends Model> extends RecyclerViewPrese
 
     protected abstract void onModelClick(Context context, View view, M model, Cursor cursor, int position);
 
-    protected void onModelSelected(Model model) {
+    protected void onModelSelected(M model) {
         final Intent data = new Intent();
         data.putExtra(RESULT_EXTRA_MODEL, model);
         onModelPresenterListener.onModelsSelected(data);
     }
 
-    protected void onMultipleModelsSelected(Set<Model> selectedModels) {
+    protected void onMultipleModelsSelected(Set<M> selectedModels) {
         final Intent data = new Intent();
         final Parcelable[] parcelables = new Parcelable[selectedModels.size()];
         int index = 0;
@@ -157,5 +192,7 @@ public abstract class ModelsPresenter<M extends Model> extends RecyclerViewPrese
 
     public static interface OnModelPresenterListener {
         public void onModelsSelected(Intent data);
+
+        public void onCancel();
     }
 }

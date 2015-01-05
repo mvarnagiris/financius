@@ -28,6 +28,7 @@ import com.code44.finance.ui.common.presenters.Presenter;
 import com.code44.finance.ui.dialogs.DatePickerDialog;
 import com.code44.finance.ui.dialogs.TimePickerDialog;
 import com.code44.finance.ui.tags.TagsActivity;
+import com.code44.finance.ui.tags.TagsPresenter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteAdapter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteInput;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
@@ -70,7 +71,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
     private final DateTimePresenter dateTimeViewController;
     private final AccountsPresenter accountsViewController;
     private final CategoryPresenter categoryViewController;
-    private final TagsPresenter tagsViewController;
+    private final MultipleTagsPresenter tagsViewController;
     private final NotePresenter noteViewController;
     private final TransactionStatePresenter transactionStateViewController;
     private final FlagsPresenter flagsViewController;
@@ -97,7 +98,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
         dateTimeViewController = new DateTimePresenter(activity, this, this);
         accountsViewController = new AccountsPresenter(activity, this, this);
         categoryViewController = new CategoryPresenter(activity, this, this);
-        tagsViewController = new TagsPresenter(activity, this, this);
+        tagsViewController = new MultipleTagsPresenter(activity, this, this);
         noteViewController = new NotePresenter(activity, this, this);
         transactionStateViewController = new TransactionStatePresenter(activity, this);
         flagsViewController = new FlagsPresenter(activity, this);
@@ -362,7 +363,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
                     requestAutoComplete();
                     break;
                 case REQUEST_TAGS:
-                    transactionEditData.setTags(ModelListActivity.<Tag>getModelsExtra(data));
+                    transactionEditData.setTags(TagsPresenter.<Tag>getModelsExtra(data));
                     requestAutoComplete();
                     break;
             }

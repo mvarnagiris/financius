@@ -30,13 +30,23 @@ public class TagsActivity extends BaseActivity implements ModelsPresenter.OnMode
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tags_v2);
+        setContentView(R.layout.activity_tags);
 
-        tagsPresenter = new TagsPresenter(this, this);
+        tagsPresenter = new TagsPresenter(this, savedInstanceState, this);
+    }
+
+    @Override public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        tagsPresenter.onSaveInstanceState(outState);
     }
 
     @Override public void onModelsSelected(Intent data) {
         setResult(RESULT_OK, data);
+        finish();
+    }
+
+    @Override public void onCancel() {
+        setResult(RESULT_CANCELED);
         finish();
     }
 

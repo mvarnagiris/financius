@@ -51,11 +51,11 @@ public abstract class ModelsAdapter<M extends Model> extends RecyclerView.Adapte
         notifyDataSetChanged();
     }
 
-    public void toggleModelSelected(M model) {
+    public void toggleModelSelected(M model, int position) {
         if (!selectedModels.add(model)) {
             selectedModels.remove(model);
         }
-        notifyDataSetChanged();
+        notifyItemChanged(position);
     }
 
     public Set<M> getSelectedModels() {
