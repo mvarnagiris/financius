@@ -1,94 +1,102 @@
 package com.code44.finance.ui.reports.trends;
 
-import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 
-import com.code44.finance.R;
-import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.graphs.line.LineGraphData;
 import com.code44.finance.graphs.line.LineGraphValue;
 import com.code44.finance.utils.BaseInterval;
-import com.code44.finance.utils.ThemeUtils;
 
 import org.joda.time.Interval;
 import org.joda.time.Period;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class TrendsGraphData {
-    private final long totalIncome;
-    private final long totalExpense;
-    private final LineGraphData lineGraphData;
+    private final TrendOptions[] trendOptionsList;
+    private final List<LineGraphData> lineGraphDataList;
 
-    public TrendsGraphData(Context context, Cursor cursor, Currency mainCurrency, BaseInterval interval) {
-        long totalIncome = 0;
-        long totalExpense = 0;
-        final LineGraphData.Builder builder = new LineGraphData.Builder()
-                .setColor(ThemeUtils.getColor(context, R.attr.textColorNegative))
-                .setLineWidth(context.getResources().getDimension(R.dimen.divider))
-                .setUseGlobalMinMax(false)
-                .setSmooth(true);
+    public TrendsGraphData(TrendOptions... trendOptionsList) {
+        this.trendOptionsList = trendOptionsList;
+        this.lineGraphDataList = new ArrayList<>();
+    }
+
+    public void init(Cursor cursor, Currency mainCurrency, BaseInterval interval) {
+        final Map<TrendOptions, LineGraphData.Builder> builderMap = prepareLineGraphDataBuilders();
+        final Map<TrendOptions, Long> amounts = new HashMap<>();
         final Period period = getPeriod(interval);
-        Interval currentInterval = getFirstInterval(interval, period);
-        long expense = 0;
         final Interval lastInterval = getLastInterval(interval, period);
-        if (cursor.moveToFirst()) {
-            do {
-                final Transaction transaction = Transaction.from(cursor);
-                if (isTransactionValid(transaction)) {
-                    final long amount = getAmount(transaction, mainCurrency);
-
-                    if (transaction.getTransactionType() == TransactionType.Expense) {
-                        totalExpense += amount;
-
-                        if (currentInterval.contains(transaction.getDate())) {
-                            expense += amount;
-                        } else {
-                            do {
-                                builder.addValue(new LineGraphValue(expense));
-                                expense = 0;
-                                currentInterval = new Interval(currentInterval.getEnd(), period);
-                            }
-                            while (!currentInterval.contains(transaction.getDate()));
-                            expense = amount;
-                        }
-                    } else {
-                        totalIncome += amount;
-                    }
-                }
-            } while (cursor.moveToNext());
-        }
-
-        builder.addValue(new LineGraphValue(expense));
-        if (!currentInterval.equals(lastInterval) && !currentInterval.isAfter(lastInterval)) {
-            do {
-                builder.addValue(new LineGraphValue(0));
-                currentInterval = new Interval(currentInterval.getEnd(), period);
+        Interval currentInterval = getFirstInterval(interval, period);
+        Transaction transaction = cursor.moveToFirst() ? Transaction.from(cursor) : null;
+        while (!currentInterval.equals(lastInterval) && !currentInterval.isAfter(lastInterval)) {
+            if (transaction == null || currentInterval.isAfter(transaction.getDate())) {
+                onIntervalDone(builderMap, amounts);
+                currentInterval = getNextInterval(currentInterval, period);
+                continue;
             }
-            while (!currentInterval.equals(lastInterval));
+
+            while (transaction != null && currentInterval.contains(transaction.getDate())) {
+                onTransactionInInterval(transaction, amounts, mainCurrency);
+                transaction = cursor.moveToNext() ? Transaction.from(cursor) : null;
+            }
+
+            onIntervalDone(builderMap, amounts);
+            currentInterval = getNextInterval(currentInterval, period);
         }
 
-
-        this.totalIncome = totalIncome;
-        this.totalExpense = totalExpense;
-        this.lineGraphData = builder.build();
+        lineGraphDataList.clear();
+        for (TrendOptions trendOptions : trendOptionsList) {
+            lineGraphDataList.add(builderMap.get(trendOptions).build());
+        }
     }
 
-    public long getTotalIncome() {
-        return totalIncome;
+    public LineGraphData[] getLineGraphData() {
+        return lineGraphDataList.toArray(new LineGraphData[lineGraphDataList.size()]);
     }
 
-    public long getTotalExpense() {
-        return totalExpense;
+    private Map<TrendOptions, LineGraphData.Builder> prepareLineGraphDataBuilders() {
+        final Map<TrendOptions, LineGraphData.Builder> builderMap = new HashMap<>();
+        for (TrendOptions trendOptions : trendOptionsList) {
+            builderMap.put(trendOptions, new LineGraphData.Builder()
+                    .setColor(trendOptions.color)
+                    .setLineWidth(trendOptions.lineWidth)
+                    .setDividerDrawable(trendOptions.dividerDrawable)
+                    .setUseGlobalMinMax(false)
+                    .setSmooth(true));
+        }
+        return builderMap;
     }
 
-    public LineGraphData getLineGraphData() {
-        return lineGraphData;
+    private void onIntervalDone(Map<TrendOptions, LineGraphData.Builder> builderMap, Map<TrendOptions, Long> amounts) {
+        for (TrendOptions trendOptions : trendOptionsList) {
+            Long amount = amounts.get(trendOptions);
+            if (amount == null) {
+                amount = 0L;
+            }
+            builderMap.get(trendOptions).addValue(new LineGraphValue(amount));
+        }
+
+        amounts.clear();
     }
 
-    private boolean isTransactionValid(Transaction transaction) {
-        return transaction.includeInReports() && transaction.getTransactionType() != TransactionType.Transfer && transaction.getTransactionState() == TransactionState.Confirmed;
+    private void onTransactionInInterval(Transaction transaction, Map<TrendOptions, Long> amounts, Currency mainCurrency) {
+        for (TrendOptions trendOptions : trendOptionsList) {
+            if (trendOptions.transactionValidator.isTransactionValid(transaction)) {
+                Long amount = amounts.get(trendOptions);
+                if (amount == null) {
+                    amount = 0L;
+                }
+
+                amount += getAmount(transaction, mainCurrency);
+                amounts.put(trendOptions, amount);
+            }
+        }
     }
 
     private long getAmount(Transaction transaction, Currency mainCurrency) {
@@ -120,5 +128,27 @@ public class TrendsGraphData {
 
     private Interval getLastInterval(BaseInterval interval, Period period) {
         return new Interval(period, interval.getInterval().getEnd());
+    }
+
+    private Interval getNextInterval(Interval interval, Period period) {
+        return new Interval(interval.getEnd(), period);
+    }
+
+    public static interface TransactionValidator {
+        public boolean isTransactionValid(Transaction transaction);
+    }
+
+    public static class TrendOptions {
+        private final int color;
+        private final float lineWidth;
+        private final Drawable dividerDrawable;
+        private final TransactionValidator transactionValidator;
+
+        public TrendOptions(int color, float lineWidth, Drawable dividerDrawable, TransactionValidator transactionValidator) {
+            this.color = color;
+            this.lineWidth = lineWidth;
+            this.dividerDrawable = dividerDrawable;
+            this.transactionValidator = transactionValidator;
+        }
     }
 }

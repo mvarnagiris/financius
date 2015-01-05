@@ -8,8 +8,12 @@ import android.view.View;
 
 import com.code44.finance.ui.common.BaseActivity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class ActivityPresenter extends Presenter {
     private BaseActivity activity;
+    private Set<ViewPresenter> registeredViewPresenters = new HashSet<>();
 
     public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
         this.activity = activity;
@@ -19,9 +23,15 @@ public class ActivityPresenter extends Presenter {
     }
 
     public void onActivityResumed(BaseActivity activity) {
+        for (ViewPresenter viewPresenter : registeredViewPresenters) {
+            viewPresenter.onActivityResume();
+        }
     }
 
     public void onActivityPaused(BaseActivity activity) {
+        for (ViewPresenter viewPresenter : registeredViewPresenters) {
+            viewPresenter.onActivityPause();
+        }
     }
 
     public void onActivityStopped(BaseActivity activity) {
@@ -40,6 +50,10 @@ public class ActivityPresenter extends Presenter {
 
     public boolean onActivityOptionsItemSelected(BaseActivity activity, MenuItem item) {
         return false;
+    }
+
+    public void registerViewPresenter(ViewPresenter viewPresenter) {
+        registeredViewPresenters.add(viewPresenter);
     }
 
     public BaseActivity getActivity() {

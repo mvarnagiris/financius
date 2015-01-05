@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/keyline">
 
     <TextView
         style="@style/Text.Title"
@@ -19,40 +20,8 @@
         <com.code44.finance.graphs.line.LineGraphView
             android:id="@+id/trendsLineGraphView"
             android:layout_width="match_parent"
-            android:layout_height="96dp" />
+            android:layout_height="64dp" />
 
-        <TextView
-            android:id="@+id/maxExpenseTextView"
-            style="@style/Text.Caption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
-            tools:text="892.58 $" />
     </FrameLayout>
-
-    <LinearLayout
-        android:id="@+id/balanceContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/keyline">
-
-        <TextView
-            android:id="@+id/totalIncomeTextView"
-            style="@style/Text.Body2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="?textColorPositive"
-            tools:text="8579.48 $" />
-
-        <TextView
-            android:id="@+id/totalExpenseTextView"
-            style="@style/Text.Body2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?textColorNegative"
-            tools:text="5892.58 $" />
-
-    </LinearLayout>
 
 </merge>

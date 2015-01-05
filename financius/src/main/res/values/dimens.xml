@@ -45,4 +45,6 @@
     <dimen name="action_bar_size_2x">112dp</dimen>
     <dimen name="action_bar_size_3x">168dp</dimen>
 
+    <dimen name="report_trend_graph_width">2dp</dimen>
+
 </resources>

@@ -9,10 +9,12 @@ import android.support.v4.content.Loader;
 import android.view.View;
 
 import com.code44.finance.R;
+import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
@@ -23,6 +25,7 @@ import com.code44.finance.ui.reports.trends.TrendsGraphData;
 import com.code44.finance.ui.reports.trends.TrendsGraphView;
 import com.code44.finance.ui.transactions.TransactionEditActivity;
 import com.code44.finance.utils.CurrentInterval;
+import com.code44.finance.utils.ThemeUtils;
 import com.code44.finance.utils.analytics.Analytics;
 import com.code44.finance.views.AccountsView;
 import com.code44.finance.views.FabImageButton;
@@ -153,9 +156,14 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
         overviewGraphView.setPieChartData(categoriesReportData.getPieChartData());
         overviewGraphView.setTotalExpense(categoriesReportData.getPieChartData().getTotalValue());
 
-        final TrendsGraphData trendsGraphData = new TrendsGraphData(this, cursor, mainCurrency, currentInterval);
-        trendsGraphView.setTotalIncomeAndExpense(trendsGraphData.getTotalIncome(), trendsGraphData.getTotalExpense(), mainCurrency);
-        trendsGraphView.setLineGraphData(trendsGraphData.getLineGraphData(), mainCurrency);
+        final TrendsGraphData.TrendOptions trendOptions = new TrendsGraphData.TrendOptions(ThemeUtils.getColor(this, R.attr.textColorNegative), getResources().getDimension(R.dimen.report_trend_graph_width), null, new TrendsGraphData.TransactionValidator() {
+            @Override public boolean isTransactionValid(Transaction transaction) {
+                return transaction.includeInReports() && transaction.getTransactionType() != TransactionType.Transfer && transaction.getTransactionState() == TransactionState.Confirmed;
+            }
+        });
+        final TrendsGraphData trendsGraphData = new TrendsGraphData(trendOptions);
+        trendsGraphData.init(cursor, mainCurrency, currentInterval);
+        trendsGraphView.setLineGraphData(trendsGraphData.getLineGraphData());
     }
 
     private void onAccountsLoaded(Cursor cursor) {
