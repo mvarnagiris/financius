@@ -9,16 +9,16 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.code44.finance.App;
+import com.code44.finance.R;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.ui.ModelFragment;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.dialogs.DeleteDialogFragment;
 import com.code44.finance.utils.EventBus;
 import com.squareup.otto.Subscribe;
-
-import javax.inject.Inject;
 
 public abstract class ModelActivityPresenter<M extends Model> extends ActivityPresenter implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String EXTRA_MODEL_ID = ModelActivityPresenter.class.getName() + ".EXTRA_MODEL_ID";
@@ -29,26 +29,19 @@ public abstract class ModelActivityPresenter<M extends Model> extends ActivityPr
 
     private static final int LOADER_MODEL = 1000;
 
+    private final EventBus eventBus;
     private final Object eventHandler = new Object() {
         @Subscribe public void onItemDeleted(DeleteDialogFragment.DeleteDialogEvent event) {
             if (event.getRequestCode() == ModelFragment.REQUEST_DELETE && event.isPositiveClicked()) {
-                callbacks.onModelDeleted();
+                getActivity().finish();
             }
         }
     };
 
-    @Inject EventBus eventBus;
-
     private String modelId;
-    private M model;
 
-    public ModelActivityPresenter() {
-
-
-        App.with(context).inject(eventHandler);
-        eventBus.register(this);
-
-        activity.getSupportLoaderManager().initLoader(LOADER_MODEL, null, this);
+    protected ModelActivityPresenter(EventBus eventBus) {
+        this.eventBus = eventBus;
     }
 
     public static void addExtras(Intent intent, String modelId) {
@@ -57,13 +50,44 @@ public abstract class ModelActivityPresenter<M extends Model> extends ActivityPr
 
     @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
         super.onActivityCreated(activity, savedInstanceState);
+        eventBus.register(eventHandler);
 
+        // Get extras
         modelId = activity.getIntent().getStringExtra(EXTRA_MODEL_ID);
+
+        // Loader
+        activity.getSupportLoaderManager().initLoader(LOADER_MODEL, null, this);
+    }
+
+    @Override public void onActivityDestroyed(BaseActivity activity) {
+        super.onActivityDestroyed(activity);
+        eventBus.unregister(eventHandler);
+    }
+
+    @Override public boolean onActivityCreateOptionsMenu(BaseActivity activity, Menu menu) {
+        super.onActivityCreateOptionsMenu(activity, menu);
+        activity.getMenuInflater().inflate(R.menu.model, menu);
+        return true;
+    }
+
+    @Override public boolean onActivityOptionsItemSelected(BaseActivity activity, MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                startModelEdit(activity, modelId);
+                return true;
+
+            case R.id.action_delete:
+                final Uri deleteUri = getDeleteUri();
+                final Pair<String, String[]> deleteSelection = getDeleteSelection(modelId);
+                DeleteDialogFragment.newInstance(getActivity(), REQUEST_DELETE, deleteUri, deleteSelection.first, deleteSelection.second).show(getActivity().getSupportFragmentManager(), FRAGMENT_DELETE);
+                return true;
+        }
+        return super.onActivityOptionsItemSelected(activity, item);
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_MODEL) {
-            return getModelCursorLoader(context, modelId);
+            return getModelCursorLoader(getActivity(), modelId);
         }
 
         return null;
@@ -71,22 +95,12 @@ public abstract class ModelActivityPresenter<M extends Model> extends ActivityPr
 
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == LOADER_MODEL) {
-            model = getModelFrom(data);
+            final M model = getModelFrom(data);
             onModelLoaded(model);
         }
     }
 
     @Override public void onLoaderReset(Loader<Cursor> loader) {
-    }
-
-    public void startModelEdit() {
-        startModelEdit(context, modelId);
-    }
-
-    public void deleteModel() {
-        final Uri deleteUri = getDeleteUri();
-        final Pair<String, String[]> deleteSelection = getDeleteSelection(modelId);
-        DeleteDialogFragment.newInstance(context, REQUEST_DELETE, deleteUri, deleteSelection.first, deleteSelection.second).show(fragmentManager, FRAGMENT_DELETE);
     }
 
     protected abstract CursorLoader getModelCursorLoader(Context context, String modelId);

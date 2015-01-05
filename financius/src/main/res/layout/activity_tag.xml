@@ -9,16 +9,19 @@
 
     <me.grantland.widget.AutofitTextView
         android:id="@+id/titleTextView"
-        style="@style/Text.Display3"
+        style="@style/Text.Display2"
         android:layout_width="match_parent"
         android:layout_height="@dimen/action_bar_size_2x"
         android:background="?colorPrimary"
         android:elevation="@dimen/elevation_header"
-        android:gravity="center"
-        android:padding="@dimen/keyline"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/keyline"
+        android:paddingLeft="@dimen/keyline_content"
+        android:paddingRight="@dimen/keyline"
+        android:paddingTop="@dimen/keyline"
         android:singleLine="true"
         android:textColor="?android:textColorPrimaryInverse"
-        tools:ignore="UnusedAttribute"
+        tools:ignore="RtlHardcoded,UnusedAttribute"
         tools:text="Tag Title" />
 
 </LinearLayout>

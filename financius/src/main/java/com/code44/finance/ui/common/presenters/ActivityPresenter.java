@@ -2,12 +2,17 @@ package com.code44.finance.ui.common.presenters;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.code44.finance.ui.common.BaseActivity;
 
-public class ActivityPresenter {
+public class ActivityPresenter extends Presenter {
+    private BaseActivity activity;
+
     public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
+        this.activity = activity;
     }
 
     public void onActivityStarted(BaseActivity activity) {
@@ -26,6 +31,19 @@ public class ActivityPresenter {
     }
 
     public void onActivityDestroyed(BaseActivity activity) {
+        this.activity = null;
+    }
+
+    public boolean onActivityCreateOptionsMenu(BaseActivity activity, Menu menu) {
+        return false;
+    }
+
+    public boolean onActivityOptionsItemSelected(BaseActivity activity, MenuItem item) {
+        return false;
+    }
+
+    public BaseActivity getActivity() {
+        return activity;
     }
 
     protected <T extends View> T findView(BaseActivity activity, @IdRes int viewId) {

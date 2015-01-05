@@ -57,6 +57,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        onCreateView(savedInstanceState);
         App.with(this).inject(this);
         eventBus.register(killEventHandler);
 
@@ -151,7 +152,13 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.common, menu);
-        return true;
+
+        boolean activityPresenterResult = false;
+        if (activityPresenter != null) {
+            activityPresenterResult = activityPresenter.onActivityCreateOptionsMenu(this, menu);
+        }
+
+        return menu.size() > 0 || activityPresenterResult;
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
@@ -161,7 +168,11 @@ public abstract class BaseActivity extends ActionBarActivity {
                 return true;
         }
 
-        return super.onOptionsItemSelected(item);
+        return activityPresenter.onActivityOptionsItemSelected(this, item) || super.onOptionsItemSelected(item);
+
+    }
+
+    protected void onCreateView(Bundle savedInstanceState) {
     }
 
     protected void onHandleError(AppError error) {
