@@ -12,8 +12,8 @@ import com.code44.finance.data.model.Tag;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsPresenter;
 
-public class TagsAdapterV2 extends ModelsAdapter<Tag> {
-    public TagsAdapterV2(OnModelClickListener<Tag> onModelClickListener) {
+public class TagsAdapter extends ModelsAdapter<Tag> {
+    public TagsAdapter(OnModelClickListener<Tag> onModelClickListener) {
         super(onModelClickListener);
     }
 

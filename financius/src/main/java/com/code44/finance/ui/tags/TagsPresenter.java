@@ -18,7 +18,7 @@ public class TagsPresenter extends ModelsPresenter<Tag> {
     }
 
     @Override protected ModelsAdapter<Tag> createAdapter(ModelsAdapter.OnModelClickListener<Tag> defaultOnModelClickListener) {
-        return new TagsAdapterV2(defaultOnModelClickListener);
+        return new TagsAdapter(defaultOnModelClickListener);
     }
 
     @Override protected CursorLoader getModelsCursorLoader(Context context) {
