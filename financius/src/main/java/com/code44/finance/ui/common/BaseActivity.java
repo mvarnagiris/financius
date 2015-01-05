@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.code44.finance.App;
 import com.code44.finance.R;
+import com.code44.finance.ui.common.presenters.ActivityPresenter;
 import com.code44.finance.ui.settings.security.Security;
 import com.code44.finance.ui.settings.security.UnlockActivity;
 import com.code44.finance.utils.EventBus;
@@ -39,6 +40,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Inject EventBus eventBus;
     @Inject Analytics analytics;
 
+    private ActivityPresenter activityPresenter;
     private boolean isKilling = false;
 
     protected static Intent makeIntentForActivity(Context context, Class activityClass) {
@@ -57,6 +59,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         App.with(this).inject(this);
         eventBus.register(killEventHandler);
+
+        activityPresenter = onCreateActivityPresenter();
+        if (activityPresenter != null) {
+            activityPresenter.onActivityCreated(this, savedInstanceState);
+        }
     }
 
     @Override public void setContentView(int layoutResID) {
@@ -71,6 +78,13 @@ public abstract class BaseActivity extends ActionBarActivity {
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override protected void onStart() {
+        super.onStart();
+        if (activityPresenter != null) {
+            activityPresenter.onActivityStarted(this);
+        }
     }
 
     @Override protected void onResume() {
@@ -90,6 +104,10 @@ public abstract class BaseActivity extends ActionBarActivity {
         } else {
             security.setLastUnlockTimestamp(System.currentTimeMillis());
         }
+
+        if (activityPresenter != null) {
+            activityPresenter.onActivityResumed(this);
+        }
     }
 
     @Override protected void onPause() {
@@ -100,11 +118,35 @@ public abstract class BaseActivity extends ActionBarActivity {
         if (!isKilling) {
             security.setLastUnlockTimestamp(System.currentTimeMillis());
         }
+
+        if (activityPresenter != null) {
+            activityPresenter.onActivityPaused(this);
+        }
+    }
+
+    @Override protected void onStop() {
+        super.onStop();
+
+        if (activityPresenter != null) {
+            activityPresenter.onActivityStopped(this);
+        }
+    }
+
+    @Override protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (activityPresenter != null) {
+            activityPresenter.onActivitySaveInstanceState(this, outState);
+        }
     }
 
     @Override protected void onDestroy() {
         super.onDestroy();
         eventBus.unregister(killEventHandler);
+
+        if (activityPresenter != null) {
+            activityPresenter.onActivityDestroyed(this);
+        }
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -153,6 +195,10 @@ public abstract class BaseActivity extends ActionBarActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
+    }
+
+    protected ActivityPresenter onCreateActivityPresenter() {
+        return null;
     }
 
     private void kill() {

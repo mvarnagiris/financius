@@ -16,6 +16,9 @@ public abstract class Presenter {
         isResumed = false;
     }
 
+    public void onDestroy() {
+    }
+
     public void onSaveInstanceState(Bundle outState) {
     }
 

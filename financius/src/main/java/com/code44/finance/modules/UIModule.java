@@ -10,6 +10,7 @@ import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.ui.categories.CategoryActivity;
 import com.code44.finance.ui.categories.CategoryEditActivity;
 import com.code44.finance.ui.common.navigation.NavigationFragment;
+import com.code44.finance.ui.common.presenters.ModelActivityPresenter;
 import com.code44.finance.ui.currencies.CurrenciesActivity;
 import com.code44.finance.ui.currencies.CurrencyActivity;
 import com.code44.finance.ui.currencies.CurrencyEditActivity;
@@ -77,7 +78,8 @@ import dagger.Module;
                 DataFragment.class,
                 ReportsFragment.class,
                 DatePickerDialog.class,
-                TimePickerDialog.class
+                TimePickerDialog.class,
+                ModelActivityPresenter.class
         }
 )
 public class UIModule {
