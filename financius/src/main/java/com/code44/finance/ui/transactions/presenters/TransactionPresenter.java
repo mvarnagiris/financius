@@ -24,11 +24,11 @@ import com.code44.finance.ui.accounts.AccountsActivity;
 import com.code44.finance.ui.categories.CategoriesActivity;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.ModelListActivity;
+import com.code44.finance.ui.common.presenters.ModelsPresenter;
 import com.code44.finance.ui.common.presenters.Presenter;
 import com.code44.finance.ui.dialogs.DatePickerDialog;
 import com.code44.finance.ui.dialogs.TimePickerDialog;
 import com.code44.finance.ui.tags.list.TagsActivity;
-import com.code44.finance.ui.tags.list.TagsPresenter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteAdapter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteInput;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
@@ -363,7 +363,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
                     requestAutoComplete();
                     break;
                 case REQUEST_TAGS:
-                    transactionEditData.setTags(TagsPresenter.<Tag>getModelsExtra(data));
+                    transactionEditData.setTags(ModelsPresenter.<Tag>getModelsExtra(data));
                     requestAutoComplete();
                     break;
             }
