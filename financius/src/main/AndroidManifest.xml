@@ -72,13 +72,13 @@
             android:name=".ui.categories.CategoryEditActivity"
             android:label="@string/categories_one" />
         <activity
-            android:name=".ui.tags.TagsActivity"
+            android:name=".ui.tags.list.TagsActivity"
             android:label="@string/tags_other" />
         <activity
-            android:name=".ui.tags.TagActivity"
+            android:name=".ui.tags.detail.TagActivity"
             android:label="@string/tags_one" />
         <activity
-            android:name=".ui.tags.TagEditActivity"
+            android:name=".ui.tags.edit.TagEditActivity"
             android:label="@string/tags_one" />
         <activity
             android:name=".ui.transactions.TransactionsActivity"

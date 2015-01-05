@@ -1,4 +1,4 @@
-package com.code44.finance.ui.tags;
+package com.code44.finance.ui.tags.list;
 
 import android.app.Activity;
 import android.content.Context;
@@ -45,7 +45,7 @@ public class TagsActivity extends BaseActivity implements ModelsPresenter.OnMode
         finish();
     }
 
-    @Override public void onCancel() {
+    @Override public void onModelsCanceled() {
         setResult(RESULT_CANCELED);
         finish();
     }

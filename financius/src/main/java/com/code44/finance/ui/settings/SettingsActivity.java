@@ -20,7 +20,7 @@ import com.code44.finance.ui.settings.data.DataActivity;
 import com.code44.finance.ui.settings.security.LockActivity;
 import com.code44.finance.ui.settings.security.Security;
 import com.code44.finance.ui.settings.security.UnlockActivity;
-import com.code44.finance.ui.tags.TagsActivity;
+import com.code44.finance.ui.tags.list.TagsActivity;
 import com.code44.finance.utils.ActiveInterval;
 import com.code44.finance.utils.BaseInterval;
 import com.code44.finance.utils.CurrentInterval;

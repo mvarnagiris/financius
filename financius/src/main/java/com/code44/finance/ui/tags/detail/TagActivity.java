@@ -1,4 +1,4 @@
-package com.code44.finance.ui.tags;
+package com.code44.finance.ui.tags.detail;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.providers.TagsProvider;
 import com.code44.finance.ui.common.ModelActivity;
+import com.code44.finance.ui.tags.edit.TagEditActivity;
 import com.code44.finance.utils.analytics.Analytics;
 
 public class TagActivity extends ModelActivity<Tag> {

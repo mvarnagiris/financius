@@ -1,4 +1,4 @@
-package com.code44.finance.ui.tags;
+package com.code44.finance.ui.tags.list;
 
 import android.database.Cursor;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import com.code44.finance.data.model.Tag;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsPresenter;
 
-public class TagsAdapter extends ModelsAdapter<Tag> {
+class TagsAdapter extends ModelsAdapter<Tag> {
     public TagsAdapter(OnModelClickListener<Tag> onModelClickListener) {
         super(onModelClickListener);
     }

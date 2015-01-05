@@ -76,7 +76,7 @@ public abstract class ModelsPresenter<M extends Model> extends RecyclerViewPrese
                 });
                 cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override public void onClick(View v) {
-                        onModelPresenterListener.onCancel();
+                        onModelPresenterListener.onModelsCanceled();
                     }
                 });
             } else {
@@ -193,6 +193,6 @@ public abstract class ModelsPresenter<M extends Model> extends RecyclerViewPrese
     public static interface OnModelPresenterListener {
         public void onModelsSelected(Intent data);
 
-        public void onCancel();
+        public void onModelsCanceled();
     }
 }
