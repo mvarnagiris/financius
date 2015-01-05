@@ -13,17 +13,17 @@ import com.code44.finance.utils.analytics.Analytics;
 
 import java.util.List;
 
-public class TagsActivityV2 extends BaseActivity implements ModelsPresenter.OnModelPresenterListener {
+public class TagsActivity extends BaseActivity implements ModelsPresenter.OnModelPresenterListener {
     private TagsPresenter tagsPresenter;
 
     public static void start(Context context) {
-        final Intent intent = makeIntentForActivity(context, TagsActivityV2.class);
+        final Intent intent = makeIntentForActivity(context, TagsActivity.class);
         TagsPresenter.addViewExtras(intent);
         startActivity(context, intent);
     }
 
     public static void startMultiSelect(Activity activity, int requestCode, List<Tag> selectedTags) {
-        final Intent intent = makeIntentForActivity(activity, TagsActivityV2.class);
+        final Intent intent = makeIntentForActivity(activity, TagsActivity.class);
         TagsPresenter.addMultiSelectExtras(intent, selectedTags);
         startActivityForResult(activity, intent, requestCode);
     }

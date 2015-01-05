@@ -31,7 +31,7 @@ import com.code44.finance.ui.settings.security.LockActivity;
 import com.code44.finance.ui.settings.security.UnlockActivity;
 import com.code44.finance.ui.tags.TagActivity;
 import com.code44.finance.ui.tags.TagEditActivity;
-import com.code44.finance.ui.tags.TagsActivityV2;
+import com.code44.finance.ui.tags.TagsActivity;
 import com.code44.finance.ui.transactions.TransactionActivity;
 import com.code44.finance.ui.transactions.TransactionEditActivity;
 import com.code44.finance.ui.transactions.TransactionsActivity;
@@ -56,7 +56,7 @@ import dagger.Module;
                 CategoriesActivity.class,
                 CategoryActivity.class,
                 CategoryEditActivity.class,
-                TagsActivityV2.class,
+                TagsActivity.class,
                 TagActivity.class,
                 TagEditActivity.class,
                 SettingsActivity.class,

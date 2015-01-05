@@ -72,7 +72,7 @@
             android:name=".ui.categories.CategoryEditActivity"
             android:label="@string/categories_one" />
         <activity
-            android:name=".ui.tags.TagsActivityV2"
+            android:name=".ui.tags.TagsActivity"
             android:label="@string/tags_other" />
         <activity
             android:name=".ui.tags.TagActivity"

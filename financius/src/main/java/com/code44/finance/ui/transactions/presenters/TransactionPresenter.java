@@ -27,7 +27,7 @@ import com.code44.finance.ui.common.ModelListActivity;
 import com.code44.finance.ui.common.presenters.Presenter;
 import com.code44.finance.ui.dialogs.DatePickerDialog;
 import com.code44.finance.ui.dialogs.TimePickerDialog;
-import com.code44.finance.ui.tags.TagsActivityV2;
+import com.code44.finance.ui.tags.TagsActivity;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteAdapter;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteInput;
 import com.code44.finance.ui.transactions.autocomplete.AutoCompleteResult;
@@ -214,7 +214,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
                 }
 
                 if (currentAutoCompleteAdapter == null) {
-                    TagsActivityV2.startMultiSelect(activity, REQUEST_TAGS, transactionEditData.getTags() != null ? transactionEditData.getTags() : Collections.<Tag>emptyList());
+                    TagsActivity.startMultiSelect(activity, REQUEST_TAGS, transactionEditData.getTags() != null ? transactionEditData.getTags() : Collections.<Tag>emptyList());
                 }
                 break;
             }
