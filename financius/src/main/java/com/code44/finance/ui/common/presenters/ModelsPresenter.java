@@ -8,7 +8,6 @@ import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +16,7 @@ import android.widget.Button;
 
 import com.code44.finance.R;
 import com.code44.finance.data.model.Model;
+import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 
 import java.util.ArrayList;
@@ -37,9 +37,44 @@ public abstract class ModelsPresenter<M extends Model> extends RecyclerViewPrese
 
     private final OnModelPresenterListener onModelPresenterListener;
 
-    public ModelsPresenter(ActionBarActivity activity, Bundle savedInstanceState, final OnModelPresenterListener onModelPresenterListener) {
-        super(activity);
+    public ModelsPresenter(OnModelPresenterListener onModelPresenterListener) {
         this.onModelPresenterListener = onModelPresenterListener;
+    }
+
+    public static void addViewExtras(Intent intent) {
+        intent.putExtra(EXTRA_MODE, Mode.View);
+    }
+
+    public static void addSelectExtras(Intent intent) {
+        intent.putExtra(EXTRA_MODE, Mode.Select);
+    }
+
+    public static void addMultiSelectExtras(Intent intent, List<? extends Model> selectedModels) {
+        intent.putExtra(EXTRA_MODE, Mode.MultiSelect);
+        final Parcelable[] parcelables = new Parcelable[selectedModels.size()];
+        int index = 0;
+        for (Model model : selectedModels) {
+            parcelables[index++] = model;
+        }
+        intent.putExtra(EXTRA_SELECTED_MODELS, parcelables);
+    }
+
+    public static <T extends Parcelable> T getModelExtra(Intent data) {
+        return data.getParcelableExtra(RESULT_EXTRA_MODEL);
+    }
+
+    public static <T extends Parcelable> List<T> getModelsExtra(Intent data) {
+        final Parcelable[] parcelables = data.getParcelableArrayExtra(RESULT_EXTRA_MODELS);
+        final List<T> models = new ArrayList<>();
+        for (Parcelable parcelable : parcelables) {
+            //noinspection unchecked
+            models.add((T) parcelable);
+        }
+        return models;
+    }
+
+    @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
+        super.onActivityCreated(activity, savedInstanceState);
 
         final Mode mode = (Mode) activity.getIntent().getSerializableExtra(EXTRA_MODE);
         final Parcelable[] selectedModels = activity.getIntent().getParcelableArrayExtra(EXTRA_SELECTED_MODELS);
@@ -85,38 +120,6 @@ public abstract class ModelsPresenter<M extends Model> extends RecyclerViewPrese
         }
 
         activity.getSupportLoaderManager().initLoader(LOADER_MODELS, null, this);
-    }
-
-    public static void addViewExtras(Intent intent) {
-        intent.putExtra(EXTRA_MODE, Mode.View);
-    }
-
-    public static void addSelectExtras(Intent intent) {
-        intent.putExtra(EXTRA_MODE, Mode.Select);
-    }
-
-    public static void addMultiSelectExtras(Intent intent, List<? extends Model> selectedModels) {
-        intent.putExtra(EXTRA_MODE, Mode.MultiSelect);
-        final Parcelable[] parcelables = new Parcelable[selectedModels.size()];
-        int index = 0;
-        for (Model model : selectedModels) {
-            parcelables[index++] = model;
-        }
-        intent.putExtra(EXTRA_SELECTED_MODELS, parcelables);
-    }
-
-    public static <T extends Parcelable> T getModelExtra(Intent data) {
-        return data.getParcelableExtra(RESULT_EXTRA_MODEL);
-    }
-
-    public static <T extends Parcelable> List<T> getModelsExtra(Intent data) {
-        final Parcelable[] parcelables = data.getParcelableArrayExtra(RESULT_EXTRA_MODELS);
-        final List<T> models = new ArrayList<>();
-        for (Parcelable parcelable : parcelables) {
-            //noinspection unchecked
-            models.add((T) parcelable);
-        }
-        return models;
     }
 
     @Override public void onSaveInstanceState(Bundle outState) {

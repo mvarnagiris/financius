@@ -8,14 +8,13 @@ import android.os.Bundle;
 import com.code44.finance.R;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.presenters.ActivityPresenter;
 import com.code44.finance.ui.common.presenters.ModelsPresenter;
 import com.code44.finance.utils.analytics.Analytics;
 
 import java.util.List;
 
 public class TagsActivity extends BaseActivity implements ModelsPresenter.OnModelPresenterListener {
-    private TagsPresenter tagsPresenter;
-
     public static void start(Context context) {
         final Intent intent = makeIntentForActivity(context, TagsActivity.class);
         TagsPresenter.addViewExtras(intent);
@@ -28,16 +27,13 @@ public class TagsActivity extends BaseActivity implements ModelsPresenter.OnMode
         startActivityForResult(activity, intent, requestCode);
     }
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @Override protected void onCreateView(Bundle savedInstanceState) {
+        super.onCreateView(savedInstanceState);
         setContentView(R.layout.activity_tags);
-
-        tagsPresenter = new TagsPresenter(this, savedInstanceState, this);
     }
 
-    @Override public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        tagsPresenter.onSaveInstanceState(outState);
+    @Override protected ActivityPresenter onCreateActivityPresenter() {
+        return new TagsPresenter(this);
     }
 
     @Override public void onModelsSelected(Intent data) {

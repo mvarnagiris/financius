@@ -21,7 +21,7 @@ import com.code44.finance.utils.ThemeUtils;
 
 import lecho.lib.hellocharts.model.Line;
 
-public class TagTrendsChartPresenter extends TrendsChartPresenter implements LoaderManager.LoaderCallbacks<Cursor> {
+class TagTrendsChartPresenter extends TrendsChartPresenter implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int LOADER_TAG_TRENDS = 712;
 
     private final LoaderManager loaderManager;
