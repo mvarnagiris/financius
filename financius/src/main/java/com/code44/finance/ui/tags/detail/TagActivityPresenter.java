@@ -15,17 +15,16 @@ import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.providers.TagsProvider;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelActivityPresenter;
+import com.code44.finance.ui.reports.trends.TrendsChartView;
 import com.code44.finance.ui.tags.edit.TagEditActivity;
 import com.code44.finance.utils.BaseInterval;
 import com.code44.finance.utils.EventBus;
-
-import lecho.lib.hellocharts.view.LineChartView;
 
 class TagActivityPresenter extends ModelActivityPresenter<Tag> {
     private final BaseInterval interval;
     private final Currency mainCurrency;
 
-    private TagTrendsViewPresenter tagTrendsViewPresenter;
+    private TagTrendsChartPresenter tagTrendsChartPresenter;
     private TextView titleTextView;
 
     public TagActivityPresenter(EventBus eventBus, BaseInterval interval, Currency mainCurrency) {
@@ -38,9 +37,8 @@ class TagActivityPresenter extends ModelActivityPresenter<Tag> {
         super.onActivityCreated(activity, savedInstanceState);
         titleTextView = findView(activity, R.id.titleTextView);
 
-        final LineChartView lineChartView = findView(activity, R.id.lineChartView);
-        tagTrendsViewPresenter = new TagTrendsViewPresenter(lineChartView, activity.getSupportLoaderManager(), interval, mainCurrency);
-        registerViewPresenter(tagTrendsViewPresenter);
+        final TrendsChartView trendsChartView = findView(activity, R.id.trendsChartView);
+        tagTrendsChartPresenter = new TagTrendsChartPresenter(trendsChartView, mainCurrency, activity.getSupportLoaderManager());
     }
 
     @Override protected CursorLoader getModelCursorLoader(Context context, String modelId) {
@@ -53,7 +51,7 @@ class TagActivityPresenter extends ModelActivityPresenter<Tag> {
 
     @Override protected void onModelLoaded(Tag model) {
         titleTextView.setText(model.getTitle());
-        tagTrendsViewPresenter.setTag(model);
+        tagTrendsChartPresenter.setTagAndInterval(model, interval);
     }
 
     @Override protected void startModelEdit(Context context, String modelId) {

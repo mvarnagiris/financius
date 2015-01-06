@@ -63,7 +63,7 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
 
         // Get views
         final FabImageButton newTransactionView = (FabImageButton) findViewById(R.id.newTransaction);
-        final TrendsChartView trendsChartView = (TrendsChartView) findViewById(R.id.trendsGraphView);
+        final TrendsChartView trendsChartView = (TrendsChartView) findViewById(R.id.trendsChartView);
         overviewGraphView = (OverviewGraphView) findViewById(R.id.overviewGraphView);
         accountsView = (AccountsView) findViewById(R.id.accounts);
 
@@ -140,7 +140,7 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
             case R.id.accounts:
                 onNavigationItemSelected(NavigationScreen.Accounts);
                 break;
-            case R.id.trendsGraphView:
+            case R.id.trendsChartView:
                 onNavigationItemSelected(NavigationScreen.Transactions);
                 break;
         }

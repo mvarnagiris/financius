@@ -1,5 +1,6 @@
 package com.code44.finance.ui.reports.trends;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 
@@ -47,7 +48,7 @@ public abstract class TrendsChartPresenter extends Presenter {
                     .setColor(ThemeUtils.getColor(trendsChartView.getContext(), R.attr.textColorNegative))
                     .setHasLabels(true)
                     .setHasLabelsOnlyForSelected(true);
-            onLineCreated(line);
+            onLineCreated(transactionValidator, line);
             lines.add(line);
         }
 
@@ -59,7 +60,11 @@ public abstract class TrendsChartPresenter extends Presenter {
 
     protected abstract AmountGroups.TransactionValidator[] getTransactionValidators();
 
-    protected abstract void onLineCreated(Line line);
+    protected abstract void onLineCreated(AmountGroups.TransactionValidator transactionValidator, Line line);
+
+    protected Context getContext() {
+        return trendsChartView.getContext();
+    }
 
     private Line getLine(List<Long> amounts) {
         final List<PointValue> points = new ArrayList<>();

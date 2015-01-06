@@ -56,7 +56,7 @@
                 app:cardCornerRadius="@dimen/card_radius">
 
                 <com.code44.finance.ui.reports.trends.TrendsChartView
-                    android:id="@+id/trendsGraphView"
+                    android:id="@+id/trendsChartView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

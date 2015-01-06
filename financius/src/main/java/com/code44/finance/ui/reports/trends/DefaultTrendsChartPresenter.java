@@ -21,6 +21,6 @@ public class DefaultTrendsChartPresenter extends TrendsChartPresenter {
         }};
     }
 
-    @Override protected void onLineCreated(Line line) {
+    @Override protected void onLineCreated(AmountGroups.TransactionValidator transactionValidator, Line line) {
     }
 }
