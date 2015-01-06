@@ -15,40 +15,54 @@ import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.ui.common.presenters.ViewPresenter;
-import com.code44.finance.ui.reports.trends.TrendsGraphData;
-import com.code44.finance.ui.reports.trends.TrendsGraphView;
+import com.code44.finance.ui.reports.AmountGroups;
 import com.code44.finance.utils.BaseInterval;
 import com.code44.finance.utils.ThemeUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import lecho.lib.hellocharts.model.Line;
+import lecho.lib.hellocharts.model.LineChartData;
+import lecho.lib.hellocharts.model.PointValue;
+import lecho.lib.hellocharts.view.LineChartView;
 
 public class TagTrendsViewPresenter extends ViewPresenter implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int LOADER_TAG_TRENDS = 712;
 
-    private final TrendsGraphView trendsGraphView;
-    private final BaseInterval interval;
+    private final LineChartView lineChartView;
+    private final BaseInterval baseInterval;
     private final Currency mainCurrency;
     private final LoaderManager loaderManager;
-    private final TrendsGraphData trendsGraphData;
+    private final AmountGroups amountGroups;
+    private final ExpenseTransactionValidator expenseValidator;
+    private final IncomeTransactionValidator incomeValidator;
+    private final TransferTransactionValidator transferValidator;
     private Tag tag;
 
-    public TagTrendsViewPresenter(TrendsGraphView view, BaseInterval interval, Currency mainCurrency, LoaderManager loaderManager) {
-        this.trendsGraphView = view;
-        this.interval = interval;
-        this.mainCurrency = mainCurrency;
+    public TagTrendsViewPresenter(LineChartView lineChartView, LoaderManager loaderManager, BaseInterval baseInterval, Currency mainCurrency) {
+        this.lineChartView = lineChartView;
         this.loaderManager = loaderManager;
-
-        final Context context = view.getContext();
-        trendsGraphData = new TrendsGraphData(getExpenseTrendOptions(context), getIncomeTrendOptions(context), getTransferTrendOptions(context));
+        this.baseInterval = baseInterval;
+        this.mainCurrency = mainCurrency;
+        amountGroups = new AmountGroups(baseInterval);
+        expenseValidator = new ExpenseTransactionValidator();
+        incomeValidator = new IncomeTransactionValidator();
+        transferValidator = new TransferTransactionValidator();
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_TAG_TRENDS) {
             return Tables.Transactions
                     .getQuery()
-                    .selection(" and " + Tables.Transactions.DATE + " between ? and ?", String.valueOf(interval.getInterval().getStartMillis()), String.valueOf(interval.getInterval().getEndMillis() - 1))
+                    .selection(" and " + Tables.Transactions.DATE + " between ? and ?", String.valueOf(baseInterval.getInterval().getStartMillis()), String.valueOf(baseInterval.getInterval().getEndMillis() - 1))
                     .selection(" and " + Tables.TransactionTags.TAG_ID + "=?", tag != null ? tag.getId() : "0")
+                    .selection(" and " + Tables.Transactions.INCLUDE_IN_REPORTS + "=?", "1")
+                    .selection(" and " + Tables.Transactions.STATE + "=?", TransactionState.Confirmed.asString())
                     .clearSort()
                     .sortOrder(Tables.Transactions.DATE.getName())
-                    .asCursorLoader(trendsGraphView.getContext(), TransactionsProvider.uriTransactions());
+                    .asCursorLoader(lineChartView.getContext(), TransactionsProvider.uriTransactions());
         }
         return null;
     }
@@ -68,31 +82,52 @@ public class TagTrendsViewPresenter extends ViewPresenter implements LoaderManag
     }
 
     private void onTransactionsLoaded(Cursor cursor) {
-        trendsGraphData.init(cursor, mainCurrency, interval);
-        trendsGraphView.setLineGraphData(trendsGraphData.getLineGraphData());
+        final Map<AmountGroups.TransactionValidator, List<Long>> groups = amountGroups.getGroups(cursor, mainCurrency, expenseValidator, incomeValidator, transferValidator);
+        final Context context = lineChartView.getContext();
+
+        final Line expenseLine = getLine(groups.get(expenseValidator))
+                .setColor(ThemeUtils.getColor(context, R.attr.textColorNegative))
+                .setHasLabels(true);
+        final Line incomeLine = getLine(groups.get(incomeValidator)).setColor(ThemeUtils.getColor(context, R.attr.textColorPositive));
+        final Line transferLine = getLine(groups.get(transferValidator)).setColor(ThemeUtils.getColor(context, R.attr.textColorNeutral));
+
+        final List<Line> lines = new ArrayList<>();
+        lines.add(transferLine);
+        lines.add(incomeLine);
+        lines.add(expenseLine);
+
+        final LineChartData lineChartData = new LineChartData(lines);
+        lineChartView.setLineChartData(lineChartData);
     }
 
-    private TrendsGraphData.TrendOptions getExpenseTrendOptions(Context context) {
-        return new TrendsGraphData.TrendOptions(ThemeUtils.getColor(context, R.attr.textColorNegative), context.getResources().getDimension(R.dimen.report_trend_graph_width), null, new TrendsGraphData.TransactionValidator() {
-            @Override public boolean isTransactionValid(Transaction transaction) {
-                return transaction.includeInReports() && transaction.getTransactionType() == TransactionType.Expense && transaction.getTransactionState() == TransactionState.Confirmed;
-            }
-        });
+    private Line getLine(List<Long> amounts) {
+        final List<PointValue> points = new ArrayList<>();
+        int index = 0;
+        for (Long amount : amounts) {
+            points.add(new PointValue(index++, amount));
+        }
+
+        return new Line(points)
+                .setCubic(true)
+                .setStrokeWidth(lineChartView.getResources().getDimensionPixelSize(R.dimen.report_trend_graph_width))
+                .setHasPoints(false);
     }
 
-    private TrendsGraphData.TrendOptions getIncomeTrendOptions(Context context) {
-        return new TrendsGraphData.TrendOptions(ThemeUtils.getColor(context, R.attr.textColorPositive), context.getResources().getDimension(R.dimen.report_trend_graph_width), null, new TrendsGraphData.TransactionValidator() {
-            @Override public boolean isTransactionValid(Transaction transaction) {
-                return transaction.includeInReports() && transaction.getTransactionType() == TransactionType.Income && transaction.getTransactionState() == TransactionState.Confirmed;
-            }
-        });
+    private static class ExpenseTransactionValidator implements AmountGroups.TransactionValidator {
+        @Override public boolean isTransactionValid(Transaction transaction) {
+            return transaction.getTransactionType() == TransactionType.Expense;
+        }
     }
 
-    private TrendsGraphData.TrendOptions getTransferTrendOptions(Context context) {
-        return new TrendsGraphData.TrendOptions(ThemeUtils.getColor(context, R.attr.textColorNeutral), context.getResources().getDimension(R.dimen.report_trend_graph_width), null, new TrendsGraphData.TransactionValidator() {
-            @Override public boolean isTransactionValid(Transaction transaction) {
-                return transaction.includeInReports() && transaction.getTransactionType() == TransactionType.Transfer && transaction.getTransactionState() == TransactionState.Confirmed;
-            }
-        });
+    private static class IncomeTransactionValidator implements AmountGroups.TransactionValidator {
+        @Override public boolean isTransactionValid(Transaction transaction) {
+            return transaction.getTransactionType() == TransactionType.Income;
+        }
+    }
+
+    private static class TransferTransactionValidator implements AmountGroups.TransactionValidator {
+        @Override public boolean isTransactionValid(Transaction transaction) {
+            return transaction.getTransactionType() == TransactionType.Transfer;
+        }
     }
 }

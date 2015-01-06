@@ -12,7 +12,7 @@ import org.joda.time.Interval;
 import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormat;
 
-public abstract class BaseInterval {
+public class BaseInterval {
     protected final Context context;
     protected final EventBus eventBus;
 
@@ -43,6 +43,27 @@ public abstract class BaseInterval {
                 break;
             case YEAR:
                 period = Period.years(length);
+                break;
+            default:
+                throw new IllegalArgumentException("Type " + type + " is not supported.");
+        }
+        return period;
+    }
+
+    public static Period getSubPeriod(Type type, int length) {
+        final Period period;
+        switch (type) {
+            case DAY:
+                period = Period.hours(length);
+                break;
+            case WEEK:
+                period = Period.days(length);
+                break;
+            case MONTH:
+                period = Period.days(length);
+                break;
+            case YEAR:
+                period = Period.months(length);
                 break;
             default:
                 throw new IllegalArgumentException("Type " + type + " is not supported.");
@@ -84,6 +105,21 @@ public abstract class BaseInterval {
                 return DateUtils.formatDateTime(context, interval.getStart(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_MONTH_DAY);
             case YEAR:
                 return interval.getStart().year().getAsText();
+            default:
+                throw new IllegalArgumentException("Type " + type + " is not supported.");
+        }
+    }
+
+    public static String getSubTypeShortestTitle(Interval interval, Type type) {
+        switch (type) {
+            case DAY:
+                return interval.getStart().hourOfDay().getAsShortText();
+            case WEEK:
+                return interval.getStart().dayOfWeek().getAsShortText();
+            case MONTH:
+                return interval.getStart().dayOfMonth().getAsShortText();
+            case YEAR:
+                return interval.getStart().monthOfYear().getAsShortText();
             default:
                 throw new IllegalArgumentException("Type " + type + " is not supported.");
         }

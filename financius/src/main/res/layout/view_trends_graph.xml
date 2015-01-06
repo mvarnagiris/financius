@@ -13,15 +13,9 @@
         android:text="@string/trends"
         android:textColor="?colorPrimary" />
 
-    <FrameLayout
+    <lecho.lib.hellocharts.view.LineChartView
+        android:id="@+id/lineChartView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.code44.finance.graphs.line.LineGraphView
-            android:id="@+id/trendsLineGraphView"
-            android:layout_width="match_parent"
-            android:layout_height="64dp" />
-
-    </FrameLayout>
+        android:layout_height="128dp" />
 
 </merge>

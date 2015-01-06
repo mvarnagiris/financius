@@ -91,6 +91,7 @@ dependencies {
     compile project(':common')
     //noinspection GradleDynamicVersion
     compile 'com.crashlytics.android:crashlytics:1.+'
+    compile(name: 'hellocharts-library-1.3', ext: 'aar')
 }
 
 def buildTime() {

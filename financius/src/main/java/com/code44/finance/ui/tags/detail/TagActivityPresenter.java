@@ -15,10 +15,11 @@ import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.providers.TagsProvider;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelActivityPresenter;
-import com.code44.finance.ui.reports.trends.TrendsGraphView;
 import com.code44.finance.ui.tags.edit.TagEditActivity;
 import com.code44.finance.utils.BaseInterval;
 import com.code44.finance.utils.EventBus;
+
+import lecho.lib.hellocharts.view.LineChartView;
 
 class TagActivityPresenter extends ModelActivityPresenter<Tag> {
     private final BaseInterval interval;
@@ -37,8 +38,8 @@ class TagActivityPresenter extends ModelActivityPresenter<Tag> {
         super.onActivityCreated(activity, savedInstanceState);
         titleTextView = findView(activity, R.id.titleTextView);
 
-        final TrendsGraphView trendsGraphView = findView(activity, R.id.trendsGraphView);
-        tagTrendsViewPresenter = new TagTrendsViewPresenter(trendsGraphView, interval, mainCurrency, activity.getSupportLoaderManager());
+        final LineChartView lineChartView = findView(activity, R.id.lineChartView);
+        tagTrendsViewPresenter = new TagTrendsViewPresenter(lineChartView, activity.getSupportLoaderManager(), interval, mainCurrency);
         registerViewPresenter(tagTrendsViewPresenter);
     }
 

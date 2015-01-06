@@ -5,12 +5,18 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 import com.code44.finance.R;
-import com.code44.finance.graphs.line.LineGraphData;
-import com.code44.finance.graphs.line.LineGraphView;
 import com.code44.finance.utils.ThemeUtils;
 
+import java.util.Collections;
+import java.util.Comparator;
+
+import lecho.lib.hellocharts.model.LineChartData;
+import lecho.lib.hellocharts.model.PointValue;
+import lecho.lib.hellocharts.model.Viewport;
+import lecho.lib.hellocharts.view.LineChartView;
+
 public class TrendsGraphView extends LinearLayout {
-    private final LineGraphView trendsLineGraphView;
+    private final LineChartView lineChartView;
 
     public TrendsGraphView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -25,10 +31,23 @@ public class TrendsGraphView extends LinearLayout {
         inflate(context, R.layout.view_trends_graph, this);
 
         // Get views
-        trendsLineGraphView = (LineGraphView) findViewById(R.id.trendsLineGraphView);
+        lineChartView = (LineChartView) findViewById(R.id.lineChartView);
+        lineChartView.setZoomEnabled(false);
+        lineChartView.setValueSelectionEnabled(true);
     }
 
-    public void setLineGraphData(LineGraphData... lineGraphData) {
-        trendsLineGraphView.setLineGraphData(lineGraphData);
+    public void setLineGraphData(LineChartData lineChartData) {
+        lineChartView.setLineChartData(lineChartData);
+
+        final PointValue maxValue = Collections.max(lineChartData.getLines().get(0).getValues(), new Comparator<PointValue>() {
+            @Override public int compare(PointValue lhs, PointValue rhs) {
+                return Float.compare(lhs.getY(), rhs.getY());
+            }
+        });
+
+        final Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
+        viewport.inset(0, -maxValue.getY() * 0.10f);
+        lineChartView.setMaximumViewport(viewport);
+        lineChartView.setCurrentViewportWithAnimation(viewport);
     }
 }
