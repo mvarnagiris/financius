@@ -94,7 +94,7 @@ public abstract class ModelActivityPresenter<M extends Model> extends ActivityPr
     }
 
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (loader.getId() == LOADER_MODEL) {
+        if (loader.getId() == LOADER_MODEL && data.moveToFirst()) {
             final M model = getModelFrom(data);
             onModelLoaded(model);
         }
