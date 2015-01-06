@@ -46,8 +46,8 @@ public class TrendsChartView extends LinearLayout {
         });
 
         final Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
-        viewport.inset(-0.2f, -maxValue.getY() * 0.10f);
+        viewport.inset(-0.2f, -maxValue.getY() * 0.08f);
         lineChartView.setMaximumViewport(viewport);
-        lineChartView.setCurrentViewport(viewport);
+        lineChartView.setCurrentViewportWithAnimation(viewport);
     }
 }

@@ -38,7 +38,7 @@ class TagActivityPresenter extends ModelActivityPresenter<Tag> {
         titleTextView = findView(activity, R.id.titleTextView);
 
         final TrendsChartView trendsChartView = findView(activity, R.id.trendsChartView);
-        tagTrendsChartPresenter = new TagTrendsChartPresenter(trendsChartView, mainCurrency, activity.getSupportLoaderManager());
+        tagTrendsChartPresenter = new TagTrendsChartPresenter(trendsChartView, mainCurrency, activity.getSupportLoaderManager(), interval);
     }
 
     @Override protected CursorLoader getModelCursorLoader(Context context, String modelId) {

@@ -35,7 +35,7 @@ public class AmountGroups {
 
         final Map<TransactionValidator, Long> intervalAmounts = new HashMap<>();
         Interval interval = firstInterval;
-        Transaction transaction = cursor.moveToFirst() ? Transaction.from(cursor) : null;
+        Transaction transaction = cursor != null && cursor.moveToFirst() ? Transaction.from(cursor) : null;
         while (isNotAfterLastInterval(interval)) {
             if (transaction == null || interval.isAfter(transaction.getDate())) {
                 onIntervalDone(groups, intervalAmounts);

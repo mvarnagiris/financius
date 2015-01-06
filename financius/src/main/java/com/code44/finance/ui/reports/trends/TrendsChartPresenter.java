@@ -70,7 +70,8 @@ public abstract class TrendsChartPresenter extends Presenter {
         final List<PointValue> points = new ArrayList<>();
         int index = 0;
         for (Long amount : amounts) {
-            points.add(new PointValue(index++, amount));
+            final PointValue value = new PointValue(index++, amount);
+            points.add(value);
         }
 
         final int lineWidthDp = (int) (trendsChartView.getResources().getDimension(R.dimen.report_trend_graph_width) / Resources.getSystem().getDisplayMetrics().density);

@@ -31,12 +31,13 @@ public class TagTrendsChartPresenter extends TrendsChartPresenter implements Loa
     private BaseInterval baseInterval;
     private Tag tag;
 
-    public TagTrendsChartPresenter(TrendsChartView trendsChartView, Currency mainCurrency, LoaderManager loaderManager) {
+    public TagTrendsChartPresenter(TrendsChartView trendsChartView, Currency mainCurrency, LoaderManager loaderManager, BaseInterval baseInterval) {
         super(trendsChartView, mainCurrency);
         this.loaderManager = loaderManager;
         expenseValidator = new ExpenseTransactionValidator();
         incomeValidator = new IncomeTransactionValidator();
         transferValidator = new TransferTransactionValidator();
+        setData(null, baseInterval);
     }
 
     @Override protected AmountGroups.TransactionValidator[] getTransactionValidators() {
