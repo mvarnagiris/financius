@@ -15,14 +15,14 @@ import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
 
-public class TrendsGraphView extends LinearLayout {
+public class TrendsChartView extends LinearLayout {
     private final LineChartView lineChartView;
 
-    public TrendsGraphView(Context context, AttributeSet attrs) {
+    public TrendsChartView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public TrendsGraphView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public TrendsChartView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setOrientation(VERTICAL);
         final int padding = getResources().getDimensionPixelSize(R.dimen.keyline);

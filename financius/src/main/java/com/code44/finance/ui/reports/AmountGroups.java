@@ -24,7 +24,7 @@ public class AmountGroups {
     public AmountGroups(BaseInterval baseInterval) {
         period = getPeriod(baseInterval);
         wholeInterval = baseInterval.getInterval();
-        firstInterval = getFirstInterval(baseInterval, period);
+        firstInterval = getFirstInterval(baseInterval.getInterval(), period);
     }
 
     public Map<TransactionValidator, List<Long>> getGroups(Cursor cursor, Currency mainCurrency, TransactionValidator... transactionValidators) {
@@ -69,8 +69,8 @@ public class AmountGroups {
         }
     }
 
-    private Interval getFirstInterval(BaseInterval interval, Period period) {
-        return new Interval(interval.getInterval().getStart(), period);
+    private Interval getFirstInterval(Interval interval, Period period) {
+        return new Interval(interval.getStart(), period);
     }
 
     private Interval getNextInterval(Interval interval, Period period) {

@@ -2,7 +2,6 @@ package com.code44.finance.ui.overview;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -10,45 +9,30 @@ import android.support.v4.content.Loader;
 import android.view.View;
 
 import com.code44.finance.R;
-import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
-import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.DrawerActivity;
 import com.code44.finance.ui.common.navigation.NavigationScreen;
-import com.code44.finance.ui.reports.AmountGroups;
 import com.code44.finance.ui.reports.categories.CategoriesReportData;
-import com.code44.finance.ui.reports.trends.TrendsGraphView;
+import com.code44.finance.ui.reports.trends.DefaultTrendsChartPresenter;
+import com.code44.finance.ui.reports.trends.TrendsChartPresenter;
+import com.code44.finance.ui.reports.trends.TrendsChartView;
 import com.code44.finance.ui.transactions.TransactionEditActivity;
-import com.code44.finance.utils.BaseInterval;
 import com.code44.finance.utils.CurrentInterval;
-import com.code44.finance.utils.MoneyFormatter;
-import com.code44.finance.utils.ThemeUtils;
 import com.code44.finance.utils.analytics.Analytics;
 import com.code44.finance.views.AccountsView;
 import com.code44.finance.views.FabImageButton;
 import com.squareup.otto.Subscribe;
 
-import org.joda.time.Interval;
-import org.joda.time.Period;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import lecho.lib.hellocharts.formatter.SimpleLineChartValueFormatter;
-import lecho.lib.hellocharts.model.Axis;
-import lecho.lib.hellocharts.model.AxisValue;
-import lecho.lib.hellocharts.model.Line;
-import lecho.lib.hellocharts.model.LineChartData;
-import lecho.lib.hellocharts.model.PointValue;
 
 public class OverviewActivity extends DrawerActivity implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
     private static final int LOADER_TRANSACTIONS = 1;
@@ -59,7 +43,8 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
 
     private OverviewGraphView overviewGraphView;
     private AccountsView accountsView;
-    private TrendsGraphView trendsGraphView;
+
+    private TrendsChartPresenter trendsChartPresenter;
 
     public static Intent makeIntent(Context context) {
         return makeIntentForActivity(context, OverviewActivity.class);
@@ -78,15 +63,16 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
 
         // Get views
         final FabImageButton newTransactionView = (FabImageButton) findViewById(R.id.newTransaction);
+        final TrendsChartView trendsChartView = (TrendsChartView) findViewById(R.id.trendsGraphView);
         overviewGraphView = (OverviewGraphView) findViewById(R.id.overviewGraphView);
         accountsView = (AccountsView) findViewById(R.id.accounts);
-        trendsGraphView = (TrendsGraphView) findViewById(R.id.trendsGraphView);
 
         // Setup
+        trendsChartPresenter = new DefaultTrendsChartPresenter(trendsChartView, mainCurrency);
         newTransactionView.setOnClickListener(this);
         overviewGraphView.setOnClickListener(this);
         accountsView.setOnClickListener(this);
-        trendsGraphView.setOnClickListener(this);
+        trendsChartView.setOnClickListener(this);
 
         // Loader
         getSupportLoaderManager().initLoader(LOADER_TRANSACTIONS, null, this);
@@ -170,57 +156,7 @@ public class OverviewActivity extends DrawerActivity implements LoaderManager.Lo
         overviewGraphView.setPieChartData(categoriesReportData.getPieChartData());
         overviewGraphView.setTotalExpense(categoriesReportData.getPieChartData().getTotalValue());
 
-        final AmountGroups.TransactionValidator transactionValidator = new AmountGroups.TransactionValidator() {
-            @Override public boolean isTransactionValid(Transaction transaction) {
-                return transaction.includeInReports() && transaction.getTransactionType() != TransactionType.Transfer && transaction.getTransactionState() == TransactionState.Confirmed;
-            }
-        };
-        final AmountGroups amountGroups = new AmountGroups(currentInterval);
-        final Line line = getLine(amountGroups.getGroups(cursor, mainCurrency, transactionValidator).values().iterator().next())
-                .setColor(ThemeUtils.getColor(this, R.attr.textColorNegative))
-                .setHasLabels(true)
-                .setHasLabelsOnlyForSelected(true);
-
-        final LineChartData lineChartData = new LineChartData(Arrays.asList(line));
-        lineChartData.setAxisXBottom(getAxis());
-
-        trendsGraphView.setLineGraphData(lineChartData);
-    }
-
-    private Line getLine(List<Long> amounts) {
-        final List<PointValue> points = new ArrayList<>();
-        int index = 0;
-        for (Long amount : amounts) {
-            points.add(new PointValue(index++, amount));
-        }
-
-        final int lineWidthDp = (int) (getResources().getDimension(R.dimen.report_trend_graph_width) / Resources.getSystem().getDisplayMetrics().density);
-        return new Line(points)
-                .setCubic(true)
-                .setStrokeWidth(lineWidthDp)
-                .setPointRadius(lineWidthDp)
-                .setFormatter(new SimpleLineChartValueFormatter() {
-                    @Override public int formatChartValue(char[] chars, PointValue pointValue) {
-                        final char[] fullText = MoneyFormatter.format(mainCurrency, (long) pointValue.getY()).toCharArray();
-                        final int size = Math.min(chars.length, fullText.length);
-                        System.arraycopy(fullText, 0, chars, chars.length - size, size);
-                        return size;
-                    }
-                })
-                .setHasPoints(false);
-    }
-
-    private Axis getAxis() {
-        final List<AxisValue> values = new ArrayList<>();
-        final Period period = BaseInterval.getSubPeriod(currentInterval.getType(), currentInterval.getLength());
-        Interval interval = new Interval(currentInterval.getInterval().getStart(), period);
-        int index = 0;
-        while (interval.overlaps(currentInterval.getInterval())) {
-            values.add(new AxisValue(index++, BaseInterval.getSubTypeShortestTitle(interval, currentInterval.getType()).toCharArray()));
-            interval = new Interval(interval.getEnd(), period);
-        }
-
-        return new Axis(values).setHasLines(true).setHasSeparationLine(true);
+        trendsChartPresenter.setData(cursor, currentInterval);
     }
 
     private void onAccountsLoaded(Cursor cursor) {
