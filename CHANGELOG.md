@@ -1,4 +1,5 @@
 ###Version: 0.17.2
+- ```new``` New trends graph that is interactive.
 - ```new``` Updated settings page UI.
 - ```new``` Updated tags list page UI.
 - ```new``` Updated tag detail page UI.
