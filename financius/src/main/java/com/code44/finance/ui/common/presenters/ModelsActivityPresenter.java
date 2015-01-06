@@ -24,20 +24,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class ModelsPresenter<M extends Model> extends RecyclerViewPresenter<ModelsAdapter<M>> implements LoaderManager.LoaderCallbacks<Cursor>, ModelsAdapter.OnModelClickListener<M> {
+public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerViewPresenter<ModelsAdapter<M>> implements LoaderManager.LoaderCallbacks<Cursor>, ModelsAdapter.OnModelClickListener<M> {
     private static final String RESULT_EXTRA_MODEL = "RESULT_EXTRA_MODEL";
     private static final String RESULT_EXTRA_MODELS = "RESULT_EXTRA_MODELS";
 
-    private static final String EXTRA_MODE = ModelsPresenter.class.getName() + ".EXTRA_MODE";
-    private static final String EXTRA_SELECTED_MODELS = ModelsPresenter.class.getName() + ".EXTRA_SELECTED_MODELS";
+    private static final String EXTRA_MODE = ModelsActivityPresenter.class.getName() + ".EXTRA_MODE";
+    private static final String EXTRA_SELECTED_MODELS = ModelsActivityPresenter.class.getName() + ".EXTRA_SELECTED_MODELS";
 
-    private static final String STATE_SELECTED_MODELS = ModelsPresenter.class.getName() + ".STATE_SELECTED_MODELS";
+    private static final String STATE_SELECTED_MODELS = ModelsActivityPresenter.class.getName() + ".STATE_SELECTED_MODELS";
 
     private static final int LOADER_MODELS = 4124;
 
     private final OnModelPresenterListener onModelPresenterListener;
 
-    public ModelsPresenter(OnModelPresenterListener onModelPresenterListener) {
+    public ModelsActivityPresenter(OnModelPresenterListener onModelPresenterListener) {
         this.onModelPresenterListener = onModelPresenterListener;
     }
 

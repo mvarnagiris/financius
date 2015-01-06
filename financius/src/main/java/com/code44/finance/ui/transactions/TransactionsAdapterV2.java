@@ -18,7 +18,7 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
-import com.code44.finance.ui.common.presenters.ModelsPresenter;
+import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 import com.code44.finance.utils.BaseInterval;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.TextBackgroundSpan;
@@ -104,7 +104,7 @@ public class TransactionsAdapterV2 extends ModelsAdapter<Transaction> {
             accountTextView = (TextView) itemView.findViewById(R.id.accountTextView);
         }
 
-        @Override public void bind(Transaction transaction, Cursor cursor, int position, ModelsPresenter.Mode mode, boolean isSelected) {
+        @Override public void bind(Transaction transaction, Cursor cursor, int position, ModelsActivityPresenter.Mode mode, boolean isSelected) {
             final DateTime date = new DateTime(transaction.getDate());
 
             // Set values

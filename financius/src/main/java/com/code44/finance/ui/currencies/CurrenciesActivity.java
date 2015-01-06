@@ -21,7 +21,7 @@ import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.ui.common.ModelListActivity;
-import com.code44.finance.ui.common.presenters.ModelsPresenter;
+import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.analytics.Analytics;
 import com.squareup.otto.Subscribe;
@@ -62,7 +62,7 @@ public class CurrenciesActivity extends ModelListActivity implements CompoundBut
         // Setup
         autoUpdateCurrenciesSwitch.setChecked(generalPrefs.isAutoUpdateCurrencies());
         autoUpdateCurrenciesSwitch.setOnCheckedChangeListener(this);
-        if (getMode() != ModelsPresenter.Mode.View) {
+        if (getMode() != ModelsActivityPresenter.Mode.View) {
             settingsContainerView.setVisibility(View.GONE);
         }
     }

@@ -9,11 +9,11 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.providers.TagsProvider;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
-import com.code44.finance.ui.common.presenters.ModelsPresenter;
+import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 import com.code44.finance.ui.tags.detail.TagActivity;
 
-class TagsPresenter extends ModelsPresenter<Tag> {
-    public TagsPresenter(OnModelPresenterListener onModelPresenterListener) {
+class TagsActivityPresenter extends ModelsActivityPresenter<Tag> {
+    public TagsActivityPresenter(OnModelPresenterListener onModelPresenterListener) {
         super(onModelPresenterListener);
     }
 

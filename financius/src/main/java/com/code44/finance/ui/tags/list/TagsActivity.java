@@ -9,21 +9,21 @@ import com.code44.finance.R;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.presenters.ActivityPresenter;
-import com.code44.finance.ui.common.presenters.ModelsPresenter;
+import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 import com.code44.finance.utils.analytics.Analytics;
 
 import java.util.List;
 
-public class TagsActivity extends BaseActivity implements ModelsPresenter.OnModelPresenterListener {
+public class TagsActivity extends BaseActivity implements ModelsActivityPresenter.OnModelPresenterListener {
     public static void start(Context context) {
         final Intent intent = makeIntentForActivity(context, TagsActivity.class);
-        TagsPresenter.addViewExtras(intent);
+        TagsActivityPresenter.addViewExtras(intent);
         startActivity(context, intent);
     }
 
     public static void startMultiSelect(Activity activity, int requestCode, List<Tag> selectedTags) {
         final Intent intent = makeIntentForActivity(activity, TagsActivity.class);
-        TagsPresenter.addMultiSelectExtras(intent, selectedTags);
+        TagsActivityPresenter.addMultiSelectExtras(intent, selectedTags);
         startActivityForResult(activity, intent, requestCode);
     }
 
@@ -33,7 +33,7 @@ public class TagsActivity extends BaseActivity implements ModelsPresenter.OnMode
     }
 
     @Override protected ActivityPresenter onCreateActivityPresenter() {
-        return new TagsPresenter(this);
+        return new TagsActivityPresenter(this);
     }
 
     @Override public void onModelsSelected(Intent data) {

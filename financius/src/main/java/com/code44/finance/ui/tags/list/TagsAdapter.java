@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
-import com.code44.finance.ui.common.presenters.ModelsPresenter;
+import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 
 class TagsAdapter extends ModelsAdapter<Tag> {
     public TagsAdapter(OnModelClickListener<Tag> onModelClickListener) {
@@ -37,9 +37,9 @@ class TagsAdapter extends ModelsAdapter<Tag> {
             titleTextView = (TextView) itemView.findViewById(R.id.titleTextView);
         }
 
-        @Override protected void bind(Tag tag, Cursor cursor, int position, ModelsPresenter.Mode mode, boolean isSelected) {
+        @Override protected void bind(Tag tag, Cursor cursor, int position, ModelsActivityPresenter.Mode mode, boolean isSelected) {
             titleTextView.setText(tag.getTitle());
-            if (mode != ModelsPresenter.Mode.View) {
+            if (mode != ModelsActivityPresenter.Mode.View) {
                 selectCheckBox.setVisibility(View.VISIBLE);
                 selectCheckBox.setChecked(isSelected);
             } else {
