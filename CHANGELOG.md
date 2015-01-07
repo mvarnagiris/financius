@@ -5,6 +5,9 @@
 - ```new``` Updated tag detail page UI.
 - ```new``` Showing trends graph in tag detail page.
 - ```new``` Small UI improvements in tag edit page.
+- ```new``` Updated category list page UI.
+- ```new``` Updated category detail page UI.
+- ```new``` Showing trends graph in category detail page.
 - ```fix``` Unnoticeable UI improvements to pie chart.
 - ```fix``` Updated separator UI, no longer too white on older versions of Android.
 
