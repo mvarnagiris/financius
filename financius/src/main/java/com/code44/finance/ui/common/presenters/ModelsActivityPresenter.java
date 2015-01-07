@@ -15,6 +15,8 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -121,6 +123,21 @@ public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerV
         activity.getSupportLoaderManager().initLoader(LOADER_MODELS, null, this);
     }
 
+    @Override public boolean onActivityCreateOptionsMenu(BaseActivity activity, Menu menu) {
+        super.onActivityCreateOptionsMenu(activity, menu);
+        activity.getMenuInflater().inflate(R.menu.models, menu);
+        return true;
+    }
+
+    @Override public boolean onActivityOptionsItemSelected(BaseActivity activity, MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_new:
+                startModelEdit(getActivity(), null);
+                break;
+        }
+        return super.onActivityOptionsItemSelected(activity, item);
+    }
+
     @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(STATE_SELECTED_MODELS, new ArrayList<Parcelable>(getAdapter().getSelectedModels()));
@@ -177,6 +194,8 @@ public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerV
     protected abstract CursorLoader getModelsCursorLoader(Context context);
 
     protected abstract void onModelClick(Context context, View view, M model, Cursor cursor, int position);
+
+    protected abstract void startModelEdit(Context context, String modelId);
 
     protected RecyclerView.ItemDecoration[] getItemDecorations() {
         return new RecyclerView.ItemDecoration[]{new DividerDecoration(getRecyclerView().getContext())};

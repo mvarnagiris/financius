@@ -11,6 +11,7 @@ import com.code44.finance.data.providers.TagsProvider;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 import com.code44.finance.ui.tags.detail.TagActivity;
+import com.code44.finance.ui.tags.edit.TagEditActivity;
 
 class TagsActivityPresenter extends ModelsActivityPresenter<Tag> {
     @Override protected ModelsAdapter<Tag> createAdapter(ModelsAdapter.OnModelClickListener<Tag> defaultOnModelClickListener) {
@@ -23,5 +24,9 @@ class TagsActivityPresenter extends ModelsActivityPresenter<Tag> {
 
     @Override protected void onModelClick(Context context, View view, Tag model, Cursor cursor, int position) {
         TagActivity.start(context, model.getId());
+    }
+
+    @Override protected void startModelEdit(Context context, String modelId) {
+        TagEditActivity.start(context, modelId);
     }
 }

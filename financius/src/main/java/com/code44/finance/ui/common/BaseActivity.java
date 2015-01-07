@@ -153,12 +153,11 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.common, menu);
 
-        boolean activityPresenterResult = false;
         if (activityPresenter != null) {
-            activityPresenterResult = activityPresenter.onActivityCreateOptionsMenu(this, menu);
+            activityPresenter.onActivityCreateOptionsMenu(this, menu);
         }
 
-        return menu.size() > 0 || activityPresenterResult;
+        return true;
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
@@ -169,7 +168,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         }
 
         return activityPresenter.onActivityOptionsItemSelected(this, item) || super.onOptionsItemSelected(item);
-
     }
 
     protected void onCreateView(Bundle savedInstanceState) {

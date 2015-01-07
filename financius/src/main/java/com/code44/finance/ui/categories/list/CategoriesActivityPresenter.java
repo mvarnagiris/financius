@@ -11,6 +11,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.ui.categories.CategoryActivity;
+import com.code44.finance.ui.categories.CategoryEditActivity;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 
@@ -29,6 +30,10 @@ class CategoriesActivityPresenter extends ModelsActivityPresenter<Category> {
 
     @Override protected void onModelClick(Context context, View view, Category model, Cursor cursor, int position) {
         CategoryActivity.start(context, model.getId());
+    }
+
+    @Override protected void startModelEdit(Context context, String modelId) {
+        CategoryEditActivity.start(context, modelId);
     }
 
     @Override protected RecyclerView.ItemDecoration[] getItemDecorations() {
