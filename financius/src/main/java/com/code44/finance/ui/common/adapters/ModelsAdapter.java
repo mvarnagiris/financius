@@ -38,6 +38,10 @@ public abstract class ModelsAdapter<M extends Model> extends RecyclerView.Adapte
         holder.bindViewHolder(model, cursor, position, mode, mode != ModelsActivityPresenter.Mode.View && selectedModels.contains(model));
     }
 
+    public Cursor getCursor() {
+        return cursor;
+    }
+
     public void setCursor(Cursor cursor) {
         this.cursor = cursor;
         if (cursor != null) {
@@ -98,6 +102,10 @@ public abstract class ModelsAdapter<M extends Model> extends RecyclerView.Adapte
             this.mode = mode;
             this.isSelected = isSelected;
             bind(model, cursor, position, mode, isSelected);
+        }
+
+        public M getModel() {
+            return model;
         }
 
         protected abstract void bind(M model, Cursor cursor, int position, ModelsActivityPresenter.Mode mode, boolean isSelected);

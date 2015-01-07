@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.code44.finance.R;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.presenters.ActivityPresenter;
 import com.code44.finance.utils.analytics.Analytics;
@@ -17,9 +18,10 @@ public class CategoriesActivity extends BaseActivity {
         startActivity(context, intent);
     }
 
-    public static void startSelect(Activity activity, int requestCode) {
+    public static void startSelect(Activity activity, int requestCode, TransactionType transactionType) {
         final Intent intent = makeIntentForActivity(activity, CategoriesActivity.class);
         CategoriesActivityPresenter.addSelectExtras(intent);
+        CategoriesActivityPresenter.addExtras(intent, transactionType);
         startActivityForResult(activity, intent, requestCode);
     }
 

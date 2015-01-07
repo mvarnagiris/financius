@@ -11,8 +11,9 @@ import com.code44.finance.R;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
+import com.code44.finance.ui.common.recycler.SectionsDecoration;
 
-class CategoriesAdapter extends ModelsAdapter<Category> {
+class CategoriesAdapter extends ModelsAdapter<Category> implements SectionsDecoration.Adapter<CategoriesAdapter.ViewHolder> {
     public CategoriesAdapter(OnModelClickListener<Category> onModelClickListener) {
         super(onModelClickListener);
     }
@@ -25,7 +26,20 @@ class CategoriesAdapter extends ModelsAdapter<Category> {
         return Category.from(cursor);
     }
 
-    private static class ViewHolder extends ModelsAdapter.ViewHolder<Category> {
+    @Override public long getHeaderId(ViewHolder viewHolder) {
+        return viewHolder.getModel().getTransactionType().ordinal();
+    }
+
+    @Override public View onNewHeaderView(ViewGroup parent, ViewHolder viewHolder) {
+        // TODO Implement
+        return null;
+    }
+
+    @Override public void onBindHeaderView(ViewGroup parent, ViewHolder viewHolder) {
+        // TODO Implement
+    }
+
+    static class ViewHolder extends ModelsAdapter.ViewHolder<Category> {
         private final ImageView colorImageView;
         private final TextView titleTextView;
 

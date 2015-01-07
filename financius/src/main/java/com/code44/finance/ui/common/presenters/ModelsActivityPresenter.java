@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
@@ -24,7 +21,7 @@ import com.code44.finance.R;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
-import com.code44.finance.utils.ThemeUtils;
+import com.code44.finance.ui.common.recycler.DividerDecoration;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -229,45 +226,4 @@ public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerV
         View, Select, MultiSelect
     }
 
-    public static class DividerDecoration extends RecyclerView.ItemDecoration {
-        private final Drawable dividerDrawable;
-        private int paddingLeft;
-
-        public DividerDecoration(Context context) {
-            this(ThemeUtils.getDrawable(context, android.R.attr.dividerHorizontal));
-        }
-
-        public DividerDecoration(Drawable dividerDrawable) {
-            this.dividerDrawable = dividerDrawable;
-        }
-
-        @Override public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            super.getItemOffsets(outRect, view, parent, state);
-            outRect.bottom = dividerDrawable.getIntrinsicHeight();
-        }
-
-        @Override public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-            super.onDrawOver(c, parent, state);
-
-            final RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
-            for (int i = 0, childCount = parent.getChildCount(); i < childCount; i++) {
-                drawDivider(c, parent.getChildAt(i), layoutManager);
-            }
-        }
-
-        private void drawDivider(Canvas canvas, View view, RecyclerView.LayoutManager layoutManager) {
-            final int left = layoutManager.getDecoratedLeft(view) + paddingLeft;
-            final int right = layoutManager.getDecoratedRight(view);
-            final int bottom = layoutManager.getDecoratedBottom(view);
-            final int top = bottom - dividerDrawable.getIntrinsicHeight();
-
-            dividerDrawable.setBounds(left, top, right, bottom);
-            dividerDrawable.draw(canvas);
-        }
-
-        public DividerDecoration setPaddingLeft(int paddingLeft) {
-            this.paddingLeft = paddingLeft;
-            return this;
-        }
-    }
 }

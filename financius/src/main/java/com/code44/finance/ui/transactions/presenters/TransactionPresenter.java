@@ -198,7 +198,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
                 }
 
                 if (currentAutoCompleteAdapter == null) {
-                    CategoriesActivity.startSelect(activity, REQUEST_CATEGORY);
+                    CategoriesActivity.startSelect(activity, REQUEST_CATEGORY, transactionEditData.getTransactionType());
                 }
                 break;
             }
