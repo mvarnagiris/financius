@@ -11,7 +11,7 @@ import android.widget.ListView;
 import com.code44.finance.R;
 import com.code44.finance.adapters.SettingsAdapter;
 import com.code44.finance.ui.DrawerActivity;
-import com.code44.finance.ui.categories.CategoriesActivity;
+import com.code44.finance.ui.categories.list.CategoriesActivity;
 import com.code44.finance.ui.common.navigation.NavigationScreen;
 import com.code44.finance.ui.currencies.CurrenciesActivity;
 import com.code44.finance.ui.dialogs.ListDialogFragment;

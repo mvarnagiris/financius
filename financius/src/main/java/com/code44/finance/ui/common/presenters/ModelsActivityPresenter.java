@@ -1,5 +1,6 @@
 package com.code44.finance.ui.common.presenters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -38,12 +39,6 @@ public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerV
     private static final String STATE_SELECTED_MODELS = ModelsActivityPresenter.class.getName() + ".STATE_SELECTED_MODELS";
 
     private static final int LOADER_MODELS = 4124;
-
-    private final OnModelPresenterListener onModelPresenterListener;
-
-    public ModelsActivityPresenter(OnModelPresenterListener onModelPresenterListener) {
-        this.onModelPresenterListener = onModelPresenterListener;
-    }
 
     public static void addViewExtras(Intent intent) {
         intent.putExtra(EXTRA_MODE, Mode.View);
@@ -102,7 +97,7 @@ public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerV
             getAdapter().setSelectedModels(selectedModelsSet);
         }
 
-        final View editButtonsContainerView = findView(activity, R.id.editButtonsContainerView);
+        final View editButtonsContainerView = activity.findViewById(R.id.editButtonsContainerView);
         if (editButtonsContainerView != null) {
             if (mode == Mode.MultiSelect) {
                 editButtonsContainerView.setVisibility(View.VISIBLE);
@@ -115,7 +110,7 @@ public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerV
                 });
                 cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override public void onClick(View v) {
-                        onModelPresenterListener.onModelsCanceled();
+                        onMultipleModelsSelectCanceled();
                     }
                 });
             } else {
@@ -190,7 +185,8 @@ public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerV
     private void onModelSelected(M model) {
         final Intent data = new Intent();
         data.putExtra(RESULT_EXTRA_MODEL, model);
-        onModelPresenterListener.onModelsSelected(data);
+        getActivity().setResult(Activity.RESULT_OK, data);
+        getActivity().finish();
     }
 
     private void onMultipleModelsSelected(Set<M> selectedModels) {
@@ -201,21 +197,22 @@ public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerV
             parcelables[index++] = model;
         }
         data.putExtra(RESULT_EXTRA_MODELS, parcelables);
-        onModelPresenterListener.onModelsSelected(data);
+        getActivity().setResult(Activity.RESULT_OK, data);
+        getActivity().finish();
+    }
+
+    private void onMultipleModelsSelectCanceled() {
+        getActivity().setResult(Activity.RESULT_CANCELED);
+        getActivity().finish();
     }
 
     public static enum Mode {
         View, Select, MultiSelect
     }
 
-    public static interface OnModelPresenterListener {
-        public void onModelsSelected(Intent data);
-
-        public void onModelsCanceled();
-    }
-
     public static class DividerDecoration extends RecyclerView.ItemDecoration {
         private final Drawable dividerDrawable;
+        private int paddingLeft;
 
         public DividerDecoration(Context context) {
             this(ThemeUtils.getDrawable(context, android.R.attr.dividerHorizontal));
@@ -240,13 +237,18 @@ public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerV
         }
 
         private void drawDivider(Canvas canvas, View view, RecyclerView.LayoutManager layoutManager) {
-            final int left = layoutManager.getDecoratedLeft(view);
+            final int left = layoutManager.getDecoratedLeft(view) + paddingLeft;
             final int right = layoutManager.getDecoratedRight(view);
             final int bottom = layoutManager.getDecoratedBottom(view);
             final int top = bottom - dividerDrawable.getIntrinsicHeight();
 
             dividerDrawable.setBounds(left, top, right, bottom);
             dividerDrawable.draw(canvas);
+        }
+
+        public DividerDecoration setPaddingLeft(int paddingLeft) {
+            this.paddingLeft = paddingLeft;
+            return this;
         }
     }
 }

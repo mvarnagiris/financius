@@ -21,7 +21,7 @@ import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.ui.CalculatorActivity;
 import com.code44.finance.ui.accounts.AccountsActivity;
-import com.code44.finance.ui.categories.CategoriesActivity;
+import com.code44.finance.ui.categories.list.CategoriesActivity;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.ModelListActivity;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
@@ -198,7 +198,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
                 }
 
                 if (currentAutoCompleteAdapter == null) {
-                    CategoriesActivity.startSelect(activity, REQUEST_CATEGORY, transactionEditData.getTransactionType());
+                    CategoriesActivity.startSelect(activity, REQUEST_CATEGORY);
                 }
                 break;
             }
@@ -359,7 +359,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
                     requestAutoComplete();
                     break;
                 case REQUEST_CATEGORY:
-                    transactionEditData.setCategory(ModelListActivity.<Category>getModelExtra(data));
+                    transactionEditData.setCategory(ModelsActivityPresenter.<Category>getModelExtra(data));
                     requestAutoComplete();
                     break;
                 case REQUEST_TAGS:

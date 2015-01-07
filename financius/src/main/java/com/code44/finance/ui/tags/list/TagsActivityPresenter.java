@@ -13,10 +13,6 @@ import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 import com.code44.finance.ui.tags.detail.TagActivity;
 
 class TagsActivityPresenter extends ModelsActivityPresenter<Tag> {
-    public TagsActivityPresenter(OnModelPresenterListener onModelPresenterListener) {
-        super(onModelPresenterListener);
-    }
-
     @Override protected ModelsAdapter<Tag> createAdapter(ModelsAdapter.OnModelClickListener<Tag> defaultOnModelClickListener) {
         return new TagsAdapter(defaultOnModelClickListener);
     }
