@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.code44.finance.R;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.ui.ModelFragment;
 import com.code44.finance.ui.common.BaseActivity;
@@ -54,6 +55,9 @@ public abstract class ModelActivityPresenter<M extends Model> extends ActivityPr
 
         // Get extras
         modelId = activity.getIntent().getStringExtra(EXTRA_MODEL_ID);
+        if (Strings.isEmpty(modelId)) {
+            modelId = "0";
+        }
 
         // Loader
         activity.getSupportLoaderManager().initLoader(LOADER_MODEL, null, this);
@@ -114,4 +118,8 @@ public abstract class ModelActivityPresenter<M extends Model> extends ActivityPr
     protected abstract Uri getDeleteUri();
 
     protected abstract Pair<String, String[]> getDeleteSelection(String modelId);
+
+    protected String getModelId() {
+        return modelId;
+    }
 }

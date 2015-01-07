@@ -47,7 +47,7 @@ class TagEditActivityPresenter extends ModelEditActivityPresenter<Tag> implement
         }
 
         if (canSave) {
-            Tag tag = new Tag();
+            final Tag tag = new Tag();
             tag.setId(getId());
             tag.setTitle(title);
 

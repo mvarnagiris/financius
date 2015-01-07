@@ -13,7 +13,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.CategoriesProvider;
-import com.code44.finance.ui.categories.CategoryEditActivity;
+import com.code44.finance.ui.categories.edit.CategoryEditActivity;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelActivityPresenter;
 import com.code44.finance.ui.reports.trends.TrendsChartView;

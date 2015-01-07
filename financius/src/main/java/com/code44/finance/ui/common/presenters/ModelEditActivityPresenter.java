@@ -42,6 +42,13 @@ public abstract class ModelEditActivityPresenter<M extends Model> extends ModelA
         });
     }
 
+    @Override public void onActivityResumed(BaseActivity activity) {
+        super.onActivityResumed(activity);
+        if (isNewModel()) {
+            onDataChanged(getStoredModel());
+        }
+    }
+
     @Override public boolean onActivityCreateOptionsMenu(BaseActivity activity, Menu menu) {
         return false;
     }
@@ -69,6 +76,10 @@ public abstract class ModelEditActivityPresenter<M extends Model> extends ModelA
     protected abstract void onDataChanged(M storedModel);
 
     protected abstract boolean onSave();
+
+    protected boolean isNewModel() {
+        return getModelId().equals("0");
+    }
 
     private void save() {
         if (onSave()) {
