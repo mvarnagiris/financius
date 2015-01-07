@@ -5,7 +5,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 
+import com.code44.finance.R;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.utils.EventBus;
@@ -19,6 +22,24 @@ public abstract class ModelEditActivityPresenter<M extends Model> extends ModelA
 
     @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
         super.onActivityCreated(activity, savedInstanceState);
+
+        // Get views
+        final Button cancelView = findView(activity, R.id.cancelButton);
+        final Button saveView = findView(activity, R.id.saveButton);
+
+        // Setup
+        cancelView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancel();
+            }
+        });
+        saveView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                save();
+            }
+        });
     }
 
     @Override public boolean onActivityCreateOptionsMenu(BaseActivity activity, Menu menu) {

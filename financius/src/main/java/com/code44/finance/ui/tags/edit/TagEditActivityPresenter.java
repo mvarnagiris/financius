@@ -4,7 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.widget.EditText;
 
 import com.code44.finance.R;
@@ -17,7 +19,7 @@ import com.code44.finance.ui.common.presenters.ModelEditActivityPresenter;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.ThemeUtils;
 
-class TagEditActivityPresenter extends ModelEditActivityPresenter<Tag> {
+class TagEditActivityPresenter extends ModelEditActivityPresenter<Tag> implements TextWatcher {
     private EditText titleEditText;
     private String title;
 
@@ -28,10 +30,11 @@ class TagEditActivityPresenter extends ModelEditActivityPresenter<Tag> {
     @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
         super.onActivityCreated(activity, savedInstanceState);
         titleEditText = findView(activity, R.id.titleEditText);
+        titleEditText.addTextChangedListener(this);
     }
 
     @Override protected void onDataChanged(Tag storedModel) {
-
+        titleEditText.setText(getTitle());
     }
 
     @Override protected boolean onSave() {
@@ -45,9 +48,10 @@ class TagEditActivityPresenter extends ModelEditActivityPresenter<Tag> {
 
         if (canSave) {
             Tag tag = new Tag();
+            tag.setId(getId());
+            tag.setTitle(title);
 
-
-            DataStore.insert().model(model).into(this, TagsProvider.uriTags());
+            DataStore.insert().model(tag).into(titleEditText.getContext(), TagsProvider.uriTags());
         }
 
         return canSave;
@@ -61,8 +65,18 @@ class TagEditActivityPresenter extends ModelEditActivityPresenter<Tag> {
         return Tag.from(cursor);
     }
 
+    @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    }
+
+    @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+    }
+
+    @Override public void afterTextChanged(Editable s) {
+        title = titleEditText.getText().toString();
+    }
+
     private String getId() {
-        return getStoredModel() != null
+        return getStoredModel() != null ? getStoredModel().getId() : null;
     }
 
     private String getTitle() {
