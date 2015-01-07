@@ -7,6 +7,6 @@
 
     <se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView
         android:id="@+id/listView"
-        style="@style/AdapterView" />
+        style="@style/AdapterView.NoDivider" />
 
 </LinearLayout>
