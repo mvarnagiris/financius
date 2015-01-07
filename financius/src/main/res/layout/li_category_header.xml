@@ -3,9 +3,7 @@
     style="@style/ListItem"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="?backgroundColorSecondary"
     android:gravity="center_vertical"
-    android:paddingLeft="0dp"
     tools:ignore="RtlHardcoded,RtlSymmetry">
 
     <TextView
@@ -13,7 +11,6 @@
         style="@style/Text.Body2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/keyline_content"
         android:textColor="?android:textColorSecondary"
         tools:text="Expenses" />
 

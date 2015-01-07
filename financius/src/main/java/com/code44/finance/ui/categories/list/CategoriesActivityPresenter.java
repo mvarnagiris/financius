@@ -3,8 +3,6 @@ package com.code44.finance.ui.categories.list;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +19,7 @@ import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 import com.code44.finance.ui.common.recycler.DividerDecoration;
+import com.code44.finance.ui.common.recycler.SectionsDecoration;
 
 class CategoriesActivityPresenter extends ModelsActivityPresenter<Category> {
     private static final String EXTRA_TRANSACTION_TYPE = CategoriesActivityPresenter.class.getName() + ".EXTRA_TRANSACTION_TYPE";
@@ -58,38 +57,6 @@ class CategoriesActivityPresenter extends ModelsActivityPresenter<Category> {
 
     @Override protected RecyclerView.ItemDecoration[] getItemDecorations() {
         final Context context = getActivity();
-        return new RecyclerView.ItemDecoration[]{new DividerDecoration(context).setPaddingLeft(context.getResources().getDimensionPixelSize(R.dimen.keyline_content))};
-    }
-
-    private static class SectionsDecoration extends RecyclerView.ItemDecoration {
-        @Override public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            super.getItemOffsets(outRect, view, parent, state);
-
-            if (hasHeader(view, parent)) {
-
-            }
-        }
-
-        @Override public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-            super.onDrawOver(c, parent, state);
-        }
-
-        private boolean hasHeader(View view, RecyclerView parent) {
-            final int adapterPosition = parent.getChildPosition(view);
-            if (adapterPosition == 0) {
-                return true;
-            }
-
-            //noinspection unchecked
-            final ModelsAdapter.ViewHolder<Category> viewHolder = (ModelsAdapter.ViewHolder<Category>) parent.getChildViewHolder(view);
-            if (viewHolder.getModel().getTransactionType() == TransactionType.Expense) {
-                return false;
-            }
-
-            final int previousPosition = parent.indexOfChild(view) - 1;
-            //noinspection unchecked
-            final ModelsAdapter.ViewHolder<Category> previousViewHolder = (ModelsAdapter.ViewHolder<Category>) parent.getChildViewHolder(parent.getChildAt(previousPosition));
-            return previousViewHolder.getModel().getTransactionType() == TransactionType.Expense;
-        }
+        return new RecyclerView.ItemDecoration[]{new DividerDecoration(context).setPaddingLeft(context.getResources().getDimensionPixelSize(R.dimen.keyline_content)), new SectionsDecoration()};
     }
 }

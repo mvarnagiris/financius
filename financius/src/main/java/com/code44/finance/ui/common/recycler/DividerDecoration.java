@@ -23,7 +23,7 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
 
     @Override public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
-        outRect.bottom = dividerDrawable.getIntrinsicHeight();
+        outRect.bottom += dividerDrawable.getIntrinsicHeight();
     }
 
     @Override public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
