@@ -20,6 +20,8 @@ import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.ThemeUtils;
 
 class TagEditActivityPresenter extends ModelEditActivityPresenter<Tag> implements TextWatcher {
+    private static final String STATE_TITLE = "STATE_TITLE";
+
     private EditText titleEditText;
     private String title;
 
@@ -31,10 +33,21 @@ class TagEditActivityPresenter extends ModelEditActivityPresenter<Tag> implement
         super.onActivityCreated(activity, savedInstanceState);
         titleEditText = findView(activity, R.id.titleEditText);
         titleEditText.addTextChangedListener(this);
+
+        if (savedInstanceState != null) {
+            title = savedInstanceState.getString(STATE_TITLE);
+            onDataChanged(getStoredModel());
+        }
+    }
+
+    @Override public void onActivitySaveInstanceState(BaseActivity activity, Bundle outState) {
+        super.onActivitySaveInstanceState(activity, outState);
+        outState.putString(STATE_TITLE, title);
     }
 
     @Override protected void onDataChanged(Tag storedModel) {
         titleEditText.setText(getTitle());
+        titleEditText.setSelection(titleEditText.getText().length());
     }
 
     @Override protected boolean onSave() {

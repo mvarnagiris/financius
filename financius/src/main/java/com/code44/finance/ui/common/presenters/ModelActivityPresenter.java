@@ -119,6 +119,10 @@ public abstract class ModelActivityPresenter<M extends Model> extends ActivityPr
 
     protected abstract Pair<String, String[]> getDeleteSelection(String modelId);
 
+    protected EventBus getEventBus() {
+        return eventBus;
+    }
+
     protected String getModelId() {
         return modelId;
     }

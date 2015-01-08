@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/titleTextView"
         style="@style/Text.Body2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="Simple item" />
 

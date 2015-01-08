@@ -31,7 +31,7 @@ public class ListDialogAdapter extends BaseAdapter {
         return items.size();
     }
 
-    @Override public Object getItem(int position) {
+    @Override public ListDialogFragment.ListDialogItem getItem(int position) {
         return items.get(position);
     }
 

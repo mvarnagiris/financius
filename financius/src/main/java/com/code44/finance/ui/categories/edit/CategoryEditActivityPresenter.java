@@ -21,11 +21,21 @@ import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.ui.SelectColorFragment;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelEditActivityPresenter;
+import com.code44.finance.ui.dialogs.ColorDialogFragment;
+import com.code44.finance.ui.dialogs.ListDialogFragment;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.ThemeUtils;
+import com.squareup.otto.Subscribe;
 
 class CategoryEditActivityPresenter extends ModelEditActivityPresenter<Category> implements TextWatcher, View.OnClickListener, SelectColorFragment.OnColorSelectedListener {
     private static final String FRAGMENT_SELECT_COLOR = CategoryEditActivityPresenter.class.getName() + ".FRAGMENT_SELECT_COLOR";
+    private static final String FRAGMENT_SELECT_COLOR_DIALOG = CategoryEditActivityPresenter.class.getName() + ".FRAGMENT_SELECT_COLOR_DIALOG";
+
+    private static final int REQUEST_COLOR = 512;
+
+    private static final String STATE_TRANSACTION_TYPE = "STATE_TRANSACTION_TYPE";
+    private static final String STATE_COLOR = "STATE_COLOR";
+    private static final String STATE_TITLE = "STATE_TITLE";
 
     private ImageView colorImageView;
     private ImageView transactionTypeImageView;
@@ -58,16 +68,37 @@ class CategoryEditActivityPresenter extends ModelEditActivityPresenter<Category>
             transactionTypeContainerView.setVisibility(View.GONE);
             transactionTypeDividerView.setVisibility(View.GONE);
         }
+
+        if (savedInstanceState != null) {
+            transactionType = (TransactionType) savedInstanceState.getSerializable(STATE_TRANSACTION_TYPE);
+            color = savedInstanceState.getInt(STATE_COLOR);
+            if (color == 0) {
+                color = null;
+            }
+            title = savedInstanceState.getString(STATE_TITLE);
+            onDataChanged(getStoredModel());
+        }
     }
 
     @Override public void onActivityResumed(BaseActivity activity) {
         super.onActivityResumed(activity);
         SelectColorFragment.setListenerIfVisible(activity.getSupportFragmentManager(), FRAGMENT_SELECT_COLOR, this);
+
+        getEventBus().register(this);
     }
 
     @Override public void onActivityPaused(BaseActivity activity) {
         super.onActivityPaused(activity);
         SelectColorFragment.removeListenerIfVisible(activity.getSupportFragmentManager(), FRAGMENT_SELECT_COLOR);
+
+        getEventBus().unregister(this);
+    }
+
+    @Override public void onActivitySaveInstanceState(BaseActivity activity, Bundle outState) {
+        super.onActivitySaveInstanceState(activity, outState);
+        outState.putSerializable(STATE_TRANSACTION_TYPE, transactionType);
+        outState.putInt(STATE_COLOR, color == null ? 0 : color);
+        outState.putString(STATE_TITLE, title);
     }
 
     @Override protected void onDataChanged(Category storedModel) {
@@ -137,7 +168,10 @@ class CategoryEditActivityPresenter extends ModelEditActivityPresenter<Category>
     @Override public void onClick(View v) {
         switch (v.getId()) {
             case R.id.colorContainerView:
-                SelectColorFragment.show(getActivity().getSupportFragmentManager(), FRAGMENT_SELECT_COLOR, getColor(), this);
+                ColorDialogFragment.build(REQUEST_COLOR)
+                        .setNegativeButtonText(getActivity().getString(R.string.cancel))
+                        .build()
+                        .show(getActivity().getSupportFragmentManager(), FRAGMENT_SELECT_COLOR_DIALOG);
                 break;
             case R.id.transactionTypeContainerView:
                 toggleTransactionType();
@@ -148,6 +182,23 @@ class CategoryEditActivityPresenter extends ModelEditActivityPresenter<Category>
     @Override public void onColorSelected(int color) {
         this.color = color;
         onDataChanged(getStoredModel());
+    }
+
+    @Subscribe public void onColorSelectedFromDialog(ListDialogFragment.ListDialogEvent event) {
+        if (event.getRequestCode() != REQUEST_COLOR) {
+            return;
+        }
+
+        if (event.getPosition() == 0) {
+            event.dismiss();
+            SelectColorFragment.show(getActivity().getSupportFragmentManager(), FRAGMENT_SELECT_COLOR, getColor(), this);
+            return;
+        }
+
+        if (!event.isActionButtonClicked()) {
+            onColorSelected(((ColorDialogFragment.ColorListDialogItem) event.getAdapter().getItem(event.getPosition())).getColor());
+            event.dismiss();
+        }
     }
 
     private String getId() {

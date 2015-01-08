@@ -50,13 +50,12 @@ public class ListDialogFragment extends BaseDialogFragment implements View.OnCli
         negative_B = (Button) view.findViewById(R.id.negative_B);
 
         // Setup
-        final ArrayList<ListDialogItem> items = getArguments().getParcelableArrayList(ARG_ITEMS);
         final String positiveButtonTitle = getArguments().getString(ARG_POSITIVE_BUTTON_TEXT);
         final String negativeButtonTitle = getArguments().getString(ARG_NEGATIVE_BUTTON_TEXT);
         final int positiveButtonColor = getArguments().getInt(ARG_POSITIVE_BUTTON_COLOR, ThemeUtils.getColor(getActivity(), android.R.attr.textColorPrimary));
         final int negativeButtonColor = getArguments().getInt(ARG_NEGATIVE_BUTTON_COLOR, ThemeUtils.getColor(getActivity(), android.R.attr.textColorPrimary));
 
-        adapter = new ListDialogAdapter(getActivity(), items);
+        adapter = getAdapter();
         list_V.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         list_V.setAdapter(adapter);
         list_V.setOnItemClickListener(this);
@@ -95,6 +94,11 @@ public class ListDialogFragment extends BaseDialogFragment implements View.OnCli
         getEventBus().post(createEvent(requestCode, true, position));
     }
 
+    protected ListDialogAdapter getAdapter() {
+        final ArrayList<ListDialogItem> items = getArguments().getParcelableArrayList(ARG_ITEMS);
+        return new ListDialogAdapter(getActivity(), items);
+    }
+
     protected void onClickPositive() {
         getEventBus().post(createEvent(requestCode, true, -1));
         dismiss();
@@ -106,19 +110,21 @@ public class ListDialogFragment extends BaseDialogFragment implements View.OnCli
     }
 
     protected ListDialogEvent createEvent(int requestCode, boolean isPositiveClicked, int position) {
-        return new ListDialogEvent(this, requestCode, isPositiveClicked, position, adapter.getSelectedPositions(), getArguments().getBundle(ARG_ARGS));
+        return new ListDialogEvent(this, adapter, requestCode, isPositiveClicked, position, adapter.getSelectedPositions(), getArguments().getBundle(ARG_ARGS));
     }
 
     public static class ListDialogEvent {
         private final ListDialogFragment dialogFragment;
+        private final ListDialogAdapter adapter;
         private final int requestCode;
         private final boolean isPositiveClicked;
         private final int position;
         private final List<Integer> selectedPositions;
         private final Bundle args;
 
-        public ListDialogEvent(ListDialogFragment dialogFragment, int requestCode, boolean isPositiveClicked, int position, List<Integer> selectedPositions, Bundle args) {
+        public ListDialogEvent(ListDialogFragment dialogFragment, ListDialogAdapter adapter, int requestCode, boolean isPositiveClicked, int position, List<Integer> selectedPositions, Bundle args) {
             this.dialogFragment = dialogFragment;
+            this.adapter = adapter;
             this.requestCode = requestCode;
             this.isPositiveClicked = isPositiveClicked;
             this.position = position;
@@ -128,6 +134,10 @@ public class ListDialogFragment extends BaseDialogFragment implements View.OnCli
 
         public int getRequestCode() {
             return requestCode;
+        }
+
+        public ListDialogAdapter getAdapter() {
+            return adapter;
         }
 
         public boolean isPositiveClicked() {

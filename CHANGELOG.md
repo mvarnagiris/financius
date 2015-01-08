@@ -8,6 +8,8 @@
 - ```new``` Updated category list page UI.
 - ```new``` Updated category detail page UI.
 - ```new``` Showing trends graph in category detail page.
+- ```new``` Updated category edit page UI.
+- ```new``` When selecting category color you can now choose from predefined list or pick a color manually.
 - ```fix``` Unnoticeable UI improvements to pie chart.
 - ```fix``` Updated separator UI, no longer too white on older versions of Android.
 
