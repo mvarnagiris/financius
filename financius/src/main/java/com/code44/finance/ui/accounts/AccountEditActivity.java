@@ -23,7 +23,7 @@ import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.CalculatorActivity;
 import com.code44.finance.ui.common.ModelEditActivity;
 import com.code44.finance.ui.common.ModelListActivity;
-import com.code44.finance.ui.currencies.CurrenciesActivity;
+import com.code44.finance.ui.currencies.list.CurrenciesActivity;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.analytics.Analytics;
 

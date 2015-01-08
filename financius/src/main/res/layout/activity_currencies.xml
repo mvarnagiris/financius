@@ -8,12 +8,6 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
-        android:id="@+id/loadingView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/progress_bar_height"
-        android:layout_below="@+id/toolbar" />
-
     <LinearLayout
         android:id="@+id/settingsContainerView"
         android:layout_width="match_parent"
@@ -30,7 +24,7 @@
         tools:ignore="RtlHardcoded,UnusedAttribute">
 
         <TextView
-            style="@style/Text"
+            style="@style/Text.Subhead"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -44,10 +38,16 @@
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/listView"
-        style="@style/AdapterView"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_above="@+id/settingsContainerView"
-        android:layout_below="@+id/toolbar" />
+        android:layout_below="@+id/toolbar">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            style="@style/AdapterView" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerViewPresenter<ModelsAdapter<M>> implements LoaderManager.LoaderCallbacks<Cursor>, ModelsAdapter.OnModelClickListener<M> {
+    protected static final int LOADER_MODELS = 4124;
+
     private static final String RESULT_EXTRA_MODEL = "RESULT_EXTRA_MODEL";
     private static final String RESULT_EXTRA_MODELS = "RESULT_EXTRA_MODELS";
 
@@ -37,7 +39,7 @@ public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerV
 
     private static final String STATE_SELECTED_MODELS = ModelsActivityPresenter.class.getName() + ".STATE_SELECTED_MODELS";
 
-    private static final int LOADER_MODELS = 4124;
+    private Mode mode;
 
     public static void addViewExtras(Intent intent) {
         intent.putExtra(EXTRA_MODE, Mode.View);
@@ -74,7 +76,7 @@ public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerV
     @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
         super.onActivityCreated(activity, savedInstanceState);
 
-        final Mode mode = (Mode) activity.getIntent().getSerializableExtra(EXTRA_MODE);
+        mode = (Mode) activity.getIntent().getSerializableExtra(EXTRA_MODE);
         final Parcelable[] selectedModels = activity.getIntent().getParcelableArrayExtra(EXTRA_SELECTED_MODELS);
 
         getAdapter().setMode(mode);
@@ -196,6 +198,10 @@ public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerV
 
     protected RecyclerView.ItemDecoration[] getItemDecorations() {
         return new RecyclerView.ItemDecoration[]{new DividerDecoration(getRecyclerView().getContext())};
+    }
+
+    protected Mode getMode() {
+        return mode;
     }
 
     private void onModelSelected(M model) {

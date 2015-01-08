@@ -6,9 +6,6 @@
 
     <array name="progress_bar_colors">
         <item>#cddc39</item>
-        <item>#8bc34a</item>
-        <item>#259b24</item>
-        <item>#ffeb3b</item>
     </array>
 
     <array name="category_colors">
