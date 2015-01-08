@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,7 +27,6 @@ import com.code44.finance.ui.currencies.CurrencyAccountsAdapter;
 import com.code44.finance.ui.currencies.CurrencyEditActivity;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.MoneyFormatter;
-import com.code44.finance.views.FabImageButton;
 import com.squareup.otto.Subscribe;
 
 class CurrencyActivityPresenter extends ModelActivityPresenter<Currency> implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
@@ -56,7 +56,7 @@ class CurrencyActivityPresenter extends ModelActivityPresenter<Currency> impleme
         formatTextView = findView(activity, R.id.formatTextView);
         exchangeRateTextView = findView(activity, R.id.exchangeRateTextView);
         swipeRefreshLayout = findView(activity, R.id.swipeRefreshLayout);
-        final FabImageButton refreshRateButton = findView(activity, R.id.refreshRateButton);
+        final ImageView refreshRateButton = findView(activity, R.id.refreshRateButton);
         final ListView listView = findView(activity, R.id.listView);
 
         // Setup
