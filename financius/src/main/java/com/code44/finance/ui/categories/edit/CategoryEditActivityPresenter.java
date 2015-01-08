@@ -18,12 +18,15 @@ import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
+import com.code44.finance.ui.SelectColorFragment;
 import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelEditActivityPresenter;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.ThemeUtils;
 
-class CategoryEditActivityPresenter extends ModelEditActivityPresenter<Category> implements TextWatcher, View.OnClickListener {
+class CategoryEditActivityPresenter extends ModelEditActivityPresenter<Category> implements TextWatcher, View.OnClickListener, SelectColorFragment.OnColorSelectedListener {
+    private static final String FRAGMENT_SELECT_COLOR = CategoryEditActivityPresenter.class.getName() + ".FRAGMENT_SELECT_COLOR";
+
     private ImageView colorImageView;
     private ImageView transactionTypeImageView;
     private TextView transactionTypeTextView;
@@ -55,6 +58,16 @@ class CategoryEditActivityPresenter extends ModelEditActivityPresenter<Category>
             transactionTypeContainerView.setVisibility(View.GONE);
             transactionTypeDividerView.setVisibility(View.GONE);
         }
+    }
+
+    @Override public void onActivityResumed(BaseActivity activity) {
+        super.onActivityResumed(activity);
+        SelectColorFragment.setListenerIfVisible(activity.getSupportFragmentManager(), FRAGMENT_SELECT_COLOR, this);
+    }
+
+    @Override public void onActivityPaused(BaseActivity activity) {
+        super.onActivityPaused(activity);
+        SelectColorFragment.removeListenerIfVisible(activity.getSupportFragmentManager(), FRAGMENT_SELECT_COLOR);
     }
 
     @Override protected void onDataChanged(Category storedModel) {
@@ -124,12 +137,17 @@ class CategoryEditActivityPresenter extends ModelEditActivityPresenter<Category>
     @Override public void onClick(View v) {
         switch (v.getId()) {
             case R.id.colorContainerView:
-//                SelectColorFragment.show(getSupportFragmentManager(), FRAGMENT_SELECT_COLOR, model.getColor(), this);
+                SelectColorFragment.show(getActivity().getSupportFragmentManager(), FRAGMENT_SELECT_COLOR, getColor(), this);
                 break;
             case R.id.transactionTypeContainerView:
                 toggleTransactionType();
                 break;
         }
+    }
+
+    @Override public void onColorSelected(int color) {
+        this.color = color;
+        onDataChanged(getStoredModel());
     }
 
     private String getId() {
