@@ -33,6 +33,8 @@
     <dimen name="btn_fab">56dp</dimen>
     <dimen name="btn_fab_half">28dp</dimen>
     <dimen name="btn_fab_half_negative">-28dp</dimen>
+    <dimen name="btn_fab_small">40dp</dimen>
+    <dimen name="btn_fab_small_half_negative">-20dp</dimen>
     <dimen name="btn_dialog_min_width">88dp</dimen>
 
     <dimen name="account_balance_graph_height">128dp</dimen>
