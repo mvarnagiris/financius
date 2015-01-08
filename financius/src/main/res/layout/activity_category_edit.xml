@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,89 +17,119 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/containerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?colorPrimary"
                 android:elevation="@dimen/elevation_header"
-                android:orientation="vertical"
                 tools:ignore="UnusedAttribute">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <FrameLayout
-                        android:id="@+id/transactionTypeContainerView"
-                        style="@style/Button.Borderless"
-                        android:layout_width="@dimen/keyline_between_large"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:layout_width="@dimen/action_item"
-                            android:layout_height="@dimen/action_item"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/keyline"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/circle"
-                            tools:ignore="ContentDescription,RtlHardcoded" />
-
-                        <ImageView
-                            android:id="@+id/transactionTypeImageView"
-                            android:layout_width="@dimen/action_item"
-                            android:layout_height="@dimen/action_item"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/keyline"
-                            android:contentDescription="@string/transaction_type"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/ic_action_category_type"
-                            tools:ignore="RtlHardcoded"
-                            tools:tint="?textColorNegative" />
-
-                    </FrameLayout>
-
-                    <me.grantland.widget.AutofitLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/action_bar_size_2x"
-                        android:padding="@dimen/keyline"
-                        tools:ignore="RtlHardcoded,RtlSymmetry">
-
-                        <EditText
-                            android:id="@+id/titleEditText"
-                            style="@style/EditText"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="bottom"
-                            android:hint="@string/title"
-                            android:inputType="textCapWords"
-                            android:singleLine="true"
-                            android:textAppearance="@style/Text.Display2"
-                            android:textColor="?android:textColorPrimaryInverse"
-                            android:textColorHint="?android:textColorSecondaryInverse"
-                            tools:ignore="RtlHardcoded" />
-
-                    </me.grantland.widget.AutofitLayout>
-
-                </LinearLayout>
-
-                <View style="@style/Divider" />
-
-                <Button
-                    android:id="@+id/colorButton"
+                <FrameLayout
+                    android:id="@+id/colorContainerView"
                     style="@style/Button.Borderless"
+                    android:layout_width="@dimen/keyline_between_large"
+                    android:layout_height="match_parent">
+
+                    <com.code44.finance.ui.common.views.TintImageView
+                        android:layout_width="@dimen/action_item"
+                        android:layout_height="@dimen/action_item"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/keyline"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/circle"
+                        app:supportTintColor="?backgroundColorPrimary"
+                        tools:ignore="ContentDescription,RtlHardcoded" />
+
+                    <ImageView
+                        android:id="@+id/colorImageView"
+                        android:layout_width="@dimen/action_item"
+                        android:layout_height="@dimen/action_item"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/keyline"
+                        android:contentDescription="@string/transaction_type"
+                        android:padding="@dimen/action_item_padding"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/circle"
+                        tools:ignore="RtlHardcoded" />
+
+                </FrameLayout>
+
+                <me.grantland.widget.AutofitLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/select_color"
-                    android:textColor="?android:textColorPrimaryInverse" />
+                    android:layout_height="@dimen/action_bar_size_2x"
+                    android:padding="@dimen/keyline"
+                    tools:ignore="RtlHardcoded,RtlSymmetry">
+
+                    <EditText
+                        android:id="@+id/titleEditText"
+                        style="@style/EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="bottom"
+                        android:hint="@string/title"
+                        android:inputType="textCapWords"
+                        android:singleLine="true"
+                        android:textAppearance="@style/Text.Display2"
+                        android:textColor="?android:textColorPrimaryInverse"
+                        android:textColorHint="?android:textColorSecondaryInverse"
+                        tools:ignore="RtlHardcoded" />
+
+                </me.grantland.widget.AutofitLayout>
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/transactionTypeButton"
-                style="@style/Button.Borderless"
+            <LinearLayout
+                android:id="@+id/transactionTypeContainerView"
+                style="@style/Button.Borderless.Bounded.Select"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="@string/expense" />
+                android:layout_marginTop="@dimen/space_large"
+                android:gravity="center_vertical">
+
+                <FrameLayout
+                    style="@style/Button.Borderless"
+                    android:layout_width="@dimen/keyline_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="?actionBarSize">
+
+                    <ImageView
+                        android:layout_width="@dimen/action_item"
+                        android:layout_height="@dimen/action_item"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/keyline"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/circle"
+                        tools:ignore="ContentDescription,RtlHardcoded" />
+
+                    <ImageView
+                        android:id="@+id/transactionTypeImageView"
+                        android:layout_width="@dimen/action_item"
+                        android:layout_height="@dimen/action_item"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/keyline"
+                        android:contentDescription="@string/transaction_type"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_action_category_type"
+                        tools:ignore="RtlHardcoded"
+                        tools:tint="?textColorNegative" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/transactionTypeTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/keyline"
+                    android:textAppearance="@style/Text.Subhead"
+                    tools:ignore="RtlHardcoded"
+                    tools:text="@string/expense" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/transactionTypeDividerView"
+                style="@style/Divider.Thick"
+                android:layout_marginLeft="@dimen/keyline_content"
+                tools:ignore="RtlHardcoded" />
 
         </LinearLayout>
     </ScrollView>

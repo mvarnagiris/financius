@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
@@ -23,9 +24,11 @@ import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.ThemeUtils;
 
 class CategoryEditActivityPresenter extends ModelEditActivityPresenter<Category> implements TextWatcher, View.OnClickListener {
-    private View transactionTypeContainerView;
+    private ImageView colorImageView;
     private ImageView transactionTypeImageView;
+    private TextView transactionTypeTextView;
     private EditText titleEditText;
+
     private TransactionType transactionType;
     private Integer color;
     private String title;
@@ -37,34 +40,45 @@ class CategoryEditActivityPresenter extends ModelEditActivityPresenter<Category>
     @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
         super.onActivityCreated(activity, savedInstanceState);
 
-        transactionTypeContainerView = findView(activity, R.id.transactionTypeContainerView);
+        final View colorContainerView = findView(activity, R.id.colorContainerView);
+        final View transactionTypeContainerView = findView(activity, R.id.transactionTypeContainerView);
+        final View transactionTypeDividerView = findView(activity, R.id.transactionTypeDividerView);
+        colorImageView = findView(activity, R.id.colorImageView);
         transactionTypeImageView = findView(activity, R.id.transactionTypeImageView);
+        transactionTypeTextView = findView(activity, R.id.transactionTypeTextView);
         titleEditText = findView(activity, R.id.titleEditText);
 
         titleEditText.addTextChangedListener(this);
+        colorContainerView.setOnClickListener(this);
         transactionTypeContainerView.setOnClickListener(this);
         if (!isNewModel()) {
             transactionTypeContainerView.setVisibility(View.GONE);
+            transactionTypeDividerView.setVisibility(View.GONE);
         }
     }
 
     @Override protected void onDataChanged(Category storedModel) {
         titleEditText.setText(getTitle());
         titleEditText.setSelection(titleEditText.getText().length());
+        colorImageView.setColorFilter(getColor());
 
         final int color;
+        final String transactionTypeTitle;
         final TransactionType transactionType = getTransactionType();
         switch (transactionType) {
             case Expense:
-                color = ThemeUtils.getColor(transactionTypeImageView.getContext(), R.attr.textColorNegative);
+                color = ThemeUtils.getColor(transactionTypeTextView.getContext(), R.attr.textColorNegative);
+                transactionTypeTitle = transactionTypeTextView.getContext().getString(R.string.expense);
                 break;
             case Income:
-                color = ThemeUtils.getColor(transactionTypeImageView.getContext(), R.attr.textColorPositive);
+                color = ThemeUtils.getColor(transactionTypeTextView.getContext(), R.attr.textColorPositive);
+                transactionTypeTitle = transactionTypeTextView.getContext().getString(R.string.income);
                 break;
             default:
                 throw new IllegalArgumentException("Transaction type " + transactionType + " is not supported.");
         }
         transactionTypeImageView.setColorFilter(color);
+        transactionTypeTextView.setText(transactionTypeTitle);
     }
 
     @Override protected boolean onSave() {
@@ -109,8 +123,7 @@ class CategoryEditActivityPresenter extends ModelEditActivityPresenter<Category>
 
     @Override public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.colorButton:
-//                ensureModelUpdated(model);
+            case R.id.colorContainerView:
 //                SelectColorFragment.show(getSupportFragmentManager(), FRAGMENT_SELECT_COLOR, model.getColor(), this);
                 break;
             case R.id.transactionTypeContainerView:
@@ -144,7 +157,7 @@ class CategoryEditActivityPresenter extends ModelEditActivityPresenter<Category>
             return getStoredModel().getColor();
         }
 
-        return ThemeUtils.getColor(titleEditText.getContext(), getTransactionType() == TransactionType.Expense ? R.attr.textColorNegative : R.attr.textColorNegative);
+        return ThemeUtils.getColor(titleEditText.getContext(), getTransactionType() == TransactionType.Expense ? R.attr.textColorNegative : R.attr.textColorPositive);
     }
 
     private String getTitle() {
