@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.util.Pair;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code44.finance.R;
@@ -26,6 +27,7 @@ class CategoryActivityPresenter extends ModelActivityPresenter<Category> {
 
     private CategoryTrendsChartPresenter categoryTrendsChartPresenter;
     private TextView titleTextView;
+    private ImageView colorImageView;
 
     public CategoryActivityPresenter(EventBus eventBus, BaseInterval interval, Currency mainCurrency) {
         super(eventBus);
@@ -36,6 +38,7 @@ class CategoryActivityPresenter extends ModelActivityPresenter<Category> {
     @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
         super.onActivityCreated(activity, savedInstanceState);
         titleTextView = findView(activity, R.id.titleTextView);
+        colorImageView = findView(activity, R.id.colorImageView);
 
         final TrendsChartView trendsChartView = findView(activity, R.id.trendsChartView);
         categoryTrendsChartPresenter = new CategoryTrendsChartPresenter(trendsChartView, mainCurrency, activity.getSupportLoaderManager(), interval);
@@ -51,6 +54,7 @@ class CategoryActivityPresenter extends ModelActivityPresenter<Category> {
 
     @Override protected void onModelLoaded(Category model) {
         titleTextView.setText(model.getTitle());
+        colorImageView.setColorFilter(model.getColor());
         categoryTrendsChartPresenter.setCategoryAndInterval(model, interval);
     }
 

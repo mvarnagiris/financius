@@ -8,22 +8,53 @@
 
     <include layout="@layout/toolbar" />
 
-    <me.grantland.widget.AutofitTextView
-        android:id="@+id/titleTextView"
-        style="@style/Text.Display2"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/action_bar_size_2x"
+        android:layout_height="wrap_content"
         android:background="?colorPrimary"
         android:elevation="@dimen/elevation_header"
         android:gravity="center_vertical"
-        android:paddingBottom="@dimen/keyline"
-        android:paddingLeft="@dimen/keyline_content"
-        android:paddingRight="@dimen/keyline"
-        android:paddingTop="@dimen/keyline"
-        android:singleLine="true"
-        android:textColor="?android:textColorPrimaryInverse"
-        tools:ignore="RtlHardcoded,UnusedAttribute"
-        tools:text="Food" />
+        tools:ignore="UnusedAttribute">
+
+        <FrameLayout
+            android:layout_width="@dimen/action_item"
+            android:layout_height="@dimen/action_item"
+            android:layout_marginLeft="@dimen/keyline"
+            android:layout_marginRight="@dimen/action_item_to_keyline_content"
+            tools:ignore="RtlHardcoded">
+
+            <com.code44.finance.ui.common.views.TintImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/circle"
+                app:supportTintColor="?backgroundColorPrimary"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/colorImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/action_item_padding"
+                android:src="@drawable/circle"
+                tools:ignore="ContentDescription" />
+
+        </FrameLayout>
+
+        <me.grantland.widget.AutofitTextView
+            android:id="@+id/titleTextView"
+            style="@style/Text.Display2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_size_2x"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/keyline"
+            android:paddingRight="@dimen/keyline"
+            android:paddingTop="@dimen/keyline"
+            android:singleLine="true"
+            android:textColor="?android:textColorPrimaryInverse"
+            tools:ignore="RtlHardcoded,RtlSymmetry"
+            tools:text="Food" />
+
+    </LinearLayout>
 
     <ScrollView style="@style/ScrollView">
 
