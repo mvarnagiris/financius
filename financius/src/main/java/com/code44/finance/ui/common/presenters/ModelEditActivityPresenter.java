@@ -14,8 +14,6 @@ import com.code44.finance.ui.common.BaseActivity;
 import com.code44.finance.utils.EventBus;
 
 public abstract class ModelEditActivityPresenter<M extends Model> extends ModelActivityPresenter<M> {
-    private M storedModel;
-
     public ModelEditActivityPresenter(EventBus eventBus) {
         super(eventBus);
     }
@@ -54,7 +52,6 @@ public abstract class ModelEditActivityPresenter<M extends Model> extends ModelA
     }
 
     @Override protected void onModelLoaded(M model) {
-        storedModel = model;
         onDataChanged(model);
     }
 
@@ -67,10 +64,6 @@ public abstract class ModelEditActivityPresenter<M extends Model> extends ModelA
 
     @Override protected Pair<String, String[]> getDeleteSelection(String modelId) {
         return null;
-    }
-
-    protected M getStoredModel() {
-        return storedModel;
     }
 
     protected abstract void onDataChanged(M storedModel);

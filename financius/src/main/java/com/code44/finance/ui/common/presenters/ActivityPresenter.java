@@ -38,6 +38,10 @@ public class ActivityPresenter extends Presenter {
         return false;
     }
 
+    public boolean onActivityPrepareOptionsMenu(BaseActivity activity, Menu menu) {
+        return false;
+    }
+
     public boolean onActivityOptionsItemSelected(BaseActivity activity, MenuItem item) {
         return false;
     }

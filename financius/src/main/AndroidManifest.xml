@@ -48,7 +48,7 @@
             android:name=".ui.currencies.list.CurrenciesActivity"
             android:label="@string/currencies_other" />
         <activity
-            android:name=".ui.currencies.CurrencyActivity"
+            android:name=".ui.currencies.detail.CurrencyActivity"
             android:label="@string/currencies_one" />
         <activity
             android:name=".ui.currencies.CurrencyEditActivity"

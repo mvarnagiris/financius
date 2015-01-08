@@ -1,91 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@id/swipeRefreshLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-
-    <me.grantland.widget.AutofitTextView
-        android:id="@+id/codeTextView"
-        style="@style/Text.Display2"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/action_bar_size_2x"
-        android:layout_below="@+id/toolbar"
-        android:background="?colorPrimary"
-        android:elevation="@dimen/elevation_header"
-        android:gravity="center_vertical"
-        android:paddingBottom="@dimen/keyline"
-        android:paddingLeft="@dimen/keyline_content"
-        android:paddingRight="@dimen/keyline"
-        android:paddingTop="@dimen/keyline"
-        android:singleLine="true"
-        android:textColor="?android:textColorPrimaryInverse"
-        tools:ignore="RtlHardcoded,UnusedAttribute"
-        tools:text="GBP" />
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/subHeaderContainerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/codeTextView"
-        android:background="?backgroundColorPrimary"
-        android:elevation="@dimen/elevation_sub_header"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/space_xlarge"
-        android:paddingLeft="@dimen/keyline"
-        android:paddingRight="@dimen/keyline"
-        android:paddingTop="@dimen/space_xlarge"
-        tools:ignore="UnusedAttribute">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/formatTextView"
-            style="@style/Text.Headline"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            tools:text="1,000.00 £" />
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
 
-        <TextView
-            android:id="@+id/exchangeRateTextView"
-            style="@style/Text.Headline"
-            android:layout_width="wrap_content"
+        <me.grantland.widget.AutofitTextView
+            android:id="@+id/codeTextView"
+            style="@style/Text.Display2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_size_2x"
+            android:background="?colorPrimary"
+            android:elevation="@dimen/elevation_header"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/keyline"
+            android:paddingLeft="@dimen/keyline_content"
+            android:paddingRight="@dimen/keyline"
+            android:paddingTop="@dimen/keyline"
+            android:singleLine="true"
+            android:textColor="?android:textColorPrimaryInverse"
+            tools:ignore="RtlHardcoded,UnusedAttribute"
+            tools:text="GBP" />
+
+        <LinearLayout
+            android:id="@+id/subHeaderContainerView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/space_normal"
-            android:gravity="right"
-            tools:ignore="RtlHardcoded"
-            tools:text="1.2489" />
+            android:background="?backgroundColorPrimary"
+            android:clipToPadding="false"
+            android:elevation="@dimen/elevation_sub_header"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/space_xlarge"
+            android:paddingLeft="@dimen/keyline"
+            android:paddingRight="@dimen/keyline"
+            android:paddingTop="@dimen/space_xlarge"
+            tools:ignore="UnusedAttribute">
+
+            <com.code44.finance.views.FabImageButton
+                android:id="@+id/refreshRateButton"
+                android:layout_width="@dimen/btn_fab_small"
+                android:layout_height="@dimen/btn_fab_small"
+                android:layout_marginRight="@dimen/keyline"
+                android:elevation="@dimen/elevation_fab"
+                android:src="@drawable/ic_action_refresh"
+                tools:ignore="RtlHardcoded,UnusedAttribute" />
+
+            <TextView
+                android:id="@+id/exchangeRateTextView"
+                style="@style/Text.Headline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:ignore="RtlHardcoded"
+                tools:text="1.2489" />
+
+            <TextView
+                android:id="@+id/formatTextView"
+                style="@style/Text.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_normal"
+                tools:ignore="RtlHardcoded"
+                tools:text="1,000.00 £" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listView"
+            style="@style/AdapterView" />
 
     </LinearLayout>
-
-    <com.code44.finance.views.FabImageButton
-        android:id="@+id/refreshRateButton"
-        android:layout_width="@dimen/btn_fab_small"
-        android:layout_height="@dimen/btn_fab_small"
-        android:layout_alignBottom="@+id/codeTextView"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/btn_fab_small_half_negative"
-        android:layout_marginRight="@dimen/keyline"
-        android:elevation="@dimen/elevation_fab"
-        android:src="@drawable/ic_action_refresh"
-        tools:ignore="RtlHardcoded,UnusedAttribute" />
-
-    <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
-        android:id="@+id/loadingView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/progress_bar_height"
-        android:layout_below="@+id/codeTextView"
-        android:elevation="@dimen/elevation_sub_header"
-        android:indeterminate="true"
-        android:visibility="invisible"
-        tools:ignore="UnusedAttribute" />
-
-    <ListView
-        android:id="@+id/listView"
-        style="@style/AdapterView"
-        android:layout_below="@+id/subHeaderContainerView" />
-
-</RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

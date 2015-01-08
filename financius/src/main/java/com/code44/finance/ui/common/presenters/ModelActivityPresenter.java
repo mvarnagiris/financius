@@ -40,6 +40,7 @@ public abstract class ModelActivityPresenter<M extends Model> extends ActivityPr
     };
 
     private String modelId;
+    private M storedModel;
 
     protected ModelActivityPresenter(EventBus eventBus) {
         this.eventBus = eventBus;
@@ -99,8 +100,8 @@ public abstract class ModelActivityPresenter<M extends Model> extends ActivityPr
 
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == LOADER_MODEL && data.moveToFirst()) {
-            final M model = getModelFrom(data);
-            onModelLoaded(model);
+            storedModel = getModelFrom(data);
+            onModelLoaded(storedModel);
         }
     }
 
@@ -125,5 +126,9 @@ public abstract class ModelActivityPresenter<M extends Model> extends ActivityPr
 
     protected String getModelId() {
         return modelId;
+    }
+
+    protected M getStoredModel() {
+        return storedModel;
     }
 }
