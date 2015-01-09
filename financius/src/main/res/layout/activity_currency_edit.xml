@@ -22,137 +22,114 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/action_bar_size_2x"
                 android:background="?colorPrimary"
                 android:baselineAligned="false"
                 android:elevation="@dimen/elevation_header"
+                android:gravity="center_vertical"
                 android:padding="@dimen/keyline"
                 tools:ignore="UnusedAttribute">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/space_small"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    tools:ignore="RtlHardcoded">
-
-                    <TextView
-                        android:id="@+id/codeTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:labelFor="@+id/codeEditTextView"
-                        android:paddingLeft="4dp"
-                        android:paddingRight="4dp"
-                        android:text="@string/currency_code"
-                        android:textAppearance="@style/Text.Caption"
-                        android:textColor="?android:textColorPrimaryInverse" />
-
-                    <AutoCompleteTextView
-                        android:id="@+id/codeEditTextView"
-                        style="@style/EditText.Large"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?editTextBackground"
-                        android:contentDescription="@string/currency_code"
-                        android:inputType="textCapCharacters"
-                        android:maxLength="3"
-                        android:textAllCaps="true"
-                        android:textColor="?android:textColorPrimaryInverse"
-                        tools:text="USD" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/space_small"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    tools:ignore="RtlHardcoded">
-
-                    <TextView
-                        android:id="@+id/symbolTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:labelFor="@+id/symbolEditTextView"
-                        android:paddingLeft="4dp"
-                        android:paddingRight="4dp"
-                        android:text="@string/symbol"
-                        android:textAppearance="@style/Text.Caption"
-                        android:textColor="?android:textColorPrimaryInverse" />
-
-                    <EditText
-                        android:id="@+id/symbolEditTextView"
-                        style="@style/EditText.Large"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/symbol"
-                        android:inputType="textCapWords"
-                        android:textColor="?android:textColorPrimaryInverse"
-                        tools:text="$" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/keyline"
-                android:layout_marginRight="@dimen/keyline"
-                android:layout_marginTop="@dimen/space_normal">
-
                 <TextView
+                    android:id="@+id/codeTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/space_small"
+                    android:layout_marginRight="@dimen/space_normal"
                     android:layout_weight="1"
-                    android:paddingLeft="12dp"
-                    android:text="@string/symbol_position"
-                    android:textAppearance="@style/Text.Caption"
-                    tools:ignore="RtlHardcoded" />
-
-                <Button
-                    android:id="@+id/symbolPositionButton"
-                    style="@style/Button.Borderless.Select"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/space_small"
-                    android:layout_weight="1"
-                    android:textColor="?colorPrimary"
+                    android:labelFor="@+id/codeEditTextView"
+                    android:textAppearance="@style/Text.Display2"
+                    android:textColor="?android:textColorPrimaryInverse"
+                    android:visibility="gone"
                     tools:ignore="RtlHardcoded"
-                    tools:stateListAnimator="@android:animator/fade_in"
-                    tools:text="1,000.00 $" />
+                    tools:text="GBP" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/codeEditTextView"
+                    style="@style/EditText.Large"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/space_normal"
+                    android:layout_weight="1"
+                    android:background="?editTextBackground"
+                    android:contentDescription="@string/currency_code"
+                    android:inputType="textCapCharacters"
+                    android:maxLength="3"
+                    android:textAllCaps="true"
+                    android:textColor="?android:textColorPrimaryInverse"
+                    tools:ignore="RtlHardcoded"
+                    tools:text="USD" />
+
+                <EditText
+                    android:id="@+id/symbolEditTextView"
+                    style="@style/EditText.Large"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_normal"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/symbol"
+                    android:inputType="textCapWords"
+                    android:textColor="?android:textColorPrimaryInverse"
+                    tools:ignore="RtlHardcoded"
+                    tools:text="$" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/symbolPositionButton"
+                style="@style/Button.Borderless.Bounded.Select"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_content"
+                android:layout_marginRight="@dimen/keyline"
+                android:layout_marginTop="@dimen/space_large"
+                tools:ignore="RtlHardcoded"
+                tools:text="1,000.00 $" />
+
+            <View
+                style="@style/Divider.Thick"
+                android:layout_marginLeft="@dimen/keyline_content"
+                tools:ignore="RtlHardcoded" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <Space
+                    android:layout_width="@dimen/space_normal"
+                    android:layout_height="match_parent" />
+
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/keyline"
-                android:layout_marginRight="@dimen/keyline"
-                android:layout_marginTop="@dimen/space_normal">
+                android:layout_marginTop="@dimen/space_normal"
+                android:paddingLeft="@dimen/keyline"
+                android:paddingRight="@dimen/keyline">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/space_small"
                     android:layout_weight="1"
-                    android:paddingLeft="12dp"
                     android:text="@string/thousands_separator"
-                    android:textAppearance="@style/Text.Caption"
-                    tools:ignore="RtlHardcoded" />
+                    android:textAppearance="@style/Text.Caption" />
+
+                <Space
+                    android:layout_width="@dimen/space_normal"
+                    android:layout_height="match_parent" />
 
                 <Button
                     android:id="@+id/thousandsSeparatorButton"
-                    style="@style/Button.Borderless.Select"
+                    style="@style/Button.Borderless.Bounded.Select"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/space_small"
                     android:layout_weight="1"
-                    tools:ignore="RtlHardcoded"
-                    tools:stateListAnimator="@android:animator/fade_in"
                     tools:text="Comma" />
 
             </LinearLayout>
@@ -160,16 +137,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/keyline"
-                android:layout_marginRight="@dimen/keyline"
-                android:layout_marginTop="@dimen/space_normal">
+                android:layout_marginTop="@dimen/space_normal"
+                android:paddingLeft="@dimen/keyline"
+                android:paddingRight="@dimen/keyline">
 
-                <TextView
+            <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/space_small"
                     android:layout_weight="1"
-                    android:paddingLeft="12dp"
                     android:text="@string/decimal_separator"
                     android:textAppearance="@style/Text.Caption"
                     tools:ignore="RtlHardcoded" />

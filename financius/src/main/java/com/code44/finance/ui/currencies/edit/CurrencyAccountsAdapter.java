@@ -1,4 +1,4 @@
-package com.code44.finance.ui.currencies;
+package com.code44.finance.ui.currencies.edit;
 
 import android.content.Context;
 import android.database.Cursor;

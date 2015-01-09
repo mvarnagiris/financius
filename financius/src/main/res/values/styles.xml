@@ -47,7 +47,7 @@
     <style name="EditText" parent="Widget.AppCompat.EditText" />
 
     <style name="EditText.Large">
-        <item name="android:textAppearance">@style/Text.Display1</item>
+        <item name="android:textAppearance">@style/Text.Display2</item>
     </style>
 
     <!-- CheckBox -->
