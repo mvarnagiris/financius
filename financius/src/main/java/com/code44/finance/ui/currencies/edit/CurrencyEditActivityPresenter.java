@@ -371,7 +371,6 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
 
         return "";
     }
-
     private SymbolPosition getSymbolPosition() {
         if (symbolPosition != null) {
             return symbolPosition;
@@ -383,6 +382,7 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
 
         return SymbolPosition.FarRight;
     }
+
 
     private GroupSeparator getGroupSeparator() {
         if (groupSeparator != null) {
