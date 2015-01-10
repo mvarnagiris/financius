@@ -40,10 +40,15 @@ import java.util.Locale;
 import java.util.Set;
 
 class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+    public static final String STATE_CODE = "STATE_CODE";
+    public static final String STATE_SYMBOL = "STATE_SYMBOL";
+    public static final String STATE_SYMBOL_POSITION = "STATE_SYMBOL_POSITION";
+    public static final String STATE_GROUP_SEPARATOR = "STATE_GROUP_SEPARATOR";
+    public static final String STATE_DECIMAL_SEPARATOR = "STATE_DECIMAL_SEPARATOR";
+    public static final String STATE_DECIMAL_COUNT = "STATE_DECIMAL_COUNT";
+    public static final String STATE_IS_DEFAULT = "STATE_IS_DEFAULT";
+    public static final String STATE_EXCHANGE_RATE = "STATE_EXCHANGE_RATE";
     private static final int LOADER_CURRENCIES = 1;
-
-    // TODO Save state
-
     private final Set<String> existingCurrencyCodes = new HashSet<>();
     private final CurrenciesApi currenciesApi;
     private final Currency mainCurrency;
@@ -161,6 +166,22 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
             mainCurrencyContainerView.setVisibility(View.GONE);
         }
 
+        // Restore state
+        if (savedInstanceState != null) {
+            code = savedInstanceState.getString(STATE_CODE);
+            symbol = savedInstanceState.getString(STATE_SYMBOL);
+            symbolPosition = (SymbolPosition) savedInstanceState.getSerializable(STATE_SYMBOL_POSITION);
+            groupSeparator = (GroupSeparator) savedInstanceState.getSerializable(STATE_GROUP_SEPARATOR);
+            decimalSeparator = (DecimalSeparator) savedInstanceState.getSerializable(STATE_DECIMAL_SEPARATOR);
+            decimalCount = savedInstanceState.getInt(STATE_DECIMAL_COUNT, -1);
+            if (decimalCount == -1) {
+                decimalCount = null;
+            }
+            isDefault = savedInstanceState.getInt(STATE_IS_DEFAULT, -1) == -1 ? null : savedInstanceState.getInt(STATE_IS_DEFAULT, 0) == 1;
+            exchangeRate = savedInstanceState.getDouble(STATE_EXCHANGE_RATE, -1) < 0 ? null : savedInstanceState.getDouble(STATE_EXCHANGE_RATE, 1);
+            onDataChanged(getStoredModel());
+        }
+
         activity.getSupportLoaderManager().initLoader(LOADER_CURRENCIES, null, this);
     }
 
@@ -172,6 +193,18 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
     @Override public void onActivityPaused(BaseActivity activity) {
         super.onActivityPaused(activity);
         getEventBus().unregister(this);
+    }
+
+    @Override public void onActivitySaveInstanceState(BaseActivity activity, Bundle outState) {
+        super.onActivitySaveInstanceState(activity, outState);
+        outState.putString(STATE_CODE, code);
+        outState.putString(STATE_SYMBOL, symbol);
+        outState.putSerializable(STATE_SYMBOL_POSITION, symbolPosition);
+        outState.putSerializable(STATE_GROUP_SEPARATOR, groupSeparator);
+        outState.putSerializable(STATE_DECIMAL_SEPARATOR, decimalSeparator);
+        outState.putInt(STATE_DECIMAL_COUNT, decimalCount == null ? -1 : decimalCount);
+        outState.putInt(STATE_IS_DEFAULT, isDefault == null ? -1 : isDefault ? 1 : 0);
+        outState.putDouble(STATE_EXCHANGE_RATE, exchangeRate == null ? -1 : exchangeRate);
     }
 
     @Override protected void onDataChanged(Currency model) {
@@ -371,6 +404,7 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
 
         return "";
     }
+
     private SymbolPosition getSymbolPosition() {
         if (symbolPosition != null) {
             return symbolPosition;
