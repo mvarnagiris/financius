@@ -125,6 +125,7 @@
 
     <string name="l_refresh_rates_daily">Refresh rates every day</string>
     <string name="l_currency_exists">This currency already exists</string>
+    <string name="l_please_enter_currency_code">Please enter currency code</string>
     <string name="l_delete_short">DEL</string>
     <string name="l_delete_confirmation">Are you sure you want to delete?</string>
     <string name="l_about_new_issue">Issues &amp; feature requests. Read the README first.</string>

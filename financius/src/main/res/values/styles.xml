@@ -56,6 +56,7 @@
     <style name="CheckBox" />
 
     <style name="CheckBox.Field">
+        <item name="android:paddingLeft">@dimen/keyline</item>
         <item name="android:textAppearance">@style/Text.Subhead</item>
     </style>
 

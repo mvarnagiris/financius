@@ -1,4 +1,4 @@
-package com.code44.finance.ui.currencies.edit;
+package com.code44.finance.ui.currencies.detail;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -20,7 +20,7 @@ import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.utils.ThemeUtils;
 
-public class CurrencyAccountsAdapter extends BaseModelsAdapter {
+class CurrencyAccountsAdapter extends BaseModelsAdapter {
     private final int textBrandColor;
 
     private Currency currency;

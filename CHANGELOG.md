@@ -12,6 +12,8 @@
 - ```new``` When selecting category color you can now choose from predefined list or pick a color manually.
 - ```new``` Updated currencies list page UI.
 - ```new``` Updated currency detail page UI.
+- ```new``` Updated currency edit page UI.
+- ```new``` Currencies list has pull to refresh.
 - ```fix``` Unnoticeable UI improvements to pie chart.
 - ```fix``` Updated separator UI, no longer too white on older versions of Android.
 
