@@ -10,7 +10,7 @@ import android.widget.Button;
 
 import com.code44.finance.R;
 import com.code44.finance.data.model.Model;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.utils.EventBus;
 
 public abstract class ModelEditActivityPresenter<M extends Model> extends ModelActivityPresenter<M> {

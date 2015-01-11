@@ -25,7 +25,7 @@ class TagsAdapter extends ModelsAdapter<Tag> {
         return Tag.from(cursor);
     }
 
-    private static class ViewHolder extends ModelsAdapter.ViewHolder<Tag> {
+    private static class ViewHolder extends ModelViewHolder<Tag> {
         private final CheckBox selectCheckBox;
         private final TextView titleTextView;
 

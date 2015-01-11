@@ -11,7 +11,7 @@ import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class ModelsAdapter<M extends Model> extends RecyclerView.Adapter<ModelsAdapter.ViewHolder<M>> {
+public abstract class ModelsAdapter<M extends Model> extends RecyclerView.Adapter<ModelsAdapter.ModelViewHolder<M>> {
     private final Set<M> selectedModels = new HashSet<>();
     private final OnModelClickListener<M> onModelClickListener;
 
@@ -26,13 +26,13 @@ public abstract class ModelsAdapter<M extends Model> extends RecyclerView.Adapte
         return cursor == null ? 0 : cursor.getCount();
     }
 
-    @Override public ViewHolder<M> onCreateViewHolder(ViewGroup parent, int viewType) {
-        final ViewHolder<M> viewHolder = createModelViewHolder(parent, viewType);
-        viewHolder.setOnModelClickListener(onModelClickListener);
-        return viewHolder;
+    @Override public ModelViewHolder<M> onCreateViewHolder(ViewGroup parent, int viewType) {
+        final ModelViewHolder<M> modelViewHolder = createModelViewHolder(parent, viewType);
+        modelViewHolder.setOnModelClickListener(onModelClickListener);
+        return modelViewHolder;
     }
 
-    @Override public void onBindViewHolder(ViewHolder<M> holder, int position) {
+    @Override public void onBindViewHolder(ModelViewHolder<M> holder, int position) {
         cursor.moveToPosition(position);
         final M model = modelFromCursor(cursor);
         holder.bindViewHolder(model, cursor, position, mode, mode != ModelsActivityPresenter.Mode.View && selectedModels.contains(model));
@@ -74,7 +74,7 @@ public abstract class ModelsAdapter<M extends Model> extends RecyclerView.Adapte
         notifyDataSetChanged();
     }
 
-    protected abstract ViewHolder<M> createModelViewHolder(ViewGroup parent, int viewType);
+    protected abstract ModelViewHolder<M> createModelViewHolder(ViewGroup parent, int viewType);
 
     protected abstract M modelFromCursor(Cursor cursor);
 
@@ -82,7 +82,7 @@ public abstract class ModelsAdapter<M extends Model> extends RecyclerView.Adapte
         public void onModelClick(View view, M model, Cursor cursor, int position, ModelsActivityPresenter.Mode mode, boolean isSelected);
     }
 
-    public static abstract class ViewHolder<M extends Model> extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static abstract class ModelViewHolder<M extends Model> extends RecyclerView.ViewHolder implements View.OnClickListener {
         private OnModelClickListener<M> onModelClickListener;
 
         private M model;
@@ -91,7 +91,7 @@ public abstract class ModelsAdapter<M extends Model> extends RecyclerView.Adapte
         private ModelsActivityPresenter.Mode mode;
         private boolean isSelected;
 
-        public ViewHolder(View itemView) {
+        public ModelViewHolder(View itemView) {
             super(itemView);
         }
 

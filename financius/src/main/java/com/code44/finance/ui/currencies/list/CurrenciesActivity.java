@@ -9,7 +9,7 @@ import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.qualifiers.Main;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ActivityPresenter;
 import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.analytics.Analytics;

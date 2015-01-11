@@ -19,7 +19,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.ui.SelectColorFragment;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelEditActivityPresenter;
 import com.code44.finance.ui.dialogs.ColorDialogFragment;
 import com.code44.finance.ui.dialogs.ListDialogFragment;

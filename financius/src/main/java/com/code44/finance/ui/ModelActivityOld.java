@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.code44.finance.R;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.dialogs.DeleteDialogFragment;
 import com.squareup.otto.Subscribe;
 

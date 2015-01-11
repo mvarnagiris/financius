@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 
 public class CalculatorActivity extends BaseActivity implements CalculatorFragment.CalculatorListener {
     public static final String RESULT_EXTRA_RESULT = "RESULT_EXTRA_RESULT";

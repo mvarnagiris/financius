@@ -1,4 +1,4 @@
-package com.code44.finance.ui.common;
+package com.code44.finance.ui.common.activities;
 
 import android.app.Activity;
 import android.content.Context;

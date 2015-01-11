@@ -16,7 +16,7 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
-import com.code44.finance.ui.DrawerActivity;
+import com.code44.finance.ui.common.activities.BaseDrawerActivity;
 import com.code44.finance.ui.common.navigation.NavigationScreen;
 import com.code44.finance.ui.reports.categories.CategoriesReportData;
 import com.code44.finance.ui.reports.trends.DefaultTrendsChartPresenter;
@@ -34,7 +34,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class OverviewActivity extends DrawerActivity implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
+public class OverviewActivity extends BaseDrawerActivity implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
     private static final int LOADER_TRANSACTIONS = 1;
     private static final int LOADER_ACCOUNTS = 2;
 

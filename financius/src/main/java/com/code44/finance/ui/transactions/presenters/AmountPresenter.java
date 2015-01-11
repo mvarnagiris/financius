@@ -7,7 +7,7 @@ import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Currency;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.Presenter;
 import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.ThemeUtils;

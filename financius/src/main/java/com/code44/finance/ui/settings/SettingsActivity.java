@@ -10,8 +10,8 @@ import android.widget.ListView;
 
 import com.code44.finance.R;
 import com.code44.finance.adapters.SettingsAdapter;
-import com.code44.finance.ui.DrawerActivity;
 import com.code44.finance.ui.categories.list.CategoriesActivity;
+import com.code44.finance.ui.common.activities.BaseDrawerActivity;
 import com.code44.finance.ui.common.navigation.NavigationScreen;
 import com.code44.finance.ui.currencies.list.CurrenciesActivity;
 import com.code44.finance.ui.dialogs.ListDialogFragment;
@@ -33,7 +33,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class SettingsActivity extends DrawerActivity implements AdapterView.OnItemClickListener {
+public class SettingsActivity extends BaseDrawerActivity implements AdapterView.OnItemClickListener {
     private static final int REQUEST_INTERVAL = 98527;
     private static final int REQUEST_UNLOCK = 2351;
     private static final int REQUEST_LOCK = 49542;

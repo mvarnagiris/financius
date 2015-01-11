@@ -40,7 +40,7 @@ class CategoriesAdapter extends ModelsAdapter<Category> implements SectionsDecor
         headerViewHolder.titleTextView.setText(viewHolder.getModel().getTransactionType() == TransactionType.Expense ? R.string.expenses : R.string.incomes);
     }
 
-    static class ViewHolder extends ModelsAdapter.ViewHolder<Category> {
+    static class ViewHolder extends ModelViewHolder<Category> {
         private final ImageView colorImageView;
         private final TextView titleTextView;
 

@@ -5,7 +5,7 @@ import android.widget.ImageView;
 
 import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.Presenter;
 import com.code44.finance.utils.ThemeUtils;
 

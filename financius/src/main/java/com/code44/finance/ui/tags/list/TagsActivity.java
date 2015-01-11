@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import com.code44.finance.R;
 import com.code44.finance.data.model.Tag;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ActivityPresenter;
 import com.code44.finance.utils.analytics.Analytics;
 

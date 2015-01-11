@@ -5,7 +5,7 @@ import com.code44.finance.ui.CalculatorFragment;
 import com.code44.finance.ui.SplashActivity;
 import com.code44.finance.ui.accounts.AccountActivity;
 import com.code44.finance.ui.accounts.AccountEditActivity;
-import com.code44.finance.ui.accounts.AccountsActivity;
+import com.code44.finance.ui.accounts.list.AccountsActivity;
 import com.code44.finance.ui.categories.detail.CategoryActivity;
 import com.code44.finance.ui.categories.edit.CategoryEditActivity;
 import com.code44.finance.ui.categories.list.CategoriesActivity;

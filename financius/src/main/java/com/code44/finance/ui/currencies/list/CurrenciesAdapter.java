@@ -26,7 +26,7 @@ class CurrenciesAdapter extends ModelsAdapter<Currency> {
         return Currency.from(cursor);
     }
 
-    private static class ViewHolder extends ModelsAdapter.ViewHolder<Currency> {
+    private static class ViewHolder extends ModelViewHolder<Currency> {
         public final TextView codeTextView;
         public final TextView formatTextView;
         public final TextView exchangeRateTextView;

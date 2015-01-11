@@ -18,7 +18,7 @@ import com.code44.finance.api.currencies.ExchangeRatesRequest;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 import com.code44.finance.ui.currencies.detail.CurrencyActivity;

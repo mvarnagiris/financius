@@ -14,8 +14,10 @@
 - ```new``` Updated currency detail page UI.
 - ```new``` Updated currency edit page UI.
 - ```new``` Currencies list has pull to refresh.
+- ```new``` Updated accounts list page UI.
 - ```fix``` Unnoticeable UI improvements to pie chart.
 - ```fix``` Updated separator UI, no longer too white on older versions of Android.
+- ```fix``` When selecting account, navigation drawer is no longer visible.
 
 ###Version: 0.17.1
 - ```fix``` Fixed a crash on older versions of Android when starting the app.

@@ -14,7 +14,7 @@ import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.providers.TagsProvider;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelEditActivityPresenter;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.ThemeUtils;

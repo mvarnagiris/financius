@@ -21,7 +21,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelActivityPresenter;
 import com.code44.finance.ui.currencies.edit.CurrencyEditActivity;
 import com.code44.finance.utils.EventBus;

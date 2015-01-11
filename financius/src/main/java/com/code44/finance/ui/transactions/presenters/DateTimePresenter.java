@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.code44.finance.R;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.Presenter;
 
 import net.danlew.android.joda.DateUtils;

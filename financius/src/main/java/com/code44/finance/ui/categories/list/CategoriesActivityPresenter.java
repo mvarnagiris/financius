@@ -15,7 +15,7 @@ import com.code44.finance.data.model.Category;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.ui.categories.detail.CategoryActivity;
 import com.code44.finance.ui.categories.edit.CategoryEditActivity;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 import com.code44.finance.ui.common.recycler.DividerDecoration;

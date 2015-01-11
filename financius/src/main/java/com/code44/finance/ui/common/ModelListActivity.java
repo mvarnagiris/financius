@@ -17,7 +17,7 @@ import android.widget.ListView;
 
 import com.code44.finance.R;
 import com.code44.finance.data.model.Model;
-import com.code44.finance.ui.DrawerActivity;
+import com.code44.finance.ui.common.activities.BaseDrawerActivity;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class ModelListActivity extends DrawerActivity implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener, View.OnClickListener {
+public abstract class ModelListActivity extends BaseDrawerActivity implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener, View.OnClickListener {
     protected static final int LOADER_MODELS = 1245;
 
     private static final String RESULT_EXTRA_MODEL = "RESULT_EXTRA_MODEL";

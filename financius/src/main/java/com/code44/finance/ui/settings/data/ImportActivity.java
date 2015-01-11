@@ -14,7 +14,7 @@ import com.code44.finance.data.backup.DriveDataImporterRunnable;
 import com.code44.finance.data.db.DBHelper;
 import com.code44.finance.qualifiers.Local;
 import com.code44.finance.ui.FilePickerActivity;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.playservices.GoogleApiConnection;
 import com.code44.finance.ui.playservices.GoogleApiFragment;
 import com.code44.finance.utils.GeneralPrefs;

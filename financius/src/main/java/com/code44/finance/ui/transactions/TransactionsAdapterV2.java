@@ -37,7 +37,7 @@ public class TransactionsAdapterV2 extends ModelsAdapter<Transaction> {
         this.interval = interval;
     }
 
-    @Override public ModelsAdapter.ViewHolder<Transaction> createModelViewHolder(ViewGroup parent, int viewType) {
+    @Override public ModelViewHolder<Transaction> createModelViewHolder(ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.li_transaction, parent, false), mainCurrency, interval);
     }
 
@@ -45,7 +45,7 @@ public class TransactionsAdapterV2 extends ModelsAdapter<Transaction> {
         return Transaction.from(cursor);
     }
 
-    private class ViewHolder extends ModelsAdapter.ViewHolder<Transaction> {
+    private class ViewHolder extends ModelViewHolder<Transaction> {
         private static final String UNKNOWN_VALUE = "?";
         private static final String TRANSFER_SYMBOL = " → ";
 

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 
 import com.code44.finance.R;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 
 public class UnlockActivity extends BaseActivity implements LockView.OnPasswordEnteredListener {
     private static final String EXTRA_CLOSE_IF_NOT_VERIFIED = "EXTRA_CLOSE_IF_NOT_VERIFIED";

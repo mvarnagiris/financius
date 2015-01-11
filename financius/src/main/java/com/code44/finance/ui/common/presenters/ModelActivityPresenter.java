@@ -16,7 +16,7 @@ import com.code44.finance.R;
 import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.ui.ModelFragment;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.dialogs.DeleteDialogFragment;
 import com.code44.finance.utils.EventBus;
 import com.squareup.otto.Subscribe;

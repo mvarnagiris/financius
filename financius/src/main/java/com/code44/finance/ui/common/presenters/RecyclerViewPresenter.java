@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
 import com.code44.finance.R;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 
 public abstract class RecyclerViewPresenter<A extends RecyclerView.Adapter<?>> extends ActivityPresenter {
     private RecyclerView recyclerView;

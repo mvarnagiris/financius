@@ -1,4 +1,4 @@
-package com.code44.finance.ui;
+package com.code44.finance.ui.common.activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -13,8 +13,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import com.code44.finance.R;
-import com.code44.finance.ui.accounts.AccountsActivity;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.accounts.list.AccountsActivity;
 import com.code44.finance.ui.common.navigation.NavigationFragment;
 import com.code44.finance.ui.common.navigation.NavigationScreen;
 import com.code44.finance.ui.overview.OverviewActivity;
@@ -22,7 +21,7 @@ import com.code44.finance.ui.reports.categories.CategoriesReportActivity;
 import com.code44.finance.ui.settings.SettingsActivity;
 import com.code44.finance.ui.transactions.TransactionsActivity;
 
-public abstract class DrawerActivity extends BaseActivity implements NavigationFragment.NavigationListener {
+public abstract class BaseDrawerActivity extends BaseActivity implements NavigationFragment.NavigationListener {
     private static final int DRAWER_LAUNCH_DELAY = 250;
 
     private final Handler handler = new Handler();
@@ -34,8 +33,8 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
     private boolean showDrawer = false;
     private boolean showDrawerToggle = false;
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @Override protected void onCreateView(Bundle savedInstanceState) {
+        super.onCreateView(savedInstanceState);
         super.setContentView(R.layout.activity_drawer);
     }
 
@@ -154,8 +153,8 @@ public abstract class DrawerActivity extends BaseActivity implements NavigationF
 
         handler.postDelayed(new Runnable() {
             @Override public void run() {
-                startActivity(DrawerActivity.this, intent);
-                if (!(DrawerActivity.this instanceof OverviewActivity)) {
+                startActivity(BaseDrawerActivity.this, intent);
+                if (!(BaseDrawerActivity.this instanceof OverviewActivity)) {
                     finish();
                 }
             }

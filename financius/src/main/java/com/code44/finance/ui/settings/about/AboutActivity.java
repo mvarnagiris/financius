@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.code44.finance.BuildConfig;
 import com.code44.finance.R;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.utils.analytics.Analytics;
 
 import net.danlew.android.joda.DateUtils;

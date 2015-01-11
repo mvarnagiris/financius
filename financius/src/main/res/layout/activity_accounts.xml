@@ -7,8 +7,8 @@
 
     <include layout="@layout/toolbar" />
 
-    <ListView
-        android:id="@+id/listView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         style="@style/AdapterView"
         android:layout_height="0dp"
         android:layout_weight="1" />

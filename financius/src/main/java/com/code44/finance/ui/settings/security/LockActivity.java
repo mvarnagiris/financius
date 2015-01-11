@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.ui.common.BaseActivity;
+import com.code44.finance.ui.common.activities.BaseActivity;
 
 public class LockActivity extends BaseActivity implements LockView.OnPasswordEnteredListener {
     private static final String EXTRA_SECURITY_TYPE = "EXTRA_SECURITY_TYPE";
