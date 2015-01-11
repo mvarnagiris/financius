@@ -100,7 +100,6 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
         final ImageView refreshRateImageView = findView(activity, R.id.refreshRateImageView);
 
         // Setup
-        prepareCurrenciesAutoComplete();
         symbolPositionButton.setOnClickListener(this);
         groupSeparatorButton.setOnClickListener(this);
         decimalSeparatorButton.setOnClickListener(this);
@@ -182,7 +181,10 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
             onDataChanged(getStoredModel());
         }
 
-        activity.getSupportLoaderManager().initLoader(LOADER_CURRENCIES, null, this);
+        if (isNewModel()) {
+            prepareCurrenciesAutoComplete();
+            activity.getSupportLoaderManager().initLoader(LOADER_CURRENCIES, null, this);
+        }
     }
 
     @Override public void onActivityResumed(BaseActivity activity) {
@@ -229,6 +231,10 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
         boolean canSave = true;
 
         final String code = getCode();
+        if (!TextUtils.isEmpty(code) && !checkForCurrencyDuplicate(code)) {
+            canSave = false;
+        }
+
         if (TextUtils.isEmpty(code) || code.length() != 3) {
             canSave = false;
             errorTextView.setText(R.string.l_please_enter_currency_code);
@@ -272,7 +278,7 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
             existingCurrencyCodes.clear();
             if (data.moveToFirst()) {
                 do {
-                    existingCurrencyCodes.add(data.getString(0));
+                    existingCurrencyCodes.add(Currency.from(data).getCode());
                 } while (data.moveToNext());
             }
             return;
@@ -364,12 +370,14 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
         });
     }
 
-    private void checkForCurrencyDuplicate(String code) {
+    private boolean checkForCurrencyDuplicate(String code) {
         if (isCurrencyExists(code) && isNewModel()) {
-            errorTextView.setError(getActivity().getString(R.string.l_currency_exists));
+            errorTextView.setText(getActivity().getString(R.string.l_currency_exists));
             errorTextView.setVisibility(View.VISIBLE);
+            return false;
         } else {
             errorTextView.setVisibility(View.GONE);
+            return true;
         }
     }
 

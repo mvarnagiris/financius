@@ -23,6 +23,40 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorPrimary"
+                android:baselineAligned="false"
+                android:elevation="@dimen/elevation_header"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/keyline"
+                android:paddingRight="@dimen/keyline"
+                android:paddingTop="@dimen/keyline"
+                tools:ignore="UnusedAttribute">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/space_normal"
+                    android:layout_weight="1"
+                    android:text="@string/currency_code"
+                    android:textAppearance="@style/Text.Caption"
+                    android:textColor="?android:textColorSecondaryInverse"
+                    tools:ignore="RtlHardcoded" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_normal"
+                    android:layout_weight="1"
+                    android:text="@string/symbol"
+                    android:textAppearance="@style/Text.Caption"
+                    android:textColor="?android:textColorSecondaryInverse"
+                    tools:ignore="RtlHardcoded" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/action_bar_size_2x"
                 android:background="?colorPrimary"
                 android:baselineAligned="false"
@@ -80,14 +114,14 @@
                 android:id="@+id/errorTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?backgroundColorPrimary"
-                android:elevation="@dimen/elevation_sub_header"
+                android:background="?colorPrimary"
+                android:elevation="@dimen/elevation_header"
                 android:paddingBottom="@dimen/space_normal"
                 android:paddingLeft="@dimen/keyline"
                 android:paddingRight="@dimen/keyline"
                 android:paddingTop="@dimen/space_normal"
                 android:textAppearance="@style/Text.Caption"
-                android:textColor="?textColorNegative"
+                android:textColor="?android:textColorPrimaryInverse"
                 android:visibility="gone"
                 tools:ignore="RtlHardcoded,UnusedAttribute"
                 tools:text="@string/l_currency_exists"
