@@ -30,7 +30,7 @@ public class AccountsAdapter extends ModelsAdapter<Account> {
         return Account.from(cursor);
     }
 
-    private static class ViewHolder extends ModelViewHolder<Account> {
+    static class ViewHolder extends ModelViewHolder<Account> {
         private final TextView titleTextView;
         private final TextView balanceTextView;
         private final TextView mainCurrencyBalanceTextView;
