@@ -7,42 +7,33 @@
 
     <include layout="@layout/toolbar" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        style="@style/AdapterView"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
     <LinearLayout
-        android:id="@+id/containerView"
+        android:id="@+id/balanceContainerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?colorPrimary"
         android:elevation="@dimen/elevation_header"
         android:gravity="center_vertical"
-        android:minHeight="?android:actionBarSize"
-        android:paddingBottom="@dimen/space_normal"
-        android:paddingLeft="@dimen/keyline"
-        android:paddingRight="@dimen/keyline"
-        android:paddingTop="@dimen/space_normal"
+        android:minHeight="@dimen/action_bar_size_2x"
+        android:padding="@dimen/keyline"
         tools:ignore="UnusedAttribute">
 
-        <TextView
-            style="@style/Text.Subhead"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/balance"
-            android:textColor="?android:textColorPrimaryInverse" />
-
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/balanceTextView"
-            style="@style/Text.Subhead"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="right"
+            android:textAppearance="@style/Text.Display2"
             android:textColor="?android:textColorPrimaryInverse"
+            tools:ignore="RtlHardcoded"
             tools:text="20,461.39 $" />
 
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        style="@style/AdapterView"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
 </LinearLayout>
