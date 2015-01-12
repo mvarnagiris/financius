@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 
 import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
@@ -51,7 +51,7 @@ class CurrenciesActivityPresenter extends ModelsActivityPresenter<Currency> impl
 
         swipeRefreshLayout = findView(activity, R.id.swipeRefreshLayout);
         final View settingsContainerView = findView(activity, R.id.settingsContainerView);
-        final Switch autoUpdateCurrenciesSwitch = findView(activity, R.id.autoUpdateCurrenciesSwitch);
+        final SwitchCompat autoUpdateCurrenciesSwitch = findView(activity, R.id.autoUpdateCurrenciesSwitch);
 
         // Setup
         swipeRefreshLayout.setOnRefreshListener(this);

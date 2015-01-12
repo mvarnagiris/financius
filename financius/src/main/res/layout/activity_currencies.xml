@@ -31,7 +31,7 @@
             android:text="@string/l_refresh_rates_daily"
             android:textColor="?android:textColorPrimaryInverse" />
 
-        <Switch
+        <android.support.v7.widget.SwitchCompat
             android:id="@+id/autoUpdateCurrenciesSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
