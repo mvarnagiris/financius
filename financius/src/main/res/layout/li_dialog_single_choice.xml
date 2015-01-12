@@ -8,7 +8,7 @@
 
     <RadioButton
         android:id="@+id/titleTextView"
-        style="@style/ListItem"
+        style="@style/AdapterItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"

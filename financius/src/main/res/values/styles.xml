@@ -160,14 +160,14 @@
         <item name="android:listSelector">#0000</item>
     </style>
 
-    <style name="ListItem">
+    <style name="AdapterItem">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">@dimen/keyline</item>
         <item name="android:paddingRight">@dimen/keyline</item>
         <item name="android:paddingTop">@dimen/space_normal</item>
         <item name="android:paddingBottom">@dimen/space_normal</item>
-        <item name="android:minHeight">?android:actionBarSize</item>
+        <item name="android:minHeight">?actionBarSize</item>
         <item name="android:background">?selectableItemBackground</item>
     </style>
 
