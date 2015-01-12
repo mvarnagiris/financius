@@ -57,7 +57,7 @@
             android:name=".ui.accounts.list.AccountsActivity"
             android:label="@string/accounts_other" />
         <activity
-            android:name=".ui.accounts.AccountActivity"
+            android:name=".ui.accounts.detail.AccountActivity"
             android:label="@string/accounts_one" />
         <activity
             android:name=".ui.accounts.AccountEditActivity"
