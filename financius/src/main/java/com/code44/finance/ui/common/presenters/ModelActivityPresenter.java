@@ -50,8 +50,8 @@ public abstract class ModelActivityPresenter<M extends Model> extends ActivityPr
         intent.putExtra(EXTRA_MODEL_ID, modelId);
     }
 
-    @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
-        super.onActivityCreated(activity, savedInstanceState);
+    @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
+        super.onCreate(activity, savedInstanceState);
         eventBus.register(eventHandler);
 
         // Get extras
@@ -64,18 +64,18 @@ public abstract class ModelActivityPresenter<M extends Model> extends ActivityPr
         activity.getSupportLoaderManager().initLoader(LOADER_MODEL, null, this);
     }
 
-    @Override public void onActivityDestroyed(BaseActivity activity) {
-        super.onActivityDestroyed(activity);
+    @Override public void onDestroy(BaseActivity activity) {
+        super.onDestroy(activity);
         eventBus.unregister(eventHandler);
     }
 
-    @Override public boolean onActivityCreateOptionsMenu(BaseActivity activity, Menu menu) {
-        super.onActivityCreateOptionsMenu(activity, menu);
+    @Override public boolean onCreateOptionsMenu(BaseActivity activity, Menu menu) {
+        super.onCreateOptionsMenu(activity, menu);
         activity.getMenuInflater().inflate(R.menu.model, menu);
         return true;
     }
 
-    @Override public boolean onActivityOptionsItemSelected(BaseActivity activity, MenuItem item) {
+    @Override public boolean onOptionsItemSelected(BaseActivity activity, MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_edit:
                 startModelEdit(activity, modelId);
@@ -87,7 +87,7 @@ public abstract class ModelActivityPresenter<M extends Model> extends ActivityPr
                 DeleteDialogFragment.newInstance(getActivity(), REQUEST_DELETE, deleteUri, deleteSelection.first, deleteSelection.second).show(getActivity().getSupportFragmentManager(), FRAGMENT_DELETE);
                 return true;
         }
-        return super.onActivityOptionsItemSelected(activity, item);
+        return super.onOptionsItemSelected(activity, item);
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {

@@ -30,9 +30,9 @@ class CategoriesActivityPresenter extends ModelsActivityPresenter<Category> {
         intent.putExtra(EXTRA_TRANSACTION_TYPE, transactionType);
     }
 
-    @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
+    @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
         transactionType = (TransactionType) activity.getIntent().getSerializableExtra(EXTRA_TRANSACTION_TYPE);
-        super.onActivityCreated(activity, savedInstanceState);
+        super.onCreate(activity, savedInstanceState);
     }
 
     @Override protected ModelsAdapter<Category> createAdapter(ModelsAdapter.OnModelClickListener<Category> defaultOnModelClickListener) {

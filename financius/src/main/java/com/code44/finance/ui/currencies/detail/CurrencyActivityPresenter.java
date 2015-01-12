@@ -47,8 +47,8 @@ class CurrencyActivityPresenter extends ModelActivityPresenter<Currency> impleme
         this.mainCurrency = mainCurrency;
     }
 
-    @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
-        super.onActivityCreated(activity, savedInstanceState);
+    @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
+        super.onCreate(activity, savedInstanceState);
 
         // Get views
         codeTextView = findView(activity, R.id.codeTextView);
@@ -67,18 +67,18 @@ class CurrencyActivityPresenter extends ModelActivityPresenter<Currency> impleme
         listView.setAdapter(adapter);
     }
 
-    @Override public void onActivityResumed(BaseActivity activity) {
-        super.onActivityResumed(activity);
+    @Override public void onResume(BaseActivity activity) {
+        super.onResume(activity);
         getEventBus().register(this);
     }
 
-    @Override public void onActivityPaused(BaseActivity activity) {
-        super.onActivityPaused(activity);
+    @Override public void onPause(BaseActivity activity) {
+        super.onPause(activity);
         getEventBus().unregister(this);
     }
 
-    @Override public boolean onActivityPrepareOptionsMenu(BaseActivity activity, Menu menu) {
-        super.onActivityPrepareOptionsMenu(activity, menu);
+    @Override public boolean onPrepareOptionsMenu(BaseActivity activity, Menu menu) {
+        super.onPrepareOptionsMenu(activity, menu);
         menu.findItem(R.id.action_delete).setVisible(!mainCurrency.getId().equals(getModelId()));
         return true;
     }

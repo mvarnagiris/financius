@@ -46,8 +46,8 @@ class CurrenciesActivityPresenter extends ModelsActivityPresenter<Currency> impl
         this.mainCurrency = mainCurrency;
     }
 
-    @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
-        super.onActivityCreated(activity, savedInstanceState);
+    @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
+        super.onCreate(activity, savedInstanceState);
 
         swipeRefreshLayout = findView(activity, R.id.swipeRefreshLayout);
         final View settingsContainerView = findView(activity, R.id.settingsContainerView);
@@ -63,29 +63,29 @@ class CurrenciesActivityPresenter extends ModelsActivityPresenter<Currency> impl
         }
     }
 
-    @Override public void onActivityResumed(BaseActivity activity) {
-        super.onActivityResumed(activity);
+    @Override public void onResume(BaseActivity activity) {
+        super.onResume(activity);
         eventBus.register(this);
     }
 
-    @Override public void onActivityPaused(BaseActivity activity) {
-        super.onActivityPaused(activity);
+    @Override public void onPause(BaseActivity activity) {
+        super.onPause(activity);
         eventBus.unregister(this);
     }
 
-    @Override public boolean onActivityCreateOptionsMenu(BaseActivity activity, Menu menu) {
-        super.onActivityCreateOptionsMenu(activity, menu);
+    @Override public boolean onCreateOptionsMenu(BaseActivity activity, Menu menu) {
+        super.onCreateOptionsMenu(activity, menu);
         activity.getMenuInflater().inflate(R.menu.currencies, menu);
         return true;
     }
 
-    @Override public boolean onActivityOptionsItemSelected(BaseActivity activity, MenuItem item) {
+    @Override public boolean onOptionsItemSelected(BaseActivity activity, MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh_rates:
                 onRefresh();
                 return true;
         }
-        return super.onActivityOptionsItemSelected(activity, item);
+        return super.onOptionsItemSelected(activity, item);
     }
 
     @Override protected ModelsAdapter<Currency> createAdapter(ModelsAdapter.OnModelClickListener<Currency> defaultOnModelClickListener) {

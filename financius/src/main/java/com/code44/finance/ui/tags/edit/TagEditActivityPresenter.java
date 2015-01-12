@@ -29,8 +29,8 @@ class TagEditActivityPresenter extends ModelEditActivityPresenter<Tag> implement
         super(eventBus);
     }
 
-    @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
-        super.onActivityCreated(activity, savedInstanceState);
+    @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
+        super.onCreate(activity, savedInstanceState);
         titleEditText = findView(activity, R.id.titleEditText);
         titleEditText.addTextChangedListener(this);
 
@@ -40,8 +40,8 @@ class TagEditActivityPresenter extends ModelEditActivityPresenter<Tag> implement
         }
     }
 
-    @Override public void onActivitySaveInstanceState(BaseActivity activity, Bundle outState) {
-        super.onActivitySaveInstanceState(activity, outState);
+    @Override public void onSaveInstanceState(BaseActivity activity, Bundle outState) {
+        super.onSaveInstanceState(activity, outState);
         outState.putString(STATE_TITLE, title);
     }
 

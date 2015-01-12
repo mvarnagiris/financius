@@ -63,7 +63,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         activityPresenter = onCreateActivityPresenter();
         if (activityPresenter != null) {
-            activityPresenter.onActivityCreated(this, savedInstanceState);
+            activityPresenter.onCreate(this, savedInstanceState);
         }
     }
 
@@ -84,7 +84,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override protected void onStart() {
         super.onStart();
         if (activityPresenter != null) {
-            activityPresenter.onActivityStarted(this);
+            activityPresenter.onStart(this);
         }
     }
 
@@ -107,7 +107,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         }
 
         if (activityPresenter != null) {
-            activityPresenter.onActivityResumed(this);
+            activityPresenter.onResume(this);
         }
     }
 
@@ -121,7 +121,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         }
 
         if (activityPresenter != null) {
-            activityPresenter.onActivityPaused(this);
+            activityPresenter.onPause(this);
         }
     }
 
@@ -129,7 +129,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         super.onStop();
 
         if (activityPresenter != null) {
-            activityPresenter.onActivityStopped(this);
+            activityPresenter.onStop(this);
         }
     }
 
@@ -137,7 +137,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         super.onSaveInstanceState(outState);
 
         if (activityPresenter != null) {
-            activityPresenter.onActivitySaveInstanceState(this, outState);
+            activityPresenter.onSaveInstanceState(this, outState);
         }
     }
 
@@ -146,7 +146,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         eventBus.unregister(killEventHandler);
 
         if (activityPresenter != null) {
-            activityPresenter.onActivityDestroyed(this);
+            activityPresenter.onDestroy(this);
         }
     }
 
@@ -156,7 +156,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.common, menu);
 
         if (activityPresenter != null) {
-            activityPresenter.onActivityCreateOptionsMenu(this, menu);
+            activityPresenter.onCreateOptionsMenu(this, menu);
         }
 
         return true;
@@ -166,7 +166,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         super.onPrepareOptionsMenu(menu);
 
         if (activityPresenter != null) {
-            activityPresenter.onActivityPrepareOptionsMenu(this, menu);
+            activityPresenter.onPrepareOptionsMenu(this, menu);
         }
 
         return true;
@@ -179,7 +179,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 return true;
         }
 
-        return activityPresenter.onActivityOptionsItemSelected(this, item) || super.onOptionsItemSelected(item);
+        return activityPresenter.onOptionsItemSelected(this, item) || super.onOptionsItemSelected(item);
     }
 
     protected void onCreateView(Bundle savedInstanceState) {

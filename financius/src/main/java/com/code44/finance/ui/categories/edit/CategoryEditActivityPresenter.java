@@ -50,8 +50,8 @@ class CategoryEditActivityPresenter extends ModelEditActivityPresenter<Category>
         super(eventBus);
     }
 
-    @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
-        super.onActivityCreated(activity, savedInstanceState);
+    @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
+        super.onCreate(activity, savedInstanceState);
 
         final View colorContainerView = findView(activity, R.id.colorContainerView);
         final View transactionTypeContainerView = findView(activity, R.id.transactionTypeContainerView);
@@ -80,22 +80,22 @@ class CategoryEditActivityPresenter extends ModelEditActivityPresenter<Category>
         }
     }
 
-    @Override public void onActivityResumed(BaseActivity activity) {
-        super.onActivityResumed(activity);
+    @Override public void onResume(BaseActivity activity) {
+        super.onResume(activity);
         SelectColorFragment.setListenerIfVisible(activity.getSupportFragmentManager(), FRAGMENT_SELECT_COLOR, this);
 
         getEventBus().register(this);
     }
 
-    @Override public void onActivityPaused(BaseActivity activity) {
-        super.onActivityPaused(activity);
+    @Override public void onPause(BaseActivity activity) {
+        super.onPause(activity);
         SelectColorFragment.removeListenerIfVisible(activity.getSupportFragmentManager(), FRAGMENT_SELECT_COLOR);
 
         getEventBus().unregister(this);
     }
 
-    @Override public void onActivitySaveInstanceState(BaseActivity activity, Bundle outState) {
-        super.onActivitySaveInstanceState(activity, outState);
+    @Override public void onSaveInstanceState(BaseActivity activity, Bundle outState) {
+        super.onSaveInstanceState(activity, outState);
         outState.putSerializable(STATE_TRANSACTION_TYPE, transactionType);
         outState.putInt(STATE_COLOR, color == null ? 0 : color);
         outState.putString(STATE_TITLE, title);

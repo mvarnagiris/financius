@@ -18,8 +18,8 @@ public abstract class ModelEditActivityPresenter<M extends Model> extends ModelA
         super(eventBus);
     }
 
-    @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
-        super.onActivityCreated(activity, savedInstanceState);
+    @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
+        super.onCreate(activity, savedInstanceState);
 
         // Get views
         final Button cancelView = findView(activity, R.id.cancelButton);
@@ -40,14 +40,14 @@ public abstract class ModelEditActivityPresenter<M extends Model> extends ModelA
         });
     }
 
-    @Override public void onActivityResumed(BaseActivity activity) {
-        super.onActivityResumed(activity);
+    @Override public void onResume(BaseActivity activity) {
+        super.onResume(activity);
         if (isNewModel()) {
             onDataChanged(getStoredModel());
         }
     }
 
-    @Override public boolean onActivityCreateOptionsMenu(BaseActivity activity, Menu menu) {
+    @Override public boolean onCreateOptionsMenu(BaseActivity activity, Menu menu) {
         return false;
     }
 

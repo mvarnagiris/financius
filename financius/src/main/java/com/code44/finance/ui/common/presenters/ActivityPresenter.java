@@ -11,38 +11,38 @@ import com.code44.finance.ui.common.activities.BaseActivity;
 public class ActivityPresenter extends Presenter {
     private BaseActivity activity;
 
-    public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
+    public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
         this.activity = activity;
     }
 
-    public void onActivityStarted(BaseActivity activity) {
+    public void onStart(BaseActivity activity) {
     }
 
-    public void onActivityResumed(BaseActivity activity) {
+    public void onResume(BaseActivity activity) {
     }
 
-    public void onActivityPaused(BaseActivity activity) {
+    public void onPause(BaseActivity activity) {
     }
 
-    public void onActivityStopped(BaseActivity activity) {
+    public void onStop(BaseActivity activity) {
     }
 
-    public void onActivitySaveInstanceState(BaseActivity activity, Bundle outState) {
+    public void onSaveInstanceState(BaseActivity activity, Bundle outState) {
     }
 
-    public void onActivityDestroyed(BaseActivity activity) {
+    public void onDestroy(BaseActivity activity) {
         this.activity = null;
     }
 
-    public boolean onActivityCreateOptionsMenu(BaseActivity activity, Menu menu) {
+    public boolean onCreateOptionsMenu(BaseActivity activity, Menu menu) {
         return false;
     }
 
-    public boolean onActivityPrepareOptionsMenu(BaseActivity activity, Menu menu) {
+    public boolean onPrepareOptionsMenu(BaseActivity activity, Menu menu) {
         return false;
     }
 
-    public boolean onActivityOptionsItemSelected(BaseActivity activity, MenuItem item) {
+    public boolean onOptionsItemSelected(BaseActivity activity, MenuItem item) {
         return false;
     }
 

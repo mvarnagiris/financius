@@ -78,8 +78,8 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
         this.mainCurrency = mainCurrency;
     }
 
-    @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
-        super.onActivityCreated(activity, savedInstanceState);
+    @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
+        super.onCreate(activity, savedInstanceState);
 
         // Get view
         codeTextView = findView(activity, R.id.codeTextView);
@@ -187,18 +187,18 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
         }
     }
 
-    @Override public void onActivityResumed(BaseActivity activity) {
-        super.onActivityResumed(activity);
+    @Override public void onResume(BaseActivity activity) {
+        super.onResume(activity);
         getEventBus().register(this);
     }
 
-    @Override public void onActivityPaused(BaseActivity activity) {
-        super.onActivityPaused(activity);
+    @Override public void onPause(BaseActivity activity) {
+        super.onPause(activity);
         getEventBus().unregister(this);
     }
 
-    @Override public void onActivitySaveInstanceState(BaseActivity activity, Bundle outState) {
-        super.onActivitySaveInstanceState(activity, outState);
+    @Override public void onSaveInstanceState(BaseActivity activity, Bundle outState) {
+        super.onSaveInstanceState(activity, outState);
         outState.putString(STATE_CODE, code);
         outState.putString(STATE_SYMBOL, symbol);
         outState.putSerializable(STATE_SYMBOL_POSITION, symbolPosition);

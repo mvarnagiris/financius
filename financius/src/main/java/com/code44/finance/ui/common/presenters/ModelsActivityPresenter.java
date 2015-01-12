@@ -73,8 +73,8 @@ public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerV
         return models;
     }
 
-    @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
-        super.onActivityCreated(activity, savedInstanceState);
+    @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
+        super.onCreate(activity, savedInstanceState);
 
         mode = (Mode) activity.getIntent().getSerializableExtra(EXTRA_MODE);
         final Parcelable[] selectedModels = activity.getIntent().getParcelableArrayExtra(EXTRA_SELECTED_MODELS);
@@ -122,19 +122,19 @@ public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerV
         activity.getSupportLoaderManager().initLoader(LOADER_MODELS, null, this);
     }
 
-    @Override public boolean onActivityCreateOptionsMenu(BaseActivity activity, Menu menu) {
-        super.onActivityCreateOptionsMenu(activity, menu);
+    @Override public boolean onCreateOptionsMenu(BaseActivity activity, Menu menu) {
+        super.onCreateOptionsMenu(activity, menu);
         activity.getMenuInflater().inflate(R.menu.models, menu);
         return true;
     }
 
-    @Override public boolean onActivityOptionsItemSelected(BaseActivity activity, MenuItem item) {
+    @Override public boolean onOptionsItemSelected(BaseActivity activity, MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_new:
                 startModelEdit(getActivity(), null);
                 break;
         }
-        return super.onActivityOptionsItemSelected(activity, item);
+        return super.onOptionsItemSelected(activity, item);
     }
 
     @Override public void onSaveInstanceState(Bundle outState) {

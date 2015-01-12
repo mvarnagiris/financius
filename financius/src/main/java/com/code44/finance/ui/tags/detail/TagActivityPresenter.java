@@ -33,8 +33,8 @@ class TagActivityPresenter extends ModelActivityPresenter<Tag> {
         this.mainCurrency = mainCurrency;
     }
 
-    @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
-        super.onActivityCreated(activity, savedInstanceState);
+    @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
+        super.onCreate(activity, savedInstanceState);
         titleTextView = findView(activity, R.id.titleTextView);
 
         final TrendsChartView trendsChartView = findView(activity, R.id.trendsChartView);

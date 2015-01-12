@@ -35,8 +35,8 @@ class CategoryActivityPresenter extends ModelActivityPresenter<Category> {
         this.mainCurrency = mainCurrency;
     }
 
-    @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
-        super.onActivityCreated(activity, savedInstanceState);
+    @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
+        super.onCreate(activity, savedInstanceState);
         titleTextView = findView(activity, R.id.titleTextView);
         colorImageView = findView(activity, R.id.colorImageView);
 

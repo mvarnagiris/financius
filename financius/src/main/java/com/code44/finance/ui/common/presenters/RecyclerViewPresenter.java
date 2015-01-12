@@ -10,8 +10,8 @@ public abstract class RecyclerViewPresenter<A extends RecyclerView.Adapter<?>> e
     private RecyclerView recyclerView;
     private A adapter;
 
-    @Override public void onActivityCreated(BaseActivity activity, Bundle savedInstanceState) {
-        super.onActivityCreated(activity, savedInstanceState);
+    @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
+        super.onCreate(activity, savedInstanceState);
         recyclerView = findView(activity, R.id.recyclerView);
         setupRecyclerView(recyclerView);
         adapter = createAdapter();
