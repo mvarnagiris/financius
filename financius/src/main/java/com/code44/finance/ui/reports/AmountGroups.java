@@ -21,10 +21,10 @@ public class AmountGroups {
     private final Interval wholeInterval;
     private final Interval firstInterval;
 
-    public AmountGroups(BaseInterval baseInterval) {
-        period = getPeriod(baseInterval);
-        wholeInterval = baseInterval.getInterval();
-        firstInterval = getFirstInterval(baseInterval.getInterval(), period);
+    public AmountGroups(Interval interval, BaseInterval.Type intervalType) {
+        period = getPeriod(intervalType);
+        wholeInterval = interval;
+        firstInterval = new Interval(interval.getStart(), period);
     }
 
     public Map<TransactionValidator, List<Long>> getGroups(Cursor cursor, Currency mainCurrency, TransactionValidator... transactionValidators) {
@@ -55,8 +55,8 @@ public class AmountGroups {
         return groups;
     }
 
-    private Period getPeriod(BaseInterval interval) {
-        switch (interval.getType()) {
+    private Period getPeriod(BaseInterval.Type intervalType) {
+        switch (intervalType) {
             case DAY:
                 return Period.hours(1);
             case WEEK:
@@ -65,12 +65,8 @@ public class AmountGroups {
             case YEAR:
                 return Period.months(1);
             default:
-                throw new IllegalArgumentException("Type " + interval.getType() + " is not supported.");
+                throw new IllegalArgumentException("Type " + intervalType + " is not supported.");
         }
-    }
-
-    private Interval getFirstInterval(Interval interval, Period period) {
-        return new Interval(interval.getStart(), period);
     }
 
     private Interval getNextInterval(Interval interval, Period period) {
@@ -108,7 +104,7 @@ public class AmountGroups {
     }
 
     private long getAmount(Transaction transaction, Currency mainCurrency) {
-        final Currency currency = transaction.getTransactionType() == TransactionType.Expense ? transaction.getAccountFrom().getCurrency() : transaction.getAccountTo().getCurrency();
+        final Currency currency = transaction.getTransactionType() != TransactionType.Income ? transaction.getAccountFrom().getCurrency() : transaction.getAccountTo().getCurrency();
         if (currency.getId().equals(mainCurrency.getId())) {
             return transaction.getAmount();
         } else {

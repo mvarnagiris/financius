@@ -9,12 +9,14 @@ import com.code44.finance.data.model.Currency;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ActivityPresenter;
+import com.code44.finance.utils.CurrentInterval;
 import com.code44.finance.utils.analytics.Analytics;
 
 import javax.inject.Inject;
 
 public class AccountActivity extends BaseActivity {
     @Inject @Main Currency mainCurrency;
+    @Inject CurrentInterval currentInterval;
 
     public static void start(Context context, String accountId) {
         final Intent intent = makeIntentForActivity(context, AccountActivity.class);
@@ -28,7 +30,7 @@ public class AccountActivity extends BaseActivity {
     }
 
     @Override protected ActivityPresenter onCreateActivityPresenter() {
-        return new AccountActivityPresenter(getEventBus(), mainCurrency);
+        return new AccountActivityPresenter(getEventBus(), mainCurrency, currentInterval);
     }
 
     @Override protected Analytics.Screen getScreen() {

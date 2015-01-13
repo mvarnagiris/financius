@@ -19,7 +19,7 @@ import com.code44.finance.utils.BaseInterval;
 import lecho.lib.hellocharts.model.Line;
 
 class CategoryTrendsChartPresenter extends TrendsChartPresenter implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final int LOADER_TAG_TRENDS = 712;
+    private static final int LOADER_CATEGORY_TRENDS = 712;
 
     private final LoaderManager loaderManager;
     private final AmountGroups.TransactionValidator transactionValidator;
@@ -44,7 +44,7 @@ class CategoryTrendsChartPresenter extends TrendsChartPresenter implements Loade
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if (id == LOADER_TAG_TRENDS) {
+        if (id == LOADER_CATEGORY_TRENDS) {
             return Tables.Transactions
                     .getQuery()
                     .selection(" and " + Tables.Transactions.DATE + " between ? and ?", String.valueOf(baseInterval.getInterval().getStartMillis()), String.valueOf(baseInterval.getInterval().getEndMillis() - 1))
@@ -59,7 +59,7 @@ class CategoryTrendsChartPresenter extends TrendsChartPresenter implements Loade
     }
 
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (loader.getId() == LOADER_TAG_TRENDS) {
+        if (loader.getId() == LOADER_CATEGORY_TRENDS) {
             setData(data, baseInterval);
         }
     }
@@ -70,7 +70,7 @@ class CategoryTrendsChartPresenter extends TrendsChartPresenter implements Loade
     public void setCategoryAndInterval(Category category, BaseInterval baseInterval) {
         this.category = category;
         this.baseInterval = baseInterval;
-        loaderManager.restartLoader(LOADER_TAG_TRENDS, null, this);
+        loaderManager.restartLoader(LOADER_CATEGORY_TRENDS, null, this);
     }
 
     private static class CategoryTransactionValidator implements AmountGroups.TransactionValidator {

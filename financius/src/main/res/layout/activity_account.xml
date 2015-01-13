@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -50,9 +51,15 @@
                 android:layout_marginLeft="@dimen/keyline_content"
                 android:layout_marginRight="@dimen/keyline"
                 android:singleLine="true"
-                android:textAppearance="@style/Text.Body1"
+                android:textAppearance="@style/Text.Subhead"
                 tools:ignore="RtlHardcoded"
                 tools:text="9,294.24 Lt" />
+
+            <View
+                style="@style/Divider"
+                android:layout_marginLeft="@dimen/keyline_content"
+                android:layout_marginTop="@dimen/keyline"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
                 android:id="@+id/noteTextView"
@@ -60,16 +67,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/keyline"
                 android:layout_marginRight="@dimen/keyline"
-                android:layout_marginTop="@dimen/space_xlarge"
+                android:layout_marginTop="@dimen/keyline"
                 android:textAppearance="@style/Text.Subhead"
                 tools:text="This is my main spending account and some other long notes written here." />
 
-            <com.code44.finance.graphs.line.LineGraphView
-                android:id="@+id/graphView"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/account_balance_graph_height"
-                android:layout_marginTop="@dimen/space_large"
-                android:visibility="gone" />
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/keyline"
+                app:cardCornerRadius="@dimen/card_radius">
+
+                <com.code44.finance.ui.reports.balance.BalanceChartView
+                    android:id="@+id/balanceChartView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </android.support.v7.widget.CardView>
 
         </LinearLayout>
     </ScrollView>
