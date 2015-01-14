@@ -291,4 +291,10 @@ public class Currency extends Model {
     public void setExchangeRate(double exchangeRate) {
         this.exchangeRate = exchangeRate;
     }
+
+    public static class ExchangeRate {
+        private final String from;
+        private final String to;
+        private final double rate;
+    }
 }

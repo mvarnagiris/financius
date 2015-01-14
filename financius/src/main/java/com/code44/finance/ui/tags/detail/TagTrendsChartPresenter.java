@@ -25,29 +25,29 @@ class TagTrendsChartPresenter extends TrendsChartPresenter implements LoaderMana
     private static final int LOADER_TAG_TRENDS = 712;
 
     private final LoaderManager loaderManager;
-    private final ExpenseTransactionValidator expenseValidator;
-    private final IncomeTransactionValidator incomeValidator;
-    private final TransferTransactionValidator transferValidator;
+    private final ExpenseAmountCalculator expenseValidator;
+    private final IncomeAmountCalculator incomeValidator;
+    private final TransferAmountCalculator transferValidator;
     private BaseInterval baseInterval;
     private Tag tag;
 
     public TagTrendsChartPresenter(TrendsChartView trendsChartView, Currency mainCurrency, LoaderManager loaderManager, BaseInterval baseInterval) {
         super(trendsChartView, mainCurrency);
         this.loaderManager = loaderManager;
-        expenseValidator = new ExpenseTransactionValidator();
-        incomeValidator = new IncomeTransactionValidator();
-        transferValidator = new TransferTransactionValidator();
+        expenseValidator = new ExpenseAmountCalculator();
+        incomeValidator = new IncomeAmountCalculator();
+        transferValidator = new TransferAmountCalculator();
         setData(null, baseInterval);
     }
 
-    @Override protected AmountGroups.TransactionValidator[] getTransactionValidators() {
-        return new AmountGroups.TransactionValidator[]{expenseValidator, incomeValidator, transferValidator};
+    @Override protected AmountGroups.AmountCalculator[] getTransactionValidators() {
+        return new AmountGroups.AmountCalculator[]{expenseValidator, incomeValidator, transferValidator};
     }
 
-    @Override protected void onLineCreated(AmountGroups.TransactionValidator transactionValidator, Line line) {
-        if (transactionValidator.equals(expenseValidator)) {
+    @Override protected void onLineCreated(AmountGroups.AmountCalculator amountCalculator, Line line) {
+        if (amountCalculator.equals(expenseValidator)) {
             line.setColor(ThemeUtils.getColor(getContext(), R.attr.textColorNegative));
-        } else if (transactionValidator.equals(incomeValidator)) {
+        } else if (amountCalculator.equals(incomeValidator)) {
             line.setColor(ThemeUtils.getColor(getContext(), R.attr.textColorPositive));
         } else {
             line.setColor(ThemeUtils.getColor(getContext(), R.attr.textColorNeutral));
@@ -84,19 +84,19 @@ class TagTrendsChartPresenter extends TrendsChartPresenter implements LoaderMana
         loaderManager.restartLoader(LOADER_TAG_TRENDS, null, this);
     }
 
-    private static class ExpenseTransactionValidator implements AmountGroups.TransactionValidator {
+    private static class ExpenseAmountCalculator implements AmountGroups.AmountCalculator {
         @Override public boolean isTransactionValid(Transaction transaction) {
             return transaction.getTransactionType() == TransactionType.Expense;
         }
     }
 
-    private static class IncomeTransactionValidator implements AmountGroups.TransactionValidator {
+    private static class IncomeAmountCalculator implements AmountGroups.AmountCalculator {
         @Override public boolean isTransactionValid(Transaction transaction) {
             return transaction.getTransactionType() == TransactionType.Income;
         }
     }
 
-    private static class TransferTransactionValidator implements AmountGroups.TransactionValidator {
+    private static class TransferAmountCalculator implements AmountGroups.AmountCalculator {
         @Override public boolean isTransactionValid(Transaction transaction) {
             return transaction.getTransactionType() == TransactionType.Transfer;
         }

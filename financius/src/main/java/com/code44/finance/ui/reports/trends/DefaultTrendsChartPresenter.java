@@ -13,14 +13,14 @@ public class DefaultTrendsChartPresenter extends TrendsChartPresenter {
         super(trendsChartView, mainCurrency);
     }
 
-    @Override protected AmountGroups.TransactionValidator[] getTransactionValidators() {
-        return new AmountGroups.TransactionValidator[]{new AmountGroups.TransactionValidator() {
+    @Override protected AmountGroups.AmountCalculator[] getTransactionValidators() {
+        return new AmountGroups.AmountCalculator[]{new AmountGroups.AmountCalculator() {
             @Override public boolean isTransactionValid(Transaction transaction) {
                 return transaction.includeInReports() && transaction.getTransactionType() != TransactionType.Transfer && transaction.getTransactionState() == TransactionState.Confirmed;
             }
         }};
     }
 
-    @Override protected void onLineCreated(AmountGroups.TransactionValidator transactionValidator, Line line) {
+    @Override protected void onLineCreated(AmountGroups.AmountCalculator amountCalculator, Line line) {
     }
 }

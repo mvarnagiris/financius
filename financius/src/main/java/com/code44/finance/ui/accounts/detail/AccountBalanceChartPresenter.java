@@ -30,15 +30,15 @@ public class AccountBalanceChartPresenter extends BalanceChartPresenter implemen
         this.loaderManager = loaderManager;
     }
 
-    @Override protected AmountGroups.TransactionValidator getTransactionValidator() {
-        return new AmountGroups.TransactionValidator() {
+    @Override protected AmountGroups.AmountCalculator getTransactionValidator() {
+        return new AmountGroups.AmountCalculator() {
             @Override public boolean isTransactionValid(Transaction transaction) {
                 return true;
             }
         };
     }
 
-    @Override protected void onLineCreated(AmountGroups.TransactionValidator transactionValidator, Line line) {
+    @Override protected void onLineCreated(AmountGroups.AmountCalculator amountCalculator, Line line) {
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {

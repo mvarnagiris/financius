@@ -40,16 +40,16 @@ public abstract class BalanceChartPresenter extends Presenter {
     }
 
     public void setData(Account account, Cursor cursor, BaseInterval baseInterval) {
-        final AmountGroups.TransactionValidator transactionValidator = getTransactionValidator();
+        final AmountGroups.AmountCalculator amountCalculator = getTransactionValidator();
         final AmountGroups amountGroups = new AmountGroups(baseInterval);
-        final Map<AmountGroups.TransactionValidator, List<Long>> groups = amountGroups.getGroups(cursor, mainCurrency, transactionValidator);
+        final Map<AmountGroups.AmountCalculator, List<Long>> groups = amountGroups.getGroups(cursor, mainCurrency, amountCalculator);
 
         final List<Line> lines = new ArrayList<>();
-        final Line line = getLine(account, groups.get(transactionValidator))
+        final Line line = getLine(account, groups.get(amountCalculator))
                 .setColor(ThemeUtils.getColor(balanceChartView.getContext(), R.attr.textColorNeutral))
                 .setHasLabels(true)
                 .setHasLabelsOnlyForSelected(true);
-        onLineCreated(transactionValidator, line);
+        onLineCreated(amountCalculator, line);
         lines.add(line);
 
         final LineChartData lineChartData = new LineChartData(lines);
@@ -58,9 +58,9 @@ public abstract class BalanceChartPresenter extends Presenter {
         balanceChartView.setLineGraphData(lineChartData);
     }
 
-    protected abstract AmountGroups.TransactionValidator getTransactionValidator();
+    protected abstract AmountGroups.AmountCalculator getTransactionValidator();
 
-    protected abstract void onLineCreated(AmountGroups.TransactionValidator transactionValidator, Line line);
+    protected abstract void onLineCreated(AmountGroups.AmountCalculator amountCalculator, Line line);
 
     protected Context getContext() {
         return balanceChartView.getContext();

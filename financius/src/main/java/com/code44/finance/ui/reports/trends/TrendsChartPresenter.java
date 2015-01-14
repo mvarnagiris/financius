@@ -38,17 +38,17 @@ public abstract class TrendsChartPresenter extends Presenter {
     }
 
     public void setData(Cursor cursor, BaseInterval baseInterval) {
-        final AmountGroups.TransactionValidator[] transactionValidators = getTransactionValidators();
+        final AmountGroups.AmountCalculator[] amountCalculators = getTransactionValidators();
         final AmountGroups amountGroups = new AmountGroups(baseInterval);
-        final Map<AmountGroups.TransactionValidator, List<Long>> groups = amountGroups.getGroups(cursor, mainCurrency, transactionValidators);
+        final Map<AmountGroups.AmountCalculator, List<Long>> groups = amountGroups.getGroups(cursor, mainCurrency, amountCalculators);
 
         final List<Line> lines = new ArrayList<>();
-        for (AmountGroups.TransactionValidator transactionValidator : transactionValidators) {
-            final Line line = getLine(groups.get(transactionValidator))
+        for (AmountGroups.AmountCalculator amountCalculator : amountCalculators) {
+            final Line line = getLine(groups.get(amountCalculator))
                     .setColor(ThemeUtils.getColor(trendsChartView.getContext(), R.attr.textColorNegative))
                     .setHasLabels(true)
                     .setHasLabelsOnlyForSelected(true);
-            onLineCreated(transactionValidator, line);
+            onLineCreated(amountCalculator, line);
             lines.add(line);
         }
 
@@ -58,9 +58,9 @@ public abstract class TrendsChartPresenter extends Presenter {
         trendsChartView.setLineGraphData(lineChartData);
     }
 
-    protected abstract AmountGroups.TransactionValidator[] getTransactionValidators();
+    protected abstract AmountGroups.AmountCalculator[] getTransactionValidators();
 
-    protected abstract void onLineCreated(AmountGroups.TransactionValidator transactionValidator, Line line);
+    protected abstract void onLineCreated(AmountGroups.AmountCalculator amountCalculator, Line line);
 
     protected Context getContext() {
         return trendsChartView.getContext();

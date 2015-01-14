@@ -27,13 +27,13 @@ public class AmountGroups {
         firstInterval = new Interval(interval.getStart(), period);
     }
 
-    public Map<TransactionValidator, List<Long>> getGroups(Cursor cursor, Currency mainCurrency, TransactionValidator... transactionValidators) {
-        final Map<TransactionValidator, List<Long>> groups = new HashMap<>();
-        for (TransactionValidator transactionValidator : transactionValidators) {
-            groups.put(transactionValidator, new ArrayList<Long>());
+    public Map<AmountCalculator, List<Long>> getGroups(Cursor cursor, Currency mainCurrency, AmountCalculator... amountCalculators) {
+        final Map<AmountCalculator, List<Long>> groups = new HashMap<>();
+        for (AmountCalculator amountCalculator : amountCalculators) {
+            groups.put(amountCalculator, new ArrayList<Long>());
         }
 
-        final Map<TransactionValidator, Long> intervalAmounts = new HashMap<>();
+        final Map<AmountCalculator, Long> intervalAmounts = new HashMap<>();
         Interval interval = firstInterval;
         Transaction transaction = cursor != null && cursor.moveToFirst() ? Transaction.from(cursor) : null;
         while (isNotAfterLastInterval(interval)) {
@@ -77,29 +77,27 @@ public class AmountGroups {
         return interval.overlaps(wholeInterval);
     }
 
-    private void onIntervalDone(Map<TransactionValidator, List<Long>> groups, Map<TransactionValidator, Long> intervalAmounts) {
-        for (TransactionValidator transactionValidator : groups.keySet()) {
-            Long amount = intervalAmounts.get(transactionValidator);
+    private void onIntervalDone(Map<AmountCalculator, List<Long>> groups, Map<AmountCalculator, Long> intervalAmounts) {
+        for (AmountCalculator amountCalculator : groups.keySet()) {
+            Long amount = intervalAmounts.get(amountCalculator);
             if (amount == null) {
                 amount = 0L;
             }
-            groups.get(transactionValidator).add(amount);
+            groups.get(amountCalculator).add(amount);
         }
 
         intervalAmounts.clear();
     }
 
-    private void onTransactionInInterval(Transaction transaction, Set<TransactionValidator> transactionValidators, Map<TransactionValidator, Long> intervalAmounts, Currency mainCurrency) {
-        for (TransactionValidator transactionValidator : transactionValidators) {
-            if (transactionValidator.isTransactionValid(transaction)) {
-                Long amount = intervalAmounts.get(transactionValidator);
-                if (amount == null) {
-                    amount = 0L;
-                }
-
-                amount += getAmount(transaction, mainCurrency);
-                intervalAmounts.put(transactionValidator, amount);
+    private void onTransactionInInterval(Transaction transaction, Set<AmountCalculator> amountCalculators, Map<AmountCalculator, Long> intervalAmounts, Currency mainCurrency) {
+        for (AmountCalculator amountCalculator : amountCalculators) {
+            Long amount = intervalAmounts.get(amountCalculator);
+            if (amount == null) {
+                amount = 0L;
             }
+
+            amount += getAmount(transaction, mainCurrency);
+            intervalAmounts.put(amountCalculator, amount);
         }
     }
 
@@ -112,7 +110,13 @@ public class AmountGroups {
         }
     }
 
-    public static interface TransactionValidator {
-        public boolean isTransactionValid(Transaction transaction);
+    public static interface AmountCalculator {
+        public long getAmount(Transaction transaction);
+    }
+
+    public static class ExpenseAmountCalculator implements AmountCalculator {
+        @Override public long getAmount(Transaction transaction) {
+            return 0;
+        }
     }
 }

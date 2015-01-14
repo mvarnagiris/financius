@@ -22,22 +22,22 @@ class CategoryTrendsChartPresenter extends TrendsChartPresenter implements Loade
     private static final int LOADER_CATEGORY_TRENDS = 712;
 
     private final LoaderManager loaderManager;
-    private final AmountGroups.TransactionValidator transactionValidator;
+    private final AmountGroups.AmountCalculator amountCalculator;
     private BaseInterval baseInterval;
     private Category category;
 
     public CategoryTrendsChartPresenter(TrendsChartView trendsChartView, Currency mainCurrency, LoaderManager loaderManager, BaseInterval baseInterval) {
         super(trendsChartView, mainCurrency);
         this.loaderManager = loaderManager;
-        transactionValidator = new CategoryTransactionValidator();
+        amountCalculator = new CategoryAmountCalculator();
         setData(null, baseInterval);
     }
 
-    @Override protected AmountGroups.TransactionValidator[] getTransactionValidators() {
-        return new AmountGroups.TransactionValidator[]{transactionValidator};
+    @Override protected AmountGroups.AmountCalculator[] getTransactionValidators() {
+        return new AmountGroups.AmountCalculator[]{amountCalculator};
     }
 
-    @Override protected void onLineCreated(AmountGroups.TransactionValidator transactionValidator, Line line) {
+    @Override protected void onLineCreated(AmountGroups.AmountCalculator amountCalculator, Line line) {
         if (category != null) {
             line.setColor(category.getColor());
         }
@@ -73,7 +73,7 @@ class CategoryTrendsChartPresenter extends TrendsChartPresenter implements Loade
         loaderManager.restartLoader(LOADER_CATEGORY_TRENDS, null, this);
     }
 
-    private static class CategoryTransactionValidator implements AmountGroups.TransactionValidator {
+    private static class CategoryAmountCalculator implements AmountGroups.AmountCalculator {
         @Override public boolean isTransactionValid(Transaction transaction) {
             return true;
         }
