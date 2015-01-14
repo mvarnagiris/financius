@@ -14,7 +14,7 @@ import android.widget.CompoundButton;
 
 import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
-import com.code44.finance.api.currencies.ExchangeRatesRequest;
+import com.code44.finance.api.currencies.ExchangeRatesRequestOld;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.CurrenciesProvider;
@@ -137,7 +137,7 @@ class CurrenciesActivityPresenter extends ModelsActivityPresenter<Currency> impl
         super.onLoadFinished(loader, data);
     }
 
-    @Subscribe public void onRefreshFinished(ExchangeRatesRequest request) {
+    @Subscribe public void onRefreshFinished(ExchangeRatesRequestOld request) {
         setRefreshing(false);
     }
 

@@ -109,6 +109,19 @@ public final class DBMigration {
         }
     }
 
+    /**
+     * 78 - v0.18.0
+     */
+    public static void upgradeV23(SQLiteDatabase db) {
+        try {
+            db.beginTransaction();
+            db.execSQL("alter table " + Tables.Currencies.TABLE_NAME + " add column " + Tables.Currencies.EXCHANGE_RATES.getName() + " " + Column.DataType.TEXT);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
     public static void fixTransactionsWithNotExistingAccounts(SQLiteDatabase db) {
         final String tables = Tables.Transactions.TABLE_NAME
                 + " left join " + Tables.Accounts.TABLE_NAME + " as " + Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT
@@ -176,7 +189,6 @@ public final class DBMigration {
                 currency.setGroupSeparator(GroupSeparator.fromSymbol(cursor.getString(5)));
                 currency.setDecimalCount(cursor.getInt(3));
                 currency.setDefault(cursor.getInt(7) != 0);
-                currency.setExchangeRate(cursor.getDouble(8));
                 db.insert(Tables.Currencies.TABLE_NAME, null, currency.asValues());
             } while (cursor.moveToNext());
         }

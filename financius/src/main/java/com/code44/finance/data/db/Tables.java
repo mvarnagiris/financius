@@ -94,19 +94,19 @@ public final class Tables {
         public static final Column GROUP_SEPARATOR = new Column(TABLE_NAME, "group_separator", Column.DataType.TEXT);
         public static final Column DECIMAL_COUNT = new Column(TABLE_NAME, "decimal_count", Column.DataType.INTEGER);
         public static final Column IS_DEFAULT = new Column(TABLE_NAME, "is_default", Column.DataType.BOOLEAN);
-        public static final Column EXCHANGE_RATE = new Column(TABLE_NAME, "exchange_rate", Column.DataType.REAL);
+        public static final Column EXCHANGE_RATES = new Column(TABLE_NAME, "exchange_rates", Column.DataType.TEXT);
 
         public static final String[] PROJECTION = {ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
                 CODE.getName(), SYMBOL.getName(), SYMBOL_POSITION.getName(), DECIMAL_SEPARATOR.getName(),
-                GROUP_SEPARATOR.getName(), DECIMAL_COUNT.getName(), IS_DEFAULT.getName(), EXCHANGE_RATE.getName()};
+                GROUP_SEPARATOR.getName(), DECIMAL_COUNT.getName(), IS_DEFAULT.getName(), EXCHANGE_RATES.getName()};
 
         public static final String[] PROJECTION_ACCOUNT_FROM = {ID.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), MODEL_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY),
                 CODE.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), SYMBOL.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), SYMBOL_POSITION.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), DECIMAL_SEPARATOR.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY),
-                GROUP_SEPARATOR.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), DECIMAL_COUNT.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), IS_DEFAULT.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), EXCHANGE_RATE.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY)};
+                GROUP_SEPARATOR.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), DECIMAL_COUNT.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), IS_DEFAULT.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), EXCHANGE_RATES.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY)};
 
         public static final String[] PROJECTION_ACCOUNT_TO = {ID.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), MODEL_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY),
                 CODE.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), SYMBOL.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), SYMBOL_POSITION.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), DECIMAL_SEPARATOR.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY),
-                GROUP_SEPARATOR.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), DECIMAL_COUNT.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), IS_DEFAULT.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), EXCHANGE_RATE.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY)};
+                GROUP_SEPARATOR.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), DECIMAL_COUNT.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), IS_DEFAULT.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), EXCHANGE_RATES.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY)};
 
         private Currencies() {
         }
@@ -114,7 +114,7 @@ public final class Tables {
         public static String createScript() {
             return makeCreateScript(TABLE_NAME, LOCAL_ID, ID, MODEL_STATE, SYNC_STATE, CODE, SYMBOL,
                     SYMBOL_POSITION, DECIMAL_SEPARATOR, GROUP_SEPARATOR, DECIMAL_COUNT, IS_DEFAULT,
-                    EXCHANGE_RATE);
+                    EXCHANGE_RATES);
         }
 
         public static Query getQuery() {

@@ -16,15 +16,15 @@ public class CurrenciesApi {
     private final CurrenciesRequestService requestService;
 
     public CurrenciesApi(Executor executor, Context context, EventBus eventBus, CurrenciesRequestService requestService) {
-        Preconditions.notNull(executor, "Executor cannot be null.");
-        Preconditions.notNull(context, "Context cannot be null.");
-        Preconditions.notNull(eventBus, "EventBus cannot be null.");
-        Preconditions.notNull(requestService, "CurrenciesRequestService cannot be null.");
+        this.executor = Preconditions.notNull(executor, "Executor cannot be null.");
+        this.context = Preconditions.notNull(context, "Context cannot be null.");
+        this.eventBus = Preconditions.notNull(eventBus, "EventBus cannot be null.");
+        this.requestService = Preconditions.notNull(requestService, "CurrenciesRequestService cannot be null.");
+    }
 
-        this.executor = executor;
-        this.context = context;
-        this.eventBus = eventBus;
-        this.requestService = requestService;
+    public void getExchangeRates(String... codes) {
+        final ExchangeRateRequest request = new ExchangeRateRequest(eventBus, context, requestService, fromCode, toCode, false);
+        executeRequest(request);
     }
 
     public void getExchangeRate(String fromCode, String toCode) {
@@ -38,7 +38,7 @@ public class CurrenciesApi {
     }
 
     public void updateExchangeRates(List<String> fromCodes, String toCode) {
-        final ExchangeRatesRequest request = new ExchangeRatesRequest(eventBus, context, requestService, fromCodes, toCode);
+        final ExchangeRatesRequestOld request = new ExchangeRatesRequestOld(eventBus, context, requestService, fromCodes, toCode);
         executeRequest(request);
     }
 

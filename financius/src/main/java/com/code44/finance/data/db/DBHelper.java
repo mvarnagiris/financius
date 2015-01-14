@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String NAME = "finance.db";
-    private static final int VERSION = 22;
+    private static final int VERSION = 23;
 
     private final Context context;
 
@@ -53,6 +53,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 DBMigration.upgradeV21(db);
             case 21:
                 DBMigration.upgradeV22(db);
+            case 22:
+                DBMigration.upgradeV23(db);
         }
     }
 

@@ -10,10 +10,14 @@ import com.code44.finance.common.model.DecimalSeparator;
 import com.code44.finance.common.model.GroupSeparator;
 import com.code44.finance.common.model.SymbolPosition;
 import com.code44.finance.common.utils.Preconditions;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.utils.IOUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Currency extends Model {
     public static final Parcelable.Creator<Currency> CREATOR = new Parcelable.Creator<Currency>() {
@@ -33,7 +37,7 @@ public class Currency extends Model {
     private GroupSeparator groupSeparator;
     private int decimalCount;
     private boolean isDefault;
-    private double exchangeRate;
+    private Map<String, ExchangeRate> exchangeRates;
 
     public Currency() {
         super();
@@ -44,7 +48,7 @@ public class Currency extends Model {
         setGroupSeparator(GroupSeparator.Comma);
         setDecimalCount(2);
         setDefault(false);
-        setExchangeRate(1.0);
+        setExchangeRates(null);
     }
 
     private Currency(Parcel parcel) {
@@ -56,7 +60,17 @@ public class Currency extends Model {
         setGroupSeparator(GroupSeparator.fromSymbol(parcel.readString()));
         setDecimalCount(parcel.readInt());
         setDefault(parcel.readInt() != 0);
-        setExchangeRate(parcel.readDouble());
+        final int exchangeRatesSize = parcel.readInt();
+        if (exchangeRatesSize == 0) {
+            setExchangeRates(null);
+        } else {
+            final Map<String, ExchangeRate> exchangeRates = new HashMap<>();
+            for (int i = 0; i < exchangeRatesSize; i++) {
+                final ExchangeRate exchangeRate = parcel.readParcelable(ExchangeRate.class.getClassLoader());
+                exchangeRates.put(exchangeRate.currencyCode, exchangeRate);
+            }
+            setExchangeRates(exchangeRates);
+        }
     }
 
     public static void updateDefaultCurrency(SQLiteDatabase database, Currency defaultCurrency) {
@@ -120,7 +134,14 @@ public class Currency extends Model {
         parcel.writeString(groupSeparator.symbol());
         parcel.writeInt(decimalCount);
         parcel.writeInt(isDefault ? 1 : 0);
-        parcel.writeDouble(exchangeRate);
+        if (exchangeRates == null) {
+            parcel.writeInt(0);
+        } else {
+            parcel.writeInt(exchangeRates.size());
+            for (ExchangeRate exchangeRate : exchangeRates.values()) {
+                parcel.writeParcelable(exchangeRate, flags);
+            }
+        }
     }
 
     @Override public void updateFrom(Cursor cursor, String columnPrefixTable) {
@@ -170,9 +191,19 @@ public class Currency extends Model {
         }
 
         // Exchange rate
-        index = cursor.getColumnIndex(Tables.Currencies.EXCHANGE_RATE.getName(columnPrefixTable));
+        index = cursor.getColumnIndex(Tables.Currencies.EXCHANGE_RATES.getName(columnPrefixTable));
         if (index >= 0) {
-            setExchangeRate(cursor.getDouble(index));
+            final String ratesPlainText = cursor.getString(index);
+            if (!Strings.isEmpty(ratesPlainText)) {
+                final String[] ratesSplit = cursor.getString(index).split(";");
+                final Map<String, ExchangeRate> exchangeRates = new HashMap<>();
+                for (String currencyCodeWithRate : ratesSplit) {
+                    final String[] rateSplit = currencyCodeWithRate.split(":");
+                    final ExchangeRate exchangeRate = new ExchangeRate(rateSplit[0], Double.parseDouble(rateSplit[1]));
+                    exchangeRates.put(exchangeRate.currencyCode, exchangeRate);
+                }
+                setExchangeRates(exchangeRates);
+            }
         }
     }
 
@@ -198,10 +229,6 @@ public class Currency extends Model {
         if (decimalCount < 0) {
             decimalCount = 0;
         }
-
-        if (Double.compare(exchangeRate, 0.0) < 0) {
-            exchangeRate = 1.0;
-        }
     }
 
     @Override public void validate() {
@@ -212,7 +239,6 @@ public class Currency extends Model {
         Preconditions.notNull(decimalSeparator, "DecimalSeparator cannot be null.");
         Preconditions.notNull(groupSeparator, "GroupSeparator cannot be null.");
         Preconditions.between(decimalCount, 0, 2, "Decimal count must be [0, 2]");
-        Preconditions.moreOrEquals(exchangeRate, 0.0, "Exchange rate must be > 0");
     }
 
     @Override public ContentValues asValues() {
@@ -224,7 +250,11 @@ public class Currency extends Model {
         values.put(Tables.Currencies.GROUP_SEPARATOR.getName(), groupSeparator.symbol());
         values.put(Tables.Currencies.DECIMAL_COUNT.getName(), decimalCount);
         values.put(Tables.Currencies.IS_DEFAULT.getName(), isDefault);
-        values.put(Tables.Currencies.EXCHANGE_RATE.getName(), isDefault ? 1.0f : getExchangeRate());
+        final StringBuilder sb = new StringBuilder();
+        for (ExchangeRate exchangeRate : exchangeRates.values()) {
+            sb.append(exchangeRate.currencyCode).append(":").append(exchangeRate.rate).append(";");
+        }
+        values.put(Tables.Currencies.EXCHANGE_RATES.getName(), sb.toString());
         return values;
     }
 
@@ -284,17 +314,81 @@ public class Currency extends Model {
         this.isDefault = isDefault;
     }
 
-    public double getExchangeRate() {
-        return exchangeRate;
+    public Map<String, ExchangeRate> getExchangeRates() {
+        return exchangeRates;
     }
 
-    public void setExchangeRate(double exchangeRate) {
-        this.exchangeRate = exchangeRate;
+    public void setExchangeRates(Map<String, ExchangeRate> exchangeRates) {
+        this.exchangeRates = exchangeRates;
     }
 
-    public static class ExchangeRate {
-        private final String from;
-        private final String to;
+    public double getExchangeRate(String currencyCode) {
+        if (exchangeRates == null) {
+            return 1;
+        }
+
+        final ExchangeRate exchangeRate = exchangeRates.get(currencyCode);
+        if (exchangeRate == null) {
+            return 1;
+        }
+        return exchangeRate.rate;
+    }
+
+    public static class ExchangeRate implements Parcelable {
+        public static final Parcelable.Creator<ExchangeRate> CREATOR = new Parcelable.Creator<ExchangeRate>() {
+            public ExchangeRate createFromParcel(Parcel in) {
+                return new ExchangeRate(in);
+            }
+
+            public ExchangeRate[] newArray(int size) {
+                return new ExchangeRate[size];
+            }
+        };
+
+        private final String currencyCode;
         private final double rate;
+
+        public ExchangeRate(String currencyCode, double rate) {
+            this.currencyCode = currencyCode;
+            this.rate = rate;
+        }
+
+        private ExchangeRate(Parcel parcel) {
+            currencyCode = parcel.readString();
+            rate = parcel.readDouble();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof ExchangeRate)) return false;
+
+            final ExchangeRate that = (ExchangeRate) o;
+
+            if (Double.compare(that.rate, rate) != 0) return false;
+            //noinspection RedundantIfStatement
+            if (!currencyCode.equals(that.currencyCode)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result;
+            long temp;
+            result = currencyCode.hashCode();
+            temp = Double.doubleToLongBits(rate);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            return result;
+        }
+
+        @Override public int describeContents() {
+            return 0;
+        }
+
+        @Override public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(currencyCode);
+            dest.writeDouble(rate);
+        }
     }
 }

@@ -11,34 +11,29 @@ import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.utils.EventBus;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
-public class ExchangeRatesRequest extends Request {
+public class ExchangeRatesRequestOld extends Request {
     private final Context context;
     private final CurrenciesRequestService requestService;
-    private final String[] codes;
+    private final List<String> fromCodes;
+    private final String toCode;
 
-    public ExchangeRatesRequest(EventBus eventBus, Context context, CurrenciesRequestService requestService, String... codes) {
+    public ExchangeRatesRequestOld(EventBus eventBus, Context context, CurrenciesRequestService requestService, List<String> fromCodes, String toCode) {
         super(eventBus);
         Preconditions.notNull(eventBus, "EventBus cannot be empty.");
+
+
+        Preconditions.notNull(fromCodes, "From codes cannot be null.");
+        Preconditions.notEmpty(toCode, "To code cannot be empty.");
+
         this.context = Preconditions.notNull(context, "Context cannot be null.");
         this.requestService = Preconditions.notNull(requestService, "Request service cannot be null.");
-        this.codes = Preconditions.notNull(codes, "Codes cannot be null.");
+        this.fromCodes = fromCodes;
+        this.toCode = toCode;
     }
 
     @Override protected void performRequest() throws Exception {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("select * from yahoo.finance.xchange where pair in (");
-        for (String code : codes) {
-            sb.append("\"").append(code).append("\",");
-        }
-        sb.append(")");
-
-        final Map<String, Double> result = requestService.getExchangeRates(sb.toString()).getExchangeRates();
-
-
         final List<ContentValues> valuesList = new ArrayList<>();
         for (String fromCode : fromCodes) {
             final Currency currency = getCurrencyWithUpdatedExchangeRate(fromCode);
@@ -52,21 +47,22 @@ public class ExchangeRatesRequest extends Request {
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ExchangeRatesRequest)) return false;
-
-        final ExchangeRatesRequest that = (ExchangeRatesRequest) o;
-
-        //noinspection RedundantIfStatement
-        if (!Arrays.equals(codes, that.codes)) return false;
-
-        return true;
+    private Currency getCurrencyWithUpdatedExchangeRate(String fromCode) {
+        final ExchangeRateRequest request = new ExchangeRateRequest(eventBus, context, requestService, fromCode, toCode, false);
+        request.run();
+        return request.getCurrency();
     }
 
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(codes);
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ExchangeRatesRequestOld)) return false;
+
+        ExchangeRatesRequestOld that = (ExchangeRatesRequestOld) o;
+
+        return toCode.equals(that.toCode);
+    }
+
+    @Override public int hashCode() {
+        return toCode.hashCode();
     }
 }
