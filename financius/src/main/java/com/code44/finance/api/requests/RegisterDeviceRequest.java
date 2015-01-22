@@ -29,7 +29,7 @@ public class RegisterDeviceRequest extends Request {
         this.gcmRegistration = gcmRegistration;
     }
 
-    @Override protected void performRequest() throws Exception {
+    @Override protected Object performRequest() throws Exception {
         String registrationId = gcmRegistration.getRegistrationId();
 
         // Register with GCM if necessary

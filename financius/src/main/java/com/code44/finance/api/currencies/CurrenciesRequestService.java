@@ -5,5 +5,5 @@ import retrofit.http.Query;
 
 public interface CurrenciesRequestService {
     @GET("/v1/public/yql?env=store://datatables.org/alltableswithkeys&format=json")
-    public ExchangeRatesResult getExchangeRates(@Query("q") String query);
+    public ExchangeRatesResponse getExchangeRates(@Query("q") String query);
 }

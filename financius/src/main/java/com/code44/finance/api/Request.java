@@ -3,10 +3,12 @@ package com.code44.finance.api;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.Logger;
 
-public abstract class Request implements Runnable {
-    protected final EventBus eventBus;
+import java.util.concurrent.Callable;
+
+public abstract class Request<T> implements Callable<Result<T>> {
+    private final EventBus eventBus;
     private final Logger logger = Logger.with(Request.class.getSimpleName());
-    protected Exception error;
+    private Result<T> result;
 
     /**
      * @param eventBus If {@code null}, then event will not be posted.
@@ -15,26 +17,33 @@ public abstract class Request implements Runnable {
         this.eventBus = eventBus;
     }
 
-    @Override public void run() {
+    @Override public Result<T> call() throws Exception {
         try {
-            performRequest();
-        } catch (Exception e) {
-            logger.error("Request failed.", e);
-            error = e;
+            final T data = performRequest();
+            result = new Result<>(data, null);
+        } catch (Throwable error) {
+            logger.error("Request failed.", error);
+            result = new Result<>(null, error);
         }
 
         if (eventBus != null) {
             eventBus.post(this);
         }
+
+        return result;
     }
 
-    public Exception getError() {
-        return error;
+    public Result<T> getResult() {
+        return result;
     }
 
-    public boolean isError() {
-        return error != null;
+    public boolean isFinished() {
+        return result != null;
     }
 
-    protected abstract void performRequest() throws Exception;
+    public boolean isSuccess() {
+        return isFinished() && result.isSuccess();
+    }
+
+    protected abstract T performRequest() throws Exception;
 }

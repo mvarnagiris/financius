@@ -71,7 +71,7 @@ public class SyncRequest extends Request {
         this.transactionsService = transactionsService;
     }
 
-    @Override protected void performRequest() throws Exception {
+    @Override protected Object performRequest() throws Exception {
         final SQLiteDatabase database = dbHelper.getWritableDatabase();
 
         pushCurrencies(database);

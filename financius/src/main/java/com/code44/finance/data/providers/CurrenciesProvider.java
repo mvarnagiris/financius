@@ -106,7 +106,7 @@ public class CurrenciesProvider extends BaseModelProvider {
         final String currencyId = values.getAsString(Tables.Currencies.ID.getName());
         if (isDefault && !currencyId.equals(mainCurrency.getId())) {
             ContentValues newValues = new ContentValues();
-            newValues.put(Tables.Currencies.EXCHANGE_RATE.getName(), 1.0);
+            newValues.put(Tables.Currencies.EXCHANGE_RATES.getName(), "");
             newValues.put(Tables.Currencies.IS_DEFAULT.getName(), false);
             newValues.put(Tables.Currencies.SYNC_STATE.getName(), SyncState.LocalChanges.asInt());
 

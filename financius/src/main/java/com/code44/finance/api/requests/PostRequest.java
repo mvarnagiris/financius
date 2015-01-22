@@ -17,7 +17,7 @@ public abstract class PostRequest<T extends GenericJson> extends Request {
         this.gcmRegistration = gcmRegistration;
     }
 
-    @Override protected void performRequest() throws Exception {
+    @Override protected Object performRequest() throws Exception {
         T body = createBody();
         body.set("deviceRegId", gcmRegistration.getRegistrationId());
         onAddPostData(body);

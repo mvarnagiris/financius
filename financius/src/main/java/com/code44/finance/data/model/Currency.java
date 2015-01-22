@@ -67,7 +67,7 @@ public class Currency extends Model {
             final Map<String, ExchangeRate> exchangeRates = new HashMap<>();
             for (int i = 0; i < exchangeRatesSize; i++) {
                 final ExchangeRate exchangeRate = parcel.readParcelable(ExchangeRate.class.getClassLoader());
-                exchangeRates.put(exchangeRate.currencyCode, exchangeRate);
+                exchangeRates.put(exchangeRate.toCode, exchangeRate);
             }
             setExchangeRates(exchangeRates);
         }
@@ -199,8 +199,8 @@ public class Currency extends Model {
                 final Map<String, ExchangeRate> exchangeRates = new HashMap<>();
                 for (String currencyCodeWithRate : ratesSplit) {
                     final String[] rateSplit = currencyCodeWithRate.split(":");
-                    final ExchangeRate exchangeRate = new ExchangeRate(rateSplit[0], Double.parseDouble(rateSplit[1]));
-                    exchangeRates.put(exchangeRate.currencyCode, exchangeRate);
+                    final ExchangeRate exchangeRate = new ExchangeRate(code, rateSplit[0], Double.parseDouble(rateSplit[1]));
+                    exchangeRates.put(exchangeRate.toCode, exchangeRate);
                 }
                 setExchangeRates(exchangeRates);
             }
@@ -252,7 +252,7 @@ public class Currency extends Model {
         values.put(Tables.Currencies.IS_DEFAULT.getName(), isDefault);
         final StringBuilder sb = new StringBuilder();
         for (ExchangeRate exchangeRate : exchangeRates.values()) {
-            sb.append(exchangeRate.currencyCode).append(":").append(exchangeRate.rate).append(";");
+            sb.append(exchangeRate.toCode).append(":").append(exchangeRate.rate).append(";");
         }
         values.put(Tables.Currencies.EXCHANGE_RATES.getName(), sb.toString());
         return values;
@@ -345,41 +345,20 @@ public class Currency extends Model {
             }
         };
 
-        private final String currencyCode;
+        private final String fromCode;
+        private final String toCode;
         private final double rate;
 
-        public ExchangeRate(String currencyCode, double rate) {
-            this.currencyCode = currencyCode;
+        public ExchangeRate(String fromCode, String toCode, double rate) {
+            this.fromCode = fromCode;
+            this.toCode = toCode;
             this.rate = rate;
         }
 
         private ExchangeRate(Parcel parcel) {
-            currencyCode = parcel.readString();
+            fromCode = parcel.readString();
+            toCode = parcel.readString();
             rate = parcel.readDouble();
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof ExchangeRate)) return false;
-
-            final ExchangeRate that = (ExchangeRate) o;
-
-            if (Double.compare(that.rate, rate) != 0) return false;
-            //noinspection RedundantIfStatement
-            if (!currencyCode.equals(that.currencyCode)) return false;
-
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            int result;
-            long temp;
-            result = currencyCode.hashCode();
-            temp = Double.doubleToLongBits(rate);
-            result = 31 * result + (int) (temp ^ (temp >>> 32));
-            return result;
         }
 
         @Override public int describeContents() {
@@ -387,8 +366,33 @@ public class Currency extends Model {
         }
 
         @Override public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(currencyCode);
+            dest.writeString(fromCode);
+            dest.writeString(toCode);
             dest.writeDouble(rate);
+        }
+
+        @Override public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof ExchangeRate)) return false;
+
+            final ExchangeRate that = (ExchangeRate) o;
+
+            if (Double.compare(that.rate, rate) != 0) return false;
+            if (!fromCode.equals(that.fromCode)) return false;
+            //noinspection RedundantIfStatement
+            if (!toCode.equals(that.toCode)) return false;
+
+            return true;
+        }
+
+        @Override public int hashCode() {
+            int result;
+            long temp;
+            result = fromCode.hashCode();
+            result = 31 * result + toCode.hashCode();
+            temp = Double.doubleToLongBits(rate);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            return result;
         }
     }
 }

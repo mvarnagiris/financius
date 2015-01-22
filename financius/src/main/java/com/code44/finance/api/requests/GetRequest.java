@@ -28,7 +28,7 @@ public abstract class GetRequest<T extends GenericJson> extends Request {
         this.user = user;
     }
 
-    @Override protected void performRequest() throws Exception {
+    @Override protected Object performRequest() throws Exception {
         long timestamp = getLastTimestamp(user);
         final List<T> entities = performRequest(timestamp);
         final List<ContentValues> valuesList = new ArrayList<>();

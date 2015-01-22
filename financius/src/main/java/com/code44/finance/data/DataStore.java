@@ -196,6 +196,22 @@ public final class DataStore {
             return this;
         }
 
+        public DataStoreBulkInsert model(Model model) {
+            return values(model.asValues());
+        }
+
+        public DataStoreBulkInsert models(Collection<Model> models) {
+            if (models == null || models.isEmpty()) {
+                throw new IllegalArgumentException("Models collection cannot be empty.");
+            }
+
+            for (Model model : models) {
+                valuesList.add(model.asValues());
+            }
+
+            return this;
+        }
+
         public int into(Context context, Uri uri) {
             ContentValues[] valuesArray = getValuesArray();
             if (valuesArray.length == 0) {
