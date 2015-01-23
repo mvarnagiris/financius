@@ -46,5 +46,6 @@ public class RegisterDeviceRequest extends Request {
         // Register device with AppEngine
         usersService.registerDevice(body).execute();
         gcmRegistration.setRegisteredWithServer(true);
+        return null;
     }
 }

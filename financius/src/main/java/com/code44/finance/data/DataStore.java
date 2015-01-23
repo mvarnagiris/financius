@@ -200,7 +200,7 @@ public final class DataStore {
             return values(model.asValues());
         }
 
-        public DataStoreBulkInsert models(Collection<Model> models) {
+        public <T extends Model> DataStoreBulkInsert models(Collection<T> models) {
             if (models == null || models.isEmpty()) {
                 throw new IllegalArgumentException("Models collection cannot be empty.");
             }

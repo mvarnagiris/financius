@@ -6,7 +6,7 @@ import com.code44.finance.utils.Logger;
 import java.util.concurrent.Callable;
 
 public abstract class Request<T> implements Callable<Result<T>> {
-    private final EventBus eventBus;
+    protected final EventBus eventBus;
     private final Logger logger = Logger.with(Request.class.getSimpleName());
     private Result<T> result;
 
@@ -21,7 +21,7 @@ public abstract class Request<T> implements Callable<Result<T>> {
         try {
             final T data = performRequest();
             result = new Result<>(data, null);
-        } catch (Throwable error) {
+        } catch (Exception error) {
             logger.error("Request failed.", error);
             result = new Result<>(null, error);
         }

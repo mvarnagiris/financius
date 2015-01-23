@@ -69,5 +69,6 @@ public class RegisterRequest extends Request {
             throw e;
         }
         user.notifyChanged();
+        return null;
     }
 }

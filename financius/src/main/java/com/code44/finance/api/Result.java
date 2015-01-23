@@ -2,9 +2,9 @@ package com.code44.finance.api;
 
 public class Result<T> {
     private final T data;
-    private final Throwable error;
+    private final Exception error;
 
-    public Result(T data, Throwable error) {
+    public Result(T data, Exception error) {
         this.data = data;
         this.error = error;
     }
@@ -13,7 +13,7 @@ public class Result<T> {
         return data;
     }
 
-    public Throwable getError() {
+    public Exception getError() {
         return error;
     }
 

@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
-import com.code44.finance.api.currencies.ExchangeRateRequest;
+import com.code44.finance.api.currencies.GetExchangeRatesRequest;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Currency;
 import com.code44.finance.data.providers.AccountsProvider;
@@ -120,7 +120,7 @@ class CurrencyActivityPresenter extends ModelActivityPresenter<Currency> impleme
         if (currency.isDefault()) {
             exchangeRateTextView.setText(R.string.main_currency);
         } else {
-            exchangeRateTextView.setText(String.valueOf(currency.getExchangeRate()));
+            exchangeRateTextView.setText(String.valueOf(currency.getExchangeRate(mainCurrency.getCode())));
         }
         formatTextView.setText(MoneyFormatter.format(currency, 100000));
 
@@ -151,14 +151,12 @@ class CurrencyActivityPresenter extends ModelActivityPresenter<Currency> impleme
     }
 
     @Override public void onRefresh() {
-        currenciesApi.updateExchangeRate(getStoredModel().getCode(), mainCurrency.getCode());
+        currenciesApi.updateExchangeRates();
         setRefreshing(true);
     }
 
-    @Subscribe public void onRefreshFinished(ExchangeRateRequest request) {
-        if (getStoredModel() != null && getStoredModel().getCode().equals(request.getFromCode())) {
-            setRefreshing(false);
-        }
+    @Subscribe public void onRefreshFinished(GetExchangeRatesRequest request) {
+        setRefreshing(false);
     }
 
     private void setRefreshing(boolean refreshing) {

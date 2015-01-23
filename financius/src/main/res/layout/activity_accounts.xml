@@ -22,7 +22,7 @@
             android:id="@+id/balanceTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:layout_marginLeft="@dimen/keyline_content_minus_keyline"
             android:textAppearance="@style/Text.Display2"
             android:textColor="?android:textColorPrimaryInverse"
             tools:ignore="RtlHardcoded"

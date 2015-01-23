@@ -1,8 +1,10 @@
 <resources>
 
     <dimen name="keyline">16dp</dimen>
+    <dimen name="keyline_2x">32dp</dimen>
     <dimen name="keyline_content">72dp</dimen>
-    <dimen name="keyline_between">40dp</dimen>
+    <dimen name="keyline_content_minus_keyline_2x">40dp</dimen>
+    <dimen name="keyline_content_minus_keyline">56dp</dimen>
     <dimen name="keyline_between_large">54dp</dimen>
 
     <dimen name="margin_edit_container">0dp</dimen>

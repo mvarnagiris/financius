@@ -20,10 +20,10 @@ import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 public final class Api {
-    private final Executor executor;
+    private final ExecutorService executor;
     private final Context context;
     private final EventBus eventBus;
     private final DBHelper dbHelper;
@@ -33,7 +33,7 @@ public final class Api {
     private final JsonFactory jsonFactory;
     private final HttpRequestInitializerFactory httpRequestInitializerFactory;
 
-    public Api(Executor executor, Context context, EventBus eventBus, DBHelper dbHelper, User user, GcmRegistration gcmRegistration, HttpTransport httpTransport, JsonFactory jsonFactory, HttpRequestInitializerFactory httpRequestInitializerFactory) {
+    public Api(ExecutorService executor, Context context, EventBus eventBus, DBHelper dbHelper, User user, GcmRegistration gcmRegistration, HttpTransport httpTransport, JsonFactory jsonFactory, HttpRequestInitializerFactory httpRequestInitializerFactory) {
         Preconditions.notNull(executor, "Executor cannot be null.");
         Preconditions.notNull(context, "Context cannot be null.");
         Preconditions.notNull(eventBus, "EventBus cannot be null.");
@@ -75,7 +75,7 @@ public final class Api {
     }
 
     private void execute(Request request) {
-        executor.execute(request);
+        executor.submit(request);
     }
 
     private Users getUsersService() {

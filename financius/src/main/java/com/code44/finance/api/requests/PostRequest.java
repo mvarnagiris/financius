@@ -24,6 +24,7 @@ public abstract class PostRequest<T extends GenericJson> extends Request {
         if (!isPostDataEmpty(body)) {
             performRequest(body);
         }
+        return null;
     }
 
     protected abstract T createBody();

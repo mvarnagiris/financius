@@ -232,7 +232,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/keyline"
-                    android:paddingLeft="@dimen/keyline_between"
+                    android:paddingLeft="@dimen/keyline_content_minus_keyline_2x"
                     android:textAppearance="@style/Text.Caption"
                     android:textColor="?android:textColorSecondary"
                     tools:text="Current main currency GBP" />
@@ -274,7 +274,7 @@
                 <View
                     android:id="@+id/exchangeRateDividerView"
                     style="@style/Divider.Thick"
-                    android:layout_marginLeft="@dimen/keyline_between"
+                    android:layout_marginLeft="@dimen/keyline_content_minus_keyline_2x"
                     tools:ignore="RtlHardcoded" />
 
             </LinearLayout>

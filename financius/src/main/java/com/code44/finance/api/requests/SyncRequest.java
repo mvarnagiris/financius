@@ -88,6 +88,8 @@ public class SyncRequest extends Request {
 
         pushTransactions(database);
         getTransactions();
+
+        return null;
     }
 
     private void pushCurrencies(SQLiteDatabase database) {
@@ -105,11 +107,11 @@ public class SyncRequest extends Request {
         } while (cursor.moveToNext());
         IOUtils.closeQuietly(cursor);
 
-        new PostCurrenciesRequest(gcmRegistration, currenciesService, currencies).run();
+//        new PostCurrenciesRequest(gcmRegistration, currenciesService, currencies).run();
     }
 
     private void getCurrencies() {
-        new GetCurrenciesRequest(context, user, currenciesService).run();
+//        new GetCurrenciesRequest(context, user, currenciesService).run();
     }
 
     private void pushCategories(SQLiteDatabase database) {
@@ -127,11 +129,11 @@ public class SyncRequest extends Request {
         } while (cursor.moveToNext());
         IOUtils.closeQuietly(cursor);
 
-        new PostCategoriesRequest(gcmRegistration, categoriesService, categories).run();
+//        new PostCategoriesRequest(gcmRegistration, categoriesService, categories).run();
     }
 
     private void getCategories() {
-        new GetCategoriesRequest(context, user, categoriesService).run();
+//        new GetCategoriesRequest(context, user, categoriesService).call();
     }
 
     private void pushTags(SQLiteDatabase database) {
@@ -149,11 +151,11 @@ public class SyncRequest extends Request {
         } while (cursor.moveToNext());
         IOUtils.closeQuietly(cursor);
 
-        new PostTagsRequest(gcmRegistration, tagsService, tags).run();
+//        new PostTagsRequest(gcmRegistration, tagsService, tags).run();
     }
 
     private void getTags() {
-        new GetTagsRequest(context, user, tagsService).run();
+//        new GetTagsRequest(context, user, tagsService).run();
     }
 
     private void pushAccounts(SQLiteDatabase database) {
@@ -172,11 +174,11 @@ public class SyncRequest extends Request {
         } while (cursor.moveToNext());
         IOUtils.closeQuietly(cursor);
 
-        new PostAccountsRequest(gcmRegistration, accountsService, accounts).run();
+//        new PostAccountsRequest(gcmRegistration, accountsService, accounts).run();
     }
 
     private void getAccounts() {
-        new GetAccountsRequest(context, user, accountsService).run();
+//        new GetAccountsRequest(context, user, accountsService).run();
     }
 
     private void pushTransactions(SQLiteDatabase database) {
@@ -199,11 +201,11 @@ public class SyncRequest extends Request {
         } while (cursor.moveToNext());
         IOUtils.closeQuietly(cursor);
 
-        new PostTransactionsRequest(gcmRegistration, transactionsService, transactions).run();
+//        new PostTransactionsRequest(gcmRegistration, transactionsService, transactions).run();
     }
 
     private void getTransactions() {
-        new GetTransactionsRequest(context, user, transactionsService).run();
+//        new GetTransactionsRequest(context, user, transactionsService).run();
     }
 
     private void markInProgress(SQLiteDatabase database, Column syncStateColumn) {

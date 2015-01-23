@@ -45,6 +45,7 @@ public abstract class GetRequest<T extends GenericJson> extends Request {
 
         DataStore.bulkInsert().values(valuesList).into(context, getSaveUri());
         saveNewTimestamp(user, timestamp);
+        return null;
     }
 
     protected abstract long getLastTimestamp(User user);

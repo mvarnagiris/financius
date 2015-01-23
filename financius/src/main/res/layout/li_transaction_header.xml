@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/arrow_IV"
-        android:layout_width="@dimen/keyline_between"
-        android:layout_height="@dimen/keyline_between"
+        android:layout_width="@dimen/keyline_content_minus_keyline_2x"
+        android:layout_height="@dimen/keyline_content_minus_keyline_2x"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="@dimen/keyline"
         android:scaleType="centerInside"

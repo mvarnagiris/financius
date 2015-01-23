@@ -10,7 +10,7 @@ import com.code44.finance.qualifiers.Network;
 import com.code44.finance.services.StartupService;
 import com.code44.finance.utils.EventBus;
 
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 import javax.inject.Singleton;
 
@@ -26,7 +26,7 @@ import retrofit.RestAdapter;
         }
 )
 public class CurrenciesApiModule {
-    @Provides @Singleton public CurrenciesApi provideCurrenciesApi(@Network Executor executor, @ApplicationContext Context context, EventBus eventBus, CurrenciesRequestService currenciesRequestService) {
+    @Provides @Singleton public CurrenciesApi provideCurrenciesApi(@Network ExecutorService executor, @ApplicationContext Context context, EventBus eventBus, CurrenciesRequestService currenciesRequestService) {
         return new CurrenciesApi(executor, context, eventBus, currenciesRequestService);
     }
 

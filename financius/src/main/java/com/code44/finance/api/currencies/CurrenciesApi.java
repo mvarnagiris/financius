@@ -21,8 +21,13 @@ public class CurrenciesApi {
         this.requestService = Preconditions.notNull(requestService, "CurrenciesRequestService cannot be null.");
     }
 
-    public void getExchangeRates(boolean updateDatabase, String... codes) {
-        final ExchangeRatesRequest request = new ExchangeRatesRequest(eventBus, requestService, context, updateDatabase, codes);
+    public void getExchangeRates(String... codes) {
+        final GetExchangeRatesRequest request = new GetExchangeRatesRequest(eventBus, requestService, codes);
+        executeRequest(request);
+    }
+
+    public void updateExchangeRates() {
+        final UpdateExchangeRatesRequest request = new UpdateExchangeRatesRequest(eventBus, requestService, context);
         executeRequest(request);
     }
 

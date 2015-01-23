@@ -11,7 +11,7 @@
     android:paddingTop="0dp">
 
     <Space
-        android:layout_width="@dimen/keyline_between"
+        android:layout_width="@dimen/keyline_content_minus_keyline_2x"
         android:layout_height="1dp"
         android:layout_marginRight="@dimen/keyline"
         tools:ignore="RtlHardcoded" />
