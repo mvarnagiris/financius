@@ -1,7 +1,8 @@
-package com.code44.finance.utils;
+package com.code44.finance.utils.interval;
 
 import android.content.Context;
 
+import com.code44.finance.utils.EventBus;
 import com.squareup.otto.Produce;
 
 import org.joda.time.Interval;

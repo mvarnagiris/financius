@@ -3,18 +3,18 @@ package com.code44.finance.modules;
 import android.content.Context;
 
 import com.code44.finance.api.NetworkExecutor;
+import com.code44.finance.money.Calculator;
 import com.code44.finance.qualifiers.ApplicationContext;
 import com.code44.finance.qualifiers.Local;
 import com.code44.finance.qualifiers.Network;
 import com.code44.finance.ui.playservices.GoogleApiConnection;
 import com.code44.finance.ui.settings.security.Security;
-import com.code44.finance.utils.ActiveInterval;
-import com.code44.finance.utils.Calculator;
-import com.code44.finance.utils.CurrentInterval;
 import com.code44.finance.utils.EventBus;
-import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.LayoutType;
 import com.code44.finance.utils.LocalExecutor;
+import com.code44.finance.utils.interval.ActiveInterval;
+import com.code44.finance.utils.interval.CurrentInterval;
+import com.code44.finance.utils.preferences.GeneralPrefs;
 
 import java.util.concurrent.ExecutorService;
 

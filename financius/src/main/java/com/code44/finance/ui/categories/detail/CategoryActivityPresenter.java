@@ -18,8 +18,8 @@ import com.code44.finance.ui.categories.edit.CategoryEditActivity;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelActivityPresenter;
 import com.code44.finance.ui.reports.trends.TrendsChartView;
-import com.code44.finance.utils.BaseInterval;
 import com.code44.finance.utils.EventBus;
+import com.code44.finance.utils.interval.BaseInterval;
 
 class CategoryActivityPresenter extends ModelActivityPresenter<Category> {
     private final BaseInterval interval;

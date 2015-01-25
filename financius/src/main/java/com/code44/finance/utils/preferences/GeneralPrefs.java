@@ -1,6 +1,9 @@
-package com.code44.finance.utils;
+package com.code44.finance.utils.preferences;
 
 import android.content.Context;
+
+import com.code44.finance.utils.EventBus;
+import com.code44.finance.utils.interval.BaseInterval;
 
 public class GeneralPrefs extends Prefs {
     private static final String PREFIX = "general_";

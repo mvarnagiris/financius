@@ -1,4 +1,4 @@
-package com.code44.finance.utils;
+package com.code44.finance.money;
 
 import android.content.Context;
 import android.text.SpannableStringBuilder;

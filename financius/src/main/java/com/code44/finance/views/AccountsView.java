@@ -10,9 +10,7 @@ import android.widget.TextView;
 import com.code44.finance.App;
 import com.code44.finance.R;
 import com.code44.finance.data.model.Account;
-import com.code44.finance.data.model.CurrencyFormat;
-import com.code44.finance.money.MoneyFormatter;
-import com.code44.finance.qualifiers.Main;
+import com.code44.finance.money.CurrenciesManager;
 
 import java.util.List;
 
@@ -22,7 +20,7 @@ public class AccountsView extends LinearLayout {
     private static final int TOP_STATIC_VIEWS_COUNT = 1;
     private static final int BOTTOM_STATIC_VIEWS_COUNT = 1;
 
-    @Inject @Main CurrencyFormat mainCurrencyFormat;
+    @Inject CurrenciesManager currenciesManager;
 
     private View balanceContainerView;
     private TextView totalBalanceView;
@@ -75,13 +73,13 @@ public class AccountsView extends LinearLayout {
             final Account account = accounts.get(i - TOP_STATIC_VIEWS_COUNT);
             final View view = getChildAt(i);
             ((TextView) view.findViewById(R.id.titleTextView)).setText(account.getTitle());
-            ((TextView) view.findViewById(R.id.balanceTextView)).setText(MoneyFormatter.format(account.getCurrencyCode(), account.getBalance()));
-            totalBalance += account.getBalance() * account.getCurrencyCode().getExchangeRate();
+            ((TextView) view.findViewById(R.id.balanceTextView)).setText(currenciesManager.formatMoney(account.getCurrencyCode(), account.getBalance()));
+            totalBalance += account.getBalance() * currenciesManager.getExchangeRateFromMain(account.getCurrencyCode());
         }
 
         if (accounts.size() > 1) {
             balanceContainerView.setVisibility(VISIBLE);
-            totalBalanceView.setText(MoneyFormatter.format(mainCurrencyFormat, totalBalance));
+            totalBalanceView.setText(currenciesManager.formatMoney(totalBalance));
         } else {
             balanceContainerView.setVisibility(GONE);
         }

@@ -1,9 +1,10 @@
-package com.code44.finance.utils;
+package com.code44.finance.utils.interval;
 
 import android.content.Context;
 
 import com.code44.finance.R;
 import com.code44.finance.common.utils.Preconditions;
+import com.code44.finance.utils.EventBus;
 
 import net.danlew.android.joda.DateUtils;
 

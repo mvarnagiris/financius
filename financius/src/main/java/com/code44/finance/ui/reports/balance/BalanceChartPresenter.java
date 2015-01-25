@@ -10,8 +10,8 @@ import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.money.MoneyFormatter;
 import com.code44.finance.ui.common.presenters.Presenter;
 import com.code44.finance.ui.reports.AmountGroups;
-import com.code44.finance.utils.BaseInterval;
 import com.code44.finance.utils.ThemeUtils;
+import com.code44.finance.utils.interval.BaseInterval;
 
 import org.joda.time.Interval;
 import org.joda.time.Period;

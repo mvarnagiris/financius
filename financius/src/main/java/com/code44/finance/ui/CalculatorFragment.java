@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.utils.Calculator;
+import com.code44.finance.money.Calculator;
 
 import javax.inject.Inject;
 

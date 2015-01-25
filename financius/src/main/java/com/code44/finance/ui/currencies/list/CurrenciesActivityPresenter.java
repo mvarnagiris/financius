@@ -24,7 +24,7 @@ import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 import com.code44.finance.ui.currencies.detail.CurrencyActivity;
 import com.code44.finance.ui.currencies.edit.CurrencyEditActivity;
 import com.code44.finance.utils.EventBus;
-import com.code44.finance.utils.GeneralPrefs;
+import com.code44.finance.utils.preferences.GeneralPrefs;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;

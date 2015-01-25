@@ -16,8 +16,8 @@ import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.navigation.NavigationScreen;
 import com.code44.finance.ui.reports.BaseReportActivity;
-import com.code44.finance.utils.ActiveInterval;
 import com.code44.finance.utils.analytics.Analytics;
+import com.code44.finance.utils.interval.ActiveInterval;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;

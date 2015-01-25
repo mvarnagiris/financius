@@ -3,7 +3,7 @@ package com.code44.finance.api;
 import android.content.Context;
 
 import com.code44.finance.BuildConfig;
-import com.code44.finance.utils.Prefs;
+import com.code44.finance.utils.preferences.Prefs;
 
 public class GcmRegistration extends Prefs {
     private static final String PREFIX = "gcm_";

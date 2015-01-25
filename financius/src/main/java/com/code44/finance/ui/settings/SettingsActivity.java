@@ -21,11 +21,11 @@ import com.code44.finance.ui.settings.security.LockActivity;
 import com.code44.finance.ui.settings.security.Security;
 import com.code44.finance.ui.settings.security.UnlockActivity;
 import com.code44.finance.ui.tags.list.TagsActivity;
-import com.code44.finance.utils.ActiveInterval;
-import com.code44.finance.utils.BaseInterval;
-import com.code44.finance.utils.CurrentInterval;
-import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.analytics.Analytics;
+import com.code44.finance.utils.interval.ActiveInterval;
+import com.code44.finance.utils.interval.BaseInterval;
+import com.code44.finance.utils.interval.CurrentInterval;
+import com.code44.finance.utils.preferences.GeneralPrefs;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;

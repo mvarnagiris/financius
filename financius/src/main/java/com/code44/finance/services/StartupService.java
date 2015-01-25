@@ -11,7 +11,7 @@ import com.code44.finance.api.GcmRegistration;
 import com.code44.finance.api.User;
 import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.money.CurrenciesManager;
-import com.code44.finance.utils.GeneralPrefs;
+import com.code44.finance.utils.preferences.GeneralPrefs;
 
 import javax.inject.Inject;
 

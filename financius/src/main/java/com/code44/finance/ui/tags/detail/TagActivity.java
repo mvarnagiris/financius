@@ -9,8 +9,8 @@ import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ActivityPresenter;
-import com.code44.finance.utils.CurrentInterval;
 import com.code44.finance.utils.analytics.Analytics;
+import com.code44.finance.utils.interval.CurrentInterval;
 
 import javax.inject.Inject;
 

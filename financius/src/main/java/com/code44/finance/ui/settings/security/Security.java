@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.code44.finance.R;
 import com.code44.finance.utils.EventBus;
-import com.code44.finance.utils.Prefs;
+import com.code44.finance.utils.preferences.Prefs;
 import com.squareup.otto.Produce;
 
 public class Security extends Prefs {

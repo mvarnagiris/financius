@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.code44.finance.BuildConfig;
 import com.code44.finance.R;
 import com.code44.finance.ui.settings.security.Security;
-import com.code44.finance.utils.BaseInterval;
+import com.code44.finance.utils.interval.BaseInterval;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,8 +5,8 @@ import android.content.Context;
 import com.code44.finance.BuildConfig;
 import com.code44.finance.qualifiers.AppTracker;
 import com.code44.finance.qualifiers.ApplicationContext;
-import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.analytics.Analytics;
+import com.code44.finance.utils.preferences.GeneralPrefs;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 

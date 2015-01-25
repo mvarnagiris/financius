@@ -5,7 +5,7 @@ import android.database.Cursor;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Transaction;
-import com.code44.finance.utils.BaseInterval;
+import com.code44.finance.utils.interval.BaseInterval;
 
 import org.joda.time.Interval;
 import org.joda.time.Period;

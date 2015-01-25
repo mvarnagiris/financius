@@ -18,8 +18,8 @@ import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.ui.common.ModelListActivity;
 import com.code44.finance.ui.common.navigation.NavigationScreen;
-import com.code44.finance.utils.CurrentInterval;
 import com.code44.finance.utils.analytics.Analytics;
+import com.code44.finance.utils.interval.CurrentInterval;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;

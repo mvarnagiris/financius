@@ -1,4 +1,4 @@
-package com.code44.finance.utils;
+package com.code44.finance.utils.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;

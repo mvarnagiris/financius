@@ -17,8 +17,8 @@ import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelActivityPresenter;
 import com.code44.finance.ui.reports.trends.TrendsChartView;
 import com.code44.finance.ui.tags.edit.TagEditActivity;
-import com.code44.finance.utils.BaseInterval;
 import com.code44.finance.utils.EventBus;
+import com.code44.finance.utils.interval.BaseInterval;
 
 class TagActivityPresenter extends ModelActivityPresenter<Tag> {
     private final BaseInterval interval;

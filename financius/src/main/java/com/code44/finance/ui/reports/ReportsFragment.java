@@ -16,7 +16,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
-import com.code44.finance.utils.ActiveInterval;
+import com.code44.finance.utils.interval.ActiveInterval;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;

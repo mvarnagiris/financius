@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import com.code44.finance.data.db.DBHelper;
 import com.code44.finance.ui.settings.security.Security;
 import com.code44.finance.utils.EventBus;
-import com.code44.finance.utils.Prefs;
+import com.code44.finance.utils.preferences.Prefs;
 import com.squareup.otto.Produce;
 
 public class User extends Prefs {

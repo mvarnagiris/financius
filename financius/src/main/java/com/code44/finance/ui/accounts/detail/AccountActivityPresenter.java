@@ -21,8 +21,8 @@ import com.code44.finance.ui.accounts.AccountEditActivity;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelActivityPresenter;
 import com.code44.finance.ui.reports.balance.BalanceChartView;
-import com.code44.finance.utils.BaseInterval;
 import com.code44.finance.utils.EventBus;
+import com.code44.finance.utils.interval.BaseInterval;
 
 class AccountActivityPresenter extends ModelActivityPresenter<Account> implements LoaderManager.LoaderCallbacks<Cursor> {
     private final CurrencyFormat mainCurrencyFormat;

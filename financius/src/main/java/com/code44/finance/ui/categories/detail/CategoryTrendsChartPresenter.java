@@ -14,7 +14,7 @@ import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.ui.reports.AmountGroups;
 import com.code44.finance.ui.reports.trends.TrendsChartPresenter;
 import com.code44.finance.ui.reports.trends.TrendsChartView;
-import com.code44.finance.utils.BaseInterval;
+import com.code44.finance.utils.interval.BaseInterval;
 
 import lecho.lib.hellocharts.model.Line;
 

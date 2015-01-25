@@ -12,8 +12,8 @@ import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.ExchangeRate;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.utils.EventBus;
-import com.code44.finance.utils.GeneralPrefs;
 import com.code44.finance.utils.IOUtils;
+import com.code44.finance.utils.preferences.GeneralPrefs;
 import com.squareup.otto.Produce;
 
 import java.util.HashMap;
@@ -98,6 +98,10 @@ public class CurrenciesManager {
         }
 
         return exchangeRate.getRate(to);
+    }
+
+    public String formatMoney(long amount) {
+        return getFormat(mainCurrencyCode).format(amount);
     }
 
     public String formatMoney(String currencyCode, long amount) {

@@ -21,9 +21,9 @@ import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.money.MoneyFormatter;
 import com.code44.finance.ui.common.BaseModelsAdapter;
-import com.code44.finance.utils.BaseInterval;
 import com.code44.finance.utils.TextBackgroundSpan;
 import com.code44.finance.utils.ThemeUtils;
+import com.code44.finance.utils.interval.BaseInterval;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;

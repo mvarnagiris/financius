@@ -9,8 +9,8 @@ import android.widget.LinearLayout;
 
 import com.code44.finance.App;
 import com.code44.finance.R;
-import com.code44.finance.utils.ActiveInterval;
 import com.code44.finance.utils.EventBus;
+import com.code44.finance.utils.interval.ActiveInterval;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;

@@ -12,7 +12,7 @@ import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.qualifiers.ApplicationContext;
 import com.code44.finance.services.StartupService;
 import com.code44.finance.utils.EventBus;
-import com.code44.finance.utils.GeneralPrefs;
+import com.code44.finance.utils.preferences.GeneralPrefs;
 
 import javax.inject.Singleton;
 
