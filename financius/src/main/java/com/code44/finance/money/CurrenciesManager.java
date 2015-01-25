@@ -3,14 +3,10 @@ package com.code44.finance.money;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.Account;
-import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.ExchangeRate;
-import com.code44.finance.data.model.Transaction;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.IOUtils;
 import com.code44.finance.utils.preferences.GeneralPrefs;
@@ -21,7 +17,6 @@ import java.util.Locale;
 import java.util.Map;
 
 public class CurrenciesManager {
-    private final Map<String, CurrencyFormat> formatCache = new HashMap<>();
     private final Map<String, ExchangeRate> exchangeRateCache = new HashMap<>();
     private final EventBus eventBus;
     private final GeneralPrefs generalPrefs;
@@ -44,19 +39,6 @@ public class CurrenciesManager {
             do {
                 final ExchangeRate exchangeRate = ExchangeRate.from(cursor);
                 exchangeRateCache.put(getExchangeRateKey(exchangeRate.getFromCode(), exchangeRate.getToCode()), exchangeRate);
-            } while (cursor.moveToNext());
-        }
-        IOUtils.closeQuietly(cursor);
-        notifyChanged();
-    }
-
-    public void updateFormats(SQLiteDatabase database) {
-        formatCache.clear();
-        final Cursor cursor = Tables.CurrencyFormats.getQuery().from(database, Tables.CurrencyFormats.TABLE_NAME).execute();
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                final CurrencyFormat currencyFormat = CurrencyFormat.from(cursor);
-                formatCache.put(currencyFormat.getCode(), currencyFormat);
             } while (cursor.moveToNext());
         }
         IOUtils.closeQuietly(cursor);
@@ -98,38 +80,6 @@ public class CurrenciesManager {
         }
 
         return exchangeRate.getRate(to);
-    }
-
-    public String formatMoney(long amount) {
-        return getFormat(mainCurrencyCode).format(amount);
-    }
-
-    public String formatMoney(String currencyCode, long amount) {
-        return getFormat(currencyCode).format(amount);
-    }
-
-    public String formatMoney(Transaction transaction) {
-        final Account account;
-        if (transaction.getTransactionType() == TransactionType.Income) {
-            account = transaction.getAccountTo();
-        } else {
-            account = transaction.getAccountFrom();
-        }
-
-        if (account != null) {
-            return formatMoney(account.getCurrencyCode(), transaction.getAmount());
-        }
-
-        return formatMoney(null, transaction.getAmount());
-    }
-
-    private CurrencyFormat getFormat(String code) {
-        final CurrencyFormat currencyFormat = formatCache.get(code);
-        if (currencyFormat != null) {
-            return currencyFormat;
-        }
-
-        return new CurrencyFormat();
     }
 
     private void notifyChanged() {
