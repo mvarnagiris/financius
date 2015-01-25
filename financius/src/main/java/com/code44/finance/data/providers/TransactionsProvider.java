@@ -24,16 +24,14 @@ public class TransactionsProvider extends ModelProvider {
     public static final String URI_VALUE_JOIN_TABLE_ACCOUNTS_FROM = "accounts_from";
     public static final String URI_VALUE_JOIN_TABLE_ACCOUNTS_TO = "accounts_to";
     public static final String URI_VALUE_JOIN_TABLE_CATEGORIES = "categories";
-    public static final String URI_VALUE_JOIN_TABLE_CURRENCIES_FROM = "currencies_from";
-    public static final String URI_VALUE_JOIN_TABLE_CURRENCIES_TO = "currencies_to";
     public static final String URI_VALUE_JOIN_TABLE_TAGS = "tags";
 
     public static Uri uriTransactions() {
         return uriModels(TransactionsProvider.class, Tables.Transactions.TABLE_NAME);
     }
 
-    public static Uri uriTransaction(String transactionServerId) {
-        return uriModel(TransactionsProvider.class, Tables.Transactions.TABLE_NAME, transactionServerId);
+    public static Uri uriTransaction(String transactionId) {
+        return uriModel(TransactionsProvider.class, Tables.Transactions.TABLE_NAME, transactionId);
     }
 
     public static void updateAccountBalance(SQLiteDatabase database, String accountId) {
@@ -92,8 +90,6 @@ public class TransactionsProvider extends ModelProvider {
             joinTables.add(URI_VALUE_JOIN_TABLE_ACCOUNTS_FROM);
             joinTables.add(URI_VALUE_JOIN_TABLE_ACCOUNTS_TO);
             joinTables.add(URI_VALUE_JOIN_TABLE_CATEGORIES);
-            joinTables.add(URI_VALUE_JOIN_TABLE_CURRENCIES_FROM);
-            joinTables.add(URI_VALUE_JOIN_TABLE_CURRENCIES_TO);
             joinTables.add(URI_VALUE_JOIN_TABLE_TAGS);
         }
 
@@ -115,16 +111,6 @@ public class TransactionsProvider extends ModelProvider {
                     .append(" on ").append(Tables.Categories.ID.getNameWithTable()).append("=").append(Tables.Transactions.CATEGORY_ID);
         }
 
-        if (joinTables.contains(URI_VALUE_JOIN_TABLE_CURRENCIES_FROM)) {
-            sb.append(" left join ").append(Tables.CurrencyFormats.TABLE_NAME).append(" as ").append(Tables.CurrencyFormats.TEMP_TABLE_NAME_FROM_CURRENCY)
-                    .append(" on ").append(Tables.CurrencyFormats.ID.getNameWithTable(Tables.CurrencyFormats.TEMP_TABLE_NAME_FROM_CURRENCY)).append("=").append(Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT));
-        }
-
-        if (joinTables.contains(URI_VALUE_JOIN_TABLE_CURRENCIES_TO)) {
-            sb.append(" left join ").append(Tables.CurrencyFormats.TABLE_NAME).append(" as ").append(Tables.CurrencyFormats.TEMP_TABLE_NAME_TO_CURRENCY)
-                    .append(" on ").append(Tables.CurrencyFormats.ID.getNameWithTable(Tables.CurrencyFormats.TEMP_TABLE_NAME_TO_CURRENCY)).append("=").append(Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT));
-        }
-
         if (joinTables.contains(URI_VALUE_JOIN_TABLE_TAGS)) {
             sb.append(" left join ").append(Tables.TransactionTags.TABLE_NAME)
                     .append(" on ").append(Tables.TransactionTags.TRANSACTION_ID).append("=").append(Tables.Transactions.ID.getNameWithTable());
@@ -139,22 +125,22 @@ public class TransactionsProvider extends ModelProvider {
         return Tables.Transactions.ID;
     }
 
-    @Override protected void onBeforeInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> outExtras) {
-        super.onBeforeInsertItem(uri, values, serverId, outExtras);
+    @Override protected void onBeforeInsertItem(Uri uri, ContentValues values, Map<String, Object> outExtras) {
+        super.onBeforeInsertItem(uri, values, outExtras);
         updateTransactionTags(values);
     }
 
-    @Override protected void onAfterInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> extras) {
-        super.onAfterInsertItem(uri, values, serverId, extras);
-        updateAllAccountsBalances(database);
+    @Override protected void onAfterInsertItem(Uri uri, ContentValues values, Map<String, Object> extras) {
+        super.onAfterInsertItem(uri, values, extras);
+        updateAllAccountsBalances(getDatabase());
     }
 
     @Override protected void onBeforeUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> outExtras) {
         throw new IllegalArgumentException("Update is not supported.");
     }
 
-    @Override protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> extras) {
-        super.onAfterDeleteItems(uri, selection, selectionArgs, modelState, extras);
+    @Override protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, Map<String, Object> extras) {
+        super.onAfterDeleteItems(uri, selection, selectionArgs, extras);
         updateAllAccountsBalances(getDatabase());
     }
 

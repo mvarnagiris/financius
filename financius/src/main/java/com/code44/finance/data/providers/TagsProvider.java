@@ -36,24 +36,21 @@ public class TagsProvider extends ModelProvider {
     }
 
     @Override protected void onBeforeUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> outExtras) {
-        super.onBeforeUpdateItems(uri, values, selection, selectionArgs, outExtras);
         throw new IllegalArgumentException("Update is not supported.");
     }
 
-    @Override protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> outExtras) {
-        super.onBeforeDeleteItems(uri, selection, selectionArgs, modelState, outExtras);
-
-        final List<String> affectedIds = getIdList(getIdColumn(), selection, selectionArgs);
-        outExtras.put("affectedIds", affectedIds);
+    @Override protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, Map<String, Object> outExtras) {
+        super.onBeforeDeleteItems(uri, selection, selectionArgs, outExtras);
+        putColumnToExtras(outExtras, getIdColumn(), selection, selectionArgs);
     }
 
-    @Override protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> extras) {
-        super.onAfterDeleteItems(uri, selection, selectionArgs, modelState, extras);
+    @Override protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, Map<String, Object> extras) {
+        super.onAfterDeleteItems(uri, selection, selectionArgs, extras);
 
-        //noinspection unchecked
-        final List<String> affectedIds = (List<String>) extras.get("affectedIds");
+        final List<String> affectedIds = getColumnValues(extras);
+        final ModelState modelState = getModelState(extras);
         if (affectedIds.size() > 0) {
-            final Uri transactionsUri = uriForDeleteFromItemState(TransactionsProvider.uriTransactions(), modelState);
+            final Uri transactionsUri = uriForDeleteFromModelState(TransactionsProvider.uriTransactions(), modelState);
 
             final Cursor cursor = Query.create()
                     .projection(Tables.TransactionTags.TRANSACTION_ID.getName())
@@ -73,5 +70,9 @@ public class TagsProvider extends ModelProvider {
             }
             IOUtils.closeQuietly(cursor);
         }
+    }
+
+    @Override protected Uri[] getOtherUrisToNotify() {
+        return new Uri[]{TransactionsProvider.uriTransactions()};
     }
 }

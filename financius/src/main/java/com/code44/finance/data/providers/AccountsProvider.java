@@ -43,8 +43,8 @@ public class AccountsProvider extends ModelProvider {
         return Tables.Accounts.ID;
     }
 
-    @Override protected void onBeforeInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> outExtras) {
-        super.onBeforeInsertItem(uri, values, serverId, outExtras);
+    @Override protected void onBeforeInsertItem(Uri uri, ContentValues values, Map<String, Object> outExtras) {
+        super.onBeforeInsertItem(uri, values, outExtras);
 
         final long currentBalance = getCurrentBalance(values);
         //noinspection ConstantConditions
@@ -53,11 +53,11 @@ public class AccountsProvider extends ModelProvider {
         values.remove(Tables.Accounts.BALANCE.getName());
     }
 
-    @Override protected void onAfterInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> extras) {
-        super.onAfterInsertItem(uri, values, serverId, extras);
+    @Override protected void onAfterInsertItem(Uri uri, ContentValues values, Map<String, Object> extras) {
+        super.onAfterInsertItem(uri, values, extras);
 
         final Account account = new Account();
-        account.setId(serverId);
+        account.setId(values.getAsString(getIdColumn().getName()));
 
         long balanceDelta = (long) extras.get(EXTRA_BALANCE_DELTA);
         final Transaction transaction = createBalanceTransaction(account, balanceDelta);
@@ -67,24 +67,21 @@ public class AccountsProvider extends ModelProvider {
     }
 
     @Override protected void onBeforeUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> outExtras) {
-        super.onBeforeUpdateItems(uri, values, selection, selectionArgs, outExtras);
         throw new IllegalArgumentException("Update is not supported.");
     }
 
-    @Override protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> outExtras) {
-        super.onBeforeDeleteItems(uri, selection, selectionArgs, modelState, outExtras);
-
-        final List<String> affectedIds = getIdList(getIdColumn(), selection, selectionArgs);
-        outExtras.put("affectedIds", affectedIds);
+    @Override protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, Map<String, Object> outExtras) {
+        super.onBeforeDeleteItems(uri, selection, selectionArgs, outExtras);
+        putColumnToExtras(outExtras, getIdColumn(), selection, selectionArgs);
     }
 
-    @Override protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> extras) {
-        super.onAfterDeleteItems(uri, selection, selectionArgs, modelState, extras);
+    @Override protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, Map<String, Object> extras) {
+        super.onAfterDeleteItems(uri, selection, selectionArgs, extras);
 
-        //noinspection unchecked
-        final List<String> affectedIds = (List<String>) extras.get("affectedIds");
+        final List<String> affectedIds = getColumnValues(extras);
+        final ModelState modelState = getModelState(extras);
         if (affectedIds.size() > 0) {
-            final Uri transactionsUri = uriForDeleteFromItemState(TransactionsProvider.uriTransactions(), modelState);
+            final Uri transactionsUri = uriForDeleteFromModelState(TransactionsProvider.uriTransactions(), modelState);
 
             Query query = Query.create().selectionInClause(Tables.Transactions.ACCOUNT_FROM_ID.getName(), affectedIds);
             getContext().getContentResolver().delete(transactionsUri, query.getSelection(), query.getSelectionArgs());

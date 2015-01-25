@@ -6,20 +6,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.text.TextUtils;
+import android.support.annotation.NonNull;
 
-import com.code44.finance.common.model.ModelState;
-import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
-import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.SyncState;
-import com.code44.finance.utils.IOUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("UnusedParameters")
 public abstract class BaseModelProvider extends BaseProvider {
     private static final int URI_ITEMS = 1;
     private static final int URI_ITEMS_ID = 2;
@@ -91,8 +85,8 @@ public abstract class BaseModelProvider extends BaseProvider {
 
                     final Map<String, Object> extras = new HashMap<>();
                     onBeforeInsertItem(uri, values, extras);
-                    insertItem(uri, values, serverId);
-                    onAfterInsertItem(uri, values, serverId, extras);
+                    insertItem(uri, values);
+                    onAfterInsertItem(uri, values, extras);
 
                     database.setTransactionSuccessful();
                 } finally {
@@ -106,17 +100,16 @@ public abstract class BaseModelProvider extends BaseProvider {
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
-        api.sync();
 
-        return Uri.withAppendedPath(uri, serverId);
+        return uri;
     }
 
     @Override public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         int count;
-        final SQLiteDatabase database = getDatabase();
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
+                final SQLiteDatabase database = getDatabase();
                 try {
                     database.beginTransaction();
 
@@ -137,43 +130,23 @@ public abstract class BaseModelProvider extends BaseProvider {
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
-        api.sync();
 
         return count;
     }
 
     @Override public int delete(Uri uri, String selection, String[] selectionArgs) {
         int count;
-        final SQLiteDatabase database = getDatabase();
         final int uriId = uriMatcher.match(uri);
-        final ModelState modelState;
         switch (uriId) {
             case URI_ITEMS:
-                final String deleteMode = uri.getQueryParameter(ProviderUtils.QueryParameterKey.DELETE_MODE.getKeyName());
-                if (TextUtils.isEmpty(deleteMode)) {
-                    throw new IllegalArgumentException("Uri " + uri + " must have query parameter " + ProviderUtils.QueryParameterKey.DELETE_MODE.getKeyName());
-                }
-
-                switch (deleteMode) {
-                    case "delete":
-                        modelState = ModelState.DeletedUndo;
-                        break;
-                    case "undo":
-                        modelState = ModelState.Normal;
-                        break;
-                    case "commit":
-                        modelState = ModelState.Deleted;
-                        break;
-                    default:
-                        throw new IllegalArgumentException(ProviderUtils.QueryParameterKey.DELETE_MODE.getKeyName() + "=" + deleteMode + " is not supported.");
-                }
+                final SQLiteDatabase database = getDatabase();
                 try {
                     database.beginTransaction();
 
                     final Map<String, Object> extras = new HashMap<>();
-                    onBeforeDeleteItems(uri, selection, selectionArgs, modelState, extras);
-                    count = deleteItems(uri, selection, selectionArgs, modelState);
-                    onAfterDeleteItems(uri, selection, selectionArgs, modelState, extras);
+                    onBeforeDeleteItems(uri, selection, selectionArgs, extras);
+                    count = deleteItems(uri, selection, selectionArgs, extras);
+                    onAfterDeleteItems(uri, selection, selectionArgs, extras);
 
                     database.setTransactionSuccessful();
                 } finally {
@@ -187,19 +160,16 @@ public abstract class BaseModelProvider extends BaseProvider {
 
         ProviderUtils.notifyChangeIfNecessary(getContext(), uri);
         ProviderUtils.notifyUris(getContext(), getOtherUrisToNotify());
-        if (modelState != ModelState.DeletedUndo) {
-            api.sync();
-        }
 
         return count;
     }
 
-    @Override public int bulkInsert(Uri uri, @SuppressWarnings("NullableProblems") ContentValues[] valuesArray) {
+    @Override public int bulkInsert(Uri uri, @NonNull ContentValues[] valuesArray) {
         int count;
-        final SQLiteDatabase database = getDatabase();
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
+                final SQLiteDatabase database = getDatabase();
                 try {
                     database.beginTransaction();
 
@@ -254,44 +224,27 @@ public abstract class BaseModelProvider extends BaseProvider {
         return ProviderUtils.doUpdateOrInsert(getDatabase(), getModelTable(), values, true);
     }
 
-    protected void onAfterInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> extras) {
+    protected void onAfterInsertItem(Uri uri, ContentValues values, Map<String, Object> extras) {
     }
 
     protected void onBeforeUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> outExtras) {
     }
 
     protected int updateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, SyncState.LocalChanges.asInt());
         return getDatabase().update(getModelTable(), values, selection, selectionArgs);
     }
 
     protected void onAfterUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> extras) {
     }
 
-    protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> outExtras) {
+    protected void onBeforeDeleteItems(Uri uri, String selection, String[] selectionArgs, Map<String, Object> outExtras) {
     }
 
-    protected int deleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState) {
-        final ContentValues values = new ContentValues();
-        values.put(getModelTable() + "_" + Tables.SUFFIX_MODEL_STATE, modelState.asInt());
-        if (modelState == ModelState.Deleted) {
-            values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, SyncState.LocalChanges.asInt());
-        }
-
-        final String whereClause;
-        final String[] whereArgs;
-        if (modelState == ModelState.DeletedUndo) {
-            whereClause = selection;
-            whereArgs = selectionArgs;
-        } else {
-            whereClause = getModelTable() + "_" + Tables.SUFFIX_MODEL_STATE + "=?";
-            whereArgs = new String[]{String.valueOf(ModelState.DeletedUndo.asInt())};
-        }
-
-        return getDatabase().update(getModelTable(), values, whereClause, whereArgs);
+    protected int deleteItems(Uri uri, String selection, String[] selectionArgs, Map<String, Object> extras) {
+        return getDatabase().delete(getModelTable(), selection, selectionArgs);
     }
 
-    protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, ModelState modelState, Map<String, Object> extras) {
+    protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, Map<String, Object> extras) {
     }
 
     protected void onBeforeBulkInsertItems(Uri uri, ContentValues[] valuesArray, Map<String, Object> outExtras) {
@@ -321,53 +274,5 @@ public abstract class BaseModelProvider extends BaseProvider {
 
     protected Uri[] getOtherUrisToNotify() {
         return null;
-    }
-
-    protected List<String> getIdList(Column serverIdColumn, String selection, String[] selectionArgs) {
-        final List<String> affectedIds = new ArrayList<>();
-
-        final Query query = Query.create().projection(serverIdColumn.getName());
-        if (!TextUtils.isEmpty(selection)) {
-            query.selection(selection);
-        }
-        if (selectionArgs != null && selectionArgs.length > 0) {
-            query.args(selectionArgs);
-        }
-
-        final Cursor cursor = query.from(getDatabase(), serverIdColumn.getTableName()).execute();
-        try {
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    int iServerId = cursor.getColumnIndex(serverIdColumn.getName());
-                    affectedIds.add(cursor.getString(iServerId));
-                } while (cursor.moveToNext());
-            }
-        } finally {
-            IOUtils.closeQuietly(cursor);
-        }
-
-        return affectedIds;
-    }
-
-    protected Uri uriForDeleteFromItemState(Uri uri, ModelState modelState) {
-        final String deleteMode;
-        switch (modelState) {
-            case Normal:
-                deleteMode = "undo";
-                break;
-
-            case DeletedUndo:
-                deleteMode = "delete";
-                break;
-
-            case Deleted:
-                deleteMode = "commit";
-                break;
-
-            default:
-                throw new IllegalArgumentException("ModelState " + modelState + " is not supported for delete.");
-        }
-
-        return ProviderUtils.withQueryParameter(uri, ProviderUtils.QueryParameterKey.DELETE_MODE, deleteMode);
     }
 }
