@@ -3,7 +3,6 @@ package com.code44.finance.services;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.text.format.DateUtils;
 
 import com.code44.finance.App;
@@ -11,14 +10,8 @@ import com.code44.finance.api.Api;
 import com.code44.finance.api.GcmRegistration;
 import com.code44.finance.api.User;
 import com.code44.finance.api.currencies.CurrenciesApi;
-import com.code44.finance.common.model.ModelState;
-import com.code44.finance.data.Query;
-import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.CurrencyFormat;
-import com.code44.finance.data.providers.CurrenciesProvider;
-import com.code44.finance.qualifiers.Main;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.utils.GeneralPrefs;
-import com.code44.finance.utils.IOUtils;
 
 import javax.inject.Inject;
 
@@ -28,7 +21,7 @@ public class StartupService extends IntentService {
     @Inject Api api;
     @Inject CurrenciesApi currenciesApi;
     @Inject GeneralPrefs generalPrefs;
-    @Inject @Main CurrencyFormat mainCurrencyFormat;
+    @Inject CurrenciesManager currenciesManager;
 
     public StartupService() {
         super(StartupService.class.getSimpleName());
@@ -67,20 +60,7 @@ public class StartupService extends IntentService {
             return;
         }
 
-        final Cursor cursor = Query.create()
-                .projection(Tables.CurrencyFormats.CODE.getName())
-                .selection(Tables.CurrencyFormats.MODEL_STATE + "=?", String.valueOf(ModelState.Normal.asInt()))
-                .from(getApplicationContext(), CurrenciesProvider.uriCurrencies())
-                .execute();
-
-        if (cursor.moveToFirst()) {
-            final int iCode = cursor.getColumnIndex(Tables.CurrencyFormats.CODE.getName());
-            do {
-                currenciesApi.updateExchangeRate(cursor.getString(iCode), mainCurrencyFormat.getCode());
-            } while (cursor.moveToNext());
-        }
-        IOUtils.closeQuietly(cursor);
-
+        currenciesApi.updateExchangeRates();
         generalPrefs.setAutoUpdateCurrenciesTimestamp(System.currentTimeMillis());
     }
 }
