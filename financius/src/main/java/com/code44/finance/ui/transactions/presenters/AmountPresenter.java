@@ -6,8 +6,7 @@ import android.widget.Button;
 import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.model.Account;
-import com.code44.finance.data.model.CurrencyFormat;
-import com.code44.finance.money.MoneyFormatter;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.Presenter;
 import com.code44.finance.utils.ThemeUtils;
@@ -17,7 +16,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class AmountPresenter extends Presenter {
-    private final CurrencyFormat mainCurrencyFormat;
+    private final CurrenciesManager currenciesManager;
     private final Button amountButton;
     private final Button exchangeRateButton;
     private final Button amountToButton;
@@ -28,8 +27,8 @@ public class AmountPresenter extends Presenter {
     private long amount = 0;
     private double exchangeRate = 1.0;
 
-    public AmountPresenter(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener, CurrencyFormat mainCurrencyFormat) {
-        this.mainCurrencyFormat = mainCurrencyFormat;
+    public AmountPresenter(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener, CurrenciesManager currenciesManager) {
+        this.currenciesManager = currenciesManager;
 
         amountButton = findView(activity, R.id.amountButton);
         exchangeRateButton = findView(activity, R.id.exchangeRateButton);
@@ -88,7 +87,7 @@ public class AmountPresenter extends Presenter {
                 break;
             case Transfer:
                 final boolean bothAccountsSet = accountFrom != null && accountTo != null;
-                final boolean differentCurrencies = bothAccountsSet && !accountFrom.getCurrencyCode().getId().equals(accountTo.getCurrencyCode().getId());
+                final boolean differentCurrencies = bothAccountsSet && !accountFrom.getCurrencyCode().equals(accountTo.getCurrencyCode());
                 if (bothAccountsSet && differentCurrencies) {
                     exchangeRateButton.setVisibility(View.VISIBLE);
                     amountToButton.setVisibility(View.VISIBLE);
@@ -98,37 +97,37 @@ public class AmountPresenter extends Presenter {
                     format.setGroupingUsed(false);
                     format.setMaximumFractionDigits(20);
                     exchangeRateButton.setText(format.format(exchangeRate));
-                    amountToButton.setText(MoneyFormatter.format(accountTo.getCurrencyCode(), Math.round(amount * exchangeRate)));
+                    amountToButton.setText(currenciesManager.formatMoney(accountTo.getCurrencyCode(), Math.round(amount * exchangeRate)));
                 } else {
                     exchangeRateButton.setVisibility(View.GONE);
                     amountToButton.setVisibility(View.GONE);
                 }
                 break;
         }
-        amountButton.setText(MoneyFormatter.format(getAmountCurrency(), amount));
+        amountButton.setText(currenciesManager.formatMoney(getAmountCurrency(), amount));
     }
 
-    private CurrencyFormat getAmountCurrency() {
-        CurrencyFormat transactionCurrencyFormat;
+    private String getAmountCurrency() {
+        String currencyCode;
         switch (transactionType) {
             case Expense:
-                transactionCurrencyFormat = accountFrom == null ? null : accountFrom.getCurrencyCode();
+                currencyCode = accountFrom == null ? null : accountFrom.getCurrencyCode();
                 break;
             case Income:
-                transactionCurrencyFormat = accountTo == null ? null : accountTo.getCurrencyCode();
+                currencyCode = accountTo == null ? null : accountTo.getCurrencyCode();
                 break;
             case Transfer:
-                transactionCurrencyFormat = accountFrom == null ? null : accountFrom.getCurrencyCode();
+                currencyCode = accountFrom == null ? null : accountFrom.getCurrencyCode();
                 break;
             default:
                 throw new IllegalStateException("Category type " + transactionType + " is not supported.");
         }
 
-        if (transactionCurrencyFormat == null || !transactionCurrencyFormat.hasId()) {
+        if (currencyCode == null) {
             // When account is not selected yet, we use main currency.
-            transactionCurrencyFormat = mainCurrencyFormat;
+            currencyCode = currenciesManager.getMainCurrencyCode();
         }
 
-        return transactionCurrencyFormat;
+        return currencyCode;
     }
 }

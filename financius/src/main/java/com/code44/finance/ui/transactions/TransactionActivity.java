@@ -21,7 +21,7 @@ import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
-import com.code44.finance.money.MoneyFormatter;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.common.ModelActivity;
 import com.code44.finance.utils.TextBackgroundSpan;
 import com.code44.finance.utils.ThemeUtils;
@@ -31,7 +31,11 @@ import net.danlew.android.joda.DateUtils;
 
 import org.joda.time.DateTime;
 
+import javax.inject.Inject;
+
 public class TransactionActivity extends ModelActivity<Transaction> {
+    @Inject CurrenciesManager currenciesManager;
+
     private View containerView;
     private TextView dateTextView;
     private TextView amountTextView;
@@ -75,7 +79,7 @@ public class TransactionActivity extends ModelActivity<Transaction> {
     @Override protected void onModelLoaded(Transaction transaction) {
         final Category category = transaction.getCategory();
         final DateTime date = new DateTime(transaction.getDate());
-        amountTextView.setText(MoneyFormatter.format(transaction));
+        amountTextView.setText(currenciesManager.formatMoney(transaction));
         dateTextView.setText(DateUtils.formatDateTime(this, date, DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_WEEKDAY));
 
         if (Strings.isEmpty(transaction.getNote())) {
@@ -112,7 +116,7 @@ public class TransactionActivity extends ModelActivity<Transaction> {
                     amountToTextView.setVisibility(View.GONE);
                 } else {
                     amountToTextView.setVisibility(View.VISIBLE);
-                    amountToTextView.setText(MoneyFormatter.format(transaction.getAccountTo().getCurrencyCode(), (long) (transaction.getAmount() * transaction.getExchangeRate())));
+                    amountToTextView.setText(currenciesManager.formatMoney(transaction.getAccountTo().getCurrencyCode(), (long) (transaction.getAmount() * transaction.getExchangeRate())));
                 }
 
                 if (Strings.isEmpty(categoryTitle)) {

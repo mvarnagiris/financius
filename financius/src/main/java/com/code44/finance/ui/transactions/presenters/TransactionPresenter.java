@@ -8,17 +8,16 @@ import android.widget.CompoundButton;
 
 import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
-import com.code44.finance.api.currencies.ExchangeRateRequest;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
-import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.CalculatorActivity;
 import com.code44.finance.ui.accounts.list.AccountsActivity;
 import com.code44.finance.ui.categories.list.CategoriesActivity;
@@ -80,7 +79,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
     private boolean isUpdated = false;
     private boolean isAutoCompleteUpdateQueued = false;
 
-    public TransactionPresenter(BaseActivity activity, String transactionId, Bundle savedInstanceState, EventBus eventBus, Executor autoCompleteExecutor, CurrencyFormat mainCurrencyFormat, CurrenciesApi currenciesApi, OnTransactionUpdatedListener listener) {
+    public TransactionPresenter(BaseActivity activity, String transactionId, Bundle savedInstanceState, EventBus eventBus, Executor autoCompleteExecutor, CurrenciesManager currenciesManager, CurrenciesApi currenciesApi, OnTransactionUpdatedListener listener) {
         this.activity = activity;
         this.eventBus = eventBus;
         this.autoCompleteExecutor = autoCompleteExecutor;
@@ -94,7 +93,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
         }
 
         transactionTypeViewController = new TransactionTypePresenter(activity, this);
-        amountViewController = new AmountPresenter(activity, this, this, mainCurrencyFormat);
+        amountViewController = new AmountPresenter(activity, this, this, currenciesManager);
         dateTimeViewController = new DateTimePresenter(activity, this, this);
         accountsViewController = new AccountsPresenter(activity, this, this);
         categoryViewController = new CategoryPresenter(activity, this, this);
@@ -324,12 +323,12 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
         requestAutoComplete();
     }
 
-    @Subscribe public void onExchangeRateUpdated(ExchangeRateRequest request) {
-        if (!request.isError() && transactionEditData.getAccountFrom() != null && transactionEditData.getAccountTo() != null && transactionEditData.getAccountFrom().getCurrencyCode().getCode().equals(request.getFromCode()) && transactionEditData.getAccountTo().getCurrencyCode().getCode().equals(request.getToCode())) {
-            transactionEditData.setExchangeRate(request.getCurrency().getExchangeRate());
-            requestAutoComplete();
-        }
-    }
+//    @Subscribe public void onExchangeRateUpdated(ExchangeRateRequest request) {
+//        if (!request.isError() && transactionEditData.getAccountFrom() != null && transactionEditData.getAccountTo() != null && transactionEditData.getAccountFrom().getCurrencyCode().getCode().equals(request.getFromCode()) && transactionEditData.getAccountTo().getCurrencyCode().getCode().equals(request.getToCode())) {
+//            transactionEditData.setExchangeRate(request.getCurrency().getExchangeRate());
+//            requestAutoComplete();
+//        }
+//    }
 
     public void handleActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
@@ -479,20 +478,20 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
                 requestAutoComplete();
                 break;
             case Transfer:
-                if (transactionEditData.getAccountFrom() != null && transactionEditData.getAccountTo() != null) {
-                    final CurrencyFormat currencyFormatFrom = transactionEditData.getAccountFrom().getCurrencyCode();
-                    final CurrencyFormat currencyFormatTo = transactionEditData.getAccountTo().getCurrencyCode();
-                    if (currencyFormatFrom.isDefault() || currencyFormatTo.isDefault()) {
-                        if (currencyFormatFrom.isDefault()) {
-                            transactionEditData.setExchangeRate(1.0 / currencyFormatTo.getExchangeRate());
-                        } else {
-                            transactionEditData.setExchangeRate(currencyFormatFrom.getExchangeRate());
-                        }
-                        requestAutoComplete();
-                    } else {
-                        currenciesApi.getExchangeRate(transactionEditData.getAccountFrom().getCurrencyCode().getCode(), transactionEditData.getAccountTo().getCurrencyCode().getCode());
-                    }
-                }
+//                if (transactionEditData.getAccountFrom() != null && transactionEditData.getAccountTo() != null) {
+//                    final CurrencyFormat currencyFormatFrom = transactionEditData.getAccountFrom().getCurrencyCode();
+//                    final CurrencyFormat currencyFormatTo = transactionEditData.getAccountTo().getCurrencyCode();
+//                    if (currencyFormatFrom.isDefault() || currencyFormatTo.isDefault()) {
+//                        if (currencyFormatFrom.isDefault()) {
+//                            transactionEditData.setExchangeRate(1.0 / currencyFormatTo.getExchangeRate());
+//                        } else {
+//                            transactionEditData.setExchangeRate(currencyFormatFrom.getExchangeRate());
+//                        }
+//                        requestAutoComplete();
+//                    } else {
+//                        currenciesApi.getExchangeRate(transactionEditData.getAccountFrom().getCurrencyCode().getCode(), transactionEditData.getAccountTo().getCurrencyCode().getCode());
+//                    }
+//                }
                 break;
         }
     }

@@ -10,11 +10,10 @@ import android.widget.ImageView;
 
 import com.code44.finance.R;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
-import com.code44.finance.qualifiers.Main;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.ui.common.ModelListActivity;
 import com.code44.finance.ui.common.navigation.NavigationScreen;
@@ -28,7 +27,7 @@ import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class TransactionsActivity extends ModelListActivity {
-    @Inject @Main CurrencyFormat mainCurrencyFormat;
+    @Inject CurrenciesManager currenciesManager;
     @Inject CurrentInterval currentInterval;
 
     private ExpandableStickyListHeadersListView headerList_V;
@@ -79,7 +78,7 @@ public class TransactionsActivity extends ModelListActivity {
     }
 
     @Override protected BaseModelsAdapter createAdapter() {
-        return new TransactionsAdapter(this, mainCurrencyFormat, currentInterval);
+        return new TransactionsAdapter(this, currenciesManager, currentInterval);
     }
 
     @Override protected CursorLoader getModelsCursorLoader() {

@@ -14,10 +14,9 @@ import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.Strings;
-import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
-import com.code44.finance.money.MoneyFormatter;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 import com.code44.finance.utils.TextBackgroundSpan;
@@ -27,18 +26,18 @@ import com.code44.finance.utils.interval.BaseInterval;
 import org.joda.time.DateTime;
 
 public class TransactionsAdapterV2 extends ModelsAdapter<Transaction> {
-    private final CurrencyFormat mainCurrencyFormat;
+    private final CurrenciesManager currenciesManager;
     private final BaseInterval interval;
 
-    public TransactionsAdapterV2(CurrencyFormat mainCurrencyFormat, BaseInterval interval) {
+    public TransactionsAdapterV2(CurrenciesManager currenciesManager, BaseInterval interval) {
         // TODO This mst be click listener
         super(null);
-        this.mainCurrencyFormat = mainCurrencyFormat;
+        this.currenciesManager = currenciesManager;
         this.interval = interval;
     }
 
     @Override public ModelViewHolder<Transaction> createModelViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.li_transaction, parent, false), mainCurrencyFormat, interval);
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.li_transaction, parent, false), currenciesManager, interval);
     }
 
     @Override protected Transaction modelFromCursor(Cursor cursor) {
@@ -57,7 +56,7 @@ public class TransactionsAdapterV2 extends ModelsAdapter<Transaction> {
         private final TextView amountTextView;
         private final TextView accountTextView;
 
-        private final CurrencyFormat mainCurrencyFormat;
+        private final CurrenciesManager currenciesManager;
         private final BaseInterval interval;
         private final String unknownExpenseTitle;
         private final String unknownIncomeTitle;
@@ -73,9 +72,9 @@ public class TransactionsAdapterV2 extends ModelsAdapter<Transaction> {
         private final int tagBackgroundColor;
         private final float tagBackgroundRadius;
 
-        public ViewHolder(View itemView, CurrencyFormat mainCurrencyFormat, BaseInterval interval) {
+        public ViewHolder(View itemView, CurrenciesManager currenciesManager, BaseInterval interval) {
             super(itemView);
-            this.mainCurrencyFormat = mainCurrencyFormat;
+            this.currenciesManager = currenciesManager;
             this.interval = interval;
 
             // Init
@@ -111,7 +110,7 @@ public class TransactionsAdapterV2 extends ModelsAdapter<Transaction> {
             weekdayTextView.setText(date.dayOfWeek().getAsShortText());
             dayTextView.setText(date.dayOfMonth().getAsShortText());
             colorImageView.setColorFilter(getCategoryColor(transaction));
-            amountTextView.setText(MoneyFormatter.format(transaction));
+            amountTextView.setText(currenciesManager.formatMoney(transaction));
             titleTextView.setTextColor(primaryColor);
             titleTextView.setText(getTitle(transaction));
             subtitleTextView.setText(getSubtitle(transaction));

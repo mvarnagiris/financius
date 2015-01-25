@@ -11,11 +11,10 @@ import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.qualifiers.Local;
-import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.ModelEditActivity;
 import com.code44.finance.ui.transactions.presenters.TransactionEditData;
 import com.code44.finance.ui.transactions.presenters.TransactionPresenter;
@@ -27,7 +26,7 @@ import javax.inject.Inject;
 
 public class TransactionEditActivity extends ModelEditActivity<Transaction> implements TransactionPresenter.OnTransactionUpdatedListener {
     @Inject CurrenciesApi currenciesApi;
-    @Inject @Main CurrencyFormat mainCurrencyFormat;
+    @Inject CurrenciesManager currenciesManager;
     @Inject @Local Executor localExecutor;
 
     private Button saveButton;
@@ -45,7 +44,7 @@ public class TransactionEditActivity extends ModelEditActivity<Transaction> impl
     @Override protected void onViewCreated(Bundle savedInstanceState) {
         super.onViewCreated(savedInstanceState);
         saveButton = (Button) findViewById(R.id.saveButton);
-        transactionPresenter = new TransactionPresenter(this, modelId, savedInstanceState, getEventBus(), localExecutor, mainCurrencyFormat, currenciesApi, this);
+        transactionPresenter = new TransactionPresenter(this, modelId, savedInstanceState, getEventBus(), localExecutor, currenciesManager, currenciesApi, this);
     }
 
     @Override public void onResume() {

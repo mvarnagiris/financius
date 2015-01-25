@@ -19,8 +19,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.AccountsProvider;
-import com.code44.finance.money.MoneyFormatter;
-import com.code44.finance.qualifiers.Main;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.CalculatorActivity;
 import com.code44.finance.ui.common.ModelEditActivity;
 import com.code44.finance.ui.common.ModelListActivity;
@@ -33,7 +32,7 @@ public class AccountEditActivity extends ModelEditActivity<Account> implements V
     private static final int REQUEST_CURRENCY = 1;
     private static final int REQUEST_BALANCE = 2;
 
-    @Inject @Main CurrencyFormat mainCurrencyFormat;
+    @Inject CurrenciesManager currenciesManager;
 
     private EditText titleEditText;
     private Button currencyButton;
@@ -70,7 +69,7 @@ public class AccountEditActivity extends ModelEditActivity<Account> implements V
             switch (requestCode) {
                 case REQUEST_CURRENCY:
                     ensureModelUpdated(model);
-                    model.setCurrencyCode(ModelListActivity.<CurrencyFormat>getModelExtra(data));
+                    model.setCurrencyCode(ModelListActivity.<CurrencyFormat>getModelExtra(data).getCode());
                     onModelLoaded(model);
                     return;
 
@@ -110,15 +109,15 @@ public class AccountEditActivity extends ModelEditActivity<Account> implements V
     @Override protected Account getModelFrom(Cursor cursor) {
         final Account account = Account.from(cursor);
         if (account.getCurrencyCode() == null) {
-            account.setCurrencyCode(mainCurrencyFormat);
+            account.setCurrencyCode(currenciesManager.getMainCurrencyCode());
         }
         return account;
     }
 
     @Override protected void onModelLoaded(Account model) {
         titleEditText.setText(model.getTitle());
-        currencyButton.setText(model.getCurrencyCode().getCode());
-        balanceButton.setText(MoneyFormatter.format(model.getCurrencyCode(), model.getBalance()));
+        currencyButton.setText(model.getCurrencyCode());
+        balanceButton.setText(currenciesManager.formatMoney(model.getCurrencyCode(), model.getBalance()));
         noteEditText.setText(model.getNote());
         includeInTotalsCheckBox.setChecked(model.includeInTotals());
     }
