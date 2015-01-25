@@ -5,6 +5,7 @@ import android.content.Context;
 import com.code44.finance.BuildConfig;
 import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.api.currencies.CurrenciesRequestService;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.qualifiers.ApplicationContext;
 import com.code44.finance.qualifiers.Network;
 import com.code44.finance.services.StartupService;
@@ -26,8 +27,8 @@ import retrofit.RestAdapter;
         }
 )
 public class CurrenciesApiModule {
-    @Provides @Singleton public CurrenciesApi provideCurrenciesApi(@Network ExecutorService executor, @ApplicationContext Context context, EventBus eventBus, CurrenciesRequestService currenciesRequestService) {
-        return new CurrenciesApi(executor, context, eventBus, currenciesRequestService);
+    @Provides @Singleton public CurrenciesApi provideCurrenciesApi(@Network ExecutorService executor, @ApplicationContext Context context, EventBus eventBus, CurrenciesRequestService currenciesRequestService, CurrenciesManager currenciesManager) {
+        return new CurrenciesApi(executor, context, eventBus, currenciesRequestService, currenciesManager);
     }
 
     @Provides @Singleton public CurrenciesRequestService provideCurrenciesRequestService() {

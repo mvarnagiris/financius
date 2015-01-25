@@ -18,7 +18,7 @@ import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 import javax.inject.Singleton;
 
@@ -33,7 +33,7 @@ import dagger.Provides;
         }
 )
 public class ApiModule {
-    @Provides @Singleton public Api providesApi(@Network Executor executor, @ApplicationContext Context context, EventBus eventBus, DBHelper dbHelper, User user, GcmRegistration gcmRegistration, HttpTransport httpTransport, JsonFactory jsonFactory, Api.HttpRequestInitializerFactory httpRequestInitializerFactory) {
+    @Provides @Singleton public Api providesApi(@Network ExecutorService executor, @ApplicationContext Context context, EventBus eventBus, DBHelper dbHelper, User user, GcmRegistration gcmRegistration, HttpTransport httpTransport, JsonFactory jsonFactory, Api.HttpRequestInitializerFactory httpRequestInitializerFactory) {
         return new Api(executor, context, eventBus, dbHelper, user, gcmRegistration, httpTransport, jsonFactory, httpRequestInitializerFactory);
     }
 
