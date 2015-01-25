@@ -25,7 +25,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 public class BackupDataExporter extends DataExporter {
-    public static final int VERSION = 8;
+    public static final int VERSION = 9;
 
     private static final String CHARSET_NAME = "UTF-8";
 
@@ -89,8 +89,6 @@ public class BackupDataExporter extends DataExporter {
                     writer.name("decimal_separator").value(currencyFormat.getDecimalSeparator().symbol());
                     writer.name("group_separator").value(currencyFormat.getGroupSeparator().symbol());
                     writer.name("decimal_count").value(currencyFormat.getDecimalCount());
-                    writer.name("is_default").value(currencyFormat.isDefault());
-                    writer.name("exchange_rate").value(currencyFormat.getExchangeRate());
                     writer.endObject();
                 } while (cursor.moveToNext());
             }
@@ -150,7 +148,7 @@ public class BackupDataExporter extends DataExporter {
 
                     writer.beginObject();
                     writeBaseModel(account, writer);
-                    writer.name("currency_id").value(account.getCurrencyCode().getId());
+                    writer.name("currency_code").value(account.getCurrencyCode());
                     writer.name("title").value(account.getTitle());
                     writer.name("note").value(account.getNote());
                     writer.name("balance").value(account.getBalance());

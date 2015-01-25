@@ -121,8 +121,6 @@ public class BackupDataImporter extends DataImporter {
             model.setDecimalSeparator(DecimalSeparator.fromSymbol(modelJson.get("decimal_separator").getAsString()));
             model.setGroupSeparator(GroupSeparator.fromSymbol(modelJson.get("group_separator").getAsString()));
             model.setDecimalCount(modelJson.get("decimal_count").getAsInt());
-            model.setDefault(modelJson.get("is_default").getAsBoolean());
-            model.setExchangeRate(modelJson.get("exchange_rate").getAsDouble());
             valuesList.add(model.asContentValues());
         }
         insert(valuesList, CurrenciesProvider.uriCurrencies());
@@ -161,12 +159,10 @@ public class BackupDataImporter extends DataImporter {
         final List<ContentValues> valuesList = new ArrayList<>();
         final JsonArray modelsJson = json.getAsJsonArray("accounts");
         final Account model = new Account();
-        final CurrencyFormat currencyFormat = new CurrencyFormat();
-        model.setCurrencyCode(currencyFormat);
         for (int i = 0, size = modelsJson.size(); i < size; i++) {
             final JsonObject modelJson = modelsJson.get(i).getAsJsonObject();
             updateBaseModel(model, modelJson);
-            currencyFormat.setId(modelJson.get("currency_id").getAsString());
+            model.setTitle(modelJson.get("currency_code").getAsString());
             model.setTitle(modelJson.get("title").getAsString());
             model.setNote(modelJson.get("note").getAsString());
             model.setIncludeInTotals(modelJson.get("include_in_totals").getAsBoolean());
