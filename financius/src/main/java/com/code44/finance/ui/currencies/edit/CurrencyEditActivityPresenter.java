@@ -20,39 +20,42 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
-import com.code44.finance.api.currencies.ExchangeRateRequest;
 import com.code44.finance.common.model.DecimalSeparator;
 import com.code44.finance.common.model.GroupSeparator;
 import com.code44.finance.common.model.SymbolPosition;
 import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
+import com.code44.finance.data.model.ExchangeRate;
 import com.code44.finance.data.providers.CurrenciesProvider;
+import com.code44.finance.money.MoneyFormatter;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelEditActivityPresenter;
 import com.code44.finance.utils.EventBus;
-import com.code44.finance.utils.MoneyFormatter;
 import com.squareup.otto.Subscribe;
 
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
-class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-    public static final String STATE_CODE = "STATE_CODE";
-    public static final String STATE_SYMBOL = "STATE_SYMBOL";
-    public static final String STATE_SYMBOL_POSITION = "STATE_SYMBOL_POSITION";
-    public static final String STATE_GROUP_SEPARATOR = "STATE_GROUP_SEPARATOR";
-    public static final String STATE_DECIMAL_SEPARATOR = "STATE_DECIMAL_SEPARATOR";
-    public static final String STATE_DECIMAL_COUNT = "STATE_DECIMAL_COUNT";
-    public static final String STATE_IS_DEFAULT = "STATE_IS_DEFAULT";
-    public static final String STATE_EXCHANGE_RATE = "STATE_EXCHANGE_RATE";
+class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<CurrencyFormat> implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+    private static final String STATE_CODE = "STATE_CODE";
+    private static final String STATE_SYMBOL = "STATE_SYMBOL";
+    private static final String STATE_SYMBOL_POSITION = "STATE_SYMBOL_POSITION";
+    private static final String STATE_GROUP_SEPARATOR = "STATE_GROUP_SEPARATOR";
+    private static final String STATE_DECIMAL_SEPARATOR = "STATE_DECIMAL_SEPARATOR";
+    private static final String STATE_DECIMAL_COUNT = "STATE_DECIMAL_COUNT";
+    private static final String STATE_IS_DEFAULT = "STATE_IS_DEFAULT";
+    private static final String STATE_EXCHANGE_RATES = "STATE_EXCHANGE_RATES";
+
     private static final int LOADER_CURRENCIES = 1;
+
     private final Set<String> existingCurrencyCodes = new HashSet<>();
     private final CurrenciesApi currenciesApi;
-    private final Currency mainCurrency;
-    private final Currency formatCurrency = new Currency();
+    private final CurrencyFormat mainCurrencyFormat;
+    private final CurrencyFormat formatCurrencyFormat = new CurrencyFormat();
 
     private TextView codeTextView;
     private AutoCompleteTextView codeEditTextView;
@@ -70,12 +73,12 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
     private DecimalSeparator decimalSeparator;
     private Integer decimalCount;
     private Boolean isDefault;
-    private Double exchangeRate;
+    private Map<String, CurrencyFormat.ExchangeRate> exchangeRates;
 
-    public CurrencyEditActivityPresenter(EventBus eventBus, CurrenciesApi currenciesApi, Currency mainCurrency) {
+    public CurrencyEditActivityPresenter(EventBus eventBus, CurrenciesApi currenciesApi, CurrencyFormat mainCurrencyFormat) {
         super(eventBus);
         this.currenciesApi = currenciesApi;
-        this.mainCurrency = mainCurrency;
+        this.mainCurrencyFormat = mainCurrencyFormat;
     }
 
     @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
@@ -154,7 +157,7 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
                 }
             }
         });
-        currentMainCurrencyTextView.setText(activity.getString(R.string.f_current_main_currency_is_x, mainCurrency.getCode()));
+        currentMainCurrencyTextView.setText(activity.getString(R.string.f_current_main_currency_is_x, mainCurrencyFormat.getCode()));
         refreshRateImageView.setOnClickListener(this);
         if (!isNewModel()) {
             codeTextView.setVisibility(View.VISIBLE);
@@ -177,7 +180,7 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
                 decimalCount = null;
             }
             isDefault = savedInstanceState.getInt(STATE_IS_DEFAULT, -1) == -1 ? null : savedInstanceState.getInt(STATE_IS_DEFAULT, 0) == 1;
-            exchangeRate = savedInstanceState.getDouble(STATE_EXCHANGE_RATE, -1) < 0 ? null : savedInstanceState.getDouble(STATE_EXCHANGE_RATE, 1);
+            exchangeRate = savedInstanceState.getDouble(STATE_EXCHANGE_RATES, -1) < 0 ? null : savedInstanceState.getDouble(STATE_EXCHANGE_RATES, 1);
             onDataChanged(getStoredModel());
         }
 
@@ -206,10 +209,10 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
         outState.putSerializable(STATE_DECIMAL_SEPARATOR, decimalSeparator);
         outState.putInt(STATE_DECIMAL_COUNT, decimalCount == null ? -1 : decimalCount);
         outState.putInt(STATE_IS_DEFAULT, isDefault == null ? -1 : isDefault ? 1 : 0);
-        outState.putDouble(STATE_EXCHANGE_RATE, exchangeRate == null ? -1 : exchangeRate);
+        outState.putDouble(STATE_EXCHANGE_RATES, exchangeRate == null ? -1 : exchangeRate);
     }
 
-    @Override protected void onDataChanged(Currency model) {
+    @Override protected void onDataChanged(CurrencyFormat model) {
         codeTextView.setText(getCode());
         codeEditTextView.setText(getCode());
         symbolEditTextView.setText(getSymbol());
@@ -242,33 +245,33 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
         }
 
         if (canSave) {
-            final Currency currency = new Currency();
-            currency.setId(getId());
-            currency.setCode(code);
-            currency.setSymbol(getSymbol());
-            currency.setSymbolPosition(getSymbolPosition());
-            currency.setGroupSeparator(getGroupSeparator());
-            currency.setDecimalSeparator(getDecimalSeparator());
-            currency.setDecimalCount(getDecimalCount());
-            currency.setDefault(isDefault());
-            currency.setExchangeRate(getExchangeRate());
-            DataStore.insert().values(currency.asValues()).into(getActivity(), CurrenciesProvider.uriCurrencies());
+            final CurrencyFormat currencyFormat = new CurrencyFormat();
+            currencyFormat.setId(getId());
+            currencyFormat.setCode(code);
+            currencyFormat.setSymbol(getSymbol());
+            currencyFormat.setSymbolPosition(getSymbolPosition());
+            currencyFormat.setGroupSeparator(getGroupSeparator());
+            currencyFormat.setDecimalSeparator(getDecimalSeparator());
+            currencyFormat.setDecimalCount(getDecimalCount());
+            currencyFormat.setDefault(isDefault());
+            currencyFormat.setExchangeRate(getExchangeRate());
+            DataStore.insert().values(currencyFormat.asContentValues()).into(getActivity(), CurrenciesProvider.uriCurrencies());
         }
 
         return canSave;
     }
 
     @Override protected CursorLoader getModelCursorLoader(Context context, String modelId) {
-        return Tables.Currencies.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrency(modelId));
+        return Tables.CurrencyFormats.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrency(modelId));
     }
 
-    @Override protected Currency getModelFrom(Cursor cursor) {
-        return Currency.from(cursor);
+    @Override protected CurrencyFormat getModelFrom(Cursor cursor) {
+        return CurrencyFormat.from(cursor);
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_CURRENCIES) {
-            return Tables.Currencies.getQuery().asCursorLoader(getActivity(), CurrenciesProvider.uriCurrencies());
+            return Tables.CurrencyFormats.getQuery().asCursorLoader(getActivity(), CurrenciesProvider.uriCurrencies());
         }
         return super.onCreateLoader(id, args);
     }
@@ -278,7 +281,7 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
             existingCurrencyCodes.clear();
             if (data.moveToFirst()) {
                 do {
-                    existingCurrencyCodes.add(Currency.from(data).getCode());
+                    existingCurrencyCodes.add(CurrencyFormat.from(data).getCode());
                 } while (data.moveToNext());
             }
             return;
@@ -308,7 +311,7 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
             case R.id.refreshRateImageView:
                 final String code = getCode();
                 if (!TextUtils.isEmpty(code) && code.length() == 3) {
-                    currenciesApi.updateExchangeRate(code, mainCurrency.getCode());
+                    currenciesApi.updateExchangeRate(code, mainCurrencyFormat.getCode());
                 }
                 break;
         }
@@ -322,13 +325,13 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
     }
 
     private void updateFormat() {
-        formatCurrency.setCode(getCode());
-        formatCurrency.setSymbol(getSymbol());
-        formatCurrency.setSymbolPosition(getSymbolPosition());
-        formatCurrency.setGroupSeparator(getGroupSeparator());
-        formatCurrency.setDecimalSeparator(getDecimalSeparator());
-        formatCurrency.setDecimalCount(getDecimalCount());
-        currencyFormatTextView.setText(MoneyFormatter.format(formatCurrency, 100000, false));
+        formatCurrencyFormat.setCode(getCode());
+        formatCurrencyFormat.setSymbol(getSymbol());
+        formatCurrencyFormat.setSymbolPosition(getSymbolPosition());
+        formatCurrencyFormat.setGroupSeparator(getGroupSeparator());
+        formatCurrencyFormat.setDecimalSeparator(getDecimalSeparator());
+        formatCurrencyFormat.setDecimalCount(getDecimalCount());
+        currencyFormatTextView.setText(MoneyFormatter.format(formatCurrencyFormat, 100000, false));
     }
 
     private void prepareCurrenciesAutoComplete() {
@@ -471,13 +474,13 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
 
     }
 
-    private double getExchangeRate() {
+    private Map<String, ExchangeRate> getExchangeRates() {
         if (exchangeRate != null) {
             return exchangeRate;
         }
 
         if (getStoredModel() != null) {
-            return getStoredModel().getExchangeRate();
+            return getStoredModel().getExchangeRates();
         }
 
         return 1;
@@ -558,6 +561,6 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<Currency>
     }
 
     private boolean isDefaultCurrency() {
-        return mainCurrency.getId().equals(getModelId());
+        return mainCurrencyFormat.getId().equals(getModelId());
     }
 }

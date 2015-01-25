@@ -10,21 +10,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Tag;
-import com.code44.finance.utils.MoneyFormatter;
+import com.code44.finance.money.MoneyFormatter;
 
 import java.util.List;
 
 public class CategoriesReportAdapter extends BaseAdapter {
     private final Context context;
-    private final Currency defaultCurrency;
+    private final CurrencyFormat defaultCurrencyFormat;
     private CategoriesReportData categoriesReportData;
     private long totalAmount = 0;
 
-    public CategoriesReportAdapter(Context context, Currency defaultCurrency) {
+    public CategoriesReportAdapter(Context context, CurrencyFormat defaultCurrencyFormat) {
         this.context = context;
-        this.defaultCurrency = defaultCurrency;
+        this.defaultCurrencyFormat = defaultCurrencyFormat;
     }
 
     @Override public int getCount() {
@@ -53,7 +53,7 @@ public class CategoriesReportAdapter extends BaseAdapter {
         final int percent = getPercent(item.getAmount());
         holder.percent_TV.setText((percent == 0 ? "<1" : (percent == 100 && getCount() > 1 ? ">99" : percent)) + "%");
         holder.title_TV.setText(item.getCategory().getTitle());
-        holder.amount_TV.setText(MoneyFormatter.format(defaultCurrency, item.getAmount()));
+        holder.amount_TV.setText(MoneyFormatter.format(defaultCurrencyFormat, item.getAmount()));
         bindTags((ViewGroup) convertView, item.getTags());
 
         return convertView;
@@ -87,7 +87,7 @@ public class CategoriesReportAdapter extends BaseAdapter {
             final TagViewHolder holder = (TagViewHolder) parent.getChildAt(i).getTag();
             final Pair<Tag, Long> tagAmount = tags.get(i - staticViewCount);
             holder.title_TV.setText(tagAmount.first.getTitle());
-            holder.amount_TV.setText(MoneyFormatter.format(defaultCurrency, tagAmount.second));
+            holder.amount_TV.setText(MoneyFormatter.format(defaultCurrencyFormat, tagAmount.second));
         }
     }
 

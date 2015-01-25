@@ -11,7 +11,7 @@ import android.widget.ListView;
 import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.navigation.NavigationScreen;
@@ -26,7 +26,7 @@ public class CategoriesReportActivity extends BaseReportActivity implements Load
     private static final int LOADER_TRANSACTIONS = 1;
 
     @Inject ActiveInterval activeInterval;
-    @Inject @Main Currency mainCurrency;
+    @Inject @Main CurrencyFormat mainCurrencyFormat;
 
     private CategoriesReportView categoriesReportView;
 
@@ -48,7 +48,7 @@ public class CategoriesReportActivity extends BaseReportActivity implements Load
         final ListView listView = (ListView) findViewById(R.id.listView);
 
         // Setup
-        adapter = new CategoriesReportAdapter(this, mainCurrency);
+        adapter = new CategoriesReportAdapter(this, mainCurrencyFormat);
         listView.setAdapter(adapter);
     }
 
@@ -97,7 +97,7 @@ public class CategoriesReportActivity extends BaseReportActivity implements Load
     }
 
     private void onTransactionsLoaded(Cursor cursor) {
-        final CategoriesReportData categoriesReportData = new CategoriesReportData(this, cursor, mainCurrency, transactionType);
+        final CategoriesReportData categoriesReportData = new CategoriesReportData(this, cursor, mainCurrencyFormat, transactionType);
         categoriesReportView.setPieChartData(categoriesReportData.getPieChartData());
         categoriesReportView.setTotalExpense(categoriesReportData.getPieChartData().getTotalValue());
         adapter.setData(categoriesReportData, categoriesReportData.getPieChartData().getTotalValue());

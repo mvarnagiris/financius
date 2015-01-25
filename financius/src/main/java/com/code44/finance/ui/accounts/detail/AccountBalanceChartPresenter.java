@@ -8,7 +8,7 @@ import android.support.v4.content.Loader;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.ui.reports.AmountGroups;
@@ -25,8 +25,8 @@ public class AccountBalanceChartPresenter extends BalanceChartPresenter implemen
     private BaseInterval baseInterval;
     private Account account;
 
-    public AccountBalanceChartPresenter(BalanceChartView balanceChartView, Currency mainCurrency, LoaderManager loaderManager) {
-        super(balanceChartView, mainCurrency);
+    public AccountBalanceChartPresenter(BalanceChartView balanceChartView, CurrencyFormat mainCurrencyFormat, LoaderManager loaderManager) {
+        super(balanceChartView, mainCurrencyFormat);
         this.loaderManager = loaderManager;
     }
 

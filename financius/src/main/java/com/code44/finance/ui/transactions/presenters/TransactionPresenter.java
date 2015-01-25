@@ -15,7 +15,7 @@ import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
@@ -80,7 +80,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
     private boolean isUpdated = false;
     private boolean isAutoCompleteUpdateQueued = false;
 
-    public TransactionPresenter(BaseActivity activity, String transactionId, Bundle savedInstanceState, EventBus eventBus, Executor autoCompleteExecutor, Currency mainCurrency, CurrenciesApi currenciesApi, OnTransactionUpdatedListener listener) {
+    public TransactionPresenter(BaseActivity activity, String transactionId, Bundle savedInstanceState, EventBus eventBus, Executor autoCompleteExecutor, CurrencyFormat mainCurrencyFormat, CurrenciesApi currenciesApi, OnTransactionUpdatedListener listener) {
         this.activity = activity;
         this.eventBus = eventBus;
         this.autoCompleteExecutor = autoCompleteExecutor;
@@ -94,7 +94,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
         }
 
         transactionTypeViewController = new TransactionTypePresenter(activity, this);
-        amountViewController = new AmountPresenter(activity, this, this, mainCurrency);
+        amountViewController = new AmountPresenter(activity, this, this, mainCurrencyFormat);
         dateTimeViewController = new DateTimePresenter(activity, this, this);
         accountsViewController = new AccountsPresenter(activity, this, this);
         categoryViewController = new CategoryPresenter(activity, this, this);
@@ -325,7 +325,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
     }
 
     @Subscribe public void onExchangeRateUpdated(ExchangeRateRequest request) {
-        if (!request.isError() && transactionEditData.getAccountFrom() != null && transactionEditData.getAccountTo() != null && transactionEditData.getAccountFrom().getCurrency().getCode().equals(request.getFromCode()) && transactionEditData.getAccountTo().getCurrency().getCode().equals(request.getToCode())) {
+        if (!request.isError() && transactionEditData.getAccountFrom() != null && transactionEditData.getAccountTo() != null && transactionEditData.getAccountFrom().getCurrencyCode().getCode().equals(request.getFromCode()) && transactionEditData.getAccountTo().getCurrencyCode().getCode().equals(request.getToCode())) {
             transactionEditData.setExchangeRate(request.getCurrency().getExchangeRate());
             requestAutoComplete();
         }
@@ -371,7 +371,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
     }
 
     public boolean save() {
-        DataStore.insert().values(transactionEditData.getModel().asValues()).into(activity, TransactionsProvider.uriTransactions());
+        DataStore.insert().values(transactionEditData.getModel().asContentValues()).into(activity, TransactionsProvider.uriTransactions());
         return true;
     }
 
@@ -480,17 +480,17 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
                 break;
             case Transfer:
                 if (transactionEditData.getAccountFrom() != null && transactionEditData.getAccountTo() != null) {
-                    final Currency currencyFrom = transactionEditData.getAccountFrom().getCurrency();
-                    final Currency currencyTo = transactionEditData.getAccountTo().getCurrency();
-                    if (currencyFrom.isDefault() || currencyTo.isDefault()) {
-                        if (currencyFrom.isDefault()) {
-                            transactionEditData.setExchangeRate(1.0 / currencyTo.getExchangeRate());
+                    final CurrencyFormat currencyFormatFrom = transactionEditData.getAccountFrom().getCurrencyCode();
+                    final CurrencyFormat currencyFormatTo = transactionEditData.getAccountTo().getCurrencyCode();
+                    if (currencyFormatFrom.isDefault() || currencyFormatTo.isDefault()) {
+                        if (currencyFormatFrom.isDefault()) {
+                            transactionEditData.setExchangeRate(1.0 / currencyFormatTo.getExchangeRate());
                         } else {
-                            transactionEditData.setExchangeRate(currencyFrom.getExchangeRate());
+                            transactionEditData.setExchangeRate(currencyFormatFrom.getExchangeRate());
                         }
                         requestAutoComplete();
                     } else {
-                        currenciesApi.getExchangeRate(transactionEditData.getAccountFrom().getCurrency().getCode(), transactionEditData.getAccountTo().getCurrency().getCode());
+                        currenciesApi.getExchangeRate(transactionEditData.getAccountFrom().getCurrencyCode().getCode(), transactionEditData.getAccountTo().getCurrencyCode().getCode());
                     }
                 }
                 break;

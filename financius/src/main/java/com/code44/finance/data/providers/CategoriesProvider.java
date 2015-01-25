@@ -11,7 +11,7 @@ import com.code44.finance.data.db.Tables;
 import java.util.List;
 import java.util.Map;
 
-public class CategoriesProvider extends BaseModelProvider {
+public class CategoriesProvider extends ModelProvider {
     public static Uri uriCategories() {
         return uriModels(CategoriesProvider.class, Tables.Categories.TABLE_NAME);
     }

@@ -17,14 +17,14 @@ import com.code44.finance.R;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.AccountsProvider;
+import com.code44.finance.money.MoneyFormatter;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.CalculatorActivity;
 import com.code44.finance.ui.common.ModelEditActivity;
 import com.code44.finance.ui.common.ModelListActivity;
 import com.code44.finance.ui.currencies.list.CurrenciesActivity;
-import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.analytics.Analytics;
 
 import javax.inject.Inject;
@@ -33,7 +33,7 @@ public class AccountEditActivity extends ModelEditActivity<Account> implements V
     private static final int REQUEST_CURRENCY = 1;
     private static final int REQUEST_BALANCE = 2;
 
-    @Inject @Main Currency mainCurrency;
+    @Inject @Main CurrencyFormat mainCurrencyFormat;
 
     private EditText titleEditText;
     private Button currencyButton;
@@ -70,7 +70,7 @@ public class AccountEditActivity extends ModelEditActivity<Account> implements V
             switch (requestCode) {
                 case REQUEST_CURRENCY:
                     ensureModelUpdated(model);
-                    model.setCurrency(ModelListActivity.<Currency>getModelExtra(data));
+                    model.setCurrencyCode(ModelListActivity.<CurrencyFormat>getModelExtra(data));
                     onModelLoaded(model);
                     return;
 
@@ -92,7 +92,7 @@ public class AccountEditActivity extends ModelEditActivity<Account> implements V
         }
 
         if (canSave) {
-            DataStore.insert().values(model.asValues()).into(this, AccountsProvider.uriAccounts());
+            DataStore.insert().values(model.asContentValues()).into(this, AccountsProvider.uriAccounts());
         }
 
         return canSave;
@@ -109,16 +109,16 @@ public class AccountEditActivity extends ModelEditActivity<Account> implements V
 
     @Override protected Account getModelFrom(Cursor cursor) {
         final Account account = Account.from(cursor);
-        if (account.getCurrency() == null) {
-            account.setCurrency(mainCurrency);
+        if (account.getCurrencyCode() == null) {
+            account.setCurrencyCode(mainCurrencyFormat);
         }
         return account;
     }
 
     @Override protected void onModelLoaded(Account model) {
         titleEditText.setText(model.getTitle());
-        currencyButton.setText(model.getCurrency().getCode());
-        balanceButton.setText(MoneyFormatter.format(model.getCurrency(), model.getBalance()));
+        currencyButton.setText(model.getCurrencyCode().getCode());
+        balanceButton.setText(MoneyFormatter.format(model.getCurrencyCode(), model.getBalance()));
         noteEditText.setText(model.getNote());
         includeInTotalsCheckBox.setChecked(model.includeInTotals());
     }

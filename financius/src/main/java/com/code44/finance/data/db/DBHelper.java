@@ -4,19 +4,23 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.code44.finance.money.CurrenciesManager;
+
 public class DBHelper extends SQLiteOpenHelper {
     private static final String NAME = "finance.db";
     private static final int VERSION = 23;
 
     private final Context context;
+    private final CurrenciesManager currenciesManager;
 
-    public DBHelper(Context context) {
-        this(context, NAME);
+    public DBHelper(Context context, CurrenciesManager currenciesManager) {
+        this(context, NAME, currenciesManager);
     }
 
-    public DBHelper(Context context, String name) {
+    public DBHelper(Context context, String name, CurrenciesManager currenciesManager) {
         super(context, name, null, VERSION);
         this.context = context;
+        this.currenciesManager = currenciesManager;
     }
 
     public static void createIndex(SQLiteDatabase db, Column serverIdColumn) {
@@ -25,7 +29,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override public void onCreate(SQLiteDatabase db) {
         // Create tables
-        db.execSQL(Tables.Currencies.createScript());
+        db.execSQL(Tables.ExchangeRates.createScript());
+        db.execSQL(Tables.CurrencyFormats.createScript());
         db.execSQL(Tables.Accounts.createScript());
         db.execSQL(Tables.Categories.createScript());
         db.execSQL(Tables.Tags.createScript());
@@ -33,7 +38,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(Tables.TransactionTags.createScript());
 
         // Create indexes
-        createIndex(db, Tables.Currencies.ID);
+        createIndex(db, Tables.CurrencyFormats.ID);
         createIndex(db, Tables.Accounts.ID);
         createIndex(db, Tables.Categories.ID);
         createIndex(db, Tables.Tags.ID);
@@ -54,13 +59,13 @@ public class DBHelper extends SQLiteOpenHelper {
             case 21:
                 DBMigration.upgradeV22(db);
             case 22:
-                DBMigration.upgradeV23(db);
+                DBMigration.upgradeV23(db, currenciesManager);
         }
     }
 
     public void clear() {
         final SQLiteDatabase database = getWritableDatabase();
-        database.delete(Tables.Currencies.TABLE_NAME, null, null);
+        database.delete(Tables.CurrencyFormats.TABLE_NAME, null, null);
         // TODO Clear database for the user
     }
 

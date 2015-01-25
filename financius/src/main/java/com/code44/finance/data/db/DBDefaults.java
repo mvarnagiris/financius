@@ -9,7 +9,7 @@ import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.model.Category;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 
 import java.util.HashSet;
 import java.util.Locale;
@@ -35,8 +35,7 @@ public final class DBDefaults {
 
     private void addCurrencies() {
         final Set<String> currencyCodes = new HashSet<>();
-        final String mainCurrencyCode = getMainCurrencyCode();
-        currencyCodes.add(mainCurrencyCode);
+        currencyCodes.add(getMainCurrencyCode());
 
         // Popular currencies
         currencyCodes.add("USD");
@@ -51,13 +50,12 @@ public final class DBDefaults {
         for (String code : currencyCodes) {
             java.util.Currency javaCurrency = getCurrencyFromCode(code);
             if (javaCurrency != null) {
-                Currency currency = new Currency();
-                currency.setId(UUID.randomUUID().toString());
-                currency.setCode(code);
-                currency.setSymbol(javaCurrency.getSymbol());
-                currency.setDecimalCount(javaCurrency.getDefaultFractionDigits());
-                currency.setDefault(code.equals(mainCurrencyCode));
-                database.insert(Tables.Currencies.TABLE_NAME, null, currency.asValues());
+                CurrencyFormat currencyFormat = new CurrencyFormat();
+                currencyFormat.setId(UUID.randomUUID().toString());
+                currencyFormat.setCode(code);
+                currencyFormat.setSymbol(javaCurrency.getSymbol());
+                currencyFormat.setDecimalCount(javaCurrency.getDefaultFractionDigits());
+                database.insert(Tables.CurrencyFormats.TABLE_NAME, null, currencyFormat.asContentValues());
             }
         }
     }
@@ -98,7 +96,7 @@ public final class DBDefaults {
             category.setTitle(title);
             category.setColor(Color.parseColor(colors[order % colors.length]));
             category.setSortOrder(order++);
-            database.insert(Tables.Categories.TABLE_NAME, null, category.asValues());
+            database.insert(Tables.Categories.TABLE_NAME, null, category.asContentValues());
         }
     }
 }

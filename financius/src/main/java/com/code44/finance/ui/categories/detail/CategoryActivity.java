@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.code44.finance.R;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ActivityPresenter;
@@ -16,7 +16,7 @@ import javax.inject.Inject;
 
 public class CategoryActivity extends BaseActivity {
     @Inject CurrentInterval currentInterval;
-    @Inject @Main Currency mainCurrency;
+    @Inject @Main CurrencyFormat mainCurrencyFormat;
 
     public static void start(Context context, String categoryId) {
         final Intent intent = makeIntentForActivity(context, CategoryActivity.class);
@@ -34,6 +34,6 @@ public class CategoryActivity extends BaseActivity {
     }
 
     @Override protected ActivityPresenter onCreateActivityPresenter() {
-        return new CategoryActivityPresenter(getEventBus(), currentInterval, mainCurrency);
+        return new CategoryActivityPresenter(getEventBus(), currentInterval, mainCurrencyFormat);
     }
 }

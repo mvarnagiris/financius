@@ -14,6 +14,7 @@ public class GeneralPrefs extends Prefs {
     private BaseInterval.Type intervalType;
     private int intervalLength;
     private boolean analyticsOptOut;
+    private String mainCurrencyCode;
 
     public GeneralPrefs(Context context, EventBus eventBus) {
         super(context);
@@ -37,10 +38,11 @@ public class GeneralPrefs extends Prefs {
         intervalType = BaseInterval.Type.valueOf(getString("intervalType", BaseInterval.Type.MONTH.toString()));
         intervalLength = getInteger("intervalLength", 1);
         analyticsOptOut = getBoolean("analyticsOptOut", false);
+        mainCurrencyCode = getString("mainCurrencyCode", null);
     }
 
     public void clear() {
-        clear("lastVersionCode", "isAutoUpdateCurrencies", "autoUpdateCurrenciesTimestamp", "lastFileExportPath", "intervalType", "intervalLength", "analyticsOptOut");
+        clear("lastVersionCode", "isAutoUpdateCurrencies", "autoUpdateCurrenciesTimestamp", "lastFileExportPath", "intervalType", "intervalLength", "analyticsOptOut", "mainCurrencyCode");
         refresh();
         notifyChanged();
     }
@@ -107,5 +109,14 @@ public class GeneralPrefs extends Prefs {
     public void setAnalyticsOptOut(boolean analyticsOptOut) {
         this.analyticsOptOut = analyticsOptOut;
         setBoolean("analyticsOptOut", analyticsOptOut);
+    }
+
+    public String getMainCurrencyCode() {
+        return mainCurrencyCode;
+    }
+
+    public void setMainCurrencyCode(String mainCurrencyCode) {
+        this.mainCurrencyCode = mainCurrencyCode;
+        setString("mainCurrencyCode", mainCurrencyCode);
     }
 }

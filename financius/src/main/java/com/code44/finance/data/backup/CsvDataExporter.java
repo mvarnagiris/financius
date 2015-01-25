@@ -122,6 +122,6 @@ public class CsvDataExporter extends DataExporter {
             account = transaction.getAccountFrom();
         }
 
-        return account != null ? account.getCurrency().getCode() : "";
+        return account != null ? account.getCurrencyCode().getCode() : "";
     }
 }

@@ -16,12 +16,12 @@ import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
+import com.code44.finance.money.MoneyFormatter;
 import com.code44.finance.ui.common.BaseModelsAdapter;
 import com.code44.finance.utils.BaseInterval;
-import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.TextBackgroundSpan;
 import com.code44.finance.utils.ThemeUtils;
 
@@ -35,7 +35,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
     private static final String UNKNOWN_VALUE = "?";
     private static final String TRANSFER_SYMBOL = " → ";
 
-    private final Currency mainCurrency;
+    private final CurrencyFormat mainCurrencyFormat;
     private final BaseInterval interval;
     private final LongSparseArray<Long> totalExpenses;
     private final String unknownExpenseTitle;
@@ -52,9 +52,9 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
     private final int tagBackgroundColor;
     private final float tagBackgroundRadius;
 
-    public TransactionsAdapter(Context context, Currency mainCurrency, BaseInterval interval) {
+    public TransactionsAdapter(Context context, CurrencyFormat mainCurrencyFormat, BaseInterval interval) {
         super(context);
-        this.mainCurrency = mainCurrency;
+        this.mainCurrencyFormat = mainCurrencyFormat;
         this.interval = interval;
         totalExpenses = new LongSparseArray<>();
         unknownExpenseTitle = context.getString(R.string.expense);
@@ -121,7 +121,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
             title = mContext.getString(R.string.pending);
         }
         holder.title_TV.setText(title);
-        holder.amount_TV.setText(MoneyFormatter.format(mainCurrency, getTotalExpenseForPosition(position)));
+        holder.amount_TV.setText(MoneyFormatter.format(mainCurrencyFormat, getTotalExpenseForPosition(position)));
 
         return convertView;
     }
@@ -276,13 +276,13 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         final Cursor cursor = getCursor();
         final int iTransactionType = cursor.getColumnIndex(Tables.Transactions.TYPE.getName());
         final int iAmount = cursor.getColumnIndex(Tables.Transactions.AMOUNT.getName());
-        final int iAccountFromCurrencyServerId = cursor.getColumnIndex(Tables.Currencies.ID.getName(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY));
-        final int iAccountFromCurrencyExchangeRate = cursor.getColumnIndex(Tables.Currencies.EXCHANGE_RATE.getName(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY));
+        final int iAccountFromCurrencyServerId = cursor.getColumnIndex(Tables.CurrencyFormats.ID.getName(Tables.CurrencyFormats.TEMP_TABLE_NAME_FROM_CURRENCY));
+        final int iAccountFromCurrencyExchangeRate = cursor.getColumnIndex(Tables.CurrencyFormats.EXCHANGE_RATE.getName(Tables.CurrencyFormats.TEMP_TABLE_NAME_FROM_CURRENCY));
         final int iIncludeInReports = cursor.getColumnIndex(Tables.Transactions.INCLUDE_IN_REPORTS.getName());
         do {
             if (TransactionType.fromInt(cursor.getInt(iTransactionType)) == TransactionType.Expense && cursor.getInt(iIncludeInReports) != 0) {
                 final long amount = cursor.getLong(iAmount);
-                if (mainCurrency.getId().equals(cursor.getString(iAccountFromCurrencyServerId))) {
+                if (mainCurrencyFormat.getId().equals(cursor.getString(iAccountFromCurrencyServerId))) {
                     totalExpense += amount;
                 } else {
                     totalExpense += amount * cursor.getDouble(iAccountFromCurrencyExchangeRate);

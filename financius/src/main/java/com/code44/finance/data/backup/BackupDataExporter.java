@@ -8,7 +8,7 @@ import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
@@ -74,23 +74,23 @@ public class BackupDataExporter extends DataExporter {
     }
 
     private void writeCurrencies(JsonWriter writer) throws IOException {
-        final Cursor cursor = getCursor(CurrenciesProvider.uriCurrencies(), Tables.Currencies.PROJECTION);
+        final Cursor cursor = getCursor(CurrenciesProvider.uriCurrencies(), Tables.CurrencyFormats.PROJECTION);
         try {
             if (cursor.moveToFirst()) {
-                final Currency currency = new Currency();
+                final CurrencyFormat currencyFormat = new CurrencyFormat();
                 do {
-                    currency.updateFrom(cursor, null);
+                    currencyFormat.updateFromCursor(cursor, null);
 
                     writer.beginObject();
-                    writeBaseModel(currency, writer);
-                    writer.name("code").value(currency.getCode());
-                    writer.name("symbol").value(currency.getSymbol());
-                    writer.name("symbol_position").value(currency.getSymbolPosition().asInt());
-                    writer.name("decimal_separator").value(currency.getDecimalSeparator().symbol());
-                    writer.name("group_separator").value(currency.getGroupSeparator().symbol());
-                    writer.name("decimal_count").value(currency.getDecimalCount());
-                    writer.name("is_default").value(currency.isDefault());
-                    writer.name("exchange_rate").value(currency.getExchangeRate());
+                    writeBaseModel(currencyFormat, writer);
+                    writer.name("code").value(currencyFormat.getCode());
+                    writer.name("symbol").value(currencyFormat.getSymbol());
+                    writer.name("symbol_position").value(currencyFormat.getSymbolPosition().asInt());
+                    writer.name("decimal_separator").value(currencyFormat.getDecimalSeparator().symbol());
+                    writer.name("group_separator").value(currencyFormat.getGroupSeparator().symbol());
+                    writer.name("decimal_count").value(currencyFormat.getDecimalCount());
+                    writer.name("is_default").value(currencyFormat.isDefault());
+                    writer.name("exchange_rate").value(currencyFormat.getExchangeRate());
                     writer.endObject();
                 } while (cursor.moveToNext());
             }
@@ -105,7 +105,7 @@ public class BackupDataExporter extends DataExporter {
             if (cursor.moveToFirst()) {
                 final Category category = new Category();
                 do {
-                    category.updateFrom(cursor, null);
+                    category.updateFromCursor(cursor, null);
 
                     writer.beginObject();
                     writeBaseModel(category, writer);
@@ -127,7 +127,7 @@ public class BackupDataExporter extends DataExporter {
             if (cursor.moveToFirst()) {
                 final Tag tag = new Tag();
                 do {
-                    tag.updateFrom(cursor, null);
+                    tag.updateFromCursor(cursor, null);
 
                     writer.beginObject();
                     writeBaseModel(tag, writer);
@@ -146,11 +146,11 @@ public class BackupDataExporter extends DataExporter {
             if (cursor.moveToFirst()) {
                 final Account account = new Account();
                 do {
-                    account.updateFrom(cursor, null);
+                    account.updateFromCursor(cursor, null);
 
                     writer.beginObject();
                     writeBaseModel(account, writer);
-                    writer.name("currency_id").value(account.getCurrency().getId());
+                    writer.name("currency_id").value(account.getCurrencyCode().getId());
                     writer.name("title").value(account.getTitle());
                     writer.name("note").value(account.getNote());
                     writer.name("balance").value(account.getBalance());
@@ -169,8 +169,8 @@ public class BackupDataExporter extends DataExporter {
             if (cursor.moveToFirst()) {
                 final Transaction transaction = new Transaction();
                 do {
-                    transaction.updateFrom(cursor, null);
-                    transaction.prepareForDb();
+                    transaction.updateFromCursor(cursor, null);
+                    transaction.prepareForContentValues();
 
                     writer.beginObject();
                     writeBaseModel(transaction, writer);

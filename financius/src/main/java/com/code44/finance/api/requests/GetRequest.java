@@ -34,7 +34,7 @@ public abstract class GetRequest<T extends GenericJson> extends Request {
         final List<ContentValues> valuesList = new ArrayList<>();
         for (T entity : entities) {
             final Model model = getModelFrom(entity);
-            final ContentValues values = model.asValues();
+            final ContentValues values = model.asContentValues();
             onValuesCreated(values);
             valuesList.add(values);
             final long entityEditTimestamp = (Long) entity.get("edit_ts");

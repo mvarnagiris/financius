@@ -1,14 +1,16 @@
 package com.code44.finance.data.providers;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.provider.BaseColumns;
 import android.text.TextUtils;
 
+import com.code44.finance.api.Api;
 import com.code44.finance.common.model.ModelState;
+import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
@@ -20,77 +22,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class BaseModelProvider extends BaseProvider {
-    private static final int URI_ITEMS = 1;
-    private static final int URI_ITEMS_ID = 2;
+import javax.inject.Inject;
 
-    public static Uri uriModels(Class<? extends BaseModelProvider> providerClass, String baseModelTable) {
-        return Uri.parse(CONTENT_URI_BASE + getAuthority(providerClass) + "/" + baseModelTable);
-    }
-
-    public static Uri uriModel(Class<? extends BaseModelProvider> providerClass, String baseModelTable, String baseModelId) {
-        return Uri.withAppendedPath(uriModels(providerClass, baseModelTable), baseModelId);
-    }
-
-    @Override public boolean onCreate() {
-        super.onCreate();
-
-        final String authority = getAuthority();
-        final String mainTable = getModelTable();
-        uriMatcher.addURI(authority, mainTable, URI_ITEMS);
-        uriMatcher.addURI(authority, mainTable + "/*", URI_ITEMS_ID);
-
-        return true;
-    }
-
-    @Override public String getType(Uri uri) {
-        switch (uriMatcher.match(uri)) {
-            case URI_ITEMS:
-                return TYPE_LIST_BASE + getModelTable();
-            case URI_ITEMS_ID:
-                return TYPE_ITEM_BASE + getModelTable();
-            default:
-                throw new IllegalArgumentException("Unsupported URI: " + uri);
-        }
-    }
-
-    @Override public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        final Cursor cursor;
-
-        final int uriId = uriMatcher.match(uri);
-        switch (uriId) {
-            case URI_ITEMS:
-                cursor = queryItems(uri, projection, selection, selectionArgs, sortOrder);
-                break;
-
-            case URI_ITEMS_ID:
-                cursor = queryItem(uri, projection, selection, selectionArgs, sortOrder);
-                break;
-
-            default:
-                throw new IllegalArgumentException("Unsupported URI: " + uri);
-        }
-
-        final Context context = getContext();
-        if (context != null) {
-            cursor.setNotificationUri(context.getContentResolver(), uri);
-        }
-
-        cursor.moveToFirst();
-
-        return cursor;
-    }
+@SuppressWarnings("UnusedParameters")
+public abstract class ModelProvider extends BaseModelProvider {
+    @Inject Api api;
 
     @Override public Uri insert(Uri uri, ContentValues values) {
+        final String serverId = values.getAsString(getIdColumn().getName());
+        if (Strings.isEmpty(serverId)) {
+            throw new IllegalArgumentException("Server Id cannot be empty.");
+        }
+
+        final SQLiteDatabase database = getDatabase();
         final int uriId = uriMatcher.match(uri);
         switch (uriId) {
             case URI_ITEMS:
-                final SQLiteDatabase database = getDatabase();
                 try {
                     database.beginTransaction();
 
                     final Map<String, Object> extras = new HashMap<>();
-                    onBeforeInsertItem(uri, values, extras);
+                    onBeforeInsertItem(uri, values, serverId, extras);
                     insertItem(uri, values, serverId);
                     onAfterInsertItem(uri, values, serverId, extras);
 
@@ -247,11 +199,18 @@ public abstract class BaseModelProvider extends BaseProvider {
         return qb.query(database, projection, selection, selectionArgs, null, null, sortOrder);
     }
 
-    protected void onBeforeInsertItem(Uri uri, ContentValues values, Map<String, Object> outExtras) {
+    protected void onBeforeInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> outExtras) {
     }
 
-    protected long insertItem(Uri uri, ContentValues values) {
-        return ProviderUtils.doUpdateOrInsert(getDatabase(), getModelTable(), values, true);
+    protected long insertItem(Uri uri, ContentValues values, String serverId) {
+        if (values.containsKey(BaseColumns._ID)) {
+            values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, SyncState.LocalChanges.asInt());
+        } else {
+            values.put(getModelTable() + "_" + Tables.SUFFIX_SYNC_STATE, SyncState.None.asInt());
+        }
+
+        final SQLiteDatabase database = getDatabase();
+        return ProviderUtils.doUpdateOrInsert(database, getModelTable(), values, true);
     }
 
     protected void onAfterInsertItem(Uri uri, ContentValues values, String serverId, Map<String, Object> extras) {

@@ -1,46 +1,27 @@
 package com.code44.finance.api.currencies;
 
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.ExchangeRate;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class ExchangeRatesResponse {
     @SerializedName("Query")
     private Query query;
-    private Map<String, Map<String, Currency.ExchangeRate>> exchangeRates;
 
-    public Map<String, Currency.ExchangeRate> getExchangeRates(String code) {
-        updateExchangeRatesIfNecessary();
-        final Map<String, Currency.ExchangeRate> rates = exchangeRates.get(code);
-        if (rates == null) {
-            return Collections.emptyMap();
-        }
-
-        return rates;
-    }
-
-    private void updateExchangeRatesIfNecessary() {
-        if (exchangeRates != null) {
-            return;
-        }
-
-        exchangeRates = new HashMap<>();
+    public Set<ExchangeRate> getExchangeRates() {
+        final Set<ExchangeRate> exchangeRates = new HashSet<>();
         for (Rate rate : query.results.rates) {
-            final String fromCode = rate.id.substring(0, 3);
-            final String toCode = rate.id.substring(3);
-
-            Map<String, Currency.ExchangeRate> fromToRates = exchangeRates.get(fromCode);
-            if (fromToRates == null) {
-                fromToRates = new HashMap<>();
-                exchangeRates.put(fromCode, fromToRates);
-            }
-
-            fromToRates.put(toCode, new Currency.ExchangeRate(fromCode, toCode, rate.rate));
+            final ExchangeRate exchangeRate = new ExchangeRate();
+            exchangeRate.setFromCode(rate.id.substring(0, 3));
+            exchangeRate.setToCode(rate.id.substring(3));
+            exchangeRate.setRate(rate.rate);
+            exchangeRates.add(exchangeRate);
         }
+
+        return exchangeRates;
     }
 
     private static class Query {
@@ -49,7 +30,7 @@ public class ExchangeRatesResponse {
     }
 
     private static class Results {
-        @SerializedName("rate")
+        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection") @SerializedName("rate")
         private List<Rate> rates;
     }
 

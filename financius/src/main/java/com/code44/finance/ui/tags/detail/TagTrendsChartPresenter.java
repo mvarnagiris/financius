@@ -9,7 +9,7 @@ import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
@@ -31,8 +31,8 @@ class TagTrendsChartPresenter extends TrendsChartPresenter implements LoaderMana
     private BaseInterval baseInterval;
     private Tag tag;
 
-    public TagTrendsChartPresenter(TrendsChartView trendsChartView, Currency mainCurrency, LoaderManager loaderManager, BaseInterval baseInterval) {
-        super(trendsChartView, mainCurrency);
+    public TagTrendsChartPresenter(TrendsChartView trendsChartView, CurrencyFormat mainCurrencyFormat, LoaderManager loaderManager, BaseInterval baseInterval) {
+        super(trendsChartView, mainCurrencyFormat);
         this.loaderManager = loaderManager;
         expenseValidator = new ExpenseAmountCalculator();
         incomeValidator = new IncomeAmountCalculator();

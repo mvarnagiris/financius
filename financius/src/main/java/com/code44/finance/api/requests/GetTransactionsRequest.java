@@ -63,7 +63,7 @@ public class GetTransactionsRequest extends GetRequest<TransactionEntity> {
             final Cursor cursor = Query.create()
                     .projectionLocalId(Tables.Accounts.LOCAL_ID)
                     .projection(Tables.Accounts.PROJECTION)
-                    .projection(Tables.Currencies.PROJECTION)
+                    .projection(Tables.CurrencyFormats.PROJECTION)
                     .selection(Tables.Accounts.ID + "=?", id)
                     .from(getContext(), AccountsProvider.uriAccounts())
                     .execute();

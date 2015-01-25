@@ -18,21 +18,21 @@ import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.api.currencies.GetExchangeRatesRequest;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
+import com.code44.finance.money.MoneyFormatter;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelActivityPresenter;
 import com.code44.finance.ui.currencies.edit.CurrencyEditActivity;
 import com.code44.finance.utils.EventBus;
-import com.code44.finance.utils.MoneyFormatter;
 import com.squareup.otto.Subscribe;
 
-class CurrencyActivityPresenter extends ModelActivityPresenter<Currency> implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+class CurrencyActivityPresenter extends ModelActivityPresenter<CurrencyFormat> implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private static final int LOADER_ACCOUNTS = 1;
 
     private final CurrenciesApi currenciesApi;
-    private final Currency mainCurrency;
+    private final CurrencyFormat mainCurrencyFormat;
 
     private TextView codeTextView;
     private TextView formatTextView;
@@ -41,10 +41,10 @@ class CurrencyActivityPresenter extends ModelActivityPresenter<Currency> impleme
 
     private CurrencyAccountsAdapter adapter;
 
-    protected CurrencyActivityPresenter(EventBus eventBus, CurrenciesApi currenciesApi, Currency mainCurrency) {
+    protected CurrencyActivityPresenter(EventBus eventBus, CurrenciesApi currenciesApi, CurrencyFormat mainCurrencyFormat) {
         super(eventBus);
         this.currenciesApi = currenciesApi;
-        this.mainCurrency = mainCurrency;
+        this.mainCurrencyFormat = mainCurrencyFormat;
     }
 
     @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ class CurrencyActivityPresenter extends ModelActivityPresenter<Currency> impleme
         final ListView listView = findView(activity, R.id.listView);
 
         // Setup
-        refreshRateButton.setVisibility(!mainCurrency.getId().equals(getModelId()) ? View.VISIBLE : View.GONE);
+        refreshRateButton.setVisibility(!mainCurrencyFormat.getId().equals(getModelId()) ? View.VISIBLE : View.GONE);
         refreshRateButton.setOnClickListener(this);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setEnabled(false);
@@ -79,7 +79,7 @@ class CurrencyActivityPresenter extends ModelActivityPresenter<Currency> impleme
 
     @Override public boolean onPrepareOptionsMenu(BaseActivity activity, Menu menu) {
         super.onPrepareOptionsMenu(activity, menu);
-        menu.findItem(R.id.action_delete).setVisible(!mainCurrency.getId().equals(getModelId()));
+        menu.findItem(R.id.action_delete).setVisible(!mainCurrencyFormat.getId().equals(getModelId()));
         return true;
     }
 
@@ -107,22 +107,22 @@ class CurrencyActivityPresenter extends ModelActivityPresenter<Currency> impleme
     }
 
     @Override protected CursorLoader getModelCursorLoader(Context context, String modelId) {
-        return Tables.Currencies.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrency(modelId));
+        return Tables.CurrencyFormats.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrency(modelId));
     }
 
-    @Override protected Currency getModelFrom(Cursor cursor) {
-        return Currency.from(cursor);
+    @Override protected CurrencyFormat getModelFrom(Cursor cursor) {
+        return CurrencyFormat.from(cursor);
     }
 
-    @Override protected void onModelLoaded(Currency currency) {
-        adapter.setCurrency(currency);
-        codeTextView.setText(currency.getCode());
-        if (currency.isDefault()) {
+    @Override protected void onModelLoaded(CurrencyFormat currencyFormat) {
+        adapter.setCurrency(currencyFormat);
+        codeTextView.setText(currencyFormat.getCode());
+        if (currencyFormat.isDefault()) {
             exchangeRateTextView.setText(R.string.main_currency);
         } else {
-            exchangeRateTextView.setText(String.valueOf(currency.getExchangeRate(mainCurrency.getCode())));
+            exchangeRateTextView.setText(String.valueOf(currencyFormat.getExchangeRate(mainCurrencyFormat.getCode())));
         }
-        formatTextView.setText(MoneyFormatter.format(currency, 100000));
+        formatTextView.setText(MoneyFormatter.format(currencyFormat, 100000));
 
         getActivity().supportInvalidateOptionsMenu();
 
@@ -139,7 +139,7 @@ class CurrencyActivityPresenter extends ModelActivityPresenter<Currency> impleme
     }
 
     @Override protected Pair<String, String[]> getDeleteSelection(String modelId) {
-        return Pair.create(Tables.Currencies.ID + "=?", new String[]{String.valueOf(modelId)});
+        return Pair.create(Tables.CurrencyFormats.ID + "=?", new String[]{String.valueOf(modelId)});
     }
 
     @Override public void onClick(View v) {

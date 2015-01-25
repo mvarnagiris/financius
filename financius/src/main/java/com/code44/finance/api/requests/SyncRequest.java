@@ -21,7 +21,7 @@ import com.code44.finance.data.db.DBHelper;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.SyncState;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
@@ -93,17 +93,17 @@ public class SyncRequest extends Request {
     }
 
     private void pushCurrencies(SQLiteDatabase database) {
-        markInProgress(database, Tables.Currencies.SYNC_STATE);
+        markInProgress(database, Tables.CurrencyFormats.SYNC_STATE);
 
         final Cursor cursor = Query.create()
-                .projectionLocalId(Tables.Currencies.LOCAL_ID)
-                .projection(Tables.Currencies.PROJECTION)
-                .selection(Tables.Currencies.SYNC_STATE + "=?", SyncState.InProgress.asString())
+                .projectionLocalId(Tables.CurrencyFormats.LOCAL_ID)
+                .projection(Tables.CurrencyFormats.PROJECTION)
+                .selection(Tables.CurrencyFormats.SYNC_STATE + "=?", SyncState.InProgress.asString())
                 .from(context, CurrenciesProvider.uriCurrencies())
                 .execute();
-        final List<Currency> currencies = new ArrayList<>();
+        final List<CurrencyFormat> currencies = new ArrayList<>();
         do {
-            currencies.add(Currency.from(cursor));
+            currencies.add(CurrencyFormat.from(cursor));
         } while (cursor.moveToNext());
         IOUtils.closeQuietly(cursor);
 
@@ -164,7 +164,7 @@ public class SyncRequest extends Request {
         final Cursor cursor = Query.create()
                 .projectionLocalId(Tables.Accounts.LOCAL_ID)
                 .projection(Tables.Accounts.PROJECTION)
-                .projection(Tables.Currencies.PROJECTION)
+                .projection(Tables.CurrencyFormats.PROJECTION)
                 .selection(Tables.Accounts.SYNC_STATE + "=?", SyncState.InProgress.asString())
                 .from(context, AccountsProvider.uriAccounts())
                 .execute();
@@ -189,8 +189,8 @@ public class SyncRequest extends Request {
                 .projection(Tables.Transactions.PROJECTION)
                 .projection(Tables.Accounts.PROJECTION_ACCOUNT_FROM)
                 .projection(Tables.Accounts.PROJECTION_ACCOUNT_TO)
-                .projection(Tables.Currencies.PROJECTION_ACCOUNT_FROM)
-                .projection(Tables.Currencies.PROJECTION_ACCOUNT_TO)
+                .projection(Tables.CurrencyFormats.PROJECTION_ACCOUNT_FROM)
+                .projection(Tables.CurrencyFormats.PROJECTION_ACCOUNT_TO)
                 .projection(Tables.Categories.PROJECTION)
                 .selection(Tables.Transactions.SYNC_STATE + "=?", SyncState.InProgress.asString())
                 .from(context, TransactionsProvider.uriTransactions())

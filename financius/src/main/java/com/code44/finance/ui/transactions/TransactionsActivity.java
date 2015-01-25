@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.code44.finance.R;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
@@ -28,7 +28,7 @@ import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class TransactionsActivity extends ModelListActivity {
-    @Inject @Main Currency mainCurrency;
+    @Inject @Main CurrencyFormat mainCurrencyFormat;
     @Inject CurrentInterval currentInterval;
 
     private ExpandableStickyListHeadersListView headerList_V;
@@ -79,7 +79,7 @@ public class TransactionsActivity extends ModelListActivity {
     }
 
     @Override protected BaseModelsAdapter createAdapter() {
-        return new TransactionsAdapter(this, mainCurrency, currentInterval);
+        return new TransactionsAdapter(this, mainCurrencyFormat, currentInterval);
     }
 
     @Override protected CursorLoader getModelsCursorLoader() {

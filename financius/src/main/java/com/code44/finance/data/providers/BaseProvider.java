@@ -17,10 +17,8 @@ public abstract class BaseProvider extends ContentProvider {
     protected static final String TYPE_ITEM_BASE = "vnd.android.cursor.item/vnd.code44.";
 
     protected final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-
-    protected SQLiteDatabase database;
-
     @Inject DBHelper dbHelper;
+    private SQLiteDatabase database;
 
     protected static String getAuthority(Class<? extends BaseProvider> cls) {
         return BuildConfig.APPLICATION_ID + ".data.providers." + cls.getSimpleName();

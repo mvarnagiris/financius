@@ -77,7 +77,7 @@ public class Transaction extends Model {
         final Transaction transaction = new Transaction();
         if (cursor.getCount() > 0) {
             try {
-                transaction.updateFrom(cursor, null);
+                transaction.updateFromCursor(cursor, null);
             } catch (Exception e) {
                 Crashlytics.log(DatabaseUtils.dumpCurrentRowToString(cursor));
                 throw e;
@@ -86,24 +86,46 @@ public class Transaction extends Model {
         return transaction;
     }
 
-    @Override protected Column getLocalIdColumn() {
-        return Tables.Transactions.LOCAL_ID;
+    @Override public void writeToParcel(Parcel parcel, int flags) {
+        super.writeToParcel(parcel, flags);
+        parcel.writeParcelable(accountFrom, 0);
+        parcel.writeParcelable(accountTo, 0);
+        parcel.writeParcelable(category, 0);
+        parcel.writeTypedList(tags);
+        parcel.writeLong(date);
+        parcel.writeLong(amount);
+        parcel.writeDouble(exchangeRate);
+        parcel.writeString(note);
+        parcel.writeInt(transactionState.asInt());
+        parcel.writeInt(transactionType.asInt());
+        parcel.writeInt(includeInReports ? 1 : 0);
     }
 
-    @Override protected Column getIdColumn() {
-        return Tables.Transactions.ID;
+    @Override public ContentValues asContentValues() {
+        final ContentValues values = super.asContentValues();
+        values.put(Tables.Transactions.ACCOUNT_FROM_ID.getName(), accountFrom == null ? null : accountFrom.getId());
+        values.put(Tables.Transactions.ACCOUNT_TO_ID.getName(), accountTo == null ? null : accountTo.getId());
+        values.put(Tables.Transactions.CATEGORY_ID.getName(), category == null ? null : category.getId());
+        values.put(Tables.Transactions.DATE.getName(), date);
+        values.put(Tables.Transactions.AMOUNT.getName(), amount);
+        values.put(Tables.Transactions.EXCHANGE_RATE.getName(), exchangeRate);
+        values.put(Tables.Transactions.NOTE.getName(), note);
+        values.put(Tables.Transactions.STATE.getName(), transactionState.asInt());
+        values.put(Tables.Transactions.TYPE.getName(), transactionType.asInt());
+        values.put(Tables.Transactions.INCLUDE_IN_REPORTS.getName(), includeInReports);
+        final StringBuilder sb = new StringBuilder();
+        for (Tag tag : tags) {
+            if (sb.length() > 0) {
+                sb.append(Tables.CONCAT_SEPARATOR);
+            }
+            sb.append(tag.getId());
+        }
+        values.put(Tables.Tags.ID.getName(), sb.toString());
+        return values;
     }
 
-    @Override protected Column getModelStateColumn() {
-        return Tables.Transactions.MODEL_STATE;
-    }
-
-    @Override protected Column getSyncStateColumn() {
-        return Tables.Transactions.SYNC_STATE;
-    }
-
-    @Override public void prepareForDb() {
-        super.prepareForDb();
+    @Override public void prepareForContentValues() {
+        super.prepareForContentValues();
 
         if (tags == null) {
             tags = Collections.emptyList();
@@ -144,8 +166,8 @@ public class Transaction extends Model {
         }
     }
 
-    @Override public void validate() throws IllegalStateException {
-        super.validate();
+    @Override public void validateForContentValues() throws IllegalStateException {
+        super.validateForContentValues();
         Preconditions.notNull(transactionState, "Transaction state cannot be null.");
         Preconditions.notNull(transactionType, "Transaction type cannot be null.");
         Preconditions.moreOrEquals(amount, 0, "Amount must be >= 0.");
@@ -193,46 +215,8 @@ public class Transaction extends Model {
         }
     }
 
-    @Override public ContentValues asValues() {
-        final ContentValues values = super.asValues();
-        values.put(Tables.Transactions.ACCOUNT_FROM_ID.getName(), accountFrom == null ? null : accountFrom.getId());
-        values.put(Tables.Transactions.ACCOUNT_TO_ID.getName(), accountTo == null ? null : accountTo.getId());
-        values.put(Tables.Transactions.CATEGORY_ID.getName(), category == null ? null : category.getId());
-        values.put(Tables.Transactions.DATE.getName(), date);
-        values.put(Tables.Transactions.AMOUNT.getName(), amount);
-        values.put(Tables.Transactions.EXCHANGE_RATE.getName(), exchangeRate);
-        values.put(Tables.Transactions.NOTE.getName(), note);
-        values.put(Tables.Transactions.STATE.getName(), transactionState.asInt());
-        values.put(Tables.Transactions.TYPE.getName(), transactionType.asInt());
-        values.put(Tables.Transactions.INCLUDE_IN_REPORTS.getName(), includeInReports);
-        final StringBuilder sb = new StringBuilder();
-        for (Tag tag : tags) {
-            if (sb.length() > 0) {
-                sb.append(Tables.CONCAT_SEPARATOR);
-            }
-            sb.append(tag.getId());
-        }
-        values.put(Tables.Tags.ID.getName(), sb.toString());
-        return values;
-    }
-
-    @Override public void writeToParcel(Parcel parcel, int flags) {
-        super.writeToParcel(parcel, flags);
-        parcel.writeParcelable(accountFrom, 0);
-        parcel.writeParcelable(accountTo, 0);
-        parcel.writeParcelable(category, 0);
-        parcel.writeTypedList(tags);
-        parcel.writeLong(date);
-        parcel.writeLong(amount);
-        parcel.writeDouble(exchangeRate);
-        parcel.writeString(note);
-        parcel.writeInt(transactionState.asInt());
-        parcel.writeInt(transactionType.asInt());
-        parcel.writeInt(includeInReports ? 1 : 0);
-    }
-
-    @Override public void updateFrom(Cursor cursor, String columnPrefixTable) {
-        super.updateFrom(cursor, columnPrefixTable);
+    @Override public void updateFromCursor(Cursor cursor, String columnPrefixTable) {
+        super.updateFromCursor(cursor, columnPrefixTable);
         int index;
 
         // Transaction type
@@ -353,6 +337,22 @@ public class Transaction extends Model {
         if (index >= 0) {
             setIncludeInReports(cursor.getInt(index) != 0);
         }
+    }
+
+    @Override protected Column getLocalIdColumn() {
+        return Tables.Transactions.LOCAL_ID;
+    }
+
+    @Override protected Column getIdColumn() {
+        return Tables.Transactions.ID;
+    }
+
+    @Override protected Column getModelStateColumn() {
+        return Tables.Transactions.MODEL_STATE;
+    }
+
+    @Override protected Column getSyncStateColumn() {
+        return Tables.Transactions.SYNC_STATE;
     }
 
     public Account getAccountFrom() {

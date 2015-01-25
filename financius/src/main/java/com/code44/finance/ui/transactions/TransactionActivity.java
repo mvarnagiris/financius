@@ -21,8 +21,8 @@ import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
+import com.code44.finance.money.MoneyFormatter;
 import com.code44.finance.ui.common.ModelActivity;
-import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.TextBackgroundSpan;
 import com.code44.finance.utils.ThemeUtils;
 import com.code44.finance.utils.analytics.Analytics;
@@ -112,7 +112,7 @@ public class TransactionActivity extends ModelActivity<Transaction> {
                     amountToTextView.setVisibility(View.GONE);
                 } else {
                     amountToTextView.setVisibility(View.VISIBLE);
-                    amountToTextView.setText(MoneyFormatter.format(transaction.getAccountTo().getCurrency(), (long) (transaction.getAmount() * transaction.getExchangeRate())));
+                    amountToTextView.setText(MoneyFormatter.format(transaction.getAccountTo().getCurrencyCode(), (long) (transaction.getAmount() * transaction.getExchangeRate())));
                 }
 
                 if (Strings.isEmpty(categoryTitle)) {
@@ -177,6 +177,6 @@ public class TransactionActivity extends ModelActivity<Transaction> {
     private boolean isSameCurrency(Transaction transaction) {
         final Account accountFrom = transaction.getAccountFrom();
         final Account accountTo = transaction.getAccountTo();
-        return accountFrom == null || accountTo == null || accountFrom.getCurrency().equals(accountTo.getCurrency());
+        return accountFrom == null || accountTo == null || accountFrom.getCurrencyCode().equals(accountTo.getCurrencyCode());
     }
 }

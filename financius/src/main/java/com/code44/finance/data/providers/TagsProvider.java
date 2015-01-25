@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class TagsProvider extends BaseModelProvider {
+public class TagsProvider extends ModelProvider {
     public static Uri uriTags() {
         return uriModels(TagsProvider.class, Tables.Tags.TABLE_NAME);
     }

@@ -17,7 +17,7 @@ import com.code44.finance.data.db.DBMigration;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.data.model.SyncState;
 import com.code44.finance.data.model.Tag;
@@ -100,7 +100,7 @@ public class BackupDataImporter extends DataImporter {
     }
 
     private void cleanDatabase(SQLiteDatabase database) {
-        database.delete(Tables.Currencies.TABLE_NAME, null, null);
+        database.delete(Tables.CurrencyFormats.TABLE_NAME, null, null);
         database.delete(Tables.Categories.TABLE_NAME, null, null);
         database.delete(Tables.Tags.TABLE_NAME, null, null);
         database.delete(Tables.Accounts.TABLE_NAME, null, null);
@@ -111,7 +111,7 @@ public class BackupDataImporter extends DataImporter {
     private void importCurrencies(JsonObject json) {
         final List<ContentValues> valuesList = new ArrayList<>();
         final JsonArray modelsJson = json.getAsJsonArray("currencies");
-        final Currency model = new Currency();
+        final CurrencyFormat model = new CurrencyFormat();
         for (int i = 0, size = modelsJson.size(); i < size; i++) {
             final JsonObject modelJson = modelsJson.get(i).getAsJsonObject();
             updateBaseModel(model, modelJson);
@@ -123,7 +123,7 @@ public class BackupDataImporter extends DataImporter {
             model.setDecimalCount(modelJson.get("decimal_count").getAsInt());
             model.setDefault(modelJson.get("is_default").getAsBoolean());
             model.setExchangeRate(modelJson.get("exchange_rate").getAsDouble());
-            valuesList.add(model.asValues());
+            valuesList.add(model.asContentValues());
         }
         insert(valuesList, CurrenciesProvider.uriCurrencies());
     }
@@ -139,7 +139,7 @@ public class BackupDataImporter extends DataImporter {
             model.setColor(modelJson.get("color").getAsInt());
             model.setTransactionType(TransactionType.fromInt(modelJson.get("transaction_type").getAsInt()));
             model.setSortOrder(modelJson.get("sort_order").getAsInt());
-            valuesList.add(model.asValues());
+            valuesList.add(model.asContentValues());
         }
         insert(valuesList, CategoriesProvider.uriCategories());
     }
@@ -152,7 +152,7 @@ public class BackupDataImporter extends DataImporter {
             final JsonObject modelJson = modelsJson.get(i).getAsJsonObject();
             updateBaseModel(model, modelJson);
             model.setTitle(modelJson.get("title").getAsString());
-            valuesList.add(model.asValues());
+            valuesList.add(model.asContentValues());
         }
         insert(valuesList, TagsProvider.uriTags());
     }
@@ -161,16 +161,16 @@ public class BackupDataImporter extends DataImporter {
         final List<ContentValues> valuesList = new ArrayList<>();
         final JsonArray modelsJson = json.getAsJsonArray("accounts");
         final Account model = new Account();
-        final Currency currency = new Currency();
-        model.setCurrency(currency);
+        final CurrencyFormat currencyFormat = new CurrencyFormat();
+        model.setCurrencyCode(currencyFormat);
         for (int i = 0, size = modelsJson.size(); i < size; i++) {
             final JsonObject modelJson = modelsJson.get(i).getAsJsonObject();
             updateBaseModel(model, modelJson);
-            currency.setId(modelJson.get("currency_id").getAsString());
+            currencyFormat.setId(modelJson.get("currency_id").getAsString());
             model.setTitle(modelJson.get("title").getAsString());
             model.setNote(modelJson.get("note").getAsString());
             model.setIncludeInTotals(modelJson.get("include_in_totals").getAsBoolean());
-            valuesList.add(model.asValues());
+            valuesList.add(model.asContentValues());
         }
         insert(valuesList, AccountsProvider.uriAccounts());
     }
@@ -216,7 +216,7 @@ public class BackupDataImporter extends DataImporter {
                 model.setTransactionState(TransactionState.Pending);
             }
 
-            valuesList.add(model.asValues());
+            valuesList.add(model.asContentValues());
         }
         insert(valuesList, TransactionsProvider.uriTransactions());
     }

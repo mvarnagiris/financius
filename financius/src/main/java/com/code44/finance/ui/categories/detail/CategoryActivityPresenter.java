@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Category;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.CategoriesProvider;
 import com.code44.finance.ui.categories.edit.CategoryEditActivity;
 import com.code44.finance.ui.common.activities.BaseActivity;
@@ -23,16 +23,16 @@ import com.code44.finance.utils.EventBus;
 
 class CategoryActivityPresenter extends ModelActivityPresenter<Category> {
     private final BaseInterval interval;
-    private final Currency mainCurrency;
+    private final CurrencyFormat mainCurrencyFormat;
 
     private CategoryTrendsChartPresenter categoryTrendsChartPresenter;
     private TextView titleTextView;
     private ImageView colorImageView;
 
-    public CategoryActivityPresenter(EventBus eventBus, BaseInterval interval, Currency mainCurrency) {
+    public CategoryActivityPresenter(EventBus eventBus, BaseInterval interval, CurrencyFormat mainCurrencyFormat) {
         super(eventBus);
         this.interval = interval;
-        this.mainCurrency = mainCurrency;
+        this.mainCurrencyFormat = mainCurrencyFormat;
     }
 
     @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ class CategoryActivityPresenter extends ModelActivityPresenter<Category> {
         colorImageView = findView(activity, R.id.colorImageView);
 
         final TrendsChartView trendsChartView = findView(activity, R.id.trendsChartView);
-        categoryTrendsChartPresenter = new CategoryTrendsChartPresenter(trendsChartView, mainCurrency, activity.getSupportLoaderManager(), interval);
+        categoryTrendsChartPresenter = new CategoryTrendsChartPresenter(trendsChartView, mainCurrencyFormat, activity.getSupportLoaderManager(), interval);
     }
 
     @Override protected CursorLoader getModelCursorLoader(Context context, String modelId) {

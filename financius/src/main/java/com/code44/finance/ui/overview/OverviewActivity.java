@@ -12,7 +12,7 @@ import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
@@ -39,7 +39,7 @@ public class OverviewActivity extends BaseDrawerActivity implements LoaderManage
     private static final int LOADER_ACCOUNTS = 2;
 
     @Inject CurrentInterval currentInterval;
-    @Inject @Main Currency mainCurrency;
+    @Inject @Main CurrencyFormat mainCurrencyFormat;
 
     private OverviewGraphView overviewGraphView;
     private AccountsView accountsView;
@@ -68,7 +68,7 @@ public class OverviewActivity extends BaseDrawerActivity implements LoaderManage
         accountsView = (AccountsView) findViewById(R.id.accounts);
 
         // Setup
-        trendsChartPresenter = new DefaultTrendsChartPresenter(trendsChartView, mainCurrency);
+        trendsChartPresenter = new DefaultTrendsChartPresenter(trendsChartView, mainCurrencyFormat);
         newTransactionView.setOnClickListener(this);
         overviewGraphView.setOnClickListener(this);
         accountsView.setOnClickListener(this);
@@ -152,7 +152,7 @@ public class OverviewActivity extends BaseDrawerActivity implements LoaderManage
     }
 
     private void onTransactionsLoaded(Cursor cursor) {
-        final CategoriesReportData categoriesReportData = new CategoriesReportData(this, cursor, mainCurrency, TransactionType.Expense);
+        final CategoriesReportData categoriesReportData = new CategoriesReportData(this, cursor, mainCurrencyFormat, TransactionType.Expense);
         overviewGraphView.setPieChartData(categoriesReportData.getPieChartData());
         overviewGraphView.setTotalExpense(categoriesReportData.getPieChartData().getTotalValue());
 

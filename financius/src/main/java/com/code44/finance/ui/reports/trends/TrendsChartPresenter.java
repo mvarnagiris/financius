@@ -5,11 +5,11 @@ import android.content.res.Resources;
 import android.database.Cursor;
 
 import com.code44.finance.R;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
+import com.code44.finance.money.MoneyFormatter;
 import com.code44.finance.ui.common.presenters.Presenter;
 import com.code44.finance.ui.reports.AmountGroups;
 import com.code44.finance.utils.BaseInterval;
-import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.ThemeUtils;
 
 import org.joda.time.Interval;
@@ -28,19 +28,19 @@ import lecho.lib.hellocharts.model.PointValue;
 
 public abstract class TrendsChartPresenter extends Presenter {
     private final TrendsChartView trendsChartView;
-    private final Currency mainCurrency;
+    private final CurrencyFormat mainCurrencyFormat;
     private final Formatter formatter;
 
-    public TrendsChartPresenter(TrendsChartView trendsChartView, Currency mainCurrency) {
+    public TrendsChartPresenter(TrendsChartView trendsChartView, CurrencyFormat mainCurrencyFormat) {
         this.trendsChartView = trendsChartView;
-        this.mainCurrency = mainCurrency;
-        this.formatter = new Formatter(mainCurrency);
+        this.mainCurrencyFormat = mainCurrencyFormat;
+        this.formatter = new Formatter(mainCurrencyFormat);
     }
 
     public void setData(Cursor cursor, BaseInterval baseInterval) {
         final AmountGroups.AmountCalculator[] amountCalculators = getTransactionValidators();
         final AmountGroups amountGroups = new AmountGroups(baseInterval);
-        final Map<AmountGroups.AmountCalculator, List<Long>> groups = amountGroups.getGroups(cursor, mainCurrency, amountCalculators);
+        final Map<AmountGroups.AmountCalculator, List<Long>> groups = amountGroups.getGroups(cursor, mainCurrencyFormat, amountCalculators);
 
         final List<Line> lines = new ArrayList<>();
         for (AmountGroups.AmountCalculator amountCalculator : amountCalculators) {
@@ -98,14 +98,14 @@ public abstract class TrendsChartPresenter extends Presenter {
     }
 
     private static class Formatter implements LineChartValueFormatter {
-        private final Currency mainCurrency;
+        private final CurrencyFormat mainCurrencyFormat;
 
-        public Formatter(Currency mainCurrency) {
-            this.mainCurrency = mainCurrency;
+        public Formatter(CurrencyFormat mainCurrencyFormat) {
+            this.mainCurrencyFormat = mainCurrencyFormat;
         }
 
         @Override public int formatChartValue(char[] chars, PointValue pointValue) {
-            final char[] fullText = MoneyFormatter.format(mainCurrency, (long) pointValue.getY()).toCharArray();
+            final char[] fullText = MoneyFormatter.format(mainCurrencyFormat, (long) pointValue.getY()).toCharArray();
             final int size = Math.min(chars.length, fullText.length);
             System.arraycopy(fullText, 0, chars, chars.length - size, size);
             return size;

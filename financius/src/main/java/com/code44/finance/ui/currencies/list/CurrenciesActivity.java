@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ActivityPresenter;
@@ -19,7 +19,7 @@ import javax.inject.Inject;
 public class CurrenciesActivity extends BaseActivity {
     @Inject GeneralPrefs generalPrefs;
     @Inject CurrenciesApi currenciesApi;
-    @Inject @Main Currency mainCurrency;
+    @Inject @Main CurrencyFormat mainCurrencyFormat;
 
     public static void start(Context context) {
         final Intent intent = makeIntentForActivity(context, CurrenciesActivity.class);
@@ -39,7 +39,7 @@ public class CurrenciesActivity extends BaseActivity {
     }
 
     @Override protected ActivityPresenter onCreateActivityPresenter() {
-        return new CurrenciesActivityPresenter(getEventBus(), generalPrefs, currenciesApi, mainCurrency);
+        return new CurrenciesActivityPresenter(getEventBus(), generalPrefs, currenciesApi, mainCurrencyFormat);
     }
 
     @Override protected Analytics.Screen getScreen() {

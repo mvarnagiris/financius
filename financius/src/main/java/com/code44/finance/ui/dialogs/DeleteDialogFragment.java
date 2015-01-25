@@ -97,8 +97,8 @@ public class DeleteDialogFragment extends AlertDialogFragment implements LoaderM
         switch (id) {
             case LOADER_CURRENCIES:
                 return Query.create()
-                        .projectionLocalId(Tables.Currencies.LOCAL_ID)
-                        .selection(Tables.Currencies.MODEL_STATE + "=?", String.valueOf(ModelState.DeletedUndo.asInt()))
+                        .projectionLocalId(Tables.CurrencyFormats.LOCAL_ID)
+                        .selection(Tables.CurrencyFormats.MODEL_STATE + "=?", String.valueOf(ModelState.DeletedUndo.asInt()))
                         .asCursorLoader(getActivity(), CurrenciesProvider.uriCurrencies());
 
             case LOADER_ACCOUNTS:

@@ -45,47 +45,9 @@ public class Category extends Model {
     public static Category from(Cursor cursor) {
         final Category category = new Category();
         if (cursor.getCount() > 0) {
-            category.updateFrom(cursor, null);
+            category.updateFromCursor(cursor, null);
         }
         return category;
-    }
-
-    @Override protected Column getLocalIdColumn() {
-        return Tables.Categories.LOCAL_ID;
-    }
-
-    @Override protected Column getIdColumn() {
-        return Tables.Categories.ID;
-    }
-
-    @Override protected Column getModelStateColumn() {
-        return Tables.Categories.MODEL_STATE;
-    }
-
-    @Override protected Column getSyncStateColumn() {
-        return Tables.Categories.SYNC_STATE;
-    }
-
-    @Override public void prepareForDb() {
-        super.prepareForDb();
-        if (transactionType == null) {
-            transactionType = TransactionType.Expense;
-        }
-    }
-
-    @Override public void validate() throws IllegalStateException {
-        super.validate();
-        Preconditions.notEmpty(title, "Title cannot be empty");
-        Preconditions.notNull(transactionType, "Category type cannot be null.");
-    }
-
-    @Override public ContentValues asValues() {
-        final ContentValues values = super.asValues();
-        values.put(Tables.Categories.TRANSACTION_TYPE.getName(), transactionType.asInt());
-        values.put(Tables.Categories.TITLE.getName(), title);
-        values.put(Tables.Categories.COLOR.getName(), color);
-        values.put(Tables.Categories.SORT_ORDER.getName(), sortOrder);
-        return values;
     }
 
     @Override public void writeToParcel(Parcel parcel, int flags) {
@@ -96,8 +58,30 @@ public class Category extends Model {
         parcel.writeInt(sortOrder);
     }
 
-    @Override public void updateFrom(Cursor cursor, String columnPrefixTable) {
-        super.updateFrom(cursor, columnPrefixTable);
+    @Override public ContentValues asContentValues() {
+        final ContentValues values = super.asContentValues();
+        values.put(Tables.Categories.TRANSACTION_TYPE.getName(), transactionType.asInt());
+        values.put(Tables.Categories.TITLE.getName(), title);
+        values.put(Tables.Categories.COLOR.getName(), color);
+        values.put(Tables.Categories.SORT_ORDER.getName(), sortOrder);
+        return values;
+    }
+
+    @Override public void prepareForContentValues() {
+        super.prepareForContentValues();
+        if (transactionType == null) {
+            transactionType = TransactionType.Expense;
+        }
+    }
+
+    @Override public void validateForContentValues() throws IllegalStateException {
+        super.validateForContentValues();
+        Preconditions.notEmpty(title, "Title cannot be empty");
+        Preconditions.notNull(transactionType, "Category type cannot be null.");
+    }
+
+    @Override public void updateFromCursor(Cursor cursor, String columnPrefixTable) {
+        super.updateFromCursor(cursor, columnPrefixTable);
         int index;
 
         // Title
@@ -123,6 +107,22 @@ public class Category extends Model {
         if (index >= 0) {
             setSortOrder(cursor.getInt(index));
         }
+    }
+
+    @Override protected Column getLocalIdColumn() {
+        return Tables.Categories.LOCAL_ID;
+    }
+
+    @Override protected Column getIdColumn() {
+        return Tables.Categories.ID;
+    }
+
+    @Override protected Column getModelStateColumn() {
+        return Tables.Categories.MODEL_STATE;
+    }
+
+    @Override protected Column getSyncStateColumn() {
+        return Tables.Categories.SYNC_STATE;
     }
 
     public String getTitle() {

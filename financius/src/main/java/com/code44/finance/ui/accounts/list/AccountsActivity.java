@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.code44.finance.R;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.activities.BaseDrawerActivity;
 import com.code44.finance.ui.common.navigation.NavigationScreen;
@@ -17,7 +17,7 @@ import com.code44.finance.utils.analytics.Analytics;
 import javax.inject.Inject;
 
 public class AccountsActivity extends BaseDrawerActivity {
-    @Inject @Main Currency mainCurrency;
+    @Inject @Main CurrencyFormat mainCurrencyFormat;
 
     public static Intent makeViewIntent(Context context) {
         final Intent intent = makeIntentForActivity(context, AccountsActivity.class);
@@ -46,7 +46,7 @@ public class AccountsActivity extends BaseDrawerActivity {
     }
 
     @Override protected ActivityPresenter onCreateActivityPresenter() {
-        return new AccountsActivityPresenter(mainCurrency);
+        return new AccountsActivityPresenter(mainCurrencyFormat);
     }
 
     @Override protected NavigationScreen getNavigationScreen() {

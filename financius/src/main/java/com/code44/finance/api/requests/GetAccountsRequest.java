@@ -10,7 +10,7 @@ import com.code44.finance.backend.endpoint.accounts.model.AccountEntity;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class GetAccountsRequest extends GetRequest<AccountEntity> {
     private final Accounts accountsService;
-    private final Map<String, Currency> currencies;
+    private final Map<String, CurrencyFormat> currencies;
 
     public GetAccountsRequest(Context context, User user, Accounts accountsService) {
         super(null, context, user);
@@ -52,21 +52,21 @@ public class GetAccountsRequest extends GetRequest<AccountEntity> {
         return AccountsProvider.uriAccounts();
     }
 
-    private Currency getCurrencyFor(AccountEntity entity) {
-        Currency currency = currencies.get(entity.getCurrencyId());
+    private CurrencyFormat getCurrencyFor(AccountEntity entity) {
+        CurrencyFormat currencyFormat = currencies.get(entity.getCurrencyId());
 
-        if (currency == null) {
+        if (currencyFormat == null) {
             final Cursor cursor = Query.create()
-                    .projectionLocalId(Tables.Currencies.LOCAL_ID)
-                    .projection(Tables.Currencies.PROJECTION)
-                    .selection(Tables.Currencies.ID + "=?", entity.getCurrencyId())
+                    .projectionLocalId(Tables.CurrencyFormats.LOCAL_ID)
+                    .projection(Tables.CurrencyFormats.PROJECTION)
+                    .selection(Tables.CurrencyFormats.ID + "=?", entity.getCurrencyId())
                     .from(getContext(), CurrenciesProvider.uriCurrencies())
                     .execute();
-            currency = Currency.from(cursor);
+            currencyFormat = CurrencyFormat.from(cursor);
             IOUtils.closeQuietly(cursor);
-            currencies.put(entity.getCurrencyId(), currency);
+            currencies.put(entity.getCurrencyId(), currencyFormat);
         }
 
-        return currency;
+        return currencyFormat;
     }
 }

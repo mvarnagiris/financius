@@ -11,11 +11,10 @@ public class Preconditions {
         return object;
     }
 
-    public static <T> T isNull(T object, String message) throws IllegalStateException {
+    public static void isNull(Object object, String message) throws IllegalStateException {
         if (object != null) {
             throw new IllegalStateException(message);
         }
-        return object;
     }
 
     public static String notEmpty(String str, String message) throws IllegalArgumentException {
@@ -62,6 +61,13 @@ public class Preconditions {
 
     public static int more(int value, int moreThan, String message) throws IllegalArgumentException {
         if (value <= moreThan) {
+            throw new IllegalStateException(message);
+        }
+        return value;
+    }
+
+    public static double more(double value, double moreThan, String message) throws IllegalArgumentException {
+        if (Double.compare(value, moreThan) <= 0) {
             throw new IllegalStateException(message);
         }
         return value;

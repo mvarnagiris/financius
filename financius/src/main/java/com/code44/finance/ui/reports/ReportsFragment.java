@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.code44.finance.R;
 import com.code44.finance.adapters.ReportsAdapter;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.qualifiers.Main;
 import com.code44.finance.utils.ActiveInterval;
@@ -25,7 +25,7 @@ public class ReportsFragment extends BaseReportFragment implements LoaderManager
     private static final int LOADER_TRANSACTIONS = 1;
 
     @Inject ActiveInterval activeInterval;
-    @Inject @Main Currency mainCurrency;
+    @Inject @Main CurrencyFormat mainCurrencyFormat;
 
     private ReportsAdapter adapter;
 

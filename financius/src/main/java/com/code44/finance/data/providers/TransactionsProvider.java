@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class TransactionsProvider extends BaseModelProvider {
+public class TransactionsProvider extends ModelProvider {
     public static final String URI_PARAM_JOIN_TABLE = "join_table";
     public static final String URI_VALUE_JOIN_TABLE_ACCOUNTS_FROM = "accounts_from";
     public static final String URI_VALUE_JOIN_TABLE_ACCOUNTS_TO = "accounts_to";
@@ -116,13 +116,13 @@ public class TransactionsProvider extends BaseModelProvider {
         }
 
         if (joinTables.contains(URI_VALUE_JOIN_TABLE_CURRENCIES_FROM)) {
-            sb.append(" left join ").append(Tables.Currencies.TABLE_NAME).append(" as ").append(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY)
-                    .append(" on ").append(Tables.Currencies.ID.getNameWithTable(Tables.Currencies.TEMP_TABLE_NAME_FROM_CURRENCY)).append("=").append(Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT));
+            sb.append(" left join ").append(Tables.CurrencyFormats.TABLE_NAME).append(" as ").append(Tables.CurrencyFormats.TEMP_TABLE_NAME_FROM_CURRENCY)
+                    .append(" on ").append(Tables.CurrencyFormats.ID.getNameWithTable(Tables.CurrencyFormats.TEMP_TABLE_NAME_FROM_CURRENCY)).append("=").append(Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_FROM_ACCOUNT));
         }
 
         if (joinTables.contains(URI_VALUE_JOIN_TABLE_CURRENCIES_TO)) {
-            sb.append(" left join ").append(Tables.Currencies.TABLE_NAME).append(" as ").append(Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY)
-                    .append(" on ").append(Tables.Currencies.ID.getNameWithTable(Tables.Currencies.TEMP_TABLE_NAME_TO_CURRENCY)).append("=").append(Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT));
+            sb.append(" left join ").append(Tables.CurrencyFormats.TABLE_NAME).append(" as ").append(Tables.CurrencyFormats.TEMP_TABLE_NAME_TO_CURRENCY)
+                    .append(" on ").append(Tables.CurrencyFormats.ID.getNameWithTable(Tables.CurrencyFormats.TEMP_TABLE_NAME_TO_CURRENCY)).append("=").append(Tables.Accounts.CURRENCY_ID.getNameWithTable(Tables.Accounts.TEMP_TABLE_NAME_TO_ACCOUNT));
         }
 
         if (joinTables.contains(URI_VALUE_JOIN_TABLE_TAGS)) {

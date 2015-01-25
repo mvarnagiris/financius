@@ -60,7 +60,7 @@ public class TransactionsProviderTest extends BaseContentProviderTestCase {
         transaction.setCategory(Category.getIncome());
         transaction.setAmount(42);
 
-        bulkInsert(TransactionsProvider.uriTransactions(), transaction.asValues());
+        bulkInsert(TransactionsProvider.uriTransactions(), transaction.asContentValues());
         account = getAccount(account.getId());
 
         assertEquals(42, account.getBalance());
@@ -77,7 +77,7 @@ public class TransactionsProviderTest extends BaseContentProviderTestCase {
         final Cursor cursor = Query.create()
                 .projectionLocalId(Tables.Accounts.ID)
                 .projection(Tables.Accounts.PROJECTION)
-                .projection(Tables.Currencies.PROJECTION)
+                .projection(Tables.CurrencyFormats.PROJECTION)
                 .from(context, AccountsProvider.uriAccount(accountId))
                 .execute();
         assertEquals(1, cursor.getCount());

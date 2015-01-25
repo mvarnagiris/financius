@@ -108,7 +108,7 @@ public class AccountsProviderTest extends BaseContentProviderTestCase {
         final Cursor cursor = Query.create()
                 .projectionLocalId(Tables.Accounts.ID)
                 .projection(Tables.Accounts.PROJECTION)
-                .projection(Tables.Currencies.PROJECTION)
+                .projection(Tables.CurrencyFormats.PROJECTION)
                 .from(Robolectric.getShadowApplication().getApplicationContext(), AccountsProvider.uriAccount(accountId))
                 .execute();
         final Account account = Account.from(cursor);

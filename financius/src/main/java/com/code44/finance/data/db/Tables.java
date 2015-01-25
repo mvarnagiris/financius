@@ -78,10 +78,32 @@ public final class Tables {
         return sb.toString();
     }
 
-    public static final class Currencies {
+    public static final class ExchangeRates {
+        public static final String TABLE_NAME = "exchange_rates";
+
+        public static final Column LOCAL_ID = getLocalIdColumn(TABLE_NAME);
+        public static final Column CURRENCY_CODE_FROM = new Column(TABLE_NAME, "currency_code_from", Column.DataType.TEXT);
+        public static final Column CURRENCY_CODE_TO = new Column(TABLE_NAME, "currency_code_to", Column.DataType.TEXT);
+        public static final Column RATE = new Column(TABLE_NAME, "rate", Column.DataType.REAL);
+
+        public static final String[] PROJECTION = {CURRENCY_CODE_FROM.getName(), CURRENCY_CODE_TO.getName(), RATE.getName()};
+
+        private ExchangeRates() {
+        }
+
+        public static String createScript() {
+            return makeCreateScript(TABLE_NAME, LOCAL_ID, CURRENCY_CODE_FROM, CURRENCY_CODE_TO, RATE);
+        }
+
+        public static Query getQuery() {
+            return Query.create()
+                    .projectionLocalId(ExchangeRates.LOCAL_ID)
+                    .projection(ExchangeRates.PROJECTION);
+        }
+    }
+
+    public static final class CurrencyFormats {
         public static final String TABLE_NAME = "currencies";
-        public static final String TEMP_TABLE_NAME_FROM_CURRENCY = "currencies_from";
-        public static final String TEMP_TABLE_NAME_TO_CURRENCY = "currencies_to";
 
         public static final Column LOCAL_ID = getLocalIdColumn(TABLE_NAME);
         public static final Column ID = getIdColumn(TABLE_NAME);
@@ -93,38 +115,26 @@ public final class Tables {
         public static final Column DECIMAL_SEPARATOR = new Column(TABLE_NAME, "decimal_separator", Column.DataType.TEXT);
         public static final Column GROUP_SEPARATOR = new Column(TABLE_NAME, "group_separator", Column.DataType.TEXT);
         public static final Column DECIMAL_COUNT = new Column(TABLE_NAME, "decimal_count", Column.DataType.INTEGER);
-        public static final Column IS_DEFAULT = new Column(TABLE_NAME, "is_default", Column.DataType.BOOLEAN);
-        public static final Column EXCHANGE_RATES = new Column(TABLE_NAME, "exchange_rates", Column.DataType.TEXT);
 
         public static final String[] PROJECTION = {ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
                 CODE.getName(), SYMBOL.getName(), SYMBOL_POSITION.getName(), DECIMAL_SEPARATOR.getName(),
-                GROUP_SEPARATOR.getName(), DECIMAL_COUNT.getName(), IS_DEFAULT.getName(), EXCHANGE_RATES.getName()};
+                GROUP_SEPARATOR.getName(), DECIMAL_COUNT.getName()};
 
-        public static final String[] PROJECTION_ACCOUNT_FROM = {ID.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), MODEL_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY),
-                CODE.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), SYMBOL.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), SYMBOL_POSITION.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), DECIMAL_SEPARATOR.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY),
-                GROUP_SEPARATOR.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), DECIMAL_COUNT.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), IS_DEFAULT.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY), EXCHANGE_RATES.getNameWithAs(TEMP_TABLE_NAME_FROM_CURRENCY)};
-
-        public static final String[] PROJECTION_ACCOUNT_TO = {ID.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), MODEL_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY),
-                CODE.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), SYMBOL.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), SYMBOL_POSITION.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), DECIMAL_SEPARATOR.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY),
-                GROUP_SEPARATOR.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), DECIMAL_COUNT.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), IS_DEFAULT.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY), EXCHANGE_RATES.getNameWithAs(TEMP_TABLE_NAME_TO_CURRENCY)};
-
-        private Currencies() {
+        private CurrencyFormats() {
         }
 
         public static String createScript() {
             return makeCreateScript(TABLE_NAME, LOCAL_ID, ID, MODEL_STATE, SYNC_STATE, CODE, SYMBOL,
-                    SYMBOL_POSITION, DECIMAL_SEPARATOR, GROUP_SEPARATOR, DECIMAL_COUNT, IS_DEFAULT,
-                    EXCHANGE_RATES);
+                    SYMBOL_POSITION, DECIMAL_SEPARATOR, GROUP_SEPARATOR, DECIMAL_COUNT);
         }
 
         public static Query getQuery() {
             return Query.create()
-                    .projectionLocalId(Tables.Currencies.LOCAL_ID)
-                    .projection(Tables.Currencies.PROJECTION)
-                    .selection("(" + Tables.Currencies.MODEL_STATE + "=?", ModelState.Normal.asString())
-                    .selection(" or " + Currencies.MODEL_STATE + "=?)", ModelState.DeletedUndo.asString())
-                    .sortOrder(Tables.Currencies.IS_DEFAULT + " desc")
-                    .sortOrder(Tables.Currencies.CODE.getName());
+                    .projectionLocalId(CurrencyFormats.LOCAL_ID)
+                    .projection(CurrencyFormats.PROJECTION)
+                    .selection("(" + CurrencyFormats.MODEL_STATE + "=?", ModelState.Normal.asString())
+                    .selection(" or " + CurrencyFormats.MODEL_STATE + "=?)", ModelState.DeletedUndo.asString())
+                    .sortOrder(CurrencyFormats.CODE.getName());
         }
     }
 
@@ -137,22 +147,22 @@ public final class Tables {
         public static final Column ID = getIdColumn(TABLE_NAME);
         public static final Column MODEL_STATE = getModelStateColumn(TABLE_NAME);
         public static final Column SYNC_STATE = getSyncStateColumn(TABLE_NAME);
-        public static final Column CURRENCY_ID = new Column(TABLE_NAME, "currency_id", Column.DataType.TEXT);
+        public static final Column CURRENCY_CODE = new Column(TABLE_NAME, "currency_code", Column.DataType.TEXT);
         public static final Column TITLE = new Column(TABLE_NAME, "title", Column.DataType.TEXT);
         public static final Column NOTE = new Column(TABLE_NAME, "note", Column.DataType.TEXT);
         public static final Column BALANCE = new Column(TABLE_NAME, "balance", Column.DataType.INTEGER, "0");
         public static final Column INCLUDE_IN_TOTALS = new Column(TABLE_NAME, "include_in_totals", Column.DataType.BOOLEAN, "1");
 
         public static final String[] PROJECTION = {ID.getName(), MODEL_STATE.getName(), SYNC_STATE.getName(),
-                CURRENCY_ID.getName(), TITLE.getName(), NOTE.getName(), BALANCE.getName(), INCLUDE_IN_TOTALS.getName()};
+                CURRENCY_CODE.getName(), TITLE.getName(), NOTE.getName(), BALANCE.getName(), INCLUDE_IN_TOTALS.getName()};
 
         public static final String[] PROJECTION_ACCOUNT_FROM = {ID.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), MODEL_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT),
-                SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), CURRENCY_ID.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT),
+                SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), CURRENCY_CODE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT),
                 TITLE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), NOTE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT),
                 BALANCE.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT), INCLUDE_IN_TOTALS.getNameWithAs(TEMP_TABLE_NAME_FROM_ACCOUNT)};
 
         public static final String[] PROJECTION_ACCOUNT_TO = {ID.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), MODEL_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT),
-                SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), CURRENCY_ID.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT),
+                SYNC_STATE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), CURRENCY_CODE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT),
                 TITLE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), NOTE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT),
                 BALANCE.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT), INCLUDE_IN_TOTALS.getNameWithAs(TEMP_TABLE_NAME_TO_ACCOUNT)};
 
@@ -160,14 +170,13 @@ public final class Tables {
         }
 
         public static String createScript() {
-            return makeCreateScript(TABLE_NAME, LOCAL_ID, ID, MODEL_STATE, SYNC_STATE, CURRENCY_ID, TITLE, NOTE, BALANCE, INCLUDE_IN_TOTALS);
+            return makeCreateScript(TABLE_NAME, LOCAL_ID, ID, MODEL_STATE, SYNC_STATE, CURRENCY_CODE, TITLE, NOTE, BALANCE, INCLUDE_IN_TOTALS);
         }
 
         public static Query getQuery() {
             return Query.create()
                     .projectionLocalId(Accounts.LOCAL_ID)
                     .projection(Accounts.PROJECTION)
-                    .projection(Currencies.PROJECTION)
                     .selection("(" + Accounts.MODEL_STATE + "=?", ModelState.Normal.asString())
                     .selection(" or " + Accounts.MODEL_STATE + "=?)", ModelState.DeletedUndo.asString())
                     .sortOrder(Accounts.INCLUDE_IN_TOTALS.getName() + " desc")
@@ -281,8 +290,6 @@ public final class Tables {
                     .projection(Accounts.PROJECTION_ACCOUNT_FROM)
                     .projection(Accounts.PROJECTION_ACCOUNT_TO)
                     .projection(Categories.PROJECTION)
-                    .projection(Currencies.PROJECTION_ACCOUNT_FROM)
-                    .projection(Currencies.PROJECTION_ACCOUNT_TO)
                     .projection(Tags.PROJECTION_TRANSACTION)
                     .selection("(" + Transactions.MODEL_STATE + "=?", ModelState.Normal.asString())
                     .selection(" or " + Transactions.MODEL_STATE + "=?)", ModelState.DeletedUndo.asString())

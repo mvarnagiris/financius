@@ -16,7 +16,7 @@ import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.api.currencies.ExchangeRatesRequestOld;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
@@ -30,20 +30,20 @@ import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-class CurrenciesActivityPresenter extends ModelsActivityPresenter<Currency> implements CompoundButton.OnCheckedChangeListener, SwipeRefreshLayout.OnRefreshListener {
+class CurrenciesActivityPresenter extends ModelsActivityPresenter<CurrencyFormat> implements CompoundButton.OnCheckedChangeListener, SwipeRefreshLayout.OnRefreshListener {
     private final EventBus eventBus;
     private final GeneralPrefs generalPrefs;
     private final CurrenciesApi currenciesApi;
-    private final Currency mainCurrency;
-    private final List<Currency> currencies = new ArrayList<>();
+    private final CurrencyFormat mainCurrencyFormat;
+    private final List<CurrencyFormat> currencies = new ArrayList<>();
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    CurrenciesActivityPresenter(EventBus eventBus, GeneralPrefs generalPrefs, CurrenciesApi currenciesApi, Currency mainCurrency) {
+    CurrenciesActivityPresenter(EventBus eventBus, GeneralPrefs generalPrefs, CurrenciesApi currenciesApi, CurrencyFormat mainCurrencyFormat) {
         this.eventBus = eventBus;
         this.generalPrefs = generalPrefs;
         this.currenciesApi = currenciesApi;
-        this.mainCurrency = mainCurrency;
+        this.mainCurrencyFormat = mainCurrencyFormat;
     }
 
     @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
@@ -88,15 +88,15 @@ class CurrenciesActivityPresenter extends ModelsActivityPresenter<Currency> impl
         return super.onOptionsItemSelected(activity, item);
     }
 
-    @Override protected ModelsAdapter<Currency> createAdapter(ModelsAdapter.OnModelClickListener<Currency> defaultOnModelClickListener) {
+    @Override protected ModelsAdapter<CurrencyFormat> createAdapter(ModelsAdapter.OnModelClickListener<CurrencyFormat> defaultOnModelClickListener) {
         return new CurrenciesAdapter(defaultOnModelClickListener);
     }
 
     @Override protected CursorLoader getModelsCursorLoader(Context context) {
-        return Tables.Currencies.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrencies());
+        return Tables.CurrencyFormats.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrencies());
     }
 
-    @Override protected void onModelClick(Context context, View view, Currency model, Cursor cursor, int position) {
+    @Override protected void onModelClick(Context context, View view, CurrencyFormat model, Cursor cursor, int position) {
         CurrencyActivity.start(context, model.getId());
     }
 
@@ -113,14 +113,14 @@ class CurrenciesActivityPresenter extends ModelsActivityPresenter<Currency> impl
 
     @Override public void onRefresh() {
         final List<String> fromCodes = new ArrayList<>();
-        for (Currency currency : currencies) {
-            if (!currency.isDefault()) {
-                fromCodes.add(currency.getCode());
+        for (CurrencyFormat currencyFormat : currencies) {
+            if (!currencyFormat.isDefault()) {
+                fromCodes.add(currencyFormat.getCode());
             }
         }
 
         if (!fromCodes.isEmpty()) {
-            currenciesApi.updateExchangeRates(fromCodes, mainCurrency.getCode());
+            currenciesApi.updateExchangeRates(fromCodes, mainCurrencyFormat.getCode());
             setRefreshing(true);
         }
     }
@@ -130,7 +130,7 @@ class CurrenciesActivityPresenter extends ModelsActivityPresenter<Currency> impl
             currencies.clear();
             if (data.moveToFirst()) {
                 do {
-                    currencies.add(Currency.from(data));
+                    currencies.add(CurrencyFormat.from(data));
                 } while (data.moveToNext());
             }
         }

@@ -14,13 +14,16 @@ import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.Query;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.SyncState;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.utils.IOUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public final class DBMigration {
@@ -112,10 +115,38 @@ public final class DBMigration {
     /**
      * 78 - v0.18.0
      */
-    public static void upgradeV23(SQLiteDatabase db) {
+    public static void upgradeV23(SQLiteDatabase db, CurrenciesManager currenciesManager) {
         try {
             db.beginTransaction();
-            db.execSQL("alter table " + Tables.Currencies.TABLE_NAME + " add column " + Tables.Currencies.EXCHANGE_RATES.getName() + " " + Column.DataType.TEXT);
+            db.execSQL(Tables.ExchangeRates.createScript());
+            db.execSQL("alter table " + Tables.Accounts.TABLE_NAME + " add column " + Tables.Accounts.CURRENCY_CODE.getName() + " " + Column.DataType.TEXT);
+
+            final Map<String, String> currencyFormats = new HashMap<>();
+            Cursor cursor = Tables.CurrencyFormats.getQuery().projection("currencies_is_default").from(db, Tables.CurrencyFormats.TABLE_NAME).execute();
+            if (cursor != null && cursor.moveToFirst()) {
+                final int iIsDefault = cursor.getColumnIndex("currencies_is_default");
+                do {
+                    final CurrencyFormat currencyFormat = CurrencyFormat.from(cursor);
+                    currencyFormats.put(currencyFormat.getId(), currencyFormat.getCode());
+                    if (cursor.getInt(iIsDefault) != 0) {
+                        currenciesManager.setMainCurrencyCode(currencyFormat.getCode());
+                    }
+                } while (cursor.moveToNext());
+            }
+            IOUtils.closeQuietly(cursor);
+
+            cursor = Tables.Accounts.getQuery().clearSelection().clearArgs().clearSort().clearSort().from(db, Tables.Accounts.TABLE_NAME).execute();
+            if (cursor != null && cursor.moveToFirst()) {
+                final int iLocalId = cursor.getColumnIndex(Tables.Accounts.LOCAL_ID.getName());
+                final int iCurrencyId = cursor.getColumnIndex("accounts_currency_id");
+                final ContentValues values = new ContentValues();
+                do {
+                    values.put(Tables.Accounts.CURRENCY_CODE.getName(), currencyFormats.get(cursor.getString(iCurrencyId)));
+                    db.update(Tables.Accounts.TABLE_NAME, values, Tables.Accounts.LOCAL_ID + "=?", new String[]{String.valueOf(cursor.getLong(iLocalId))});
+                } while (cursor.moveToNext());
+            }
+            IOUtils.closeQuietly(cursor);
+
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -162,8 +193,8 @@ public final class DBMigration {
         final String oldTableName = "currencies";
         final String tempTableName = "temp_" + oldTableName;
         db.execSQL("alter table " + oldTableName + " rename to " + tempTableName);
-        db.execSQL(Tables.Currencies.createScript());
-        DBHelper.createIndex(db, Tables.Currencies.ID);
+        db.execSQL(Tables.CurrencyFormats.createScript());
+        DBHelper.createIndex(db, Tables.CurrencyFormats.ID);
 
         final String[] projection = {oldTableName + "_server_id", oldTableName + "_code",
                 oldTableName + "_symbol", oldTableName + "_decimals",
@@ -173,23 +204,22 @@ public final class DBMigration {
         final String selection = oldTableName + "_delete_state = 0";
         final Cursor cursor = db.query(tempTableName, projection, selection, null, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
-            final Currency currency = new Currency();
-            currency.setModelState(ModelState.Normal);
-            currency.setSyncState(SyncState.None);
+            final CurrencyFormat currencyFormat = new CurrencyFormat();
+            currencyFormat.setModelState(ModelState.Normal);
+            currencyFormat.setSyncState(SyncState.None);
             do {
-                currency.setId(cursor.getString(0));
-                currency.setCode(cursor.getString(1));
-                currency.setSymbol(cursor.getString(2));
+                currencyFormat.setId(cursor.getString(0));
+                currencyFormat.setCode(cursor.getString(1));
+                currencyFormat.setSymbol(cursor.getString(2));
                 final String symbolPositionOld = cursor.getString(6);
                 final SymbolPosition symbolPosition = "LF".equals(symbolPositionOld) ? SymbolPosition.FarLeft :
                         "LC".equals(symbolPositionOld) ? SymbolPosition.CloseLeft :
                                 "RC".equals(symbolPositionOld) ? SymbolPosition.CloseRight : SymbolPosition.FarRight;
-                currency.setSymbolPosition(symbolPosition);
-                currency.setDecimalSeparator(DecimalSeparator.fromSymbol(cursor.getString(4)));
-                currency.setGroupSeparator(GroupSeparator.fromSymbol(cursor.getString(5)));
-                currency.setDecimalCount(cursor.getInt(3));
-                currency.setDefault(cursor.getInt(7) != 0);
-                db.insert(Tables.Currencies.TABLE_NAME, null, currency.asValues());
+                currencyFormat.setSymbolPosition(symbolPosition);
+                currencyFormat.setDecimalSeparator(DecimalSeparator.fromSymbol(cursor.getString(4)));
+                currencyFormat.setGroupSeparator(GroupSeparator.fromSymbol(cursor.getString(5)));
+                currencyFormat.setDecimalCount(cursor.getInt(3));
+                db.insert(Tables.CurrencyFormats.TABLE_NAME, null, currencyFormat.asContentValues());
             } while (cursor.moveToNext());
         }
 
@@ -210,18 +240,18 @@ public final class DBMigration {
                 tempCurrenciesTable + "._id=" + oldTableName + "_currency_id";
         final Cursor cursor = db.query(tables, projection, selection, null, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
-            final Currency currency = new Currency();
+            final CurrencyFormat currencyFormat = new CurrencyFormat();
             final Account account = new Account();
             account.setModelState(ModelState.Normal);
             account.setSyncState(SyncState.None);
-            account.setCurrency(currency);
+            account.setCurrencyCode(currencyFormat.getCode());
             do {
                 account.setId(cursor.getString(0));
-                currency.setId(cursor.getString(1));
+                currencyFormat.setId(cursor.getString(1));
                 account.setTitle(cursor.getString(2));
                 account.setNote(cursor.getString(3));
                 account.setIncludeInTotals(cursor.getInt(4) != 0);
-                db.insert(Tables.Accounts.TABLE_NAME, null, account.asValues());
+                db.insert(Tables.Accounts.TABLE_NAME, null, account.asContentValues());
             } while (cursor.moveToNext());
         }
 
@@ -256,11 +286,11 @@ public final class DBMigration {
                     category.setSortOrder(cursor.getInt(4));
                     final int categoryType = cursor.getInt(3);
                     category.setTransactionType(categoryType == 0 ? TransactionType.Income : categoryType == 1 ? TransactionType.Expense : TransactionType.Transfer);
-                    db.insert(Tables.Categories.TABLE_NAME, null, category.asValues());
+                    db.insert(Tables.Categories.TABLE_NAME, null, category.asContentValues());
                 } else {
                     tag.setId(cursor.getString(0));
                     tag.setTitle(cursor.getString(1));
-                    db.insert(Tables.Tags.TABLE_NAME, null, tag.asValues());
+                    db.insert(Tables.Tags.TABLE_NAME, null, tag.asContentValues());
                 }
             } while (cursor.moveToNext());
         }
@@ -351,7 +381,7 @@ public final class DBMigration {
                         break;
                 }
 
-                final ContentValues transactionValues = transaction.asValues();
+                final ContentValues transactionValues = transaction.asContentValues();
                 transactionValues.remove(Tables.Tags.ID.getName());
                 db.insert(Tables.Transactions.TABLE_NAME, null, transactionValues);
             } while (cursor.moveToNext());

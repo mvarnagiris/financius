@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.providers.TagsProvider;
 import com.code44.finance.ui.common.activities.BaseActivity;
@@ -22,15 +22,15 @@ import com.code44.finance.utils.EventBus;
 
 class TagActivityPresenter extends ModelActivityPresenter<Tag> {
     private final BaseInterval interval;
-    private final Currency mainCurrency;
+    private final CurrencyFormat mainCurrencyFormat;
 
     private TagTrendsChartPresenter tagTrendsChartPresenter;
     private TextView titleTextView;
 
-    public TagActivityPresenter(EventBus eventBus, BaseInterval interval, Currency mainCurrency) {
+    public TagActivityPresenter(EventBus eventBus, BaseInterval interval, CurrencyFormat mainCurrencyFormat) {
         super(eventBus);
         this.interval = interval;
-        this.mainCurrency = mainCurrency;
+        this.mainCurrencyFormat = mainCurrencyFormat;
     }
 
     @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ class TagActivityPresenter extends ModelActivityPresenter<Tag> {
         titleTextView = findView(activity, R.id.titleTextView);
 
         final TrendsChartView trendsChartView = findView(activity, R.id.trendsChartView);
-        tagTrendsChartPresenter = new TagTrendsChartPresenter(trendsChartView, mainCurrency, activity.getSupportLoaderManager(), interval);
+        tagTrendsChartPresenter = new TagTrendsChartPresenter(trendsChartView, mainCurrencyFormat, activity.getSupportLoaderManager(), interval);
     }
 
     @Override protected CursorLoader getModelCursorLoader(Context context, String modelId) {

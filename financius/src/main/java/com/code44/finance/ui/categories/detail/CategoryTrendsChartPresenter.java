@@ -8,7 +8,7 @@ import android.support.v4.content.Loader;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Category;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.ui.reports.AmountGroups;
@@ -26,8 +26,8 @@ class CategoryTrendsChartPresenter extends TrendsChartPresenter implements Loade
     private BaseInterval baseInterval;
     private Category category;
 
-    public CategoryTrendsChartPresenter(TrendsChartView trendsChartView, Currency mainCurrency, LoaderManager loaderManager, BaseInterval baseInterval) {
-        super(trendsChartView, mainCurrency);
+    public CategoryTrendsChartPresenter(TrendsChartView trendsChartView, CurrencyFormat mainCurrencyFormat, LoaderManager loaderManager, BaseInterval baseInterval) {
+        super(trendsChartView, mainCurrencyFormat);
         this.loaderManager = loaderManager;
         amountCalculator = new CategoryAmountCalculator();
         setData(null, baseInterval);

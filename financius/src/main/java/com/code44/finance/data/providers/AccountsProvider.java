@@ -20,7 +20,7 @@ import com.code44.finance.utils.IOUtils;
 import java.util.List;
 import java.util.Map;
 
-public class AccountsProvider extends BaseModelProvider {
+public class AccountsProvider extends ModelProvider {
     private static final String EXTRA_BALANCE_DELTA = "balance_delta";
 
     public static Uri uriAccounts() {
@@ -36,7 +36,7 @@ public class AccountsProvider extends BaseModelProvider {
     }
 
     @Override protected String getQueryTables(Uri uri) {
-        return getModelTable() + " inner join " + Tables.Currencies.TABLE_NAME + " on " + Tables.Currencies.ID + "=" + Tables.Accounts.CURRENCY_ID;
+        return getModelTable();
     }
 
     @Override protected Column getIdColumn() {

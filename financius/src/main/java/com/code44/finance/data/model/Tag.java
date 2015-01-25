@@ -34,9 +34,36 @@ public class Tag extends Model {
     public static Tag from(Cursor cursor) {
         final Tag tag = new Tag();
         if (cursor.getCount() > 0) {
-            tag.updateFrom(cursor, null);
+            tag.updateFromCursor(cursor, null);
         }
         return tag;
+    }
+
+    @Override public void writeToParcel(Parcel parcel, int flags) {
+        super.writeToParcel(parcel, flags);
+        parcel.writeString(getTitle());
+    }
+
+    @Override public ContentValues asContentValues() {
+        final ContentValues values = super.asContentValues();
+        values.put(Tables.Tags.TITLE.getName(), title);
+        return values;
+    }
+
+    @Override public void validateForContentValues() throws IllegalStateException {
+        super.validateForContentValues();
+        Preconditions.notEmpty(title, "Title cannot be empty.");
+    }
+
+    @Override public void updateFromCursor(Cursor cursor, String columnPrefixTable) {
+        super.updateFromCursor(cursor, columnPrefixTable);
+        int index;
+
+        // Title
+        index = cursor.getColumnIndex(Tables.Tags.TITLE.getName(columnPrefixTable));
+        if (index >= 0) {
+            setTitle(cursor.getString(index));
+        }
     }
 
     @Override protected Column getLocalIdColumn() {
@@ -53,33 +80,6 @@ public class Tag extends Model {
 
     @Override protected Column getSyncStateColumn() {
         return Tables.Tags.SYNC_STATE;
-    }
-
-    @Override public void validate() throws IllegalStateException {
-        super.validate();
-        Preconditions.notEmpty(title, "Title cannot be empty.");
-    }
-
-    @Override public ContentValues asValues() {
-        final ContentValues values = super.asValues();
-        values.put(Tables.Tags.TITLE.getName(), title);
-        return values;
-    }
-
-    @Override public void writeToParcel(Parcel parcel, int flags) {
-        super.writeToParcel(parcel, flags);
-        parcel.writeString(getTitle());
-    }
-
-    @Override public void updateFrom(Cursor cursor, String columnPrefixTable) {
-        super.updateFrom(cursor, columnPrefixTable);
-        int index;
-
-        // Title
-        index = cursor.getColumnIndex(Tables.Tags.TITLE.getName(columnPrefixTable));
-        if (index >= 0) {
-            setTitle(cursor.getString(index));
-        }
     }
 
     public String getTitle() {

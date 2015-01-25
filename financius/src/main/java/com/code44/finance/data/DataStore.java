@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
+import com.code44.finance.data.model.BaseModel;
 import com.code44.finance.data.model.Model;
 import com.code44.finance.data.providers.ProviderUtils;
 
@@ -45,7 +46,7 @@ public final class DataStore {
         private ContentValues values;
 
         public DataStoreInsert model(Model model) {
-            return values(model.asValues());
+            return values(model.asContentValues());
         }
 
         public DataStoreInsert values(ContentValues values) {
@@ -197,16 +198,16 @@ public final class DataStore {
         }
 
         public DataStoreBulkInsert model(Model model) {
-            return values(model.asValues());
+            return values(model.asContentValues());
         }
 
-        public <T extends Model> DataStoreBulkInsert models(Collection<T> models) {
+        public <T extends BaseModel> DataStoreBulkInsert models(Collection<T> models) {
             if (models == null || models.isEmpty()) {
                 throw new IllegalArgumentException("Models collection cannot be empty.");
             }
 
-            for (Model model : models) {
-                valuesList.add(model.asValues());
+            for (BaseModel model : models) {
+                valuesList.add(model.asContentValues());
             }
 
             return this;

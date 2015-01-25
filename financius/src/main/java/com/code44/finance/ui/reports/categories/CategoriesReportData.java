@@ -8,7 +8,7 @@ import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.model.Category;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.graphs.pie.PieChartData;
@@ -25,7 +25,7 @@ public class CategoriesReportData {
     private final PieChartData pieChartData;
     private final List<CategoriesReportItem> categoriesReportItems;
 
-    public CategoriesReportData(Context context, Cursor cursor, Currency mainCurrency, TransactionType transactionType) {
+    public CategoriesReportData(Context context, Cursor cursor, CurrencyFormat mainCurrencyFormat, TransactionType transactionType) {
         final Map<Category, Long> categoryExpenses = new HashMap<>();
         final Map<Category, Map<Tag, Long>> categoryTagExpenses = new HashMap<>();
 
@@ -34,7 +34,7 @@ public class CategoriesReportData {
             do {
                 final Transaction transaction = Transaction.from(cursor);
                 if (isTransactionValid(transaction, transactionType)) {
-                    final Long amount = getAmount(transaction, mainCurrency);
+                    final Long amount = getAmount(transaction, mainCurrencyFormat);
                     final Category category = transaction.getCategory() == null ? noCategory : transaction.getCategory();
                     increaseCategoryExpenseAmount(categoryExpenses, category, amount);
                     increaseCategoryTagsExpenses(categoryTagExpenses, transaction, category, amount);
@@ -96,13 +96,13 @@ public class CategoriesReportData {
         return transaction.includeInReports() && transaction.getTransactionType() == transactionType && transaction.getTransactionState() == TransactionState.Confirmed;
     }
 
-    private Long getAmount(Transaction transaction, Currency mainCurrency) {
-        final Currency currency = transaction.getTransactionType() == TransactionType.Expense ? transaction.getAccountFrom().getCurrency() : transaction.getAccountTo().getCurrency();
+    private Long getAmount(Transaction transaction, CurrencyFormat mainCurrencyFormat) {
+        final CurrencyFormat currencyFormat = transaction.getTransactionType() == TransactionType.Expense ? transaction.getAccountFrom().getCurrencyCode() : transaction.getAccountTo().getCurrencyCode();
 
-        if (currency.getId().equals(mainCurrency.getId())) {
+        if (currencyFormat.getId().equals(mainCurrencyFormat.getId())) {
             return transaction.getAmount();
         } else {
-            return Math.round(transaction.getAmount() * currency.getExchangeRate());
+            return Math.round(transaction.getAmount() * currencyFormat.getExchangeRate());
         }
     }
 

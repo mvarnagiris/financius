@@ -7,14 +7,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.data.model.Currency;
+import com.code44.finance.data.model.CurrencyFormat;
+import com.code44.finance.money.MoneyFormatter;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
-import com.code44.finance.utils.MoneyFormatter;
 import com.code44.finance.utils.ThemeUtils;
 
-class CurrenciesAdapter extends ModelsAdapter<Currency> {
-    public CurrenciesAdapter(OnModelClickListener<Currency> onModelClickListener) {
+class CurrenciesAdapter extends ModelsAdapter<CurrencyFormat> {
+    public CurrenciesAdapter(OnModelClickListener<CurrencyFormat> onModelClickListener) {
         super(onModelClickListener);
     }
 
@@ -22,11 +22,11 @@ class CurrenciesAdapter extends ModelsAdapter<Currency> {
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.li_currency, parent, false));
     }
 
-    @Override protected Currency modelFromCursor(Cursor cursor) {
-        return Currency.from(cursor);
+    @Override protected CurrencyFormat modelFromCursor(Cursor cursor) {
+        return CurrencyFormat.from(cursor);
     }
 
-    private static class ViewHolder extends ModelViewHolder<Currency> {
+    private static class ViewHolder extends ModelViewHolder<CurrencyFormat> {
         public final TextView codeTextView;
         public final TextView formatTextView;
         public final TextView exchangeRateTextView;
@@ -44,15 +44,15 @@ class CurrenciesAdapter extends ModelsAdapter<Currency> {
             textBrandColor = ThemeUtils.getColor(itemView.getContext(), R.attr.colorPrimary);
         }
 
-        @Override protected void bind(Currency currency, Cursor cursor, int position, ModelsActivityPresenter.Mode mode, boolean isSelected) {
-            codeTextView.setText(currency.getCode());
-            formatTextView.setText(MoneyFormatter.format(currency, 100000));
-            if (currency.isDefault()) {
+        @Override protected void bind(CurrencyFormat currencyFormat, Cursor cursor, int position, ModelsActivityPresenter.Mode mode, boolean isSelected) {
+            codeTextView.setText(currencyFormat.getCode());
+            formatTextView.setText(MoneyFormatter.format(currencyFormat, 100000));
+            if (currencyFormat.isDefault()) {
                 codeTextView.setTextColor(textBrandColor);
                 exchangeRateTextView.setText(null);
             } else {
                 codeTextView.setTextColor(textPrimaryColor);
-                exchangeRateTextView.setText(String.valueOf(currency.getExchangeRate()));
+                exchangeRateTextView.setText(String.valueOf(currencyFormat.getExchangeRate()));
             }
         }
     }
