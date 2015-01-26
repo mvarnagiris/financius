@@ -51,9 +51,9 @@
             <com.code44.finance.ui.common.views.TintImageView
                 android:id="@+id/refreshRateButton"
                 style="@style/Button.Borderless"
-                android:layout_width="@dimen/keyline_content_minus_keyline_2x"
-                android:layout_height="@dimen/keyline_content_minus_keyline_2x"
-                android:layout_marginRight="@dimen/keyline"
+                android:layout_width="@dimen/action_item"
+                android:layout_height="@dimen/action_item"
+                android:layout_marginRight="@dimen/action_item_to_keyline_content"
                 android:elevation="@dimen/elevation_fab"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_action_refresh"
@@ -66,6 +66,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:ellipsize="end"
+                android:singleLine="true"
                 tools:ignore="RtlHardcoded"
                 tools:text="1.2489" />
 

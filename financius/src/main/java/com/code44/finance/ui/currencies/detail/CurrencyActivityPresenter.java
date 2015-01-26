@@ -8,7 +8,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Pair;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -16,20 +15,25 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
+import com.code44.finance.api.currencies.UpdateExchangeRatesRequest;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
+import com.code44.finance.money.AmountFormatter;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelActivityPresenter;
 import com.code44.finance.ui.currencies.edit.CurrencyEditActivity;
 import com.code44.finance.utils.EventBus;
+import com.squareup.otto.Subscribe;
 
 class CurrencyActivityPresenter extends ModelActivityPresenter<CurrencyFormat> implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private static final int LOADER_ACCOUNTS = 1;
 
     private final CurrenciesApi currenciesApi;
-    private final CurrencyFormat mainCurrencyFormat;
+    private final CurrenciesManager currenciesManager;
+    private final AmountFormatter amountFormatter;
 
     private TextView codeTextView;
     private TextView formatTextView;
@@ -38,10 +42,11 @@ class CurrencyActivityPresenter extends ModelActivityPresenter<CurrencyFormat> i
 
     private CurrencyAccountsAdapter adapter;
 
-    protected CurrencyActivityPresenter(EventBus eventBus, CurrenciesApi currenciesApi, CurrencyFormat mainCurrencyFormat) {
+    protected CurrencyActivityPresenter(EventBus eventBus, CurrenciesApi currenciesApi, CurrenciesManager currenciesManager, AmountFormatter amountFormatter) {
         super(eventBus);
         this.currenciesApi = currenciesApi;
-        this.mainCurrencyFormat = mainCurrencyFormat;
+        this.currenciesManager = currenciesManager;
+        this.amountFormatter = amountFormatter;
     }
 
     @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
@@ -56,7 +61,6 @@ class CurrencyActivityPresenter extends ModelActivityPresenter<CurrencyFormat> i
         final ListView listView = findView(activity, R.id.listView);
 
         // Setup
-        refreshRateButton.setVisibility(!mainCurrencyFormat.getId().equals(getModelId()) ? View.VISIBLE : View.GONE);
         refreshRateButton.setOnClickListener(this);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setEnabled(false);
@@ -72,12 +76,6 @@ class CurrencyActivityPresenter extends ModelActivityPresenter<CurrencyFormat> i
     @Override public void onPause(BaseActivity activity) {
         super.onPause(activity);
         getEventBus().unregister(this);
-    }
-
-    @Override public boolean onPrepareOptionsMenu(BaseActivity activity, Menu menu) {
-        super.onPrepareOptionsMenu(activity, menu);
-        menu.findItem(R.id.action_delete).setVisible(!mainCurrencyFormat.getId().equals(getModelId()));
-        return true;
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -114,12 +112,12 @@ class CurrencyActivityPresenter extends ModelActivityPresenter<CurrencyFormat> i
     @Override protected void onModelLoaded(CurrencyFormat currencyFormat) {
         adapter.setCurrency(currencyFormat);
         codeTextView.setText(currencyFormat.getCode());
-// TODO        if (currencyFormat.isDefault()) {
-//            exchangeRateTextView.setText(R.string.main_currency);
-//        } else {
-//            exchangeRateTextView.setText(String.valueOf(currencyFormat.getExchangeRate(mainCurrencyFormat.getCode())));
-//        }
-//        formatTextView.setText(MoneyFormatter.format(currencyFormat, 100000));
+        if (currenciesManager.isMainCurrency(currencyFormat.getCode())) {
+            exchangeRateTextView.setText(R.string.main_currency);
+        } else {
+            exchangeRateTextView.setText(String.valueOf(currenciesManager.getExchangeRate(currencyFormat.getCode())));
+        }
+        formatTextView.setText(amountFormatter.format(currencyFormat.getCode(), 100000));
 
         getActivity().supportInvalidateOptionsMenu();
 
@@ -152,9 +150,9 @@ class CurrencyActivityPresenter extends ModelActivityPresenter<CurrencyFormat> i
         setRefreshing(true);
     }
 
-// TODO    @Subscribe public void onRefreshFinished(GetExchangeRatesRequest request) {
-//        setRefreshing(false);
-//    }
+    @Subscribe public void onRefreshFinished(UpdateExchangeRatesRequest request) {
+        setRefreshing(false);
+    }
 
     private void setRefreshing(boolean refreshing) {
         swipeRefreshLayout.setRefreshing(refreshing);
