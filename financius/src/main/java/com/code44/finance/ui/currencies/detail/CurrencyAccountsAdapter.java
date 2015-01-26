@@ -2,9 +2,6 @@ package com.code44.finance.ui.currencies.detail;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +19,15 @@ import com.code44.finance.utils.ThemeUtils;
 
 class CurrencyAccountsAdapter extends BaseModelsAdapter {
     private final int textBrandColor;
-
-    private CurrencyFormat currencyFormat;
-
     private final View.OnClickListener changeCurrencyClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             final Account account = (Account) v.getTag();
-            account.setCurrencyCode(currencyFormat);
+// TODO            account.setCurrencyCode(currencyFormat);
             DataStore.insert().model(account).into(mContext, AccountsProvider.uriAccounts());
         }
     };
+    private CurrencyFormat currencyFormat;
 
     public CurrencyAccountsAdapter(Context context) {
         super(context);
@@ -53,26 +48,26 @@ class CurrencyAccountsAdapter extends BaseModelsAdapter {
         final ViewHolder holder = (ViewHolder) view.getTag();
         final Account account = Account.from(cursor);
 
-        final String accountText = account.getTitle() + ", " + account.getCurrencyCode().getCode();
-        if (currencyFormat.getId().equals(account.getCurrencyCode().getId())) {
-            holder.currencyButton.setVisibility(View.INVISIBLE);
-            final SpannableStringBuilder ssb = new SpannableStringBuilder(accountText);
-            ssb.setSpan(new ForegroundColorSpan(textBrandColor), ssb.length() - account.getCurrencyCode().getCode().length(), ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.titleTextView.setText(ssb);
-        } else {
-            holder.titleTextView.setText(accountText);
-            holder.currencyButton.setTag(account);
-            holder.currencyButton.setVisibility(View.VISIBLE);
-
-            final String text = mContext.getString(R.string.f_change_to_x, currencyFormat.getCode()).toUpperCase();
-            final SpannableStringBuilder ssb = new SpannableStringBuilder(text);
-            final int codeIndex = text.indexOf(currencyFormat.getCode().toUpperCase());
-            if (codeIndex > 0) {
-                ssb.setSpan(new ForegroundColorSpan(textBrandColor), codeIndex, codeIndex + currencyFormat.getCode().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-
-            holder.currencyButton.setText(ssb);
-        }
+//    TODO     final String accountText = account.getTitle() + ", " + account.getCurrencyCode().getCode();
+//        if (currencyFormat.getId().equals(account.getCurrencyCode().getId())) {
+//            holder.currencyButton.setVisibility(View.INVISIBLE);
+//            final SpannableStringBuilder ssb = new SpannableStringBuilder(accountText);
+//            ssb.setSpan(new ForegroundColorSpan(textBrandColor), ssb.length() - account.getCurrencyCode().getCode().length(), ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            holder.titleTextView.setText(ssb);
+//        } else {
+//            holder.titleTextView.setText(accountText);
+//            holder.currencyButton.setTag(account);
+//            holder.currencyButton.setVisibility(View.VISIBLE);
+//
+//            final String text = mContext.getString(R.string.f_change_to_x, currencyFormat.getCode()).toUpperCase();
+//            final SpannableStringBuilder ssb = new SpannableStringBuilder(text);
+//            final int codeIndex = text.indexOf(currencyFormat.getCode().toUpperCase());
+//            if (codeIndex > 0) {
+//                ssb.setSpan(new ForegroundColorSpan(textBrandColor), codeIndex, codeIndex + currencyFormat.getCode().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            }
+//
+//            holder.currencyButton.setText(ssb);
+//        }
     }
 
     public void setCurrency(CurrencyFormat currencyFormat) {

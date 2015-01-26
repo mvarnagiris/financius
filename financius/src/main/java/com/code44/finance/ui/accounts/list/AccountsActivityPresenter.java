@@ -72,6 +72,6 @@ public class AccountsActivityPresenter extends ModelsActivityPresenter<Account> 
                 }
             } while (cursor.moveToNext());
         }
-        balanceTextView.setText(currenciesManager.formatMoney(balance));
+// TODO        balanceTextView.setText(currenciesManager.formatMoney(balance));
     }
 }

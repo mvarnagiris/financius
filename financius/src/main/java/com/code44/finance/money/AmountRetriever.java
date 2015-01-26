@@ -3,8 +3,8 @@ package com.code44.finance.money;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.model.Transaction;
 
-public final class AmountUtils {
-    private AmountUtils() {
+public final class AmountRetriever {
+    private AmountRetriever() {
     }
 
     public static long getExpenseAmount(Transaction transaction, CurrenciesManager currenciesManager, String currencyCode) {

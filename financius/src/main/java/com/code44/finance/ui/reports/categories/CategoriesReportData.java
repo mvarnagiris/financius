@@ -97,13 +97,14 @@ public class CategoriesReportData {
     }
 
     private Long getAmount(Transaction transaction, CurrencyFormat mainCurrencyFormat) {
-        final CurrencyFormat currencyFormat = transaction.getTransactionType() == TransactionType.Expense ? transaction.getAccountFrom().getCurrencyCode() : transaction.getAccountTo().getCurrencyCode();
+// TODO       final CurrencyFormat currencyFormat = transaction.getTransactionType() == TransactionType.Expense ? transaction.getAccountFrom().getCurrencyCode() : transaction.getAccountTo().getCurrencyCode();
 
-        if (currencyFormat.getId().equals(mainCurrencyFormat.getId())) {
-            return transaction.getAmount();
-        } else {
-            return Math.round(transaction.getAmount() * currencyFormat.getExchangeRate());
-        }
+//        if (currencyFormat.getId().equals(mainCurrencyFormat.getId())) {
+//            return transaction.getAmount();
+//        } else {
+//            return Math.round(transaction.getAmount() * currencyFormat.getExchangeRate());
+//        }
+        return 0L;
     }
 
     private void increaseCategoryExpenseAmount(Map<Category, Long> categoryExpenses, Category category, Long amount) {

@@ -31,7 +31,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 import javax.inject.Inject;
 
@@ -49,7 +49,7 @@ public class ImportActivity extends BaseActivity {
     private static final String STATE_IS_FILE_REQUESTED = "STATE_IS_FILE_REQUESTED";
 
     @Inject GoogleApiConnection connection;
-    @Inject @Local Executor localExecutor;
+    @Inject @Local ExecutorService localExecutor;
     @Inject GeneralPrefs generalPrefs;
     @Inject DBHelper dbHelper;
 

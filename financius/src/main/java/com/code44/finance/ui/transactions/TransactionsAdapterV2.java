@@ -110,7 +110,7 @@ public class TransactionsAdapterV2 extends ModelsAdapter<Transaction> {
             weekdayTextView.setText(date.dayOfWeek().getAsShortText());
             dayTextView.setText(date.dayOfMonth().getAsShortText());
             colorImageView.setColorFilter(getCategoryColor(transaction));
-            amountTextView.setText(currenciesManager.formatMoney(transaction));
+// TODO            amountTextView.setText(currenciesManager.formatMoney(transaction));
             titleTextView.setTextColor(primaryColor);
             titleTextView.setText(getTitle(transaction));
             subtitleTextView.setText(getSubtitle(transaction));

@@ -79,7 +79,7 @@ public class TransactionActivity extends ModelActivity<Transaction> {
     @Override protected void onModelLoaded(Transaction transaction) {
         final Category category = transaction.getCategory();
         final DateTime date = new DateTime(transaction.getDate());
-        amountTextView.setText(currenciesManager.formatMoney(transaction));
+// TODO        amountTextView.setText(currenciesManager.formatMoney(transaction));
         dateTextView.setText(DateUtils.formatDateTime(this, date, DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_WEEKDAY));
 
         if (Strings.isEmpty(transaction.getNote())) {
@@ -116,7 +116,7 @@ public class TransactionActivity extends ModelActivity<Transaction> {
                     amountToTextView.setVisibility(View.GONE);
                 } else {
                     amountToTextView.setVisibility(View.VISIBLE);
-                    amountToTextView.setText(currenciesManager.formatMoney(transaction.getAccountTo().getCurrencyCode(), (long) (transaction.getAmount() * transaction.getExchangeRate())));
+// TODO                    amountToTextView.setText(currenciesManager.formatMoney(transaction.getAccountTo().getCurrencyCode(), (long) (transaction.getAmount() * transaction.getExchangeRate())));
                 }
 
                 if (Strings.isEmpty(categoryTitle)) {

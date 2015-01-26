@@ -20,14 +20,14 @@ import com.code44.finance.ui.transactions.presenters.TransactionEditData;
 import com.code44.finance.ui.transactions.presenters.TransactionPresenter;
 import com.code44.finance.utils.analytics.Analytics;
 
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 import javax.inject.Inject;
 
 public class TransactionEditActivity extends ModelEditActivity<Transaction> implements TransactionPresenter.OnTransactionUpdatedListener {
     @Inject CurrenciesApi currenciesApi;
     @Inject CurrenciesManager currenciesManager;
-    @Inject @Local Executor localExecutor;
+    @Inject @Local ExecutorService localExecutor;
 
     private Button saveButton;
 

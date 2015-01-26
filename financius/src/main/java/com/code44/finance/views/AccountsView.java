@@ -73,13 +73,13 @@ public class AccountsView extends LinearLayout {
             final Account account = accounts.get(i - TOP_STATIC_VIEWS_COUNT);
             final View view = getChildAt(i);
             ((TextView) view.findViewById(R.id.titleTextView)).setText(account.getTitle());
-            ((TextView) view.findViewById(R.id.balanceTextView)).setText(currenciesManager.formatMoney(account.getCurrencyCode(), account.getBalance()));
-            totalBalance += account.getBalance() * currenciesManager.getExchangeRateFromMain(account.getCurrencyCode());
+// TODO            ((TextView) view.findViewById(R.id.balanceTextView)).setText(currenciesManager.formatMoney(account.getCurrencyCode(), account.getBalance()));
+            totalBalance += account.getBalance() * currenciesManager.getExchangeRate(account.getCurrencyCode());
         }
 
         if (accounts.size() > 1) {
             balanceContainerView.setVisibility(VISIBLE);
-            totalBalanceView.setText(currenciesManager.formatMoney(totalBalance));
+// TODO            totalBalanceView.setText(currenciesManager.formatMoney(totalBalance));
         } else {
             balanceContainerView.setVisibility(GONE);
         }

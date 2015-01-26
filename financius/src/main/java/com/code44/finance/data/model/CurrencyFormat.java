@@ -16,6 +16,8 @@ import com.code44.finance.data.db.Tables;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
+import javax.inject.Inject;
+
 public class CurrencyFormat extends Model {
     public static final Parcelable.Creator<CurrencyFormat> CREATOR = new Parcelable.Creator<CurrencyFormat>() {
         public CurrencyFormat createFromParcel(Parcel in) {
@@ -36,6 +38,8 @@ public class CurrencyFormat extends Model {
 
     private transient DecimalFormat decimalFormat;
 
+    // TODO This is temporary
+    @Inject
     public CurrencyFormat() {
         super();
         setCode(null);

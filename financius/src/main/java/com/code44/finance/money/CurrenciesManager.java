@@ -7,42 +7,33 @@ import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.ExchangeRate;
-import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.IOUtils;
 import com.code44.finance.utils.preferences.GeneralPrefs;
-import com.squareup.otto.Produce;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 public class CurrenciesManager {
-    private final Map<String, ExchangeRate> exchangeRateCache = new HashMap<>();
-    private final EventBus eventBus;
+    private final Map<String, ExchangeRate> exchangeRates = new HashMap<>();
     private final GeneralPrefs generalPrefs;
+
     private String mainCurrencyCode;
 
-    public CurrenciesManager(EventBus eventBus, GeneralPrefs generalPrefs) {
-        this.eventBus = Preconditions.notNull(eventBus, "EventBus cannot be null.");
+    public CurrenciesManager(GeneralPrefs generalPrefs) {
         this.generalPrefs = Preconditions.notNull(generalPrefs, "GeneralPrefs cannot be null.");
-        eventBus.register(this);
-    }
-
-    @Produce public CurrenciesManager produceCurrenciesManager() {
-        return this;
     }
 
     public void updateExchangeRates(SQLiteDatabase database) {
-        exchangeRateCache.clear();
+        exchangeRates.clear();
         final Cursor cursor = Tables.ExchangeRates.getQuery().from(database, Tables.ExchangeRates.TABLE_NAME).execute();
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 final ExchangeRate exchangeRate = ExchangeRate.from(cursor);
-                exchangeRateCache.put(getExchangeRateKey(exchangeRate.getFromCode(), exchangeRate.getToCode()), exchangeRate);
+                exchangeRates.put(getExchangeRateKey(exchangeRate.getFromCode(), exchangeRate.getToCode()), exchangeRate);
             } while (cursor.moveToNext());
         }
         IOUtils.closeQuietly(cursor);
-        notifyChanged();
     }
 
     public String getMainCurrencyCode() {
@@ -61,29 +52,24 @@ public class CurrenciesManager {
     public void setMainCurrencyCode(String mainCurrencyCode) {
         this.mainCurrencyCode = mainCurrencyCode;
         generalPrefs.setMainCurrencyCode(mainCurrencyCode);
-        notifyChanged();
     }
 
-    public double getExchangeRateFromMain(String to) {
+    public double getExchangeRate(String to) {
         return getExchangeRate(mainCurrencyCode, to);
     }
 
     public double getExchangeRate(String from, String to) {
-        if (from.equals(to)) {
+        if (Strings.isEmpty(from) || Strings.isEmpty(to) || from.equals(to) || from.length() != 3 || to.length() != 3) {
             return 1;
         }
 
         final String key = getExchangeRateKey(from, to);
-        final ExchangeRate exchangeRate = exchangeRateCache.get(key);
+        final ExchangeRate exchangeRate = exchangeRates.get(key);
         if (exchangeRate == null) {
             return 1;
         }
 
         return exchangeRate.getRate(to);
-    }
-
-    private void notifyChanged() {
-        eventBus.post(this);
     }
 
     private String getExchangeRateKey(String from, String to) {

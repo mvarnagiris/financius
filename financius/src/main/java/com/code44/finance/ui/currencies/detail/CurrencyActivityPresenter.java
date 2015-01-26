@@ -16,17 +16,14 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
-import com.code44.finance.api.currencies.GetExchangeRatesRequest;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.CurrenciesProvider;
-import com.code44.finance.money.MoneyFormatter;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelActivityPresenter;
 import com.code44.finance.ui.currencies.edit.CurrencyEditActivity;
 import com.code44.finance.utils.EventBus;
-import com.squareup.otto.Subscribe;
 
 class CurrencyActivityPresenter extends ModelActivityPresenter<CurrencyFormat> implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private static final int LOADER_ACCOUNTS = 1;
@@ -117,12 +114,12 @@ class CurrencyActivityPresenter extends ModelActivityPresenter<CurrencyFormat> i
     @Override protected void onModelLoaded(CurrencyFormat currencyFormat) {
         adapter.setCurrency(currencyFormat);
         codeTextView.setText(currencyFormat.getCode());
-        if (currencyFormat.isDefault()) {
-            exchangeRateTextView.setText(R.string.main_currency);
-        } else {
-            exchangeRateTextView.setText(String.valueOf(currencyFormat.getExchangeRate(mainCurrencyFormat.getCode())));
-        }
-        formatTextView.setText(MoneyFormatter.format(currencyFormat, 100000));
+// TODO        if (currencyFormat.isDefault()) {
+//            exchangeRateTextView.setText(R.string.main_currency);
+//        } else {
+//            exchangeRateTextView.setText(String.valueOf(currencyFormat.getExchangeRate(mainCurrencyFormat.getCode())));
+//        }
+//        formatTextView.setText(MoneyFormatter.format(currencyFormat, 100000));
 
         getActivity().supportInvalidateOptionsMenu();
 
@@ -155,9 +152,9 @@ class CurrencyActivityPresenter extends ModelActivityPresenter<CurrencyFormat> i
         setRefreshing(true);
     }
 
-    @Subscribe public void onRefreshFinished(GetExchangeRatesRequest request) {
-        setRefreshing(false);
-    }
+// TODO    @Subscribe public void onRefreshFinished(GetExchangeRatesRequest request) {
+//        setRefreshing(false);
+//    }
 
     private void setRefreshing(boolean refreshing) {
         swipeRefreshLayout.setRefreshing(refreshing);

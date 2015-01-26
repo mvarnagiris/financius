@@ -189,8 +189,6 @@ public class SyncRequest extends Request {
                 .projection(Tables.Transactions.PROJECTION)
                 .projection(Tables.Accounts.PROJECTION_ACCOUNT_FROM)
                 .projection(Tables.Accounts.PROJECTION_ACCOUNT_TO)
-                .projection(Tables.CurrencyFormats.PROJECTION_ACCOUNT_FROM)
-                .projection(Tables.CurrencyFormats.PROJECTION_ACCOUNT_TO)
                 .projection(Tables.Categories.PROJECTION)
                 .selection(Tables.Transactions.SYNC_STATE + "=?", SyncState.InProgress.asString())
                 .from(context, TransactionsProvider.uriTransactions())

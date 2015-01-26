@@ -33,7 +33,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 import javax.inject.Inject;
 
@@ -51,7 +51,7 @@ public class ExportActivity extends BaseActivity {
     private static final String STATE_IS_DIRECTORY_REQUESTED = "STATE_IS_DIRECTORY_REQUESTED";
 
     @Inject GoogleApiConnection connection;
-    @Inject @Local Executor localExecutor;
+    @Inject @Local ExecutorService localExecutor;
     @Inject GeneralPrefs generalPrefs;
 
     private ExportType exportType;

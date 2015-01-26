@@ -1,10 +1,7 @@
 package com.code44.finance.ui.reports.trends;
 
-import com.code44.finance.common.model.TransactionState;
-import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.model.CurrencyFormat;
-import com.code44.finance.data.model.Transaction;
-import com.code44.finance.ui.reports.AmountGroups;
+import com.code44.finance.money.AmountGrouper;
 
 import lecho.lib.hellocharts.model.Line;
 
@@ -13,14 +10,15 @@ public class DefaultTrendsChartPresenter extends TrendsChartPresenter {
         super(trendsChartView, mainCurrencyFormat);
     }
 
-    @Override protected AmountGroups.AmountCalculator[] getTransactionValidators() {
-        return new AmountGroups.AmountCalculator[]{new AmountGroups.AmountCalculator() {
-            @Override public boolean isTransactionValid(Transaction transaction) {
-                return transaction.includeInReports() && transaction.getTransactionType() != TransactionType.Transfer && transaction.getTransactionState() == TransactionState.Confirmed;
-            }
-        }};
+    @Override protected AmountGrouper.AmountCalculator[] getTransactionValidators() {
+//        return new AmountGrouper.AmountCalculator[]{new AmountGrouper.AmountCalculator() {
+//            @Override public boolean isTransactionValid(Transaction transaction) {
+//                return transaction.includeInReports() && transaction.getTransactionType() != TransactionType.Transfer && transaction.getTransactionState() == TransactionState.Confirmed;
+//            }
+//        }};
+        return null;
     }
 
-    @Override protected void onLineCreated(AmountGroups.AmountCalculator amountCalculator, Line line) {
+    @Override protected void onLineCreated(AmountGrouper.AmountCalculator amountCalculator, Line line) {
     }
 }

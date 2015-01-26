@@ -14,7 +14,6 @@ import android.widget.CompoundButton;
 
 import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
-import com.code44.finance.api.currencies.ExchangeRatesRequestOld;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.CurrenciesProvider;
@@ -25,7 +24,6 @@ import com.code44.finance.ui.currencies.detail.CurrencyActivity;
 import com.code44.finance.ui.currencies.edit.CurrencyEditActivity;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.preferences.GeneralPrefs;
-import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,14 +111,14 @@ class CurrenciesActivityPresenter extends ModelsActivityPresenter<CurrencyFormat
 
     @Override public void onRefresh() {
         final List<String> fromCodes = new ArrayList<>();
-        for (CurrencyFormat currencyFormat : currencies) {
-            if (!currencyFormat.isDefault()) {
-                fromCodes.add(currencyFormat.getCode());
-            }
-        }
+// TODO        for (CurrencyFormat currencyFormat : currencies) {
+//            if (!currencyFormat.isDefault()) {
+//                fromCodes.add(currencyFormat.getCode());
+//            }
+//        }
 
         if (!fromCodes.isEmpty()) {
-            currenciesApi.updateExchangeRates(fromCodes, mainCurrencyFormat.getCode());
+// TODO            currenciesApi.updateExchangeRates(fromCodes, mainCurrencyFormat.getCode());
             setRefreshing(true);
         }
     }
@@ -137,9 +135,9 @@ class CurrenciesActivityPresenter extends ModelsActivityPresenter<CurrencyFormat
         super.onLoadFinished(loader, data);
     }
 
-    @Subscribe public void onRefreshFinished(ExchangeRatesRequestOld request) {
-        setRefreshing(false);
-    }
+// TODO    @Subscribe public void onRefreshFinished(ExchangeRatesRequestOld request) {
+//        setRefreshing(false);
+//    }
 
     private void setRefreshing(boolean refreshing) {
         swipeRefreshLayout.setRefreshing(refreshing);

@@ -36,7 +36,7 @@ public class CurrenciesProvider extends ModelProvider {
 
     @Override protected void onAfterInsertItem(Uri uri, ContentValues values, Map<String, Object> extras) {
         super.onAfterInsertItem(uri, values, extras);
-        currenciesManager.updateFormats(getDatabase());
+//   TODO     currenciesManager.updateFormats(getDatabase());
     }
 
     @Override protected void onBeforeUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> outExtras) {
@@ -45,12 +45,12 @@ public class CurrenciesProvider extends ModelProvider {
 
     @Override protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, Map<String, Object> extras) {
         super.onAfterDeleteItems(uri, selection, selectionArgs, extras);
-        currenciesManager.updateFormats(getDatabase());
+// TODO        currenciesManager.updateFormats(getDatabase());
     }
 
     @Override protected void onAfterBulkInsertItems(Uri uri, ContentValues[] valuesArray, Map<String, Object> extras) {
         super.onAfterBulkInsertItems(uri, valuesArray, extras);
-        currenciesManager.updateFormats(getDatabase());
+// TODO        currenciesManager.updateFormats(getDatabase());
     }
 
     @Override protected Uri[] getOtherUrisToNotify() {

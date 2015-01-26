@@ -29,8 +29,8 @@ public class CurrenciesApi {
     }
 
     public void updateExchangeRates(String fromCode) {
-        final UpdateExchangeRatesRequest request = new UpdateExchangeRatesRequest(eventBus, requestService, context, currenciesManager, fromCode);
-        executeRequest(request);
+//        final UpdateExchangeRatesRequest request = new UpdateExchangeRatesRequest(eventBus, requestService, context, currenciesManager, fromCode);
+//        executeRequest(request);
     }
 
     private void executeRequest(Request request) {

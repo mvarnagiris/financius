@@ -86,7 +86,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
         holder.weekday_TV.setText(date.dayOfWeek().getAsShortText());
         holder.day_TV.setText(date.dayOfMonth().getAsShortText());
         holder.color_IV.setColorFilter(getCategoryColor(transaction));
-        holder.amount_TV.setText(currenciesManager.formatMoney(transaction));
+// TODO        holder.amount_TV.setText(currenciesManager.formatMoney(transaction));
         holder.title_TV.setTextColor(primaryColor);
         holder.title_TV.setText(getTitle(transaction));
         holder.subtitle_TV.setText(getSubtitle(transaction));
@@ -120,7 +120,7 @@ public class TransactionsAdapter extends BaseModelsAdapter implements StickyList
             title = mContext.getString(R.string.pending);
         }
         holder.title_TV.setText(title);
-        holder.amount_TV.setText(currenciesManager.formatMoney(getTotalExpenseForPosition(position)));
+// TODO        holder.amount_TV.setText(currenciesManager.formatMoney(getTotalExpenseForPosition(position)));
 
         return convertView;
     }

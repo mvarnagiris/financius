@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.data.model.CurrencyFormat;
-import com.code44.finance.money.MoneyFormatter;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 import com.code44.finance.utils.ThemeUtils;
@@ -46,14 +45,14 @@ class CurrenciesAdapter extends ModelsAdapter<CurrencyFormat> {
 
         @Override protected void bind(CurrencyFormat currencyFormat, Cursor cursor, int position, ModelsActivityPresenter.Mode mode, boolean isSelected) {
             codeTextView.setText(currencyFormat.getCode());
-            formatTextView.setText(MoneyFormatter.format(currencyFormat, 100000));
-            if (currencyFormat.isDefault()) {
-                codeTextView.setTextColor(textBrandColor);
-                exchangeRateTextView.setText(null);
-            } else {
-                codeTextView.setTextColor(textPrimaryColor);
-                exchangeRateTextView.setText(String.valueOf(currencyFormat.getExchangeRate()));
-            }
+// TODO            formatTextView.setText(MoneyFormatter.format(currencyFormat, 100000));
+//            if (currencyFormat.isDefault()) {
+//                codeTextView.setTextColor(textBrandColor);
+//                exchangeRateTextView.setText(null);
+//            } else {
+//                codeTextView.setTextColor(textPrimaryColor);
+//                exchangeRateTextView.setText(String.valueOf(currencyFormat.getExchangeRate()));
+//            }
         }
     }
 }

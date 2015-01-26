@@ -97,14 +97,14 @@ public class AmountPresenter extends Presenter {
                     format.setGroupingUsed(false);
                     format.setMaximumFractionDigits(20);
                     exchangeRateButton.setText(format.format(exchangeRate));
-                    amountToButton.setText(currenciesManager.formatMoney(accountTo.getCurrencyCode(), Math.round(amount * exchangeRate)));
+// TODO                    amountToButton.setText(currenciesManager.formatMoney(accountTo.getCurrencyCode(), Math.round(amount * exchangeRate)));
                 } else {
                     exchangeRateButton.setVisibility(View.GONE);
                     amountToButton.setVisibility(View.GONE);
                 }
                 break;
         }
-        amountButton.setText(currenciesManager.formatMoney(getAmountCurrency(), amount));
+// TODO        amountButton.setText(currenciesManager.formatMoney(getAmountCurrency(), amount));
     }
 
     private String getAmountCurrency() {

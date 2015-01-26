@@ -13,7 +13,6 @@ import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.TransactionsProvider;
-import com.code44.finance.qualifiers.Main;
 import com.code44.finance.ui.common.navigation.NavigationScreen;
 import com.code44.finance.ui.reports.BaseReportActivity;
 import com.code44.finance.utils.analytics.Analytics;
@@ -26,7 +25,7 @@ public class CategoriesReportActivity extends BaseReportActivity implements Load
     private static final int LOADER_TRANSACTIONS = 1;
 
     @Inject ActiveInterval activeInterval;
-    @Inject @Main CurrencyFormat mainCurrencyFormat;
+    @Inject CurrencyFormat mainCurrencyFormat;
 
     private CategoriesReportView categoriesReportView;
 

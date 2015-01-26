@@ -117,7 +117,7 @@ public class AccountEditActivity extends ModelEditActivity<Account> implements V
     @Override protected void onModelLoaded(Account model) {
         titleEditText.setText(model.getTitle());
         currencyButton.setText(model.getCurrencyCode());
-        balanceButton.setText(currenciesManager.formatMoney(model.getCurrencyCode(), model.getBalance()));
+// TODO        balanceButton.setText(currenciesManager.formatMoney(model.getCurrencyCode(), model.getBalance()));
         noteEditText.setText(model.getNote());
         includeInTotalsCheckBox.setChecked(model.includeInTotals());
     }

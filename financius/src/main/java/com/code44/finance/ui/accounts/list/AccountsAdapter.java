@@ -50,7 +50,7 @@ public class AccountsAdapter extends ModelsAdapter<Account> {
         @Override protected void bind(Account account, Cursor cursor, int position, ModelsActivityPresenter.Mode mode, boolean isSelected) {
             titleTextView.setText(account.getTitle());
             titleTextView.setTextColor(account.includeInTotals() ? includeInTotalsTextColor : doNotIncludeInTotalsTextColor);
-            balanceTextView.setText(currenciesManager.formatMoney(account.getCurrencyCode(), account.getBalance()));
+// TODO            balanceTextView.setText(currenciesManager.formatMoney(account.getCurrencyCode(), account.getBalance()));
             balanceTextView.setTextColor(account.includeInTotals() ? includeInTotalsTextColor : doNotIncludeInTotalsTextColor);
             if (account.getCurrencyCode().equals(currenciesManager.getMainCurrencyCode())) {
                 mainCurrencyBalanceTextView.setVisibility(View.GONE);

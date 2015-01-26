@@ -23,17 +23,14 @@ import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.common.model.DecimalSeparator;
 import com.code44.finance.common.model.GroupSeparator;
 import com.code44.finance.common.model.SymbolPosition;
-import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.DataStore;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.ExchangeRate;
 import com.code44.finance.data.providers.CurrenciesProvider;
-import com.code44.finance.money.MoneyFormatter;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelEditActivityPresenter;
 import com.code44.finance.utils.EventBus;
-import com.squareup.otto.Subscribe;
 
 import java.util.HashSet;
 import java.util.Locale;
@@ -73,7 +70,7 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<CurrencyF
     private DecimalSeparator decimalSeparator;
     private Integer decimalCount;
     private Boolean isDefault;
-    private Map<String, CurrencyFormat.ExchangeRate> exchangeRates;
+    private Map<String, ExchangeRate> exchangeRates;
 
     public CurrencyEditActivityPresenter(EventBus eventBus, CurrenciesApi currenciesApi, CurrencyFormat mainCurrencyFormat) {
         super(eventBus);
@@ -138,25 +135,25 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<CurrencyF
                 updateFormat();
             }
         });
-        exchangeRateEditText.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override public void afterTextChanged(Editable s) {
-                try {
-                    exchangeRate = Double.parseDouble(exchangeRateEditText.getText().toString());
-                } catch (NumberFormatException e) {
-                    exchangeRate = 1.0;
-                }
-
-                if (Double.compare(exchangeRate, 0) <= 0) {
-                    exchangeRate = 1.0;
-                }
-            }
-        });
+// TODO        exchangeRateEditText.addTextChangedListener(new TextWatcher() {
+//            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+//            }
+//
+//            @Override public void afterTextChanged(Editable s) {
+//                try {
+//                    exchangeRate = Double.parseDouble(exchangeRateEditText.getText().toString());
+//                } catch (NumberFormatException e) {
+//                    exchangeRate = 1.0;
+//                }
+//
+//                if (Double.compare(exchangeRate, 0) <= 0) {
+//                    exchangeRate = 1.0;
+//                }
+//            }
+//        });
         currentMainCurrencyTextView.setText(activity.getString(R.string.f_current_main_currency_is_x, mainCurrencyFormat.getCode()));
         refreshRateImageView.setOnClickListener(this);
         if (!isNewModel()) {
@@ -180,7 +177,7 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<CurrencyF
                 decimalCount = null;
             }
             isDefault = savedInstanceState.getInt(STATE_IS_DEFAULT, -1) == -1 ? null : savedInstanceState.getInt(STATE_IS_DEFAULT, 0) == 1;
-            exchangeRate = savedInstanceState.getDouble(STATE_EXCHANGE_RATES, -1) < 0 ? null : savedInstanceState.getDouble(STATE_EXCHANGE_RATES, 1);
+// TODO            exchangeRate = savedInstanceState.getDouble(STATE_EXCHANGE_RATES, -1) < 0 ? null : savedInstanceState.getDouble(STATE_EXCHANGE_RATES, 1);
             onDataChanged(getStoredModel());
         }
 
@@ -209,7 +206,7 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<CurrencyF
         outState.putSerializable(STATE_DECIMAL_SEPARATOR, decimalSeparator);
         outState.putInt(STATE_DECIMAL_COUNT, decimalCount == null ? -1 : decimalCount);
         outState.putInt(STATE_IS_DEFAULT, isDefault == null ? -1 : isDefault ? 1 : 0);
-        outState.putDouble(STATE_EXCHANGE_RATES, exchangeRate == null ? -1 : exchangeRate);
+// TODO        outState.putDouble(STATE_EXCHANGE_RATES, exchangeRate == null ? -1 : exchangeRate);
     }
 
     @Override protected void onDataChanged(CurrencyFormat model) {
@@ -225,7 +222,7 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<CurrencyF
             } else {
                 exchangeRateContainerView.setVisibility(View.VISIBLE);
                 exchangeRateDividerView.setVisibility(View.VISIBLE);
-                exchangeRateEditText.setText(String.valueOf(getExchangeRate()));
+// TODO                exchangeRateEditText.setText(String.valueOf(getExchangeRate()));
             }
         }
     }
@@ -253,8 +250,8 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<CurrencyF
             currencyFormat.setGroupSeparator(getGroupSeparator());
             currencyFormat.setDecimalSeparator(getDecimalSeparator());
             currencyFormat.setDecimalCount(getDecimalCount());
-            currencyFormat.setDefault(isDefault());
-            currencyFormat.setExchangeRate(getExchangeRate());
+// TODO            currencyFormat.setDefault(isDefault());
+//            currencyFormat.setExchangeRate(getExchangeRate());
             DataStore.insert().values(currencyFormat.asContentValues()).into(getActivity(), CurrenciesProvider.uriCurrencies());
         }
 
@@ -311,18 +308,18 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<CurrencyF
             case R.id.refreshRateImageView:
                 final String code = getCode();
                 if (!TextUtils.isEmpty(code) && code.length() == 3) {
-                    currenciesApi.updateExchangeRate(code, mainCurrencyFormat.getCode());
+// TODO                    currenciesApi.updateExchangeRate(code, mainCurrencyFormat.getCode());
                 }
                 break;
         }
     }
 
-    @Subscribe public void onRefreshFinished(ExchangeRateRequest request) {
-        if (!Strings.isEmpty(getCode()) && getCode().equals(request.getFromCode())) {
-            exchangeRate = request.getCurrency().getExchangeRate();
-            onDataChanged(getStoredModel());
-        }
-    }
+// TODO    @Subscribe public void onRefreshFinished(ExchangeRateRequest request) {
+//        if (!Strings.isEmpty(getCode()) && getCode().equals(request.getFromCode())) {
+//            exchangeRate = request.getCurrency().getExchangeRate();
+//            onDataChanged(getStoredModel());
+//        }
+//    }
 
     private void updateFormat() {
         formatCurrencyFormat.setCode(getCode());
@@ -331,7 +328,7 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<CurrencyF
         formatCurrencyFormat.setGroupSeparator(getGroupSeparator());
         formatCurrencyFormat.setDecimalSeparator(getDecimalSeparator());
         formatCurrencyFormat.setDecimalCount(getDecimalCount());
-        currencyFormatTextView.setText(MoneyFormatter.format(formatCurrencyFormat, 100000, false));
+// TODO        currencyFormatTextView.setText(MoneyFormatter.format(formatCurrencyFormat, 100000, false));
     }
 
     private void prepareCurrenciesAutoComplete() {
@@ -470,20 +467,21 @@ class CurrencyEditActivityPresenter extends ModelEditActivityPresenter<CurrencyF
             return isDefault;
         }
 
-        return getStoredModel() != null && getStoredModel().isDefault();
-
+// TODO        return getStoredModel() != null && getStoredModel().isDefault();
+        return false;
     }
 
     private Map<String, ExchangeRate> getExchangeRates() {
-        if (exchangeRate != null) {
-            return exchangeRate;
-        }
+// TODO        if (exchangeRate != null) {
+//            return exchangeRate;
+//        }
+//
+//        if (getStoredModel() != null) {
+//            return getStoredModel().getExchangeRates();
+//        }
 
-        if (getStoredModel() != null) {
-            return getStoredModel().getExchangeRates();
-        }
-
-        return 1;
+//        return 1;
+        return null;
     }
 
     private void toggleSymbolPosition() {

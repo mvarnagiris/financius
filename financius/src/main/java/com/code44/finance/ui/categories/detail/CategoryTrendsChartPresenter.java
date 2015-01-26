@@ -9,9 +9,8 @@ import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.CurrencyFormat;
-import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
-import com.code44.finance.ui.reports.AmountGroups;
+import com.code44.finance.money.AmountGrouper;
 import com.code44.finance.ui.reports.trends.TrendsChartPresenter;
 import com.code44.finance.ui.reports.trends.TrendsChartView;
 import com.code44.finance.utils.interval.BaseInterval;
@@ -22,22 +21,22 @@ class CategoryTrendsChartPresenter extends TrendsChartPresenter implements Loade
     private static final int LOADER_CATEGORY_TRENDS = 712;
 
     private final LoaderManager loaderManager;
-    private final AmountGroups.AmountCalculator amountCalculator;
+    private final AmountGrouper.AmountCalculator amountCalculator;
     private BaseInterval baseInterval;
     private Category category;
 
     public CategoryTrendsChartPresenter(TrendsChartView trendsChartView, CurrencyFormat mainCurrencyFormat, LoaderManager loaderManager, BaseInterval baseInterval) {
         super(trendsChartView, mainCurrencyFormat);
         this.loaderManager = loaderManager;
-        amountCalculator = new CategoryAmountCalculator();
+        amountCalculator = null; // TODO new CategoryAmountCalculator();
         setData(null, baseInterval);
     }
 
-    @Override protected AmountGroups.AmountCalculator[] getTransactionValidators() {
-        return new AmountGroups.AmountCalculator[]{amountCalculator};
+    @Override protected AmountGrouper.AmountCalculator[] getTransactionValidators() {
+        return new AmountGrouper.AmountCalculator[]{amountCalculator};
     }
 
-    @Override protected void onLineCreated(AmountGroups.AmountCalculator amountCalculator, Line line) {
+    @Override protected void onLineCreated(AmountGrouper.AmountCalculator amountCalculator, Line line) {
         if (category != null) {
             line.setColor(category.getColor());
         }
@@ -73,9 +72,9 @@ class CategoryTrendsChartPresenter extends TrendsChartPresenter implements Loade
         loaderManager.restartLoader(LOADER_CATEGORY_TRENDS, null, this);
     }
 
-    private static class CategoryAmountCalculator implements AmountGroups.AmountCalculator {
-        @Override public boolean isTransactionValid(Transaction transaction) {
-            return true;
-        }
-    }
+// TODO    private static class CategoryAmountCalculator implements AmountGrouper.AmountCalculator {
+//        @Override public boolean isTransactionValid(Transaction transaction) {
+//            return true;
+//        }
+//    }
 }

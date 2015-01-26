@@ -1,9 +1,7 @@
-package com.code44.finance.ui.reports;
+package com.code44.finance.money;
 
 import android.database.Cursor;
 
-import com.code44.finance.common.model.TransactionType;
-import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.utils.interval.BaseInterval;
 
@@ -16,18 +14,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class AmountGroups {
+public class AmountGrouper {
     private final Period period;
     private final Interval wholeInterval;
     private final Interval firstInterval;
 
-    public AmountGroups(Interval interval, BaseInterval.Type intervalType) {
+    public AmountGrouper(Interval interval, BaseInterval.Type intervalType) {
         period = getPeriod(intervalType);
         wholeInterval = interval;
         firstInterval = new Interval(interval.getStart(), period);
     }
 
-    public Map<AmountCalculator, List<Long>> getGroups(Cursor cursor, CurrencyFormat mainCurrencyFormat, AmountCalculator... amountCalculators) {
+    public Map<AmountCalculator, List<Long>> getGroups(Cursor cursor, AmountCalculator... amountCalculators) {
         final Map<AmountCalculator, List<Long>> groups = new HashMap<>();
         for (AmountCalculator amountCalculator : amountCalculators) {
             groups.put(amountCalculator, new ArrayList<Long>());
@@ -44,7 +42,7 @@ public class AmountGroups {
             }
 
             while (transaction != null && interval.contains(transaction.getDate())) {
-                onTransactionInInterval(transaction, groups.keySet(), intervalAmounts, mainCurrencyFormat);
+                onTransactionInInterval(transaction, groups.keySet(), intervalAmounts);
                 transaction = cursor.moveToNext() ? Transaction.from(cursor) : null;
             }
 
@@ -89,34 +87,19 @@ public class AmountGroups {
         intervalAmounts.clear();
     }
 
-    private void onTransactionInInterval(Transaction transaction, Set<AmountCalculator> amountCalculators, Map<AmountCalculator, Long> intervalAmounts, CurrencyFormat mainCurrencyFormat) {
+    private void onTransactionInInterval(Transaction transaction, Set<AmountCalculator> amountCalculators, Map<AmountCalculator, Long> intervalAmounts) {
         for (AmountCalculator amountCalculator : amountCalculators) {
             Long amount = intervalAmounts.get(amountCalculator);
             if (amount == null) {
                 amount = 0L;
             }
 
-            amount += getAmount(transaction, mainCurrencyFormat);
+            amount += amountCalculator.getAmount(transaction);
             intervalAmounts.put(amountCalculator, amount);
-        }
-    }
-
-    private long getAmount(Transaction transaction, CurrencyFormat mainCurrencyFormat) {
-        final CurrencyFormat currencyFormat = transaction.getTransactionType() != TransactionType.Income ? transaction.getAccountFrom().getCurrencyCode() : transaction.getAccountTo().getCurrencyCode();
-        if (currencyFormat.getId().equals(mainCurrencyFormat.getId())) {
-            return transaction.getAmount();
-        } else {
-            return Math.round(transaction.getAmount() * currencyFormat.getExchangeRate());
         }
     }
 
     public static interface AmountCalculator {
         public long getAmount(Transaction transaction);
-    }
-
-    public static class ExpenseAmountCalculator implements AmountCalculator {
-        @Override public long getAmount(Transaction transaction) {
-            return 0;
-        }
     }
 }
