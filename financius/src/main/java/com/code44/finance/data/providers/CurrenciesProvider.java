@@ -5,14 +5,14 @@ import android.net.Uri;
 
 import com.code44.finance.data.db.Column;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.money.CurrenciesManager;
+import com.code44.finance.money.AmountFormatter;
 
 import java.util.Map;
 
 import javax.inject.Inject;
 
 public class CurrenciesProvider extends ModelProvider {
-    @Inject CurrenciesManager currenciesManager;
+    @Inject AmountFormatter amountFormatter;
 
     public static Uri uriCurrencies() {
         return uriModels(CurrenciesProvider.class, Tables.CurrencyFormats.TABLE_NAME);
@@ -36,7 +36,7 @@ public class CurrenciesProvider extends ModelProvider {
 
     @Override protected void onAfterInsertItem(Uri uri, ContentValues values, Map<String, Object> extras) {
         super.onAfterInsertItem(uri, values, extras);
-//   TODO     currenciesManager.updateFormats(getDatabase());
+        amountFormatter.updateFormats(getDatabase());
     }
 
     @Override protected void onBeforeUpdateItems(Uri uri, ContentValues values, String selection, String[] selectionArgs, Map<String, Object> outExtras) {
@@ -45,12 +45,12 @@ public class CurrenciesProvider extends ModelProvider {
 
     @Override protected void onAfterDeleteItems(Uri uri, String selection, String[] selectionArgs, Map<String, Object> extras) {
         super.onAfterDeleteItems(uri, selection, selectionArgs, extras);
-// TODO        currenciesManager.updateFormats(getDatabase());
+        amountFormatter.updateFormats(getDatabase());
     }
 
     @Override protected void onAfterBulkInsertItems(Uri uri, ContentValues[] valuesArray, Map<String, Object> extras) {
         super.onAfterBulkInsertItems(uri, valuesArray, extras);
-// TODO        currenciesManager.updateFormats(getDatabase());
+        amountFormatter.updateFormats(getDatabase());
     }
 
     @Override protected Uri[] getOtherUrisToNotify() {

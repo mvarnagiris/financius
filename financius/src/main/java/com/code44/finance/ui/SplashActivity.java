@@ -3,6 +3,7 @@ package com.code44.finance.ui;
 import android.os.Bundle;
 
 import com.code44.finance.BuildConfig;
+import com.code44.finance.services.StartupService;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.overview.OverviewActivity;
 import com.code44.finance.utils.preferences.GeneralPrefs;
@@ -20,6 +21,7 @@ public class SplashActivity extends BaseActivity {
         checkVersionUpdate();
 
         OverviewActivity.start(this);
+        StartupService.start(this);
         finish();
     }
 

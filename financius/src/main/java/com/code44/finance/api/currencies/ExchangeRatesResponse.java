@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 public class ExchangeRatesResponse {
-    @SerializedName("Query")
+    @SerializedName("query")
     private Query query;
 
     public Set<ExchangeRate> getExchangeRates() {

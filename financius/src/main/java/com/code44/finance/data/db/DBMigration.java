@@ -135,7 +135,7 @@ public final class DBMigration {
             }
             IOUtils.closeQuietly(cursor);
 
-            cursor = Tables.Accounts.getQuery().clearSelection().clearArgs().clearSort().clearSort().from(db, Tables.Accounts.TABLE_NAME).execute();
+            cursor = Tables.Accounts.getQuery().clearSelection().clearArgs().clearSort().clearSort().projection("accounts_currency_id").from(db, Tables.Accounts.TABLE_NAME).execute();
             if (cursor != null && cursor.moveToFirst()) {
                 final int iLocalId = cursor.getColumnIndex(Tables.Accounts.LOCAL_ID.getName());
                 final int iCurrencyId = cursor.getColumnIndex("accounts_currency_id");

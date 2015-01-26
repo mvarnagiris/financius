@@ -11,6 +11,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.ExchangeRate;
 import com.code44.finance.data.providers.CurrenciesProvider;
+import com.code44.finance.data.providers.ExchangeRatesProvider;
 import com.code44.finance.utils.EventBus;
 
 import java.util.ArrayList;
@@ -35,8 +36,13 @@ public class UpdateExchangeRatesRequest extends Request<ExchangeRatesResponse> {
 
         final StringBuilder sb = new StringBuilder();
         sb.append("select * from yahoo.finance.xchange where pair in (");
+        int index = 0;
         for (String code : codes) {
-            sb.append("\"").append(code).append("\",");
+            if (index > 0) {
+                sb.append(",");
+            }
+            sb.append("\"").append(code).append("\"");
+            index++;
         }
         sb.append(")");
 
@@ -78,6 +84,6 @@ public class UpdateExchangeRatesRequest extends Request<ExchangeRatesResponse> {
 
     private void updateDatabase(ExchangeRatesResponse response) {
         final Set<ExchangeRate> exchangeRates = response.getExchangeRates();
-        DataStore.bulkInsert().models(exchangeRates).into(context, CurrenciesProvider.uriCurrencies());
+        DataStore.bulkInsert().models(exchangeRates).into(context, ExchangeRatesProvider.uriExchangeRates());
     }
 }

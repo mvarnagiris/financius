@@ -8,17 +8,24 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.data.model.CurrencyFormat;
+import com.code44.finance.money.AmountFormatter;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 import com.code44.finance.utils.ThemeUtils;
 
 class CurrenciesAdapter extends ModelsAdapter<CurrencyFormat> {
-    public CurrenciesAdapter(OnModelClickListener<CurrencyFormat> onModelClickListener) {
+    private final CurrenciesManager currenciesManager;
+    private final AmountFormatter amountFormatter;
+
+    public CurrenciesAdapter(OnModelClickListener<CurrencyFormat> onModelClickListener, CurrenciesManager currenciesManager, AmountFormatter amountFormatter) {
         super(onModelClickListener);
+        this.currenciesManager = currenciesManager;
+        this.amountFormatter = amountFormatter;
     }
 
     @Override protected ViewHolder createModelViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.li_currency, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.li_currency, parent, false), currenciesManager, amountFormatter);
     }
 
     @Override protected CurrencyFormat modelFromCursor(Cursor cursor) {
@@ -26,15 +33,20 @@ class CurrenciesAdapter extends ModelsAdapter<CurrencyFormat> {
     }
 
     private static class ViewHolder extends ModelViewHolder<CurrencyFormat> {
-        public final TextView codeTextView;
-        public final TextView formatTextView;
-        public final TextView exchangeRateTextView;
+        private final TextView codeTextView;
+        private final TextView formatTextView;
+        private final TextView exchangeRateTextView;
 
+        private final CurrenciesManager currenciesManager;
+        private final AmountFormatter amountFormatter;
         private final int textPrimaryColor;
         private final int textBrandColor;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, CurrenciesManager currenciesManager, AmountFormatter amountFormatter) {
             super(itemView);
+            this.currenciesManager = currenciesManager;
+            this.amountFormatter = amountFormatter;
+
             codeTextView = (TextView) itemView.findViewById(R.id.codeTextView);
             formatTextView = (TextView) itemView.findViewById(R.id.formatTextView);
             exchangeRateTextView = (TextView) itemView.findViewById(R.id.exchangeRateTextView);
@@ -45,14 +57,15 @@ class CurrenciesAdapter extends ModelsAdapter<CurrencyFormat> {
 
         @Override protected void bind(CurrencyFormat currencyFormat, Cursor cursor, int position, ModelsActivityPresenter.Mode mode, boolean isSelected) {
             codeTextView.setText(currencyFormat.getCode());
-// TODO            formatTextView.setText(MoneyFormatter.format(currencyFormat, 100000));
-//            if (currencyFormat.isDefault()) {
-//                codeTextView.setTextColor(textBrandColor);
-//                exchangeRateTextView.setText(null);
-//            } else {
-//                codeTextView.setTextColor(textPrimaryColor);
-//                exchangeRateTextView.setText(String.valueOf(currencyFormat.getExchangeRate()));
-//            }
+
+            formatTextView.setText(amountFormatter.format(currencyFormat.getCode(), 100000));
+            if (currenciesManager.isMainCurrency(currencyFormat.getCode())) {
+                codeTextView.setTextColor(textBrandColor);
+                exchangeRateTextView.setText(null);
+            } else {
+                codeTextView.setTextColor(textPrimaryColor);
+                exchangeRateTextView.setText(String.valueOf(currenciesManager.getExchangeRate(currencyFormat.getCode())));
+            }
         }
     }
 }

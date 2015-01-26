@@ -137,6 +137,10 @@
             android:name=".data.providers.TransactionsProvider"
             android:authorities="${applicationId}.data.providers.TransactionsProvider"
             android:exported="false" />
+        <provider
+            android:name=".data.providers.ExchangeRatesProvider"
+            android:authorities="${applicationId}.data.providers.ExchangeRatesProvider"
+            android:exported="false" />
 
         <!-- Receivers -->
         <!-- ======================================================================================================= -->

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
@@ -14,9 +13,12 @@ import android.widget.CompoundButton;
 
 import com.code44.finance.R;
 import com.code44.finance.api.currencies.CurrenciesApi;
+import com.code44.finance.api.currencies.UpdateExchangeRatesRequest;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.CurrenciesProvider;
+import com.code44.finance.money.AmountFormatter;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
@@ -24,24 +26,23 @@ import com.code44.finance.ui.currencies.detail.CurrencyActivity;
 import com.code44.finance.ui.currencies.edit.CurrencyEditActivity;
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.preferences.GeneralPrefs;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.squareup.otto.Subscribe;
 
 class CurrenciesActivityPresenter extends ModelsActivityPresenter<CurrencyFormat> implements CompoundButton.OnCheckedChangeListener, SwipeRefreshLayout.OnRefreshListener {
     private final EventBus eventBus;
     private final GeneralPrefs generalPrefs;
     private final CurrenciesApi currenciesApi;
-    private final CurrencyFormat mainCurrencyFormat;
-    private final List<CurrencyFormat> currencies = new ArrayList<>();
+    private final CurrenciesManager currenciesManager;
+    private final AmountFormatter amountFormatter;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    CurrenciesActivityPresenter(EventBus eventBus, GeneralPrefs generalPrefs, CurrenciesApi currenciesApi, CurrencyFormat mainCurrencyFormat) {
+    CurrenciesActivityPresenter(EventBus eventBus, GeneralPrefs generalPrefs, CurrenciesApi currenciesApi, CurrenciesManager currenciesManager, AmountFormatter amountFormatter) {
         this.eventBus = eventBus;
         this.generalPrefs = generalPrefs;
         this.currenciesApi = currenciesApi;
-        this.mainCurrencyFormat = mainCurrencyFormat;
+        this.currenciesManager = currenciesManager;
+        this.amountFormatter = amountFormatter;
     }
 
     @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
@@ -87,11 +88,15 @@ class CurrenciesActivityPresenter extends ModelsActivityPresenter<CurrencyFormat
     }
 
     @Override protected ModelsAdapter<CurrencyFormat> createAdapter(ModelsAdapter.OnModelClickListener<CurrencyFormat> defaultOnModelClickListener) {
-        return new CurrenciesAdapter(defaultOnModelClickListener);
+        return new CurrenciesAdapter(defaultOnModelClickListener, currenciesManager, amountFormatter);
     }
 
     @Override protected CursorLoader getModelsCursorLoader(Context context) {
-        return Tables.CurrencyFormats.getQuery().asCursorLoader(context, CurrenciesProvider.uriCurrencies());
+        return Tables.CurrencyFormats.getQuery()
+                .clearSort()
+                .sortOrder("case when " + Tables.CurrencyFormats.CODE + "=\"" + currenciesManager.getMainCurrencyCode() + "\" then 0 else 1 end")
+                .sortOrder(Tables.CurrencyFormats.CODE.getName())
+                .asCursorLoader(context, CurrenciesProvider.uriCurrencies());
     }
 
     @Override protected void onModelClick(Context context, View view, CurrencyFormat model, Cursor cursor, int position) {
@@ -110,34 +115,13 @@ class CurrenciesActivityPresenter extends ModelsActivityPresenter<CurrencyFormat
     }
 
     @Override public void onRefresh() {
-        final List<String> fromCodes = new ArrayList<>();
-// TODO        for (CurrencyFormat currencyFormat : currencies) {
-//            if (!currencyFormat.isDefault()) {
-//                fromCodes.add(currencyFormat.getCode());
-//            }
-//        }
-
-        if (!fromCodes.isEmpty()) {
-// TODO            currenciesApi.updateExchangeRates(fromCodes, mainCurrencyFormat.getCode());
-            setRefreshing(true);
-        }
+        currenciesApi.updateExchangeRates();
+        setRefreshing(true);
     }
 
-    @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (loader.getId() == LOADER_MODELS) {
-            currencies.clear();
-            if (data.moveToFirst()) {
-                do {
-                    currencies.add(CurrencyFormat.from(data));
-                } while (data.moveToNext());
-            }
-        }
-        super.onLoadFinished(loader, data);
+    @Subscribe public void onRefreshFinished(UpdateExchangeRatesRequest request) {
+        setRefreshing(false);
     }
-
-// TODO    @Subscribe public void onRefreshFinished(ExchangeRatesRequestOld request) {
-//        setRefreshing(false);
-//    }
 
     private void setRefreshing(boolean refreshing) {
         swipeRefreshLayout.setRefreshing(refreshing);
