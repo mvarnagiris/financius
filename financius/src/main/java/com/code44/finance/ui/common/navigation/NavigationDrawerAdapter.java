@@ -32,6 +32,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
 
         navigationItems = new ArrayList<>();
         navigationItems.add(new HeaderNavigationItem());
+        navigationItems.add(new DividerNavigationItem(false));
         navigationItems.add(new PrimaryNavigationItem(NavigationScreen.Overview, R.drawable.ic_action_overview, R.string.overview));
         navigationItems.add(new PrimaryNavigationItem(NavigationScreen.Accounts, R.drawable.ic_action_account, R.string.accounts_other));
         navigationItems.add(new PrimaryNavigationItem(NavigationScreen.Transactions, R.drawable.ic_action_transactions, R.string.transactions_other));
