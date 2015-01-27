@@ -5,14 +5,20 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
+import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionState;
+import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Tag;
+import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
+import com.code44.finance.money.AmountFormatter;
 import com.code44.finance.money.AmountGrouper;
+import com.code44.finance.money.AmountRetriever;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.reports.trends.TrendsChartPresenter;
 import com.code44.finance.ui.reports.trends.TrendsChartView;
+import com.code44.finance.utils.ThemeUtils;
 import com.code44.finance.utils.interval.BaseInterval;
 
 import lecho.lib.hellocharts.model.Line;
@@ -21,34 +27,33 @@ class TagTrendsChartPresenter extends TrendsChartPresenter implements LoaderMana
     private static final int LOADER_TAG_TRENDS = 712;
 
     private final LoaderManager loaderManager;
-    // TODO    private final ExpenseAmountCalculator expenseValidator;
-//    private final IncomeAmountCalculator incomeValidator;
-//    private final TransferAmountCalculator transferValidator;
+    private final ExpenseAmountCalculator expenseValidator;
+    private final IncomeAmountCalculator incomeValidator;
+    private final TransferAmountCalculator transferValidator;
     private BaseInterval baseInterval;
     private Tag tag;
 
-    public TagTrendsChartPresenter(TrendsChartView trendsChartView, CurrencyFormat mainCurrencyFormat, LoaderManager loaderManager, BaseInterval baseInterval) {
-        super(trendsChartView, null); // TODO Put AmountFormatter
+    public TagTrendsChartPresenter(TrendsChartView trendsChartView, CurrenciesManager currenciesManager, AmountFormatter amountFormatter, LoaderManager loaderManager, BaseInterval baseInterval) {
+        super(trendsChartView, amountFormatter);
         this.loaderManager = loaderManager;
-//        expenseValidator = new ExpenseAmountCalculator();
-//        incomeValidator = new IncomeAmountCalculator();
-//        transferValidator = new TransferAmountCalculator();
+        expenseValidator = new ExpenseAmountCalculator(currenciesManager);
+        incomeValidator = new IncomeAmountCalculator(currenciesManager);
+        transferValidator = new TransferAmountCalculator(currenciesManager);
         setData(null, baseInterval);
     }
 
     @Override protected AmountGrouper.AmountCalculator[] getTransactionValidators() {
-//        return new AmountGrouper.AmountCalculator[]{expenseValidator, incomeValidator, transferValidator};
-        return null;
+        return new AmountGrouper.AmountCalculator[]{transferValidator, incomeValidator, expenseValidator};
     }
 
     @Override protected void onLineCreated(AmountGrouper.AmountCalculator amountCalculator, Line line) {
-//        if (amountCalculator.equals(expenseValidator)) {
-//            line.setColor(ThemeUtils.getColor(getContext(), R.attr.textColorNegative));
-//        } else if (amountCalculator.equals(incomeValidator)) {
-//            line.setColor(ThemeUtils.getColor(getContext(), R.attr.textColorPositive));
-//        } else {
-//            line.setColor(ThemeUtils.getColor(getContext(), R.attr.textColorNeutral));
-//        }
+        if (amountCalculator.equals(expenseValidator)) {
+            line.setColor(ThemeUtils.getColor(getContext(), R.attr.textColorNegative));
+        } else if (amountCalculator.equals(incomeValidator)) {
+            line.setColor(ThemeUtils.getColor(getContext(), R.attr.textColorPositive));
+        } else {
+            line.setColor(ThemeUtils.getColor(getContext(), R.attr.textColorNeutral));
+        }
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -81,21 +86,39 @@ class TagTrendsChartPresenter extends TrendsChartPresenter implements LoaderMana
         loaderManager.restartLoader(LOADER_TAG_TRENDS, null, this);
     }
 
-//    private static class ExpenseAmountCalculator implements AmountGrouper.AmountCalculator {
-//        @Override public boolean isTransactionValid(Transaction transaction) {
-//            return transaction.getTransactionType() == TransactionType.Expense;
-//        }
-//    }
+    private static class ExpenseAmountCalculator implements AmountGrouper.AmountCalculator {
+        private final CurrenciesManager currenciesManager;
 
-//    private static class IncomeAmountCalculator implements AmountGrouper.AmountCalculator {
-//        @Override public boolean isTransactionValid(Transaction transaction) {
-//            return transaction.getTransactionType() == TransactionType.Income;
-//        }
-//    }
+        private ExpenseAmountCalculator(CurrenciesManager currenciesManager) {
+            this.currenciesManager = currenciesManager;
+        }
 
-//    private static class TransferAmountCalculator implements AmountGrouper.AmountCalculator {
-//        @Override public boolean isTransactionValid(Transaction transaction) {
-//            return transaction.getTransactionType() == TransactionType.Transfer;
-//        }
-//    }
+        @Override public long getAmount(Transaction transaction) {
+            return AmountRetriever.getExpenseAmount(transaction, currenciesManager, currenciesManager.getMainCurrencyCode());
+        }
+    }
+
+    private static class IncomeAmountCalculator implements AmountGrouper.AmountCalculator {
+        private final CurrenciesManager currenciesManager;
+
+        private IncomeAmountCalculator(CurrenciesManager currenciesManager) {
+            this.currenciesManager = currenciesManager;
+        }
+
+        @Override public long getAmount(Transaction transaction) {
+            return transaction.getTransactionType() == TransactionType.Income ? AmountRetriever.getIncomeAmount(transaction, currenciesManager, currenciesManager.getMainCurrencyCode()) : 0;
+        }
+    }
+
+    private static class TransferAmountCalculator implements AmountGrouper.AmountCalculator {
+        private final CurrenciesManager currenciesManager;
+
+        private TransferAmountCalculator(CurrenciesManager currenciesManager) {
+            this.currenciesManager = currenciesManager;
+        }
+
+        @Override public long getAmount(Transaction transaction) {
+            return transaction.getTransactionType() == TransactionType.Transfer ? AmountRetriever.getExpenseAmount(transaction, currenciesManager, currenciesManager.getMainCurrencyCode()) : 0;
+        }
+    }
 }

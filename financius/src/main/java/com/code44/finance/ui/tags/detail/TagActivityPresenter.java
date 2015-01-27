@@ -10,9 +10,10 @@ import android.widget.TextView;
 
 import com.code44.finance.R;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.providers.TagsProvider;
+import com.code44.finance.money.AmountFormatter;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelActivityPresenter;
 import com.code44.finance.ui.reports.trends.TrendsChartView;
@@ -22,15 +23,17 @@ import com.code44.finance.utils.interval.BaseInterval;
 
 class TagActivityPresenter extends ModelActivityPresenter<Tag> {
     private final BaseInterval interval;
-    private final CurrencyFormat mainCurrencyFormat;
+    private final CurrenciesManager currenciesManager;
+    private final AmountFormatter amountFormatter;
 
     private TagTrendsChartPresenter tagTrendsChartPresenter;
     private TextView titleTextView;
 
-    public TagActivityPresenter(EventBus eventBus, BaseInterval interval, CurrencyFormat mainCurrencyFormat) {
+    public TagActivityPresenter(EventBus eventBus, BaseInterval interval, CurrenciesManager currenciesManager, AmountFormatter amountFormatter) {
         super(eventBus);
         this.interval = interval;
-        this.mainCurrencyFormat = mainCurrencyFormat;
+        this.currenciesManager = currenciesManager;
+        this.amountFormatter = amountFormatter;
     }
 
     @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
@@ -38,7 +41,7 @@ class TagActivityPresenter extends ModelActivityPresenter<Tag> {
         titleTextView = findView(activity, R.id.titleTextView);
 
         final TrendsChartView trendsChartView = findView(activity, R.id.trendsChartView);
-        tagTrendsChartPresenter = new TagTrendsChartPresenter(trendsChartView, mainCurrencyFormat, activity.getSupportLoaderManager(), interval);
+        tagTrendsChartPresenter = new TagTrendsChartPresenter(trendsChartView, currenciesManager, amountFormatter, activity.getSupportLoaderManager(), interval);
     }
 
     @Override protected CursorLoader getModelCursorLoader(Context context, String modelId) {
