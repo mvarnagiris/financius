@@ -25,7 +25,7 @@
 
                 <FrameLayout
                     android:id="@+id/colorContainerView"
-                    style="@style/Button.Borderless"
+                    style="@style/Button.Flat"
                     android:layout_width="@dimen/keyline_between_large"
                     android:layout_height="match_parent">
 
@@ -79,14 +79,14 @@
 
             <LinearLayout
                 android:id="@+id/transactionTypeContainerView"
-                style="@style/Button.Borderless.Bounded.Select"
+                style="@style/Button.Flat.Borderless.Select"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_large"
                 android:gravity="center_vertical">
 
                 <FrameLayout
-                    style="@style/Button.Borderless"
+                    style="@style/Button.Flat"
                     android:layout_width="@dimen/keyline_content"
                     android:layout_height="wrap_content"
                     android:minHeight="?actionBarSize">

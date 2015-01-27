@@ -8,7 +8,7 @@
 
     <ImageButton
         android:id="@+id/previousImageButton"
-        style="@style/Button.Borderless"
+        style="@style/Button.Flat"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:contentDescription="@string/previous"
@@ -18,7 +18,7 @@
 
     <Button
         android:id="@+id/intervalButton"
-        style="@style/Button.Borderless"
+        style="@style/Button.Flat"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -32,7 +32,7 @@
 
     <ImageButton
         android:id="@+id/nextImageButton"
-        style="@style/Button.Borderless"
+        style="@style/Button.Flat"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:contentDescription="@string/next"

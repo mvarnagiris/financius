@@ -8,7 +8,10 @@ import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.ExchangeRate;
+import com.code44.finance.data.providers.AccountsProvider;
+import com.code44.finance.data.providers.CurrenciesProvider;
 import com.code44.finance.data.providers.ExchangeRatesProvider;
+import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.utils.IOUtils;
 import com.code44.finance.utils.preferences.GeneralPrefs;
 
@@ -51,6 +54,9 @@ public class CurrenciesManager {
     public void setMainCurrencyCode(String mainCurrencyCode) {
         this.mainCurrencyCode = mainCurrencyCode;
         generalPrefs.setMainCurrencyCode(mainCurrencyCode);
+        context.getContentResolver().notifyChange(CurrenciesProvider.uriCurrencies(), null);
+        context.getContentResolver().notifyChange(TransactionsProvider.uriTransactions(), null);
+        context.getContentResolver().notifyChange(AccountsProvider.uriAccounts(), null);
     }
 
     public boolean isMainCurrency(String currencyCode) {

@@ -39,7 +39,7 @@
 
                     <FrameLayout
                         android:id="@+id/transactionTypeContainerView"
-                        style="@style/Button.Borderless"
+                        style="@style/Button.Flat"
                         android:layout_width="@dimen/keyline_content"
                         android:layout_height="match_parent">
 
@@ -72,7 +72,7 @@
 
                         <Button
                             android:id="@+id/amountButton"
-                            style="@style/Button.Borderless"
+                            style="@style/Button.Flat"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -88,7 +88,7 @@
 
                 <Button
                     android:id="@+id/exchangeRateButton"
-                    style="@style/Button.Borderless.Bounded.Select"
+                    style="@style/Button.Flat.Borderless.Select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end|center_vertical"
@@ -101,7 +101,7 @@
 
                 <Button
                     android:id="@+id/amountToButton"
-                    style="@style/Button.Borderless.Bounded.Select"
+                    style="@style/Button.Flat.Borderless.Select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end|center_vertical"
@@ -140,7 +140,7 @@
 
                     <Button
                         android:id="@+id/dateButton"
-                        style="@style/Button.Borderless.Bounded.Select"
+                        style="@style/Button.Flat.Borderless.Select"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -149,7 +149,7 @@
 
                     <Button
                         android:id="@+id/timeButton"
-                        style="@style/Button.Borderless.Bounded.Select"
+                        style="@style/Button.Flat.Borderless.Select"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -187,14 +187,14 @@
 
                         <Button
                             android:id="@+id/accountFromButton"
-                            style="@style/Button.Borderless.Bounded.Select"
+                            style="@style/Button.Flat.Borderless.Select"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/from" />
 
                         <Button
                             android:id="@+id/accountToButton"
-                            style="@style/Button.Borderless.Bounded.Select"
+                            style="@style/Button.Flat.Borderless.Select"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/to"
@@ -244,11 +244,11 @@
                         android:padding="@dimen/action_item_padding"
                         android:src="@drawable/circle"
                         tools:ignore="RtlHardcoded"
-                        tools:tint="@color/text_secondary" />
+                        tools:tint="?android:textColorSecondary" />
 
                     <Button
                         android:id="@+id/categoryButton"
-                        style="@style/Button.Borderless.Bounded.Select"
+                        style="@style/Button.Flat.Borderless.Select"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/categories_one" />
@@ -300,7 +300,7 @@
 
                     <Button
                         android:id="@+id/tagsButton"
-                        style="@style/Button.Borderless.Bounded.Select"
+                        style="@style/Button.Flat.Borderless.Select"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/tags_other" />
@@ -349,7 +349,7 @@
 
                     <AutoCompleteTextView
                         android:id="@+id/noteAutoCompleteTextView"
-                        style="@style/Button.Borderless.Bounded.Select"
+                        style="@style/Button.Flat.Borderless.Select"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"

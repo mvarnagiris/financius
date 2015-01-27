@@ -55,7 +55,7 @@
 
                 <Button
                     android:id="@+id/currencyButton"
-                    style="@style/Button.Borderless.Select"
+                    style="@style/Button.Flat.Select"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="@string/currencies_one"
@@ -63,7 +63,7 @@
 
                 <Button
                     android:id="@+id/balanceButton"
-                    style="@style/Button.Borderless.Select"
+                    style="@style/Button.Flat.Select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/space_normal"

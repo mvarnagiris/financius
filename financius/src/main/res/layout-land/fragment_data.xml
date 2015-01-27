@@ -44,7 +44,7 @@
 
                 <Button
                     android:id="@+id/restoreAndMerge_B"
-                    style="@style/Button.Borderless"
+                    style="@style/Button.Flat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_large"
@@ -57,7 +57,7 @@
 
                 <Button
                     android:id="@+id/restore_B"
-                    style="@style/Button.Borderless"
+                    style="@style/Button.Flat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/clear_and_restore"
