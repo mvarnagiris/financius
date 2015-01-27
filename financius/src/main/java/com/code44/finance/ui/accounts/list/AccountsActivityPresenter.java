@@ -12,6 +12,7 @@ import com.code44.finance.R;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.providers.AccountsProvider;
+import com.code44.finance.money.AmountFormatter;
 import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.accounts.AccountEditActivity;
 import com.code44.finance.ui.accounts.detail.AccountActivity;
@@ -21,11 +22,13 @@ import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 
 public class AccountsActivityPresenter extends ModelsActivityPresenter<Account> {
     private final CurrenciesManager currenciesManager;
+    private final AmountFormatter amountFormatter;
 
     private TextView balanceTextView;
 
-    public AccountsActivityPresenter(CurrenciesManager currenciesManager) {
+    public AccountsActivityPresenter(CurrenciesManager currenciesManager, AmountFormatter amountFormatter) {
         this.currenciesManager = currenciesManager;
+        this.amountFormatter = amountFormatter;
     }
 
     @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
@@ -47,7 +50,7 @@ public class AccountsActivityPresenter extends ModelsActivityPresenter<Account> 
     }
 
     @Override protected ModelsAdapter<Account> createAdapter(ModelsAdapter.OnModelClickListener<Account> defaultOnModelClickListener) {
-        return new AccountsAdapter(defaultOnModelClickListener, currenciesManager);
+        return new AccountsAdapter(defaultOnModelClickListener, currenciesManager, amountFormatter);
     }
 
     @Override protected CursorLoader getModelsCursorLoader(Context context) {
@@ -68,10 +71,10 @@ public class AccountsActivityPresenter extends ModelsActivityPresenter<Account> 
             do {
                 final Account account = Account.from(cursor);
                 if (account.includeInTotals()) {
-// TODO                    balance += account.getBalance() * account.getCurrencyCode().getExchangeRate();
+                    balance += account.getBalance() * currenciesManager.getExchangeRate(account.getCurrencyCode(), currenciesManager.getMainCurrencyCode());
                 }
             } while (cursor.moveToNext());
         }
-// TODO        balanceTextView.setText(currenciesManager.formatMoney(balance));
+        balanceTextView.setText(amountFormatter.format(balance));
     }
 }
