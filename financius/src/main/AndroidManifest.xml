@@ -60,7 +60,7 @@
             android:name=".ui.accounts.detail.AccountActivity"
             android:label="@string/accounts_one" />
         <activity
-            android:name=".ui.accounts.AccountEditActivity"
+            android:name=".ui.accounts.edit.AccountEditActivity"
             android:label="@string/accounts_one" />
         <activity
             android:name=".ui.categories.list.CategoriesActivity"

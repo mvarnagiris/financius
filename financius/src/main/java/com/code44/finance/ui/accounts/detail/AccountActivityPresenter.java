@@ -17,7 +17,7 @@ import com.code44.finance.data.model.Account;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.money.AmountFormatter;
 import com.code44.finance.money.CurrenciesManager;
-import com.code44.finance.ui.accounts.AccountEditActivity;
+import com.code44.finance.ui.accounts.edit.AccountEditActivity;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelActivityPresenter;
 import com.code44.finance.ui.reports.balance.BalanceChartView;

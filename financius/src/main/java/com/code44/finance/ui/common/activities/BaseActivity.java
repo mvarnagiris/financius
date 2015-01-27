@@ -78,6 +78,10 @@ public abstract class BaseActivity extends ActionBarActivity {
             return;
         }
 
+        if (activityPresenter != null) {
+            activityPresenter.onActivityResult(this, requestCode, resultCode, data);
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 

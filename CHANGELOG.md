@@ -19,6 +19,7 @@
 - ```new``` Manual setting of currencies exchange rate is gone for now.
 - ```new``` Updated accounts list page UI.
 - ```new``` Updated account detail page UI.
+- ```new``` Updated account edit page UI.
 - ```new``` Account detail page has balance graph for selected period.
 - ```fix``` Unnoticeable UI improvements to pie chart.
 - ```fix``` Updated separator UI, no longer too white on older versions of Android.

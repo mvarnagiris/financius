@@ -1,5 +1,6 @@
 package com.code44.finance.ui.common.presenters;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.view.Menu;
@@ -13,6 +14,9 @@ public class ActivityPresenter extends Presenter {
 
     public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
         this.activity = activity;
+    }
+
+    public void onActivityResult(BaseActivity activity, int requestCode, int resultCode, Intent data) {
     }
 
     public void onStart(BaseActivity activity) {
