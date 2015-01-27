@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -143,7 +142,7 @@
 
             <Button
                 android:id="@+id/symbolPositionButton"
-                style="@style/Button.Flat.Borderless.Select"
+                style="@style/Button.Flat.Select"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/keyline_content"
@@ -159,7 +158,7 @@
 
             <Button
                 android:id="@+id/groupSeparatorButton"
-                style="@style/Button.Flat.Borderless.Select"
+                style="@style/Button.Flat.Select"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/keyline_content"
@@ -175,7 +174,7 @@
 
             <Button
                 android:id="@+id/decimalSeparatorButton"
-                style="@style/Button.Flat.Borderless.Select"
+                style="@style/Button.Flat.Select"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/keyline_content"
@@ -191,7 +190,7 @@
 
             <Button
                 android:id="@+id/decimalCountButton"
-                style="@style/Button.Flat.Borderless.Select"
+                style="@style/Button.Flat.Select"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/keyline_content"
@@ -204,80 +203,6 @@
                 style="@style/Divider.Thick"
                 android:layout_marginLeft="@dimen/keyline_content"
                 tools:ignore="RtlHardcoded" />
-
-            <LinearLayout
-                android:id="@+id/mainCurrencyContainerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_xxlarge"
-                android:animateLayoutChanges="true"
-                android:clipToPadding="false"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/keyline"
-                android:paddingLeft="@dimen/keyline_content"
-                tools:ignore="RtlHardcoded">
-
-                <CheckBox
-                    android:id="@+id/isDefaultCheckBox"
-                    style="@style/CheckBox.Field"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="-8dp"
-                    android:layout_marginRight="@dimen/keyline"
-                    android:text="@string/set_as_main_currency"
-                    tools:ignore="RtlHardcoded" />
-
-                <TextView
-                    android:id="@+id/currentMainCurrencyTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/keyline"
-                    android:paddingLeft="@dimen/keyline_content_minus_keyline_2x"
-                    android:textAppearance="@style/Text.Caption"
-                    android:textColor="?android:textColorSecondary"
-                    tools:text="Current main currency GBP" />
-
-                <LinearLayout
-                    android:id="@+id/exchangeRateContainerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="-4dp"
-                    android:layout_marginTop="@dimen/space_large">
-
-                    <com.code44.finance.ui.common.views.TintImageView
-                        android:id="@+id/refreshRateImageView"
-                        style="@style/Button.Flat"
-                        android:layout_width="@dimen/action_item"
-                        android:layout_height="@dimen/action_item"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="@dimen/keyline"
-                        android:contentDescription="@string/refresh_rate"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_action_refresh"
-                        app:supportTintColor="?actionItemColor" />
-
-                    <EditText
-                        android:id="@+id/exchangeRateEditText"
-                        style="@style/Button.Flat.Borderless.Select"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginRight="@dimen/keyline"
-                        android:background="@null"
-                        android:hint="@string/exchange_rate"
-                        android:inputType="numberDecimal"
-                        android:minHeight="@dimen/recommended_touch_size"
-                        tools:ignore="NestedWeights" />
-
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/exchangeRateDividerView"
-                    style="@style/Divider.Thick"
-                    android:layout_marginLeft="@dimen/keyline_content_minus_keyline_2x"
-                    tools:ignore="RtlHardcoded" />
-
-            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
