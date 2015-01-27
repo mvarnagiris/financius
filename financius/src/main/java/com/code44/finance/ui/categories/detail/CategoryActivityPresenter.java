@@ -12,8 +12,9 @@ import android.widget.TextView;
 import com.code44.finance.R;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Category;
-import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.CategoriesProvider;
+import com.code44.finance.money.AmountFormatter;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.categories.edit.CategoryEditActivity;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelActivityPresenter;
@@ -23,16 +24,18 @@ import com.code44.finance.utils.interval.BaseInterval;
 
 class CategoryActivityPresenter extends ModelActivityPresenter<Category> {
     private final BaseInterval interval;
-    private final CurrencyFormat mainCurrencyFormat;
+    private final CurrenciesManager currenciesManager;
+    private final AmountFormatter amountFormatter;
 
     private CategoryTrendsChartPresenter categoryTrendsChartPresenter;
     private TextView titleTextView;
     private ImageView colorImageView;
 
-    public CategoryActivityPresenter(EventBus eventBus, BaseInterval interval, CurrencyFormat mainCurrencyFormat) {
+    public CategoryActivityPresenter(EventBus eventBus, BaseInterval interval, CurrenciesManager currenciesManager, AmountFormatter amountFormatter) {
         super(eventBus);
         this.interval = interval;
-        this.mainCurrencyFormat = mainCurrencyFormat;
+        this.currenciesManager = currenciesManager;
+        this.amountFormatter = amountFormatter;
     }
 
     @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
@@ -41,7 +44,7 @@ class CategoryActivityPresenter extends ModelActivityPresenter<Category> {
         colorImageView = findView(activity, R.id.colorImageView);
 
         final TrendsChartView trendsChartView = findView(activity, R.id.trendsChartView);
-        categoryTrendsChartPresenter = new CategoryTrendsChartPresenter(trendsChartView, mainCurrencyFormat, activity.getSupportLoaderManager(), interval);
+        categoryTrendsChartPresenter = new CategoryTrendsChartPresenter(trendsChartView, currenciesManager, amountFormatter, activity.getSupportLoaderManager(), interval);
     }
 
     @Override protected CursorLoader getModelCursorLoader(Context context, String modelId) {

@@ -5,9 +5,10 @@ import android.content.res.Resources;
 import android.database.Cursor;
 
 import com.code44.finance.R;
-import com.code44.finance.data.model.CurrencyFormat;
+import com.code44.finance.money.AmountFormatter;
 import com.code44.finance.money.AmountGrouper;
 import com.code44.finance.ui.common.presenters.Presenter;
+import com.code44.finance.utils.ThemeUtils;
 import com.code44.finance.utils.interval.BaseInterval;
 
 import org.joda.time.Interval;
@@ -15,43 +16,43 @@ import org.joda.time.Period;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import lecho.lib.hellocharts.formatter.LineChartValueFormatter;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;
+import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
 
 public abstract class TrendsChartPresenter extends Presenter {
     private final TrendsChartView trendsChartView;
-    private final CurrencyFormat mainCurrencyFormat;
     private final Formatter formatter;
 
-    public TrendsChartPresenter(TrendsChartView trendsChartView, CurrencyFormat mainCurrencyFormat) {
+    public TrendsChartPresenter(TrendsChartView trendsChartView, AmountFormatter amountFormatter) {
         this.trendsChartView = trendsChartView;
-        this.mainCurrencyFormat = mainCurrencyFormat;
-        this.formatter = new Formatter(mainCurrencyFormat);
+        this.formatter = new Formatter(amountFormatter);
     }
 
     public void setData(Cursor cursor, BaseInterval baseInterval) {
         final AmountGrouper.AmountCalculator[] amountCalculators = getTransactionValidators();
-//        final AmountGrouper amountGrouper = new AmountGrouper(baseInterval);
-//        final Map<AmountGrouper.AmountCalculator, List<Long>> groups = amountGrouper.getGroups(cursor, mainCurrencyFormat, amountCalculators);
+        final AmountGrouper amountGrouper = new AmountGrouper(baseInterval.getInterval(), baseInterval.getType());
+        final Map<AmountGrouper.AmountCalculator, List<Long>> groups = amountGrouper.getGroups(cursor, amountCalculators);
 
-//        final List<Line> lines = new ArrayList<>();
-//        for (AmountGrouper.AmountCalculator amountCalculator : amountCalculators) {
-//            final Line line = getLine(groups.get(amountCalculator))
-//                    .setColor(ThemeUtils.getColor(trendsChartView.getContext(), R.attr.textColorNegative))
-//                    .setHasLabels(true)
-//                    .setHasLabelsOnlyForSelected(true);
-//            onLineCreated(amountCalculator, line);
-//            lines.add(line);
-//        }
-//
-//        final LineChartData lineChartData = new LineChartData(lines);
-//        lineChartData.setAxisXBottom(getAxis(baseInterval));
-//
-//        trendsChartView.setLineGraphData(lineChartData);
+        final List<Line> lines = new ArrayList<>();
+        for (AmountGrouper.AmountCalculator amountCalculator : amountCalculators) {
+            final Line line = getLine(groups.get(amountCalculator))
+                    .setColor(ThemeUtils.getColor(trendsChartView.getContext(), R.attr.textColorNegative))
+                    .setHasLabels(true)
+                    .setHasLabelsOnlyForSelected(true);
+            onLineCreated(amountCalculator, line);
+            lines.add(line);
+        }
+
+        final LineChartData lineChartData = new LineChartData(lines);
+        lineChartData.setAxisXBottom(getAxis(baseInterval));
+
+        trendsChartView.setLineGraphData(lineChartData);
     }
 
     protected abstract AmountGrouper.AmountCalculator[] getTransactionValidators();
@@ -94,18 +95,17 @@ public abstract class TrendsChartPresenter extends Presenter {
     }
 
     private static class Formatter implements LineChartValueFormatter {
-        private final CurrencyFormat mainCurrencyFormat;
+        private final AmountFormatter amountFormatter;
 
-        public Formatter(CurrencyFormat mainCurrencyFormat) {
-            this.mainCurrencyFormat = mainCurrencyFormat;
+        public Formatter(AmountFormatter amountFormatter) {
+            this.amountFormatter = amountFormatter;
         }
 
         @Override public int formatChartValue(char[] chars, PointValue pointValue) {
-//            final char[] fullText = MoneyFormatter.format(mainCurrencyFormat, (long) pointValue.getY()).toCharArray();
-//            final int size = Math.min(chars.length, fullText.length);
-//            System.arraycopy(fullText, 0, chars, chars.length - size, size);
-//            return size;
-            return 0;
+            final char[] fullText = amountFormatter.format((long) pointValue.getY()).toCharArray();
+            final int size = Math.min(chars.length, fullText.length);
+            System.arraycopy(fullText, 0, chars, chars.length - size, size);
+            return size;
         }
     }
 }

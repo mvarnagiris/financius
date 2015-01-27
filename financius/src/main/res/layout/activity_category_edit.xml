@@ -86,7 +86,6 @@
                 android:gravity="center_vertical">
 
                 <FrameLayout
-                    style="@style/Button.Flat"
                     android:layout_width="@dimen/keyline_content"
                     android:layout_height="wrap_content"
                     android:minHeight="?actionBarSize">

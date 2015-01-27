@@ -15,6 +15,7 @@ import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.TransactionsProvider;
+import com.code44.finance.money.AmountFormatter;
 import com.code44.finance.ui.common.activities.BaseDrawerActivity;
 import com.code44.finance.ui.common.navigation.NavigationScreen;
 import com.code44.finance.ui.reports.categories.CategoriesReportData;
@@ -39,6 +40,7 @@ public class OverviewActivity extends BaseDrawerActivity implements LoaderManage
 
     @Inject CurrentInterval currentInterval;
     @Inject CurrencyFormat mainCurrencyFormat;
+    @Inject AmountFormatter amountFormatter;
 
     private OverviewGraphView overviewGraphView;
     private AccountsView accountsView;
@@ -67,7 +69,7 @@ public class OverviewActivity extends BaseDrawerActivity implements LoaderManage
         accountsView = (AccountsView) findViewById(R.id.accounts);
 
         // Setup
-        trendsChartPresenter = new DefaultTrendsChartPresenter(trendsChartView, mainCurrencyFormat);
+        trendsChartPresenter = new DefaultTrendsChartPresenter(trendsChartView, amountFormatter);
         newTransactionView.setOnClickListener(this);
         overviewGraphView.setOnClickListener(this);
         accountsView.setOnClickListener(this);
@@ -117,7 +119,7 @@ public class OverviewActivity extends BaseDrawerActivity implements LoaderManage
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         switch (loader.getId()) {
             case LOADER_TRANSACTIONS:
-                onTransactionsLoaded(cursor);
+// TODO                onTransactionsLoaded(cursor);
                 break;
             case LOADER_ACCOUNTS:
                 onAccountsLoaded(cursor);

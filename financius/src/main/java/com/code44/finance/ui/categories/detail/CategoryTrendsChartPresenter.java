@@ -8,9 +8,12 @@ import android.support.v4.content.Loader;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Category;
-import com.code44.finance.data.model.CurrencyFormat;
+import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
+import com.code44.finance.money.AmountFormatter;
 import com.code44.finance.money.AmountGrouper;
+import com.code44.finance.money.AmountRetriever;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.reports.trends.TrendsChartPresenter;
 import com.code44.finance.ui.reports.trends.TrendsChartView;
 import com.code44.finance.utils.interval.BaseInterval;
@@ -25,10 +28,10 @@ class CategoryTrendsChartPresenter extends TrendsChartPresenter implements Loade
     private BaseInterval baseInterval;
     private Category category;
 
-    public CategoryTrendsChartPresenter(TrendsChartView trendsChartView, CurrencyFormat mainCurrencyFormat, LoaderManager loaderManager, BaseInterval baseInterval) {
-        super(trendsChartView, mainCurrencyFormat);
+    public CategoryTrendsChartPresenter(TrendsChartView trendsChartView, CurrenciesManager currenciesManager, AmountFormatter amountFormatter, LoaderManager loaderManager, BaseInterval baseInterval) {
+        super(trendsChartView, amountFormatter);
         this.loaderManager = loaderManager;
-        amountCalculator = null; // TODO new CategoryAmountCalculator();
+        amountCalculator = new CategoryAmountCalculator(currenciesManager);
         setData(null, baseInterval);
     }
 
@@ -72,9 +75,15 @@ class CategoryTrendsChartPresenter extends TrendsChartPresenter implements Loade
         loaderManager.restartLoader(LOADER_CATEGORY_TRENDS, null, this);
     }
 
-// TODO    private static class CategoryAmountCalculator implements AmountGrouper.AmountCalculator {
-//        @Override public boolean isTransactionValid(Transaction transaction) {
-//            return true;
-//        }
-//    }
+    private static class CategoryAmountCalculator implements AmountGrouper.AmountCalculator {
+        private final CurrenciesManager currenciesManager;
+
+        private CategoryAmountCalculator(CurrenciesManager currenciesManager) {
+            this.currenciesManager = currenciesManager;
+        }
+
+        @Override public long getAmount(Transaction transaction) {
+            return AmountRetriever.getAmount(transaction, currenciesManager, currenciesManager.getMainCurrencyCode());
+        }
+    }
 }

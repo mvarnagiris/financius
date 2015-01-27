@@ -28,7 +28,7 @@ class TagTrendsChartPresenter extends TrendsChartPresenter implements LoaderMana
     private Tag tag;
 
     public TagTrendsChartPresenter(TrendsChartView trendsChartView, CurrencyFormat mainCurrencyFormat, LoaderManager loaderManager, BaseInterval baseInterval) {
-        super(trendsChartView, mainCurrencyFormat);
+        super(trendsChartView, null); // TODO Put AmountFormatter
         this.loaderManager = loaderManager;
 //        expenseValidator = new ExpenseAmountCalculator();
 //        incomeValidator = new IncomeAmountCalculator();

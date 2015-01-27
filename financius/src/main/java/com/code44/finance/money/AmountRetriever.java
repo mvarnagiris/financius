@@ -7,6 +7,14 @@ public final class AmountRetriever {
     private AmountRetriever() {
     }
 
+    public static long getAmount(Transaction transaction, CurrenciesManager currenciesManager, String currencyCode) {
+        if (transaction.getTransactionType() == TransactionType.Income) {
+            return getIncomeAmount(transaction, currenciesManager, currencyCode);
+        } else {
+            return getExpenseAmount(transaction, currenciesManager, currencyCode);
+        }
+    }
+
     public static long getExpenseAmount(Transaction transaction, CurrenciesManager currenciesManager, String currencyCode) {
         if (transaction.getTransactionType() == TransactionType.Income) {
             return 0;
