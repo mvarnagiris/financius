@@ -11,8 +11,9 @@ import android.widget.ListView;
 import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.db.Tables;
-import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.TransactionsProvider;
+import com.code44.finance.money.AmountFormatter;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.common.navigation.NavigationScreen;
 import com.code44.finance.ui.reports.BaseReportActivity;
 import com.code44.finance.utils.analytics.Analytics;
@@ -25,7 +26,8 @@ public class CategoriesReportActivity extends BaseReportActivity implements Load
     private static final int LOADER_TRANSACTIONS = 1;
 
     @Inject ActiveInterval activeInterval;
-    @Inject CurrencyFormat mainCurrencyFormat;
+    @Inject CurrenciesManager currenciesManager;
+    @Inject AmountFormatter amountFormatter;
 
     private CategoriesReportView categoriesReportView;
 
@@ -47,7 +49,7 @@ public class CategoriesReportActivity extends BaseReportActivity implements Load
         final ListView listView = (ListView) findViewById(R.id.listView);
 
         // Setup
-        adapter = new CategoriesReportAdapter(this, mainCurrencyFormat);
+        adapter = new CategoriesReportAdapter(this, amountFormatter);
         listView.setAdapter(adapter);
     }
 
@@ -96,7 +98,7 @@ public class CategoriesReportActivity extends BaseReportActivity implements Load
     }
 
     private void onTransactionsLoaded(Cursor cursor) {
-        final CategoriesReportData categoriesReportData = new CategoriesReportData(this, cursor, mainCurrencyFormat, transactionType);
+        final CategoriesReportData categoriesReportData = new CategoriesReportData(this, cursor, currenciesManager, transactionType);
         categoriesReportView.setPieChartData(categoriesReportData.getPieChartData());
         categoriesReportView.setTotalExpense(categoriesReportData.getPieChartData().getTotalValue());
         adapter.setData(categoriesReportData, categoriesReportData.getPieChartData().getTotalValue());

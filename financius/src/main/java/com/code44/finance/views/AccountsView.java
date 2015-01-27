@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.code44.finance.App;
 import com.code44.finance.R;
 import com.code44.finance.data.model.Account;
+import com.code44.finance.money.AmountFormatter;
 import com.code44.finance.money.CurrenciesManager;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class AccountsView extends LinearLayout {
     private static final int BOTTOM_STATIC_VIEWS_COUNT = 1;
 
     @Inject CurrenciesManager currenciesManager;
+    @Inject AmountFormatter amountFormatter;
 
     private View balanceContainerView;
     private TextView totalBalanceView;
@@ -73,13 +75,13 @@ public class AccountsView extends LinearLayout {
             final Account account = accounts.get(i - TOP_STATIC_VIEWS_COUNT);
             final View view = getChildAt(i);
             ((TextView) view.findViewById(R.id.titleTextView)).setText(account.getTitle());
-// TODO            ((TextView) view.findViewById(R.id.balanceTextView)).setText(currenciesManager.formatMoney(account.getCurrencyCode(), account.getBalance()));
-            totalBalance += account.getBalance() * currenciesManager.getExchangeRate(account.getCurrencyCode());
+            ((TextView) view.findViewById(R.id.balanceTextView)).setText(amountFormatter.format(account.getCurrencyCode(), account.getBalance()));
+            totalBalance += account.getBalance() * currenciesManager.getExchangeRate(account.getCurrencyCode(), currenciesManager.getMainCurrencyCode());
         }
 
         if (accounts.size() > 1) {
             balanceContainerView.setVisibility(VISIBLE);
-// TODO            totalBalanceView.setText(currenciesManager.formatMoney(totalBalance));
+            totalBalanceView.setText(amountFormatter.format(totalBalance));
         } else {
             balanceContainerView.setVisibility(GONE);
         }

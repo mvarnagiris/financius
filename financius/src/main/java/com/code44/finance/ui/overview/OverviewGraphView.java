@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import com.code44.finance.App;
 import com.code44.finance.R;
-import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartView;
+import com.code44.finance.money.AmountFormatter;
 import com.code44.finance.ui.common.ViewBackgroundTheme;
 import com.code44.finance.utils.LayoutType;
 import com.code44.finance.utils.ThemeUtils;
@@ -22,7 +22,7 @@ public class OverviewGraphView extends LinearLayout {
     private final PieChartView pieChartView;
     private final TextView totalExpenseTextView;
 
-    @Inject CurrencyFormat mainCurrencyFormat;
+    @Inject AmountFormatter amountFormatter;
     @Inject LayoutType layoutType;
 
     public OverviewGraphView(Context context) {
@@ -75,7 +75,7 @@ public class OverviewGraphView extends LinearLayout {
     }
 
     public void setTotalExpense(long totalExpense) {
-// TODO        totalExpenseTextView.setText(MoneyFormatter.format(mainCurrencyFormat, totalExpense));
+        totalExpenseTextView.setText(amountFormatter.format(totalExpense));
     }
 
     private void applyStyle(Context context, AttributeSet attrs) {

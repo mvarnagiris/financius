@@ -37,8 +37,10 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:orientation="vertical"
-            android:padding="@dimen/space_normal"
-            android:paddingBottom="@dimen/keyline">
+            android:paddingBottom="@dimen/keyline_content"
+            android:paddingLeft="@dimen/keyline_half"
+            android:paddingRight="@dimen/keyline_half"
+            android:paddingTop="@dimen/keyline_half">
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -70,10 +72,9 @@
         android:id="@+id/newTransaction"
         android:layout_width="@dimen/btn_fab"
         android:layout_height="@dimen/btn_fab"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/overviewGraphContainer"
-        android:layout_marginRight="@dimen/keyline"
-        android:layout_marginTop="@dimen/btn_fab_half_negative"
+        android:layout_margin="@dimen/keyline"
         android:elevation="@dimen/elevation_fab"
         android:scaleType="centerInside"
         android:src="@drawable/ic_action_new"

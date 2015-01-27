@@ -10,20 +10,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code44.finance.R;
-import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.model.Tag;
+import com.code44.finance.money.AmountFormatter;
 
 import java.util.List;
 
 public class CategoriesReportAdapter extends BaseAdapter {
     private final Context context;
-    private final CurrencyFormat defaultCurrencyFormat;
+    private final AmountFormatter amountFormatter;
     private CategoriesReportData categoriesReportData;
     private long totalAmount = 0;
 
-    public CategoriesReportAdapter(Context context, CurrencyFormat defaultCurrencyFormat) {
+    public CategoriesReportAdapter(Context context, AmountFormatter amountFormatter) {
         this.context = context;
-        this.defaultCurrencyFormat = defaultCurrencyFormat;
+        this.amountFormatter = amountFormatter;
     }
 
     @Override public int getCount() {
@@ -52,7 +52,7 @@ public class CategoriesReportAdapter extends BaseAdapter {
         final int percent = getPercent(item.getAmount());
         holder.percent_TV.setText((percent == 0 ? "<1" : (percent == 100 && getCount() > 1 ? ">99" : percent)) + "%");
         holder.title_TV.setText(item.getCategory().getTitle());
-// TODO        holder.amount_TV.setText(MoneyFormatter.format(defaultCurrencyFormat, item.getAmount()));
+        holder.amount_TV.setText(amountFormatter.format(item.getAmount()));
         bindTags((ViewGroup) convertView, item.getTags());
 
         return convertView;

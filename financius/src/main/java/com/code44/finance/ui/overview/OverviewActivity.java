@@ -12,10 +12,10 @@ import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
-import com.code44.finance.data.model.CurrencyFormat;
 import com.code44.finance.data.providers.AccountsProvider;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.money.AmountFormatter;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.common.activities.BaseDrawerActivity;
 import com.code44.finance.ui.common.navigation.NavigationScreen;
 import com.code44.finance.ui.reports.categories.CategoriesReportData;
@@ -39,7 +39,7 @@ public class OverviewActivity extends BaseDrawerActivity implements LoaderManage
     private static final int LOADER_ACCOUNTS = 2;
 
     @Inject CurrentInterval currentInterval;
-    @Inject CurrencyFormat mainCurrencyFormat;
+    @Inject CurrenciesManager currenciesManager;
     @Inject AmountFormatter amountFormatter;
 
     private OverviewGraphView overviewGraphView;
@@ -69,7 +69,7 @@ public class OverviewActivity extends BaseDrawerActivity implements LoaderManage
         accountsView = (AccountsView) findViewById(R.id.accounts);
 
         // Setup
-        trendsChartPresenter = new DefaultTrendsChartPresenter(trendsChartView, amountFormatter);
+        trendsChartPresenter = new DefaultTrendsChartPresenter(trendsChartView, amountFormatter, currenciesManager);
         newTransactionView.setOnClickListener(this);
         overviewGraphView.setOnClickListener(this);
         accountsView.setOnClickListener(this);
@@ -119,7 +119,7 @@ public class OverviewActivity extends BaseDrawerActivity implements LoaderManage
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         switch (loader.getId()) {
             case LOADER_TRANSACTIONS:
-// TODO                onTransactionsLoaded(cursor);
+                onTransactionsLoaded(cursor);
                 break;
             case LOADER_ACCOUNTS:
                 onAccountsLoaded(cursor);
@@ -153,7 +153,7 @@ public class OverviewActivity extends BaseDrawerActivity implements LoaderManage
     }
 
     private void onTransactionsLoaded(Cursor cursor) {
-        final CategoriesReportData categoriesReportData = new CategoriesReportData(this, cursor, mainCurrencyFormat, TransactionType.Expense);
+        final CategoriesReportData categoriesReportData = new CategoriesReportData(this, cursor, currenciesManager, TransactionType.Expense);
         overviewGraphView.setPieChartData(categoriesReportData.getPieChartData());
         overviewGraphView.setTotalExpense(categoriesReportData.getPieChartData().getTotalValue());
 
