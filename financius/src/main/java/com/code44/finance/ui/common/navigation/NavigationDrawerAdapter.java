@@ -31,6 +31,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         selectedBackgroundColor = ThemeUtils.getColor(context, R.attr.backgroundColorSecondary);
 
         navigationItems = new ArrayList<>();
+        navigationItems.add(new HeaderNavigationItem());
         navigationItems.add(new PrimaryNavigationItem(NavigationScreen.Overview, R.drawable.ic_action_overview, R.string.overview));
         navigationItems.add(new PrimaryNavigationItem(NavigationScreen.Accounts, R.drawable.ic_action_account, R.string.accounts_other));
         navigationItems.add(new PrimaryNavigationItem(NavigationScreen.Transactions, R.drawable.ic_action_transactions, R.string.transactions_other));
@@ -126,22 +127,11 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         }
     }
 
-//    private static class HeaderViewHolder extends ViewHolder {
-//        public final ImageView backgroundImageView;
-//        public final ImageView photoImageView;
-//        public final TextView nameTextView;
-//        public final TextView usernameTextView;
-//
-//        private HeaderViewHolder(View view) {
-//            super(view);
-//            backgroundImageView = (ImageView) view.findViewById(R.id.backgroundImageView);
-//            photoImageView = (ImageView) view.findViewById(R.id.photoImageView);
-//            nameTextView = (TextView) view.findViewById(R.id.nameTextView);
-//            usernameTextView = (TextView) view.findViewById(R.id.usernameTextView);
-//
-//            backgroundImageView.setColorFilter(0x66000000, PorterDuff.Mode.DARKEN);
-//        }
-//    }
+    private static class HeaderViewHolder extends ViewHolder {
+        private HeaderViewHolder(View view) {
+            super(view);
+        }
+    }
 
     public abstract static class NavigationItem {
         private final NavigationScreen navigationScreen;
@@ -229,32 +219,25 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         }
     }
 
-//    private class HeaderNavigationItem extends NavigationItem {
-//        private HeaderNavigationItem() {
-//            super(NavigationDrawerItem.Profile, ViewType.Header);
-//        }
-//
-//        @Override
-//        public View inflate(ViewGroup parent) {
-//            return inflater.inflate(R.layout.item_navigation_drawer_header, parent, false);
-//        }
-//
-//        @Override
-//        public ViewHolder createViewHolder(View view) {
-//            return new HeaderViewHolder(view);
-//        }
-//
-//        @Override
-//        public void bind(ViewHolder holder) {
-//            HeaderViewHolder viewHolder = (HeaderViewHolder) holder;
-//
-//
-//            AvatarLoader.loadBackground(viewHolder.backgroundImageView, appUser);
-//            AvatarLoader.load(viewHolder.photoImageView, appUser);
-//            viewHolder.nameTextView.setText(appUser.getFirstName() + " " + appUser.getLastName());
-//            viewHolder.usernameTextView.setText("@" + appUser.getUsername());
-//        }
-//    }
+    private class HeaderNavigationItem extends NavigationItem {
+        private HeaderNavigationItem() {
+            super(NavigationScreen.User, ViewType.Header);
+        }
+
+        @Override
+        public View inflate(ViewGroup parent) {
+            return inflater.inflate(R.layout.li_navigation_header, parent, false);
+        }
+
+        @Override
+        public ViewHolder createViewHolder(View view) {
+            return new HeaderViewHolder(view);
+        }
+
+        @Override
+        public void bind(ViewHolder holder) {
+        }
+    }
 
     private class DividerNavigationItem extends NavigationItem {
         private final boolean showLine;

@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.code44.finance.R;
@@ -104,7 +105,11 @@ public abstract class BaseDrawerActivity extends BaseActivity implements Navigat
         }
 
         if (drawerLayout != null && showDrawerToggle) {
-            drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, getToolbar(), R.string.open_navigation, R.string.close_navigation);
+            drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, getToolbar(), R.string.open_navigation, R.string.close_navigation) {
+                @Override public void onDrawerSlide(View drawerView, float slideOffset) {
+                    super.onDrawerSlide(drawerView, 0);
+                }
+            };
             drawerLayout.setDrawerListener(drawerToggle);
         }
         setupToolbar();
