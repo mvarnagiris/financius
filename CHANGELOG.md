@@ -1,4 +1,4 @@
-###Version: 0.17.2
+###Version: 0.17.2 - Not released
 - ```new``` New trends graph that is interactive.
 - ```new``` Updated settings page UI.
 - ```new``` Updated tags list page UI.
@@ -15,6 +15,8 @@
 - ```new``` Updated currency edit page UI.
 - ```new``` Currencies list has pull to refresh.
 - ```new``` Updated accounts list page UI.
+- ```new``` Supporting exchange rates from all currencies to all currencies.
+- ```new``` Manual setting of currencies exchange rate is gone for now.
 - ```fix``` Unnoticeable UI improvements to pie chart.
 - ```fix``` Updated separator UI, no longer too white on older versions of Android.
 - ```fix``` When selecting account, navigation drawer is no longer visible.

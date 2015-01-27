@@ -15,6 +15,8 @@ import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.providers.AccountsProvider;
+import com.code44.finance.money.AmountFormatter;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.accounts.AccountEditActivity;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelActivityPresenter;
@@ -24,6 +26,8 @@ import com.code44.finance.utils.interval.BaseInterval;
 
 class AccountActivityPresenter extends ModelActivityPresenter<Account> implements LoaderManager.LoaderCallbacks<Cursor> {
     private final BaseInterval baseInterval;
+    private final CurrenciesManager currenciesManager;
+    private final AmountFormatter amountFormatter;
 
     private TextView titleTextView;
     private TextView balanceTextView;
@@ -32,9 +36,11 @@ class AccountActivityPresenter extends ModelActivityPresenter<Account> implement
 
     private AccountBalanceChartPresenter accountBalanceChartPresenter;
 
-    protected AccountActivityPresenter(EventBus eventBus, BaseInterval baseInterval) {
+    protected AccountActivityPresenter(EventBus eventBus, BaseInterval baseInterval, CurrenciesManager currenciesManager, AmountFormatter amountFormatter) {
         super(eventBus);
         this.baseInterval = baseInterval;
+        this.currenciesManager = currenciesManager;
+        this.amountFormatter = amountFormatter;
     }
 
     @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
@@ -46,7 +52,7 @@ class AccountActivityPresenter extends ModelActivityPresenter<Account> implement
         noteTextView = findView(activity, R.id.noteTextView);
         final BalanceChartView balanceChartView = findView(activity, R.id.balanceChartView);
 
-        accountBalanceChartPresenter = new AccountBalanceChartPresenter(balanceChartView, activity.getSupportLoaderManager());
+        accountBalanceChartPresenter = new AccountBalanceChartPresenter(balanceChartView, amountFormatter, currenciesManager, activity.getSupportLoaderManager());
     }
 
     @Override protected CursorLoader getModelCursorLoader(Context context, String modelId) {
@@ -59,15 +65,15 @@ class AccountActivityPresenter extends ModelActivityPresenter<Account> implement
 
     @Override protected void onModelLoaded(Account model) {
         titleTextView.setText(model.getTitle());
-//        balanceTextView.setText(MoneyFormatter.format(model.getCurrencyCode(), model.getBalance()));
+        balanceTextView.setText(amountFormatter.format(model.getCurrencyCode(), model.getBalance()));
         noteTextView.setText(model.getNote());
         noteTextView.setVisibility(Strings.isEmpty(model.getNote()) ? View.GONE : View.VISIBLE);
-//        if (model.getCurrencyCode() == null || model.getCurrencyCode().getId().equals(mainCurrencyFormat.getId())) {
-//            mainCurrencyBalanceTextView.setVisibility(View.GONE);
-//        } else {
-//            mainCurrencyBalanceTextView.setVisibility(View.VISIBLE);
-//            mainCurrencyBalanceTextView.setText(MoneyFormatter.format(mainCurrencyFormat, (long) (model.getBalance() * model.getCurrencyCode().getExchangeRate())));
-//        }
+        if (currenciesManager.isMainCurrency(model.getCurrencyCode())) {
+            mainCurrencyBalanceTextView.setVisibility(View.GONE);
+        } else {
+            mainCurrencyBalanceTextView.setVisibility(View.VISIBLE);
+            mainCurrencyBalanceTextView.setText(amountFormatter.format((long) (model.getBalance() * currenciesManager.getExchangeRate(model.getCurrencyCode(), currenciesManager.getMainCurrencyCode()))));
+        }
         accountBalanceChartPresenter.setAccountAndInterval(model, baseInterval);
     }
 

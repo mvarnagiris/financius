@@ -14,7 +14,7 @@ import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 import com.code44.finance.utils.ThemeUtils;
 
-public class AccountsAdapter extends ModelsAdapter<Account> {
+class AccountsAdapter extends ModelsAdapter<Account> {
     private final CurrenciesManager currenciesManager;
     private final AmountFormatter amountFormatter;
 

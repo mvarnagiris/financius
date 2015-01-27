@@ -20,7 +20,7 @@ import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 
-public class AccountsActivityPresenter extends ModelsActivityPresenter<Account> {
+class AccountsActivityPresenter extends ModelsActivityPresenter<Account> {
     private final CurrenciesManager currenciesManager;
     private final AmountFormatter amountFormatter;
 

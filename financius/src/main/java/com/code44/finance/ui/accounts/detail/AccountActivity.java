@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.code44.finance.R;
-import com.code44.finance.data.model.CurrencyFormat;
+import com.code44.finance.money.AmountFormatter;
+import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ActivityPresenter;
 import com.code44.finance.utils.analytics.Analytics;
@@ -14,8 +15,9 @@ import com.code44.finance.utils.interval.CurrentInterval;
 import javax.inject.Inject;
 
 public class AccountActivity extends BaseActivity {
-    @Inject CurrencyFormat mainCurrencyFormat;
     @Inject CurrentInterval currentInterval;
+    @Inject CurrenciesManager currenciesManager;
+    @Inject AmountFormatter amountFormatter;
 
     public static void start(Context context, String accountId) {
         final Intent intent = makeIntentForActivity(context, AccountActivity.class);
@@ -29,8 +31,7 @@ public class AccountActivity extends BaseActivity {
     }
 
     @Override protected ActivityPresenter onCreateActivityPresenter() {
-//   TODO     return new AccountActivityPresenter(getEventBus(), mainCurrencyFormat, currentInterval);
-        return null;
+        return new AccountActivityPresenter(getEventBus(), currentInterval, currenciesManager, amountFormatter);
     }
 
     @Override protected Analytics.Screen getScreen() {

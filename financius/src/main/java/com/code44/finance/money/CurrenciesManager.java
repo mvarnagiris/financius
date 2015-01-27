@@ -60,7 +60,7 @@ public class CurrenciesManager {
     }
 
     public boolean isMainCurrency(String currencyCode) {
-        return currencyCode.equals(mainCurrencyCode);
+        return currencyCode != null && currencyCode.equals(mainCurrencyCode);
     }
 
     public double getExchangeRate(String to) {

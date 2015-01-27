@@ -6,8 +6,10 @@ import android.database.Cursor;
 
 import com.code44.finance.R;
 import com.code44.finance.data.model.Account;
+import com.code44.finance.money.AmountFormatter;
 import com.code44.finance.money.AmountGrouper;
 import com.code44.finance.ui.common.presenters.Presenter;
+import com.code44.finance.utils.ThemeUtils;
 import com.code44.finance.utils.interval.BaseInterval;
 
 import org.joda.time.Interval;
@@ -16,42 +18,44 @@ import org.joda.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import lecho.lib.hellocharts.formatter.LineChartValueFormatter;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;
+import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
 
 public abstract class BalanceChartPresenter extends Presenter {
     private final BalanceChartView balanceChartView;
-    private final Formatter formatter;
+    private final AmountFormatter amountFormatter;
 
-    public BalanceChartPresenter(BalanceChartView balanceChartView) {
+    public BalanceChartPresenter(BalanceChartView balanceChartView, AmountFormatter amountFormatter) {
         this.balanceChartView = balanceChartView;
-        this.formatter = new Formatter();
+        this.amountFormatter = amountFormatter;
     }
 
     public void setData(Account account, Cursor cursor, BaseInterval baseInterval) {
-        final AmountGrouper.AmountCalculator amountCalculator = getTransactionValidator();
-//        final AmountGrouper amountGrouper = new AmountGrouper(baseInterval);
-//        final Map<AmountGrouper.AmountCalculator, List<Long>> groups = amountGrouper.getGroups(cursor, amountCalculator);
+        final AmountGrouper.AmountCalculator amountCalculator = getTransactionValidator(account);
+        final AmountGrouper amountGrouper = new AmountGrouper(baseInterval.getInterval(), baseInterval.getType());
+        final Map<AmountGrouper.AmountCalculator, List<Long>> groups = amountGrouper.getGroups(cursor, amountCalculator);
 
-//        final List<Line> lines = new ArrayList<>();
-//        final Line line = getLine(account, groups.get(amountCalculator))
-//                .setColor(ThemeUtils.getColor(balanceChartView.getContext(), R.attr.textColorNeutral))
-//                .setHasLabels(true)
-//                .setHasLabelsOnlyForSelected(true);
-//        onLineCreated(amountCalculator, line);
-//        lines.add(line);
-//
-//        final LineChartData lineChartData = new LineChartData(lines);
-//        lineChartData.setAxisXBottom(getAxis(baseInterval));
-//
-//        balanceChartView.setLineGraphData(lineChartData);
+        final List<Line> lines = new ArrayList<>();
+        final Line line = getLine(account, groups.get(amountCalculator))
+                .setColor(ThemeUtils.getColor(balanceChartView.getContext(), R.attr.textColorNeutral))
+                .setHasLabels(true)
+                .setHasLabelsOnlyForSelected(true);
+        onLineCreated(amountCalculator, line);
+        lines.add(line);
+
+        final LineChartData lineChartData = new LineChartData(lines);
+        lineChartData.setAxisXBottom(getAxis(baseInterval));
+
+        balanceChartView.setLineGraphData(lineChartData);
     }
 
-    protected abstract AmountGrouper.AmountCalculator getTransactionValidator();
+    protected abstract AmountGrouper.AmountCalculator getTransactionValidator(Account account);
 
     protected abstract void onLineCreated(AmountGrouper.AmountCalculator amountCalculator, Line line);
 
@@ -75,7 +79,7 @@ public abstract class BalanceChartPresenter extends Presenter {
                 .setCubic(true)
                 .setStrokeWidth(lineWidthDp)
                 .setPointRadius(lineWidthDp)
-                .setFormatter(formatter)
+                .setFormatter(new Formatter(amountFormatter, account.getCurrencyCode()))
                 .setHasPoints(false);
     }
 
@@ -94,15 +98,19 @@ public abstract class BalanceChartPresenter extends Presenter {
     }
 
     private static class Formatter implements LineChartValueFormatter {
-        public Formatter() {
+        private final AmountFormatter amountFormatter;
+        private final String currencyCode;
+
+        public Formatter(AmountFormatter amountFormatter, String currencyCode) {
+            this.amountFormatter = amountFormatter;
+            this.currencyCode = currencyCode;
         }
 
         @Override public int formatChartValue(char[] chars, PointValue pointValue) {
-//            final char[] fullText = MoneyFormatter.format(mainCurrencyFormat, (long) pointValue.getY()).toCharArray();
-//            final int size = Math.min(chars.length, fullText.length);
-//            System.arraycopy(fullText, 0, chars, chars.length - size, size);
-//            return size;
-            return 0;
+            final char[] fullText = amountFormatter.format(currencyCode, (long) pointValue.getY()).toCharArray();
+            final int size = Math.min(chars.length, fullText.length);
+            System.arraycopy(fullText, 0, chars, chars.length - size, size);
+            return size;
         }
     }
 }
