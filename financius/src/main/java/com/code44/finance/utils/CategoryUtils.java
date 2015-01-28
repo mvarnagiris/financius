@@ -25,4 +25,21 @@ public final class CategoryUtils {
             return transaction.getCategory().getColor();
         }
     }
+
+    public static String getTitle(Context context, Transaction transaction) {
+        if (transaction.getCategory() != null) {
+            return transaction.getCategory().getTitle();
+        } else {
+            switch (transaction.getTransactionType()) {
+                case Expense:
+                    return context.getString(R.string.expense);
+                case Income:
+                    return context.getString(R.string.income);
+                case Transfer:
+                    return context.getString(R.string.transfer);
+                default:
+                    throw new IllegalArgumentException("Transaction type " + transaction.getTransactionType() + " is not supported.");
+            }
+        }
+    }
 }

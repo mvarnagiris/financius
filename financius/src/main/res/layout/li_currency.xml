@@ -30,7 +30,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_normal"
+        android:ellipsize="end"
         android:gravity="right"
+        android:singleLine="true"
         tools:text="1.2489" />
 
 </LinearLayout>

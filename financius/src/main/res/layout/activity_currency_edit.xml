@@ -71,7 +71,6 @@
                     android:layout_marginRight="@dimen/space_normal"
                     android:layout_weight="1"
                     android:labelFor="@+id/codeEditTextView"
-                    android:paddingLeft="@dimen/keyline_between_large"
                     android:textAppearance="@style/Text.Display2"
                     android:textColor="?android:textColorPrimaryInverse"
                     android:visibility="gone"
