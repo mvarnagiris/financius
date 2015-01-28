@@ -87,7 +87,7 @@
             android:name=".ui.transactions.detail.TransactionActivity"
             android:label="@string/transactions_one" />
         <activity
-            android:name=".ui.transactions.TransactionEditActivity"
+            android:name=".ui.transactions.edit.TransactionEditActivity"
             android:label="@string/transactions_one" />
         <activity android:name=".ui.user.LoginActivity" />
         <activity

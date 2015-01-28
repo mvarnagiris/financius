@@ -22,7 +22,7 @@ import com.code44.finance.ui.reports.categories.CategoriesReportData;
 import com.code44.finance.ui.reports.trends.DefaultTrendsChartPresenter;
 import com.code44.finance.ui.reports.trends.TrendsChartPresenter;
 import com.code44.finance.ui.reports.trends.TrendsChartView;
-import com.code44.finance.ui.transactions.TransactionEditActivity;
+import com.code44.finance.ui.transactions.edit.TransactionEditActivity;
 import com.code44.finance.utils.analytics.Analytics;
 import com.code44.finance.utils.interval.CurrentInterval;
 import com.code44.finance.views.AccountsView;

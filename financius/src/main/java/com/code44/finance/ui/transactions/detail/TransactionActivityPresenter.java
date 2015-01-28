@@ -23,7 +23,7 @@ import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.money.AmountFormatter;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.ModelActivityPresenter;
-import com.code44.finance.ui.transactions.TransactionEditActivity;
+import com.code44.finance.ui.transactions.edit.TransactionEditActivity;
 import com.code44.finance.utils.AccountUtils;
 import com.code44.finance.utils.CategoryUtils;
 import com.code44.finance.utils.EventBus;
