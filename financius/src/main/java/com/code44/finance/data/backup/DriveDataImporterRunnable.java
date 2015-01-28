@@ -35,7 +35,7 @@ public class DriveDataImporterRunnable implements Runnable {
         final DriveApi.DriveContentsResult result = driveFile.open(googleApiClient, DriveFile.MODE_READ_ONLY, null).await();
 
         if (!result.getStatus().isSuccess()) {
-            throw new ImportError("Import failed.");
+            throw new ImportError("Import failed. Result status from Google Drive " + result.getStatus().getStatusMessage());
         }
 
         final DriveContents contents = result.getDriveContents();
