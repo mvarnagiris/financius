@@ -57,6 +57,6 @@ class CategoriesActivityPresenter extends ModelsActivityPresenter<Category> {
 
     @Override protected RecyclerView.ItemDecoration[] getItemDecorations() {
         final Context context = getActivity();
-        return new RecyclerView.ItemDecoration[]{new DividerDecoration(context).setPaddingLeft(context.getResources().getDimensionPixelSize(R.dimen.keyline_content)), new SectionsDecoration()};
+        return new RecyclerView.ItemDecoration[]{new DividerDecoration(context).setPaddingLeft(context.getResources().getDimensionPixelSize(R.dimen.keyline_content)), new SectionsDecoration(true)};
     }
 }

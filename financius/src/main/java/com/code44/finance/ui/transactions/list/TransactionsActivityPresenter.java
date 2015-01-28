@@ -64,6 +64,8 @@ class TransactionsActivityPresenter extends ModelsActivityPresenter<Transaction>
 
     @Override protected RecyclerView.ItemDecoration[] getItemDecorations() {
         final Context context = getActivity();
-        return new RecyclerView.ItemDecoration[]{new DividerDecoration(context).setPaddingLeft(context.getResources().getDimensionPixelSize(R.dimen.keyline_content)), new SectionsDecoration()};
+        final RecyclerView.ItemDecoration dividerDecoration = new DividerDecoration(context).setPaddingLeft(context.getResources().getDimensionPixelSize(R.dimen.keyline_content));
+        final RecyclerView.ItemDecoration sectionDecoration = new SectionsDecoration(true);
+        return new RecyclerView.ItemDecoration[]{dividerDecoration, sectionDecoration};
     }
 }
