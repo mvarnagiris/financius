@@ -25,6 +25,7 @@
 - ```new``` Navigation drawer UI.
 - ```new``` Updated transactions list page UI.
 - ```new``` Updated transactions detail page UI.
+- ```new``` Better typography throughout the app. Especially on pre-Lollipop.
 - ```fix``` Unnoticeable UI improvements to pie chart.
 - ```fix``` Updated separator UI, no longer too white on older versions of Android.
 - ```fix``` When selecting account, navigation drawer is no longer visible.

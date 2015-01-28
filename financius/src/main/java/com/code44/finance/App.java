@@ -7,6 +7,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class App extends Application {
     private ObjectGraph objectGraph;
@@ -27,6 +28,11 @@ public class App extends Application {
 //                .penaltyDeath()
 //                .penaltyLog()
 //                .build());
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
         buildObjectGraphAndInject();
         JodaTimeAndroid.init(this);
     }

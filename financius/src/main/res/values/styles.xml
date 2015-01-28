@@ -3,29 +3,56 @@
     <!-- Text -->
     <!-- ======================================================================================= -->
 
-    <style name="Text" parent="TextAppearance.AppCompat" />
+    <style name="Text" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
 
-    <style name="Text.Body1" parent="TextAppearance.AppCompat.Body1" />
+    <style name="Text.Body1" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">14sp</item>
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
 
-    <style name="Text.Body2" parent="TextAppearance.AppCompat.Body2" />
+    <style name="Text.Body2" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:textSize">14sp</item>
+        <item name="fontPath">fonts/Roboto-Medium.ttf</item>
+    </style>
 
-    <style name="Text.Button" parent="TextAppearance.AppCompat.Button" />
+    <style name="Text.Button" parent="TextAppearance.AppCompat.Button">
+        <item name="fontPath">fonts/Roboto-Medium.ttf</item>
+    </style>
 
-    <style name="Text.Caption" parent="TextAppearance.AppCompat.Caption" />
+    <style name="Text.Caption" parent="TextAppearance.AppCompat.Caption">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
 
-    <style name="Text.Display1" parent="TextAppearance.AppCompat.Display1" />
+    <style name="Text.Display1" parent="TextAppearance.AppCompat.Display1">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
 
-    <style name="Text.Display2" parent="TextAppearance.AppCompat.Display2" />
+    <style name="Text.Display2" parent="TextAppearance.AppCompat.Display2">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
 
-    <style name="Text.Display3" parent="TextAppearance.AppCompat.Display3" />
+    <style name="Text.Display3" parent="TextAppearance.AppCompat.Display3">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
 
-    <style name="Text.Display4" parent="TextAppearance.AppCompat.Display4" />
+    <style name="Text.Display4" parent="TextAppearance.AppCompat.Display4">
+        <item name="fontPath">fonts/Roboto-Light.ttf</item>
+    </style>
 
-    <style name="Text.Headline" parent="TextAppearance.AppCompat.Headline" />
+    <style name="Text.Headline" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
 
-    <style name="Text.Subhead" parent="TextAppearance.AppCompat.Subhead" />
+    <style name="Text.Subhead" parent="TextAppearance.AppCompat.Subhead">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
 
-    <style name="Text.Title" parent="TextAppearance.AppCompat.Title" />
+    <style name="Text.Title" parent="TextAppearance.AppCompat.Title">
+        <item name="fontPath">fonts/Roboto-Medium.ttf</item>
+    </style>
 
     <!-- ImageView -->
     <!-- =========================================================================================================== -->

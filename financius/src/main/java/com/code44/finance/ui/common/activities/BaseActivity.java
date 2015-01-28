@@ -22,6 +22,8 @@ import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public abstract class BaseActivity extends ActionBarActivity {
     private static final int REQUEST_UNLOCK = 17172;
 
@@ -53,6 +55,10 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     protected static void startActivityForResult(Activity activity, Intent intent, int requestCode) {
         activity.startActivityForResult(intent, requestCode);
+    }
+
+    @Override protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
