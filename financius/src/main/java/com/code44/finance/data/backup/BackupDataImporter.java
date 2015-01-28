@@ -36,9 +36,11 @@ import com.google.gson.stream.JsonReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class BackupDataImporter extends DataImporter {
@@ -67,10 +69,10 @@ public class BackupDataImporter extends DataImporter {
                 cleanDatabase(database);
             }
 
-            importCurrencies(json);
+            final Map<String, CurrencyFormat> currencyFormats = importCurrencies(json);
             importCategories(json);
             importTags(json);
-            importAccounts(json);
+            importAccounts(json, version, currencyFormats);
             importTransactions(json);
 
             if (version <= 7) {
@@ -108,12 +110,13 @@ public class BackupDataImporter extends DataImporter {
         database.delete(Tables.TransactionTags.TABLE_NAME, null, null);
     }
 
-    private void importCurrencies(JsonObject json) {
+    private Map<String, CurrencyFormat> importCurrencies(JsonObject json) {
+        final Map<String, CurrencyFormat> currencyFormats = new HashMap<>();
         final List<ContentValues> valuesList = new ArrayList<>();
         final JsonArray modelsJson = json.getAsJsonArray("currencies");
-        final CurrencyFormat model = new CurrencyFormat();
         for (int i = 0, size = modelsJson.size(); i < size; i++) {
             final JsonObject modelJson = modelsJson.get(i).getAsJsonObject();
+            final CurrencyFormat model = new CurrencyFormat();
             updateBaseModel(model, modelJson);
             model.setCode(modelJson.get("code").getAsString());
             model.setSymbol(modelJson.get("symbol").getAsString());
@@ -122,8 +125,10 @@ public class BackupDataImporter extends DataImporter {
             model.setGroupSeparator(GroupSeparator.fromSymbol(modelJson.get("group_separator").getAsString()));
             model.setDecimalCount(modelJson.get("decimal_count").getAsInt());
             valuesList.add(model.asContentValues());
+            currencyFormats.put(model.getId(), model);
         }
         insert(valuesList, CurrenciesProvider.uriCurrencies());
+        return currencyFormats;
     }
 
     private void importCategories(JsonObject json) {
@@ -155,14 +160,19 @@ public class BackupDataImporter extends DataImporter {
         insert(valuesList, TagsProvider.uriTags());
     }
 
-    private void importAccounts(JsonObject json) {
+    private void importAccounts(JsonObject json, int version, Map<String, CurrencyFormat> currencyFormats) {
         final List<ContentValues> valuesList = new ArrayList<>();
         final JsonArray modelsJson = json.getAsJsonArray("accounts");
         final Account model = new Account();
         for (int i = 0, size = modelsJson.size(); i < size; i++) {
             final JsonObject modelJson = modelsJson.get(i).getAsJsonObject();
             updateBaseModel(model, modelJson);
-            model.setTitle(modelJson.get("currency_code").getAsString());
+            if (version >= 9) {
+                model.setCurrencyCode(modelJson.get("currency_code").getAsString());
+            } else {
+                final CurrencyFormat currencyFormat = currencyFormats.get(modelJson.get("currency_id").getAsString());
+                model.setCurrencyCode(currencyFormat != null ? currencyFormat.getCode() : "USD");
+            }
             model.setTitle(modelJson.get("title").getAsString());
             model.setNote(modelJson.get("note").getAsString());
             model.setIncludeInTotals(modelJson.get("include_in_totals").getAsBoolean());
