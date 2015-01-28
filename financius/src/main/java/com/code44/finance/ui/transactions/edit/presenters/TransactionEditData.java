@@ -9,7 +9,6 @@ import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
-import com.code44.finance.ui.common.presenters.Presenter;
 import com.code44.finance.ui.transactions.edit.autocomplete.AutoCompleteResult;
 
 import java.util.ArrayList;
@@ -443,33 +442,33 @@ public class TransactionEditData implements Parcelable {
         return validateAmount(null) && validateAccountFrom(null) && validateAccountTo(null);
     }
 
-    public boolean validateAmount(Presenter controller) {
+    public boolean validateAmount(AmountPresenter controller) {
         if (getAmount() > 0) {
             return true;
         }
 
         if (controller != null) {
-            controller.showError(new Throwable());
+            controller.showError();
         }
 
         return false;
     }
 
-    public boolean validateAccountFrom(Presenter controller) {
+    public boolean validateAccountFrom(AccountsPresenter controller) {
         if (getTransactionType() == TransactionType.Income) {
             return true;
         }
 
         if (getAccountFrom() == null) {
             if (controller != null) {
-                controller.showError(new Throwable());
+                controller.showError();
             }
             return false;
         }
 
         if (getTransactionType() == TransactionType.Transfer && getAccountFrom().equals(getAccountTo())) {
             if (controller != null) {
-                controller.showError(new Throwable());
+                controller.showError();
             }
             return false;
         }
@@ -477,21 +476,21 @@ public class TransactionEditData implements Parcelable {
         return true;
     }
 
-    public boolean validateAccountTo(Presenter controller) {
+    public boolean validateAccountTo(AccountsPresenter controller) {
         if (getTransactionType() == TransactionType.Expense) {
             return true;
         }
 
         if (getAccountTo() == null) {
             if (controller != null) {
-                controller.showError(new Throwable());
+                controller.showError();
             }
             return false;
         }
 
         if (getTransactionType() == TransactionType.Transfer && getAccountTo().equals(getAccountFrom())) {
             if (controller != null) {
-                controller.showError(new Throwable());
+                controller.showError();
             }
             return false;
         }

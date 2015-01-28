@@ -11,6 +11,7 @@ import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
 import com.code44.finance.money.AmountFormatter;
+import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 import com.code44.finance.ui.common.recycler.DividerDecoration;
@@ -32,13 +33,13 @@ class TransactionsActivityPresenter extends ModelsActivityPresenter<Transaction>
         this.currentInterval = currentInterval;
     }
 
-    @Override public void onResume() {
-        super.onResume();
+    @Override public void onResume(BaseActivity activity) {
+        super.onResume(activity);
         eventBus.register(this);
     }
 
-    @Override public void onPause() {
-        super.onPause();
+    @Override public void onPause(BaseActivity activity) {
+        super.onPause(activity);
         eventBus.unregister(this);
     }
 

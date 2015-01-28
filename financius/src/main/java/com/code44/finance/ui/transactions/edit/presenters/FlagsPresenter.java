@@ -18,9 +18,6 @@ public class FlagsPresenter extends Presenter {
         includeInReportsCheckBox.setOnCheckedChangeListener(checkedChangeListener);
     }
 
-    @Override public void showError(Throwable error) {
-    }
-
     public void setIncludeInReports(boolean includeInReports) {
         includeInReportsCheckBox.setOnCheckedChangeListener(null);
         includeInReportsCheckBox.setChecked(includeInReports);

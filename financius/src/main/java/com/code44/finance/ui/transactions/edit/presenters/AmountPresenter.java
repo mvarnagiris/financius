@@ -6,6 +6,7 @@ import android.widget.Button;
 import com.code44.finance.R;
 import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.data.model.Account;
+import com.code44.finance.money.AmountFormatter;
 import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.common.activities.BaseActivity;
 import com.code44.finance.ui.common.presenters.Presenter;
@@ -17,6 +18,7 @@ import java.util.Locale;
 
 public class AmountPresenter extends Presenter {
     private final CurrenciesManager currenciesManager;
+    private final AmountFormatter amountFormatter;
     private final Button amountButton;
     private final Button exchangeRateButton;
     private final Button amountToButton;
@@ -27,8 +29,9 @@ public class AmountPresenter extends Presenter {
     private long amount = 0;
     private double exchangeRate = 1.0;
 
-    public AmountPresenter(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener, CurrenciesManager currenciesManager) {
+    public AmountPresenter(BaseActivity activity, View.OnClickListener clickListener, View.OnLongClickListener longClickListener, CurrenciesManager currenciesManager, AmountFormatter amountFormatter) {
         this.currenciesManager = currenciesManager;
+        this.amountFormatter = amountFormatter;
 
         amountButton = findView(activity, R.id.amountButton);
         exchangeRateButton = findView(activity, R.id.exchangeRateButton);
@@ -42,7 +45,7 @@ public class AmountPresenter extends Presenter {
         amountButton.setOnLongClickListener(longClickListener);
     }
 
-    @Override public void showError(Throwable error) {
+    public void showError() {
         amountButton.setTextColor(ThemeUtils.getColor(amountButton.getContext(), R.attr.colorError));
     }
 
@@ -97,14 +100,14 @@ public class AmountPresenter extends Presenter {
                     format.setGroupingUsed(false);
                     format.setMaximumFractionDigits(20);
                     exchangeRateButton.setText(format.format(exchangeRate));
-// TODO                    amountToButton.setText(currenciesManager.formatMoney(accountTo.getCurrencyCode(), Math.round(amount * exchangeRate)));
+                    amountToButton.setText(amountFormatter.format(accountTo.getCurrencyCode(), Math.round(amount * exchangeRate)));
                 } else {
                     exchangeRateButton.setVisibility(View.GONE);
                     amountToButton.setVisibility(View.GONE);
                 }
                 break;
         }
-// TODO        amountButton.setText(currenciesManager.formatMoney(getAmountCurrency(), amount));
+        amountButton.setText(amountFormatter.format(getAmountCurrency(), amount));
     }
 
     private String getAmountCurrency() {

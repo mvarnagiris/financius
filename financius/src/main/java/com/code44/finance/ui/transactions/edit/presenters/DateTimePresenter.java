@@ -25,9 +25,6 @@ public class DateTimePresenter extends Presenter {
         timeButton.setOnLongClickListener(longClickListener);
     }
 
-    @Override public void showError(Throwable error) {
-    }
-
     public void setDateTime(long date) {
         final DateTime dateTime = new DateTime(date);
         dateButton.setText(DateUtils.formatDateTime(dateButton.getContext(), dateTime, DateUtils.FORMAT_SHOW_DATE));

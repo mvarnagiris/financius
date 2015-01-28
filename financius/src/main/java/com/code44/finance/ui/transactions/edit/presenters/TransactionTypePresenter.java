@@ -19,10 +19,7 @@ public class TransactionTypePresenter extends Presenter {
         transactionTypeContainerView.setOnClickListener(clickListener);
     }
 
-    @Override public void showError(Throwable error) {
-    }
-
-    protected void setTransactionType(TransactionType transactionType) {
+    public void setTransactionType(TransactionType transactionType) {
         final int color;
         switch (transactionType) {
             case Expense:

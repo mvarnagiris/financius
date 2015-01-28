@@ -37,9 +37,6 @@ public class MultipleTagsPresenter extends Presenter implements AutoCompletePres
         tagsButton.setOnLongClickListener(longClickListener);
     }
 
-    @Override public void showError(Throwable error) {
-    }
-
     @Override public void onAutoCompleteAdapterShown(AutoCompleteAdapter autoCompleteAdapter) {
         tagsButton.setHint(R.string.show_all);
         tagsDividerView.setVisibility(View.GONE);

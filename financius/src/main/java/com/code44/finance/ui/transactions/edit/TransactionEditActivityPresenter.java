@@ -1,30 +1,34 @@
-package com.code44.finance.ui.transactions.edit.presenters;
+package com.code44.finance.ui.transactions.edit;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.content.CursorLoader;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 
 import com.code44.finance.R;
-import com.code44.finance.api.currencies.CurrenciesApi;
 import com.code44.finance.common.model.TransactionState;
 import com.code44.finance.common.model.TransactionType;
-import com.code44.finance.common.utils.Strings;
 import com.code44.finance.data.DataStore;
+import com.code44.finance.data.db.Tables;
 import com.code44.finance.data.model.Account;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.Tag;
 import com.code44.finance.data.model.Transaction;
 import com.code44.finance.data.providers.TransactionsProvider;
+import com.code44.finance.money.AmountFormatter;
 import com.code44.finance.money.CurrenciesManager;
 import com.code44.finance.ui.CalculatorActivity;
 import com.code44.finance.ui.accounts.list.AccountsActivity;
 import com.code44.finance.ui.categories.list.CategoriesActivity;
 import com.code44.finance.ui.common.ModelListActivity;
 import com.code44.finance.ui.common.activities.BaseActivity;
+import com.code44.finance.ui.common.presenters.ModelEditActivityPresenter;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
-import com.code44.finance.ui.common.presenters.Presenter;
 import com.code44.finance.ui.dialogs.DatePickerDialog;
 import com.code44.finance.ui.dialogs.TimePickerDialog;
 import com.code44.finance.ui.tags.list.TagsActivity;
@@ -33,6 +37,16 @@ import com.code44.finance.ui.transactions.edit.autocomplete.AutoCompleteInput;
 import com.code44.finance.ui.transactions.edit.autocomplete.AutoCompleteResult;
 import com.code44.finance.ui.transactions.edit.autocomplete.TransactionAutoComplete;
 import com.code44.finance.ui.transactions.edit.autocomplete.smart.SmartTransactionAutoComplete;
+import com.code44.finance.ui.transactions.edit.presenters.AccountsPresenter;
+import com.code44.finance.ui.transactions.edit.presenters.AmountPresenter;
+import com.code44.finance.ui.transactions.edit.presenters.CategoryPresenter;
+import com.code44.finance.ui.transactions.edit.presenters.DateTimePresenter;
+import com.code44.finance.ui.transactions.edit.presenters.FlagsPresenter;
+import com.code44.finance.ui.transactions.edit.presenters.MultipleTagsPresenter;
+import com.code44.finance.ui.transactions.edit.presenters.NotePresenter;
+import com.code44.finance.ui.transactions.edit.presenters.TransactionEditData;
+import com.code44.finance.ui.transactions.edit.presenters.TransactionStatePresenter;
+import com.code44.finance.ui.transactions.edit.presenters.TransactionTypePresenter;
 import com.code44.finance.utils.EventBus;
 import com.squareup.otto.Subscribe;
 
@@ -42,7 +56,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-public class TransactionPresenter extends Presenter implements TransactionAutoComplete.TransactionAutoCompleteListener, NotePresenter.Callbacks, View.OnClickListener, View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
+class TransactionEditActivityPresenter extends ModelEditActivityPresenter<Transaction> implements TransactionAutoComplete.TransactionAutoCompleteListener, NotePresenter.Callbacks, View.OnClickListener, View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int REQUEST_AMOUNT = 1;
     private static final int REQUEST_ACCOUNT_FROM = 2;
     private static final int REQUEST_ACCOUNT_TO = 3;
@@ -57,34 +71,36 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
 
     private static final boolean LOG_AUTO_COMPLETE = true;
 
-    private final BaseActivity activity;
-    private final EventBus eventBus;
+    private final CurrenciesManager currenciesManager;
+    private final AmountFormatter amountFormatter;
     private final Executor autoCompleteExecutor;
-    private final CurrenciesApi currenciesApi;
-    private final OnTransactionUpdatedListener listener;
 
-    private final TransactionEditData transactionEditData;
+    private Button saveButton;
+    private TransactionTypePresenter transactionTypeViewController;
+    private AmountPresenter amountViewController;
+    private DateTimePresenter dateTimeViewController;
+    private AccountsPresenter accountsViewController;
+    private CategoryPresenter categoryViewController;
+    private MultipleTagsPresenter tagsViewController;
+    private NotePresenter noteViewController;
+    private TransactionStatePresenter transactionStateViewController;
+    private FlagsPresenter flagsViewController;
 
-    private final TransactionTypePresenter transactionTypeViewController;
-    private final AmountPresenter amountViewController;
-    private final DateTimePresenter dateTimeViewController;
-    private final AccountsPresenter accountsViewController;
-    private final CategoryPresenter categoryViewController;
-    private final MultipleTagsPresenter tagsViewController;
-    private final NotePresenter noteViewController;
-    private final TransactionStatePresenter transactionStateViewController;
-    private final FlagsPresenter flagsViewController;
-
+    private TransactionEditData transactionEditData;
     private AutoCompleteAdapter<?> currentAutoCompleteAdapter;
     private boolean isUpdated = false;
     private boolean isAutoCompleteUpdateQueued = false;
+    private boolean isResumed = false;
 
-    public TransactionPresenter(BaseActivity activity, String transactionId, Bundle savedInstanceState, EventBus eventBus, Executor autoCompleteExecutor, CurrenciesManager currenciesManager, CurrenciesApi currenciesApi, OnTransactionUpdatedListener listener) {
-        this.activity = activity;
-        this.eventBus = eventBus;
+    public TransactionEditActivityPresenter(EventBus eventBus, Executor autoCompleteExecutor, CurrenciesManager currenciesManager, AmountFormatter amountFormatter) {
+        super(eventBus);
+        this.currenciesManager = currenciesManager;
+        this.amountFormatter = amountFormatter;
         this.autoCompleteExecutor = autoCompleteExecutor;
-        this.currenciesApi = currenciesApi;
-        this.listener = listener;
+    }
+
+    @Override public void onCreate(BaseActivity activity, Bundle savedInstanceState) {
+        super.onCreate(activity, savedInstanceState);
 
         if (savedInstanceState == null) {
             transactionEditData = new TransactionEditData();
@@ -92,8 +108,9 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
             transactionEditData = savedInstanceState.getParcelable(STATE_TRANSACTION_EDIT_DATA);
         }
 
+        saveButton = findView(activity, R.id.saveButton);
         transactionTypeViewController = new TransactionTypePresenter(activity, this);
-        amountViewController = new AmountPresenter(activity, this, this, currenciesManager);
+        amountViewController = new AmountPresenter(activity, this, this, currenciesManager, amountFormatter);
         dateTimeViewController = new DateTimePresenter(activity, this, this);
         accountsViewController = new AccountsPresenter(activity, this, this);
         categoryViewController = new CategoryPresenter(activity, this, this);
@@ -102,7 +119,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
         transactionStateViewController = new TransactionStatePresenter(activity, this);
         flagsViewController = new FlagsPresenter(activity, this);
 
-        if (Strings.isEmpty(transactionId) || transactionId.equals("0")) {
+        if (isNewModel()) {
             if (savedInstanceState == null) {
                 CalculatorActivity.start(activity, REQUEST_AMOUNT, 0);
             }
@@ -111,9 +128,10 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
         }
     }
 
-    @Override public void onResume() {
-        super.onResume();
-        eventBus.register(this);
+    @Override public void onResume(BaseActivity activity) {
+        super.onResume(activity);
+        isResumed = true;
+        getEventBus().register(this);
         if (!isUpdated) {
             update(false);
         } else if (isAutoCompleteUpdateQueued) {
@@ -121,13 +139,88 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
         }
     }
 
-    @Override public void onPause() {
-        super.onPause();
-        eventBus.unregister(this);
+    @Override public void onPause(BaseActivity activity) {
+        super.onPause(activity);
+        isResumed = false;
+        getEventBus().unregister(this);
     }
 
-    @Override public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+    @Override protected void onDataChanged(Transaction storedModel) {
+        transactionEditData.setStoredTransaction(storedModel);
+
+        updateTransactionType(transactionEditData.getTransactionType());
+        updateAmount(transactionEditData.getAmount());
+        updateExchangeRate(transactionEditData.getExchangeRate());
+        updateDate(transactionEditData.getDate());
+        updateAccountFrom(transactionEditData.getAccountFrom());
+        updateAccountTo(transactionEditData.getAccountTo());
+        updateCategory(transactionEditData.getCategory());
+        updateTags(transactionEditData.getTags());
+        updateTransactionState(transactionEditData.getTransactionState());
+        updateIncludeInReports(transactionEditData.getIncludeInReports());
+
+        if (!noteViewController.hasFocus()) {
+            updateNote(transactionEditData.getNote());
+        }
+
+        saveButton.setText(transactionEditData.getTransactionState() == TransactionState.Confirmed ? R.string.save : R.string.pending);
+    }
+
+    @Override protected boolean onSave() {
+        DataStore.insert().values(transactionEditData.getModel().asContentValues()).into(getActivity(), TransactionsProvider.uriTransactions());
+        return true;
+    }
+
+    @Override protected CursorLoader getModelCursorLoader(Context context, String modelId) {
+        return Tables.Transactions.getQuery().asCursorLoader(context, TransactionsProvider.uriTransaction(modelId));
+    }
+
+    @Override protected Transaction getModelFrom(Cursor cursor) {
+        return Transaction.from(cursor);
+    }
+
+    @Override public void onActivityResult(BaseActivity activity, int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(activity, requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_AMOUNT:
+                    transactionEditData.setAmount(data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0));
+                    requestAutoComplete();
+                    break;
+                case REQUEST_EXCHANGE_RATE:
+                    transactionEditData.setExchangeRate(data.getDoubleExtra(CalculatorActivity.RESULT_EXTRA_RAW_RESULT, 1.0));
+                    requestAutoComplete();
+                    break;
+                case REQUEST_AMOUNT_TO:
+                    final long newAmount = Math.round(data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0) / transactionEditData.getExchangeRate());
+                    transactionEditData.setAmount(newAmount);
+                    refreshExchangeRate();
+                    requestAutoComplete();
+                    break;
+                case REQUEST_ACCOUNT_FROM:
+                    transactionEditData.setAccountFrom(ModelListActivity.<Account>getModelExtra(data));
+                    refreshExchangeRate();
+                    requestAutoComplete();
+                    break;
+                case REQUEST_ACCOUNT_TO:
+                    transactionEditData.setAccountTo(ModelListActivity.<Account>getModelExtra(data));
+                    refreshExchangeRate();
+                    requestAutoComplete();
+                    break;
+                case REQUEST_CATEGORY:
+                    transactionEditData.setCategory(ModelsActivityPresenter.<Category>getModelExtra(data));
+                    requestAutoComplete();
+                    break;
+                case REQUEST_TAGS:
+                    transactionEditData.setTags(ModelsActivityPresenter.<Tag>getModelsExtra(data));
+                    requestAutoComplete();
+                    break;
+            }
+        }
+    }
+
+    @Override public void onSaveInstanceState(BaseActivity activity, Bundle outState) {
+        super.onSaveInstanceState(activity, outState);
         outState.putParcelable(STATE_TRANSACTION_EDIT_DATA, transactionEditData);
     }
 
@@ -137,19 +230,19 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
                 toggleTransactionType();
                 break;
             case R.id.amountButton:
-                CalculatorActivity.start(activity, REQUEST_AMOUNT, transactionEditData.getAmount());
+                CalculatorActivity.start(getActivity(), REQUEST_AMOUNT, transactionEditData.getAmount());
                 break;
             case R.id.exchangeRateButton:
-                CalculatorActivity.start(activity, REQUEST_EXCHANGE_RATE, transactionEditData.getExchangeRate());
+                CalculatorActivity.start(getActivity(), REQUEST_EXCHANGE_RATE, transactionEditData.getExchangeRate());
                 break;
             case R.id.amountToButton:
-                CalculatorActivity.start(activity, REQUEST_AMOUNT_TO, Math.round(transactionEditData.getAmount() * transactionEditData.getExchangeRate()));
+                CalculatorActivity.start(getActivity(), REQUEST_AMOUNT_TO, Math.round(transactionEditData.getAmount() * transactionEditData.getExchangeRate()));
                 break;
             case R.id.dateButton:
-                DatePickerDialog.show(activity.getSupportFragmentManager(), REQUEST_DATE, transactionEditData.getDate());
+                DatePickerDialog.show(getActivity().getSupportFragmentManager(), REQUEST_DATE, transactionEditData.getDate());
                 break;
             case R.id.timeButton:
-                TimePickerDialog.show(activity.getSupportFragmentManager(), REQUEST_TIME, transactionEditData.getDate());
+                TimePickerDialog.show(getActivity().getSupportFragmentManager(), REQUEST_TIME, transactionEditData.getDate());
                 break;
             case R.id.accountFromButton: {
                 final boolean showPopup = !transactionEditData.isAccountFromSet();
@@ -163,7 +256,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
                 }
 
                 if (currentAutoCompleteAdapter == null) {
-                    AccountsActivity.startSelect(activity, REQUEST_ACCOUNT_FROM);
+                    AccountsActivity.startSelect(getActivity(), REQUEST_ACCOUNT_FROM);
                 }
                 break;
             }
@@ -180,7 +273,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
                 }
 
                 if (currentAutoCompleteAdapter == null) {
-                    AccountsActivity.startSelect(activity, REQUEST_ACCOUNT_TO);
+                    AccountsActivity.startSelect(getActivity(), REQUEST_ACCOUNT_TO);
                 }
                 break;
             }
@@ -197,7 +290,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
                 }
 
                 if (currentAutoCompleteAdapter == null) {
-                    CategoriesActivity.startSelect(activity, REQUEST_CATEGORY, transactionEditData.getTransactionType());
+                    CategoriesActivity.startSelect(getActivity(), REQUEST_CATEGORY, transactionEditData.getTransactionType());
                 }
                 break;
             }
@@ -214,7 +307,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
                 }
 
                 if (currentAutoCompleteAdapter == null) {
-                    TagsActivity.startMultiSelect(activity, REQUEST_TAGS, transactionEditData.getTags() != null ? transactionEditData.getTags() : Collections.<Tag>emptyList());
+                    TagsActivity.startMultiSelect(getActivity(), REQUEST_TAGS, transactionEditData.getTags() != null ? transactionEditData.getTags() : Collections.<Tag>emptyList());
                 }
                 break;
             }
@@ -323,64 +416,8 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
         requestAutoComplete();
     }
 
-//    @Subscribe public void onExchangeRateUpdated(ExchangeRateRequest request) {
-//        if (!request.isError() && transactionEditData.getAccountFrom() != null && transactionEditData.getAccountTo() != null && transactionEditData.getAccountFrom().getCurrencyCode().getCode().equals(request.getFromCode()) && transactionEditData.getAccountTo().getCurrencyCode().getCode().equals(request.getToCode())) {
-//            transactionEditData.setExchangeRate(request.getCurrency().getExchangeRate());
-//            requestAutoComplete();
-//        }
-//    }
-
-    public void handleActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_AMOUNT:
-                    transactionEditData.setAmount(data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0));
-                    requestAutoComplete();
-                    break;
-                case REQUEST_EXCHANGE_RATE:
-                    transactionEditData.setExchangeRate(data.getDoubleExtra(CalculatorActivity.RESULT_EXTRA_RAW_RESULT, 1.0));
-                    requestAutoComplete();
-                    break;
-                case REQUEST_AMOUNT_TO:
-                    final long newAmount = Math.round(data.getLongExtra(CalculatorActivity.RESULT_EXTRA_RESULT, 0) / transactionEditData.getExchangeRate());
-                    transactionEditData.setAmount(newAmount);
-                    refreshExchangeRate();
-                    requestAutoComplete();
-                    break;
-                case REQUEST_ACCOUNT_FROM:
-                    transactionEditData.setAccountFrom(ModelListActivity.<Account>getModelExtra(data));
-                    refreshExchangeRate();
-                    requestAutoComplete();
-                    break;
-                case REQUEST_ACCOUNT_TO:
-                    transactionEditData.setAccountTo(ModelListActivity.<Account>getModelExtra(data));
-                    refreshExchangeRate();
-                    requestAutoComplete();
-                    break;
-                case REQUEST_CATEGORY:
-                    transactionEditData.setCategory(ModelsActivityPresenter.<Category>getModelExtra(data));
-                    requestAutoComplete();
-                    break;
-                case REQUEST_TAGS:
-                    transactionEditData.setTags(ModelsActivityPresenter.<Tag>getModelsExtra(data));
-                    requestAutoComplete();
-                    break;
-            }
-        }
-    }
-
-    public boolean save() {
-        DataStore.insert().values(transactionEditData.getModel().asContentValues()).into(activity, TransactionsProvider.uriTransactions());
-        return true;
-    }
-
-    public void setStoredTransaction(Transaction transaction) {
-        transactionEditData.setStoredTransaction(transaction);
-        update(false);
-    }
-
     private void update(boolean isAutoComplete) {
-        if (!isResumed()) {
+        if (!isResumed) {
             if (isAutoComplete) {
                 isAutoCompleteUpdateQueued = true;
             }
@@ -389,22 +426,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
         isUpdated = true;
         isAutoCompleteUpdateQueued = false;
 
-        updateTransactionType(transactionEditData.getTransactionType());
-        updateAmount(transactionEditData.getAmount());
-        updateExchangeRate(transactionEditData.getExchangeRate());
-        updateDate(transactionEditData.getDate());
-        updateAccountFrom(transactionEditData.getAccountFrom());
-        updateAccountTo(transactionEditData.getAccountTo());
-        updateCategory(transactionEditData.getCategory());
-        updateTags(transactionEditData.getTags());
-        updateTransactionState(transactionEditData.getTransactionState());
-        updateIncludeInReports(transactionEditData.getIncludeInReports());
-
-        if (!isAutoComplete || !noteViewController.hasFocus()) {
-            updateNote(transactionEditData.getNote());
-        }
-
-        listener.onTransactionUpdated(transactionEditData);
+        onDataChanged(getStoredModel());
     }
 
     private void requestAutoComplete() {
@@ -442,7 +464,7 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
             input.setNote(transactionEditData.getNote());
         }
 
-        new SmartTransactionAutoComplete(activity, autoCompleteExecutor, this, input.build(), LOG_AUTO_COMPLETE).execute();
+        new SmartTransactionAutoComplete(getActivity(), autoCompleteExecutor, this, input.build(), LOG_AUTO_COMPLETE).execute();
     }
 
     private void toggleTransactionType() {
@@ -478,20 +500,10 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
                 requestAutoComplete();
                 break;
             case Transfer:
-//                if (transactionEditData.getAccountFrom() != null && transactionEditData.getAccountTo() != null) {
-//                    final CurrencyFormat currencyFormatFrom = transactionEditData.getAccountFrom().getCurrencyCode();
-//                    final CurrencyFormat currencyFormatTo = transactionEditData.getAccountTo().getCurrencyCode();
-//                    if (currencyFormatFrom.isDefault() || currencyFormatTo.isDefault()) {
-//                        if (currencyFormatFrom.isDefault()) {
-//                            transactionEditData.setExchangeRate(1.0 / currencyFormatTo.getExchangeRate());
-//                        } else {
-//                            transactionEditData.setExchangeRate(currencyFormatFrom.getExchangeRate());
-//                        }
-//                        requestAutoComplete();
-//                    } else {
-//                        currenciesApi.getExchangeRate(transactionEditData.getAccountFrom().getCurrencyCode().getCode(), transactionEditData.getAccountTo().getCurrencyCode().getCode());
-//                    }
-//                }
+                if (transactionEditData.getAccountFrom() != null && transactionEditData.getAccountTo() != null) {
+                    transactionEditData.setExchangeRate(currenciesManager.getExchangeRate(transactionEditData.getAccountFrom().getCurrencyCode(), transactionEditData.getAccountTo().getCurrencyCode()));
+                    requestAutoComplete();
+                }
                 break;
         }
     }
@@ -553,9 +565,5 @@ public class TransactionPresenter extends Presenter implements TransactionAutoCo
             currentAutoCompleteAdapter.hide();
             currentAutoCompleteAdapter = null;
         }
-    }
-
-    public static interface OnTransactionUpdatedListener {
-        public void onTransactionUpdated(TransactionEditData transactionEditData);
     }
 }

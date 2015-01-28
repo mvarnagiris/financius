@@ -46,9 +46,6 @@ public class NotePresenter extends Presenter implements LoaderManager.LoaderCall
         activity.getSupportLoaderManager().initLoader(LOADER_NOTES, null, this);
     }
 
-    @Override public void showError(Throwable error) {
-    }
-
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         final long fromDate = System.currentTimeMillis() - DateUtils.DAY_IN_MILLIS * 90;
         final String filter = noteAutoCompleteTextView.getText().toString();

@@ -32,7 +32,7 @@ public class AccountsPresenter extends Presenter implements AutoCompletePresente
         accountToButton.setOnLongClickListener(longClickListener);
     }
 
-    @Override public void showError(Throwable error) {
+    public void showError() {
         accountFromButton.setHintTextColor(ThemeUtils.getColor(accountFromButton.getContext(), R.attr.colorError));
         accountToButton.setHintTextColor(ThemeUtils.getColor(accountToButton.getContext(), R.attr.colorError));
     }
@@ -80,11 +80,11 @@ public class AccountsPresenter extends Presenter implements AutoCompletePresente
         }
     }
 
-    protected void setAccountFrom(Account account) {
+    public void setAccountFrom(Account account) {
         accountFromButton.setText(account == null ? null : account.getTitle());
     }
 
-    protected void setAccountTo(Account account) {
+    public void setAccountTo(Account account) {
         accountToButton.setText(account == null ? null : account.getTitle());
     }
 }

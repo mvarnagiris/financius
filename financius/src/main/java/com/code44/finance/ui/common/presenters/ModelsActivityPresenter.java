@@ -137,8 +137,8 @@ public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerV
         return super.onOptionsItemSelected(activity, item);
     }
 
-    @Override public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+    @Override public void onSaveInstanceState(BaseActivity activity, Bundle outState) {
+        super.onSaveInstanceState(activity, outState);
         outState.putParcelableArrayList(STATE_SELECTED_MODELS, new ArrayList<Parcelable>(getAdapter().getSelectedModels()));
     }
 

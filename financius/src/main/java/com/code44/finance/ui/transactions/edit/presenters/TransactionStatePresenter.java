@@ -19,9 +19,6 @@ public class TransactionStatePresenter extends Presenter {
         confirmedCheckBox.setOnCheckedChangeListener(checkedChangeListener);
     }
 
-    @Override public void showError(Throwable error) {
-    }
-
     public void setTransactionState(TransactionState transactionState) {
         confirmedCheckBox.setOnCheckedChangeListener(null);
         confirmedCheckBox.setChecked(transactionState == TransactionState.Confirmed);

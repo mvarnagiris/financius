@@ -33,9 +33,6 @@ public class CategoryPresenter extends Presenter implements AutoCompletePresente
         categoryButton.setOnLongClickListener(longClickListener);
     }
 
-    @Override public void showError(Throwable error) {
-    }
-
     @Override public AutoCompleteAdapter<Category> showAutoComplete(AutoCompleteAdapter<?> currentAdapter, TransactionEditData transactionEditData, AutoCompleteAdapter.OnAutoCompleteItemClickListener<Category> clickListener, View view) {
         final AutoCompleteCategoriesAdapter adapter = new AutoCompleteCategoriesAdapter(categoriesAutoCompleteContainerView, this, clickListener);
         if (adapter.show(currentAdapter, transactionEditData)) {
