@@ -23,6 +23,7 @@
 - ```new``` Account detail page has balance graph for selected period.
 - ```new``` Add new transaction button is now moved to the bottom.
 - ```new``` Navigation drawer UI.
+- ```new``` Updated transactions list page UI.
 - ```fix``` Unnoticeable UI improvements to pie chart.
 - ```fix``` Updated separator UI, no longer too white on older versions of Android.
 - ```fix``` When selecting account, navigation drawer is no longer visible.

@@ -15,7 +15,7 @@ import com.code44.finance.ui.common.adapters.ModelsAdapter;
 import com.code44.finance.ui.common.presenters.ModelsActivityPresenter;
 import com.code44.finance.ui.common.recycler.SectionsDecoration;
 
-class CategoriesAdapter extends ModelsAdapter<Category> implements SectionsDecoration.Adapter<CategoriesAdapter.HeaderViewHolder, CategoriesAdapter.ViewHolder> {
+class CategoriesAdapter extends ModelsAdapter<Category> implements SectionsDecoration.Adapter<CategoriesAdapter.HeaderViewHolder> {
     public CategoriesAdapter(OnModelClickListener<Category> onModelClickListener) {
         super(onModelClickListener);
     }
@@ -28,16 +28,20 @@ class CategoriesAdapter extends ModelsAdapter<Category> implements SectionsDecor
         return Category.from(cursor);
     }
 
-    @Override public long getHeaderId(ViewHolder viewHolder) {
-        return viewHolder.getModel().getTransactionType().ordinal();
+    @Override public long getHeaderId(int position) {
+        final Cursor cursor = getCursor();
+        cursor.moveToPosition(position);
+        return Category.from(cursor).getTransactionType().ordinal();
     }
 
-    @Override public HeaderViewHolder onCreateHeaderViewHolder(ViewGroup parent, int viewType, ViewHolder viewHolder) {
+    @Override public HeaderViewHolder onCreateHeaderViewHolder(ViewGroup parent) {
         return new HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.li_category_header, parent, false));
     }
 
-    @Override public void onBindHeaderViewHolder(HeaderViewHolder headerViewHolder, ViewHolder viewHolder) {
-        headerViewHolder.titleTextView.setText(viewHolder.getModel().getTransactionType() == TransactionType.Expense ? R.string.expenses : R.string.incomes);
+    @Override public void onBindHeaderViewHolder(HeaderViewHolder viewHolder, int position) {
+        final Cursor cursor = getCursor();
+        cursor.moveToPosition(position);
+        viewHolder.titleTextView.setText(Category.from(cursor).getTransactionType() == TransactionType.Expense ? R.string.expenses : R.string.incomes);
     }
 
     static class ViewHolder extends ModelViewHolder<Category> {

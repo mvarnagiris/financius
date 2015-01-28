@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 public class SectionsDecoration extends RecyclerView.ItemDecoration {
     private final int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
 
-    @Override public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+    @Override
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
 
         final Adapter adapter = getAdapter(parent);
@@ -17,16 +18,16 @@ public class SectionsDecoration extends RecyclerView.ItemDecoration {
             return;
         }
 
-        final RecyclerView.ViewHolder viewHolder = parent.getChildViewHolder(view);
-        if (!hasHeader(adapter, view, viewHolder, parent)) {
+        if (!hasHeader(adapter, view, parent)) {
             return;
         }
 
-        final RecyclerView.ViewHolder headerViewHolder = getMeasuredAndBoundViewHolder(adapter, parent, viewHolder);
+        final RecyclerView.ViewHolder headerViewHolder = getMeasuredAndBoundViewHolder(adapter, parent, parent.getChildViewHolder(view));
         outRect.top += headerViewHolder.itemView.getMeasuredHeight();
     }
 
-    @Override public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+    @Override
+    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDrawOver(c, parent, state);
         final Adapter adapter = getAdapter(parent);
         if (adapter == null) {
@@ -36,12 +37,11 @@ public class SectionsDecoration extends RecyclerView.ItemDecoration {
         final RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
         for (int i = 0, childCount = parent.getChildCount(); i < childCount; i++) {
             final View view = parent.getChildAt(i);
-            final RecyclerView.ViewHolder viewHolder = parent.getChildViewHolder(view);
-            if (!hasHeader(adapter, view, viewHolder, parent)) {
+            if (!hasHeader(adapter, view, parent)) {
                 continue;
             }
 
-            drawHeader(c, getMeasuredAndBoundViewHolder(adapter, parent, viewHolder), layoutManager, view);
+            drawHeader(c, getMeasuredAndBoundViewHolder(adapter, parent, parent.getChildViewHolder(view)), layoutManager, view);
         }
     }
 
@@ -53,22 +53,14 @@ public class SectionsDecoration extends RecyclerView.ItemDecoration {
         return null;
     }
 
-    private boolean hasHeader(Adapter adapter, View view, RecyclerView.ViewHolder viewHolder, RecyclerView parent) {
+    private boolean hasHeader(Adapter adapter, View view, RecyclerView parent) {
         final int adapterPosition = parent.getChildPosition(view);
         if (adapterPosition == 0) {
             return true;
         }
 
-        final int previousViewIndex = parent.indexOfChild(view) - 1;
-        if (previousViewIndex < 0) {
-            return false;
-        }
-        final View previousView = parent.getChildAt(previousViewIndex);
-
-        //noinspection unchecked
-        final long currentHeaderId = adapter.getHeaderId(viewHolder);
-        //noinspection unchecked
-        final long previousHeaderId = adapter.getHeaderId(parent.getChildViewHolder(previousView));
+        final long currentHeaderId = adapter.getHeaderId(adapterPosition);
+        final long previousHeaderId = adapter.getHeaderId(adapterPosition - 1);
 
         return currentHeaderId != previousHeaderId;
     }
@@ -76,14 +68,14 @@ public class SectionsDecoration extends RecyclerView.ItemDecoration {
     private RecyclerView.ViewHolder getMeasuredAndBoundViewHolder(Adapter adapter, RecyclerView parent, RecyclerView.ViewHolder viewHolder) {
         final RecyclerView.ViewHolder headerViewHolder = getHeaderViewHolder(adapter, parent, viewHolder);
         //noinspection unchecked
-        adapter.onBindHeaderViewHolder(headerViewHolder, viewHolder);
+        adapter.onBindHeaderViewHolder(headerViewHolder, viewHolder.getPosition());
         headerViewHolder.itemView.measure(View.MeasureSpec.makeMeasureSpec(parent.getWidth(), View.MeasureSpec.EXACTLY), heightMeasureSpec);
         return headerViewHolder;
     }
 
     private RecyclerView.ViewHolder getHeaderViewHolder(Adapter adapter, RecyclerView parent, RecyclerView.ViewHolder viewHolder) {
         //noinspection unchecked
-        return adapter.onCreateHeaderViewHolder(parent, 0, viewHolder);
+        return adapter.onCreateHeaderViewHolder(parent);
     }
 
     private void drawHeader(Canvas canvas, RecyclerView.ViewHolder headerViewHolder, RecyclerView.LayoutManager layoutManager, View view) {
@@ -96,11 +88,11 @@ public class SectionsDecoration extends RecyclerView.ItemDecoration {
         canvas.restore();
     }
 
-    public static interface Adapter<HVH extends RecyclerView.ViewHolder, VH extends RecyclerView.ViewHolder> {
-        public long getHeaderId(VH viewHolder);
+    public static interface Adapter<VH extends RecyclerView.ViewHolder> {
+        public long getHeaderId(int position);
 
-        public HVH onCreateHeaderViewHolder(ViewGroup parent, int viewType, VH viewHolder);
+        public VH onCreateHeaderViewHolder(ViewGroup parent);
 
-        public void onBindHeaderViewHolder(HVH headerViewHolder, VH viewHolder);
+        public void onBindHeaderViewHolder(VH viewHolder, int position);
     }
 }

@@ -81,7 +81,7 @@
             android:name=".ui.tags.edit.TagEditActivity"
             android:label="@string/tags_one" />
         <activity
-            android:name=".ui.transactions.TransactionsActivity"
+            android:name=".ui.transactions.list.TransactionsActivity"
             android:label="@string/transactions_other" />
         <activity
             android:name=".ui.transactions.TransactionActivity"

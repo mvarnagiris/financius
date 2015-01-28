@@ -20,7 +20,7 @@ import com.code44.finance.ui.common.navigation.NavigationScreen;
 import com.code44.finance.ui.overview.OverviewActivity;
 import com.code44.finance.ui.reports.categories.CategoriesReportActivity;
 import com.code44.finance.ui.settings.SettingsActivity;
-import com.code44.finance.ui.transactions.TransactionsActivity;
+import com.code44.finance.ui.transactions.list.TransactionsActivity;
 
 public abstract class BaseDrawerActivity extends BaseActivity implements NavigationFragment.NavigationListener {
     private static final int DRAWER_LAUNCH_DELAY = 250;

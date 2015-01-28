@@ -35,7 +35,7 @@ import com.code44.finance.ui.tags.edit.TagEditActivity;
 import com.code44.finance.ui.tags.list.TagsActivity;
 import com.code44.finance.ui.transactions.TransactionActivity;
 import com.code44.finance.ui.transactions.TransactionEditActivity;
-import com.code44.finance.ui.transactions.TransactionsActivity;
+import com.code44.finance.ui.transactions.list.TransactionsActivity;
 
 import dagger.Module;
 
