@@ -10,6 +10,7 @@
     <string name="expense">Koszt</string>
     <string name="expenses">Koszty</string>
     <string name="income">Dochód</string>
+    <string name="incomes">Przychody</string>
     <string name="transfer">Przelew</string>
     <string name="currencies_zero">Walut</string>
     <string name="currencies_one">Waluta</string>
@@ -109,6 +110,13 @@
     <string name="create_backup">Stwórz kopię zapasową</string>
     <string name="no_category">Brak kategorii</string>
     <string name="trends">Trendy</string>
+    <string name="security">Bezpieczeństwo</string>
+    <string name="lock">Zablokuj</string>
+    <string name="unlock">Odblokuj</string>
+    <string name="create_password">Utwórz hasło</string>
+    <string name="confirm_password">Potwierdź hasło</string>
+    <string name="show_all">Pokaż wszystko</string>
+    <string name="translate">Tłumacz</string>
     <string name="f_change_to_x">Zmień na %s</string>
     <string name="f_current_main_currency_is_x">Aktualna waluta główna to %s</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s zostaną usunięte</string>
@@ -119,6 +127,8 @@
     <string name="l_about_new_issue">Problemy &amp; prośby. Najpierw przeczytaj README.</string>
     <string name="l_about_rate">Lubisz tę aplikację? Oceń ją na Google Play.</string>
     <string name="l_about_community">Chcesz zobaczyć, co mamy w zanadrzu? Dołącz do społeczności.</string>
+    <string name="l_about_translate">Możesz pomóc w tłumaczeniu tej aplikacji na swój język.</string>
+    <string name="error_unlock_password">Hasło nie pasuje. Spróbuj ponownie.</string>
     <string name="c_food">Jedzenie</string>
     <string name="c_leisure">Wypoczynek</string>
     <string name="c_clothing">Odzież</string>

@@ -10,6 +10,7 @@
     <string name="expense">Расход</string>
     <string name="expenses">Расходы</string>
     <string name="income">Приход</string>
+    <string name="incomes">Доход</string>
     <string name="transfer">Перевод</string>
     <string name="currencies_zero">Валют</string>
     <string name="currencies_one">Валюта</string>
@@ -114,6 +115,8 @@
     <string name="unlock">Разблокировать</string>
     <string name="create_password">Создайте пароль</string>
     <string name="confirm_password">Подтвердите пароль</string>
+    <string name="show_all">Показать все</string>
+    <string name="translate">Перевести</string>
     <string name="f_change_to_x">Изменить на %s</string>
     <string name="f_current_main_currency_is_x">Текущая основная валюта – %s</string>
     <string name="f_x_y_will_be_deleted">Будет удалено %1$d %2$s</string>
@@ -124,6 +127,7 @@
     <string name="l_about_new_issue">Вопросы и пожелания. Сначала ознакомьтесь с разделом «Информация».</string>
     <string name="l_about_rate">Нравится приложение? Оцените его на Google Play.</string>
     <string name="l_about_community">Хотите узнать, что будет дальше? Присоединяйтесь к сообществу.</string>
+    <string name="l_about_translate">Вы можете помочь перевести это приложение на ваш язык.</string>
     <string name="error_unlock_password">Неправильный пароль. Попробуйте еще раз.</string>
     <string name="c_food">Питание</string>
     <string name="c_leisure">Досуг</string>

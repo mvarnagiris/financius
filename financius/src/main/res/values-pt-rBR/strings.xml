@@ -10,6 +10,7 @@
     <string name="expense">Despesa</string>
     <string name="expenses">Despesas</string>
     <string name="income">Receitas</string>
+    <string name="incomes">Receita</string>
     <string name="transfer">Transferência</string>
     <string name="currencies_zero">Moedas</string>
     <string name="currencies_one">Moeda</string>
@@ -50,7 +51,7 @@
     <string name="close_left">Grudado a Esquerda</string>
     <string name="far_left">Espaço a Esquerda</string>
     <string name="calculator">Calculadora</string>
-    <string name="categories_zero">Categorias</string>
+    <string name="categories_zero">Nenhuma Categoria</string>
     <string name="categories_one">Categoria</string>
     <string name="categories_two">Categorias</string>
     <string name="categories_few">Categorias</string>
@@ -83,7 +84,7 @@
     <string name="month">Mês</string>
     <string name="year">Ano</string>
     <string name="from">De</string>
-    <string name="to">até</string>
+    <string name="to">Para</string>
     <string name="date">Data</string>
     <string name="include_in_reports">Mostrar nos Relatórios</string>
     <string name="confirmed">Confirmado</string>
@@ -114,16 +115,19 @@
     <string name="unlock">Desbloqueio</string>
     <string name="create_password">Senha</string>
     <string name="confirm_password">Confirme a Senha</string>
+    <string name="show_all">Mostrar Todos</string>
+    <string name="translate">Traduzir</string>
     <string name="f_change_to_x">Alterar para %s</string>
     <string name="f_current_main_currency_is_x">A Moeda Principal Atual é %s</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s Será Deletada</string>
     <string name="l_refresh_rates_daily">Atualizar Taxa de Câmbio todos os Dias</string>
     <string name="l_currency_exists">Esta Moeda já Existe</string>
-    <string name="l_delete_short">Deletar</string>
+    <string name="l_delete_short">DEL</string>
     <string name="l_delete_confirmation">Tem Certeza que Deseja Excluir?</string>
     <string name="l_about_new_issue">Problemas e Pedidos de Novas Funcionalidades. Primeiro leia o arquivo Leia-me.</string>
     <string name="l_about_rate">Gostou do Financius? Avalie-nos no Google Play.</string>
     <string name="l_about_community">Quer ver o que vem pela Frente? Participe da Comunidade.</string>
+    <string name="l_about_translate">Você pode ajudar a traduzir o Financius para o seu idioma.</string>
     <string name="error_unlock_password">A Senha não corresponde. Tente novamente.</string>
     <string name="c_food">Comida</string>
     <string name="c_leisure">Lazer</string>

@@ -114,6 +114,7 @@
     <string name="unlock">பூட்டவிழ்</string>
     <string name="create_password">கடவுச்சொல் உருவாக்கவும்</string>
     <string name="confirm_password">கடவுச்சொல் உறுதிசெய்</string>
+    <string name="show_all">Tamil</string>
     <string name="f_change_to_x">%s-க்கு மாற்ற</string>
     <string name="f_current_main_currency_is_x">தற்போதைய பிரதான நாணயம் %s  உள்ளது</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s நீக்கப்படும்</string>

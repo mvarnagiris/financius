@@ -10,6 +10,7 @@
     <string name="expense">支出</string>
     <string name="expenses">支出</string>
     <string name="income">收入</string>
+    <string name="incomes">收入</string>
     <string name="transfer">转账</string>
     <string name="currencies_zero">货币</string>
     <string name="currencies_one">货币</string>
@@ -114,6 +115,8 @@
     <string name="unlock">解锁</string>
     <string name="create_password">创建密码</string>
     <string name="confirm_password">确认密码</string>
+    <string name="show_all">显示全部</string>
+    <string name="translate">翻译网页</string>
     <string name="f_change_to_x">转换为%s</string>
     <string name="f_current_main_currency_is_x">当前的主货币是 %s</string>
     <string name="f_x_y_will_be_deleted">%1$d个%2$s将会被删除</string>
@@ -124,6 +127,7 @@
     <string name="l_about_new_issue">如果您有疑问或是想要请求新的功能，请先阅读自述文件（英语）。</string>
     <string name="l_about_rate">喜欢我吗？请在Google Play上为我打分吧！</string>
     <string name="l_about_community">想知道未来会发生什么改变吗？那就加入社群吧！</string>
+    <string name="l_about_translate">您可以帮助翻译本应用至中文。</string>
     <string name="error_unlock_password">两次输入的密码不匹配，请重试。</string>
     <string name="c_food">餐饮</string>
     <string name="c_leisure">休闲娱乐</string>

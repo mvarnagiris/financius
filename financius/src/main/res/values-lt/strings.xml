@@ -10,6 +10,7 @@
     <string name="expense">Išlaidos</string>
     <string name="expenses">Išlaidos</string>
     <string name="income">Pajamos</string>
+    <string name="incomes">Pajamos</string>
     <string name="transfer">Pervedimas</string>
     <string name="currencies_zero">Valiutų</string>
     <string name="currencies_one">Valiuta</string>
@@ -114,6 +115,8 @@
     <string name="unlock">Atrakinti</string>
     <string name="create_password">Sukurkite slaptažodį</string>
     <string name="confirm_password">Patvirtinkite slaptažodį</string>
+    <string name="show_all">Rodyti viską</string>
+    <string name="translate">Išversti</string>
     <string name="f_change_to_x">Pakeisti į %s</string>
     <string name="f_current_main_currency_is_x">Dabartinė pagrindinė valiuta yra %s</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s bus ištrinta</string>
@@ -124,6 +127,7 @@
     <string name="l_about_new_issue">Problemos ir funkcijų prašymai. Pirmiausia perskaityti informaciją.</string>
     <string name="l_about_rate">Patinka aplikacija? Įvertink ją Google Play.</string>
     <string name="l_about_community">Nori gauti naujausias funkcijas anksčiau? Prisijunk prie bendruomenės.</string>
+    <string name="l_about_translate">Jūs galite padėti išversti šią programą į savo kalbą.</string>
     <string name="error_unlock_password">Slaptažodis neatitinka. Bandykite dar kartą.</string>
     <string name="c_food">Maistas</string>
     <string name="c_leisure">Laisvalaikis</string>

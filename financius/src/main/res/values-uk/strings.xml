@@ -10,6 +10,7 @@
     <string name="expense">Витрати</string>
     <string name="expenses">Витрати</string>
     <string name="income">Доходи</string>
+    <string name="incomes">Прибуток</string>
     <string name="transfer">Переказ</string>
     <string name="currencies_zero">Валюти</string>
     <string name="currencies_one">Валюта</string>
@@ -114,6 +115,8 @@
     <string name="unlock">Розблокувати</string>
     <string name="create_password">Задати пароль</string>
     <string name="confirm_password">Підтвердити пароль</string>
+    <string name="show_all">Показати всі</string>
+    <string name="translate">Переклад</string>
     <string name="f_change_to_x">Змінити на %s</string>
     <string name="f_current_main_currency_is_x">Основною валютою є %s</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s буде видалено</string>
@@ -124,6 +127,7 @@
     <string name="l_about_new_issue">Питання та побажання. Спочатку ознайомтеся з розділом \"Інформація\".</string>
     <string name="l_about_rate">Подобається додаток? Оціни в Google Play.</string>
     <string name="l_about_community">Хочеш побачити, що буде далі? Приєднуйся до спільноти.</string>
+    <string name="l_about_translate">Допоможіть нам перекласти Financius своєю мовою.</string>
     <string name="error_unlock_password">Паролі не збігаються. Спробуй ще раз.</string>
     <string name="c_food">Їжа</string>
     <string name="c_leisure">Дозвілля</string>

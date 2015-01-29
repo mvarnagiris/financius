@@ -10,6 +10,7 @@
     <string name="expense">Gider</string>
     <string name="expenses">Giderler</string>
     <string name="income">Gelirler</string>
+    <string name="incomes">Gelirler</string>
     <string name="transfer">Aktarma</string>
     <string name="currencies_zero">Para Birimleri</string>
     <string name="currencies_one">Para Birimi</string>
@@ -114,6 +115,8 @@
     <string name="unlock">Kilidi kaldır</string>
     <string name="create_password">Şifre oluştur</string>
     <string name="confirm_password">Şifreyi onayla</string>
+    <string name="show_all">Hepsini göster</string>
+    <string name="translate">Tercüme et</string>
     <string name="f_change_to_x">%s olarak değiştir</string>
     <string name="f_current_main_currency_is_x">Mevcut para birimi %s</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s silinecek</string>
@@ -124,6 +127,7 @@
     <string name="l_about_new_issue">Sorunlar &amp; özellik istekleri. Öncelikle BENİ OKU kısmını okuyun.</string>
     <string name="l_about_rate">Bu uygulamayı sevdin mi? Google Play\'de oyla.</string>
     <string name="l_about_community">Sırada hangi yeniliğin olduğunu görmek ister misin? Topluluğa katılın.</string>
+    <string name="l_about_translate">Bu uygulamayı kendi dilinize tercüme etmek için yardım edebilirsiniz.</string>
     <string name="error_unlock_password">Şifre eşleşmedi. Tekrar dene.</string>
     <string name="c_food">Yiyecek</string>
     <string name="c_leisure">Gündelik</string>

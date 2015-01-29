@@ -1,4 +1,4 @@
-###Version: 0.17.2 - Not released
+###Version: 0.18.0
 - ```new``` New trends graph that is interactive.
 - ```new``` Updated settings page UI.
 - ```new``` Updated tags list page UI.
@@ -26,6 +26,7 @@
 - ```new``` Updated transactions list page UI.
 - ```new``` Updated transactions detail page UI.
 - ```new``` Better typography throughout the app. Especially on pre-Lollipop.
+- ```new``` Added a bunch of new languages. Updated all other translations.
 - ```fix``` Unnoticeable UI improvements to pie chart.
 - ```fix``` Updated separator UI, no longer too white on older versions of Android.
 - ```fix``` When selecting account, navigation drawer is no longer visible.

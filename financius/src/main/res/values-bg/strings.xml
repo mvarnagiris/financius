@@ -10,6 +10,7 @@
     <string name="expense">Разход</string>
     <string name="expenses">Разходи</string>
     <string name="income">Доход</string>
+    <string name="incomes">Доход</string>
     <string name="transfer">Прехвърляне</string>
     <string name="currencies_zero">Валути</string>
     <string name="currencies_one">Валутa</string>
@@ -22,7 +23,7 @@
     <string name="main_currency">Основна валута</string>
     <string name="set_as_main_currency">Задаване като основна валута</string>
     <string name="refresh_rate">Честота на обновяване</string>
-    <string name="refresh_rates">Честота на обновяване</string>
+    <string name="refresh_rates">Обнови курсовете</string>
     <string name="exchange_rate">Обменен курс</string>
     <string name="accounts_zero">Сметки</string>
     <string name="accounts_one">Сметка</string>
@@ -114,6 +115,8 @@
     <string name="unlock">Отключи</string>
     <string name="create_password">Създай парола</string>
     <string name="confirm_password">Потвърди парола</string>
+    <string name="show_all">Покажи всички</string>
+    <string name="translate">Преведи</string>
     <string name="f_change_to_x">Промени на %s</string>
     <string name="f_current_main_currency_is_x">Текущaтa основна валута е %s</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s ще бъдат изтрити</string>
@@ -124,6 +127,7 @@
     <string name="l_about_new_issue">По въпроси за проблеми и нови функции първо прочетете файла README.</string>
     <string name="l_about_rate">Харесвате Financius? Оценете го в Google Play.</string>
     <string name="l_about_community">Искате да знаете какво следва? Присъединете се към общността Financius.</string>
+    <string name="l_about_translate">Можете да помогнете за превода на приложението на вашия език.</string>
     <string name="error_unlock_password">Паролата не съвпада. Опитайте отново.</string>
     <string name="c_food">Храна</string>
     <string name="c_leisure">Свободно време</string>

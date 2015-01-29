@@ -10,6 +10,7 @@
     <string name="expense">Ausgabe</string>
     <string name="expenses">Ausgaben</string>
     <string name="income">Einkommen</string>
+    <string name="incomes">Einkommen</string>
     <string name="transfer">Bewegung</string>
     <string name="currencies_zero">Währungen</string>
     <string name="currencies_one">Währung</string>
@@ -114,6 +115,8 @@
     <string name="unlock">Entsperren</string>
     <string name="create_password">Passwort erstellen</string>
     <string name="confirm_password">Passwort bestätigen</string>
+    <string name="show_all">Alles anzeigen</string>
+    <string name="translate">Übersetzen</string>
     <string name="f_change_to_x">Ändern zu %s</string>
     <string name="f_current_main_currency_is_x">Aktuelle Hauptwährung ist %s</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s werden gelöscht</string>
@@ -124,6 +127,7 @@
     <string name="l_about_new_issue">Fragen &amp; Wünsche. Lesen Sie zuerst die Readme-Datei.</string>
     <string name="l_about_rate">Gefällt dir die App? Bewerte Sie auf Google Play.</string>
     <string name="l_about_community">Möchtest du wissen, was als nächstes kommt? Tritt der Community bei.</string>
+    <string name="l_about_translate">Sie können helfen, die App in Ihre Sprache zu übersetzen.</string>
     <string name="error_unlock_password">Falsches Passwort. Versuche es erneut.</string>
     <string name="c_food">Essen</string>
     <string name="c_leisure">Freizeit</string>

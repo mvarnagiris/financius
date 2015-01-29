@@ -10,6 +10,7 @@
     <string name="expense">Kiadás</string>
     <string name="expenses">Kiadások</string>
     <string name="income">Bevétel</string>
+    <string name="incomes">Bevétel</string>
     <string name="transfer">Átutalás</string>
     <string name="currencies_zero">Pénznemek</string>
     <string name="currencies_one">Pénznem</string>
@@ -114,6 +115,8 @@
     <string name="unlock">Feloldás</string>
     <string name="create_password">Jelszó létrehozása</string>
     <string name="confirm_password">Jelszó megerősítése</string>
+    <string name="show_all">Összes mutatása</string>
+    <string name="translate">Fordítás</string>
     <string name="f_change_to_x">Módosítás erre: %s</string>
     <string name="f_current_main_currency_is_x">Jelenlegi fő pénznem: %s</string>
     <string name="f_x_y_will_be_deleted">%1$d %2$s törlésre kerül</string>
@@ -124,6 +127,7 @@
     <string name="l_about_new_issue">Problémák &amp; ötletek, kérelmek. Először olvassa el a README-t!</string>
     <string name="l_about_rate">Tetszik az app? Értékelje a Google Playen!</string>
     <string name="l_about_community">Első kézből akar értesülni az újdonságokról? Csatlakozzon a közösséghez!</string>
+    <string name="l_about_translate">Segíts te is lefordítani az appot a saját nyelvedre!</string>
     <string name="error_unlock_password">A jelszavak nem egyeznek. Próbálja újra!</string>
     <string name="c_food">Étel</string>
     <string name="c_leisure">Szabadidő</string>

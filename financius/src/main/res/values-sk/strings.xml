@@ -2,7 +2,7 @@
 <resources>
     <string name="settings">Nastavenia</string>
     <string name="edit">Upraviť</string>
-    <string name="delete">Vymazať</string>
+    <string name="delete">Odstrániť</string>
     <string name="save">Uložiť</string>
     <string name="cancel">Zrušiť</string>
     <string name="done">Hotovo</string>
@@ -10,6 +10,7 @@
     <string name="expense">Výdavok</string>
     <string name="expenses">Výdavky</string>
     <string name="income">Príjem</string>
+    <string name="incomes">Príjem</string>
     <string name="transfer">Prevod</string>
     <string name="currencies_zero">Mien</string>
     <string name="currencies_one">Mena</string>
@@ -114,6 +115,8 @@
     <string name="unlock">Odomknúť</string>
     <string name="create_password">Zadajte nové heslo</string>
     <string name="confirm_password">Potvrďte nové heslo</string>
+    <string name="show_all">Ukázať všetky</string>
+    <string name="translate">Prekladať</string>
     <string name="f_change_to_x">Zmeniť na %s</string>
     <string name="f_current_main_currency_is_x">Aktuálna hlavná mena je %s</string>
     <string name="f_x_y_will_be_deleted">Vymaže sa %1$d %2$s</string>
@@ -121,9 +124,10 @@
     <string name="l_currency_exists">Táto mena už existuje</string>
     <string name="l_delete_short">DEL</string>
     <string name="l_delete_confirmation">Naozaj chcete odstrániť tieto záznamy?</string>
-    <string name="l_about_new_issue">Chceli by ste nahlásiť problém či požiadať o nové funkcie? Prečítajte si najprv informácie.</string>
-    <string name="l_about_rate">Páči sa vám táto aplikácia? Ohodnoťte ju v obchode Google Play.</string>
+    <string name="l_about_new_issue">Chceli by ste nahlásiť problém či požiadať o nové funkcie? Prečítajte si prosím informácie.</string>
+    <string name="l_about_rate">Páči sa vám Financius? Ohodnoťte ho v obchode Google Play.</string>
     <string name="l_about_community">Chcete vedieť čo sa chystá? Pridajte sa ku komunite.</string>
+    <string name="l_about_translate">Pomôžte s prekladom do vášho jazyka.</string>
     <string name="error_unlock_password">Heslo sa nezhoduje. Skúste to znova.</string>
     <string name="c_food">Jedlo</string>
     <string name="c_leisure">Voľný čas</string>
