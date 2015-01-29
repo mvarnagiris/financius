@@ -31,10 +31,19 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        style="@style/AdapterView"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            style="@style/AdapterView" />
+
+        <com.code44.finance.ui.common.views.EmptyContainerView
+            android:id="@+id/emptyContainerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
 
 </LinearLayout>

@@ -188,6 +188,10 @@ public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerV
         }
     }
 
+    @Override public void onEmptyAddClick(View v) {
+        startModelEdit(v.getContext(), null);
+    }
+
     protected abstract ModelsAdapter<M> createAdapter(ModelsAdapter.OnModelClickListener<M> defaultOnModelClickListener);
 
     protected abstract CursorLoader getModelsCursorLoader(Context context);

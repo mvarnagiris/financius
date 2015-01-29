@@ -10,6 +10,7 @@ import com.code44.finance.common.model.TransactionType;
 import com.code44.finance.common.utils.Preconditions;
 import com.code44.finance.data.model.Category;
 import com.code44.finance.data.model.CurrencyFormat;
+import com.code44.finance.money.CurrenciesManager;
 
 import java.util.HashSet;
 import java.util.Locale;
@@ -19,13 +20,12 @@ import java.util.UUID;
 public final class DBDefaults {
     private final Context context;
     private final SQLiteDatabase database;
+    private final CurrenciesManager currenciesManager;
 
-    public DBDefaults(Context context, SQLiteDatabase database) {
-        Preconditions.notNull(context, "Context cannot be null.");
-        Preconditions.notNull(database, "Database cannot be null.");
-
-        this.context = context;
-        this.database = database;
+    public DBDefaults(Context context, SQLiteDatabase database, CurrenciesManager currenciesManager) {
+        this.context = Preconditions.notNull(context, "Context cannot be null.");
+        this.database = Preconditions.notNull(database, "Database cannot be null.");
+        this.currenciesManager = Preconditions.notNull(currenciesManager, "CurrenciesManager cannot be null.");
     }
 
     public void addDefaults() {
@@ -35,7 +35,8 @@ public final class DBDefaults {
 
     private void addCurrencies() {
         final Set<String> currencyCodes = new HashSet<>();
-        currencyCodes.add(getMainCurrencyCode());
+        currenciesManager.setMainCurrencyCode(getMainCurrencyCode());
+        currencyCodes.add(currenciesManager.getMainCurrencyCode());
 
         // Popular currencies
         currencyCodes.add("USD");

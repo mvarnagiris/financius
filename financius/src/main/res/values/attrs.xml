@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="supportTintColor" format="color" />
+
     <declare-styleable name="Theme">
         <attr name="textColorPositive" format="color" />
         <attr name="textColorNegative" format="color" />
@@ -14,7 +16,11 @@
     </declare-styleable>
 
     <declare-styleable name="TintImageView">
-        <attr name="supportTintColor" format="color" />
+        <attr name="supportTintColor" />
+    </declare-styleable>
+
+    <declare-styleable name="TintImageButton">
+        <attr name="supportTintColor" />
     </declare-styleable>
 
     <attr name="viewBackgroundTheme" format="enum">

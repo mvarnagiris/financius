@@ -45,7 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
         createIndex(db, Tables.Transactions.ID);
 
         // Add defaults
-        addDefaults(db);
+        addDefaults(db, currenciesManager);
     }
 
     @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -69,7 +69,7 @@ public class DBHelper extends SQLiteOpenHelper {
         // TODO Clear database for the user
     }
 
-    private void addDefaults(SQLiteDatabase database) {
-        new DBDefaults(context, database).addDefaults();
+    private void addDefaults(SQLiteDatabase database, CurrenciesManager currenciesManager) {
+        new DBDefaults(context, database, currenciesManager).addDefaults();
     }
 }
