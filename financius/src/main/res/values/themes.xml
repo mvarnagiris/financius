@@ -23,8 +23,14 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
 
+        <item name="android:dialogTheme">@style/AppTheme.DialogTheme</item>
+
         <item name="spbStyle">@style/ProgressBar</item>
         <item name="cpbStyle">@style/CircularProgressBar</item>
+    </style>
+
+    <style name="AppTheme.DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">#00bcd4</item>
     </style>
 
     <style name="ProgressBar" parent="SmoothProgressBar">

@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.widget.DatePicker;
 
+import com.code44.finance.R;
+
 import org.joda.time.DateTime;
 
 public class DatePickerDialog extends BaseDialogFragment implements android.app.DatePickerDialog.OnDateSetListener {
@@ -30,6 +32,11 @@ public class DatePickerDialog extends BaseDialogFragment implements android.app.
         final DatePickerDialog fragment = new DatePickerDialog();
         fragment.setArguments(args);
         fragment.show(fragmentManager, FRAGMENT_DATE_PICKER);
+    }
+
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(STYLE_NORMAL, R.style.AppTheme);
     }
 
     @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {

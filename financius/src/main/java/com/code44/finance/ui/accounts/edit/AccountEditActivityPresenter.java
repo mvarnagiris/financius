@@ -71,7 +71,6 @@ class AccountEditActivityPresenter extends ModelEditActivityPresenter<Account> i
         noteEditText = findView(activity, R.id.noteEditText);
         includeInTotalsCheckBox = findView(activity, R.id.includeInTotalsCheckBox);
 
-
         titleEditText.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }

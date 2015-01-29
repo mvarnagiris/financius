@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
     android:orientation="vertical"
     tools:context=".ui.currencies.CurrencyEditActivity">
 
@@ -67,6 +65,12 @@
                     tools:text="1,234.56 £" />
 
             </LinearLayout>
+
+            <View
+                style="@style/Divider.Thick"
+                android:layout_marginLeft="@dimen/keyline"
+                android:layout_marginRight="@dimen/keyline"
+                tools:ignore="RtlHardcoded" />
 
             <EditText
                 android:id="@+id/noteEditText"

@@ -31,14 +31,14 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         selectedBackgroundColor = ThemeUtils.getColor(context, R.attr.backgroundColorSecondary);
 
         navigationItems = new ArrayList<>();
-        navigationItems.add(new HeaderNavigationItem());
+//        navigationItems.add(new HeaderNavigationItem());
         navigationItems.add(new DividerNavigationItem(false));
         navigationItems.add(new PrimaryNavigationItem(NavigationScreen.Overview, R.drawable.ic_action_overview, R.string.overview));
         navigationItems.add(new PrimaryNavigationItem(NavigationScreen.Accounts, R.drawable.ic_action_account, R.string.accounts_other));
         navigationItems.add(new PrimaryNavigationItem(NavigationScreen.Transactions, R.drawable.ic_action_transactions, R.string.transactions_other));
         navigationItems.add(new PrimaryNavigationItem(NavigationScreen.Reports, R.drawable.ic_action_reports, R.string.reports));
         navigationItems.add(new DividerNavigationItem(true));
-        navigationItems.add(new SecondaryNavigationItem(NavigationScreen.Settings, R.string.settings));
+        navigationItems.add(new PrimaryNavigationItem(NavigationScreen.Settings, R.drawable.ic_action_settings, R.string.settings));
     }
 
     @Override
