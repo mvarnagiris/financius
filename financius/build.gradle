@@ -24,7 +24,7 @@ android {
         applicationId 'com.code44.finance'
         targetSdkVersion 21
         minSdkVersion 16
-        versionCode 77
+        versionCode 79
         versionName '0.18.1'
         buildConfigField "boolean", "USE_LOCAL_SERVER", "true"
         buildConfigField "String", "LOCAL_SERVER_IP", "\"192.168.0.7\""

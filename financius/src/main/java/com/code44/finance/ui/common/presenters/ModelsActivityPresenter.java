@@ -169,6 +169,7 @@ public abstract class ModelsActivityPresenter<M extends Model> extends RecyclerV
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == LOADER_MODELS) {
             getAdapter().setCursor(data);
+            getEmptyContainerView().setEmpty(getAdapter().getItemCount() == 0);
         }
     }
 

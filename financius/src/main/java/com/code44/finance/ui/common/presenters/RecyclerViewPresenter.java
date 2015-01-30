@@ -22,7 +22,6 @@ public abstract class RecyclerViewPresenter<A extends RecyclerView.Adapter<?>> e
 
         if (emptyContainerView != null) {
             emptyContainerView.setCallbacks(this);
-            emptyContainerView.setEmpty(adapter.getItemCount() == 0);
             adapter.registerAdapterDataObserver(new AdapterObserver());
         }
     }
@@ -37,6 +36,10 @@ public abstract class RecyclerViewPresenter<A extends RecyclerView.Adapter<?>> e
 
     protected A getAdapter() {
         return adapter;
+    }
+
+    protected EmptyContainerView getEmptyContainerView() {
+        return emptyContainerView;
     }
 
     private class AdapterObserver extends RecyclerView.AdapterDataObserver {
