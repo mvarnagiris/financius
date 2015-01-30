@@ -86,7 +86,7 @@ public class CategoriesReportAdapter extends BaseAdapter {
             final TagViewHolder holder = (TagViewHolder) parent.getChildAt(i).getTag();
             final Pair<Tag, Long> tagAmount = tags.get(i - staticViewCount);
             holder.title_TV.setText(tagAmount.first.getTitle());
-// TODO            holder.amount_TV.setText(MoneyFormatter.format(defaultCurrencyFormat, tagAmount.second));
+            holder.amount_TV.setText(amountFormatter.format(tagAmount.second));
         }
     }
 
