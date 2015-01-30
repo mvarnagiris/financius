@@ -1,3 +1,7 @@
+###Version: 0.18.1
+- ```fix``` Fixed currency exchange rates update.
+- ```fix``` Categories report shows tag amounts again.
+
 ###Version: 0.18.0
 - ```new``` New trends graph that is interactive.
 - ```new``` Updated settings page UI.

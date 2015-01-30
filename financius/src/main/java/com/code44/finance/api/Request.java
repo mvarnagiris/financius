@@ -2,6 +2,7 @@ package com.code44.finance.api;
 
 import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.Logger;
+import com.crashlytics.android.Crashlytics;
 
 import java.util.concurrent.Callable;
 
@@ -22,6 +23,7 @@ public abstract class Request<T> implements Callable<Result<T>> {
             final T data = performRequest();
             result = new Result<>(data, null);
         } catch (Exception error) {
+            Crashlytics.logException(error);
             logger.error("Request failed.", error);
             result = new Result<>(null, error);
         }
