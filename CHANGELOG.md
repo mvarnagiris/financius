@@ -1,3 +1,6 @@
+###Version: 0.18.2
+- ```fix``` Currencies exchange rates are now displayed correctly.
+
 ###Version: 0.18.1
 - ```fix``` Fixed currency exchange rates update.
 - ```fix``` Categories report shows tag amounts again.

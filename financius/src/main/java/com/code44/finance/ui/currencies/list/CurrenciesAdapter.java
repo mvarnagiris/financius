@@ -64,7 +64,7 @@ class CurrenciesAdapter extends ModelsAdapter<CurrencyFormat> {
                 exchangeRateTextView.setText(null);
             } else {
                 codeTextView.setTextColor(textPrimaryColor);
-                exchangeRateTextView.setText(String.valueOf(currenciesManager.getExchangeRate(currencyFormat.getCode())));
+                exchangeRateTextView.setText(String.valueOf(currenciesManager.getExchangeRate(currencyFormat.getCode(), currenciesManager.getMainCurrencyCode())));
             }
         }
     }
