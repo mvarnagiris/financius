@@ -43,7 +43,7 @@ of this license document, but changing it is not allowed.
 [1]: https://play.google.com/store/apps/details?id=com.code44.finance
 [2]: https://plus.google.com/communities/105052097023793642366
 [3]: https://play.google.com/apps/testing/com.code44.finance
-[4]: https://github.com/mvarnagiris/Financius/issues/new
-[5]: https://github.com/mvarnagiris/Financius/issues?state=open
-[6]: https://github.com/mvarnagiris/Financius/issues?state=closed
+[4]: https://github.com/mvarnagiris/financius-public/issues/new
+[5]: https://github.com/mvarnagiris/financius-public/issues?state=open
+[6]: https://github.com/mvarnagiris/financius-public/issues?state=closed
 [7]: https://crowdin.com/project/financius
