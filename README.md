@@ -8,10 +8,6 @@ Personal finance tracking tool for Android.
 - [Report an issue or  request a feature][4] but before **[read this](#report-a-bug-or-request-a-feature)**
 - [Translate to a different language][7]
 
-##Future plans
-I plan to add paid features to the app. Everything that is in the app as of v0.9.x will be free, but some (or maybe all)
-features will be under in app purchase. The price and model is still TBD.
-
 ##Report a bug or request a feature
 Before creating a new issue please make sure that same or similar issue is not already created by checking 
 [open issues][5] and [closed issues][6] *(please not that there might be multiple pages)*. If your issue is already 
