@@ -77,7 +77,7 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void showChangeLog() {
-        openUrl("https://github.com/mvarnagiris/Financius/blob/dev/CHANGELOG.md");
+        openUrl("https://github.com/mvarnagiris/Financius-public/blob/dev/CHANGELOG.md");
     }
 
     private void showIssues() {
