@@ -9,7 +9,7 @@
 ###Version: 0.18.3
 - ```fix``` Pointing to correct URLs in about screen.
 - ```fix``` Various other fixes for crashes.
-- 
+
 ###Version: 0.18.2
 - ```fix``` Currencies exchange rates are now displayed correctly.
 
