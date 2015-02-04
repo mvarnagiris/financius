@@ -1,3 +1,15 @@
+###Version: 0.18.5
+- ```fix``` Fixed amount editing with calculator when decimal symbol was lost.
+
+###Version: 0.18.4
+- ```new``` Calculator landscape.
+- ```new``` Better landscape support for Overview screen. Just a bit better.
+- ```fix``` Some bug squashing.
+
+###Version: 0.18.3
+- ```fix``` Pointing to correct URLs in about screen.
+- ```fix``` Various other fixes for crashes.
+- 
 ###Version: 0.18.2
 - ```fix``` Currencies exchange rates are now displayed correctly.
 
