@@ -81,7 +81,7 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void showIssues() {
-        openUrl("https://github.com/mvarnagiris/Financius/blob/dev/README.md");
+        openUrl("https://github.com/mvarnagiris/Financius-public/blob/dev/README.md");
     }
 
     private void showRate() {
