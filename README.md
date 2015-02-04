@@ -22,9 +22,6 @@ Checklist for creating issues:
 
 [Create new issue][4]
 
-##Contribute
-I do accept and review Pull Requests on **dev** branch. So if you want to contribute, you are very welcome to do so. But before you do it would be best if you could talk with me about what you want to do.
-
 ##License
 ```
 GNU GENERAL PUBLIC LICENSE
