@@ -1,3 +1,7 @@
+###Version: 0.18.6
+- ```new``` Using new pie chart. This should fix distortion issues for some users.
+- ```new``` Added new languages and updated existing ones.
+
 ###Version: 0.18.5
 - ```fix``` Fixed amount editing with calculator when decimal symbol was lost.
 
