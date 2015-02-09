@@ -1,3 +1,7 @@
+###Version: 0.18.7
+- ```fix``` Crash on startup.
+- ```fix``` Pie chart is no longer clickable.
+
 ###Version: 0.18.6
 - ```new``` Using new pie chart. This should fix distortion issues for some users.
 - ```new``` Added new languages and updated existing ones.
