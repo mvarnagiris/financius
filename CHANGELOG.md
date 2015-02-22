@@ -1,3 +1,7 @@
+###Version: 0.18.8
+- ```fix``` Pending transactions are no longer included in reports.
+- ```fix``` When canceling delete for account/category/tag will no longer un-delete transactions that were deleted before.
+
 ###Version: 0.18.7
 - ```fix``` Crash on startup.
 - ```fix``` Pie chart is no longer clickable.
