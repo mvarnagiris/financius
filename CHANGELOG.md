@@ -1,3 +1,6 @@
+###Version: 0.18.9
+- ```fix``` Transactions that are marked to not be included in reports will not be included in reports.
+
 ###Version: 0.18.8
 - ```fix``` Pending transactions are no longer included in reports.
 - ```fix``` When canceling delete for account/category/tag will no longer un-delete transactions that were deleted before.
