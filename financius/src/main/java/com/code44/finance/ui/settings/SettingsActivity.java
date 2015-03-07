@@ -187,6 +187,9 @@ public class SettingsActivity extends BaseDrawerActivity implements AdapterView.
     private void onLockSelected(int selectedPosition) {
         final Security.Type type;
         switch (selectedPosition) {
+            case 2:
+                type = Security.Type.Pattern;
+                break;
             case 1:
                 type = Security.Type.Pin;
                 break;
@@ -221,6 +224,7 @@ public class SettingsActivity extends BaseDrawerActivity implements AdapterView.
         final List<ListDialogFragment.ListDialogItem> items = new ArrayList<>();
         items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.none), getSecurity().getType() == Security.Type.None));
         items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.pin), getSecurity().getType() == Security.Type.Pin));
+        items.add(new ListDialogFragment.SingleChoiceListDialogItem(getString(R.string.pattern), getSecurity().getType() == Security.Type.Pattern));
         new ListDialogFragment.Builder(REQUEST_LOCK)
                 .setTitle(getString(R.string.security))
                 .setItems(items)

@@ -40,6 +40,8 @@ public class Security extends Prefs {
                 return getContext().getString(R.string.none);
             case Pin:
                 return getContext().getString(R.string.pin);
+            case Pattern:
+                return getContext().getString(R.string.pattern);
             default:
                 throw new IllegalStateException("Lock type " + type + " is not supported.");
         }
@@ -92,7 +94,7 @@ public class Security extends Prefs {
     }
 
     public static enum Type {
-        None(0), Pin(1);
+        None(0), Pin(1), Pattern(2);
 
         private final int value;
 
@@ -102,6 +104,8 @@ public class Security extends Prefs {
 
         public static Type fromInt(int value) {
             switch (value) {
+                case 2:
+                    return Pattern;
                 case 1:
                     return Pin;
                 default:

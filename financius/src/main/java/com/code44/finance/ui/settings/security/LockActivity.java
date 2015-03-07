@@ -81,6 +81,9 @@ public class LockActivity extends BaseActivity implements LockView.OnPasswordEnt
             case Pin:
                 lockView = new PinLockView(this);
                 break;
+            case Pattern:
+                lockView = new PatternLockView(this);
+                break;
             default:
                 throw new IllegalStateException("Security type " + type + " is not supported.");
         }

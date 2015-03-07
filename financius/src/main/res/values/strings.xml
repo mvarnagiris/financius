@@ -118,6 +118,7 @@
     <string name="confirm_password">Confirm password</string>
     <string name="show_all">Show all</string>
     <string name="translate">Translate</string>
+    <string name="pattern">Pattern</string>
 
     <string name="f_change_to_x">Change to %s</string>
     <string name="f_current_main_currency_is_x">Current main currency is %s</string>
@@ -143,5 +144,14 @@
     <string name="c_household">Household</string>
     <string name="c_bills_and_utilities">Bills and Utilities</string>
     <string name="c_salary">Salary</string>
+
+    <!-- Accessibility description sent when user starts drawing a lock pattern. [CHAR LIMIT=NONE] -->
+    <string name="lockscreen_access_pattern_start">Pattern started</string>
+    <!-- Accessibility description sent when the pattern times out and is cleared. [CHAR LIMIT=NONE] -->
+    <string name="lockscreen_access_pattern_cleared">Pattern cleared</string>
+    <!-- Accessibility description sent when user adds a cell to the pattern. [CHAR LIMIT=NONE]  -->
+    <string name="lockscreen_access_pattern_cell_added">Cell added</string>
+    <!-- Accessibility description sent when user completes drawing a pattern. [CHAR LIMIT=NONE] -->
+    <string name="lockscreen_access_pattern_detected">Pattern completed</string>
 
 </resources>
