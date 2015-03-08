@@ -4,6 +4,8 @@
     <!-- When changing this, you need to change <item name="backgroundColor">#f0f0f0</item> in theme-->
     <color name="window_background">#f0f0f0</color>
 
+    <color name="color_sub_header">#222</color>
+
     <array name="progress_bar_colors">
         <item>#cddc39</item>
     </array>
