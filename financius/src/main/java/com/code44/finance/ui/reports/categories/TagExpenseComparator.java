@@ -8,12 +8,6 @@ import java.util.Comparator;
 
 class TagExpenseComparator implements Comparator<Pair<Tag, Long>> {
     @Override public int compare(Pair<Tag, Long> leftValue, Pair<Tag, Long> rightValue) {
-        if (leftValue.second < rightValue.second) {
-            return 1;
-        } else if (leftValue.second > rightValue.second) {
-            return -1;
-        } else {
-            return 0;
-        }
+        return (int) (rightValue.second - leftValue.second);
     }
 }
