@@ -1,3 +1,34 @@
+###Version: 0.19.6
+- ```new``` Changed the order of fields in new transaction screen. Again.
+
+###Version: 0.19.5
+- ```new``` Changed the order of fields in new transaction screen.
+- ```new``` Updated how auto complete works.
+
+###Version: 0.19.4
+- ```new``` Added sync for default currency, pin code, and period settings.
+
+###Version: 0.19.3
+- ```fix``` Fixed synchronization bug.
+
+###Version: 0.19.2
+- ```new``` Disabled backup restore options for users that are logged in.
+
+###Version: 0.19.1
+- ```fix``` Fixed some issues related with Cloud Endpoints.
+
+###Version: 0.19.0
+- ```new``` Cloud Endpoints backend.
+
+###Version: 0.18.12
+- ```fix``` Fixed Google Drive backup/import.
+
+###Version: 0.18.11
+- ```fix``` Fixed build issue with native platforms.
+
+###Version: 0.18.10
+- ```fix``` Fixed manifest issue.
+
 ###Version: 0.18.9
 - ```fix``` Transactions that are marked to not be included in reports will not be included in reports.
 
