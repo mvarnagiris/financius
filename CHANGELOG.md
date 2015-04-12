@@ -1,3 +1,7 @@
+###Version: 0.19.7
+- ```fix``` Startup crash fixed.
+- ```fix``` Profile screen shows toolbar.
+
 ###Version: 0.19.6
 - ```new``` Changed the order of fields in new transaction screen. Again.
 
