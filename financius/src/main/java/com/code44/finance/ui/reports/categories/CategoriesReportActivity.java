@@ -117,6 +117,7 @@ public class CategoriesReportActivity extends BaseReportActivity implements Load
     }
 
     @Subscribe public void onActiveIntervalChanged(ActiveInterval interval) {
+        transactionTypeViewController.setTransactionType(TransactionType.Expense);
         getSupportLoaderManager().restartLoader(LOADER_TRANSACTIONS, null, this);
     }
 
