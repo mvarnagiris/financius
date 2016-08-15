@@ -4,24 +4,29 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.code44.finance.App;
 import com.code44.finance.R;
+import com.code44.finance.common.model.TransactionType;
+import com.code44.finance.data.model.Transaction;
 import com.code44.finance.graphs.pie.PieChartData;
 import com.code44.finance.graphs.pie.PieChartView;
 import com.code44.finance.money.AmountFormatter;
 import com.code44.finance.ui.common.ViewBackgroundTheme;
+import com.code44.finance.utils.EventBus;
 import com.code44.finance.utils.ThemeUtils;
 
 import javax.inject.Inject;
 
-public class CategoriesReportView extends LinearLayout {
+public class CategoriesReportView extends LinearLayout implements View.OnClickListener {
     private final PieChartView pieChartView;
     private final TextView totalExpenseTextView;
 
     @Inject AmountFormatter amountFormatter;
+    @Inject EventBus eventBus;
 
     public CategoriesReportView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -49,6 +54,10 @@ public class CategoriesReportView extends LinearLayout {
         } else {
             setTotalExpense(0);
         }
+
+        if (!isInEditMode()) {
+            eventBus.register(this);
+        }
     }
 
     @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -56,6 +65,14 @@ public class CategoriesReportView extends LinearLayout {
 
         final LayoutParams params = (LayoutParams) pieChartView.getLayoutParams();
         params.height = pieChartView.getMeasuredWidth();
+    }
+
+    @Override public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.transactionTypeContainerView:
+                eventBus.post(TransactionType.Expense);
+                break;
+        }
     }
 
     public void setPieChartData(PieChartData pieChartData) {

@@ -3,6 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <FrameLayout
+        android:id="@+id/transactionTypeContainerView"
+        style="@style/Button.Flat"
+        android:layout_width="@dimen/keyline_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="@dimen/action_item"
+            android:layout_height="@dimen/action_item"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/keyline"
+            android:scaleType="centerInside"
+            android:src="@drawable/circle"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+        <ImageView
+            android:id="@+id/transactionTypeImageView"
+            android:layout_width="@dimen/action_item"
+            android:layout_height="@dimen/action_item"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/keyline"
+            android:contentDescription="@string/transaction_type"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_action_category_type"
+            tools:ignore="RtlHardcoded"
+            tools:tint="?textColorNegative" />
+
+    </FrameLayout>
+
     <com.code44.finance.graphs.pie.PieChartView
         android:id="@+id/pieChartView"
         android:layout_width="wrap_content"
