@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.code44.finance.ui.common.views.AccountsView
+    android:id="@+id/accounts"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackgroundBorderless"
+    android:orientation="vertical"
+    android:padding="@dimen/keyline">
+
+    <TextView
+        style="@style/Text.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/space_large"
+        android:text="@string/accounts_other"
+        android:textColor="?colorPrimary" />
+
+    <LinearLayout
+        android:id="@+id/balanceContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/keyline">
+
+        <TextView
+            style="@style/Text.Subhead"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/balance"
+            android:textColor="?android:textColorSecondary" />
+
+        <TextView
+            android:id="@+id/totalBalance"
+            style="@style/Text.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?android:textColorSecondary"
+            tools:text="5892.58 $" />
+
+    </LinearLayout>
+
+</com.code44.finance.ui.common.views.AccountsView>

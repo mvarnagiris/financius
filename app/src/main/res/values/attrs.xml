@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="supportTintColor" format="color" />
+
+    <declare-styleable name="Theme">
+        <attr name="textColorPositive" format="color" />
+        <attr name="textColorNegative" format="color" />
+        <attr name="textColorNeutral" format="color" />
+        <attr name="colorAccentDark" format="color" />
+        <attr name="colorError" format="color" />
+        <attr name="colorIcon" format="color" />
+        <attr name="colorIconAction" format="color" />
+        <attr name="backgroundColor" format="color" />
+        <attr name="backgroundColorPrimary" format="color" />
+        <attr name="backgroundColorPrimaryInverse" format="color" />
+        <attr name="backgroundColorSecondary" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="AspectLayout">
+        <attr name="aspectBase" format="enum">
+            <enum name="width" value="0" />
+            <enum name="height" value="1" />
+            <enum name="smallest" value="2" />
+            <enum name="biggest" value="3" />
+        </attr>
+        <attr name="aspect" format="float" />
+    </declare-styleable>
+
+    <declare-styleable name="TintImageView">
+        <attr name="supportTintColor" />
+    </declare-styleable>
+
+    <declare-styleable name="TintImageButton">
+        <attr name="supportTintColor" />
+    </declare-styleable>
+
+</resources>

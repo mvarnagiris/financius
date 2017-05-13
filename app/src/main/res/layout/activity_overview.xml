@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <FrameLayout
+        android:id="@+id/overviewGraphContainer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_size_2x"
+        android:layout_below="@+id/toolbar"
+        android:background="?colorPrimary"
+        android:elevation="@dimen/elevation_toolbar"
+        tools:ignore="UnusedAttribute">
+
+        <com.code44.finance.ui.reports.categories.CategoriesPieChartView
+            android:id="@+id/categoriesPieChartView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_size_2x"
+            android:background="?selectableItemBackgroundBorderless"
+            tools:ignore="UnusedAttribute" />
+
+    </FrameLayout>
+
+    <ScrollView
+        style="@style/ScrollView"
+        android:layout_below="@+id/overviewGraphContainer">
+
+        <LinearLayout
+            android:id="@+id/containerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/keyline_content"
+            android:paddingLeft="@dimen/keyline_half"
+            android:paddingRight="@dimen/keyline_half"
+            android:paddingTop="@dimen/keyline_half">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/card_radius">
+
+                <include layout="@layout/view_accounts" />
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_normal"
+                app:cardCornerRadius="@dimen/card_radius">
+
+                <com.code44.finance.ui.reports.trends.TrendsChartView
+                    android:id="@+id/trendsChartView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/newTransactionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/keyline"
+        app:fab_colorNormal="?colorAccent"
+        app:fab_colorPressed="?colorAccentDark"
+        app:fab_icon="@drawable/ic_action_new"
+        tools:ignore="RtlHardcoded" />
+
+</RelativeLayout>

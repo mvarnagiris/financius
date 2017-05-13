@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/action_bar_size_2x"
+    android:gravity="center_vertical">
+
+    <com.code44.finance.ui.common.views.AspectLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/space_small"
+        android:orientation="vertical"
+        app:aspectBase="height">
+
+        <com.code44.finance.ui.common.views.TintImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="6dp"
+            android:src="@drawable/circle"
+            app:supportTintColor="?backgroundColorPrimary" />
+
+        <lecho.lib.hellocharts.view.PieChartView
+            android:id="@+id/pieChartView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.code44.finance.ui.common.views.AspectLayout>
+
+    <me.grantland.widget.AutofitTextView
+        android:id="@+id/totalExpenseTextView"
+        style="@style/Text.Display2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_large"
+        android:layout_marginRight="@dimen/space_large"
+        android:gravity="right"
+        android:singleLine="true"
+        android:textColor="?android:textColorPrimaryInverse"
+        tools:ignore="RtlHardcoded"
+        tools:text="34.12 $" />
+
+</merge>

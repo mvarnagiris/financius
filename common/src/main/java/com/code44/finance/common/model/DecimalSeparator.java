@@ -7,7 +7,7 @@ public enum DecimalSeparator {
 
     private final String symbol;
 
-    private DecimalSeparator(String symbol) {
+    DecimalSeparator(String symbol) {
         this.symbol = symbol;
     }
 

@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
+    <filter>
+        <filter-name>ObjectifyFilter</filter-name>
+        <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ObjectifyFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>SystemServiceServlet</servlet-name>
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
             <param-value>
-                com.code44.finance.backend.endpoint.UsersEndpoint,
-                com.code44.finance.backend.endpoint.CurrenciesEndpoint,
-                com.code44.finance.backend.endpoint.CategoriesEndpoint,
-                com.code44.finance.backend.endpoint.TagsEndpoint,
-                com.code44.finance.backend.endpoint.AccountsEndpoint,
-                com.code44.finance.backend.endpoint.TransactionsEndpoint
+                com.code44.finance.backend.endpoints.UsersEndpoint,
+                com.code44.finance.backend.endpoints.DevicesEndpoint,
+                com.code44.finance.backend.endpoints.CurrenciesEndpoint,
+                com.code44.finance.backend.endpoints.TagsEndpoint,
+                com.code44.finance.backend.endpoints.CategoriesEndpoint,
+                com.code44.finance.backend.endpoints.AccountsEndpoint,
+                com.code44.finance.backend.endpoints.TransactionsEndpoint,
+                com.code44.finance.backend.endpoints.ConfigsEndpoint
             </param-value>
         </init-param>
     </servlet>

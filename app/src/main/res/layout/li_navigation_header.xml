@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="168dp"
+    android:foreground="?selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/coverImageView"
+        style="@style/ImageView.Photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        tools:background="?colorAccentDark"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/iconImageView"
+        style="@style/ImageView.Icon.XLarge"
+        android:layout_margin="@dimen/keyline"
+        android:scaleType="centerCrop"
+        tools:background="@drawable/circle"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/icon_large"
+        android:layout_gravity="bottom"
+        android:layout_margin="@dimen/keyline"
+        android:gravity="center_vertical"
+        android:textAppearance="@style/Text.Body2"
+        android:textColor="?android:textColorPrimaryInverse"
+        tools:ignore="RtlHardcoded"
+        tools:text="someuser@gmail.com" />
+
+</FrameLayout>

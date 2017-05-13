@@ -8,7 +8,7 @@ public enum GroupSeparator {
 
     private final String symbol;
 
-    private GroupSeparator(String symbol) {
+    GroupSeparator(String symbol) {
         this.symbol = symbol;
     }
 

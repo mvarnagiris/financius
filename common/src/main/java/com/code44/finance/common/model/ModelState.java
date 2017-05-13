@@ -11,7 +11,7 @@ public enum ModelState {
 
     private final int value;
 
-    private ModelState(int value) {
+    ModelState(int value) {
         this.value = value;
     }
 

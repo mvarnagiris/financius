@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <me.grantland.widget.AutofitTextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_size_2x"
+        android:background="?colorPrimary"
+        android:elevation="@dimen/elevation_toolbar"
+        android:gravity="bottom"
+        android:paddingBottom="@dimen/keyline"
+        android:paddingLeft="@dimen/keyline_content"
+        android:paddingRight="@dimen/keyline"
+        android:singleLine="true"
+        android:text="@string/login"
+        android:textAppearance="@style/Text.Display1"
+        android:textColor="?android:textColorPrimaryInverse"
+        tools:ignore="RtlHardcoded,RtlSymmetry,UnusedAttribute" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            style="?progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+    </FrameLayout>
+
+</LinearLayout>

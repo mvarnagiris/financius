@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.code44.finance.ui.common.views.AspectLayout
+        android:id="@+id/containerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/elevation_header"
+        app:aspect="0.5625"
+        app:aspectBase="width"
+        tools:ignore="UnusedAttribute">
+
+        <ImageView
+            android:id="@+id/coverImageView"
+            style="@style/ImageView.Photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="ContentDescription"
+            tools:src="?colorAccent" />
+
+    </com.code44.finance.ui.common.views.AspectLayout>
+
+    <ImageView
+        android:id="@+id/photoImageView"
+        style="@style/ImageView.Icon.XLarge"
+        android:layout_below="@id/containerView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/icon_xlarge_half_negative"
+        android:elevation="@dimen/elevation_fab"
+        android:scaleType="centerCrop"
+        tools:ignore="ContentDescription,UnusedAttribute"
+        tools:src="@drawable/circle" />
+
+    <me.grantland.widget.AutofitTextView
+        android:id="@+id/nameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/photoImageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/keyline"
+        android:layout_marginRight="@dimen/keyline"
+        android:layout_marginTop="@dimen/keyline"
+        android:gravity="center"
+        android:textAppearance="@style/Text.Headline"
+        tools:ignore="RtlHardcoded"
+        tools:text="Name Surname" />
+
+    <include layout="@layout/toolbar_transparent" />
+
+</RelativeLayout>

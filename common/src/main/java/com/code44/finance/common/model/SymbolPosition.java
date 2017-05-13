@@ -13,7 +13,7 @@ public enum SymbolPosition {
 
     private final int value;
 
-    private SymbolPosition(int value) {
+    SymbolPosition(int value) {
         this.value = value;
     }
 

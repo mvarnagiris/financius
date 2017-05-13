@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#00bcd4</item>
+        <item name="colorPrimaryDark">#0097a7</item>
+        <item name="colorAccent">#cddc39</item>
+        <item name="colorAccentDark">#afb42b</item>
+        <item name="colorControlHighlight">#84cddc39</item>
+        <item name="colorError">#e51c23</item>
+        <item name="colorIcon">#757575</item>
+        <item name="colorIconAction">#505050</item>
+        <item name="backgroundColor">#f0f0f0</item>
+        <item name="backgroundColorPrimary">#fafafa</item>
+        <item name="backgroundColorPrimaryInverse">#212121</item>
+        <item name="backgroundColorSecondary">#e4e4e4</item>
+        <item name="textColorPositive">#259b24</item>
+        <item name="textColorNegative">#e51c23</item>
+        <item name="textColorNeutral">#607d8b</item>
+
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowContentTransitions" tools:ignore="NewApi">true</item>
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+
+        <item name="android:dialogTheme">@style/AppTheme.DialogTheme</item>
+    </style>
+
+    <style name="AppTheme.DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">#00bcd4</item>
+    </style>
+
+    <style name="ToolbarTheme">
+        <item name="android:textColorPrimary">?android:textColorPrimaryInverse</item>
+        <item name="colorControlNormal">?android:textColorPrimaryInverse</item>
+    </style>
+
+    <style name="ToolbarStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?actionBarSize</item>
+        <item name="android:minHeight">?actionBarSize</item>
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_toolbar</item>
+        <item name="contentInsetStart">@dimen/keyline_content</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    </style>
+
+    <style name="ToolbarStyle.Transparent">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="ToolbarPopupTextAppearance">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+</resources>

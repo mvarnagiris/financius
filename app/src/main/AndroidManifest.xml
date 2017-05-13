@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    package="com.code44.finance"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
+
+    <permission
+        android:name="${applicationId}.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon">
+
+        <!-- Activities -->
+        <!-- ======================================================================================================= -->
+        <activity
+            android:name=".ui.common.activities.SplashActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.overview.OverviewActivity"
+            android:label="@string/overview" />
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:label="@string/settings" />
+        <activity
+            android:name=".ui.common.activities.CalculatorActivity"
+            android:label="@string/calculator" />
+        <activity
+            android:name=".ui.currencies.list.CurrenciesActivity"
+            android:label="@string/currencies_other" />
+        <activity
+            android:name=".ui.currencies.detail.CurrencyActivity"
+            android:label="@string/currencies_one" />
+        <activity
+            android:name=".ui.currencies.edit.CurrencyEditActivity"
+            android:label="@string/currencies_one" />
+        <activity
+            android:name=".ui.accounts.list.AccountsActivity"
+            android:label="@string/accounts_other" />
+        <activity
+            android:name=".ui.accounts.detail.AccountActivity"
+            android:label="@string/accounts_one" />
+        <activity
+            android:name=".ui.accounts.edit.AccountEditActivity"
+            android:label="@string/accounts_one" />
+        <activity
+            android:name=".ui.categories.list.CategoriesActivity"
+            android:label="@string/categories_other" />
+        <activity
+            android:name=".ui.categories.detail.CategoryActivity"
+            android:label="@string/categories_one" />
+        <activity
+            android:name=".ui.categories.edit.CategoryEditActivity"
+            android:label="@string/categories_one" />
+        <activity
+            android:name=".ui.tags.list.TagsActivity"
+            android:label="@string/tags_other" />
+        <activity
+            android:name=".ui.tags.detail.TagActivity"
+            android:label="@string/tags_one" />
+        <activity
+            android:name=".ui.tags.edit.TagEditActivity"
+            android:label="@string/tags_one" />
+        <activity
+            android:name=".ui.transactions.list.TransactionsActivity"
+            android:label="@string/transactions_other" />
+        <activity
+            android:name=".ui.transactions.detail.TransactionActivity"
+            android:label="@string/transactions_one" />
+        <activity
+            android:name=".ui.transactions.edit.TransactionEditActivity"
+            android:label="@string/transactions_one" />
+        <activity
+            android:name=".ui.user.LoginActivity"
+            android:label="@string/login" />
+        <activity
+            android:name=".ui.settings.data.DataActivity"
+            android:label="@string/your_data" />
+        <activity
+            android:name=".ui.settings.data.FileExportActivity"
+            android:label="@string/export" />
+        <activity
+            android:name=".ui.settings.data.DriveExportActivity"
+            android:label="@string/export" />
+        <activity
+            android:name=".ui.settings.data.FileImportActivity"
+            android:label="@string/import_backup" />
+        <activity
+            android:name=".ui.settings.data.DriveImportActivity"
+            android:label="@string/import_backup" />
+        <activity
+            android:name=".ui.settings.about.AboutActivity"
+            android:label="@string/about" />
+        <activity
+            android:name=".ui.settings.security.UnlockActivity"
+            android:label="@string/unlock" />
+        <activity
+            android:name=".ui.settings.security.LockActivity"
+            android:label="@string/unlock" />
+        <activity
+            android:name=".ui.reports.categories.CategoriesReportActivity"
+            android:label="@string/categories_report" />
+        <activity
+            android:name=".ui.user.ProfileActivity"
+            android:label="@string/user" />
+        <activity
+            android:name=".ui.common.activities.FilePickerActivity"
+            android:theme="@style/FilePicker.Theme" />
+
+        <!-- Providers -->
+        <!-- ======================================================================================================= -->
+        <provider
+            android:name=".data.providers.CurrenciesProvider"
+            android:authorities="${applicationId}.data.providers.CurrenciesProvider"
+            android:exported="false" />
+        <provider
+            android:name=".data.providers.AccountsProvider"
+            android:authorities="${applicationId}.data.providers.AccountsProvider"
+            android:exported="false" />
+        <provider
+            android:name=".data.providers.CategoriesProvider"
+            android:authorities="${applicationId}.data.providers.CategoriesProvider"
+            android:exported="false" />
+        <provider
+            android:name=".data.providers.TagsProvider"
+            android:authorities="${applicationId}.data.providers.TagsProvider"
+            android:exported="false" />
+        <provider
+            android:name=".data.providers.TransactionsProvider"
+            android:authorities="${applicationId}.data.providers.TransactionsProvider"
+            android:exported="false" />
+        <provider
+            android:name=".data.providers.ExchangeRatesProvider"
+            android:authorities="${applicationId}.data.providers.ExchangeRatesProvider"
+            android:exported="false" />
+
+        <!-- Receivers -->
+        <!-- ======================================================================================================= -->
+        <receiver
+            android:name=".receivers.GcmReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receivers.ConnectivityChangeReceiver"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Services -->
+        <!-- ======================================================================================================= -->
+        <service android:name=".services.StartupService" />
+        <service android:name=".services.GcmService" />
+        <service android:name=".services.SyncService" />
+        <service android:name=".services.LogoutService" />
+
+        <!-- Meta -->
+        <!-- ======================================================================================================= -->
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="a0fed0de33f7f506e0acd0e0eb605f9f3a3da96f" />
+    </application>
+
+</manifest>

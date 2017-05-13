@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    style="@style/AdapterItem"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@null"
+    android:minHeight="0dp"
+    android:orientation="horizontal"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp">
+
+    <Space
+        android:layout_width="@dimen/keyline_content_minus_keyline_2x"
+        android:layout_height="1dp"
+        android:layout_marginRight="@dimen/keyline"
+        tools:ignore="RtlHardcoded" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        style="@style/Text.Caption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="?android:textColorSecondary"
+        tools:text="Lunch" />
+
+    <TextView
+        android:id="@+id/amountTextView"
+        style="@style/Text.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginLeft="@dimen/space_normal"
+        android:textColor="?android:textColorSecondary"
+        tools:ignore="RtlHardcoded"
+        tools:text="58.99 $" />
+
+</LinearLayout>

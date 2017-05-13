@@ -1,45 +1,41 @@
-// Currently, the appengine gradle plugin's appengine devappserver launch doesn't interact well with Intellij/AndroidStudio's
-// Gradle integration.  As a temporary solution, please launch from the command line.
-// ./gradlew modulename:appengineRun
 // If you would like more information on the gradle-appengine-plugin please refer to the github page
 // https://github.com/GoogleCloudPlatform/gradle-appengine-plugin
 
 buildscript {
     repositories {
-        mavenLocal()
-        mavenCentral()
+        jcenter()
     }
     dependencies {
-        classpath 'com.google.appengine:gradle-appengine-plugin:1.9.17'
+        classpath 'com.google.appengine:gradle-appengine-plugin:1.9.18'
     }
 }
 
 repositories {
-    mavenCentral();
+    jcenter();
 }
 
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'appengine'
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
 
 dependencies {
-    appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.17'
+    appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.18'
     compile project(path: ':common')
-    compile 'com.google.appengine:appengine-endpoints:1.9.17'
-    compile 'com.google.appengine:appengine-endpoints-deps:1.9.17'
+    compile 'com.google.appengine:appengine-endpoints:1.9.18'
+    compile 'com.google.appengine:appengine-endpoints-deps:1.9.18'
     compile 'javax.servlet:servlet-api:2.5'
-    compile 'com.googlecode.objectify:objectify:5.0+'
+    compile 'com.googlecode.objectify:objectify:5+'
     compile 'com.ganyo:gcm-server:1.0.2'
-    compile 'com.google.code.gson:gson:2.+'
-    compile project(':common')
+    compile 'com.google.code.gson:gson:2.3.1'
 }
 
 appengine {
     httpAddress = '0.0.0.0'
     downloadSdk = true
+    jvmFlags = ['-Dfile.encoding="UTF-8"']
     appcfg {
         oauth2 = true
     }

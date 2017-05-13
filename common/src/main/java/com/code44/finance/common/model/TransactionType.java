@@ -11,7 +11,7 @@ public enum TransactionType {
 
     private final int value;
 
-    private TransactionType(int value) {
+    TransactionType(int value) {
         this.value = value;
     }
 

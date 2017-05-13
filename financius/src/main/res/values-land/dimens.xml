@@ -1,8 +1,0 @@
-<resources>
-
-    <dimen name="margin_edit_content">64dp</dimen>
-
-    <dimen name="recommended_touch_size">40dp</dimen>
-    <dimen name="big_touch_size">56dp</dimen>
-
-</resources>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:background="?backgroundColorPrimaryInverse"
+        android:baselineAligned="false"
+        android:elevation="@dimen/elevation_sub_header"
+        android:orientation="vertical"
+        tools:ignore="UnusedAttribute">
+
+        <RelativeLayout
+            android:id="@+id/resultContainerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?backgroundColorPrimary"
+            android:elevation="@dimen/elevation_toolbar"
+            tools:ignore="UnusedAttribute">
+
+            <me.grantland.widget.AutofitTextView
+                android:id="@+id/resultTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline"
+                android:layout_marginRight="@dimen/keyline"
+                android:layout_marginTop="@dimen/keyline"
+                android:gravity="end"
+                android:singleLine="true"
+                android:textAppearance="@style/Text.Display1"
+                tools:text="0.00" />
+
+            <TextView
+                android:id="@+id/tempResultTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/resultTextView"
+                android:layout_marginLeft="@dimen/keyline"
+                android:layout_marginRight="@dimen/keyline"
+                android:gravity="end"
+                android:paddingBottom="@dimen/keyline"
+                android:singleLine="true"
+                android:textAppearance="@style/Text.Headline"
+                android:visibility="invisible"
+                tools:text="0.00" />
+
+            <View
+                android:id="@+id/resultClearerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="?colorPrimary"
+                android:visibility="invisible" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/number7Button"
+                    style="@style/Button.Flat.Calc"
+                    android:text="@string/number_7" />
+
+                <Button
+                    android:id="@+id/number8Button"
+                    style="@style/Button.Flat.Calc"
+                    android:text="@string/number_8" />
+
+                <Button
+                    android:id="@+id/number9Button"
+                    style="@style/Button.Flat.Calc"
+                    android:text="@string/number_9" />
+
+                <Button
+                    android:id="@+id/dotButton"
+                    style="@style/Button.Flat.Calc"
+                    android:text="@string/decimal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/number4Button"
+                    style="@style/Button.Flat.Calc"
+                    android:text="@string/number_4" />
+
+                <Button
+                    android:id="@+id/number5Button"
+                    style="@style/Button.Flat.Calc"
+                    android:text="@string/number_5" />
+
+                <Button
+                    android:id="@+id/number6Button"
+                    style="@style/Button.Flat.Calc"
+                    android:text="@string/number_6" />
+
+                <Button
+                    android:id="@+id/number0Button"
+                    style="@style/Button.Flat.Calc"
+                    android:text="@string/number_0" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/number1Button"
+                    style="@style/Button.Flat.Calc"
+                    android:text="@string/number_1" />
+
+                <Button
+                    android:id="@+id/number2Button"
+                    style="@style/Button.Flat.Calc"
+                    android:text="@string/number_2" />
+
+                <Button
+                    android:id="@+id/number3Button"
+                    style="@style/Button.Flat.Calc"
+                    android:text="@string/number_3" />
+
+                <Button
+                    android:id="@+id/equalsButton"
+                    style="@style/Button.Flat.Calc"
+                    android:text="@string/equals"
+                    android:textColor="?colorAccent"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="?backgroundColorSecondary"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/deleteButton"
+            style="@style/Button.Flat.Calc.Action"
+            android:text="@string/l_delete_short"
+            android:textAppearance="@style/Text.Subhead"
+            tools:ignore="UnusedAttribute" />
+
+        <Button
+            android:id="@+id/divideButton"
+            style="@style/Button.Flat.Calc.Action"
+            android:text="@string/divide" />
+
+        <Button
+            android:id="@+id/multiplyButton"
+            style="@style/Button.Flat.Calc.Action"
+            android:text="@string/multiply" />
+
+        <Button
+            android:id="@+id/minusButton"
+            style="@style/Button.Flat.Calc.Action"
+            android:text="@string/minus" />
+
+        <Button
+            android:id="@+id/plusButton"
+            style="@style/Button.Flat.Calc.Action"
+            android:text="@string/plus" />
+
+    </LinearLayout>
+
+</LinearLayout>

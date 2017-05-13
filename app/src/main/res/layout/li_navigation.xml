@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    style="@style/AdapterItem"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:foreground="?selectableItemBackground"
+    android:minHeight="?android:listPreferredItemHeightSmall"
+    android:paddingLeft="@dimen/keyline"
+    android:paddingRight="@dimen/keyline"
+    tools:ignore="RtlHardcoded">
+
+    <com.code44.finance.ui.common.views.TintImageView
+        android:id="@+id/iconImageView"
+        android:layout_width="@dimen/icon"
+        android:layout_height="@dimen/icon"
+        android:layout_gravity="center_vertical"
+        android:scaleType="centerInside"
+        app:supportTintColor="?android:textColorPrimary"
+        tools:src="@drawable/ic_action_overview" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        style="@style/Text.Body2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/keyline_content_minus_keyline"
+        tools:text="Navigation item" />
+
+</FrameLayout>

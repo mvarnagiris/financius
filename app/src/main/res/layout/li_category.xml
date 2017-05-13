@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    style="@style/AdapterItem"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:clipToPadding="false"
+    android:gravity="center_vertical"
+    tools:ignore="UseCompoundDrawables">
+
+    <ImageView
+        android:id="@+id/colorImageView"
+        android:layout_width="@dimen/icon"
+        android:layout_height="@dimen/icon"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/action_item_to_keyline_content"
+        android:padding="@dimen/action_item_padding"
+        android:src="@drawable/circle"
+        tools:ignore="ContentDescription,RtlHardcoded" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        style="@style/Text.Subhead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Bills and Utilities" />
+
+</LinearLayout>

@@ -9,7 +9,7 @@ public enum TransactionState {
 
     private final int value;
 
-    private TransactionState(int value) {
+    TransactionState(int value) {
         this.value = value;
     }
 
