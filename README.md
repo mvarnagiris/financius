@@ -1,14 +1,14 @@
-#Financius
+# Financius
 Personal finance tracking tool for Android.
 
-##Quick links
+## Quick links
 - [Download app from Google Play][1]
 - [Google+ community][2]
 - [Join beta testing program][3] *(You must be joined to Google+ community)*
 - [Report an issue or  request a feature][4] but before **[read this](#report-a-bug-or-request-a-feature)**
 - [Translate to a different language][7]
 
-##Report a bug or request a feature
+## Report a bug or request a feature
 Before creating a new issue please make sure that same or similar issue is not already created by checking 
 [open issues][5] and [closed issues][6] *(please note that there might be multiple pages)*. If your issue is already 
 there, don't create a new one, but leave a comment under already existing one.
@@ -22,7 +22,7 @@ Checklist for creating issues:
 
 [Create new issue][4]
 
-##License
+## License
 ```
 GNU GENERAL PUBLIC LICENSE
 Version 2, June 1991
