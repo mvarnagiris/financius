@@ -55,4 +55,24 @@
     <declare-styleable name="CategoriesReportView">
         <attr name="viewBackgroundTheme" />
     </declare-styleable>
+
+    <!-- =============================== -->
+    <!-- LockPatternView class attributes -->
+    <!-- =============================== -->
+    <eat-comment />
+
+    <declare-styleable name="LockPatternView">
+        <!-- Aspect to use when drawing LockPatternView. Choices are "square"(default), "lock_width"
+             or "lock_height" -->
+        <attr name="aspect" format="string" />
+        <!-- Color to use when drawing LockPatternView paths. -->
+        <attr name="pathColor" format="color|reference" />
+        <!-- The regular pattern color -->
+        <attr name="regularColor" format="color|reference" />
+        <!-- The error color -->
+        <attr name="errorColor" format="color|reference" />
+        <!-- The success color -->
+        <attr name="successColor" format="color|reference"/>
+    </declare-styleable>
+
 </resources>

@@ -58,6 +58,9 @@ public class UnlockActivity extends BaseActivity implements LockView.OnPasswordE
             case Pin:
                 lockView = new PinLockView(this);
                 break;
+            case Pattern:
+                lockView = new PatternLockView(this);
+                break;
             default:
                 throw new IllegalStateException("Security type " + getSecurity().getType() + " is not supported.");
         }
