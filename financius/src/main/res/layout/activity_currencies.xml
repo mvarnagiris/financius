@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="?colorPrimary"
+        android:background="@color/color_sub_header"
         android:elevation="@dimen/elevation_sub_header"
         android:gravity="center_vertical"
         android:minHeight="?android:actionBarSize"
