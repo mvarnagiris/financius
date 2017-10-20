@@ -426,6 +426,10 @@ class TransactionEditActivityPresenter extends ModelEditActivityPresenter<Transa
         isUpdated = true;
         isAutoCompleteUpdateQueued = false;
 
+        if (isAutoComplete && transactionEditData.getStoredTransaction() == null &&
+                transactionEditData.getAccountFrom() != null && transactionEditData.getAccountTo() != null) {
+            transactionEditData.setExchangeRate(currenciesManager.getExchangeRate(transactionEditData.getAccountFrom().getCurrencyCode(), transactionEditData.getAccountTo().getCurrencyCode()));
+        }
         onDataChanged(getStoredModel());
     }
 
