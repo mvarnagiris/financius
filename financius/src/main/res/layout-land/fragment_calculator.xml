@@ -197,7 +197,8 @@
                     android:id="@+id/equals_B"
                     style="@style/Button.Flat.Calc.Action.Landscape"
                     android:text="@string/equals"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="?colorAccentDark" />
 
                 <Button
                     android:id="@+id/plus_B"
