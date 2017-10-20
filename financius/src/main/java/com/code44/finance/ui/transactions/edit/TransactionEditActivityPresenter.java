@@ -525,7 +525,11 @@ class TransactionEditActivityPresenter extends ModelEditActivityPresenter<Transa
     }
 
     private void updateDate(long date) {
-        dateTimeViewController.setDateTime(date);
+        if (isNewModel() && !transactionEditData.isDateSet()) {
+            dateTimeViewController.loadLatestTransactionDate();
+        } else {
+            dateTimeViewController.setDateTime(date);
+        }
         dateTimeViewController.isSetByUser(transactionEditData.isDateSet());
     }
 
