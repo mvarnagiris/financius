@@ -8,12 +8,6 @@ import java.util.Comparator;
 
 class CategoryExpenseComparator implements Comparator<Pair<Category, Long>> {
     @Override public int compare(Pair<Category, Long> leftValue, Pair<Category, Long> rightValue) {
-        if (leftValue.second < rightValue.second) {
-            return 1;
-        } else if (leftValue.second > rightValue.second) {
-            return -1;
-        } else {
-            return 0;
-        }
+        return (int) (rightValue.second - leftValue.second);
     }
 }
