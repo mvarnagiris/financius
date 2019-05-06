@@ -8,6 +8,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
@@ -20,9 +21,7 @@ abstract class Presenter<INTENT, STATE, SIDE_EFFECT, VIEW : Presenter.View> : Co
     private val sideEffectChannel by lazy { Channel<SIDE_EFFECT>(Channel.UNLIMITED) }
 
     private var currentView: VIEW? = null
-    private var currentOpenStateChannel: ReceiveChannel<STATE>? = null
-    private var currentSideEffectsJob: Job? = null
-    private var viewIntentChannels: List<ReceiveChannel<INTENT>>? = null
+    private var jobsUntilDetached: List<Job>? = null
 
     infix fun attach(view: VIEW) {
         if (!coroutineContext.isActive) throw IllegalStateException("Presenter $this has been disposed")
@@ -32,17 +31,16 @@ abstract class Presenter<INTENT, STATE, SIDE_EFFECT, VIEW : Presenter.View> : Co
         if (currentlyAttachedView != null) detach(currentlyAttachedView)
 
         this.currentView = view
-        val openStateChannel = stateChannel.openSubscription()
-        currentOpenStateChannel = openStateChannel
+
         onAttached(view)
 
-        launch {
-            for (state in openStateChannel) {
-                onStateChanged(view, state)
+        launchUntilDetached {
+            stateChannel.consumeEach {
+                onStateChanged(view, it)
             }
         }
 
-        currentSideEffectsJob = launch {
+        launchUntilDetached {
             for (sideEffect in sideEffectChannel) {
                 onSideEffectReceived(view, sideEffect)
             }
@@ -51,12 +49,8 @@ abstract class Presenter<INTENT, STATE, SIDE_EFFECT, VIEW : Presenter.View> : Co
 
     infix fun detach(view: VIEW) {
         currentView = null
-        currentOpenStateChannel?.cancel()
-        currentOpenStateChannel = null
-        viewIntentChannels?.forEach { it.cancel() }
-        viewIntentChannels = null
-        currentSideEffectsJob?.cancel()
-        currentSideEffectsJob = null
+        jobsUntilDetached?.forEach { it.cancel() }
+        jobsUntilDetached = null
         onDetached(view)
     }
 
@@ -83,20 +77,29 @@ abstract class Presenter<INTENT, STATE, SIDE_EFFECT, VIEW : Presenter.View> : Co
         return null
     }
 
-    protected suspend fun setState(state: STATE) {
+    protected fun setState(state: STATE) {
         val oldState = stateChannel.value
-        if (state != oldState) stateChannel.send(state)
+        if (state != oldState) {
+            println("Setting new state $state")
+            stateChannel.offer(state)
+        }
     }
 
-    protected suspend fun addSideEffect(sideEffect: SIDE_EFFECT) {
-        sideEffectChannel.send(sideEffect)
+    protected fun addSideEffect(sideEffect: SIDE_EFFECT) {
+        println("Adding side effect $sideEffect")
+        sideEffectChannel.offer(sideEffect)
     }
 
-    protected fun ReceiveChannel<INTENT>.untilDetached() = launch {
-        viewIntentChannels = viewIntentChannels.orEmpty() + this@untilDetached
-        for (value in this@untilDetached) {
+    protected fun ReceiveChannel<INTENT>.receiveUntilDetached() = launchUntilDetached {
+        for (value in this@receiveUntilDetached) {
             intent(value)
         }
+    }
+
+    protected fun launchUntilDetached(block: suspend () -> Unit): Job {
+        val job = launch { block() }
+        jobsUntilDetached = jobsUntilDetached.orEmpty() + job
+        return job
     }
 
     protected abstract fun getInitialState(): STATE

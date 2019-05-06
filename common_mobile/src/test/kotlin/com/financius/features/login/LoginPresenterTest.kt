@@ -1,14 +1,38 @@
 package com.financius.features.login
 
 import com.financius.BaseTest
+import com.financius.channel
+import com.financius.data.models.Authentication
+import com.financius.data.models.Login.GoogleLogin
+import com.financius.features.login.LoginPresenter.Intent.LoginWithGoogle
+import com.financius.loggedInAuthentication
+import com.financius.never
+import com.financius.notLoggedInAuthentication
+import io.mockk.clearAllMocks
+import io.mockk.clearMocks
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.coVerifyOrder
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import io.mockk.verifyOrder
+import kotlinx.coroutines.CompletableDeferred
+import org.junit.Before
 import org.junit.Test
 
 class LoginPresenterTest : BaseTest() {
 
-    private val presenter by lazy { LoginPresenter() }
+    private val loginWithGoogleRequestsChannel = channel<LoginWithGoogle>()
+
+    private val loginService = mockk<LoginService>()
+    private val presenter by lazy { LoginPresenter(loginService) }
     private val view = mockk<LoginPresenter.View>(relaxed = true)
+
+    @Before
+    fun setUp() {
+        every { view.loginWithGoogleRequests() } returns loginWithGoogleRequestsChannel.openSubscription()
+    }
 
     @Test
     fun `initially shows login method selection`() {
@@ -19,16 +43,82 @@ class LoginPresenterTest : BaseTest() {
 
     @Test
     fun `can login with google`() {
+//        val googleLogin = mockk<GoogleLogin>()
+//        val authentication = loggedInAuthentication
+//        val deferredGoogleLogin = CompletableDeferred<GoogleLogin>()
+//        val deferredAuthentication = CompletableDeferred<Authentication>()
+//        coEvery { loginService.login(googleLogin) } coAnswers { deferredAuthentication.await() }
         presenter attach view
 
+//        coEvery { view.loginWithGoogle() } coAnswers { never() }
         loginWithGoogle()
+//        loginWithGoogle()
         presenter detach view
         presenter attach view
+        presenter detach view
+        presenter attach view
+//        deferredGoogleLogin.complete(googleLogin)
+//        presenter detach view
+//        presenter attach view
+//        deferredAuthentication.complete(authentication)
 
-        verify { view.showLoginMethodSelection() }
+//        coVerifyOrder {
+//            view.showLoggingIn()
+//            view.loginWithGoogle()
+//            view.showLoggingIn()
+//            view.loginWithGoogle()
+//            loginService.login(googleLogin)
+//            view.showLoggingIn()
+//            view.showLoggedIn()
+//        }
+
+//        coVerify(exactly = 1) { loginService.login(any()) }
+//        coVerify(exactly = 2) { view.loginWithGoogle() }
     }
 
-    private fun loginWithGoogle() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    @Test
+    fun `handles google login errors`() {
+        val exception = Exception()
+        val googleLogin = mockk<GoogleLogin>()
+        coEvery { loginService.login(googleLogin) } throws exception
+        presenter attach view
+
+        clearMocks(view)
+        coEvery { view.loginWithGoogle() } throws exception
+        loginWithGoogle()
+        verify {
+            view.showLoggingIn()
+            view.showLoginMethodSelection()
+            view.showError(any())
+        }
+
+        clearMocks(view)
+        coEvery { view.loginWithGoogle() } returns googleLogin
+        loginWithGoogle()
+        verify {
+            view.showLoggingIn()
+            view.showLoginMethodSelection()
+            view.showError(any())
+        }
+
+        clearMocks(view)
+        coEvery { view.loginWithGoogle() } returns googleLogin
+        coEvery { loginService.login(googleLogin) } returns notLoggedInAuthentication
+        loginWithGoogle()
+        verify {
+            view.showLoggingIn()
+            view.showLoginMethodSelection()
+            view.showError(any())
+        }
+
+        clearMocks(view)
+        coEvery { view.loginWithGoogle() } returns googleLogin
+        coEvery { loginService.login(googleLogin) } returns loggedInAuthentication
+        loginWithGoogle()
+        verify {
+            view.showLoggedIn()
+        }
     }
+
+    private fun loginWithGoogle() = loginWithGoogleRequestsChannel.offer(LoginWithGoogle)
 }
