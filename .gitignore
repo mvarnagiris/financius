@@ -1,11 +1,8 @@
 *.iml
 .gradle
-local.properties
-build
+/local.properties
 /.idea/*
-!/.idea/codeStyleSettings.xml
-financius/crashlytics.properties
-com_crashlytics_export_strings.xml
-crashlytics-build.properties
-.DS_Store
-Thumbs.db
+!/.idea/codeStyles
+!/.idea/dictionaries
+/build
+google-services.json

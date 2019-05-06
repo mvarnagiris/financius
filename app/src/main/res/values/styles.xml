@@ -1,0 +1,78 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <item name="android:windowBackground">@color/background</item>
+
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorAccent">@color/secondary</item>
+    </style>
+
+    <!-- Text -->
+    <!--=====================================================================================================================================================-->
+
+    <style name="Text" />
+
+    <style name="Text.Headline" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textSize">@dimen/text_xxlarge</item>
+        <item name="fontFamily">@font/open_sans</item>
+    </style>
+
+    <style name="Text.Headline.Large">
+        <item name="android:textSize">@dimen/text_xxxlarge</item>
+    </style>
+
+    <style name="Text.Input" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="fontFamily">@font/open_sans_semibold</item>
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="Text.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="fontFamily">@font/open_sans_semibold</item>
+    </style>
+
+    <!-- TextView -->
+    <!--=====================================================================================================================================================-->
+
+    <style name="TextViewHeadline">
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="autoSizeMinTextSize">12sp</item>
+        <item name="android:paddingStart">@dimen/grid_2x</item>
+        <item name="android:paddingTop">@dimen/grid_4x</item>
+        <item name="android:paddingEnd">@dimen/grid_2x</item>
+        <item name="android:paddingBottom">@dimen/grid_4x</item>
+        <item name="android:textAppearance">@style/Text.Headline</item>
+    </style>
+
+    <style name="TextViewHeadline.Large">
+        <item name="android:textAppearance">@style/Text.Headline.Large</item>
+    </style>
+
+    <style name="TextViewHeadline.Large.OnPrimary">
+        <item name="android:textColor">?colorOnPrimary</item>
+    </style>
+
+    <style name="TextInputLayoutFormField" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense" />
+
+    <style name="TextInputEditTextFormField">
+        <item name="android:textAppearance">@style/Text.Input</item>
+    </style>
+
+    <!-- Button -->
+    <!--=====================================================================================================================================================-->
+
+    <style name="Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/Text.Button</item>
+        <item name="cornerRadius">100dp</item>
+    </style>
+
+    <style name="Button.Large">
+        <item name="android:minHeight">56dp</item>
+    </style>
+
+</resources>

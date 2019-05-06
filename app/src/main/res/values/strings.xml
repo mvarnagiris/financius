@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Financius</string>
+    <string name="login_with_phone_number">Login with phone number</string>
+    <string name="phone_number_hint">Phone number</string>
+    <string name="country_code_hint">Country code</string>
+    <string name="verify_button">Verify</string>
+    <string name="error_phone_number_is_not_global">Please enter valid international phone number that starts with +</string>
+    <string name="login_with_google_button">Login with Google</string>
+</resources>

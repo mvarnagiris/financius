@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".features.login.LoginFragment">
+
+    <View
+        android:id="@+id/topMiddleDotView"
+        android:layout_width="1px"
+        android:layout_height="1px"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/outerOvalView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.5"
+        android:src="@drawable/oval"
+        android:tint="?colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@id/topMiddleDotView"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="@id/topMiddleDotView"
+        app:layout_constraintHeight_percent="0.9"
+        app:layout_constraintStart_toStartOf="@id/topMiddleDotView"
+        app:layout_constraintTop_toTopOf="@id/topMiddleDotView" />
+
+    <ImageView
+        android:id="@+id/innerOvalView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/oval"
+        android:tint="?colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@id/topMiddleDotView"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="@id/topMiddleDotView"
+        app:layout_constraintHeight_percent="0.85"
+        app:layout_constraintStart_toStartOf="@id/topMiddleDotView"
+        app:layout_constraintTop_toTopOf="@id/topMiddleDotView" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        style="@style/TextViewHeadline.Large.OnPrimary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        app:layout_constraintBottom_toBottomOf="@id/innerOvalView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/googleLogin"
+        style="@style/Button.Large"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/grid_2x"
+        android:layout_marginEnd="@dimen/grid_2x"
+        android:text="@string/login_with_google_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/outerOvalView"
+        app:layout_constraintWidth_percent="0.7" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
