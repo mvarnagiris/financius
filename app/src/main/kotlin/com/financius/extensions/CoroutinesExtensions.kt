@@ -23,6 +23,11 @@ fun View.clicks(): ReceiveChannel<Unit> = openPresenterChannel {
     invokeOnClose { setOnClickListener(null) }
 }
 
+fun <T> View.clicks(value: () -> T): ReceiveChannel<T> = openPresenterChannel {
+    setOnClickListener { offer(value()) }
+    invokeOnClose { setOnClickListener(null) }
+}
+
 fun TextView.textChanges(): ReceiveChannel<String> = openPresenterChannel {
     val textChangeListener = TextChangeListener(this)
     addTextChangedListener(textChangeListener)

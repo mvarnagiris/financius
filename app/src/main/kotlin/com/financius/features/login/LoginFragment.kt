@@ -5,13 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.financius.R
+import com.financius.data.models.Error
 import com.financius.data.models.Login.GoogleLogin
+import com.financius.extensions.clicks
 import com.financius.features.BaseFragment
+import com.financius.features.errorShowToast
+import com.financius.features.login.LoginPresenter.Intent.LoginWithGoogle
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import kotlinx.android.synthetic.main.login_fragment.*
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.channels.ReceiveChannel
 
 private const val REQUEST_GOOGLE_LOGIN = 1
 
@@ -26,7 +33,7 @@ class LoginFragment : BaseFragment(), LoginPresenter.View {
 
     private val googleSignInClient get() = GoogleSignIn.getClient(requireContext(), googleSignInOptions)
 
-    private var deferredGoogleLogin: CompletableDeferred<GoogleLogin>? = null
+    private var currentDeferredGoogleLogin: CompletableDeferred<GoogleLogin>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.login_fragment, container, false)
@@ -39,25 +46,45 @@ class LoginFragment : BaseFragment(), LoginPresenter.View {
             try {
                 val account = task.getResult(ApiException::class.java)!!
                 val googleLogin = GoogleLogin(account.idToken!!)
-                deferredGoogleLogin?.complete(googleLogin)
+                getDeferredGoogleLogin().complete(googleLogin)
             } catch (e: Exception) {
-                deferredGoogleLogin?.completeExceptionally(e)
+                getDeferredGoogleLogin().completeExceptionally(e)
             }
         }
     }
 
-    override suspend fun loginWithGoogle(): GoogleLogin {
-        startActivityForResult(googleSignInClient.signInIntent, REQUEST_GOOGLE_LOGIN)
-        return TODO()//getDeferredGoogleLogin()
-    }
+    override fun loginWithGoogleRequests(): ReceiveChannel<LoginWithGoogle> = googleLoginButton.clicks { LoginWithGoogle }
 
     override fun showLoginMethodSelection() {
+        progressBar.isVisible = false
+        googleLoginButton.isVisible = true
+    }
+
+    override fun showLoggingIn() {
+        progressBar.isVisible = true
+        googleLoginButton.isVisible = false
+    }
+
+    override fun showError(error: Error) = errorShowToast(error)
+
+    override fun showLoggedIn() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override suspend fun loginWithGoogle(): GoogleLogin {
+        if (currentDeferredGoogleLogin == null) startActivityForResult(googleSignInClient.signInIntent, REQUEST_GOOGLE_LOGIN)
+        return getDeferredGoogleLogin().await()
+    }
+
     private fun getDeferredGoogleLogin(): CompletableDeferred<GoogleLogin> {
-        val deferred = deferredGoogleLogin ?: CompletableDeferred()
-        deferredGoogleLogin = deferred
-        return deferred
+        val deferredGoogleLogin = currentDeferredGoogleLogin
+        if (deferredGoogleLogin != null) return deferredGoogleLogin
+
+        val newDeferredGoogleLogin = CompletableDeferred<GoogleLogin>()
+        newDeferredGoogleLogin.invokeOnCompletion {
+            currentDeferredGoogleLogin = null
+        }
+        currentDeferredGoogleLogin = newDeferredGoogleLogin
+        return newDeferredGoogleLogin
     }
 }

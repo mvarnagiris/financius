@@ -68,7 +68,7 @@
 
     <style name="Button" parent="Widget.MaterialComponents.Button">
         <item name="android:textAppearance">@style/Text.Button</item>
-        <item name="cornerRadius">100dp</item>
+        <item name="cornerRadius">56dp</item>
     </style>
 
     <style name="Button.Large">
