@@ -17,11 +17,8 @@ import com.financius.features.login.LoginPresenter.State.LoggingInToGoogle
 import com.financius.features.login.LoginPresenter.State.LoginMethodSelection
 import com.financius.features.login.LoginPresenter.View
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class LoginPresenter(private val loginService: LoginService) : AttachListeningPresenter<Intent, State, SideEffect, View>() {
 
@@ -41,7 +38,6 @@ class LoginPresenter(private val loginService: LoginService) : AttachListeningPr
     }
 
     override fun onStateChanged(view: View, state: State) {
-        println("State = ${state::class.java.simpleName}")
         when (state) {
             LoginMethodSelection -> view.showLoginMethodSelection()
             LoggingInToGoogle -> loginWithGoogle(view)
@@ -57,17 +53,11 @@ class LoginPresenter(private val loginService: LoginService) : AttachListeningPr
     }
 
     private fun loginWithGoogle(view: View) {
-//        launch { intent(LogAAA) }
-        launch { setState(LoggingIn) }
-//        setState(LoginMethodSelection)
-//        setState(LoggingIn)
-//        launch { setState(LoginMethodSelection) }
-//        launch { delay(500);setState(LoggingIn) }
         view.showLoggingIn()
-//        launchUntilDetached {
-//            val googleLogin = getGoogleLogin(view)
-//            login(googleLogin)
-//        }
+        launchUntilDetached {
+            val googleLogin = getGoogleLogin(view)
+            login(googleLogin)
+        }
     }
 
     private suspend fun getGoogleLogin(view: View): GoogleLogin {
@@ -82,6 +72,7 @@ class LoginPresenter(private val loginService: LoginService) : AttachListeningPr
     }
 
     private fun login(login: Login) {
+        setState(LoggingIn)
         launch {
             try {
                 val authentication = loginService.login(login)
@@ -94,7 +85,7 @@ class LoginPresenter(private val loginService: LoginService) : AttachListeningPr
     }
 
     private fun addShowErrorSideEffect(error: Error) {
-//        setState(LoginMethodSelection)
+        setState(LoginMethodSelection)
         addSideEffect(ShowError(error))
     }
 

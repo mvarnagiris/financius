@@ -106,6 +106,18 @@ class PresenterTest : BaseTest() {
         }
     }
 
+    @Test
+    fun `can set new state while handling a state`() {
+        presenter attach view
+
+        presenter.doIntent(10)
+
+        verify {
+            view.onStateChanged("10")
+            view.onStateChanged("20")
+        }
+    }
+
     private class TestPresenter : Presenter<Int, String, Float, TestPresenter.View>() {
 
         override fun getInitialState(): String = "0"
@@ -132,6 +144,7 @@ class PresenterTest : BaseTest() {
 
         override fun onStateChanged(view: View, state: String) {
             view.onStateChanged(state)
+            if (state == "10") setState("20")
         }
 
         override fun onSideEffectReceived(view: View, sideEffect: Float) {

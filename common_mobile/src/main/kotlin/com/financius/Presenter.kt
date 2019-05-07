@@ -6,18 +6,17 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicReference
 import kotlin.coroutines.CoroutineContext
 
 abstract class Presenter<INTENT, STATE, SIDE_EFFECT, VIEW : Presenter.View> : CoroutineScope {
 
     override val coroutineContext: CoroutineContext by lazy { SupervisorJob() + Dispatchers.Main }
 
-    private val stateChannel by lazy { ConflatedBroadcastChannel(getInitialState()) }
+    private val state by lazy { AtomicReference(getInitialState()) }
     private val sideEffectChannel by lazy { Channel<SIDE_EFFECT>(Channel.UNLIMITED) }
 
     private var currentView: VIEW? = null
@@ -34,11 +33,7 @@ abstract class Presenter<INTENT, STATE, SIDE_EFFECT, VIEW : Presenter.View> : Co
 
         onAttached(view)
 
-        launchUntilDetached {
-            stateChannel.consumeEach {
-                onStateChanged(view, it)
-            }
-        }
+        onStateChanged(view, state.get())
 
         launchUntilDetached {
             for (sideEffect in sideEffectChannel) {
@@ -56,13 +51,12 @@ abstract class Presenter<INTENT, STATE, SIDE_EFFECT, VIEW : Presenter.View> : Co
 
     fun dispose() {
         currentView?.run { detach(this) }
-        stateChannel.cancel()
         sideEffectChannel.cancel()
         coroutineContext.cancel()
     }
 
     protected suspend fun intent(intent: INTENT) {
-        val state = mapIntentToState(stateChannel.value, intent)
+        val state = mapIntentToState(state.get(), intent)
         setState(state)
 
         val sideEffect = mapIntentToSideEffect(state, intent)
@@ -78,15 +72,14 @@ abstract class Presenter<INTENT, STATE, SIDE_EFFECT, VIEW : Presenter.View> : Co
     }
 
     protected fun setState(state: STATE) {
-        val oldState = stateChannel.value
+        val oldState = this.state.get()
         if (state != oldState) {
-            println("Setting new state $state")
-            stateChannel.offer(state)
+            this.state.set(state)
+            currentView?.run { onStateChanged(this, state) }
         }
     }
 
     protected fun addSideEffect(sideEffect: SIDE_EFFECT) {
-        println("Adding side effect $sideEffect")
         sideEffectChannel.offer(sideEffect)
     }
 

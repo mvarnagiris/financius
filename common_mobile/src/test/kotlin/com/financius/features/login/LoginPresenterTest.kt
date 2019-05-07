@@ -8,7 +8,6 @@ import com.financius.features.login.LoginPresenter.Intent.LoginWithGoogle
 import com.financius.loggedInAuthentication
 import com.financius.never
 import com.financius.notLoggedInAuthentication
-import io.mockk.clearAllMocks
 import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -16,7 +15,6 @@ import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import io.mockk.verifyOrder
 import kotlinx.coroutines.CompletableDeferred
 import org.junit.Before
 import org.junit.Test
@@ -43,48 +41,46 @@ class LoginPresenterTest : BaseTest() {
 
     @Test
     fun `can login with google`() {
-//        val googleLogin = mockk<GoogleLogin>()
-//        val authentication = loggedInAuthentication
-//        val deferredGoogleLogin = CompletableDeferred<GoogleLogin>()
-//        val deferredAuthentication = CompletableDeferred<Authentication>()
-//        coEvery { loginService.login(googleLogin) } coAnswers { deferredAuthentication.await() }
+        val googleLogin = mockk<GoogleLogin>()
+        val authentication = loggedInAuthentication
+        val deferredGoogleLogin = CompletableDeferred<GoogleLogin>()
+        val deferredAuthentication = CompletableDeferred<Authentication>()
+        coEvery { loginService.login(googleLogin) } coAnswers { deferredAuthentication.await() }
         presenter attach view
 
-//        coEvery { view.loginWithGoogle() } coAnswers { never() }
+        coEvery { view.loginWithGoogle() } coAnswers { never() }
         loginWithGoogle()
-//        loginWithGoogle()
+        loginWithGoogle()
+        presenter detach view
+        coEvery { view.loginWithGoogle() } coAnswers { deferredGoogleLogin.await() }
+        presenter attach view
+        deferredGoogleLogin.complete(googleLogin)
         presenter detach view
         presenter attach view
-        presenter detach view
-        presenter attach view
-//        deferredGoogleLogin.complete(googleLogin)
-//        presenter detach view
-//        presenter attach view
-//        deferredAuthentication.complete(authentication)
+        deferredAuthentication.complete(authentication)
 
-//        coVerifyOrder {
-//            view.showLoggingIn()
-//            view.loginWithGoogle()
-//            view.showLoggingIn()
-//            view.loginWithGoogle()
-//            loginService.login(googleLogin)
-//            view.showLoggingIn()
-//            view.showLoggedIn()
-//        }
+        coVerifyOrder {
+            view.showLoggingIn()
+            view.loginWithGoogle()
+            view.showLoggingIn()
+            view.loginWithGoogle()
+            loginService.login(googleLogin)
+            view.showLoggingIn()
+            view.showLoggedIn()
+        }
 
-//        coVerify(exactly = 1) { loginService.login(any()) }
-//        coVerify(exactly = 2) { view.loginWithGoogle() }
+        coVerify(exactly = 1) { loginService.login(any()) }
+        coVerify(exactly = 2) { view.loginWithGoogle() }
     }
 
     @Test
     fun `handles google login errors`() {
-        val exception = Exception()
         val googleLogin = mockk<GoogleLogin>()
-        coEvery { loginService.login(googleLogin) } throws exception
+        coEvery { loginService.login(googleLogin) } throws mockk<Exception>(relaxed = true)
         presenter attach view
 
         clearMocks(view)
-        coEvery { view.loginWithGoogle() } throws exception
+        coEvery { view.loginWithGoogle() } throws mockk<Exception>(relaxed = true)
         loginWithGoogle()
         verify {
             view.showLoggingIn()
