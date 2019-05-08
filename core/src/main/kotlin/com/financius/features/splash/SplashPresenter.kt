@@ -1,7 +1,7 @@
 package com.financius.features.splash
 
 import com.financius.AttachListeningPresenter
-import com.financius.data.datasources.AuthenticationDataSource
+import com.financius.data.AuthenticationDataSource
 import com.financius.features.splash.SplashPresenter.*
 import com.financius.features.splash.SplashPresenter.SideEffect.ShowLoggedIn
 import com.financius.features.splash.SplashPresenter.SideEffect.ShowNotLoggedIn

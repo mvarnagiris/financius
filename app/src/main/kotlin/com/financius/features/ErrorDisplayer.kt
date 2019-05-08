@@ -23,6 +23,6 @@ class ErrorDisplayer(private val context: Context) {
     }
 }
 
-inline fun Context.errorShowToast(error: Error) = ErrorDisplayer(this).showToast(error)
-inline fun View.errorShowToast(error: Error) = ErrorDisplayer(this).showToast(error)
-inline fun Fragment.errorShowToast(error: Error) = ErrorDisplayer(this).showToast(error)
+fun Context.errorShowToast(error: Error) = ErrorDisplayer(this).showToast(error)
+fun View.errorShowToast(error: Error) = ErrorDisplayer(this).showToast(error)
+fun Fragment.errorShowToast(error: Error) = ErrorDisplayer(this).showToast(error)

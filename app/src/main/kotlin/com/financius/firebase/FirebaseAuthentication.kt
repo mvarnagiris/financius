@@ -1,6 +1,6 @@
 package com.financius.firebase
 
-import com.financius.data.datasources.AuthenticationDataSource
+import com.financius.data.AuthenticationDataSource
 import com.financius.models.Authentication
 import com.financius.models.Login
 import com.financius.models.Login.GoogleLogin

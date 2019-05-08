@@ -2,7 +2,8 @@ apply plugin: 'java-library'
 apply plugin: 'kotlin'
 
 dependencies {
-    api project(':models')
+    api project(':data')
+    implementation project(':models')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"
     implementation 'com.github.memoizr.shank:autoattach-pure:9c95e4d'

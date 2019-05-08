@@ -1,4 +1,4 @@
-package com.financius.data.datasources
+package com.financius.data
 
 import com.financius.models.Authentication
 

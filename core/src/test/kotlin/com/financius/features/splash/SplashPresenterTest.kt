@@ -2,7 +2,7 @@ package com.financius.features.splash
 
 import com.financius.BaseTest
 import com.financius.coTest
-import com.financius.data.datasources.AuthenticationDataSource
+import com.financius.data.AuthenticationDataSource
 import com.financius.models.Authentication
 import com.financius.loggedInAuthentication
 import com.financius.notLoggedInAuthentication
