@@ -2,12 +2,10 @@ package com.financius.features.splash
 
 import com.financius.AttachListeningPresenter
 import com.financius.data.datasources.AuthenticationDataSource
-import com.financius.features.splash.SplashPresenter.SideEffect
+import com.financius.features.splash.SplashPresenter.*
 import com.financius.features.splash.SplashPresenter.SideEffect.ShowLoggedIn
 import com.financius.features.splash.SplashPresenter.SideEffect.ShowNotLoggedIn
-import com.financius.features.splash.SplashPresenter.State
 import com.financius.features.splash.SplashPresenter.State.Loading
-import com.financius.features.splash.SplashPresenter.View
 import kotlinx.coroutines.launch
 
 class SplashPresenter(private val authenticationDataSource: AuthenticationDataSource) : AttachListeningPresenter<Unit, State, SideEffect, View>() {

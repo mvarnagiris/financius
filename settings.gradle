@@ -1,1 +1,1 @@
-include ':app', ':common_mobile', ':models'
+include ':app', ':core', ':models'

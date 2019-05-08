@@ -3,7 +3,7 @@ buildscript {
     ext.kotlin_coroutines_version = '1.2.1'
     ext.mockk_version = "1.9.3"
     ext.random_object_kreator_version = "1.9.1"
-    ext.nav_version = "2.1.0-alpha02"
+    ext.nav_version = "2.1.0-alpha03"
     ext.junit_version = '4.12'
 
     repositories {
