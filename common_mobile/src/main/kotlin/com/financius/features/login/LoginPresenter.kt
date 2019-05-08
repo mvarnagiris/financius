@@ -1,10 +1,10 @@
 package com.financius.features.login
 
 import com.financius.AttachListeningPresenter
-import com.financius.data.models.Error
-import com.financius.data.models.Login
-import com.financius.data.models.Login.GoogleLogin
-import com.financius.data.models.toError
+import com.financius.models.Error
+import com.financius.models.Login
+import com.financius.models.Login.GoogleLogin
+import com.financius.models.toError
 import com.financius.features.login.LoginPresenter.Intent
 import com.financius.features.login.LoginPresenter.Intent.LogAAA
 import com.financius.features.login.LoginPresenter.Intent.LoginWithGoogle

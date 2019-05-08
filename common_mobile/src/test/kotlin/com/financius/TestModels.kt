@@ -1,6 +1,6 @@
 package com.financius
 
-import com.financius.data.models.Authentication
+import com.financius.models.Authentication
 import io.mockk.every
 import io.mockk.mockk
 

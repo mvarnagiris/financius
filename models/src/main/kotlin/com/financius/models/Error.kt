@@ -1,4 +1,4 @@
-package com.financius.data.models
+package com.financius.models
 
 sealed class Error(cause: Throwable) : Throwable(cause)
 class UnknownError(cause: Throwable) : Error(cause)

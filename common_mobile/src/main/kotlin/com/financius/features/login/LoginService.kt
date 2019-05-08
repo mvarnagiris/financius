@@ -1,7 +1,7 @@
 package com.financius.features.login
 
-import com.financius.data.models.Authentication
-import com.financius.data.models.Login
+import com.financius.models.Authentication
+import com.financius.models.Login
 
 interface LoginService {
     suspend fun login(login: Login): Authentication

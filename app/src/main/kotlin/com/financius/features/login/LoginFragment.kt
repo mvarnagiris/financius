@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.financius.R
-import com.financius.data.models.Error
-import com.financius.data.models.Login.GoogleLogin
+import com.financius.models.Error
+import com.financius.models.Login.GoogleLogin
 import com.financius.extensions.clicks
 import com.financius.features.BaseFragment
 import com.financius.features.errorShowToast

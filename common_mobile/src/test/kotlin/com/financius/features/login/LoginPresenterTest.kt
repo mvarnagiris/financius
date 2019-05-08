@@ -2,8 +2,8 @@ package com.financius.features.login
 
 import com.financius.BaseTest
 import com.financius.channel
-import com.financius.data.models.Authentication
-import com.financius.data.models.Login.GoogleLogin
+import com.financius.models.Authentication
+import com.financius.models.Login.GoogleLogin
 import com.financius.features.login.LoginPresenter.Intent.LoginWithGoogle
 import com.financius.loggedInAuthentication
 import com.financius.never

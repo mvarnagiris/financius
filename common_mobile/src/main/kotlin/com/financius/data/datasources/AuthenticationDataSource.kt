@@ -1,6 +1,6 @@
 package com.financius.data.datasources
 
-import com.financius.data.models.Authentication
+import com.financius.models.Authentication
 
 interface AuthenticationDataSource {
     suspend fun getAuthentication(): Authentication

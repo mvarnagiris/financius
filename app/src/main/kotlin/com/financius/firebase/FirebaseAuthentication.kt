@@ -1,11 +1,11 @@
 package com.financius.firebase
 
 import com.financius.data.datasources.AuthenticationDataSource
-import com.financius.data.models.Authentication
-import com.financius.data.models.Login
-import com.financius.data.models.Login.GoogleLogin
-import com.financius.data.models.UserId
-import com.financius.data.models.noAuthentication
+import com.financius.models.Authentication
+import com.financius.models.Login
+import com.financius.models.Login.GoogleLogin
+import com.financius.models.UserId
+import com.financius.models.noAuthentication
 import com.financius.features.login.LoginService
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -48,6 +48,10 @@ class FirebaseAuthentication : AuthenticationDataSource, LoginService {
         is GoogleLogin -> GoogleAuthProvider.getCredential(token, null)
     }
 
-    private fun FirebaseUser?.toAuthentication() = if (this != null) Authentication(UserId(uid)) else noAuthentication
+    private fun FirebaseUser?.toAuthentication() = if (this != null) Authentication(
+        UserId(
+            uid
+        )
+    ) else noAuthentication
 
 }

@@ -1,3 +1,3 @@
-package com.financius.data.models
+package com.financius.models
 
 data class Uri(val value: String)

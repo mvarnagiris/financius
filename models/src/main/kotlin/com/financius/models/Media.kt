@@ -1,4 +1,4 @@
-package com.financius.data.models
+package com.financius.models
 
 interface Media {
     val uri: Uri

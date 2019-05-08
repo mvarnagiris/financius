@@ -1,4 +1,4 @@
-package com.financius.data.models
+package com.financius.models
 
 data class Authentication(val userId: UserId) {
     val isLoggedIn get() = userId.value.isNotBlank()

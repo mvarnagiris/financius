@@ -7,8 +7,8 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import com.financius.R.string
-import com.financius.data.models.Error
-import com.financius.data.models.UnknownError
+import com.financius.models.Error
+import com.financius.models.UnknownError
 
 class ErrorDisplayer(private val context: Context) {
     constructor(view: View) : this(view.context)
