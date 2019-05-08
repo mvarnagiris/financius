@@ -1,4 +1,4 @@
-package com.financius.features.login
+package com.financius.data
 
 import com.financius.models.Authentication
 import com.financius.models.Login

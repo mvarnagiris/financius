@@ -1,12 +1,12 @@
 package com.financius.firebase
 
 import com.financius.data.AuthenticationDataSource
+import com.financius.data.LoginService
 import com.financius.models.Authentication
 import com.financius.models.Login
 import com.financius.models.Login.GoogleLogin
 import com.financius.models.UserId
 import com.financius.models.noAuthentication
-import com.financius.features.login.LoginService
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -41,17 +41,16 @@ class FirebaseAuthentication : AuthenticationDataSource, LoginService {
         }
     }
 
-    private fun linkToCurrentAccount(login: Login): Task<AuthResult> = firebaseAuth.currentUser!!.linkWithCredential(login.createCredential())
-    private fun createNewAccount(login: Login): Task<AuthResult> = firebaseAuth.signInWithCredential(login.createCredential())
+    private fun linkToCurrentAccount(login: Login): Task<AuthResult> =
+        firebaseAuth.currentUser!!.linkWithCredential(login.createCredential())
+
+    private fun createNewAccount(login: Login): Task<AuthResult> =
+        firebaseAuth.signInWithCredential(login.createCredential())
 
     private fun Login.createCredential() = when (this) {
         is GoogleLogin -> GoogleAuthProvider.getCredential(token, null)
     }
 
-    private fun FirebaseUser?.toAuthentication() = if (this != null) Authentication(
-        UserId(
-            uid
-        )
-    ) else noAuthentication
+    private fun FirebaseUser?.toAuthentication() = if (this != null) Authentication(UserId(uid)) else noAuthentication
 
 }
