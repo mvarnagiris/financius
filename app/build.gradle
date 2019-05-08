@@ -4,20 +4,23 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion compile_sdk_version
+
     defaultConfig {
         applicationId "com.financius"
-        minSdkVersion 23
-        targetSdkVersion 28
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
         versionCode 1
         versionName "0.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
     signingConfigs {
         debug {
             storeFile file("debug.keystore")
         }
     }
+
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
@@ -29,13 +32,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
     }
+
     packagingOptions {
         pickFirst 'META-INF/kotlinx-coroutines-core.kotlin_module'
     }
+
     sourceSets {
         main.java.srcDirs += "src/main/kotlin"
     }
@@ -44,15 +50,14 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':core')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation project(':firebase')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha05'
     implementation 'androidx.core:core-ktx:1.1.0-beta01'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha5'
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation 'com.google.android.material:material:1.1.0-alpha06'
-    implementation 'com.google.firebase:firebase-core:16.0.9'
-    implementation 'com.google.firebase:firebase-auth:17.0.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation 'com.github.memoizr.shank:Shank:2.0.5'
     implementation 'com.github.memoizr:shankandroid:919d215'

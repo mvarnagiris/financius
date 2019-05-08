@@ -6,10 +6,14 @@ buildscript {
     ext.nav_version = "2.1.0-alpha03"
     ext.junit_version = '4.12'
 
+    ext.compile_sdk_version = 28
+    ext.target_sdk_version = 28
+    ext.min_sdk_version = 23
+
     repositories {
         google()
         jcenter()
-        
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0-beta01'

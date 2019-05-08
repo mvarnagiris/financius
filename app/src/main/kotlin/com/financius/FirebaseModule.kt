@@ -1,5 +1,6 @@
-package com.financius.firebase
+package com.financius
 
+import com.financius.firebase.FirebaseAuthentication
 import life.shank.ShankModule
 import life.shank.singleton
 
