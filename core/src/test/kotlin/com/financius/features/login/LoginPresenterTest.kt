@@ -1,25 +1,20 @@
 package com.financius.features.login
 
-import com.financius.BaseTest
-import com.financius.channel
+import com.financius.*
+import com.financius.features.login.LoginPresenter.Intent.LoginWithGoogle
 import com.financius.models.Authentication
 import com.financius.models.Login.GoogleLogin
-import com.financius.features.login.LoginPresenter.Intent.LoginWithGoogle
-import com.financius.loggedInAuthentication
-import com.financius.never
-import com.financius.notLoggedInAuthentication
-import io.mockk.clearMocks
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.coVerifyOrder
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import kotlinx.coroutines.CompletableDeferred
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
-class LoginPresenterTest : BaseTest() {
+class LoginPresenterTest {
+
+    @Rule
+    @JvmField
+    val rule = CoroutinesTestRule()
 
     private val loginWithGoogleRequestsChannel = channel<LoginWithGoogle>()
 

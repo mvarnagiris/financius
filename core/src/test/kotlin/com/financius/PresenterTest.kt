@@ -1,17 +1,17 @@
 package com.financius
 
-import io.mockk.clearMocks
-import io.mockk.confirmVerified
-import io.mockk.excludeRecords
-import io.mockk.mockk
-import io.mockk.verify
-import io.mockk.verifyOrder
+import io.mockk.*
 import kotlinx.coroutines.launch
 import org.amshove.kluent.invoking
 import org.amshove.kluent.shouldThrow
+import org.junit.Rule
 import org.junit.Test
 
-class PresenterTest : BaseTest() {
+class PresenterTest {
+
+    @Rule
+    @JvmField
+    val rule = CoroutinesTestRule()
 
     private val presenter = TestPresenter()
     private val view = mockk<TestPresenter.View>(relaxed = true)
