@@ -1,11 +1,21 @@
 package com.financius.features.login
 
-import com.financius.*
+import com.financius.CoroutinesTestRule
+import com.financius.channel
 import com.financius.data.LoginService
 import com.financius.features.login.LoginPresenter.Intent.LoginWithGoogle
+import com.financius.loggedInAuthentication
 import com.financius.models.Authentication
 import com.financius.models.Login.GoogleLogin
-import io.mockk.*
+import com.financius.never
+import com.financius.notLoggedInAuthentication
+import io.mockk.clearMocks
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.coVerifyOrder
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.CompletableDeferred
 import org.junit.Before
 import org.junit.Rule

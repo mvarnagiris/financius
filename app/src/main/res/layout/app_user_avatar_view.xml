@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.financius.features.user.avatar.AppUserAvatarView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/appUserAvatarView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/oval"
+    android:backgroundTint="?colorSurface"
+    android:clipToPadding="false"
+    android:elevation="@dimen/elevation_content"
+    android:outlineProvider="background"
+    android:scaleType="centerCrop"
+    android:src="@drawable/app_user_avatar_placeholder"
+    tools:layout_height="56dp"
+    tools:layout_width="56dp" />

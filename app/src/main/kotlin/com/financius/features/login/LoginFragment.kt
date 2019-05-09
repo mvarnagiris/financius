@@ -2,27 +2,28 @@ package com.financius.features.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.financius.R
+import com.financius.extensions.clicks
+import com.financius.features.errorShowToast
+import com.financius.features.login.LoginModule.loginPresenter
+import com.financius.features.login.LoginPresenter.Intent.LoginWithGoogle
 import com.financius.models.Error
 import com.financius.models.Login.GoogleLogin
-import com.financius.extensions.clicks
-import com.financius.features.BaseFragment
-import com.financius.features.errorShowToast
-import com.financius.features.login.LoginPresenter.Intent.LoginWithGoogle
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import kotlinx.android.synthetic.main.login_fragment.*
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.channels.ReceiveChannel
+import life.shank.android.AutoAttachable
+import life.shank.android.AutoScoped
 
 private const val REQUEST_GOOGLE_LOGIN = 1
 
-class LoginFragment : BaseFragment(), LoginPresenter.View {
+class LoginFragment : Fragment(R.layout.login_fragment), LoginPresenter.View, AutoScoped, AutoAttachable {
 
     private val googleSignInOptions
         get() =
@@ -32,11 +33,11 @@ class LoginFragment : BaseFragment(), LoginPresenter.View {
                 .build()
 
     private val googleSignInClient get() = GoogleSignIn.getClient(requireContext(), googleSignInOptions)
-
     private var currentDeferredGoogleLogin: CompletableDeferred<GoogleLogin>? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.login_fragment, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        loginPresenter.register(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -65,11 +66,12 @@ class LoginFragment : BaseFragment(), LoginPresenter.View {
         googleLoginButton.isVisible = false
     }
 
-    override fun showError(error: Error) = errorShowToast(error)
-
-    override fun showLoggedIn() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun showError(error: Error) {
+        currentDeferredGoogleLogin = null
+        errorShowToast(error)
     }
+
+    override fun showLoggedIn() = findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
 
     override suspend fun loginWithGoogle(): GoogleLogin {
         if (currentDeferredGoogleLogin == null) startActivityForResult(googleSignInClient.signInIntent, REQUEST_GOOGLE_LOGIN)
@@ -81,9 +83,6 @@ class LoginFragment : BaseFragment(), LoginPresenter.View {
         if (deferredGoogleLogin != null) return deferredGoogleLogin
 
         val newDeferredGoogleLogin = CompletableDeferred<GoogleLogin>()
-        newDeferredGoogleLogin.invokeOnCompletion {
-            currentDeferredGoogleLogin = null
-        }
         currentDeferredGoogleLogin = newDeferredGoogleLogin
         return newDeferredGoogleLogin
     }

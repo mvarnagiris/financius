@@ -1,11 +1,17 @@
 package com.financius.firebase
 
+import com.financius.data.AppUserDataSource
 import com.financius.data.AuthenticationDataSource
 import com.financius.data.LoginService
+import com.financius.models.AppUser
 import com.financius.models.Authentication
 import com.financius.models.Login
 import com.financius.models.Login.GoogleLogin
+import com.financius.models.NoImage
+import com.financius.models.RemoteImage
+import com.financius.models.Uri
 import com.financius.models.UserId
+import com.financius.models.UserNotLoggedInError
 import com.financius.models.noAuthentication
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -18,7 +24,7 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-class FirebaseAuthentication : AuthenticationDataSource, LoginService {
+class FirebaseAuthentication : AuthenticationDataSource, LoginService, AppUserDataSource {
 
     private val firebaseAuth by lazy { FirebaseAuth.getInstance() }
 
@@ -41,6 +47,11 @@ class FirebaseAuthentication : AuthenticationDataSource, LoginService {
         }
     }
 
+    override suspend fun getAppUser(): AppUser {
+        val authentication = getAuthentication().takeIf { it.isLoggedIn } ?: throw UserNotLoggedInError
+        return AppUser(authentication.userId, firebaseAuth.currentUser.photo)
+    }
+
     private fun linkToCurrentAccount(login: Login): Task<AuthResult> =
         firebaseAuth.currentUser!!.linkWithCredential(login.createCredential())
 
@@ -51,6 +62,7 @@ class FirebaseAuthentication : AuthenticationDataSource, LoginService {
         is GoogleLogin -> GoogleAuthProvider.getCredential(token, null)
     }
 
-    private fun FirebaseUser?.toAuthentication() = if (this != null) Authentication(UserId(uid)) else noAuthentication
-
+    private fun FirebaseUser?.toAuthentication() = if (this != null) Authentication(userId) else noAuthentication
+    private val FirebaseUser.userId get() = UserId(uid)
+    private val FirebaseUser?.photo get() = this?.photoUrl?.toString()?.let { RemoteImage(Uri(it)) } ?: NoImage
 }

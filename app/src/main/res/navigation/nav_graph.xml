@@ -9,7 +9,7 @@
         android:id="@+id/splashFragment"
         android:name="com.financius.features.splash.SplashFragment"
         android:label="splash_fragment"
-        tools:layout="@layout/splash_fragment" >
+        tools:layout="@layout/splash_fragment">
         <action
             android:id="@+id/action_splashFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -25,11 +25,27 @@
         android:id="@+id/homeFragment"
         android:name="com.financius.features.home.HomeFragment"
         android:label="home_fragment"
-        tools:layout="@layout/home_fragment" />
+        tools:layout="@layout/home_fragment">
+        <action
+            android:id="@+id/action_homeFragment_to_appUserOptionsDialogFragment"
+            app:destination="@id/appUserOptionsDialogFragment" />
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.financius.features.login.LoginFragment"
         android:label="login_fragment"
-        tools:layout="@layout/login_fragment" />
+        tools:layout="@layout/login_fragment">
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@+id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/appUserOptionsDialogFragment"
+        android:name="com.financius.features.user.options.AppUserOptionsDialogFragment"
+        android:label="AppUserOptionsDialogFragment"
+        tools:layout="@layout/app_user_options_dialog_fragment" />
 
 </navigation>

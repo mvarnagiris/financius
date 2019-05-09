@@ -2,10 +2,6 @@ package com.financius.features.login
 
 import com.financius.AttachListeningPresenter
 import com.financius.data.LoginService
-import com.financius.models.Error
-import com.financius.models.Login
-import com.financius.models.Login.GoogleLogin
-import com.financius.models.toError
 import com.financius.features.login.LoginPresenter.Intent
 import com.financius.features.login.LoginPresenter.Intent.LogAAA
 import com.financius.features.login.LoginPresenter.Intent.LoginWithGoogle
@@ -17,6 +13,10 @@ import com.financius.features.login.LoginPresenter.State.LoggingIn
 import com.financius.features.login.LoginPresenter.State.LoggingInToGoogle
 import com.financius.features.login.LoginPresenter.State.LoginMethodSelection
 import com.financius.features.login.LoginPresenter.View
+import com.financius.models.Error
+import com.financius.models.Login
+import com.financius.models.Login.GoogleLogin
+import com.financius.models.toError
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.launch
@@ -56,19 +56,14 @@ class LoginPresenter(private val loginService: LoginService) : AttachListeningPr
     private fun loginWithGoogle(view: View) {
         view.showLoggingIn()
         launchUntilDetached {
-            val googleLogin = getGoogleLogin(view)
-            login(googleLogin)
-        }
-    }
-
-    private suspend fun getGoogleLogin(view: View): GoogleLogin {
-        return try {
-            view.loginWithGoogle()
-        } catch (e: CancellationException) {
-            throw e
-        } catch (e: Exception) {
-            addShowErrorSideEffect(e.toError())
-            throw e
+            try {
+                val googleLogin = view.loginWithGoogle()
+                login(googleLogin)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                addShowErrorSideEffect(e.toError())
+            }
         }
     }
 

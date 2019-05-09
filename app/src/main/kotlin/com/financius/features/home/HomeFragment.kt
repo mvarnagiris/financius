@@ -1,16 +1,20 @@
 package com.financius.features.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.financius.R
-import com.financius.features.BaseFragment
+import kotlinx.android.synthetic.main.app_user_avatar_view.*
+import life.shank.android.AutoScoped
 
-class HomeFragment : BaseFragment() {
+class HomeFragment : Fragment(R.layout.home_fragment), AutoScoped {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.home_fragment, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        appUserAvatarView.showAppUserOptionsListener = {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAppUserOptionsDialogFragment())
+        }
     }
 
 }

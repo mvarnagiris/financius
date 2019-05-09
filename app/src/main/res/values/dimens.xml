@@ -12,7 +12,6 @@
     <dimen name="grid_7x">56dp</dimen>
     <dimen name="grid_8x">64dp</dimen>
 
-
     <dimen name="text_xsmall">10dp</dimen>
     <dimen name="text_small">12dp</dimen>
     <dimen name="text_normal">14dp</dimen>
@@ -20,5 +19,7 @@
     <dimen name="text_xlarge">18dp</dimen>
     <dimen name="text_xxlarge">24dp</dimen>
     <dimen name="text_xxxlarge">32dp</dimen>
+
+    <dimen name="elevation_content">2dp</dimen>
 
 </resources>
