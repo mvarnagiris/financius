@@ -10,6 +10,6 @@
     android:elevation="@dimen/elevation_content"
     android:outlineProvider="background"
     android:scaleType="centerCrop"
-    android:src="@drawable/app_user_avatar_placeholder"
     tools:layout_height="56dp"
-    tools:layout_width="56dp" />
+    tools:layout_width="56dp"
+    tools:src="@drawable/app_user_avatar_placeholder" />
