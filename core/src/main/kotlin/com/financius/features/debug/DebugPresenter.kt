@@ -5,6 +5,7 @@ import com.financius.data.LogoutService
 import com.financius.features.debug.DebugPresenter.DebugItem.Action
 import com.financius.features.debug.DebugPresenter.DebugItem.Action.Logout
 import com.financius.features.debug.DebugPresenter.Intent
+import com.financius.features.debug.DebugPresenter.Intent.Select
 import com.financius.features.debug.DebugPresenter.SideEffect
 import com.financius.features.debug.DebugPresenter.SideEffect.RestartApp
 import com.financius.features.debug.DebugPresenter.State
@@ -24,11 +25,15 @@ class DebugPresenter(private val logoutService: LogoutService) : AttachListening
     override fun getInitialState(): State = Loaded(listOf(Logout(logoutService)))
 
     override suspend fun mapIntentToSideEffect(currentState: State, intent: Intent): SideEffect? {
-        when (intent.debugItem) {
-            is Action -> {
-                launch {
-                    intent.debugItem.execute()
-                    addSideEffect(intent.debugItem.sideEffectAfterExecution())
+        when (intent) {
+            is Select -> {
+                when (intent.debugItem) {
+                    is Action -> {
+                        launch {
+                            intent.debugItem.execute()
+                            addSideEffect(intent.debugItem.sideEffectAfterExecution())
+                        }
+                    }
                 }
             }
         }
@@ -71,7 +76,9 @@ class DebugPresenter(private val logoutService: LogoutService) : AttachListening
         }
     }
 
-    data class Intent(val debugItem: DebugItem)
+    sealed class Intent {
+        data class Select(val debugItem: DebugItem) : Intent()
+    }
 
     sealed class State {
         data class Loaded(val debugItems: List<DebugItem>) : State()
@@ -83,7 +90,7 @@ class DebugPresenter(private val logoutService: LogoutService) : AttachListening
     }
 
     interface View : AttachListeningPresenter.View {
-        fun debugItemSelects(): ReceiveChannel<Intent>
+        fun debugItemSelects(): ReceiveChannel<Select>
         fun showDebugItems(debugItems: List<DebugItem>)
         fun showExecuting(debugItem: DebugItem)
         fun hideExecuting()
